@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Documentation - Technical guides, API references, and tutorials for EmbeddedOS">
+    <title>Documentation | EmbeddedOS Foundation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) with AI + Neural Link</span>
+            <div>
+                <a href="documentation.html">Documentation</a>
+                <a href="https://github.com/embeddedos-org">GitHub</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Research ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="research.html">Neural Link Architecture</a>
+                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
+                        <a href="ai-os.html">AI Operating Systems</a>
+                        <a href="building-os.html">Building OS with Linux/RTOS</a>
+                        <a href="future-research.html">Future Research</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Programs ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="membership.html">Membership</a>
+                        <a href="certification.html">Certification</a>
+                        <a href="internship.html">Internship</a>
+                        <a href="careers.html">Careers</a>
+                    </div>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="donate.html">Donate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="membership.html" class="nav-cta">Join Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Documentation</h1>
+        <p>Technical guides, API references, and tutorials for EmbeddedOS development</p>
+    </section>
+
+    <!-- Quick Start -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Get Started</span>
+                <h2>Quick Start Guides</h2>
+                <p>Get up and running quickly with our step-by-step guides</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">🚀</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Getting Started</h3>
+                        <p>Set up your development environment and build your first EmbeddedOS project.</p>
+                        <a href="#" class="card-link">Read Guide →</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">🔧</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Build System</h3>
+                        <p>Learn how to configure and use the EmbeddedOS build system.</p>
+                        <a href="#" class="card-link">Read Guide →</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">📱</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Device Drivers</h3>
+                        <p>Write and integrate device drivers for your hardware platform.</p>
+                        <a href="#" class="card-link">Read Guide →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Reference -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Reference</span>
+                <h2>API Documentation</h2>
+                <p>Comprehensive API reference for all EmbeddedOS modules</p>
+            </div>
+            <div class="cards-grid cards-grid-4">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Neural Link API</h3>
+                    <p>Interface for neural link integration and signal processing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI/ML API</h3>
+                    <p>Machine learning inference and model management APIs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Security API</h3>
+                    <p>Cryptography, authentication, and secure communication.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time API</h3>
+                    <p>Real-time scheduling and timing-critical operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorials -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Learn</span>
+                <h2>Tutorials</h2>
+                <p>Step-by-step tutorials to build real projects</p>
+            </div>
+            <div class="positions-list">
+                <div class="position-card">
+                    <h3>Building Your First AI-Powered Application</h3>
+                    <p class="type">Beginner • 30 minutes</p>
+                    <p>Learn how to integrate machine learning models into your embedded application.</p>
+                </div>
+                <div class="position-card">
+                    <h3>Implementing Neural Link Security</h3>
+                    <p class="type">Intermediate • 1 hour</p>
+                    <p>Secure your neural link communications with encryption and authentication.</p>
+                </div>
+                <div class="position-card">
+                    <h3>Real-Time Signal Processing</h3>
+                    <p class="type">Advanced • 2 hours</p>
+                    <p>Process neural signals in real-time with minimal latency.</p>
+                </div>
+                <div class="position-card">
+                    <h3>Cross-Platform Development</h3>
+                    <p class="type">Intermediate • 45 minutes</p>
+                    <p>Build applications that run on multiple hardware platforms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downloads -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Downloads</span>
+                <h2>SDKs & Tools</h2>
+                <p>Download the tools you need to get started</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>EmbeddedOS SDK</h3>
+                        <p>Complete software development kit with libraries, headers, and examples.</p>
+                        <a href="#" class="btn btn-outline" style="margin-top: 1rem;">Download SDK</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Development Tools</h3>
+                        <p>Compilers, debuggers, and IDE plugins for EmbeddedOS development.</p>
+                        <a href="#" class="btn btn-outline" style="margin-top: 1rem;">Download Tools</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Sample Projects</h3>
+                        <p>Ready-to-build sample projects demonstrating various features.</p>
+                        <a href="https://github.com/embeddedos" class="btn btn-outline" style="margin-top: 1rem;">View on GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Need Help?</h2>
+        <p>Join our community forums or contact our support team.</p>
+        <div class="cta-buttons">
+            <a href="contact.html" class="btn btn-dark">Contact Support</a>
+            <a href="membership.html" class="btn btn-secondary">Join Community</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Foundation</span>
+                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <div class="footer-social">
+                    <a href="#">𝕏</a>
+                    <a href="#">in</a>
+                    <a href="https://github.com/embeddedos">GH</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Security</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link + AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="future-research.html">Future Research</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internship</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:help@embeddedos.org">help@embeddedos.org</a></li>
+                    <li><a href="mailto:support@embeddedos.org">support@embeddedos.org</a></li>
+                    <li><a href="mailto:volunteer@embeddedos.org">volunteer@embeddedos.org</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EmbeddedOS (EoS) Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Trademark Guidelines</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

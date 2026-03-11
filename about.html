@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About EmbeddedOS Foundation - Bringing together academia, industry, and government to advance AI operating systems and neural link technology">
+    <title>About Us | EmbeddedOS Foundation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .ecosystem-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            position: relative;
+        }
+        .ecosystem-center {
+            width: 180px;
+            height: 180px;
+            background: var(--gradient-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 20px 60px rgba(0, 102, 204, 0.4);
+        }
+        .ecosystem-center span {
+            font-size: 2rem;
+        }
+        .ecosystem-ring {
+            position: absolute;
+            border: 3px dashed rgba(0, 102, 204, 0.3);
+            border-radius: 50%;
+        }
+        .ring-1 { width: 300px; height: 300px; }
+        .ring-2 { width: 450px; height: 450px; }
+        .ring-3 { width: 600px; height: 600px; }
+        .ecosystem-node {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            border: 2px solid var(--medium-gray);
+            transition: all 0.3s;
+        }
+        .ecosystem-node:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-blue);
+        }
+        .ecosystem-node .icon {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+        .ecosystem-node .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        .node-academia { top: 50px; left: 50%; transform: translateX(-50%); }
+        .node-industry { top: 35%; right: 50px; }
+        .node-government { bottom: 35%; right: 50px; }
+        .node-startups { bottom: 50px; left: 50%; transform: translateX(-50%); }
+        .node-research { top: 35%; left: 50px; }
+        .node-education { bottom: 35%; left: 50px; }
+
+        .pillar-visual {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+        .pillar-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            width: 150px;
+            transition: transform 0.3s;
+        }
+        .pillar-item:hover {
+            transform: translateY(-10px);
+        }
+        .pillar-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        .pillar-icon.os { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .pillar-icon.ai { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .pillar-icon.neural { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .pillar-icon.apps { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        @media (max-width: 768px) {
+            .ecosystem-visual {
+                display: none;
+            }
+            .pillar-visual {
+                gap: 1rem;
+            }
+            .pillar-item {
+                width: 120px;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) with AI + Neural Link</span>
+            <div>
+                <a href="documentation.html">Documentation</a>
+                <a href="https://github.com/embeddedos-org">GitHub</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Research ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="research.html">Neural Link Architecture</a>
+                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
+                        <a href="ai-os.html">AI Operating Systems</a>
+                        <a href="building-os.html">Building OS with Linux/RTOS</a>
+                        <a href="future-research.html">Future Research</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Programs ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="membership.html">Membership</a>
+                        <a href="certification.html">Certification</a>
+                        <a href="internship.html">Internship</a>
+                        <a href="careers.html">Careers</a>
+                    </div>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="donate.html">Donate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="membership.html" class="nav-cta">Join Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: 65vh;">
+        <div class="hero-container" style="grid-template-columns: 1fr;">
+            <div class="hero-content" style="text-align: center; max-width: 900px; margin: 0 auto;">
+                <span class="badge badge-blue" style="background: rgba(255,255,255,0.1); color: white;">ABOUT US</span>
+                <h1 style="margin-top: 1rem;">Bringing Together the <span>Global Ecosystem</span></h1>
+                <p>We unite academia, industry, and government to advance education and engineering in AI operating systems, neural link technology, and customer applications—supporting innovation from startups to industry manufacturing across all versatile platforms.</p>
+                <div class="hero-buttons" style="justify-content: center;">
+                    <a href="#mission" class="btn btn-primary">Our Mission</a>
+                    <a href="contact.html" class="btn btn-secondary">Get in Touch</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Four Pillars -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Our Technology Stack</span>
+                <h2>Four Pillars of Innovation</h2>
+                <p>Bringing together the core technologies that power the future</p>
+            </div>
+
+            <div class="pillar-visual">
+                <div class="pillar-item">
+                    <div class="pillar-icon os">💻</div>
+                    <h4>Operating Systems</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Linux, RTOS, Embedded</p>
+                </div>
+                <div class="pillar-item">
+                    <div class="pillar-icon ai">🤖</div>
+                    <h4>Artificial Intelligence</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">ML, Deep Learning, LLMs</p>
+                </div>
+                <div class="pillar-item">
+                    <div class="pillar-icon neural">🧠</div>
+                    <h4>Neural Links</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">BCI, Signal Processing</p>
+                </div>
+                <div class="pillar-item">
+                    <div class="pillar-icon apps">📱</div>
+                    <h4>Customer Apps</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Real-world Solutions</p>
+                </div>
+            </div>
+
+            <!-- Visual Connection Diagram -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <svg width="100%" height="120" viewBox="0 0 800 120" style="max-width: 800px;">
+                    <!-- Connection lines -->
+                    <path d="M100,60 Q200,20 300,60 Q400,100 500,60 Q600,20 700,60"
+                          fill="none" stroke="url(#gradient1)" stroke-width="4" stroke-linecap="round"/>
+                    <defs>
+                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#667eea"/>
+                            <stop offset="33%" style="stop-color:#f5576c"/>
+                            <stop offset="66%" style="stop-color:#4facfe"/>
+                            <stop offset="100%" style="stop-color:#43e97b"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Nodes -->
+                    <circle cx="100" cy="60" r="15" fill="#667eea"/>
+                    <circle cx="300" cy="60" r="15" fill="#f5576c"/>
+                    <circle cx="500" cy="60" r="15" fill="#4facfe"/>
+                    <circle cx="700" cy="60" r="15" fill="#43e97b"/>
+                    <!-- Labels -->
+                    <text x="100" y="100" text-anchor="middle" font-size="12" fill="#666">OS</text>
+                    <text x="300" y="100" text-anchor="middle" font-size="12" fill="#666">AI</text>
+                    <text x="500" y="100" text-anchor="middle" font-size="12" fill="#666">Neural</text>
+                    <text x="700" y="100" text-anchor="middle" font-size="12" fill="#666">Apps</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Section -->
+    <section class="section section-gray" id="mission">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Our Mission</span>
+                <h2>Uniting the Global Ecosystem</h2>
+                <p>Bridging academia, industry, and government for collective innovation</p>
+            </div>
+
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                        <div class="card-icon">🎓</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Academia</h3>
+                        <p>Partnering with universities and research institutions worldwide to advance fundamental research in embedded AI and neural interfaces.</p>
+                        <ul style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                            <li>Joint research programs</li>
+                            <li>PhD fellowships</li>
+                            <li>Publication support</li>
+                            <li>Curriculum development</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);">
+                        <div class="card-icon">🏭</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Industry</h3>
+                        <p>Collaborating with technology companies from startups to Fortune 500 to bring innovations from lab to manufacturing scale.</p>
+                        <ul style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                            <li>Technology transfer</li>
+                            <li>Manufacturing partnerships</li>
+                            <li>Standards development</li>
+                            <li>Industry working groups</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);">
+                        <div class="card-icon">🏛️</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Government</h3>
+                        <p>Working with government agencies to ensure safe, ethical, and beneficial deployment of neural and AI technologies.</p>
+                        <ul style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                            <li>Policy guidance</li>
+                            <li>Safety standards</li>
+                            <li>Grant programs</li>
+                            <li>Regulatory frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Support -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Engineering Excellence</span>
+                <h2>Versatile Platform Support</h2>
+                <p>From startups to industry manufacturing—we support all platforms</p>
+            </div>
+
+            <!-- Platform Visual -->
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <svg width="100%" height="300" viewBox="0 0 800 300" style="max-width: 900px;">
+                    <!-- Background grid -->
+                    <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#eee" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)"/>
+
+                    <!-- Startup to Enterprise flow -->
+                    <rect x="50" y="100" width="120" height="100" rx="10" fill="#e3f2fd"/>
+                    <text x="110" y="140" text-anchor="middle" font-weight="600" font-size="14">🚀 Startup</text>
+                    <text x="110" y="165" text-anchor="middle" font-size="11" fill="#666">Prototyping</text>
+                    <text x="110" y="180" text-anchor="middle" font-size="11" fill="#666">MVP Development</text>
+
+                    <polygon points="190,150 210,140 210,160" fill="#0066cc"/>
+
+                    <rect x="230" y="100" width="120" height="100" rx="10" fill="#e8f5e9"/>
+                    <text x="290" y="140" text-anchor="middle" font-weight="600" font-size="14">📈 Scale-up</text>
+                    <text x="290" y="165" text-anchor="middle" font-size="11" fill="#666">Pilot Programs</text>
+                    <text x="290" y="180" text-anchor="middle" font-size="11" fill="#666">Testing & QA</text>
+
+                    <polygon points="370,150 390,140 390,160" fill="#0066cc"/>
+
+                    <rect x="410" y="100" width="120" height="100" rx="10" fill="#fff3e0"/>
+                    <text x="470" y="140" text-anchor="middle" font-weight="600" font-size="14">🏭 Production</text>
+                    <text x="470" y="165" text-anchor="middle" font-size="11" fill="#666">Manufacturing</text>
+                    <text x="470" y="180" text-anchor="middle" font-size="11" fill="#666">Supply Chain</text>
+
+                    <polygon points="550,150 570,140 570,160" fill="#0066cc"/>
+
+                    <rect x="590" y="100" width="140" height="100" rx="10" fill="#f3e5f5"/>
+                    <text x="660" y="140" text-anchor="middle" font-weight="600" font-size="14">🌍 Enterprise</text>
+                    <text x="660" y="165" text-anchor="middle" font-size="11" fill="#666">Global Deployment</text>
+                    <text x="660" y="180" text-anchor="middle" font-size="11" fill="#666">Maintenance</text>
+
+                    <!-- Supporting text -->
+                    <text x="400" y="260" text-anchor="middle" font-size="14" fill="#0066cc" font-weight="600">
+                        End-to-End Support for Your Journey
+                    </text>
+                </svg>
+            </div>
+
+            <div class="cards-grid cards-grid-4">
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Innovation Support</h3>
+                    <p>Incubation programs and technical mentorship for early-stage startups.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Engineering Resources</h3>
+                    <p>Reference designs, SDKs, and development tools for rapid prototyping.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏭</div>
+                    <h3>Manufacturing Network</h3>
+                    <p>Connections to certified manufacturing partners worldwide.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Compliance Support</h3>
+                    <p>Guidance on certifications, safety standards, and regulatory requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Research Progress -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Achievements</span>
+                <h2>Latest Research Progress</h2>
+                <p>Recent milestones and breakthrough developments</p>
+            </div>
+
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%); padding: 2rem;">
+                        <svg width="100%" height="120" viewBox="0 0 200 120">
+                            <text x="100" y="50" text-anchor="middle" font-size="40" fill="white">📡</text>
+                            <text x="100" y="90" text-anchor="middle" font-size="14" fill="white" font-weight="600">Neural Protocol v2.0</text>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <span class="badge badge-green">Q1 2024</span>
+                        <h3>Neural Protocol v2.0 Released</h3>
+                        <p>New communication protocol with 40% lower latency and enhanced security for neural link systems.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #00a86b 0%, #00d68f 100%); padding: 2rem;">
+                        <svg width="100%" height="120" viewBox="0 0 200 120">
+                            <text x="100" y="50" text-anchor="middle" font-size="40" fill="white">🎯</text>
+                            <text x="100" y="90" text-anchor="middle" font-size="14" fill="white" font-weight="600">98% Accuracy</text>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <span class="badge badge-blue">Q4 2023</span>
+                        <h3>Intent Recognition Milestone</h3>
+                        <p>AI models now achieve 98% accuracy in neural intent recognition across 50+ command classes.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%); padding: 2rem;">
+                        <svg width="100%" height="120" viewBox="0 0 200 120">
+                            <text x="100" y="50" text-anchor="middle" font-size="40" fill="white">🏆</text>
+                            <text x="100" y="90" text-anchor="middle" font-size="14" fill="white" font-weight="600">ISO Certification</text>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <span class="badge badge-orange">Q3 2023</span>
+                        <h3>Security Framework Certified</h3>
+                        <p>Our security architecture received ISO 27001 certification for medical-grade neural applications.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Stats -->
+            <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-md);">
+                <h3 style="text-align: center; margin-bottom: 2rem;">2024 Research Goals Progress</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>Neural Link SDK</span>
+                            <span style="font-weight: 600;">85%</span>
+                        </div>
+                        <div style="height: 8px; background: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 85%; height: 100%; background: var(--primary-blue); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>AI OS Reference Design</span>
+                            <span style="font-weight: 600;">70%</span>
+                        </div>
+                        <div style="height: 8px; background: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 70%; height: 100%; background: var(--accent-green); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>Security Certification</span>
+                            <span style="font-weight: 600;">100%</span>
+                        </div>
+                        <div style="height: 8px; background: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 100%; height: 100%; background: #ff6b35; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>Partner Integrations</span>
+                            <span style="font-weight: 600;">60%</span>
+                        </div>
+                        <div style="height: 8px; background: var(--medium-gray); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 60%; height: 100%; background: #7c4dff; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Education</span>
+                <h2>Advancing Global Education</h2>
+                <p>Building the next generation of embedded AI engineers</p>
+            </div>
+
+            <div class="two-col">
+                <div class="two-col-content">
+                    <h3>Education Initiatives</h3>
+                    <p>We're committed to democratizing access to cutting-edge embedded systems and neural link education worldwide.</p>
+                    <ul>
+                        <li><strong>University Partnerships</strong> - Curriculum support for 50+ universities</li>
+                        <li><strong>Online Learning</strong> - Free courses reaching 100,000+ students</li>
+                        <li><strong>Hands-on Labs</strong> - Remote lab access for practical experience</li>
+                        <li><strong>Scholarship Programs</strong> - Funding for underrepresented students</li>
+                        <li><strong>Faculty Development</strong> - Training programs for educators</li>
+                    </ul>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="certification.html" class="btn btn-primary">Explore Certifications</a>
+                        <a href="internship.html" class="btn btn-outline" style="margin-left: 1rem;">Internship Program</a>
+                    </div>
+                </div>
+                <div class="two-col-image">
+                    <!-- Custom SVG illustration -->
+                    <svg width="100%" height="350" viewBox="0 0 400 350">
+                        <defs>
+                            <linearGradient id="eduGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#0066cc"/>
+                                <stop offset="100%" style="stop-color:#00a86b"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Background -->
+                        <rect x="50" y="50" width="300" height="250" rx="20" fill="#f5f5f5"/>
+                        <!-- Book -->
+                        <rect x="100" y="150" width="80" height="100" rx="5" fill="#0066cc"/>
+                        <rect x="105" y="155" width="70" height="90" rx="3" fill="white"/>
+                        <line x1="140" y1="155" x2="140" y2="245" stroke="#0066cc" stroke-width="2"/>
+                        <!-- Screen -->
+                        <rect x="210" y="100" width="120" height="90" rx="8" fill="#333"/>
+                        <rect x="215" y="105" width="110" height="75" rx="4" fill="#0099ff"/>
+                        <text x="270" y="150" text-anchor="middle" fill="white" font-size="24">🧠</text>
+                        <rect x="250" y="190" width="40" height="10" rx="2" fill="#666"/>
+                        <!-- Graduation cap -->
+                        <polygon points="200,80 160,100 200,120 240,100" fill="url(#eduGrad)"/>
+                        <rect x="190" y="65" width="20" height="15" fill="url(#eduGrad)"/>
+                        <circle cx="200" cy="65" r="8" fill="#ffeb3b"/>
+                        <!-- Decorative elements -->
+                        <circle cx="80" cy="80" r="15" fill="#e3f2fd"/>
+                        <circle cx="330" cy="270" r="20" fill="#e8f5e9"/>
+                        <text x="200" y="320" text-anchor="middle" fill="#666" font-size="14" font-weight="600">
+                            Empowering Future Engineers
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Leadership</span>
+                <h2>Foundation Leadership</h2>
+                <p>Guided by experts from academia, industry, and government</p>
+            </div>
+            <div class="cards-grid cards-grid-4">
+                <div style="text-align: center;">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3rem;">👤</span>
+                    </div>
+                    <h4>Executive Director</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Foundation Leadership</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3rem;">👤</span>
+                    </div>
+                    <h4>Chief Research Officer</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Academia Lead</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3rem;">👤</span>
+                    </div>
+                    <h4>Industry Relations</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Industry Partnerships</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3rem;">👤</span>
+                    </div>
+                    <h4>Policy Director</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Government Affairs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="cta-section">
+        <h2>Ready to Collaborate?</h2>
+        <p>Whether you're from academia, industry, or government—we'd love to hear from you.</p>
+        <div class="cta-buttons">
+            <a href="contact.html" class="btn btn-dark">Contact Us</a>
+            <a href="membership.html" class="btn btn-secondary">Join the Foundation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Foundation</span>
+                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <div class="footer-social">
+                    <a href="#">𝕏</a>
+                    <a href="#">in</a>
+                    <a href="#">GH</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Security</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link + AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="future-research.html">Future Research</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internship</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:help@embeddedos.org">help@embeddedos.org</a></li>
+                    <li><a href="mailto:support@embeddedos.org">support@embeddedos.org</a></li>
+                    <li><a href="mailto:volunteer@embeddedos.org">volunteer@embeddedos.org</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EmbeddedOS (EoS) Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Trademark Guidelines</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EmbeddedOS Foundation Membership - Join our community of AI and embedded systems professionals">
+    <title>Membership | EmbeddedOS Foundation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) with AI + Neural Link</span>
+            <div>
+                <a href="documentation.html">Documentation</a>
+                <a href="https://github.com/embeddedos-org">GitHub</a>
+                <a href="mailto:info@embeddedos.org">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Research ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="research.html">Neural Link Architecture</a>
+                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
+                        <a href="ai-os.html">AI Operating Systems</a>
+                        <a href="building-os.html">Building OS with Linux/RTOS</a>
+                        <a href="future-research.html">Future Research</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Programs ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="membership.html">Membership</a>
+                        <a href="certification.html">Certification</a>
+                        <a href="internship.html">Internship</a>
+                        <a href="careers.html">Careers</a>
+                    </div>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="donate.html">Donate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="membership.html" class="nav-cta">Join Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: 60vh;">
+        <div class="hero-container" style="grid-template-columns: 1fr;">
+            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <span class="badge badge-blue" style="background: rgba(255,255,255,0.1); color: white;">MEMBERSHIP</span>
+                <h1 style="margin-top: 1rem;">Join the EmbeddedOS Foundation</h1>
+                <p>Be part of a global community advancing AI-based operating systems and neural link technology. Members drive open standards, access premium resources, and shape the future of intelligent embedded systems.</p>
+                <div class="hero-buttons" style="justify-content: center;">
+                    <a href="#tiers" class="btn btn-primary">View Membership Tiers</a>
+                    <a href="#benefits" class="btn btn-secondary">See Benefits</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-item-large">
+                <div class="number">10K+</div>
+                <div class="label">Global Members</div>
+            </div>
+            <div class="stat-item-large">
+                <div class="number">50+</div>
+                <div class="label">Corporate Partners</div>
+            </div>
+            <div class="stat-item-large">
+                <div class="number">30+</div>
+                <div class="label">Countries</div>
+            </div>
+            <div class="stat-item-large">
+                <div class="number">100%</div>
+                <div class="label">Open Governance</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Membership Benefits -->
+    <section class="section section-white" id="benefits">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Why Join</span>
+                <h2>Membership Benefits</h2>
+                <p>Unlock exclusive resources and opportunities to accelerate your career and projects</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Premium Resources</h3>
+                    <p>Access comprehensive documentation, reference implementations, and technical deep-dives not available to the public.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Certification Discounts</h3>
+                    <p>Receive vouchers and discounted rates on all EmbeddedOS Foundation certifications and training programs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗳️</div>
+                    <h3>Voting Rights</h3>
+                    <p>Participate in governance decisions, vote on technical standards, and influence the project roadmap.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Events Access</h3>
+                    <p>Early access and discounts to conferences, workshops, and member-exclusive networking events.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Community Support</h3>
+                    <p>Priority access to community forums, expert Q&A sessions, and dedicated support channels.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Early Access</h3>
+                    <p>Be the first to try new projects, beta features, and experimental technologies before public release.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Tiers -->
+    <section class="section section-gray" id="tiers">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Choose Your Plan</span>
+                <h2>Membership Tiers</h2>
+                <p>Select the membership level that best fits your needs</p>
+            </div>
+            <div class="membership-tiers">
+                <div class="membership-card">
+                    <div class="membership-icon">🎓</div>
+                    <h3>Individual</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">For students and hobbyists</p>
+                    <div class="membership-price">Free<span>/year</span></div>
+                    <ul class="membership-features">
+                        <li>Access to open-source repositories</li>
+                        <li>Community forum participation</li>
+                        <li>Monthly newsletter</li>
+                        <li>Basic documentation access</li>
+                        <li>Event notifications</li>
+                        <li>Public working group access</li>
+                    </ul>
+                    <a href="#apply" class="btn btn-outline" style="width: 100%;">Get Started Free</a>
+                </div>
+                <div class="membership-card featured">
+                    <div class="membership-icon">⭐</div>
+                    <h3>Professional</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">For individual professionals</p>
+                    <div class="membership-price">$299<span>/year</span></div>
+                    <ul class="membership-features">
+                        <li>Everything in Individual</li>
+                        <li>2 certification exam vouchers</li>
+                        <li>Premium documentation & guides</li>
+                        <li>Priority support channels</li>
+                        <li>Early access to new projects</li>
+                        <li>Voting rights on standards</li>
+                        <li>Member badge & profile</li>
+                    </ul>
+                    <a href="#apply" class="btn btn-primary" style="width: 100%;">Join Professional</a>
+                </div>
+                <div class="membership-card">
+                    <div class="membership-icon">🏢</div>
+                    <h3>Enterprise</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">For organizations</p>
+                    <div class="membership-price">Custom</div>
+                    <ul class="membership-features">
+                        <li>Everything in Professional</li>
+                        <li>Unlimited team seats</li>
+                        <li>Dedicated support engineer</li>
+                        <li>Custom training programs</li>
+                        <li>Board advisory opportunities</li>
+                        <li>Logo on website & events</li>
+                        <li>Direct influence on roadmap</li>
+                    </ul>
+                    <a href="#apply" class="btn btn-dark" style="width: 100%;">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Corporate Members -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Enterprise Membership</span>
+                <h2>Corporate Member Benefits</h2>
+                <p>Leading organizations partner with EmbeddedOS Foundation</p>
+            </div>
+            <div class="two-col">
+                <div class="two-col-content">
+                    <h3>Strategic Partnership</h3>
+                    <p>Enterprise members gain strategic influence over the direction of AI operating system standards and neural link security protocols. Your organization will be at the forefront of embedded AI innovation.</p>
+                    <ul>
+                        <li>Seat on Technical Advisory Board</li>
+                        <li>Early input on specification development</li>
+                        <li>Co-marketing and PR opportunities</li>
+                        <li>Access to member-exclusive research</li>
+                        <li>Talent pipeline through internship program</li>
+                        <li>Custom workshops and training</li>
+                    </ul>
+                    <a href="mailto:enterprise@embeddedos.org" class="btn btn-primary">Contact Enterprise Sales</a>
+                </div>
+                <div class="two-col-image">
+                    <img src="https://via.placeholder.com/500x350/ffffff/0066cc?text=Enterprise+Partnership" alt="Enterprise Partnership">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Form -->
+    <section class="section section-gray" id="apply">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Get Started</span>
+                <h2>Apply for Membership</h2>
+                <p>Join our community today</p>
+            </div>
+            <div style="max-width: 600px; margin: 0 auto; background: white; padding: 3rem; border-radius: 16px; box-shadow: var(--shadow-lg);">
+                <form>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Full Name *</label>
+                        <input type="text" required style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email Address *</label>
+                        <input type="email" required style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Organization</label>
+                        <input type="text" style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Membership Tier *</label>
+                        <select required style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                            <option value="">Select a tier</option>
+                            <option value="individual">Individual (Free)</option>
+                            <option value="professional">Professional ($299/year)</option>
+                            <option value="enterprise">Enterprise (Contact Sales)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Areas of Interest</label>
+                        <textarea style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem; min-height: 100px;" placeholder="Tell us about your interests in AI OS, neural link, or embedded systems..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Questions About Membership?</h2>
+        <p>Our team is here to help you find the right membership tier for your needs.</p>
+        <div class="cta-buttons">
+            <a href="mailto:membership@embeddedos.org" class="btn btn-dark">Contact Membership Team</a>
+            <a href="documentation.html" class="btn btn-secondary">View FAQ</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Foundation</span>
+                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <div class="footer-social">
+                    <a href="#">𝕏</a>
+                    <a href="#">in</a>
+                    <a href="#">GH</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Security</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link + AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="building-os.html">Building OS</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internship</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="resources.html">Academic Resources</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Leadership</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EmbeddedOS (EoS) Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Trademark Guidelines</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

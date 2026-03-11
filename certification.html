@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EmbeddedOS Foundation Certifications - Industry-recognized credentials for AI OS and Neural Link professionals">
+    <title>Certification | EmbeddedOS Foundation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) with AI + Neural Link</span>
+            <div>
+                <a href="documentation.html">Documentation</a>
+                <a href="https://github.com/embeddedos-org">GitHub</a>
+                <a href="mailto:info@embeddedos.org">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Research ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="research.html">Neural Link Architecture</a>
+                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
+                        <a href="ai-os.html">AI Operating Systems</a>
+                        <a href="building-os.html">Building OS with Linux/RTOS</a>
+                        <a href="future-research.html">Future Research</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Programs ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="membership.html">Membership</a>
+                        <a href="certification.html">Certification</a>
+                        <a href="internship.html">Internship</a>
+                        <a href="careers.html">Careers</a>
+                    </div>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="donate.html">Donate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="membership.html" class="nav-cta">Join Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: 60vh;">
+        <div class="hero-container" style="grid-template-columns: 1fr;">
+            <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <span class="badge badge-green" style="background: rgba(0,168,107,0.2); color: #00d68f;">CERTIFICATION</span>
+                <h1 style="margin-top: 1rem;">Professional Certifications</h1>
+                <p>Validate your expertise with industry-recognized credentials in AI operating systems, neural link security, embedded Linux, and real-time systems development.</p>
+                <div class="hero-buttons" style="justify-content: center;">
+                    <a href="#certifications" class="btn btn-primary">View Certifications</a>
+                    <a href="#process" class="btn btn-secondary">Exam Process</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-item-large">
+                <div class="number">12</div>
+                <div class="label">Certifications</div>
+            </div>
+            <div class="stat-item-large">
+                <div class="number">5K+</div>
+                <div class="label">Certified Professionals</div>
+            </div>
+            <div class="stat-item-large">
+                <div class="number">95%</div>
+                <div class="label">Employer Recognition</div>
+            </div>
+            <div class="stat-item-large">
+                <div class="number">3 Years</div>
+                <div class="label">Validity Period</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Certification -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Why Certify</span>
+                <h2>Benefits of Certification</h2>
+                <p>Stand out in the competitive field of embedded AI systems</p>
+            </div>
+            <div class="cards-grid cards-grid-4">
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Career Advancement</h3>
+                    <p>Certified professionals earn 15-25% more and get promoted faster.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3>Industry Recognition</h3>
+                    <p>Credentials recognized by leading automotive, aerospace, and tech companies.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Skill Validation</h3>
+                    <p>Prove your expertise with rigorous, hands-on examinations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Global Network</h3>
+                    <p>Join an elite community of certified embedded AI professionals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Certifications -->
+    <section class="section section-gray" id="certifications">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Credentials</span>
+                <h2>Available Certifications</h2>
+                <p>Choose the certification path that aligns with your career goals</p>
+            </div>
+
+            <!-- Neural Link Certifications -->
+            <h3 style="margin-bottom: 2rem; color: var(--primary-blue);">🧠 Neural Link Certifications</h3>
+            <div class="cert-grid mb-4">
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🧠</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-green">Professional</span>
+                        <h3>Certified Neural Link Security Engineer (CNLSE)</h3>
+                        <p>Master security architectures for neural link systems including encryption, node integrity, and layered protection mechanisms.</p>
+                        <div class="cert-meta">
+                            <span>📝 90 Questions</span>
+                            <span>⏱️ 2 Hours</span>
+                            <span>💰 $395</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🔗</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-blue">Associate</span>
+                        <h3>Neural Link Fundamentals (NLF)</h3>
+                        <p>Entry-level certification covering neural link basics, signal processing, and integration concepts.</p>
+                        <div class="cert-meta">
+                            <span>📝 60 Questions</span>
+                            <span>⏱️ 90 Minutes</span>
+                            <span>💰 $199</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI OS Certifications -->
+            <h3 style="margin-bottom: 2rem; color: var(--primary-blue);">🤖 AI Operating System Certifications</h3>
+            <div class="cert-grid mb-4">
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🤖</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-green">Professional</span>
+                        <h3>Certified AI Operating System Developer (CAIOSD)</h3>
+                        <p>Demonstrate expertise in developing AI-integrated operating systems for automotive, drones, and IoT platforms.</p>
+                        <div class="cert-meta">
+                            <span>📝 75 Questions</span>
+                            <span>⏱️ 2 Hours</span>
+                            <span>💰 $395</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🚗</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-orange">Specialist</span>
+                        <h3>Automotive AI Systems Specialist (AASS)</h3>
+                        <p>Specialized certification for autonomous vehicle OS development, V2X communication, and safety-critical systems.</p>
+                        <div class="cert-meta">
+                            <span>📝 80 Questions</span>
+                            <span>⏱️ 2.5 Hours</span>
+                            <span>💰 $495</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Embedded Systems Certifications -->
+            <h3 style="margin-bottom: 2rem; color: var(--primary-blue);">💻 Embedded Systems Certifications</h3>
+            <div class="cert-grid mb-4">
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🐧</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-green">Professional</span>
+                        <h3>Certified Embedded Linux Professional (CELP)</h3>
+                        <p>Validate Linux kernel development, device driver programming, and system integration skills.</p>
+                        <div class="cert-meta">
+                            <span>📝 80 Questions</span>
+                            <span>⏱️ 2 Hours</span>
+                            <span>💰 $395</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">⚡</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-green">Professional</span>
+                        <h3>Certified RTOS Engineer (CRTOSE)</h3>
+                        <p>Master real-time operating system concepts, deterministic scheduling, and safety-critical development.</p>
+                        <div class="cert-meta">
+                            <span>📝 85 Questions</span>
+                            <span>⏱️ 2.5 Hours</span>
+                            <span>💰 $395</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🔧</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-blue">Associate</span>
+                        <h3>Embedded Systems Fundamentals (ESF)</h3>
+                        <p>Entry-level certification for hardware/software integration, EE interfaces, and embedded programming basics.</p>
+                        <div class="cert-meta">
+                            <span>📝 50 Questions</span>
+                            <span>⏱️ 75 Minutes</span>
+                            <span>💰 $149</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge">
+                        <span class="cert-badge-icon">🔒</span>
+                    </div>
+                    <div class="cert-info">
+                        <span class="badge badge-orange">Specialist</span>
+                        <h3>Embedded Security Specialist (ESS)</h3>
+                        <p>Advanced certification for secure boot, TEE implementation, hardware security modules, and cryptographic systems.</p>
+                        <div class="cert-meta">
+                            <span>📝 70 Questions</span>
+                            <span>⏱️ 2 Hours</span>
+                            <span>💰 $445</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exam Process -->
+    <section class="section section-white" id="process">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">How It Works</span>
+                <h2>Certification Process</h2>
+                <p>Your path to becoming a certified professional</p>
+            </div>
+            <div class="connection-flow">
+                <div class="flow-item">
+                    <div class="flow-icon">1️⃣</div>
+                    <h4>Register</h4>
+                    <p>Create account & select exam</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="flow-icon">2️⃣</div>
+                    <h4>Prepare</h4>
+                    <p>Study materials & practice</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="flow-icon">3️⃣</div>
+                    <h4>Schedule</h4>
+                    <p>Book exam date & time</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="flow-icon">4️⃣</div>
+                    <h4>Take Exam</h4>
+                    <p>Online proctored test</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="flow-icon">5️⃣</div>
+                    <h4>Get Certified</h4>
+                    <p>Receive digital badge</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exam Details -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Exam Information</span>
+                <h2>Exam Details</h2>
+                <p>Everything you need to know about our certification exams</p>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Detail</th>
+                        <th>Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Exam Format</td>
+                        <td>Multiple choice, multiple select, and scenario-based questions</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Method</td>
+                        <td>Online proctored (from home/office) or at testing centers worldwide</td>
+                    </tr>
+                    <tr>
+                        <td>Passing Score</td>
+                        <td>66-70% depending on certification level</td>
+                    </tr>
+                    <tr>
+                        <td>Validity</td>
+                        <td>3 years from date of certification</td>
+                    </tr>
+                    <tr>
+                        <td>Retake Policy</td>
+                        <td>14-day wait after first attempt, 30-day wait after second</td>
+                    </tr>
+                    <tr>
+                        <td>Languages</td>
+                        <td>English (additional languages coming soon)</td>
+                    </tr>
+                    <tr>
+                        <td>Accommodations</td>
+                        <td>Available for candidates with disabilities upon request</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Study Resources -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Preparation</span>
+                <h2>Study Resources</h2>
+                <p>Everything you need to prepare for your certification exam</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">📖</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Official Study Guides</h3>
+                        <p>Comprehensive guides covering all exam objectives with practice questions and explanations.</p>
+                        <a href="#" class="card-link">Browse Guides →</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">🎥</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Video Courses</h3>
+                        <p>Self-paced video training from expert instructors with hands-on labs and demos.</p>
+                        <a href="#" class="card-link">View Courses →</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">💻</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Practice Labs</h3>
+                        <p>Hands-on virtual environments to practice skills and prepare for scenario-based questions.</p>
+                        <a href="#" class="card-link">Access Labs →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Ready to Get Certified?</h2>
+        <p>Start your certification journey today and join thousands of certified AI OS professionals.</p>
+        <div class="cta-buttons">
+            <a href="#certifications" class="btn btn-dark">Choose Certification</a>
+            <a href="membership.html" class="btn btn-secondary">Join for Discounts</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Foundation</span>
+                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <div class="footer-social">
+                    <a href="#">𝕏</a>
+                    <a href="#">in</a>
+                    <a href="#">GH</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Security</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link + AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="building-os.html">Building OS</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internship</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="documentation.html">Documentation</a></li>
+                    <li><a href="resources.html">Academic Resources</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Leadership</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EmbeddedOS (EoS) Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Trademark Guidelines</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
