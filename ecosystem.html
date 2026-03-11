@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#0066cc"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EoS Ecosystem - A complete embedded AI systems stack from boot to cloud. EoS, EAI, ENI, EIPC, eBootloader.">
+    <title>Ecosystem | EmbeddedOS Research Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <meta property="og:title" content="EmbeddedOS Ecosystem | EmbeddedOS Foundation">
+    <meta property="og:description" content="EoS Ecosystem - A complete embedded AI systems stack from boot to cloud. EoS, EAI, ENI, EIPC, eBootloader.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.embeddedos.org">
+</head>
+<body>
+
+    
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+<!-- Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo" aria-label="EmbeddedOS Home">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar">
+                <li role="none">
+                    <a href="#" aria-haspopup="true" aria-expanded="false">Research ▾</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
+                        <li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
+                        <li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
+                        <li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
+                        <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
+                    </ul></li>
+                <li role="none">
+                    <a href="#" aria-haspopup="true" aria-expanded="false">Programs ▾</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
+                        <li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
+                        <li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
+                        <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
+                    </ul></li>
+                <li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
+                <li role="none"><a href="about.html" role="menuitem">About</a></li>
+                <li role="none"><a href="resources.html" role="menuitem">Resources</a></li>
+                <li role="none"><a href="donate.html" role="menuitem">Donate</a></li>
+                <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
+                <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
+            </ul></nav>
+            </ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+        </div>
+    </header>
+
+    <nav class="product-nav" aria-label="Ecosystem products">
+        <div class="container">
+            <div class="product-nav__links">
+                <a href="product-eos.html" class="product-nav__item"><span class="product-nav__icon">&#9881;</span> EoS</a>
+                <a href="product-eboot.html" class="product-nav__item"><span class="product-nav__icon">&#9889;</span> eBootloader</a>
+                <a href="product-ebuild.html" class="product-nav__item"><span class="product-nav__icon">&#127959;</span> eBuild</a>
+                <a href="product-eai.html" class="product-nav__item"><span class="product-nav__icon">&#129302;</span> EAI</a>
+                <a href="product-eni.html" class="product-nav__item"><span class="product-nav__icon">&#129504;</span> ENI</a>
+                <a href="product-eipc.html" class="product-nav__item"><span class="product-nav__icon">&#128274;</span> EIPC</a>
+            </div>
+        </div>
+    </nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">›</span>
+        <span class="current">Ecosystem</span>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content section-header">
+                <span class="badge badge-blue">ECOSYSTEM</span>
+                <h1 class="mt-2">EoS <span>Ecosystem</span></h1>
+                <p>A complete embedded AI systems stack — from boot to cloud</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">Explore Projects</a>
+                    <a href="https://github.com/embeddedos-org" class="btn btn-secondary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Overview</span>
+                <h2>The Complete Stack</h2>
+                <p>Seven open-source projects forming a unified embedded AI platform</p>
+            </div>
+            <div class="section-header">
+                <p>
+                    The EoS ecosystem brings together seven purpose-built projects that span the entire embedded systems lifecycle. From the <strong>eBootloader</strong> that initializes hardware, through the <strong>EoS</strong> build system that compiles your OS image, to the <strong>EAI</strong> runtime that powers edge AI, the <strong>EIPC</strong> framework securing inter-process communication, and the <strong>ENI</strong> adapter bridging neural interfaces — every layer is designed to work together as a cohesive, open-source stack.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Diagram -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline" >Architecture</span>
+                <h2>System Architecture</h2>
+                <p >How the ecosystem components connect</p>
+            </div>
+            <div class="arch-diagram">
+                <div class="arch-layers">
+                    <div class="arch-layer">
+                        <div class="layer-name">eBootloader</div>
+                        <div class="layer-role">Boot</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">EoS</div>
+                        <div class="layer-role">Build</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">EAI</div>
+                        <div class="layer-role">AI</div>
+                    </div>
+                    <div class="arch-arrow">↔</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">EIPC</div>
+                        <div class="layer-role">IPC</div>
+                    </div>
+                    <div class="arch-arrow">↔</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">ENI</div>
+                        <div class="layer-role">Neural</div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <svg width="100%" height="80" viewBox="0 0 800 80" style="max-width: 800px;">
+                        <defs>
+                            <linearGradient id="archLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="25%" style="stop-color:#0099ff"/>
+                                <stop offset="50%" style="stop-color:#f5576c"/>
+                                <stop offset="75%" style="stop-color:#4facfe"/>
+                                <stop offset="100%" style="stop-color:#43e97b"/>
+                            </linearGradient>
+                        </defs>
+                        <line x1="80" y1="40" x2="720" y2="40" stroke="url(#archLineGrad)" stroke-width="3" stroke-dasharray="8,4"/>
+                        <circle cx="80" cy="40" r="6" fill="#667eea"/>
+                        <circle cx="240" cy="40" r="6" fill="#0099ff"/>
+                        <circle cx="400" cy="40" r="6" fill="#f5576c"/>
+                        <circle cx="560" cy="40" r="6" fill="#4facfe"/>
+                        <circle cx="720" cy="40" r="6" fill="#43e97b"/>
+                        <text x="80" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Stage-0/1</text>
+                        <text x="240" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Ninja+YAML</text>
+                        <text x="400" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Edge+Industrial</text>
+                        <text x="560" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Secure IPC</text>
+                        <text x="720" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">BCI Adapter</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Cards -->
+    <section class="section section-gray" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Projects</span>
+                <h2>Ecosystem Projects</h2>
+                <p>Explore each component of the EoS stack</p>
+            </div>
+            <div class="cards-grid cards-grid-2">
+                <!-- eBuild -->
+                <div class="ecosystem-card">
+                    <h3>🏗️ eBuild — Build System &amp; AI Hardware Analyzer</h3>
+                    <p>Python-based build orchestrator with built-in AI hardware analyzer (100+ MCU database, KiCad/Eagle parsers), package manager with topological dependency resolution, system image builder (ext4, squashfs, qcow2), and firmware builder (Zephyr, FreeRTOS, NuttX). Auto-detects CMake, Meson, Cargo, Make, Ninja, and Kbuild projects.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python 3.9+</span>
+                        <span class="tech-tag">v0.4.0</span>
+                        <span class="tech-tag">AI Analyzer</span>
+                        <span class="tech-tag">Package Mgr</span>
+                        <span class="tech-tag">6 Build Backends</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/ebuild" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- EoS -->
+                <div class="ecosystem-card">
+                    <h3>⚙️ EoS — Embedded Operating System</h3>
+                    <p>Modular C11 firmware framework with 6-layer architecture: HAL (vtable dispatch for 25 boards), kernel (scheduler, memory, IPC), device drivers, services, middleware, and applications. 39 compile-time feature flags (<code>EOS_ENABLE_*</code>), 41 product profiles, CMake build with cross-compilation for ARM Cortex-M/A, x86, RISC-V.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">C11</span>
+                        <span class="tech-tag">v0.5.0</span>
+                        <span class="tech-tag">CMake</span>
+                        <span class="tech-tag">25 Boards</span>
+                        <span class="tech-tag">41 Products</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/eos" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- eBootloader -->
+                <div class="ecosystem-card">
+                    <h3>⚡ eBootloader — Staged Boot Platform</h3>
+                    <p>Two-stage C11 bootloader: Stage-0 (16KB — vector table, .data/.bss init, recovery check) and Stage-1 (boot policy, CRC32/signature verification, A/B slot management). Dual-copy boot control blocks with redundancy, automatic rollback on 3 consecutive failures, and OTA-safe firmware upgrades across 24 platform targets.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">C11</span>
+                        <span class="tech-tag">v0.3.0</span>
+                        <span class="tech-tag">CMake</span>
+                        <span class="tech-tag">A/B Slots</span>
+                        <span class="tech-tag">24 Platforms</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/eboot" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- EAI -->
+                <div class="ecosystem-card">
+                    <h3>🤖 EAI — Embedded AI Runtime</h3>
+                    <p>Zero-dependency C11 AI agent runtime. <strong>EAI-Min</strong>: lightweight edge agent with tool registry (64 tools), memory store (1024 entries), and local LLM inference. <strong>EAI-Framework</strong>: industrial orchestration with 8 runtime slots, 16 connectors (MQTT, OPC-UA, Modbus, CAN), policy engine, and observability. Receives intents from ENI via EIPC bridge.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">C11</span>
+                        <span class="tech-tag">v0.1.0</span>
+                        <span class="tech-tag">Zero Deps</span>
+                        <span class="tech-tag">MQTT/OPC-UA</span>
+                        <span class="tech-tag">64 Tools</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/eai" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- ENI -->
+                <div class="ecosystem-card">
+                    <h3>🧠 ENI — Embedded Neural Interface</h3>
+                    <p>Zero-dependency C11 neural interface adapter. <strong>ENI-Min</strong>: single-provider BCI with signal normalization, confidence filtering (threshold + debounce), intent-to-tool mapping, and 3-tier safety policy (safe/controlled/restricted). <strong>ENI-Framework</strong>: multi-provider (16 slots), 256-entry stream bus, cognitive pipeline with FFT/bandpass/spatial filters. Forwards intents to EAI via EIPC bridge.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">C11</span>
+                        <span class="tech-tag">v0.1.0</span>
+                        <span class="tech-tag">Zero Deps</span>
+                        <span class="tech-tag">BCI/Neural</span>
+                        <span class="tech-tag">16 Providers</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/eni" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- EIPC -->
+                <div class="ecosystem-card">
+                    <h3>🔒 EIPC — Embedded Secure IPC</h3>
+                    <p>Go 1.22 + C11 SDK secure inter-process communication. Wire protocol: 16-byte preamble + JSON header + JSON payload + HMAC-SHA256 (built-in SHA-256, zero deps). Features: capability-based authorization, service registry, audit logging, health monitoring, replay protection (128-entry sliding window), priority lanes P0–P3. C SDK enables ENI↔EAI communication.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Go + C SDK</span>
+                        <span class="tech-tag">v0.1.0</span>
+                        <span class="tech-tag">HMAC-SHA256</span>
+                        <span class="tech-tag">Cap-Auth</span>
+                        <span class="tech-tag">Zero Deps</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/eipc" class="btn btn-outline">View on GitHub →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Quick Start</span>
+                <h2>Getting Started</h2>
+                <p>Build your first embedded OS image in four steps</p>
+            </div>
+            <div>
+                <ol class="getting-started-steps">
+                    <li>
+                        <div class="step-content">
+                            <h4>Clone EoS</h4>
+                            <p>Get the core build system repository:</p>
+                            <code>git clone https://github.com/embeddedos-org/eos</code>
+                        </ul></li>
+                    <li>
+                        <div class="step-content">
+                            <h4>Configure Your Target</h4>
+                            <p>Define your board, architecture, and feature set in a YAML configuration file.</p>
+                        </ul></li>
+                    <li>
+                        <div class="step-content">
+                            <h4>Compile</h4>
+                            <p>Run the build system to cross-compile for your target platform:</p>
+                            <code>eos build</code>
+                        </ul></li>
+                    <li>
+                        <div class="step-content">
+                            <h4>Generate OS Image</h4>
+                            <p>Create a deployable OS image ready for flashing:</p>
+                            <code>eos system</code>
+                        </ul></li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Join the Ecosystem</h2>
+        <p>Contribute to the future of embedded AI systems — start building with EoS today.</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/embeddedos-org" class="btn btn-dark">GitHub</a>
+            <a href="membership.html" class="btn btn-secondary">Become a Member</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-mega">
+            <div class="footer-column">
+                <h4>Ecosystem</h4>
+                <ul>
+                    <li><a href="ecosystem.html">Overview</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eos">EoS</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eai">EAI (AI Layer)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eni">ENI (Neural Interface)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eipc">EIPC (Secure IPC)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eboot">eBootloader</a></li>
+                    <li><a href="https://github.com/embeddedos-org/ebuild">eBuild</a></li>
+                    <li><a href="https://github.com/embeddedos-org">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Architecture</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link &amp; AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="building-os.html">Building OS</a></li>
+                    <li><a href="future-research.html">Future Research</a></li>
+                    <li><a href="resources.html">Thesis &amp; Papers</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internships</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Foundation</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="donate.html">Support Our Mission</a></li>
+                    <li><a href="membership.html">Partners</a></li>
+                    <li><a href="mailto:help@embeddedos.org">General Inquiries</a></li>
+                    <li><a href="mailto:support@embeddedos.org">Technical Support</a></li>
+                    <li><a href="mailto:careers@embeddedos.org">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal &amp; Policies</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="code-of-conduct.html">Code of Conduct</a></li>
+                    <li><a href="licenses.html">Open Source Licenses</a></li>
+                    <li><a href="mailto:security@embeddedos.org">Responsible Disclosure</a></li>
+                    <li><a href="privacy.html#cookies">Cookie Policy</a></li>
+                    <li><a href="terms.html">Trademark Guidelines</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span>OS</span></span>
+                <div class="footer-social">
+                    <a href="#" aria-label="Twitter">𝕏</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                    <a href="https://github.com/embeddedos-org" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="YouTube">YT</a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.
+            </div>
+            <div class="footer-legal"><a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a><a href="privacy.html">Cookies</a>
+            </div>
+        </div>
+    </footer>
+    <button type="button" class="scroll-to-top" aria-label="Scroll to top">↑</button>
+    <script src="js/monitor.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

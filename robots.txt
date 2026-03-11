@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /.github/
+Disallow: /README.md
+
+Sitemap: https://embeddedos.org/sitemap.xml

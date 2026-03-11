@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="theme-color" content="#0066cc"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="EAI v0.1.0 - Zero-dependency C11 AI agent runtime with tool execution, LLM inference, and industrial connectors (MQTT, OPC-UA, Modbus, CAN).">
+<title>EAI - Embedded AI Runtime | EmbeddedOS Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css">
+<meta property="og:title" content="EAI - Embedded AI Runtime"><meta property="og:description" content="EAI v0.1.0 - Zero-dependency C11 AI agent runtime with tool execution, LLM inference, and industrial connectors (MQTT, OPC-UA, Modbus, CAN)."><meta property="og:type" content="website">
+</head>
+<body>
+<header class="navbar"><div class="nav-container"><a href="index.html" class="logo" aria-label="EmbeddedOS Home"><div class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar"><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Research &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li><li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI</a></li><li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li><li role="none"><a href="building-os.html" role="menuitem">Building OS</a></li><li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li></ul></li><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Programs &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="membership.html" role="menuitem">Membership</a></li><li role="none"><a href="certification.html" role="menuitem">Certification</a></li><li role="none"><a href="internship.html" role="menuitem">Internship</a></li><li role="none"><a href="careers.html" role="menuitem">Careers</a></li></ul></li><li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li><li role="none"><a href="about.html" role="menuitem">About</a></li><li role="none"><a href="resources.html" role="menuitem">Resources</a></li><li role="none"><a href="donate.html" role="menuitem">Donate</a></li><li role="none"><a href="contact.html" role="menuitem">Contact</a></li><li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li></ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button></div></header>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="separator">&#8250;</span><a href="ecosystem.html">Ecosystem</a><span class="separator">&#8250;</span><span class="current">EAI</span></nav>
+    <nav class="product-nav" aria-label="Ecosystem products">
+        <div class="container">
+            <div class="product-nav__links">
+                <a href="product-eos.html" class="product-nav__item"><span class="product-nav__icon">&#9881;</span> EoS</a>
+                <a href="product-eboot.html" class="product-nav__item"><span class="product-nav__icon">&#9889;</span> eBootloader</a>
+                <a href="product-ebuild.html" class="product-nav__item"><span class="product-nav__icon">&#127959;</span> eBuild</a>
+                <a href="product-eai.html" class="product-nav__item product-nav__item--active"><span class="product-nav__icon">&#129302;</span> EAI</a>
+                <a href="product-eni.html" class="product-nav__item"><span class="product-nav__icon">&#129504;</span> ENI</a>
+                <a href="product-eipc.html" class="product-nav__item"><span class="product-nav__icon">&#128274;</span> EIPC</a>
+            </div>
+        </div>
+    </nav>
+<section class="section section-dark"><div class="container"><div class="section-header"><span class="badge badge-blue">AI RUNTIME</span><h1 class="mt-2">EAI <span class="gradient-text">Embedded AI Runtime</span></h1><p>Zero-dependency C11 AI agent runtime &mdash; from edge inference to industrial orchestration</p></div></div></section>
+<section class="section section-white"><div class="container">
+    <div class="cards-grid cards-grid-2">
+        <div class="feature-card"><div class="feature-icon feature-icon--blue"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="6" stroke="white" stroke-width="2" fill="none"/><circle cx="10" cy="26" r="4" stroke="white" stroke-width="2" fill="none"/><circle cx="26" cy="26" r="4" stroke="white" stroke-width="2" fill="none"/><line x1="14" y1="16" x2="10" y2="22" stroke="white" stroke-width="1.5"/><line x1="22" y1="16" x2="26" y2="22" stroke="white" stroke-width="1.5"/></svg></div><h3>EAI-Min &mdash; Edge Agent</h3><p>Lightweight agent loop: Think (LLM inference) &rarr; Tool call parsing &rarr; Tool execution. 64-tool registry, 1024-entry memory store, local inference. Perfect for edge devices and resource-constrained environments.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--orange"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="10" width="28" height="16" rx="3" stroke="white" stroke-width="2" fill="none"/><circle cx="12" cy="18" r="4" fill="white"/><circle cx="24" cy="18" r="4" fill="white"/><line x1="16" y1="18" x2="20" y2="18" stroke="white" stroke-width="2"/></svg></div><h3>EAI-Framework &mdash; Industrial</h3><p>Full orchestration: 8 runtime slots, 16 connectors (MQTT, OPC-UA, Modbus, CAN), policy engine with allow/deny rules, observability with metrics export. Built for factory automation, PLC integration, and multi-agent systems.</p></div>
+    </div>
+    <div class="stack-diagram mt-4"><h3 class="stack-diagram__title">EAI Agent Loop</h3><div class="stack-layers">
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--blue">1</div><div class="stack-layer__content"><h4>Receive Intent (from ENI via EIPC)</h4><p>eai_eipc_listener_receive_intent() &rarr; parse intent from EIPC frame &rarr; convert to agent goal</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--purple">2</div><div class="stack-layer__content"><h4>Think (LLM Inference)</h4><p>Local inference engine processes goal + context + memory &rarr; generates tool call plan</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--orange">3</div><div class="stack-layer__content"><h4>Execute Tools</h4><p>Tool dispatch: mqtt.publish, device.read, http.request, file.write &mdash; up to 64 registered tools</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--green">4</div><div class="stack-layer__content"><h4>Respond</h4><p>Send acknowledgment back via EIPC &rarr; update memory store &rarr; emit observability metrics</p></div></div>
+    </div></div>
+    <div class="cards-grid cards-grid-4 mt-4">
+        <div class="feature-card"><h3>C11</h3><p>Zero dependencies</p></div>
+        <div class="feature-card"><h3>v0.1.0</h3><p>Current version</p></div>
+        <div class="feature-card"><h3>64</h3><p>Max tools</p></div>
+        <div class="feature-card"><h3>16</h3><p>Connectors</p></div>
+    </div>
+</div></section>
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Open Source</span>
+                <h2>Explore the Source Code</h2>
+                <p>All code is MIT licensed and available on GitHub</p>
+            </div>
+            <div class="source-links-card">
+                <div class="source-links-header">
+                    <span class="source-links-icon">&#128193;</span>
+                    <div>
+                        <h3>eai</h3>
+                        <a href="https://github.com/embeddedos-org/eai" class="source-links-repo" target="_blank" rel="noopener">https://github.com/embeddedos-org/eai</a>
+                    </div>
+                </div>
+                <div class="source-links-grid">
+                <a href="https://github.com/embeddedos-org/eai" class="source-link" target="_blank" rel="noopener">Source Code &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eai/tree/main/min" class="source-link" target="_blank" rel="noopener">EAI-Min (Edge) &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eai/tree/main/framework" class="source-link" target="_blank" rel="noopener">EAI-Framework &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eai/tree/main/framework/connectors" class="source-link" target="_blank" rel="noopener">Connectors &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eai/tree/main/common/src/eipc_listener.c" class="source-link" target="_blank" rel="noopener">EIPC Bridge &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eai/tree/main/docs" class="source-link" target="_blank" rel="noopener">Documentation &#8599;</a>
+                </div>
+                <div class="source-links-actions">
+                    <a href="https://github.com/embeddedos-org/eai" class="btn btn-primary" target="_blank" rel="noopener">View Repository</a>
+                    <a href="https://github.com/embeddedos-org/eai/issues" class="btn btn-outline" target="_blank" rel="noopener">Report Issue</a>
+                    <a href="https://github.com/embeddedos-org/eai/pulls" class="btn btn-outline" target="_blank" rel="noopener">Pull Requests</a>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="cta-section"><h2>Start Building with EAI</h2><p>Explore the source, read the docs, and contribute.</p><div class="cta-buttons"><a href="https://github.com/embeddedos-org" class="btn btn-dark">GitHub</a><a href="ecosystem.html" class="btn btn-secondary">Full Ecosystem</a></div></section><footer class="footer"><div class="footer-mega"><div class="footer-column"><h4>Ecosystem</h4><ul><li><a href="ecosystem.html">Overview</a></li><li><a href="product-eos.html">EoS</a></li><li><a href="product-eai.html">EAI</a></li><li><a href="product-eni.html">ENI</a></li><li><a href="product-eipc.html">EIPC</a></li><li><a href="product-eboot.html">eBootloader</a></li><li><a href="product-ebuild.html">eBuild</a></li></ul></div><div class="footer-column"><h4>Research</h4><ul><li><a href="research.html">Neural Link</a></li><li><a href="ai-os.html">AI OS</a></li><li><a href="documentation.html">Docs</a></li></ul></div><div class="footer-column"><h4>Programs</h4><ul><li><a href="membership.html">Membership</a></li><li><a href="certification.html">Certification</a></li><li><a href="careers.html">Careers</a></li></ul></div><div class="footer-column"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-column"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div></div><div class="footer-divider"></div><div class="footer-bottom"><div class="footer-brand"><span class="logo-text">Embedded<span>OS</span></span></div><div class="footer-copyright">&copy; 2026 EmbeddedOS Foundation. MIT License.</div><div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></footer><button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button><script src="js/monitor.js"></script><script src="js/main.js"></script>
+</body></html>

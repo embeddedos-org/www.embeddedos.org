@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="theme-color" content="#0066cc"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="EIPC v0.1.0 - Go + C SDK secure inter-process communication with HMAC-SHA256, capability-based authorization, audit logging, and replay protection."><title>EIPC - Embedded Secure IPC | EmbeddedOS Foundation</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><meta property="og:title" content="EIPC - Embedded Secure IPC"><meta property="og:description" content="EIPC v0.1.0 - Go + C SDK secure inter-process communication with HMAC-SHA256, capability-based authorization, audit logging, and replay protection."><meta property="og:type" content="website"></head>
+<body>
+<header class="navbar"><div class="nav-container"><a href="index.html" class="logo" aria-label="EmbeddedOS Home"><div class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar"><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Research &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="research.html" role="menuitem">Neural Link</a></li><li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI</a></li><li role="none"><a href="ai-os.html" role="menuitem">AI OS</a></li><li role="none"><a href="building-os.html" role="menuitem">Building OS</a></li><li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li></ul></li><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Programs &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="membership.html" role="menuitem">Membership</a></li><li role="none"><a href="certification.html" role="menuitem">Certification</a></li><li role="none"><a href="internship.html" role="menuitem">Internship</a></li><li role="none"><a href="careers.html" role="menuitem">Careers</a></li></ul></li><li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li><li role="none"><a href="about.html" role="menuitem">About</a></li><li role="none"><a href="resources.html" role="menuitem">Resources</a></li><li role="none"><a href="donate.html" role="menuitem">Donate</a></li><li role="none"><a href="contact.html" role="menuitem">Contact</a></li><li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li></ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button></div></header>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="separator">&#8250;</span><a href="ecosystem.html">Ecosystem</a><span class="separator">&#8250;</span><span class="current">EIPC</span></nav>
+    <nav class="product-nav" aria-label="Ecosystem products">
+        <div class="container">
+            <div class="product-nav__links">
+                <a href="product-eos.html" class="product-nav__item"><span class="product-nav__icon">&#9881;</span> EoS</a>
+                <a href="product-eboot.html" class="product-nav__item"><span class="product-nav__icon">&#9889;</span> eBootloader</a>
+                <a href="product-ebuild.html" class="product-nav__item"><span class="product-nav__icon">&#127959;</span> eBuild</a>
+                <a href="product-eai.html" class="product-nav__item"><span class="product-nav__icon">&#129302;</span> EAI</a>
+                <a href="product-eni.html" class="product-nav__item"><span class="product-nav__icon">&#129504;</span> ENI</a>
+                <a href="product-eipc.html" class="product-nav__item product-nav__item--active"><span class="product-nav__icon">&#128274;</span> EIPC</a>
+            </div>
+        </div>
+    </nav>
+<section class="section section-dark"><div class="container"><div class="section-header"><span class="badge badge-blue">SECURE IPC</span><h1 class="mt-2">EIPC <span class="gradient-text">Embedded Secure IPC</span></h1><p>The communication backbone &mdash; transport, security, and trust for the entire ecosystem</p></div></div></section>
+<section class="section section-white"><div class="container">
+    <div class="cards-grid cards-grid-3">
+        <div class="feature-card"><div class="feature-icon feature-icon--red"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4L6 10v8c0 8 5 16 12 18 7-2 12-10 12-18v-8L18 4z" stroke="white" stroke-width="2" fill="none"/><path d="M14 18l3 3 6-6" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div><h3>HMAC-SHA256 Integrity</h3><p>Every frame is signed with HMAC-SHA256 using a built-in zero-dependency SHA-256 implementation. No OpenSSL or external crypto libraries required.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--blue"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="6" y="14" width="24" height="14" rx="3" stroke="white" stroke-width="2" fill="none"/><path d="M12 14V10a6 6 0 0112 0v4" stroke="white" stroke-width="2" fill="none"/><circle cx="18" cy="22" r="2" fill="white"/></svg></div><h3>Capability-Based Auth</h3><p>Each message carries a capability tag (e.g., <code>ui:control</code>). Server checks against action allowlists. Service identity + session tokens + capability validation.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--green"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="6" width="28" height="24" rx="3" stroke="white" stroke-width="2" fill="none"/><path d="M4 12h28" stroke="white" stroke-width="2"/><path d="M10 18h8M10 23h12" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Audit &amp; Health</h3><p>JSON-line audit trail for every controlled action. Heartbeat-based liveness monitoring with configurable intervals. Priority lanes P0-P3 for real-time traffic.</p></div>
+    </div>
+    <div class="stack-diagram mt-4"><h3 class="stack-diagram__title">EIPC Wire Protocol</h3><div class="stack-layers">
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--blue">1</div><div class="stack-layer__content"><h4>Preamble (16 bytes)</h4><p>Magic bytes [0x45,0x49,0x50,0x43] + protocol version (v1) + message type (intent/ack/heartbeat/tool) + flags (HMAC enabled)</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--purple">2</div><div class="stack-layer__content"><h4>Header (JSON, max 1024 bytes)</h4><p>service_id, session_id, request_id, sequence number, timestamp (RFC3339), priority (P0-P3), capability tag, payload_format</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--orange">3</div><div class="stack-layer__content"><h4>Payload (JSON, max 8192 bytes)</h4><p>Intent data, tool request parameters, ack response, or heartbeat &mdash; type-specific structured JSON</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--red">4</div><div class="stack-layer__content"><h4>HMAC-SHA256 (32 bytes)</h4><p>Signature over preamble + header + payload. Verified on receive. 128-entry sliding window for replay protection.</p></div></div>
+    </div></div>
+    <div class="cards-grid cards-grid-2 mt-4">
+        <div class="feature-card"><h3>Go 1.22 (Core)</h3><p>Server, router, authenticator, capability checker, service registry, audit logger, health monitor &mdash; all using Go stdlib only</p></div>
+        <div class="feature-card"><h3>C11 SDK</h3><p>Wire-compatible client/server library for C applications. Ships built-in SHA-256 &mdash; zero external dependencies. Enables ENI &harr; EAI communication.</p></div>
+    </div>
+    <div class="cards-grid cards-grid-4 mt-4">
+        <div class="feature-card"><h3>v0.1.0</h3><p>Current version</p></div>
+        <div class="feature-card"><h3>Zero</h3><p>External deps</p></div>
+        <div class="feature-card"><h3>128</h3><p>Replay window</p></div>
+        <div class="feature-card"><h3>P0-P3</h3><p>Priority lanes</p></div>
+    </div>
+</div></section>
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Open Source</span>
+                <h2>Explore the Source Code</h2>
+                <p>All code is MIT licensed and available on GitHub</p>
+            </div>
+            <div class="source-links-card">
+                <div class="source-links-header">
+                    <span class="source-links-icon">&#128193;</span>
+                    <div>
+                        <h3>eipc</h3>
+                        <a href="https://github.com/embeddedos-org/eipc" class="source-links-repo" target="_blank" rel="noopener">https://github.com/embeddedos-org/eipc</a>
+                    </div>
+                </div>
+                <div class="source-links-grid">
+                <a href="https://github.com/embeddedos-org/eipc" class="source-link" target="_blank" rel="noopener">Source Code &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eipc/tree/main/protocol" class="source-link" target="_blank" rel="noopener">Protocol &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eipc/tree/main/security" class="source-link" target="_blank" rel="noopener">Security &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eipc/tree/main/sdk/c" class="source-link" target="_blank" rel="noopener">C SDK &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eipc/tree/main/services" class="source-link" target="_blank" rel="noopener">Services &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eipc/tree/main/docs" class="source-link" target="_blank" rel="noopener">Documentation &#8599;</a>
+                </div>
+                <div class="source-links-actions">
+                    <a href="https://github.com/embeddedos-org/eipc" class="btn btn-primary" target="_blank" rel="noopener">View Repository</a>
+                    <a href="https://github.com/embeddedos-org/eipc/issues" class="btn btn-outline" target="_blank" rel="noopener">Report Issue</a>
+                    <a href="https://github.com/embeddedos-org/eipc/pulls" class="btn btn-outline" target="_blank" rel="noopener">Pull Requests</a>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="cta-section"><h2>Start Building with EIPC</h2><p>Explore the source, read the docs, and contribute.</p><div class="cta-buttons"><a href="https://github.com/embeddedos-org" class="btn btn-dark">GitHub</a><a href="ecosystem.html" class="btn btn-secondary">Full Ecosystem</a></div></section><footer class="footer"><div class="footer-mega"><div class="footer-column"><h4>Ecosystem</h4><ul><li><a href="ecosystem.html">Overview</a></li><li><a href="product-eos.html">EoS</a></li><li><a href="product-eai.html">EAI</a></li><li><a href="product-eni.html">ENI</a></li><li><a href="product-eipc.html">EIPC</a></li><li><a href="product-eboot.html">eBootloader</a></li><li><a href="product-ebuild.html">eBuild</a></li></ul></div><div class="footer-column"><h4>Research</h4><ul><li><a href="research.html">Neural Link</a></li><li><a href="ai-os.html">AI OS</a></li><li><a href="documentation.html">Docs</a></li></ul></div><div class="footer-column"><h4>Programs</h4><ul><li><a href="membership.html">Membership</a></li><li><a href="certification.html">Certification</a></li><li><a href="careers.html">Careers</a></li></ul></div><div class="footer-column"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-column"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div></div><div class="footer-divider"></div><div class="footer-bottom"><div class="footer-brand"><span class="logo-text">Embedded<span>OS</span></span></div><div class="footer-copyright">&copy; 2026 EmbeddedOS Foundation. MIT License.</div><div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></footer><button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button><script src="js/monitor.js"></script><script src="js/main.js"></script>
+</body></html>

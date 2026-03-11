@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#0066cc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="eBootloader v0.3.0 - Two-stage C11 bootloader with A/B slot management, CRC32/signature verification, and OTA-safe firmware upgrades.">
+    <title>eBootloader - Staged Boot Platform | EmbeddedOS Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <meta property="og:title" content="eBootloader - Staged Boot Platform | EmbeddedOS Foundation">
+    <meta property="og:description" content="eBootloader v0.3.0 - Two-stage C11 bootloader with A/B slot management, CRC32/signature verification, and OTA-safe firmware upgrades.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://embeddedos.org/product-eboot.html">
+</head>
+<body>
+    <header class="navbar"><div class="nav-container"><a href="index.html" class="logo" aria-label="EmbeddedOS Home"><div class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar"><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Research &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li><li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI</a></li><li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li><li role="none"><a href="building-os.html" role="menuitem">Building OS</a></li><li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li></ul></li><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Programs &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="membership.html" role="menuitem">Membership</a></li><li role="none"><a href="certification.html" role="menuitem">Certification</a></li><li role="none"><a href="internship.html" role="menuitem">Internship</a></li><li role="none"><a href="careers.html" role="menuitem">Careers</a></li></ul></li><li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li><li role="none"><a href="about.html" role="menuitem">About</a></li><li role="none"><a href="resources.html" role="menuitem">Resources</a></li><li role="none"><a href="donate.html" role="menuitem">Donate</a></li><li role="none"><a href="contact.html" role="menuitem">Contact</a></li><li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li></ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button></div></header>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="separator">&#8250;</span><a href="ecosystem.html">Ecosystem</a><span class="separator">&#8250;</span><span class="current">eBootloader</span></nav>
+    <nav class="product-nav" aria-label="Ecosystem products">
+        <div class="container">
+            <div class="product-nav__links">
+                <a href="product-eos.html" class="product-nav__item"><span class="product-nav__icon">&#9881;</span> EoS</a>
+                <a href="product-eboot.html" class="product-nav__item product-nav__item--active"><span class="product-nav__icon">&#9889;</span> eBootloader</a>
+                <a href="product-ebuild.html" class="product-nav__item"><span class="product-nav__icon">&#127959;</span> eBuild</a>
+                <a href="product-eai.html" class="product-nav__item"><span class="product-nav__icon">&#129302;</span> EAI</a>
+                <a href="product-eni.html" class="product-nav__item"><span class="product-nav__icon">&#129504;</span> ENI</a>
+                <a href="product-eipc.html" class="product-nav__item"><span class="product-nav__icon">&#128274;</span> EIPC</a>
+            </div>
+        </div>
+    </nav>
+    <section class="section section-dark"><div class="container"><div class="section-header"><span class="badge badge-blue">BOOT PLATFORM</span><h1 class="mt-2">eBootloader <span class="gradient-text">Staged Boot Platform</span></h1><p>Secure, staged boot from power-on to verified OS handoff</p></div></div></section>
+    <section class="section section-white"><div class="container">
+        <div class="cards-grid cards-grid-3">
+            <div class="feature-card"><div class="feature-icon feature-icon--blue"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="6" y="4" width="24" height="28" rx="3" stroke="white" stroke-width="2" fill="none"/><path d="M12 12h12M12 17h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Two-Stage Boot</h3><p>Stage-0 (16KB): vector table, .data/.bss init, recovery check. Stage-1: full boot policy, image verification, slot selection.</p></div>
+            <div class="feature-card"><div class="feature-icon feature-icon--green"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="12" stroke="white" stroke-width="2" fill="none"/><path d="M12 18l4 4 8-8" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div><h3>A/B Slot Management</h3><p>Dual firmware slots with independent boot control blocks. CRC32 integrity verification and optional cryptographic signatures.</p></div>
+            <div class="feature-card"><div class="feature-icon feature-icon--orange"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 6l10 5v10c0 6-4 11-10 13-6-2-10-7-10-13V11l10-5z" stroke="white" stroke-width="2" fill="none"/><path d="M18 14v6M18 24h0" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div><h3>Auto-Rollback</h3><p>Automatic rollback after 3 consecutive boot failures. Dual-copy boot control blocks with redundancy for corruption protection.</p></div>
+        </div>
+        <div class="stack-diagram mt-4"><h3 class="stack-diagram__title">Flash Memory Layout</h3><div class="stack-layers">
+            <div class="stack-layer"><div class="stack-layer__number stack-layer__number--blue">1</div><div class="stack-layer__content"><h4>Stage-0 (16KB min)</h4><p>Vector table + .data/.bss init + recovery button check + jump to Stage-1</p></div></div>
+            <div class="stack-layer"><div class="stack-layer__number stack-layer__number--purple">2</div><div class="stack-layer__content"><h4>Stage-1 (64KB min)</h4><p>Boot policy engine + CRC32/signature verify + A/B slot selection + OS handoff</p></div></div>
+            <div class="stack-layer"><div class="stack-layer__number stack-layer__number--teal">3</div><div class="stack-layer__content"><h4>Boot Control (4KB x2)</h4><p>Primary + backup boot control blocks with active slot, boot count, CRC32 protection</p></div></div>
+            <div class="stack-layer"><div class="stack-layer__number stack-layer__number--green">4</div><div class="stack-layer__content"><h4>Slot A + Slot B</h4><p>Two firmware image slots for OTA-safe updates. Remaining flash divided equally.</p></div></div>
+        </div></div>
+        <div class="cards-grid cards-grid-4 mt-4">
+            <div class="feature-card"><h3>C11</h3><p>Language</p></div>
+            <div class="feature-card"><h3>v0.3.0</h3><p>Version</p></div>
+            <div class="feature-card"><h3>24</h3><p>Platform targets</p></div>
+            <div class="feature-card"><h3>MIT</h3><p>License</p></div>
+        </div>
+    </div></section>
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Open Source</span>
+                <h2>Explore the Source Code</h2>
+                <p>All code is MIT licensed and available on GitHub</p>
+            </div>
+            <div class="source-links-card">
+                <div class="source-links-header">
+                    <span class="source-links-icon">&#128193;</span>
+                    <div>
+                        <h3>eboot</h3>
+                        <a href="https://github.com/embeddedos-org/eboot" class="source-links-repo" target="_blank" rel="noopener">https://github.com/embeddedos-org/eboot</a>
+                    </div>
+                </div>
+                <div class="source-links-grid">
+                <a href="https://github.com/embeddedos-org/eboot" class="source-link" target="_blank" rel="noopener">Source Code &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eboot/tree/main/stage0" class="source-link" target="_blank" rel="noopener">Stage-0 &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eboot/tree/main/stage1" class="source-link" target="_blank" rel="noopener">Stage-1 &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eboot/tree/main/bootctl" class="source-link" target="_blank" rel="noopener">Boot Control &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eboot/tree/main/boards" class="source-link" target="_blank" rel="noopener">Board Ports &#8599;</a>
+                <a href="https://github.com/embeddedos-org/eboot/tree/main/docs" class="source-link" target="_blank" rel="noopener">Documentation &#8599;</a>
+                </div>
+                <div class="source-links-actions">
+                    <a href="https://github.com/embeddedos-org/eboot" class="btn btn-primary" target="_blank" rel="noopener">View Repository</a>
+                    <a href="https://github.com/embeddedos-org/eboot/issues" class="btn btn-outline" target="_blank" rel="noopener">Report Issue</a>
+                    <a href="https://github.com/embeddedos-org/eboot/pulls" class="btn btn-outline" target="_blank" rel="noopener">Pull Requests</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="cta-section"><h2>Start Building with eBootloader</h2><p>Explore the source code, documentation, and contribute to the project.</p><div class="cta-buttons"><a href="https://github.com/embeddedos-org" class="btn btn-dark">GitHub</a><a href="ecosystem.html" class="btn btn-secondary">Full Ecosystem</a></div></section>
+    <footer class="footer"><div class="footer-mega"><div class="footer-column"><h4>Ecosystem</h4><ul><li><a href="ecosystem.html">Overview</a></li><li><a href="product-eos.html">EoS</a></li><li><a href="product-eai.html">EAI</a></li><li><a href="product-eni.html">ENI</a></li><li><a href="product-eipc.html">EIPC</a></li><li><a href="product-eboot.html">eBootloader</a></li><li><a href="product-ebuild.html">eBuild</a></li></ul></div><div class="footer-column"><h4>Research</h4><ul><li><a href="research.html">Neural Link</a></li><li><a href="ai-os.html">AI Operating Systems</a></li><li><a href="building-os.html">Building OS</a></li><li><a href="documentation.html">Documentation</a></li></ul></div><div class="footer-column"><h4>Programs</h4><ul><li><a href="membership.html">Membership</a></li><li><a href="certification.html">Certification</a></li><li><a href="careers.html">Careers</a></li><li><a href="donate.html">Donate</a></li></ul></div><div class="footer-column"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-column"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="licenses.html">Licenses</a></li></ul></div></div><div class="footer-divider"></div><div class="footer-bottom"><div class="footer-brand"><span class="logo-text">Embedded<span>OS</span></span></div><div class="footer-copyright">&copy; 2026 EmbeddedOS Foundation. MIT License.</div><div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></footer>
+    <button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button>
+    <script src="js/monitor.js"></script><script src="js/main.js"></script>
+</body>
+</html>

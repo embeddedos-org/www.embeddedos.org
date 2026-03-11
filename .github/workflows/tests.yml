@@ -1,0 +1,35 @@
+name: Website Tests
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Test Suite (66 tests)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run comprehensive tests
+        shell: pwsh
+        run: ./tests/run-tests.ps1
+
+      - name: Summary
+        if: always()
+        shell: pwsh
+        run: |
+          Write-Host ""
+          Write-Host "Test suite covers 8 categories:"
+          Write-Host "  1. Functional (16)  - links, forms, nav, buttons"
+          Write-Host "  2. Usability (5)    - h1, breadcrumbs, alt text, CTAs"
+          Write-Host "  3. Performance (7)  - file sizes, lazy loading, no inline"
+          Write-Host "  4. Compatibility (9)- DOCTYPE, viewport, responsive, dark mode"
+          Write-Host "  5. Security (7)     - XSS, HTTPS, honeypot, no API keys"
+          Write-Host "  6. SEO (8)          - title, OG, JSON-LD, sitemap"
+          Write-Host "  7. Accessibility (7)- skip-link, ARIA, focus, semantic"
+          Write-Host "  8. Regression (7)   - CSS ref, names, copyright, JS loaded"

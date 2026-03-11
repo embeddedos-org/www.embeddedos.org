@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="theme-color" content="#0066cc"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="eBuild v0.4.0 - Python build orchestrator with AI hardware analyzer, package manager, and system image builder supporting 6 build backends.">
+<title>eBuild - Build System and AI Hardware Analyzer | EmbeddedOS Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css">
+<meta property="og:title" content="eBuild - Build System and AI Hardware Analyzer"><meta property="og:description" content="eBuild v0.4.0 - Python build orchestrator with AI hardware analyzer, package manager, and system image builder supporting 6 build backends."><meta property="og:type" content="website">
+</head>
+<body>
+<header class="navbar"><div class="nav-container"><a href="index.html" class="logo" aria-label="EmbeddedOS Home"><div class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar"><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Research &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li><li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI</a></li><li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li><li role="none"><a href="building-os.html" role="menuitem">Building OS</a></li><li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li></ul></li><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Programs &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="membership.html" role="menuitem">Membership</a></li><li role="none"><a href="certification.html" role="menuitem">Certification</a></li><li role="none"><a href="internship.html" role="menuitem">Internship</a></li><li role="none"><a href="careers.html" role="menuitem">Careers</a></li></ul></li><li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li><li role="none"><a href="about.html" role="menuitem">About</a></li><li role="none"><a href="resources.html" role="menuitem">Resources</a></li><li role="none"><a href="donate.html" role="menuitem">Donate</a></li><li role="none"><a href="contact.html" role="menuitem">Contact</a></li><li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li></ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button></div></header>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="separator">&#8250;</span><a href="ecosystem.html">Ecosystem</a><span class="separator">&#8250;</span><span class="current">eBuild</span></nav>
+    <nav class="product-nav" aria-label="Ecosystem products">
+        <div class="container">
+            <div class="product-nav__links">
+                <a href="product-eos.html" class="product-nav__item"><span class="product-nav__icon">&#9881;</span> EoS</a>
+                <a href="product-eboot.html" class="product-nav__item"><span class="product-nav__icon">&#9889;</span> eBootloader</a>
+                <a href="product-ebuild.html" class="product-nav__item product-nav__item--active"><span class="product-nav__icon">&#127959;</span> eBuild</a>
+                <a href="product-eai.html" class="product-nav__item"><span class="product-nav__icon">&#129302;</span> EAI</a>
+                <a href="product-eni.html" class="product-nav__item"><span class="product-nav__icon">&#129504;</span> ENI</a>
+                <a href="product-eipc.html" class="product-nav__item"><span class="product-nav__icon">&#128274;</span> EIPC</a>
+            </div>
+        </div>
+    </nav>
+<section class="section section-dark"><div class="container"><div class="section-header"><span class="badge badge-blue">BUILD SYSTEM</span><h1 class="mt-2">eBuild <span class="gradient-text">Build System &amp; AI Analyzer</span></h1><p>From hardware schematic to production OS image &mdash; fully automated</p></div></div></section>
+<section class="section section-white"><div class="container">
+    <div class="cards-grid cards-grid-3">
+        <div class="feature-card"><div class="feature-icon feature-icon--blue"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="12" stroke="white" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="5" fill="white"/><rect x="16" y="3" width="4" height="5" rx="1" fill="white"/><rect x="16" y="28" width="4" height="5" rx="1" fill="white"/></svg></div><h3>AI Hardware Analyzer</h3><p>Built-in database of 100+ MCUs with auto-detection from KiCad/Eagle schematics. Identifies peripherals, pin configs, and generates board definitions.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--purple"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="6" y="6" width="10" height="10" rx="2" fill="white" opacity=".9"/><rect x="20" y="6" width="10" height="10" rx="2" fill="white" opacity=".7"/><rect x="6" y="20" width="10" height="10" rx="2" fill="white" opacity=".5"/><rect x="20" y="20" width="10" height="10" rx="2" fill="white" opacity=".3"/></svg></div><h3>6 Build Backends</h3><p>Auto-detects and dispatches to CMake, Meson, Cargo, Make, Ninja, or Kbuild. Includes Zephyr west.yml and Buildroot Config.in support.</p></div>
+        <div class="feature-card"><div class="feature-icon feature-icon--green"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="white" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="8" stroke="white" stroke-width="1.5" fill="none"/><circle cx="18" cy="18" r="3" fill="white"/><circle cx="28" cy="10" r="3" fill="white"/></svg></div><h3>Package Manager</h3><p>YAML recipes, topological dependency resolution, git/tarball fetching with checksum verification, hash-based local cache, lockfile for reproducible builds.</p></div>
+    </div>
+    <div class="stack-diagram mt-4"><h3 class="stack-diagram__title">eBuild Pipeline</h3><div class="stack-layers">
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--blue">1</div><div class="stack-layer__content"><h4>Input: Hardware Specs</h4><p>Text description, KiCad/Eagle schematic, BOM &rarr; AI Analyzer with 100+ MCU database &amp; 200+ component DB</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--purple">2</div><div class="stack-layer__content"><h4>Config Generation</h4><p>Produces board.yaml, boot.yaml, build.yaml, eos_product_config.h, eboot_flash_layout.h, linker scripts</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--orange">3</div><div class="stack-layer__content"><h4>Build &amp; Compile</h4><p>Backend dispatch (CMake/Meson/Cargo/Make/Ninja/Kbuild), cross-compilation for ARM/x86/RISC-V</p></div></div>
+        <div class="stack-layer"><div class="stack-layer__number stack-layer__number--green">4</div><div class="stack-layer__content"><h4>Output: OS Image</h4><p>System image (raw, qcow2, ext4, squashfs, tar) or firmware binary ready for flashing via OpenOCD/pyOCD</p></div></div>
+    </div></div>
+    <div class="cards-grid cards-grid-3 mt-4">
+        <div class="feature-card"><h3>Python 3.9+</h3><p>Language</p></div>
+        <div class="feature-card"><h3>v0.4.0</h3><p>Version</p></div>
+        <div class="feature-card"><h3>6 Templates</h3><p>bare-metal, BLE sensor, RTOS app, Linux app, secure boot, safety-critical</p></div>
+    </div>
+</div></section>
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Open Source</span>
+                <h2>Explore the Source Code</h2>
+                <p>All code is MIT licensed and available on GitHub</p>
+            </div>
+            <div class="source-links-card">
+                <div class="source-links-header">
+                    <span class="source-links-icon">&#128193;</span>
+                    <div>
+                        <h3>ebuild</h3>
+                        <a href="https://github.com/embeddedos-org/ebuild" class="source-links-repo" target="_blank" rel="noopener">https://github.com/embeddedos-org/ebuild</a>
+                    </div>
+                </div>
+                <div class="source-links-grid">
+                <a href="https://github.com/embeddedos-org/ebuild" class="source-link" target="_blank" rel="noopener">Source Code &#8599;</a>
+                <a href="https://github.com/embeddedos-org/ebuild/tree/main/ebuild/eos_ai" class="source-link" target="_blank" rel="noopener">AI Analyzer &#8599;</a>
+                <a href="https://github.com/embeddedos-org/ebuild/tree/main/ebuild/packages" class="source-link" target="_blank" rel="noopener">Package Manager &#8599;</a>
+                <a href="https://github.com/embeddedos-org/ebuild/tree/main/ebuild/build" class="source-link" target="_blank" rel="noopener">Build Backends &#8599;</a>
+                <a href="https://github.com/embeddedos-org/ebuild/tree/main/templates" class="source-link" target="_blank" rel="noopener">Templates &#8599;</a>
+                <a href="https://github.com/embeddedos-org/ebuild/tree/main/docs" class="source-link" target="_blank" rel="noopener">Documentation &#8599;</a>
+                </div>
+                <div class="source-links-actions">
+                    <a href="https://github.com/embeddedos-org/ebuild" class="btn btn-primary" target="_blank" rel="noopener">View Repository</a>
+                    <a href="https://github.com/embeddedos-org/ebuild/issues" class="btn btn-outline" target="_blank" rel="noopener">Report Issue</a>
+                    <a href="https://github.com/embeddedos-org/ebuild/pulls" class="btn btn-outline" target="_blank" rel="noopener">Pull Requests</a>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="cta-section"><h2>Start Building with eBuild</h2><p>Explore the source, read the docs, and contribute.</p><div class="cta-buttons"><a href="https://github.com/embeddedos-org" class="btn btn-dark">GitHub</a><a href="ecosystem.html" class="btn btn-secondary">Full Ecosystem</a></div></section><footer class="footer"><div class="footer-mega"><div class="footer-column"><h4>Ecosystem</h4><ul><li><a href="ecosystem.html">Overview</a></li><li><a href="product-eos.html">EoS</a></li><li><a href="product-eai.html">EAI</a></li><li><a href="product-eni.html">ENI</a></li><li><a href="product-eipc.html">EIPC</a></li><li><a href="product-eboot.html">eBootloader</a></li><li><a href="product-ebuild.html">eBuild</a></li></ul></div><div class="footer-column"><h4>Research</h4><ul><li><a href="research.html">Neural Link</a></li><li><a href="ai-os.html">AI OS</a></li><li><a href="documentation.html">Docs</a></li></ul></div><div class="footer-column"><h4>Programs</h4><ul><li><a href="membership.html">Membership</a></li><li><a href="certification.html">Certification</a></li><li><a href="careers.html">Careers</a></li></ul></div><div class="footer-column"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-column"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div></div><div class="footer-divider"></div><div class="footer-bottom"><div class="footer-brand"><span class="logo-text">Embedded<span>OS</span></span></div><div class="footer-copyright">&copy; 2026 EmbeddedOS Foundation. MIT License.</div><div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></footer><button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button><script src="js/monitor.js"></script><script src="js/main.js"></script>
+</body></html>

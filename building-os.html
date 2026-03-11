@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#0066cc"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Building Operating Systems using EE Interfaces, CAD Schematic Designs, Open Source Linux and RTOS">
+    <title>Building Operating Systems | EmbeddedOS Research Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <meta property="og:title" content="Building OS with Linux and RTOS | EmbeddedOS Foundation">
+    <meta property="og:description" content="Building Operating Systems using EE Interfaces, CAD Schematic Designs, Open Source Linux and RTOS">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.embeddedos.org">
+</head>
+<body>
+
+    
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+<!-- Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo" aria-label="EmbeddedOS Home">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar">
+                <li role="none">
+                    <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Research ▾</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
+                        <li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
+                        <li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
+                        <li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
+                        <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
+                    </ul></li>
+                <li role="none">
+                    <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Programs ▾</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
+                        <li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
+                        <li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
+                        <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
+                    </ul></li>
+                <li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
+                <li role="none"><a href="about.html" role="menuitem">About</a></li>
+                <li role="none"><a href="resources.html" role="menuitem">Resources</a></li>
+                <li role="none"><a href="donate.html" role="menuitem">Donate</a></li>
+                <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
+                <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
+            </ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+        </div>
+    </header>
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">›</span>
+        <a href="#">Research</a>
+        <span class="separator">›</span>
+        <span class="current">Building OS</span>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Building Operating Systems</h1>
+        <p>EE Interfaces, CAD Schematic Designs, Open Source Linux, and RTOS</p>
+    </section>
+
+    <!-- Overview -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Overview</span>
+                <h2>Hardware-Software Co-Design</h2>
+                <p>Integrating electrical engineering with operating system development</p>
+            </div>
+            <div class="research-content">
+                <div class="research-text">
+                    <h3>The Complete Stack — Powered by EoS</h3>
+                    <p>Building a modern embedded operating system requires deep integration between hardware and software. <strong>EoS</strong> is the core build system — a developer-first tool unifying application builds, package management, and embedded Linux image generation. It uses a Ninja backend for fast builds and YAML-based configuration.</p>
+                    <p>EoS employs a <strong>layered monorepo architecture</strong> (core → BSP → distro → vendor → product layers) with cross-compilation support for ARM, x86, and RISC-V. A single config file and a single command — <code>eos build</code> / <code>eos system</code> — is all you need.</p>
+                    <ul>
+                        <li>Hardware abstraction layer design</li>
+                        <li>Custom peripheral drivers</li>
+                        <li>Power management integration</li>
+                        <li>Real-time signal processing</li>
+                        <li>Sensor fusion architectures</li>
+                        <li>Ninja-powered parallel builds with YAML config</li>
+                        <li>Cross-compilation: ARM, x86, RISC-V</li>
+                    </ul>
+                </div>
+                <div class="research-image">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=350&fit=crop&auto=format+Software+Integration" alt="Hardware Software Integration" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EE Interfaces -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Hardware</span>
+                <h2>Electrical Engineering Interfaces</h2>
+                <p>Bridging the physical and digital worlds</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="lightning-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" />
+                                    </linearGradient>
+                                    <filter id="lightning-glow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <path d="M26 4L8 28h12l-2 16 18-24H24l2-16z" fill="url(#lightning-gradient)" filter="url(#lightning-glow)" stroke="#FFD700" stroke-width="1" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>GPIO &amp; Digital I/O</h3>
+                        <p>General-purpose input/output design for sensor integration, actuator control, and external device communication.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="plug-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00D084;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#00B371;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#00875A;stop-opacity:1" />
+                                    </linearGradient>
+                                    <filter id="plug-glow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <rect x="14" y="6" width="6" height="16" rx="2" fill="url(#plug-gradient)" filter="url(#plug-glow)"/>
+                                <rect x="28" y="6" width="6" height="16" rx="2" fill="url(#plug-gradient)" filter="url(#plug-glow)"/>
+                                <rect x="10" y="20" width="28" height="10" rx="3" fill="url(#plug-gradient)" filter="url(#plug-glow)"/>
+                                <rect x="18" y="30" width="12" height="12" rx="2" fill="url(#plug-gradient)" filter="url(#plug-glow)"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Communication Buses</h3>
+                        <p>I2C, SPI, UART, CAN, and other bus protocols for reliable data transfer between components.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <div class="card-icon">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="chart-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#0066CC;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#0099FF;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#33BBFF;stop-opacity:1" />
+                                    </linearGradient>
+                                    <filter id="chart-glow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <rect x="6" y="28" width="8" height="14" rx="2" fill="url(#chart-gradient)" filter="url(#chart-glow)"/>
+                                <rect x="17" y="18" width="8" height="24" rx="2" fill="url(#chart-gradient)" filter="url(#chart-glow)"/>
+                                <rect x="28" y="10" width="8" height="32" rx="2" fill="url(#chart-gradient)" filter="url(#chart-glow)"/>
+                                <rect x="39" y="22" width="8" height="20" rx="2" fill="url(#chart-gradient)" filter="url(#chart-glow)"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Analog Signal Processing</h3>
+                        <p>ADC/DAC integration, signal conditioning, and real-world sensor interfaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAD Design -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Design</span>
+                <h2>CAD Schematic Design</h2>
+                <p>Professional hardware design methodology</p>
+            </div>
+            <div class="research-content">
+                <div class="research-image">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=350&fit=crop&auto=format+Schematic+Design" alt="CAD Schematic Design" loading="lazy">
+                </div>
+                <div class="research-text">
+                    <h3>Design Process</h3>
+                    <p>Our CAD-based approach ensures reliable, manufacturable hardware designs that integrate seamlessly with our operating system software.</p>
+                    <ul>
+                        <li>Schematic capture and circuit design</li>
+                        <li>PCB layout and routing</li>
+                        <li>Signal integrity analysis</li>
+                        <li>EMC compliance design</li>
+                        <li>Thermal management</li>
+                        <li>Design for manufacturability (DFM)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Linux &amp; RTOS -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Platforms</span>
+                <h2>Open Source Linux &amp; RTOS</h2>
+                <p>Leveraging proven foundations for innovation</p>
+            </div>
+            <div class="architecture-diagram">
+                <h3>EoS Architecture Stack</h3>
+                <div class="diagram-layers">
+                    <div class="layer layer-application">Product Layer (Applications &amp; User Space)</div>
+                    <div class="layer layer-security">Vendor Layer (OEM Customizations)</div>
+                    <div class="layer layer-ai">Distro Layer (Linux Kernel / RTOS Core)</div>
+                    <div class="layer layer-middleware">BSP Layer (Board Support Package &amp; HAL)</div>
+                    <div class="layer layer-rtos">Core Layer (EoS Build System &amp; Toolchains)</div>
+                    <div class="layer layer-hardware">Hardware Platform — eBootloader (Staged Boot: Stage-0 HW Init → Stage-1 A/B Slot Manager)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Linux vs RTOS Comparison -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Comparison</span>
+                <h2>Linux vs RTOS: Choosing the Right Foundation</h2>
+                <p>Understanding when to use each approach</p>
+            </div>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>Embedded Linux</th>
+                        <th>RTOS (FreeRTOS, Zephyr)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Real-time Performance</td>
+                        <td>Soft real-time (with RT patch)</td>
+                        <td>Hard real-time guaranteed</td>
+                    </tr>
+                    <tr>
+                        <td>Memory Footprint</td>
+                        <td>Larger (MB+)</td>
+                        <td>Minimal (KB)</td>
+                    </tr>
+                    <tr>
+                        <td>Boot Time</td>
+                        <td>Seconds</td>
+                        <td>Milliseconds</td>
+                    </tr>
+                    <tr>
+                        <td>Ecosystem</td>
+                        <td>Vast libraries &amp; tools</td>
+                        <td>Growing, focused</td>
+                    </tr>
+                    <tr>
+                        <td>Networking</td>
+                        <td>Full TCP/IP stack</td>
+                        <td>Lightweight options</td>
+                    </tr>
+                    <tr>
+                        <td>Best For</td>
+                        <td>Complex applications, HMI</td>
+                        <td>Safety-critical, low power</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Best Practices -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Guidelines</span>
+                <h2>Best Practices &amp; What to Avoid</h2>
+                <p>Lessons learned from embedded OS development</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="card">
+                    <div class="card-content">
+                        <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="check-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00D084;stop-opacity:1" /><stop offset="100%" style="stop-color:#00875A;stop-opacity:1" /></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#check-gradient-1)"/><path d="M7 12l3 3 7-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Do: Prioritize Modularity</h3>
+                        <p>Design with separation of concerns. Keep hardware abstraction layers clean and well-documented to enable portability.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="x-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" /><stop offset="100%" style="stop-color:#DC3545;stop-opacity:1" /></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#x-gradient-1)"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>Avoid: Monolithic Designs</h3>
+                        <p>Tightly coupled code becomes unmaintainable. Avoid mixing hardware-specific code with application logic.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="check-gradient-2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00D084;stop-opacity:1" /><stop offset="100%" style="stop-color:#00875A;stop-opacity:1" /></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#check-gradient-2)"/><path d="M7 12l3 3 7-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Do: Test Continuously</h3>
+                        <p>Implement unit testing, hardware-in-loop testing, and automated CI/CD pipelines for embedded systems.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="x-gradient-2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" /><stop offset="100%" style="stop-color:#DC3545;stop-opacity:1" /></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#x-gradient-2)"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>Avoid: Ignoring Power</h3>
+                        <p>Power management must be designed from the start, not added later. Plan sleep states and power domains early.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="check-gradient-3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00D084;stop-opacity:1" /><stop offset="100%" style="stop-color:#00875A;stop-opacity:1" /></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#check-gradient-3)"/><path d="M7 12l3 3 7-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Do: Document Everything</h3>
+                        <p>Comprehensive documentation of interfaces, protocols, and design decisions enables collaboration.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="x-gradient-3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" /><stop offset="100%" style="stop-color:#DC3545;stop-opacity:1" /></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#x-gradient-3)"/><path d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>Avoid: Premature Optimization</h3>
+                        <p>Profile first, optimize later. Focus on correct functionality before micro-optimizations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Start Building Your Embedded OS</h2>
+        <p>Get the tools, training, and community support you need to build production-quality embedded systems.</p>
+        <div class="cta-buttons">
+            <a href="certification.html" class="btn btn-dark">Get Certified</a>
+            <a href="documentation.html" class="btn btn-secondary">Read Documentation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-mega">
+            <div class="footer-column">
+                <h4>Ecosystem</h4>
+                <ul>
+                    <li><a href="ecosystem.html">Overview</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eos">EoS</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eai">EAI (AI Layer)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eni">ENI (Neural Interface)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eipc">EIPC (Secure IPC)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eboot">eBootloader</a></li>
+                    <li><a href="https://github.com/embeddedos-org/ebuild">eBuild</a></li>
+                    <li><a href="https://github.com/embeddedos-org">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Architecture</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link &amp; AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="building-os.html">Building OS</a></li>
+                    <li><a href="future-research.html">Future Research</a></li>
+                    <li><a href="resources.html">Thesis &amp; Papers</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internships</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Foundation</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="donate.html">Support Our Mission</a></li>
+                    <li><a href="membership.html">Partners</a></li>
+                    <li><a href="mailto:help@embeddedos.org">General Inquiries</a></li>
+                    <li><a href="mailto:support@embeddedos.org">Technical Support</a></li>
+                    <li><a href="mailto:careers@embeddedos.org">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal &amp; Policies</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="code-of-conduct.html">Code of Conduct</a></li>
+                    <li><a href="licenses.html">Open Source Licenses</a></li>
+                    <li><a href="mailto:security@embeddedos.org">Responsible Disclosure</a></li>
+                    <li><a href="privacy.html#cookies">Cookie Policy</a></li>
+                    <li><a href="terms.html">Trademark Guidelines</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span>OS</span></span>
+                <div class="footer-social">
+                    <a href="#" aria-label="Twitter">𝕏</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                    <a href="https://github.com/embeddedos-org" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="YouTube">YT</a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.
+            </div>
+            <div class="footer-legal"><a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a><a href="privacy.html">Cookies</a>
+            </div>
+        </div>
+    </footer>
+    <button type="button" class="scroll-to-top" aria-label="Scroll to top">↑</button>
+    <script src="js/monitor.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

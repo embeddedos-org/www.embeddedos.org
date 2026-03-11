@@ -1,0 +1,12 @@
+# EmbeddedOS Website — Code Owners
+# These users will be automatically requested for review on PRs
+
+# Default owner for all files
+* @srpatcha
+
+# CI/CD workflows require owner review
+.github/ @srpatcha
+
+# CSS and JavaScript changes
+css/ @srpatcha
+js/ @srpatcha
