@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="EmbeddedOS (EoS) - Building Embedded Operating Systems using EE Interfaces and CAD Schematic Designs with optional AI + Neural Link">
     <meta name="keywords" content="Embedded OS, EE Interfaces, CAD Schematic, Device Drivers, RTOS, Linux, AI Operating Systems, Neural Link">
-    <title>EmbeddedOS (EoS) Foundation - Building OS from EE & CAD Designs</title>
+    <title>EmbeddedOS (EoS) Research Foundation - Building OS from EE & CAD Designs</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -71,38 +71,134 @@
                     <a href="contact.html" class="btn btn-secondary">Request Quote</a>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="code-window">
-                    <div class="code-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                        <span class="filename">ee_to_os_pipeline.c</span>
-                    </div>
-                    <pre><code><span class="comment">/* EE Interface → Device Driver → OS Image */</span>
-<span class="keyword">typedef struct</span> {
-    gpio_config_t   pins;      <span class="comment">// From schematic</span>
-    protocol_t      interface; <span class="comment">// I2C/SPI/UART</span>
-    timing_spec_t   timing;    <span class="comment">// From datasheet</span>
-} ee_interface_t;
+            <div class="hero-visual" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                <!-- Full-width Pipeline Diagram - Larger & More Readable -->
+                <svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                    <defs>
+                        <linearGradient id="heroBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3b82f6"/>
+                            <stop offset="100%" style="stop-color:#60a5fa"/>
+                        </linearGradient>
+                        <linearGradient id="heroPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#a78bfa"/>
+                        </linearGradient>
+                        <linearGradient id="heroGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#10b981"/>
+                            <stop offset="100%" style="stop-color:#34d399"/>
+                        </linearGradient>
+                        <linearGradient id="heroOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f59e0b"/>
+                            <stop offset="100%" style="stop-color:#fbbf24"/>
+                        </linearGradient>
+                        <linearGradient id="heroTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4"/>
+                            <stop offset="100%" style="stop-color:#22d3ee"/>
+                        </linearGradient>
+                        <marker id="heroArrowBlue" markerWidth="14" markerHeight="14" refX="7" refY="7" orient="auto">
+                            <path d="M0,0 L0,14 L14,7 Z" fill="#60a5fa"/>
+                        </marker>
+                        <marker id="heroArrowOrange" markerWidth="14" markerHeight="14" refX="7" refY="7" orient="auto">
+                            <path d="M0,0 L0,14 L14,7 Z" fill="#fbbf24"/>
+                        </marker>
+                        <marker id="heroArrowTeal" markerWidth="14" markerHeight="14" refX="7" refY="7" orient="auto">
+                            <path d="M0,0 L0,14 L14,7 Z" fill="#22d3ee"/>
+                        </marker>
+                        <marker id="heroArrowPurple" markerWidth="14" markerHeight="14" refX="7" refY="7" orient="auto">
+                            <path d="M0,0 L0,14 L14,7 Z" fill="#a78bfa"/>
+                        </marker>
+                        <filter id="heroShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+                        </filter>
+                    </defs>
 
-<span class="comment">/* Generate driver from CAD specs */</span>
-driver_t* <span class="function">cad_to_driver</span>(
-    schematic_t* sch,
-    ee_interface_t* ee
-) {
-    driver_t* drv = <span class="function">parse_schematic</span>(sch);
-    <span class="function">apply_ee_config</span>(drv, ee);
-    <span class="function">generate_registers</span>(drv);
-    <span class="keyword">return</span> drv;
-}
+                    <!-- === INPUT 1: CAD SCHEMATIC === -->
+                    <rect x="10" y="10" width="200" height="120" rx="18" fill="url(#heroBlue)" filter="url(#heroShadow)"/>
+                    <!-- PCB Icon - Top Left Corner -->
+                    <rect x="25" y="25" width="40" height="32" rx="5" fill="none" stroke="white" stroke-width="2.5"/>
+                    <circle cx="36" cy="36" r="4" fill="white"/>
+                    <circle cx="54" cy="36" r="4" fill="white"/>
+                    <circle cx="36" cy="48" r="4" fill="white"/>
+                    <circle cx="54" cy="48" r="4" fill="white"/>
+                    <rect x="42" y="39" width="8" height="8" rx="1" fill="white"/>
+                    <!-- Text - Right Side, Vertically Centered -->
+                    <text x="140" y="38" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="700" fill="white">CAD</text>
+                    <text x="140" y="60" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="700" fill="white">Schematic</text>
+                    <text x="140" y="85" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.9)">KiCad • Altium • Eagle</text>
+                    <text x="140" y="105" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.5)">INPUT</text>
 
-<span class="comment">/* Optional: AI + Neural Link */</span>
-<span class="preprocessor">#ifdef ENABLE_AI_NEURAL</span>
-    <span class="function">integrate_ai_layer</span>(os_image);
-    <span class="function">add_neural_support</span>(os_image);
-<span class="preprocessor">#endif</span></code></pre>
-                </div>
+                    <!-- === INPUT 2: EE INTERFACE === -->
+                    <rect x="10" y="150" width="200" height="120" rx="18" fill="url(#heroOrange)" filter="url(#heroShadow)"/>
+                    <!-- Chip Icon - Top Left Corner -->
+                    <rect x="30" y="170" width="35" height="28" rx="4" fill="white" opacity="0.95"/>
+                    <line x1="18" y1="178" x2="30" y2="178" stroke="white" stroke-width="3"/>
+                    <line x1="18" y1="190" x2="30" y2="190" stroke="white" stroke-width="3"/>
+                    <line x1="65" y1="178" x2="77" y2="178" stroke="white" stroke-width="3"/>
+                    <line x1="65" y1="190" x2="77" y2="190" stroke="white" stroke-width="3"/>
+                    <!-- Text - Right Side -->
+                    <text x="140" y="178" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="700" fill="white">EE</text>
+                    <text x="140" y="200" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="700" fill="white">Interface</text>
+                    <text x="140" y="225" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.9)">GPIO • I2C • SPI • UART</text>
+                    <text x="140" y="245" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.5)">INPUT</text>
+
+                    <!-- === OPTIONAL: AI + NEURAL === -->
+                    <rect x="10" y="290" width="200" height="105" rx="18" fill="url(#heroTeal)" filter="url(#heroShadow)" opacity="0.92"/>
+                    <!-- Brain Icon - Top Left Corner -->
+                    <ellipse cx="48" cy="330" rx="22" ry="18" fill="none" stroke="white" stroke-width="2"/>
+                    <circle cx="38" cy="325" r="3" fill="white"/>
+                    <circle cx="58" cy="325" r="3" fill="white"/>
+                    <circle cx="48" cy="338" r="3" fill="white"/>
+                    <line x1="38" y1="328" x2="48" y2="335" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+                    <line x1="58" y1="328" x2="48" y2="335" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+                    <!-- Text - Right Side -->
+                    <text x="145" y="325" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="white">AI + Neural</text>
+                    <text x="145" y="348" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="white">Link</text>
+                    <text x="145" y="375" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">Optional Enhancement</text>
+
+                    <!-- === ARROWS FROM INPUTS TO ENGINE === -->
+                    <!-- Blue arrow from CAD Schematic -->
+                    <path d="M215 70 L265 70 Q285 70 285 90 L285 200 Q285 220 305 220 L320 220" stroke="#60a5fa" stroke-width="4" fill="none"/>
+                    <polygon points="335,220 320,212 320,228" fill="#60a5fa"/>
+                    <!-- Orange arrow from EE Interface -->
+                    <path d="M215 210 L285 210 Q305 210 305 215 L305 220 Q305 220 310 220 L320 220" stroke="#fbbf24" stroke-width="4" fill="none"/>
+                    <polygon points="335,220 320,212 320,228" fill="#fbbf24"/>
+                    <!-- Teal dashed arrow from AI + Neural -->
+                    <path d="M215 342 L255 342 Q275 342 275 322 L275 240 Q275 220 295 220 L320 220" stroke="#22d3ee" stroke-width="4" fill="none" stroke-dasharray="8,4"/>
+                    <polygon points="335,220 320,212 320,228" fill="#22d3ee"/>
+
+                    <!-- === EOS ENGINE === -->
+                    <rect x="345" y="120" width="165" height="200" rx="22" fill="url(#heroPurple)" filter="url(#heroShadow)"/>
+                    <!-- Gear Icon - Top Center -->
+                    <circle cx="427" cy="175" r="32" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="4"/>
+                    <circle cx="427" cy="175" r="12" fill="white"/>
+                    <rect x="421" y="138" width="12" height="14" rx="2" fill="white"/>
+                    <rect x="421" y="198" width="12" height="14" rx="2" fill="white"/>
+                    <rect x="390" y="169" width="14" height="12" rx="2" fill="white"/>
+                    <rect x="450" y="169" width="14" height="12" rx="2" fill="white"/>
+                    <!-- Text - Below Icon -->
+                    <text x="427" y="235" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="800" fill="white">EoS Engine</text>
+                    <text x="427" y="260" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.85)">Parse → Generate</text>
+                    <text x="427" y="278" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.85)">→ Compile → Build</text>
+                    <text x="427" y="305" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.5)">PROCESS</text>
+
+                    <!-- === ARROW TO OUTPUT === -->
+                    <line x1="427" y1="325" x2="427" y2="360" stroke="#a78bfa" stroke-width="4"/>
+                    <polygon points="427,375 419,360 435,360" fill="#a78bfa"/>
+
+                    <!-- === OUTPUT: OS IMAGE === -->
+                    <rect x="200" y="380" width="310" height="130" rx="22" fill="url(#heroGreen)" filter="url(#heroShadow)"/>
+                    <!-- Disc Icon - Left Side -->
+                    <circle cx="270" cy="445" r="35" fill="none" stroke="white" stroke-width="3"/>
+                    <circle cx="270" cy="445" r="20" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+                    <circle cx="270" cy="445" r="7" fill="white"/>
+                    <!-- Checkmark Badge -->
+                    <circle cx="298" cy="418" r="16" fill="white"/>
+                    <path d="M289 418 L295 424 L308 410" stroke="#10b981" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Text - Right Side -->
+                    <text x="410" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="700" fill="white">Production-Ready</text>
+                    <text x="410" y="455" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="700" fill="white">OS Image</text>
+                    <text x="410" y="485" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" fill="rgba(255,255,255,0.9)">Linux • FreeRTOS • Zephyr</text>
+                </svg>
             </div>
         </div>
     </section>
@@ -140,22 +236,197 @@ driver_t* <span class="function">cad_to_driver</span>(
                 <p>Building embedded operating systems from your hardware designs with optional AI + Neural Link features</p>
             </div>
 
-            <div class="two-col">
-                <div class="two-col-content">
-                    <h3>Hardware-First OS Development</h3>
-                    <p>We start with your EE interface specifications and CAD schematic designs to build complete, optimized operating systems for your embedded hardware. Our process ensures every driver, protocol, and system component matches your exact hardware configuration.</p>
-                    <ul>
-                        <li><strong>EE Interface Parsing:</strong> Analyze pin configurations, voltage levels, timing specs</li>
-                        <li><strong>CAD Schematic Analysis:</strong> Extract component connections from KiCad, Altium, Eagle</li>
-                        <li><strong>Driver Generation:</strong> Auto-generate drivers for I2C, SPI, UART, GPIO peripherals</li>
-                        <li><strong>OS Layer Integration:</strong> Kernel, HAL, middleware, applications unified</li>
-                        <li><strong>Optional AI + Neural Link:</strong> Add intelligent features on customer request</li>
-                    </ul>
-                    <a href="building-os.html" class="btn btn-outline">Learn More</a>
+            <!-- Full-width Diagram without box -->
+            <div style="width: 100%; margin: 3rem 0;">
+                <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                    <defs>
+                        <linearGradient id="coreBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3b82f6"/>
+                            <stop offset="100%" style="stop-color:#60a5fa"/>
+                        </linearGradient>
+                        <linearGradient id="coreOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f59e0b"/>
+                            <stop offset="100%" style="stop-color:#fbbf24"/>
+                        </linearGradient>
+                        <linearGradient id="corePurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8b5cf6"/>
+                            <stop offset="100%" style="stop-color:#a78bfa"/>
+                        </linearGradient>
+                        <linearGradient id="coreGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#10b981"/>
+                            <stop offset="100%" style="stop-color:#34d399"/>
+                        </linearGradient>
+                        <linearGradient id="coreTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#06b6d4"/>
+                            <stop offset="100%" style="stop-color:#22d3ee"/>
+                        </linearGradient>
+                        <marker id="arrowBlueCore" markerWidth="15" markerHeight="15" refX="8" refY="5" orient="auto">
+                            <path d="M0,0 L0,10 L10,5 Z" fill="#60a5fa"/>
+                        </marker>
+                        <marker id="arrowOrangeCore" markerWidth="15" markerHeight="15" refX="8" refY="5" orient="auto">
+                            <path d="M0,0 L0,10 L10,5 Z" fill="#fbbf24"/>
+                        </marker>
+                        <marker id="arrowPurpleCore" markerWidth="15" markerHeight="15" refX="8" refY="5" orient="auto">
+                            <path d="M0,0 L0,10 L10,5 Z" fill="#a78bfa"/>
+                        </marker>
+                        <marker id="arrowGreenCore" markerWidth="15" markerHeight="15" refX="8" refY="5" orient="auto">
+                            <path d="M0,0 L0,10 L10,5 Z" fill="#34d399"/>
+                        </marker>
+                        <filter id="shadowCore" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.15"/>
+                        </filter>
+                    </defs>
+
+                    <!-- === STEP 1: CAD SCHEMATIC INPUT === -->
+                    <rect x="20" y="30" width="200" height="140" rx="16" fill="url(#coreBlue)" filter="url(#shadowCore)"/>
+                    <!-- PCB Icon - Centered Top -->
+                    <rect x="90" y="45" width="40" height="32" rx="5" fill="none" stroke="white" stroke-width="2.5"/>
+                    <circle cx="102" cy="56" r="4" fill="white"/>
+                    <circle cx="118" cy="56" r="4" fill="white"/>
+                    <circle cx="102" cy="70" r="4" fill="white"/>
+                    <circle cx="118" cy="70" r="4" fill="white"/>
+                    <rect x="107" y="60" width="8" height="8" rx="1" fill="white"/>
+                    <!-- Text - Centered Below Icon -->
+                    <text x="120" y="100" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="white">CAD Schematic</text>
+                    <text x="120" y="120" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)">KiCad • Altium • Eagle</text>
+                    <text x="120" y="138" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">PCB layouts & components</text>
+                    <text x="120" y="160" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,0.5)">INPUT 1</text>
+
+                    <!-- === STEP 2: EE INTERFACE INPUT === -->
+                    <rect x="20" y="200" width="200" height="140" rx="16" fill="url(#coreOrange)" filter="url(#shadowCore)"/>
+                    <!-- Chip Icon - Centered Top -->
+                    <rect x="95" y="215" width="35" height="28" rx="4" fill="white" opacity="0.95"/>
+                    <line x1="82" y1="224" x2="95" y2="224" stroke="white" stroke-width="3"/>
+                    <line x1="82" y1="236" x2="95" y2="236" stroke="white" stroke-width="3"/>
+                    <line x1="130" y1="224" x2="143" y2="224" stroke="white" stroke-width="3"/>
+                    <line x1="130" y1="236" x2="143" y2="236" stroke="white" stroke-width="3"/>
+                    <!-- Text - Centered Below Icon -->
+                    <text x="120" y="268" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="white">EE Interface</text>
+                    <text x="120" y="288" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)">GPIO • I2C • SPI • UART</text>
+                    <text x="120" y="306" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)">Pin configs & protocols</text>
+                    <text x="120" y="328" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,0.5)">INPUT 2</text>
+
+                    <!-- === ARROWS FROM INPUTS TO PARSER === -->
+                    <!-- Blue arrow from CAD Schematic -->
+                    <path d="M225 100 L280 100 Q300 100 300 120 L300 170 Q300 185 315 185 L345 185" stroke="#60a5fa" stroke-width="4" fill="none"/>
+                    <polygon points="360,185 345,177 345,193" fill="#60a5fa"/>
+                    <!-- Orange arrow from EE Interface -->
+                    <path d="M225 270 L280 270 Q300 270 300 250 L300 200 Q300 185 315 185 L345 185" stroke="#fbbf24" stroke-width="4" fill="none"/>
+                    <polygon points="360,185 345,177 345,193" fill="#fbbf24"/>
+
+                    <!-- === STEP 3: EOS PARSER ENGINE === -->
+                    <rect x="370" y="110" width="220" height="150" rx="18" fill="url(#corePurple)" filter="url(#shadowCore)"/>
+                    <!-- Gear Icon -->
+                    <circle cx="430" cy="185" r="30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="4"/>
+                    <circle cx="430" cy="185" r="12" fill="white"/>
+                    <rect x="425" y="150" width="10" height="14" rx="2" fill="white"/>
+                    <rect x="425" y="206" width="10" height="14" rx="2" fill="white"/>
+                    <rect x="395" y="180" width="14" height="10" rx="2" fill="white"/>
+                    <rect x="451" y="180" width="14" height="10" rx="2" fill="white"/>
+                    <text x="480" y="160" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="white">EoS Engine</text>
+                    <text x="480" y="185" font-family="Inter, system-ui, sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">Parse → Generate</text>
+                    <text x="480" y="205" font-family="Inter, system-ui, sans-serif" font-size="12" fill="rgba(255,255,255,0.85)">→ Compile → Build</text>
+                    <rect x="465" y="220" width="100" height="24" rx="12" fill="url(#coreTeal)"/>
+                    <text x="515" y="237" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="white">+ AI / Neural Link</text>
+                    <text x="480" y="255" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.5)">PROCESS</text>
+
+                    <!-- === ARROW FROM PARSER TO LAYERS === -->
+                    <line x1="595" y1="185" x2="655" y2="185" stroke="#a78bfa" stroke-width="4"/>
+                    <polygon points="670,185 655,177 655,193" fill="#a78bfa"/>
+
+                    <!-- === STEP 4: OS LAYERS === -->
+                    <g transform="translate(680, 50)">
+                        <!-- Layer stack -->
+                        <rect x="0" y="0" width="180" height="50" rx="10" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="2"/>
+                        <text x="90" y="30" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#10b981">Applications</text>
+                        <text x="90" y="45" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6b7280">User Apps</text>
+
+                        <rect x="0" y="60" width="180" height="50" rx="10" fill="rgba(139,92,246,0.15)" stroke="#8b5cf6" stroke-width="2"/>
+                        <text x="90" y="90" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#8b5cf6">Middleware</text>
+                        <text x="90" y="105" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6b7280">Services & APIs</text>
+
+                        <rect x="0" y="120" width="180" height="50" rx="10" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="2"/>
+                        <text x="90" y="150" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#f59e0b">Device Drivers</text>
+                        <text x="90" y="165" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6b7280">I2C / SPI / GPIO / UART</text>
+
+                        <rect x="0" y="180" width="180" height="50" rx="10" fill="rgba(6,182,212,0.15)" stroke="#06b6d4" stroke-width="2"/>
+                        <text x="90" y="210" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#06b6d4">HAL</text>
+                        <text x="90" y="225" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6b7280">Hardware Abstraction</text>
+
+                        <rect x="0" y="240" width="180" height="50" rx="10" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="2"/>
+                        <text x="90" y="270" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#3b82f6">Kernel</text>
+                        <text x="90" y="285" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#6b7280">Linux / FreeRTOS / Zephyr</text>
+
+                        <!-- Connecting arrows between layers -->
+                        <path d="M90 50 L90 60" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,2"/>
+                        <path d="M90 110 L90 120" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,2"/>
+                        <path d="M90 170 L90 180" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,2"/>
+                        <path d="M90 230 L90 240" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,2"/>
+
+                        <text x="90" y="310" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" fill="#64748b">GENERATED LAYERS</text>
+                    </g>
+
+                    <!-- === ARROW TO OUTPUT === -->
+                    <line x1="870" y1="185" x2="915" y2="185" stroke="#34d399" stroke-width="4"/>
+                    <polygon points="930,185 915,177 915,193" fill="#34d399"/>
+
+                    <!-- === STEP 5: OUTPUT === -->
+                    <rect x="940" y="100" width="140" height="170" rx="18" fill="url(#coreGreen)" filter="url(#shadowCore)"/>
+                    <!-- Disc icon -->
+                    <circle cx="1010" cy="160" r="35" fill="none" stroke="white" stroke-width="3"/>
+                    <circle cx="1010" cy="160" r="20" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+                    <circle cx="1010" cy="160" r="8" fill="white"/>
+                    <!-- Checkmark badge -->
+                    <circle cx="1035" cy="140" r="14" fill="white"/>
+                    <path d="M1028 140 L1033 145 L1042 134" stroke="#10b981" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="1010" y="215" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="white">OS Image</text>
+                    <text x="1010" y="235" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)">.img • .bin • .elf</text>
+                    <text x="1010" y="260" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.5)">OUTPUT</text>
+                </svg>
+            </div>
+
+            <!-- Features list below diagram -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="white" stroke-width="2"/><circle cx="7" cy="7" r="1.5" fill="white"/><circle cx="13" cy="7" r="1.5" fill="white"/><circle cx="7" cy="13" r="1.5" fill="white"/><circle cx="13" cy="13" r="1.5" fill="white"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">CAD Schematic Analysis</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Extract component connections from KiCad, Altium, Eagle formats</p>
+                    </div>
                 </div>
-                <div class="two-col-image">
-                    <img src="https://via.placeholder.com/500x350/ffffff/0066cc?text=EE+%26+CAD+to+OS" alt="EE Interfaces and CAD to OS Pipeline">
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="6" y="5" width="8" height="6" rx="1" fill="white"/><line x1="3" y1="7" x2="6" y2="7" stroke="white" stroke-width="2"/><line x1="3" y1="10" x2="6" y2="10" stroke="white" stroke-width="2"/><line x1="14" y1="7" x2="17" y2="7" stroke="white" stroke-width="2"/><line x1="14" y1="10" x2="17" y2="10" stroke="white" stroke-width="2"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">EE Interface Parsing</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Analyze pin configurations, voltage levels, timing specs</p>
+                    </div>
                 </div>
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="white" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="2.5" fill="white"/><rect x="8.5" y="2" width="3" height="3" rx="1" fill="white"/><rect x="8.5" y="15" width="3" height="3" rx="1" fill="white"/><rect x="2" y="8.5" width="3" height="3" rx="1" fill="white"/><rect x="15" y="8.5" width="3" height="3" rx="1" fill="white"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">Automated Driver Generation</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Auto-generate drivers for I2C, SPI, UART, GPIO peripherals</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #34d399); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="white" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="3" stroke="white" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="1" fill="white"/><circle cx="14" cy="7" r="3" fill="white"/><path d="M12 7l1.5 1.5 3-3" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">Production-Ready Output</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Complete OS image ready for deployment on your hardware</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="building-os.html" class="btn btn-primary">Learn More About Our Process</a>
             </div>
         </div>
     </section>
@@ -171,31 +442,134 @@ driver_t* <span class="function">cad_to_driver</span>(
 
             <div class="connection-flow">
                 <div class="flow-item">
-                    <div class="flow-icon">📐</div>
+                    <div class="flow-icon-svg">
+                        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#0066cc"/>
+                                    <stop offset="100%" style="stop-color:#0099ff"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="60" height="60" rx="14" fill="url(#cadGrad)"/>
+                            <!-- Circuit board pattern -->
+                            <rect x="12" y="12" width="36" height="36" rx="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                            <circle cx="18" cy="18" r="3" fill="white"/>
+                            <circle cx="42" cy="18" r="3" fill="white"/>
+                            <circle cx="18" cy="42" r="3" fill="white"/>
+                            <circle cx="42" cy="42" r="3" fill="white"/>
+                            <line x1="18" y1="21" x2="18" y2="39" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                            <line x1="42" y1="21" x2="42" y2="39" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                            <line x1="21" y1="30" x2="39" y2="30" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                            <rect x="26" y="26" width="8" height="8" rx="2" fill="white"/>
+                        </svg>
+                    </div>
                     <h4>CAD/EE Specs</h4>
                     <p>Hardware input</p>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon">🤖</div>
+                    <div class="flow-icon-svg">
+                        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="llmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea"/>
+                                    <stop offset="100%" style="stop-color:#764ba2"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="60" height="60" rx="14" fill="url(#llmGrad)"/>
+                            <!-- Brain/AI network -->
+                            <circle cx="30" cy="22" r="6" fill="white" opacity="0.9"/>
+                            <circle cx="18" cy="34" r="5" fill="white" opacity="0.7"/>
+                            <circle cx="42" cy="34" r="5" fill="white" opacity="0.7"/>
+                            <circle cx="24" cy="46" r="4" fill="white" opacity="0.5"/>
+                            <circle cx="36" cy="46" r="4" fill="white" opacity="0.5"/>
+                            <line x1="30" y1="28" x2="20" y2="32" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                            <line x1="30" y1="28" x2="40" y2="32" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+                            <line x1="18" y1="39" x2="24" y2="43" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+                            <line x1="42" y1="39" x2="36" y2="43" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+                            <line x1="24" y1="46" x2="36" y2="46" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                        </svg>
+                    </div>
                     <h4>Multi-LLM</h4>
                     <p>Code generation</p>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon">📚</div>
+                    <div class="flow-icon-svg">
+                        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="codeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#f093fb"/>
+                                    <stop offset="100%" style="stop-color:#f5576c"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="60" height="60" rx="14" fill="url(#codeGrad)"/>
+                            <!-- Stacked layers -->
+                            <rect x="14" y="38" width="32" height="8" rx="2" fill="white" opacity="0.5"/>
+                            <rect x="14" y="28" width="32" height="8" rx="2" fill="white" opacity="0.65"/>
+                            <rect x="14" y="18" width="32" height="8" rx="2" fill="white" opacity="0.8"/>
+                            <rect x="14" y="8" width="32" height="8" rx="2" fill="white" opacity="0.95"/>
+                            <!-- Code brackets -->
+                            <text x="20" y="15" font-family="monospace" font-size="6" fill="#f5576c" font-weight="bold">&lt;/&gt;</text>
+                            <text x="20" y="25" font-family="monospace" font-size="6" fill="#f5576c" font-weight="bold">{ }</text>
+                            <text x="20" y="35" font-family="monospace" font-size="6" fill="#f5576c" font-weight="bold">fn()</text>
+                            <text x="20" y="45" font-family="monospace" font-size="6" fill="#f5576c" font-weight="bold">asm</text>
+                        </svg>
+                    </div>
                     <h4>Layered Code</h4>
                     <p>Unified codebase</p>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon">🔧</div>
+                    <div class="flow-icon-svg">
+                        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="buildGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fa709a"/>
+                                    <stop offset="100%" style="stop-color:#fee140"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="60" height="60" rx="14" fill="url(#buildGrad)"/>
+                            <!-- Gear/cog -->
+                            <circle cx="30" cy="30" r="12" fill="none" stroke="white" stroke-width="3"/>
+                            <circle cx="30" cy="30" r="5" fill="white"/>
+                            <!-- Gear teeth -->
+                            <rect x="28" y="14" width="4" height="6" fill="white"/>
+                            <rect x="28" y="40" width="4" height="6" fill="white"/>
+                            <rect x="14" y="28" width="6" height="4" fill="white"/>
+                            <rect x="40" y="28" width="6" height="4" fill="white"/>
+                            <!-- Diagonal teeth -->
+                            <rect x="18" y="18" width="4" height="5" fill="white" transform="rotate(45 20 20)"/>
+                            <rect x="38" y="18" width="4" height="5" fill="white" transform="rotate(-45 40 20)"/>
+                            <rect x="18" y="38" width="4" height="5" fill="white" transform="rotate(-45 20 40)"/>
+                            <rect x="38" y="38" width="4" height="5" fill="white" transform="rotate(45 40 40)"/>
+                        </svg>
+                    </div>
                     <h4>Build System</h4>
                     <p>Compilation</p>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon">💿</div>
+                    <div class="flow-icon-svg">
+                        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="osGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00a86b"/>
+                                    <stop offset="100%" style="stop-color:#00d68f"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="60" height="60" rx="14" fill="url(#osGrad)"/>
+                            <!-- CD/Disc icon -->
+                            <circle cx="30" cy="30" r="18" fill="none" stroke="white" stroke-width="2.5" opacity="0.9"/>
+                            <circle cx="30" cy="30" r="12" fill="none" stroke="white" stroke-width="1.5" opacity="0.6"/>
+                            <circle cx="30" cy="30" r="5" fill="white"/>
+                            <!-- Shine effect -->
+                            <path d="M 20 20 Q 30 25 40 20" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+                            <!-- Check mark -->
+                            <circle cx="44" cy="44" r="8" fill="white"/>
+                            <path d="M 40 44 L 43 47 L 48 40" fill="none" stroke="#00a86b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                     <h4>OS Image</h4>
                     <p>Ready to deploy</p>
                 </div>
@@ -263,8 +637,8 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
             <div class="cards-grid cards-grid-4">
                 <div class="card">
-                    <div class="card-image">
-                        <div class="card-icon">🚗</div>
+                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=250&fit=crop&auto=format" alt="Automotive ECU" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <h3>Automotive ECUs</h3>
@@ -273,8 +647,8 @@ driver_t* <span class="function">cad_to_driver</span>(
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image">
-                        <div class="card-icon">🚁</div>
+                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=250&fit=crop&auto=format" alt="Drone UAV" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <h3>Drones & UAVs</h3>
@@ -283,8 +657,8 @@ driver_t* <span class="function">cad_to_driver</span>(
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image">
-                        <div class="card-icon">🏠</div>
+                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=250&fit=crop&auto=format" alt="Smart Home" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <h3>Smart Home</h3>
@@ -293,8 +667,8 @@ driver_t* <span class="function">cad_to_driver</span>(
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image">
-                        <div class="card-icon">🏭</div>
+                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop&auto=format" alt="Industrial Systems" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <h3>Industrial Systems</h3>
@@ -329,7 +703,7 @@ driver_t* <span class="function">cad_to_driver</span>(
                     <a href="contact.html" class="btn btn-outline">Request Demo</a>
                 </div>
                 <div class="membership-card featured">
-                    <div class="membership-icon">💿</div>
+                    <div class="membership-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="discGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00a86b"/><stop offset="100%" style="stop-color:#00d68f"/></linearGradient></defs><circle cx="24" cy="24" r="20" stroke="url(#discGrad)" stroke-width="3" fill="none"/><circle cx="24" cy="24" r="8" stroke="url(#discGrad)" stroke-width="2" fill="none"/><circle cx="24" cy="24" r="3" fill="url(#discGrad)"/><path d="M24 7 L24 16 M24 32 L24 41 M7 24 L16 24 M32 24 L41 24" stroke="url(#discGrad)" stroke-width="1.5" opacity="0.5"/></svg></div>
                     <h3>Production OS Image</h3>
                     <div class="membership-price">Custom<span> pricing</span></div>
                     <ul class="membership-features">
@@ -370,58 +744,58 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
             <div class="cert-grid">
                 <div class="cert-card">
-                    <div class="cert-badge">
-                        <span class="cert-badge-icon">🧠</span>
+                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
+                        <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=160&h=160&fit=crop&auto=format" alt="Neural Link Security" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="cert-info">
                         <h3>Certified Neural Link Security Engineer</h3>
                         <p>Validate your expertise in designing and implementing secure neural link architectures with multi-layer protection.</p>
                         <div class="cert-meta">
-                            <span>📝 90 Questions</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS1)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS1)" stroke-width="1.5"/></svg> 90 Questions</span>
                             <span>⏱️ 2 Hours</span>
-                            <span>🎯 70% Pass</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS1)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS1)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS1)"/></svg> 70% Pass</span>
                         </div>
                     </div>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-badge">
-                        <span class="cert-badge-icon">🤖</span>
+                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=160&h=160&fit=crop&auto=format" alt="AI Operating System" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="cert-info">
                         <h3>Certified AI Operating System Developer</h3>
                         <p>Demonstrate proficiency in developing AI-integrated operating systems for embedded platforms.</p>
                         <div class="cert-meta">
-                            <span>📝 75 Questions</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS2)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS2)" stroke-width="1.5"/></svg> 75 Questions</span>
                             <span>⏱️ 2 Hours</span>
-                            <span>🎯 70% Pass</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS2)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS2)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS2)"/></svg> 70% Pass</span>
                         </div>
                     </div>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-badge">
-                        <span class="cert-badge-icon">🔧</span>
+                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
+                        <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=160&h=160&fit=crop&auto=format" alt="Embedded Linux" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="cert-info">
                         <h3>Certified Embedded Linux Professional</h3>
                         <p>Prove your skills in Linux kernel development, device drivers, and system integration.</p>
                         <div class="cert-meta">
-                            <span>📝 80 Questions</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS3)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS3)" stroke-width="1.5"/></svg> 80 Questions</span>
                             <span>⏱️ 2 Hours</span>
-                            <span>🎯 66% Pass</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS3)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS3)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS3)"/></svg> 66% Pass</span>
                         </div>
                     </div>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-badge">
-                        <span class="cert-badge-icon">⚡</span>
+                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&h=160&fit=crop&auto=format" alt="RTOS Engineering" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="cert-info">
                         <h3>Certified RTOS Engineer</h3>
                         <p>Master real-time operating system concepts, scheduling, and safety-critical development.</p>
                         <div class="cert-meta">
-                            <span>📝 85 Questions</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS4)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS4)" stroke-width="1.5"/></svg> 85 Questions</span>
                             <span>⏱️ 2.5 Hours</span>
-                            <span>🎯 70% Pass</span>
+                            <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS4)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS4)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS4)"/></svg> 70% Pass</span>
                         </div>
                     </div>
                 </div>
@@ -442,49 +816,49 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
             <div class="cards-grid cards-grid-3">
                 <div class="card">
-                    <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        <div class="card-icon">🚗</div>
+                    <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&h=300&fit=crop&auto=format" alt="AutoOS - Automotive ECU" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <span class="badge badge-green">Demo Available</span>
                         <h3>AutoOS v2.1</h3>
                         <p>Complete automotive ECU operating system with ADAS support, CAN bus integration, and OTA update capability. Built for ARM Cortex-R5 processors.</p>
                         <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-                            <span>📐 CAD Import</span>
-                            <span>🧠 AI Ready</span>
-                            <span>🔒 ISO 26262</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="cadGradA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M2 2h12v12H2V2z" stroke="url(#cadGradA)" stroke-width="1.5" fill="none"/><path d="M2 6h12M6 2v12" stroke="url(#cadGradA)" stroke-width="1"/><circle cx="11" cy="11" r="2" stroke="url(#cadGradA)" stroke-width="1" fill="none"/></svg> CAD Import</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="brainGradA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00b8d4"/><stop offset="100%" style="stop-color:#00e5ff"/></linearGradient></defs><path d="M8 2C5 2 3 4 3 6.5c0 1.5.5 2.5 1.5 3.5-1 1-1.5 2-1.5 3.5C3 15 5 16 8 16s5-1 5-2.5c0-1.5-.5-2.5-1.5-3.5 1-1 1.5-2 1.5-3.5C13 4 11 2 8 2z" stroke="url(#brainGradA)" stroke-width="1.2" fill="none"/><path d="M5 6c0 0 1.5 1 3 1s3-1 3-1M5 10c0 0 1.5 1 3 1s3-1 3-1" stroke="url(#brainGradA)" stroke-width="1"/></svg> AI Ready</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="lockGradA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><rect x="3" y="7" width="10" height="8" rx="1" stroke="url(#lockGradA)" stroke-width="1.5" fill="none"/><path d="M5 7V5a3 3 0 016 0v2" stroke="url(#lockGradA)" stroke-width="1.5" fill="none"/><circle cx="8" cy="11" r="1.5" fill="url(#lockGradA)"/></svg> ISO 26262</span>
                         </div>
                         <a href="contact.html" class="card-link">Request Demo →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        <div class="card-icon">🚁</div>
+                    <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=500&h=300&fit=crop&auto=format" alt="FlightOS - Drone" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <span class="badge badge-blue">Beta</span>
                         <h3>FlightOS Pro</h3>
                         <p>Drone flight computer OS with autonomous navigation, sensor fusion, and real-time control. Multi-LLM generated for STM32H7 platforms.</p>
                         <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-                            <span>📐 Schematic Ready</span>
-                            <span>🤖 Neural Link</span>
-                            <span>⚡ RTOS</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="cadGradB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M2 2h12v12H2V2z" stroke="url(#cadGradB)" stroke-width="1.5" fill="none"/><path d="M2 6h12M6 2v12" stroke="url(#cadGradB)" stroke-width="1"/><circle cx="11" cy="11" r="2" stroke="url(#cadGradB)" stroke-width="1" fill="none"/></svg> Schematic Ready</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="robotGradB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="3" y="4" width="10" height="8" rx="2" stroke="url(#robotGradB)" stroke-width="1.2" fill="none"/><circle cx="6" cy="7" r="1" fill="url(#robotGradB)"/><circle cx="10" cy="7" r="1" fill="url(#robotGradB)"/><path d="M6 10h4" stroke="url(#robotGradB)" stroke-width="1" stroke-linecap="round"/><path d="M8 4V2M6 2h4" stroke="url(#robotGradB)" stroke-width="1" stroke-linecap="round"/></svg> Neural Link</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="boltGradB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ffc107"/><stop offset="100%" style="stop-color:#ffeb3b"/></linearGradient></defs><path d="M9 1L4 9h4l-1 6 5-8H8l1-6z" stroke="url(#boltGradB)" stroke-width="1.2" fill="url(#boltGradB)" fill-opacity="0.3"/></svg> RTOS</span>
                         </div>
                         <a href="contact.html" class="card-link">Request Beta →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                        <div class="card-icon">🏭</div>
+                    <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=500&h=300&fit=crop&auto=format" alt="IndustrialOS - Industrial Automation" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="card-content">
                         <span class="badge badge-green">Demo Available</span>
                         <h3>IndustrialOS Edge</h3>
                         <p>Industrial edge computing OS with PLC integration, MQTT/OPC-UA, and AI inference. Generated for NXP i.MX8 series.</p>
                         <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-                            <span>📐 EE Interface</span>
-                            <span>🤖 Edge AI</span>
-                            <span>🐧 Linux Based</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="cadGradC" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M2 2h12v12H2V2z" stroke="url(#cadGradC)" stroke-width="1.5" fill="none"/><path d="M2 6h12M6 2v12" stroke="url(#cadGradC)" stroke-width="1"/><circle cx="11" cy="11" r="2" stroke="url(#cadGradC)" stroke-width="1" fill="none"/></svg> EE Interface</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="robotGradC" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="3" y="4" width="10" height="8" rx="2" stroke="url(#robotGradC)" stroke-width="1.2" fill="none"/><circle cx="6" cy="7" r="1" fill="url(#robotGradC)"/><circle cx="10" cy="7" r="1" fill="url(#robotGradC)"/><path d="M6 10h4" stroke="url(#robotGradC)" stroke-width="1" stroke-linecap="round"/><path d="M8 4V2M6 2h4" stroke="url(#robotGradC)" stroke-width="1" stroke-linecap="round"/></svg> Edge AI</span>
+                            <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="linuxGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f9a825"/><stop offset="100%" style="stop-color:#ffc107"/></linearGradient></defs><ellipse cx="8" cy="10" rx="5" ry="4" stroke="url(#linuxGrad)" stroke-width="1.2" fill="none"/><circle cx="8" cy="5" r="3" stroke="url(#linuxGrad)" stroke-width="1.2" fill="none"/><circle cx="6.5" cy="4.5" r="0.8" fill="url(#linuxGrad)"/><circle cx="9.5" cy="4.5" r="0.8" fill="url(#linuxGrad)"/><path d="M7 6.5h2" stroke="url(#linuxGrad)" stroke-width="0.8" stroke-linecap="round"/></svg> Linux Based</span>
                         </div>
                         <a href="contact.html" class="card-link">Request Demo →</a>
                     </div>
@@ -506,22 +880,69 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
                 <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📐</div>
+                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Upload/Submit document icon -->
+                            <rect x="8" y="4" width="20" height="28" rx="2" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M12 14h12M12 19h12M12 24h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M18 4V1M14 1h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="26" cy="26" r="7" fill="white"/>
+                            <path d="M26 23v6M23 26h6" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">1. Submit Specs</h3>
                     <p style="color: var(--text-muted); font-size: 0.95rem;">Provide your CAD schematics, EE interface specs, and hardware requirements. We accept all major CAD formats.</p>
                 </div>
                 <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #00a86b 0%, #00d68f 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🤖</div>
+                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #00a86b 0%, #00d68f 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- AI/Brain neural network icon -->
+                            <circle cx="18" cy="10" r="5" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="8" cy="22" r="4" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="28" cy="22" r="4" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="18" cy="30" r="4" stroke="white" stroke-width="2" fill="none"/>
+                            <line x1="18" y1="15" x2="10" y2="19" stroke="white" stroke-width="1.5"/>
+                            <line x1="18" y1="15" x2="26" y2="19" stroke="white" stroke-width="1.5"/>
+                            <line x1="10" y1="25" x2="15" y2="28" stroke="white" stroke-width="1.5"/>
+                            <line x1="26" y1="25" x2="21" y2="28" stroke="white" stroke-width="1.5"/>
+                            <circle cx="18" cy="10" r="2" fill="white"/>
+                            <circle cx="8" cy="22" r="1.5" fill="white"/>
+                            <circle cx="28" cy="22" r="1.5" fill="white"/>
+                            <circle cx="18" cy="30" r="1.5" fill="white"/>
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">2. LLM Analysis</h3>
                     <p style="color: var(--text-muted); font-size: 0.95rem;">Our Multi-LLM system analyzes your specs and generates optimized code for each OS layer automatically.</p>
                 </div>
                 <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🔧</div>
+                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Build/Gear + Checkmark icon -->
+                            <circle cx="16" cy="16" r="10" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="16" cy="16" r="4" fill="white"/>
+                            <rect x="14" y="3" width="4" height="5" rx="1" fill="white"/>
+                            <rect x="14" y="24" width="4" height="5" rx="1" fill="white"/>
+                            <rect x="3" y="14" width="5" height="4" rx="1" fill="white"/>
+                            <rect x="24" y="14" width="5" height="4" rx="1" fill="white"/>
+                            <circle cx="27" cy="27" r="7" fill="white"/>
+                            <path d="M24 27l2 2 4-4" stroke="#ff6b35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">3. Build & Test</h3>
                     <p style="color: var(--text-muted); font-size: 0.95rem;">We compile the layered codebase, run automated tests, and validate against your hardware specifications.</p>
                 </div>
                 <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #7c4dff 0%, #aa66ff 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">📦</div>
+                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Delivery/Package with rocket icon -->
+                            <rect x="6" y="12" width="24" height="18" rx="2" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M6 17l12 7 12-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 24v6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18 3l4 6h-8l4-6z" fill="white"/>
+                            <rect x="16" y="6" width="4" height="6" fill="white"/>
+                            <circle cx="18" cy="10" r="1" fill="#8b5cf6"/>
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">4. Deliver</h3>
                     <p style="color: var(--text-muted); font-size: 0.95rem;">Receive your production-ready OS image, beta demo builds, and optionally complete source code with documentation.</p>
                 </div>
@@ -529,16 +950,6 @@ driver_t* <span class="function">cad_to_driver</span>(
             <div style="text-align: center; margin-top: 2rem;">
                 <a href="contact.html" class="btn btn-primary">Start Your Project</a>
                 <a href="building-os.html" class="btn btn-outline" style="margin-left: 1rem;">Learn More</a>
-            </div>
-        </div>
-    </section>
-                                <span style="font-size: 0.85rem; color: var(--text-muted);">Mar 20, 2026</span>
-                            </div>
-                            <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Getting Started with EdgeAI</h4>
-                            <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Free webinar on deploying AI models on embedded devices.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -553,7 +964,7 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
             <div class="cards-grid cards-grid-3">
                 <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">"The EoS Foundation has been instrumental in advancing our autonomous vehicle development. The open-source neural link protocols saved us years of R&D."</p>
+                    <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">"The EoS Research Foundation has been instrumental in advancing our autonomous vehicle development. The open-source neural link protocols saved us years of R&D."</p>
                     <div style="display: flex; align-items: center; gap: 1rem;">
                         <div style="width: 50px; height: 50px; background: var(--gradient-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">👤</div>
                         <div>
@@ -626,25 +1037,25 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
             <div class="cards-grid cards-grid-4">
                 <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon">💻</div>
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="8" y="10" width="32" height="22" rx="2" stroke="url(#laptopGrad)" stroke-width="2.5" fill="none"/><path d="M4 36h40" stroke="url(#laptopGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M16 36l-2 4h20l-2-4" stroke="url(#laptopGrad)" stroke-width="2" fill="none"/><path d="M14 18h8M14 23h12" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16l4 5-4 5" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                     <h3>Contribute Code</h3>
                     <p>Submit PRs, fix bugs, and build features for our open-source projects.</p>
                     <a href="https://github.com/embeddedos" class="card-link" style="justify-content: center;">GitHub →</a>
                 </div>
                 <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon">📝</div>
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="docGradL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M12 6h16l10 10v26a2 2 0 01-2 2H12a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="url(#docGradL)" stroke-width="2.5" fill="none"/><path d="M28 6v10h10" stroke="url(#docGradL)" stroke-width="2.5"/><path d="M16 22h16M16 28h12M16 34h8" stroke="url(#docGradL)" stroke-width="2" stroke-linecap="round"/></svg></div>
                     <h3>Write Docs</h3>
                     <p>Help improve documentation, tutorials, and educational content.</p>
                     <a href="documentation.html" class="card-link" style="justify-content: center;">Docs →</a>
                 </div>
                 <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon">🎤</div>
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><rect x="18" y="8" width="12" height="20" rx="6" stroke="url(#micGrad)" stroke-width="2.5" fill="none"/><path d="M12 24c0 7 5.4 12 12 12s12-5 12-12" stroke="url(#micGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M24 36v6M18 42h12" stroke="url(#micGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M21 16h6M21 20h6" stroke="url(#micGrad)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
                     <h3>Speak & Teach</h3>
                     <p>Present at events, lead workshops, or mentor newcomers.</p>
                     <a href="contact.html" class="card-link" style="justify-content: center;">Contact →</a>
                 </div>
                 <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon">💰</div>
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="moneyGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00a86b"/><stop offset="100%" style="stop-color:#00d68f"/></linearGradient></defs><circle cx="18" cy="30" r="10" stroke="url(#moneyGrad)" stroke-width="2.5" fill="none"/><circle cx="30" cy="20" r="10" stroke="url(#moneyGrad)" stroke-width="2.5" fill="none"/><path d="M18 26v8M16 28h4M16 32h4" stroke="url(#moneyGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16v8M28 18h4M28 22h4" stroke="url(#moneyGrad)" stroke-width="2" stroke-linecap="round"/></svg></div>
                     <h3>Donate</h3>
                     <p>Support our nonprofit mission with a tax-deductible donation.</p>
                     <a href="donate.html" class="card-link" style="justify-content: center;">Donate →</a>
@@ -667,7 +1078,7 @@ driver_t* <span class="function">cad_to_driver</span>(
     <footer class="footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Foundation</span>
+                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
                 <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
@@ -713,7 +1124,7 @@ driver_t* <span class="function">cad_to_driver</span>(
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 EmbeddedOS (EoS) Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
+            <p>&copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
             <div class="footer-links">
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Use</a>
