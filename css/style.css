@@ -19,6 +19,106 @@
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
     --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+    /* Icon gradients as CSS variables for reuse */
+    --icon-blue: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+    --icon-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --icon-green: linear-gradient(135deg, #00a86b 0%, #00d68f 100%);
+    --icon-orange: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+    --icon-pink: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --icon-teal: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --icon-yellow: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --icon-red: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+}
+
+/* SVG Icon Base Styles */
+.svg-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.svg-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.svg-icon-sm { width: 24px; height: 24px; }
+.svg-icon-md { width: 40px; height: 40px; }
+.svg-icon-lg { width: 60px; height: 60px; }
+.svg-icon-xl { width: 80px; height: 80px; }
+
+/* Card icon wrapper */
+.card-icon-svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.card-icon-svg svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+}
+
+/* Feature icon wrapper */
+.feature-icon-svg {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.feature-icon-svg svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+/* Contact icon wrapper */
+.contact-icon-svg {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.contact-icon-svg svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+/* Certification badge icon */
+.cert-icon-svg {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cert-icon-svg svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Pillar icon wrapper */
+.pillar-icon-svg {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.pillar-icon-svg svg {
+    width: 100%;
+    height: 100%;
 }
 
 * {
@@ -210,8 +310,8 @@ h4 { font-size: 1.25rem; }
 
 /* Hero Section - Linux Foundation Style */
 .hero {
-    background: var(--gradient-hero);
-    min-height: 85vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #0d1421 25%, #111827 50%, #0d1421 75%, #0a0a0a 100%);
+    min-height: 90vh;
     display: flex;
     align-items: center;
     position: relative;
@@ -225,8 +325,22 @@ h4 { font-size: 1.25rem; }
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-    background-size: 100px 100px;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 102, 204, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    background-size: 100% 100%, 100% 100%, 100px 100px;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 80%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(0, 102, 204, 0.08) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .hero-container {
@@ -241,22 +355,46 @@ h4 { font-size: 1.25rem; }
     z-index: 1;
 }
 
+.hero-content {
+    position: relative;
+}
+
+.hero-content .badge {
+    animation: fadeInUp 0.6s ease-out;
+}
+
 .hero-content h1 {
     color: var(--white);
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
     line-height: 1.1;
+    animation: fadeInUp 0.6s ease-out 0.1s both;
 }
 
 .hero-content h1 span {
-    color: var(--primary-light-blue);
+    background: linear-gradient(135deg, #0099ff 0%, #00d4ff 50%, #0099ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .hero-content p {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
     margin-bottom: 2rem;
-    line-height: 1.7;
+    line-height: 1.8;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero-stats {
@@ -286,6 +424,39 @@ h4 { font-size: 1.25rem; }
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.hero-buttons .btn-primary {
+    background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+    transition: all 0.3s ease;
+}
+
+.hero-buttons .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.5);
+}
+
+.hero-buttons .btn-secondary {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.hero-buttons .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
 }
 
 .hero-image {
@@ -299,11 +470,14 @@ h4 { font-size: 1.25rem; }
 }
 
 .hero-visual {
-    background: linear-gradient(135deg, rgba(0, 102, 204, 0.2) 0%, rgba(0, 153, 255, 0.1) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 3rem;
-    backdrop-filter: blur(10px);
+    background: transparent;
+    border-radius: 24px;
+    padding: 1rem;
+    border: none;
+    box-shadow: none;
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Buttons */
@@ -803,6 +977,30 @@ h4 { font-size: 1.25rem; }
     font-size: 1.5rem;
     color: white;
     margin: 0 auto 1rem;
+}
+
+.flow-icon-svg {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 14px;
+}
+
+.flow-icon-svg:hover {
+    transform: scale(1.1) translateY(-4px);
+}
+
+.flow-icon-svg svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.25);
+    transition: box-shadow 0.3s ease;
+}
+
+.flow-icon-svg:hover svg {
+    box-shadow: 0 12px 35px rgba(0, 102, 204, 0.35);
 }
 
 .flow-arrow {
