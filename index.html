@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="EmbeddedOS (EoS) - Building Embedded Operating Systems using EE Interfaces and CAD Schematic Designs with optional AI + Neural Link">
-    <meta name="keywords" content="Embedded OS, EE Interfaces, CAD Schematic, Device Drivers, RTOS, Linux, AI Operating Systems, Neural Link">
-    <title>EmbeddedOS (EoS) Research Foundation - Building OS from EE & CAD Designs</title>
+    <meta name="description" content="EmbeddedOS (EoS) - A complete embedded AI systems stack from boot to cloud. ForgeOS build system, AIL AI runtime, NIA neural interface, EIPC secure IPC, and E-Bootloader.">
+    <meta name="keywords" content="Embedded OS, ForgeOS, AIL, NIA, EIPC, E-Bootloader, RTOS, Linux, AI Operating Systems, Neural Link, Edge Computing, IoT">
+    <title>EmbeddedOS (EoS) Research Foundation - Embedded AI Systems Stack</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="top-bar-content">
-            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) with AI + Neural Link</span>
+            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) — Embedded AI Systems Stack</span>
             <div>
                 <a href="documentation">Documentation</a>
                 <a href="https://github.com/embeddedos-org">GitHub</a>
@@ -49,6 +49,7 @@
                         <a href="careers.html">Careers</a>
                     </div>
                 </li>
+                <li><a href="ecosystem.html">Ecosystem</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="resources.html">Resources</a></li>
                 <li><a href="donate.html">Donate</a></li>
@@ -63,12 +64,12 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <span class="badge badge-blue">EMBEDDED OS DEVELOPMENT</span>
-                <h1>Building Operating Systems from <span>EE & CAD Designs</span></h1>
-                <p>EmbeddedOS (EoS) transforms your electrical engineering interfaces and CAD schematic designs into complete, production-ready embedded operating systems. AI + Neural Link integration available as optional features for advanced applications.</p>
+                <span class="badge badge-blue">COMPLETE EMBEDDED AI STACK</span>
+                <h1>From Boot to Cloud — <span>One Ecosystem</span></h1>
+                <p>EmbeddedOS (EoS) provides a complete embedded AI systems stack: ForgeOS build system, AIL AI runtime, NIA neural interface, EIPC secure IPC, and E-Bootloader — from bare-metal boot to top-level IoT integration.</p>
                 <div class="hero-buttons">
-                    <a href="building-os.html" class="btn btn-primary">How We Build</a>
-                    <a href="contact.html" class="btn btn-secondary">Request Quote</a>
+                    <a href="ecosystem.html" class="btn btn-primary">Explore Ecosystem</a>
+                    <a href="contact.html" class="btn btn-secondary">Get Started</a>
                 </div>
             </div>
             <div class="hero-visual" style="background: transparent; border: none; box-shadow: none; padding: 0;">
@@ -205,35 +206,191 @@
 
     <!-- Stats Bar -->
     <div class="stats-bar">
-<!-- Stats Bar -->
-    <div class="stats-bar">
         <div class="stats-grid">
             <div class="stat-item-large">
-                <div class="number">EE</div>
-                <div class="label">Interface Parsing</div>
+                <div class="number">7</div>
+                <div class="label">Core Projects</div>
             </div>
             <div class="stat-item-large">
-                <div class="number">CAD</div>
-                <div class="label">Schematic Design</div>
+                <div class="number">3</div>
+                <div class="label">Architectures (ARM, x86, RISC-V)</div>
             </div>
             <div class="stat-item-large">
                 <div class="number">6</div>
-                <div class="label">OS Layers</div>
+                <div class="label">OS Stack Layers</div>
             </div>
             <div class="stat-item-large">
-                <div class="number">AI</div>
-                <div class="label">Optional Features</div>
+                <div class="number">100%</div>
+                <div class="label">Open Source</div>
             </div>
         </div>
     </div>
+
+    <!-- Core Capabilities -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Core Capabilities</span>
+                <h2>Full-Stack Embedded Systems Platform</h2>
+                <p>From bare-metal bootloaders to top-level IoT integration — everything you need to build, secure, and deploy embedded systems at scale</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <!-- Custom Bootloader -->
+                <div class="feature-card" style="text-align: center;">
+                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 16px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="4" width="24" height="28" rx="3" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M12 12h12M12 17h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M18 22l-4 6h8l-4-6z" fill="white" opacity="0.9"/>
+                            <rect x="16" y="26" width="4" height="4" rx="1" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3>Custom Bootloader</h3>
+                    <p>Modular, staged boot platform (E-Bootloader) with Stage-0 HW init, Stage-1 boot manager, A/B slot support, CRC/signature verification, and recovery logic.</p>
+                </div>
+                <!-- Bare to OS Firmware -->
+                <div class="feature-card" style="text-align: center;">
+                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius: 16px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="24" width="20" height="6" rx="2" fill="white" opacity="0.5"/>
+                            <rect x="8" y="16" width="20" height="6" rx="2" fill="white" opacity="0.7"/>
+                            <rect x="8" y="8" width="20" height="6" rx="2" fill="white" opacity="0.9"/>
+                            <path d="M18 3l3 4h-6l3-4z" fill="white"/>
+                            <path d="M18 33l-3-4h6l-3 4z" fill="white" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <h3>Bare to OS Firmware</h3>
+                    <p>Complete firmware pipeline from bare-metal hardware initialization through HAL, device drivers, kernel, and middleware to a fully functional embedded OS image.</p>
+                </div>
+                <!-- Enhanced Security Layers -->
+                <div class="feature-card" style="text-align: center;">
+                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #ef4444, #f87171); border-radius: 16px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 4L6 10v8c0 8.4 5.1 16.2 12 18 6.9-1.8 12-9.6 12-18v-8L18 4z" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M14 18l3 3 6-6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Enhanced Security Layers</h3>
+                    <p>Secure IPC (EIPC) with capability-based authorization, audit logging, replay protection, frame-level integrity, and versioned protocol with CRC verification.</p>
+                </div>
+                <!-- Edge Computing Support -->
+                <div class="feature-card" style="text-align: center;">
+                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #06b6d4, #22d3ee); border-radius: 16px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="10" width="16" height="12" rx="2" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="18" cy="16" r="3" fill="white"/>
+                            <path d="M6 6l4 4M30 6l-4 4M6 30l4-4M30 30l-4-4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="6" cy="6" r="2" fill="white" opacity="0.7"/>
+                            <circle cx="30" cy="6" r="2" fill="white" opacity="0.7"/>
+                            <circle cx="6" cy="30" r="2" fill="white" opacity="0.7"/>
+                            <circle cx="30" cy="30" r="2" fill="white" opacity="0.7"/>
+                        </svg>
+                    </div>
+                    <h3>Edge Computing Support</h3>
+                    <p>AIL-Min lightweight agent runtime for edge/mobile with llama.cpp, ONNX, and TFLite support. On-device AI inference optimized for resource-constrained environments.</p>
+                </div>
+                <!-- Industrial Systems Flavors -->
+                <div class="feature-card" style="text-align: center;">
+                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 16px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="10" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="18" cy="18" r="4" fill="white"/>
+                            <rect x="16" y="4" width="4" height="5" rx="1" fill="white"/>
+                            <rect x="16" y="27" width="4" height="5" rx="1" fill="white"/>
+                            <rect x="4" y="16" width="5" height="4" rx="1" fill="white"/>
+                            <rect x="27" y="16" width="5" height="4" rx="1" fill="white"/>
+                            <rect x="7" y="7" width="4" height="4" rx="1" fill="white" transform="rotate(45 9 9)"/>
+                            <rect x="25" y="7" width="4" height="4" rx="1" fill="white" transform="rotate(45 27 9)"/>
+                        </svg>
+                    </div>
+                    <h3>Industrial Systems Flavors</h3>
+                    <p>AIL-Framework with industrial-grade orchestration, MQTT/OPC-UA/CAN connectors, policy engine, and observability — purpose-built for factory automation and PLC systems.</p>
+                </div>
+                <!-- Top Level IoT Integration -->
+                <div class="feature-card" style="text-align: center;">
+                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #10b981, #34d399); border-radius: 16px;">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="5" fill="white"/>
+                            <circle cx="18" cy="18" r="10" stroke="white" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+                            <circle cx="18" cy="18" r="15" stroke="white" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.6"/>
+                            <circle cx="18" cy="6" r="2.5" fill="white"/>
+                            <circle cx="28" cy="12" r="2.5" fill="white"/>
+                            <circle cx="28" cy="24" r="2.5" fill="white"/>
+                            <circle cx="18" cy="30" r="2.5" fill="white"/>
+                            <circle cx="8" cy="24" r="2.5" fill="white"/>
+                            <circle cx="8" cy="12" r="2.5" fill="white"/>
+                        </svg>
+                    </div>
+                    <h3>Top Level IoT Integration</h3>
+                    <p>End-to-end IoT stack connecting devices through secure EIPC channels with NIA neural interface support, multi-transport protocols, and priority-lane real-time control.</p>
+                </div>
+            </div>
+
+            <!-- Ecosystem Stack Diagram -->
+            <div class="neural-diagram mt-4">
+                <div class="diagram-title">
+                    <h3>EoS Ecosystem Stack</h3>
+                </div>
+                <div class="diagram-layers">
+                    <div class="diagram-layer">
+                        <div class="layer-number" style="background: #10b981;">6</div>
+                        <div class="layer-content">
+                            <h4>IoT Integration Layer</h4>
+                            <p>Device management, cloud connectivity, MQTT/CoAP, telemetry, OTA updates</p>
+                        </div>
+                    </div>
+                    <div class="diagram-layer">
+                        <div class="layer-number" style="background: #f59e0b;">5</div>
+                        <div class="layer-content">
+                            <h4>Industrial & Edge AI</h4>
+                            <p>AIL runtime, edge inference (llama.cpp, ONNX, TFLite), OPC-UA/CAN connectors, orchestration</p>
+                        </div>
+                    </div>
+                    <div class="diagram-layer">
+                        <div class="layer-number" style="background: #ef4444;">4</div>
+                        <div class="layer-content">
+                            <h4>Security & IPC (EIPC)</h4>
+                            <p>Capability-based auth, audit logging, replay protection, MessagePack payloads, priority lanes P0–P3</p>
+                        </div>
+                    </div>
+                    <div class="diagram-layer">
+                        <div class="layer-number" style="background: #8b5cf6;">3</div>
+                        <div class="layer-content">
+                            <h4>OS & Firmware (ForgeOS)</h4>
+                            <p>Layered monorepo — core, BSP, distro, vendor, product layers. Ninja build, YAML config, cross-compilation</p>
+                        </div>
+                    </div>
+                    <div class="diagram-layer">
+                        <div class="layer-number" style="background: #06b6d4;">2</div>
+                        <div class="layer-content">
+                            <h4>Neural Interface (NIA)</h4>
+                            <p>Vendor-neutral BCI adapter, cognitive signal processing, structured events, safe tool calls</p>
+                        </div>
+                    </div>
+                    <div class="diagram-layer">
+                        <div class="layer-number" style="background: #3b82f6;">1</div>
+                        <div class="layer-content">
+                            <h4>Boot Platform (E-Bootloader)</h4>
+                            <p>Stage-0 HW init → Stage-1 boot manager → A/B slots, CRC/signature verify, rollback, recovery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://github.com/embeddedos-org" class="btn btn-primary">Explore on GitHub</a>
+                <a href="documentation.html" class="btn btn-outline" style="margin-left: 1rem;">Read the Docs</a>
+            </div>
+        </div>
+    </section>
 
     <!-- How Our Multi-LLM System Works -->
     <section class="section section-white">
         <div class="container">
             <div class="section-header">
-                <span class="overline">Core Technology</span>
-                <h2>From EE Interfaces & CAD to Complete OS</h2>
-                <p>Building embedded operating systems from your hardware designs with optional AI + Neural Link features</p>
+                <span class="overline">Core Technology — ForgeOS</span>
+                <h2>From Hardware Designs to Complete OS</h2>
+                <p>ForgeOS build system with Ninja backend, YAML config, and layered monorepo — unified with AIL, NIA, EIPC, and E-Bootloader</p>
             </div>
 
             <!-- Full-width Diagram without box -->
@@ -1040,7 +1197,7 @@
                     <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="8" y="10" width="32" height="22" rx="2" stroke="url(#laptopGrad)" stroke-width="2.5" fill="none"/><path d="M4 36h40" stroke="url(#laptopGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M16 36l-2 4h20l-2-4" stroke="url(#laptopGrad)" stroke-width="2" fill="none"/><path d="M14 18h8M14 23h12" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16l4 5-4 5" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                     <h3>Contribute Code</h3>
                     <p>Submit PRs, fix bugs, and build features for our open-source projects.</p>
-                    <a href="https://github.com/embeddedos" class="card-link" style="justify-content: center;">GitHub →</a>
+                    <a href="https://github.com/embeddedos-org" class="card-link" style="justify-content: center;">GitHub →</a>
                 </div>
                 <div class="feature-card" style="text-align: center;">
                     <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="docGradL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M12 6h16l10 10v26a2 2 0 01-2 2H12a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="url(#docGradL)" stroke-width="2.5" fill="none"/><path d="M28 6v10h10" stroke="url(#docGradL)" stroke-width="2.5"/><path d="M16 22h16M16 28h12M16 34h8" stroke="url(#docGradL)" stroke-width="2" stroke-linecap="round"/></svg></div>
@@ -1064,6 +1221,37 @@
         </div>
     </section>
 
+    <!-- Latest News & Updates -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Latest Updates</span>
+                <h2>News & Announcements</h2>
+                <p>Stay up to date with the latest developments across the EoS ecosystem</p>
+            </div>
+            <div class="cards-grid cards-grid-3">
+                <div class="news-card">
+                    <div class="news-date">March 2025</div>
+                    <h4>ForgeOS v0.9 Beta Released</h4>
+                    <p>The first public beta of ForgeOS is now available with Ninja build backend, YAML config, and ARM/x86 cross-compilation support. RISC-V support coming in v1.0.</p>
+                    <a href="https://github.com/embeddedos-org/forgeos" class="card-link">View on GitHub →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">February 2025</div>
+                    <h4>EIPC Security Audit Complete</h4>
+                    <p>Independent security audit of EIPC's capability-based authorization and replay protection has been completed. All critical findings addressed in v1.2.</p>
+                    <a href="research.html" class="card-link">Read More →</a>
+                </div>
+                <div class="news-card">
+                    <div class="news-date">January 2025</div>
+                    <h4>AIL-Min Edge Runtime Preview</h4>
+                    <p>AIL-Min lightweight agent runtime now supports llama.cpp and ONNX inference on ARM Cortex-A devices. TFLite integration in progress.</p>
+                    <a href="ai-os.html" class="card-link">Learn More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="cta-section">
         <h2>Ready to Shape the Future of Embedded AI?</h2>
@@ -1079,11 +1267,11 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>
-                    <a href="https://github.com/embeddedos">GH</a>
+                    <a href="https://github.com/embeddedos-org">GH</a>
                     <a href="#">YT</a>
                 </div>
             </div>
@@ -1138,6 +1326,23 @@
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('active');
         }
+
+        // Scroll-to-top button
+        const scrollBtn = document.querySelector('.scroll-to-top');
+        if (scrollBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     </script>
+
+    <button class="scroll-to-top" aria-label="Scroll to top">↑</button>
 </body>
 </html>

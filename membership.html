@@ -235,32 +235,32 @@
                 <h2>Apply for Membership</h2>
                 <p>Join our community today</p>
             </div>
-            <div style="max-width: 600px; margin: 0 auto; background: white; padding: 3rem; border-radius: 16px; box-shadow: var(--shadow-lg);">
-                <form>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Full Name *</label>
-                        <input type="text" required style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+            <div class="application-form">
+                <form action="#">
+                    <div class="form-group">
+                        <label for="member-name">Full Name *</label>
+                        <input type="text" id="member-name" name="name" required placeholder="Your full name">
                     </div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email Address *</label>
-                        <input type="email" required style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="member-email">Email Address *</label>
+                        <input type="email" id="member-email" name="email" required placeholder="your.email@example.com">
                     </div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Organization</label>
-                        <input type="text" style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="member-org">Organization</label>
+                        <input type="text" id="member-org" name="organization" placeholder="Your company or institution">
                     </div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Membership Tier *</label>
-                        <select required style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="member-tier">Membership Tier *</label>
+                        <select id="member-tier" name="tier" required>
                             <option value="">Select a tier</option>
                             <option value="individual">Individual (Free)</option>
                             <option value="professional">Professional ($299/year)</option>
                             <option value="enterprise">Enterprise (Contact Sales)</option>
                         </select>
                     </div>
-                    <div class="form-group" style="margin-bottom: 2rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Areas of Interest</label>
-                        <textarea style="width: 100%; padding: 12px 16px; border: 2px solid var(--medium-gray); border-radius: 8px; font-size: 1rem; min-height: 100px;" placeholder="Tell us about your interests in AI OS, neural link, or embedded systems..."></textarea>
+                    <div class="form-group">
+                        <label for="member-interests">Areas of Interest</label>
+                        <textarea id="member-interests" name="interests" placeholder="Tell us about your interests in AI OS, neural link, or embedded systems..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
                 </form>
@@ -283,11 +283,11 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+<p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>
-                    <a href="#">GH</a>
+                    <a href="https://github.com/embeddedos-org">GH</a>
                     <a href="#">YT</a>
                 </div>
             </div>

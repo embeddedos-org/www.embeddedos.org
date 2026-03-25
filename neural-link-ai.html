@@ -64,7 +64,7 @@
             <div class="hero-content" style="text-align: center; max-width: 900px; margin: 0 auto;">
                 <span class="badge badge-blue" style="background: rgba(255,255,255,0.1); color: white;">CORE TECHNOLOGY</span>
                 <h1 style="margin-top: 1rem;">How Neural Link Connects to <span>AI Operating Systems</span></h1>
-                <p>A comprehensive technical guide to understanding the seamless integration between neural link networks and intelligent operating systems. Learn how biological neural signals are processed, interpreted, and executed by AI-powered embedded systems.</p>
+                <p>A comprehensive technical guide to understanding the seamless integration between neural link networks and intelligent operating systems. NIA (Neural Interface Adapter) provides a vendor-neutral interface for brain-computer communication, available as NIA-Min for lightweight edge devices and NIA-Framework for scalable industrial deployments. Learn how biological neural signals are processed, interpreted, and executed by AI-powered embedded systems.</p>
                 <div class="hero-buttons" style="justify-content: center;">
                     <a href="#architecture" class="btn btn-primary">View Architecture</a>
                     <a href="#dataflow" class="btn btn-secondary">Data Flow</a>
@@ -80,14 +80,14 @@
                 <div class="two-col-content">
                     <span class="overline">Introduction</span>
                     <h2>The Neural-AI Bridge</h2>
-                    <p>Neural link technology represents a paradigm shift in human-machine interaction. By creating direct interfaces between biological neural systems and digital operating systems, we enable unprecedented levels of control, feedback, and integration.</p>
-                    <p>Our AI operating systems are specifically designed to interpret neural signals, classify intent, and execute commands with millisecond latency while maintaining the highest security standards.</p>
+                    <p>Neural link technology represents a paradigm shift in human-machine interaction. NIA (Neural Interface Adapter) creates vendor-neutral, direct interfaces between biological neural systems and digital operating systems, enabling unprecedented levels of control, feedback, and integration.</p>
+                    <p>Our AI operating systems are specifically designed to interpret neural signals, classify intent, and execute commands with millisecond latency while maintaining the highest security standards. NIA-Min provides lightweight real-time processing for edge devices, while NIA-Framework delivers scalable industrial-grade neural interfaces.</p>
                     <ul>
-                        <li>Direct neural signal acquisition and processing</li>
-                        <li>Real-time AI-driven intent recognition</li>
-                        <li>Secure command execution pipeline</li>
+                        <li>Direct neural signal acquisition and processing via NIA</li>
+                        <li>Real-time AI-driven intent recognition through AIL</li>
+                        <li>Secure command execution pipeline over EIPC channels</li>
                         <li>Bidirectional communication protocols</li>
-                        <li>Multi-layer security architecture</li>
+                        <li>Multi-layer security architecture with EIPC capability-based auth</li>
                     </ul>
                 </div>
                 <div class="two-col-image">
@@ -177,8 +177,8 @@
                     <div class="card">
                         <div class="card-content">
                             <h3>5. Security Validation</h3>
-                            <p>Before execution, commands pass through security layers that verify authenticity, check authorization levels, and ensure system integrity.</p>
-                            <p style="color: var(--text-muted); font-size: 0.9rem;"><strong>Measures:</strong> Neural fingerprinting, anomaly detection, command signing</p>
+                            <p>Before execution, commands pass through EIPC security layers that verify authenticity via capability-based authorization, check authorization levels, and ensure system integrity through audit logging.</p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;"><strong>Measures:</strong> EIPC capability-based auth, neural fingerprinting, anomaly detection, command signing, audit logging</p>
                         </div>
                     </div>
                     <div class="card">
@@ -224,22 +224,22 @@
                     <div class="diagram-layer">
                         <div class="layer-number">L5</div>
                         <div class="layer-content">
-                            <h4>Security & Integrity Layer</h4>
-                            <p>Neural authentication, command verification, encryption, anomaly detection, audit logging, access control</p>
+                            <h4>Security & Integrity Layer (EIPC)</h4>
+                            <p>EIPC capability-based authorization, audit logging, replay protection, neural authentication, command verification, encryption</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">L4</div>
                         <div class="layer-content">
-                            <h4>Signal Processing Layer</h4>
-                            <p>Digital signal processing, feature extraction, noise filtering, signal conditioning, data compression</p>
+                            <h4>Signal Processing Layer (NIA)</h4>
+                            <p>NIA neural signal processing, feature extraction, noise filtering, signal conditioning, data compression. NIA → EIPC → AIL data path for secure intent delivery</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">L3</div>
                         <div class="layer-content">
-                            <h4>Neural Protocol Layer</h4>
-                            <p>Communication protocols, data serialization, synchronization, error correction, bandwidth management</p>
+                            <h4>IPC & Protocol Layer (EIPC)</h4>
+                            <p>EIPC secure IPC channels (Unix sockets, named pipes, shared memory, TCP), versioned protocol, JSON/MessagePack serialization, priority lanes P0–P3</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
@@ -310,14 +310,15 @@
                 </div>
                 <div class="two-col-content">
                     <h3>Security Integration</h3>
-                    <p>Security is paramount when neural signals control critical systems. Our integrated security approach includes:</p>
+                    <p>Security is paramount when neural signals control critical systems. EIPC (Embedded IPC) provides the secure communication backbone with capability-based authorization and comprehensive audit logging:</p>
                     <ul>
+                        <li><strong>EIPC capability-based auth</strong> - Fine-grained authorization for every IPC channel</li>
+                        <li><strong>Audit logging & replay protection</strong> - Full audit trail with replay attack prevention</li>
                         <li><strong>Neural fingerprinting</strong> - Unique neural patterns for authentication</li>
-                        <li><strong>Command signing</strong> - Cryptographic verification of all commands</li>
+                        <li><strong>Command signing</strong> - Cryptographic verification of all commands via EIPC</li>
                         <li><strong>Anomaly detection</strong> - ML-based detection of unusual patterns</li>
-                        <li><strong>Secure enclaves</strong> - Hardware-isolated processing for sensitive operations</li>
                     </ul>
-                    <p>Multiple security layers ensure that only authenticated, authorized commands execute.</p>
+                    <p>The NIA → EIPC → AIL pipeline ensures that neural signals are securely transported from the Neural Interface Adapter through authenticated EIPC channels to the AI Layer for processing.</p>
                 </div>
             </div>
         </div>
@@ -487,7 +488,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>

@@ -92,8 +92,8 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h3>Getting Started</h3>
-                        <p>Set up your development environment and build your first EmbeddedOS project.</p>
+                    <h3>Getting Started</h3>
+                        <p>Set up your development environment and build your first EmbeddedOS project using <code>forge build</code> and <code>forge system</code> commands.</p>
                         <a href="#" class="card-link">Read Guide →</a>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Build System</h3>
-                        <p>Learn how to configure and use the EmbeddedOS build system.</p>
+                        <p>Learn how to configure and use ForgeOS with its Ninja build backend for fast, incremental cross-compilation across ARM, x86, and RISC-V targets.</p>
                         <a href="#" class="card-link">Read Guide →</a>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Device Drivers</h3>
-                        <p>Write and integrate device drivers for your hardware platform.</p>
+                        <p>Write and integrate device drivers using the ForgeOS BSP (Board Support Package) layer for your hardware platform.</p>
                         <a href="#" class="card-link">Read Guide →</a>
                     </div>
                 </div>
@@ -151,30 +151,22 @@
                 <h2>API Documentation</h2>
                 <p>Comprehensive API reference for all EmbeddedOS modules</p>
             </div>
-            <div class="cards-grid cards-grid-4">
+            <div class="cards-grid cards-grid-3">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <linearGradient id="brainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#00D9C0"/>
-                                    <stop offset="100%" style="stop-color:#00A896"/>
+                                <linearGradient id="forgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FF6B35"/>
+                                    <stop offset="100%" style="stop-color:#F7931E"/>
                                 </linearGradient>
                             </defs>
-                            <path d="M12 2C8.5 2 6 4.5 6 7.5C6 8.5 6.3 9.4 6.8 10.2C5.1 11.1 4 12.9 4 15C4 18 6.5 20.5 9.5 20.5H10V22H14V20.5H14.5C17.5 20.5 20 18 20 15C20 12.9 18.9 11.1 17.2 10.2C17.7 9.4 18 8.5 18 7.5C18 4.5 15.5 2 12 2Z" fill="url(#brainGradient)"/>
-                            <circle cx="9" cy="9" r="1" fill="white"/>
-                            <circle cx="15" cy="9" r="1" fill="white"/>
-                            <circle cx="12" cy="13" r="1" fill="white"/>
-                            <circle cx="9" cy="16" r="1" fill="white"/>
-                            <circle cx="15" cy="16" r="1" fill="white"/>
-                            <line x1="9" y1="9" x2="12" y2="13" stroke="white" stroke-width="0.5"/>
-                            <line x1="15" y1="9" x2="12" y2="13" stroke="white" stroke-width="0.5"/>
-                            <line x1="12" y1="13" x2="9" y2="16" stroke="white" stroke-width="0.5"/>
-                            <line x1="12" y1="13" x2="15" y2="16" stroke="white" stroke-width="0.5"/>
+                            <rect x="3" y="3" width="18" height="18" rx="3" fill="url(#forgeGradient)"/>
+                            <path d="M7 9l2 2-2 2M11 13h5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <h3>Neural Link API</h3>
-                    <p>Interface for neural link integration and signal processing.</p>
+                    <h3>ForgeOS API</h3>
+                    <p>Build system configuration, layer management (core, BSP, distro, vendor, product), and cross-compilation for ARM/x86/RISC-V.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -191,13 +183,30 @@
                             <circle cx="9" cy="10" r="1" fill="url(#aiGradient)"/>
                             <circle cx="15" cy="10" r="1" fill="url(#aiGradient)"/>
                             <rect x="8" y="15" width="8" height="2" rx="1" fill="white"/>
-                            <rect x="2" y="8" width="2" height="3" rx="1" fill="url(#aiGradient)"/>
-                            <rect x="20" y="8" width="2" height="3" rx="1" fill="url(#aiGradient)"/>
-                            <rect x="10" y="1" width="4" height="2" rx="1" fill="url(#aiGradient)"/>
                         </svg>
                     </div>
-                    <h3>AI/ML API</h3>
-                    <p>Machine learning inference and model management APIs.</p>
+                    <h3>AIL API</h3>
+                    <p>AI runtime, model inference (llama.cpp, ONNX, TFLite), and edge/industrial connectors (MQTT, OPC-UA, CAN).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="brainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00D9C0"/>
+                                    <stop offset="100%" style="stop-color:#00A896"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M12 2C8.5 2 6 4.5 6 7.5C6 8.5 6.3 9.4 6.8 10.2C5.1 11.1 4 12.9 4 15C4 18 6.5 20.5 9.5 20.5H10V22H14V20.5H14.5C17.5 20.5 20 18 20 15C20 12.9 18.9 11.1 17.2 10.2C17.7 9.4 18 8.5 18 7.5C18 4.5 15.5 2 12 2Z" fill="url(#brainGradient)"/>
+                            <circle cx="9" cy="9" r="1" fill="white"/>
+                            <circle cx="15" cy="9" r="1" fill="white"/>
+                            <circle cx="12" cy="13" r="1" fill="white"/>
+                            <line x1="9" y1="9" x2="12" y2="13" stroke="white" stroke-width="0.5"/>
+                            <line x1="15" y1="9" x2="12" y2="13" stroke="white" stroke-width="0.5"/>
+                        </svg>
+                    </div>
+                    <h3>NIA API</h3>
+                    <p>Neural signal processing, intent recognition, and event routing. NIA-Min for edge devices, NIA-Framework for industrial.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -214,23 +223,23 @@
                             <circle cx="12" cy="13" r="1" fill="url(#securityGradient)"/>
                         </svg>
                     </div>
-                    <h3>Security API</h3>
-                    <p>Cryptography, authentication, and secure communication.</p>
+                    <h3>EIPC API</h3>
+                    <p>Secure IPC channels, capability-based auth, priority lanes P0–P3, JSON/MessagePack serialization.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <linearGradient id="performanceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <linearGradient id="bootGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" style="stop-color:#FBBF24"/>
                                     <stop offset="100%" style="stop-color:#F59E0B"/>
                                 </linearGradient>
                             </defs>
-                            <path d="M13 2L4 14H11L10 22L20 10H13L13 2Z" fill="url(#performanceGradient)"/>
+                            <path d="M13 2L4 14H11L10 22L20 10H13L13 2Z" fill="url(#bootGradient)"/>
                         </svg>
                     </div>
-                    <h3>Real-Time API</h3>
-                    <p>Real-time scheduling and timing-critical operations.</p>
+                    <h3>E-Bootloader API</h3>
+                    <p>Boot management, A/B slots, firmware upgrade, recovery. Stage-0 HW init and Stage-1 boot manager.</p>
                 </div>
             </div>
         </div>
@@ -282,21 +291,21 @@
                     <div class="card-content">
                         <h3>EmbeddedOS SDK</h3>
                         <p>Complete software development kit with libraries, headers, and examples.</p>
-                        <a href="#" class="btn btn-outline" style="margin-top: 1rem;">Download SDK</a>
+                        <a href="https://github.com/embeddedos-org/forgeos" class="btn btn-outline" style="margin-top: 1rem;">Download SDK</a>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-content">
                         <h3>Development Tools</h3>
                         <p>Compilers, debuggers, and IDE plugins for EmbeddedOS development.</p>
-                        <a href="#" class="btn btn-outline" style="margin-top: 1rem;">Download Tools</a>
+                        <a href="https://github.com/embeddedos-org" class="btn btn-outline" style="margin-top: 1rem;">Download Tools</a>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-content">
                         <h3>Sample Projects</h3>
                         <p>Ready-to-build sample projects demonstrating various features.</p>
-                        <a href="https://github.com/embeddedos" class="btn btn-outline" style="margin-top: 1rem;">View on GitHub</a>
+                        <a href="https://github.com/embeddedos-org" class="btn btn-outline" style="margin-top: 1rem;">View on GitHub</a>
                     </div>
                 </div>
             </div>
@@ -318,11 +327,11 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>
-                    <a href="https://github.com/embeddedos">GH</a>
+                    <a href="https://github.com/embeddedos-org">GH</a>
                     <a href="#">YT</a>
                 </div>
             </div>

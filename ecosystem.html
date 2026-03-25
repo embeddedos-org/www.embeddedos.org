@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EoS Ecosystem - A complete embedded AI systems stack from boot to cloud. ForgeOS, AIL, NIA, EIPC, E-Bootloader.">
+    <title>Ecosystem | EmbeddedOS Research Foundation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .ecosystem-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--medium-gray);
+            transition: all 0.3s;
+        }
+        .ecosystem-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-lg);
+        }
+        .ecosystem-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .ecosystem-card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .tech-tag {
+            background: var(--light-gray);
+            color: var(--text-muted);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .ecosystem-card .btn-outline {
+            font-size: 0.9rem;
+        }
+        .arch-diagram {
+            background: var(--dark-blue);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-top: 2rem;
+        }
+        .arch-layers {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .arch-layer {
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            min-width: 140px;
+            transition: all 0.3s;
+        }
+        .arch-layer:hover {
+            background: rgba(255,255,255,0.14);
+            border-color: rgba(0,153,255,0.6);
+            transform: translateY(-4px);
+        }
+        .arch-layer .layer-name {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .arch-layer .layer-role {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .arch-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .getting-started-steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+        .getting-started-steps li {
+            counter-increment: step-counter;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+        .getting-started-steps li::before {
+            content: counter(step-counter);
+            background: var(--gradient-blue);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-content h4 {
+            margin-bottom: 0.25rem;
+        }
+        .step-content code {
+            background: var(--light-gray);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+        }
+
+        @media (max-width: 768px) {
+            .arch-layers {
+                flex-direction: column;
+            }
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <span style="color: rgba(255,255,255,0.6);">EmbeddedOS (EoS) with AI + Neural Link</span>
+            <div>
+                <a href="documentation.html">Documentation</a>
+                <a href="https://github.com/embeddedos-org">GitHub</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">EoS</div>
+                <span class="logo-text">Embedded<span>OS</span></span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="#">Research ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="research.html">Neural Link Architecture</a>
+                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
+                        <a href="ai-os.html">AI Operating Systems</a>
+                        <a href="building-os.html">Building OS with Linux/RTOS</a>
+                        <a href="future-research.html">Future Research</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Programs ▾</a>
+                    <div class="dropdown-menu">
+                        <a href="membership.html">Membership</a>
+                        <a href="certification.html">Certification</a>
+                        <a href="internship.html">Internship</a>
+                        <a href="careers.html">Careers</a>
+                    </div>
+                </li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="ecosystem.html">Ecosystem</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="donate.html">Donate</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="membership.html" class="nav-cta">Join Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="min-height: 60vh;">
+        <div class="hero-container" style="grid-template-columns: 1fr;">
+            <div class="hero-content" style="text-align: center; max-width: 900px; margin: 0 auto;">
+                <span class="badge badge-blue" style="background: rgba(255,255,255,0.1); color: white;">ECOSYSTEM</span>
+                <h1 style="margin-top: 1rem;">EoS <span>Ecosystem</span></h1>
+                <p>A complete embedded AI systems stack — from boot to cloud</p>
+                <div class="hero-buttons" style="justify-content: center;">
+                    <a href="#projects" class="btn btn-primary">Explore Projects</a>
+                    <a href="https://github.com/embeddedos-org" class="btn btn-secondary">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Overview</span>
+                <h2>The Complete Stack</h2>
+                <p>Seven open-source projects forming a unified embedded AI platform</p>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted);">
+                    The EoS ecosystem brings together seven purpose-built projects that span the entire embedded systems lifecycle. From the <strong>E-Bootloader</strong> that initializes hardware, through the <strong>ForgeOS</strong> build system that compiles your OS image, to the <strong>AIL</strong> runtime that powers edge AI, the <strong>EIPC</strong> framework securing inter-process communication, and the <strong>NIA</strong> adapter bridging neural interfaces — every layer is designed to work together as a cohesive, open-source stack.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Diagram -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline" style="color: rgba(255,255,255,0.5);">Architecture</span>
+                <h2 style="color: white;">System Architecture</h2>
+                <p style="color: rgba(255,255,255,0.6);">How the ecosystem components connect</p>
+            </div>
+            <div class="arch-diagram">
+                <div class="arch-layers">
+                    <div class="arch-layer">
+                        <div class="layer-name">E-Bootloader</div>
+                        <div class="layer-role">Boot</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">ForgeOS</div>
+                        <div class="layer-role">Build</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">AIL</div>
+                        <div class="layer-role">AI</div>
+                    </div>
+                    <div class="arch-arrow">↔</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">EIPC</div>
+                        <div class="layer-role">IPC</div>
+                    </div>
+                    <div class="arch-arrow">↔</div>
+                    <div class="arch-layer">
+                        <div class="layer-name">NIA</div>
+                        <div class="layer-role">Neural</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <svg width="100%" height="80" viewBox="0 0 800 80" style="max-width: 800px;">
+                        <defs>
+                            <linearGradient id="archLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#667eea"/>
+                                <stop offset="25%" style="stop-color:#0099ff"/>
+                                <stop offset="50%" style="stop-color:#f5576c"/>
+                                <stop offset="75%" style="stop-color:#4facfe"/>
+                                <stop offset="100%" style="stop-color:#43e97b"/>
+                            </linearGradient>
+                        </defs>
+                        <line x1="80" y1="40" x2="720" y2="40" stroke="url(#archLineGrad)" stroke-width="3" stroke-dasharray="8,4"/>
+                        <circle cx="80" cy="40" r="6" fill="#667eea"/>
+                        <circle cx="240" cy="40" r="6" fill="#0099ff"/>
+                        <circle cx="400" cy="40" r="6" fill="#f5576c"/>
+                        <circle cx="560" cy="40" r="6" fill="#4facfe"/>
+                        <circle cx="720" cy="40" r="6" fill="#43e97b"/>
+                        <text x="80" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Stage-0/1</text>
+                        <text x="240" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Ninja+YAML</text>
+                        <text x="400" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Edge+Industrial</text>
+                        <text x="560" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">Secure IPC</text>
+                        <text x="720" y="70" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)">BCI Adapter</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Cards -->
+    <section class="section section-gray" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Projects</span>
+                <h2>Ecosystem Projects</h2>
+                <p>Explore each component of the EoS stack</p>
+            </div>
+            <div class="cards-grid cards-grid-2">
+                <!-- ForgeOS -->
+                <div class="ecosystem-card">
+                    <h3>🔧 ForgeOS</h3>
+                    <p>Core embedded OS build system with a Ninja backend, YAML-based configuration, and a layered monorepo architecture (core, BSP, distro, vendor, product). Supports cross-compilation for ARM, x86, and RISC-V targets.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Ninja</span>
+                        <span class="tech-tag">YAML</span>
+                        <span class="tech-tag">ARM</span>
+                        <span class="tech-tag">x86</span>
+                        <span class="tech-tag">RISC-V</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/forgeos" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- AIL -->
+                <div class="ecosystem-card">
+                    <h3>🤖 AIL (AI Layer)</h3>
+                    <p>Two-tier AI platform: <strong>AIL-Min</strong> for edge inference (llama.cpp, ONNX, TFLite) and <strong>AIL-Framework</strong> for industrial AI with MQTT, OPC-UA, and CAN protocol integration.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">llama.cpp</span>
+                        <span class="tech-tag">ONNX</span>
+                        <span class="tech-tag">TFLite</span>
+                        <span class="tech-tag">MQTT</span>
+                        <span class="tech-tag">OPC-UA</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/AIL" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- NIA -->
+                <div class="ecosystem-card">
+                    <h3>🧠 NIA (Neural Interface Adapter)</h3>
+                    <p>Vendor-neutral brain-computer interface layer. <strong>NIA-Min</strong> provides minimal BCI abstraction while <strong>NIA-Framework</strong> delivers multi-lane routing, signal processing, and real-time neural data streaming.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">BCI</span>
+                        <span class="tech-tag">Neural</span>
+                        <span class="tech-tag">Real-time</span>
+                        <span class="tech-tag">Edge</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/NIA" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- EIPC -->
+                <div class="ecosystem-card">
+                    <h3>🔒 EIPC (Embedded IPC)</h3>
+                    <p>Secure inter-process communication framework with capability-based authorization, audit logging, replay protection, and MessagePack serialization for efficient embedded messaging.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">IPC</span>
+                        <span class="tech-tag">MessagePack</span>
+                        <span class="tech-tag">Security</span>
+                        <span class="tech-tag">Auth</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/EIPC" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- E-Bootloader -->
+                <div class="ecosystem-card">
+                    <h3>⚡ E-Bootloader</h3>
+                    <p>Staged boot platform with Stage-0 and Stage-1 architecture, A/B slot management for safe upgrades, CRC and signature verification, and automatic rollback on failure.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Boot</span>
+                        <span class="tech-tag">A/B</span>
+                        <span class="tech-tag">CRC</span>
+                        <span class="tech-tag">Recovery</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/E-Bootloader" class="btn btn-outline">View on GitHub →</a>
+                </div>
+
+                <!-- Build-tool -->
+                <div class="ecosystem-card">
+                    <h3>📦 Build-tool</h3>
+                    <p>Earlier build system concept and package management toolkit. Provides foundational build abstractions and image generation utilities used during the initial EoS development phases.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Build</span>
+                        <span class="tech-tag">Package</span>
+                        <span class="tech-tag">Image</span>
+                    </div>
+                    <a href="https://github.com/embeddedos-org/Build-tool" class="btn btn-outline">View on GitHub →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header">
+                <span class="overline">Quick Start</span>
+                <h2>Getting Started</h2>
+                <p>Build your first embedded OS image in four steps</p>
+            </div>
+            <div style="max-width: 700px; margin: 0 auto;">
+                <ol class="getting-started-steps">
+                    <li>
+                        <div class="step-content">
+                            <h4>Clone ForgeOS</h4>
+                            <p>Get the core build system repository:</p>
+                            <code>git clone https://github.com/embeddedos-org/forgeos</code>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-content">
+                            <h4>Configure Your Target</h4>
+                            <p>Define your board, architecture, and feature set in a YAML configuration file.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-content">
+                            <h4>Compile</h4>
+                            <p>Run the build system to cross-compile for your target platform:</p>
+                            <code>forge build</code>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-content">
+                            <h4>Generate OS Image</h4>
+                            <p>Create a deployable OS image ready for flashing:</p>
+                            <code>forge system</code>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Join the Ecosystem</h2>
+        <p>Contribute to the future of embedded AI systems — start building with EoS today.</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/embeddedos-org" class="btn btn-dark">GitHub</a>
+            <a href="membership.html" class="btn btn-secondary">Become a Member</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
+                <div class="footer-social">
+                    <a href="#">𝕏</a>
+                    <a href="#">in</a>
+                    <a href="https://github.com/embeddedos-org">GH</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Research</h4>
+                <ul>
+                    <li><a href="research.html">Neural Link Security</a></li>
+                    <li><a href="neural-link-ai.html">Neural Link + AI</a></li>
+                    <li><a href="ai-os.html">AI Operating Systems</a></li>
+                    <li><a href="future-research.html">Future Research</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Programs</h4>
+                <ul>
+                    <li><a href="membership.html">Membership</a></li>
+                    <li><a href="certification.html">Certification</a></li>
+                    <li><a href="internship.html">Internship</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:help@embeddedos.org">help@embeddedos.org</a></li>
+                    <li><a href="mailto:support@embeddedos.org">support@embeddedos.org</a></li>
+                    <li><a href="mailto:volunteer@embeddedos.org">volunteer@embeddedos.org</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Trademark Guidelines</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

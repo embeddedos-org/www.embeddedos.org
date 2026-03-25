@@ -1997,3 +1997,313 @@ div[style*="background: var(--light-gray); border-radius: 12px; font-weight: 700
     color: white !important;
     transform: scale(1.05);
 }
+
+/* ============================================
+   PHASE 3: ENHANCED STYLES
+   ============================================ */
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scroll-to-Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-blue);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.4);
+}
+
+/* Mobile Nav Slide-in */
+@media (max-width: 768px) {
+    .nav-links {
+        transform: translateY(-10px);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Focus/Accessibility Styles */
+*:focus-visible {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* Skip to content link (accessibility) */
+.skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-blue);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 8px 8px;
+    z-index: 10000;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.3s;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* Consistent Card Hover - normalize to translateY(-8px) */
+.card:hover,
+.feature-card:hover,
+.feature-item:hover,
+.cert-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Print Stylesheet */
+@media print {
+    .top-bar,
+    .navbar,
+    .footer,
+    .cta-section,
+    .scroll-to-top,
+    .mobile-menu-btn {
+        display: none !important;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 2rem;
+        background: white !important;
+        color: black !important;
+    }
+
+    .hero-content h1 {
+        color: black !important;
+        -webkit-text-fill-color: black !important;
+    }
+
+    .hero-content h1 span {
+        -webkit-text-fill-color: var(--primary-blue) !important;
+    }
+
+    .hero-content p {
+        color: #333 !important;
+    }
+
+    .section {
+        padding: 2rem 0;
+    }
+
+    .section-dark,
+    .section-gradient {
+        background: white !important;
+        color: black !important;
+    }
+
+    .section-dark h2,
+    .section-dark h3,
+    .section-dark p {
+        color: black !important;
+    }
+
+    .card, .feature-card, .feature-item {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+    }
+
+    a[href^="#"]::after,
+    a[href^="javascript"]::after {
+        content: "";
+    }
+}
+
+/* Dark Mode Variables (behind .dark-mode class) */
+.dark-mode {
+    --primary-dark: #f7f8fa;
+    --white: #0f1117;
+    --light-gray: #1a1d27;
+    --medium-gray: #2d3140;
+    --dark-gray: #c9cdd5;
+    --text-dark: #e5e7eb;
+    --text-muted: #9ca3af;
+    --gradient-hero: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode body {
+    background-color: #0f1117;
+}
+
+.dark-mode .navbar {
+    background: #1a1d27;
+    border-bottom-color: #2d3140;
+}
+
+.dark-mode .card,
+.dark-mode .feature-card {
+    background: #1a1d27;
+    border-color: #2d3140;
+}
+
+.dark-mode .dropdown-menu {
+    background: #1a1d27;
+}
+
+.dark-mode .dropdown-menu a:hover {
+    background: #2d3140;
+}
+
+/* Ecosystem page specific styles */
+.ecosystem-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem;
+    border: 2px solid var(--medium-gray);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ecosystem-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-blue);
+    transition: height 0.3s ease;
+}
+
+.ecosystem-card:hover {
+    border-color: var(--primary-blue);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.ecosystem-card:hover::before {
+    height: 6px;
+}
+
+.ecosystem-card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+}
+
+.ecosystem-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.ecosystem-card .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.ecosystem-card .tech-tag {
+    padding: 0.25rem 0.75rem;
+    background: var(--light-gray);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.ecosystem-card .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-blue);
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: gap 0.3s;
+}
+
+.ecosystem-card .repo-link:hover {
+    gap: 0.75rem;
+}
+
+/* News/Updates section */
+.news-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--medium-gray);
+    transition: all 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-blue);
+}
+
+.news-card .news-date {
+    font-size: 0.85rem;
+    color: var(--primary-blue);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.news-card h4 {
+    margin-bottom: 0.5rem;
+}
+
+.news-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}

@@ -259,7 +259,7 @@
                         <div class="layer-number">1</div>
                         <div class="layer-content">
                             <h4>Requirements Analysis</h4>
-                            <p>AI analyzes hardware specs, application needs, performance targets, and security requirements</p>
+                            <p>AI analyzes hardware specs and application needs via ForgeOS YAML configuration, defining performance targets, layers (core, BSP, distro, vendor, product), and security requirements</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
@@ -273,21 +273,21 @@
                         <div class="layer-number">3</div>
                         <div class="layer-content">
                             <h4>Code Generation</h4>
-                            <p>LLM-based generation of device drivers, HAL implementations, and application interfaces</p>
+                            <p>LLM-based generation of device drivers, HAL implementations, and application interfaces using the Ninja build backend for fast incremental compilation</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">4</div>
                         <div class="layer-content">
-                            <h4>Security Integration</h4>
-                            <p>Automated threat modeling, security layer insertion, encryption implementation, and access control</p>
+                            <h4>Security Integration (EIPC)</h4>
+                            <p>EIPC secure IPC integration with capability-based auth, audit logging, replay protection, and priority lanes for access control</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">5</div>
                         <div class="layer-content">
-                            <h4>Neural Link Binding</h4>
-                            <p>Integration of neural interface drivers, signal processing pipelines, and AI intent recognition</p>
+                            <h4>Neural Link Binding (NIA)</h4>
+                            <p>Integration of NIA (Neural Interface Adapter) drivers — NIA-Min for edge real-time and NIA-Framework for industrial — with signal processing pipelines and AI intent recognition</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
@@ -455,32 +455,32 @@
                 <tbody>
                     <tr>
                         <td>Phase 1: Foundation</td>
-                        <td>2024-2025</td>
-                        <td>Establish open-source base, initial AI code generation experiments, security framework</td>
+                        <td>2025-2026</td>
+                        <td>Establish ForgeOS build system and E-Bootloader secure boot chain, initial AI code generation experiments, EIPC security framework</td>
                         <td><span class="badge badge-green">Active</span></td>
                     </tr>
                     <tr>
                         <td>Phase 2: AI Integration</td>
-                        <td>2025-2026</td>
-                        <td>LLM-assisted driver generation, automated testing pipelines, neural link prototypes</td>
+                        <td>2026-2027</td>
+                        <td>AIL (AI Layer) integration with AIL-Min edge runtime, LLM-assisted driver generation, NIA neural link prototypes</td>
                         <td><span class="badge badge-blue">Planned</span></td>
                     </tr>
                     <tr>
                         <td>Phase 3: Autonomy</td>
-                        <td>2026-2027</td>
-                        <td>End-to-end autonomous OS generation for simple use cases, formal verification integration</td>
+                        <td>2027-2028</td>
+                        <td>End-to-end autonomous OS generation with ForgeOS + Ninja backend, NIA-Framework industrial deployment, formal verification</td>
                         <td><span class="badge badge-blue">Planned</span></td>
                     </tr>
                     <tr>
                         <td>Phase 4: Scale</td>
-                        <td>2027-2028</td>
-                        <td>Complex system support, production-grade security, commercial pilots</td>
+                        <td>2028-2029</td>
+                        <td>Full EIPC production deployment, AIL-Framework industrial connectors (MQTT, OPC-UA, CAN), commercial pilots</td>
                         <td><span class="badge badge-blue">Planned</span></td>
                     </tr>
                     <tr>
                         <td>Phase 5: Ecosystem</td>
-                        <td>2028+</td>
-                        <td>Open platform for autonomous OS development, industry adoption, standards</td>
+                        <td>2029+</td>
+                        <td>Open platform for autonomous OS development, industry adoption, cross-platform standards (ARM/x86/RISC-V)</td>
                         <td><span class="badge badge-blue">Vision</span></td>
                     </tr>
                 </tbody>
@@ -500,7 +500,7 @@
                     <h2>100% Open Source</h2>
                     <p>All research outputs from this initiative will be released as open source. We believe that the future of autonomous OS development must be built collaboratively and transparently.</p>
                     <ul>
-                        <li>All code under permissive licenses (Apache 2.0, MIT)</li>
+                        <li>All code under permissive licenses (Apache 2.0, MIT, BSD-3-Clause)</li>
                         <li>Research papers published openly</li>
                         <li>Training data and models shared with community</li>
                         <li>Open governance through the foundation</li>
@@ -594,7 +594,7 @@
                     <div class="card-content">
                         <h3>Contribute</h3>
                         <p>Contribute code, documentation, or testing to our repos.</p>
-                        <a href="https://github.com/embeddedos" class="card-link">GitHub →</a>
+                        <a href="https://github.com/embeddedos-org" class="card-link">GitHub →</a>
                     </div>
                 </div>
                 <div class="card">
@@ -650,7 +650,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>

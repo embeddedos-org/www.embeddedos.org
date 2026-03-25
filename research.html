@@ -75,12 +75,12 @@
             <div class="research-content">
                 <div class="research-text">
                     <h3>Multi-Layer Security Framework</h3>
-                    <p>Our research focuses on developing robust security frameworks for neural link networks. We investigate multiple layers of protection to ensure data integrity, prevent unauthorized access, and maintain system reliability.</p>
+                    <p>Our research focuses on developing robust security frameworks for neural link networks, anchored by EIPC (Embedded IPC). EIPC provides capability-based authorization, comprehensive audit logging, and replay protection to ensure data integrity, prevent unauthorized access, and maintain system reliability.</p>
                     <ul>
-                        <li>Encryption protocols for neural data transmission</li>
-                        <li>Authentication mechanisms for node verification</li>
-                        <li>Intrusion detection systems for neural networks</li>
-                        <li>Secure communication channels between nodes</li>
+                        <li>EIPC capability-based authorization for fine-grained access control</li>
+                        <li>Audit logging and replay protection for all IPC channels</li>
+                        <li>Frame-level integrity and versioned protocol for data validation</li>
+                        <li>MessagePack payloads for production-grade serialization</li>
                         <li>Real-time threat monitoring and response</li>
                     </ul>
                     <a href="neural-link-ai.html" class="btn btn-primary">Learn More</a>
@@ -137,28 +137,28 @@
                         <div class="layer-number">6</div>
                         <div class="layer-content">
                             <h4>Application Security</h4>
-                            <p>User authentication, access control, secure API endpoints</p>
+                            <p>EIPC capability-based authorization, user access control, secure API endpoints</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">5</div>
                         <div class="layer-content">
-                            <h4>AI Security</h4>
-                            <p>Adversarial attack prevention, model integrity, anomaly detection</p>
+                            <h4>AI Security (AIL)</h4>
+                            <p>Adversarial attack prevention, model integrity, anomaly detection via AIL policy engine</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">4</div>
                         <div class="layer-content">
-                            <h4>Protocol Security</h4>
-                            <p>Encrypted communication channels, secure handshakes</p>
+                            <h4>IPC Protocol Security (EIPC)</h4>
+                            <p>EIPC versioned protocol, frame-level integrity, audit logging, replay protection, priority lanes P0–P3</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
                         <div class="layer-number">3</div>
                         <div class="layer-content">
-                            <h4>Node Security</h4>
-                            <p>Individual node protection, monitoring, and isolation</p>
+                            <h4>Transport Security (EIPC)</h4>
+                            <p>Secure transport over Unix sockets, named pipes, shared memory, and TCP with JSON/MessagePack serialization</p>
                         </div>
                     </div>
                     <div class="diagram-layer">
@@ -171,8 +171,8 @@
                     <div class="diagram-layer">
                         <div class="layer-number">1</div>
                         <div class="layer-content">
-                            <h4>Physical Security</h4>
-                            <p>Hardware tamper resistance, secure boot, trusted execution</p>
+                            <h4>Physical Security (E-Bootloader)</h4>
+                            <p>Hardware tamper resistance, E-Bootloader secure boot chain (Stage-0/Stage-1), trusted execution</p>
                         </div>
                     </div>
                 </div>
@@ -207,8 +207,8 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h3>Cryptographic Protocols</h3>
-                        <p>Developing quantum-resistant encryption methods for neural link communication. Our protocols ensure long-term security against emerging computational threats.</p>
+                        <h3>Cryptographic Protocols & EIPC Transport Security</h3>
+                        <p>Developing quantum-resistant encryption methods for neural link communication. EIPC secures all inter-process channels over Unix sockets, named pipes, shared memory, and TCP transports with versioned protocol negotiation.</p>
                     </div>
                 </div>
                 <div class="card">
@@ -327,11 +327,11 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>
-                    <a href="https://github.com/embeddedos">GH</a>
+                    <a href="https://github.com/embeddedos-org">GH</a>
                     <a href="#">YT</a>
                 </div>
             </div>

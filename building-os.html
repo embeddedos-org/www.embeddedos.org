@@ -74,14 +74,17 @@
             </div>
             <div class="research-content">
                 <div class="research-text">
-                    <h3>The Complete Stack</h3>
-                    <p>Building a modern embedded operating system requires deep integration between hardware and software. Our approach combines electrical engineering interfaces with sophisticated CAD-based schematic designs.</p>
+                    <h3>The Complete Stack — Powered by ForgeOS</h3>
+                    <p>Building a modern embedded operating system requires deep integration between hardware and software. <strong>ForgeOS</strong> is the core build system — a developer-first tool unifying application builds, package management, and embedded Linux image generation. It uses a Ninja backend for fast builds and YAML-based configuration.</p>
+                    <p>ForgeOS employs a <strong>layered monorepo architecture</strong> (core → BSP → distro → vendor → product layers) with cross-compilation support for ARM, x86, and RISC-V. A single config file and a single command — <code>forge build</code> / <code>forge system</code> — is all you need.</p>
                     <ul>
                         <li>Hardware abstraction layer design</li>
                         <li>Custom peripheral drivers</li>
                         <li>Power management integration</li>
                         <li>Real-time signal processing</li>
                         <li>Sensor fusion architectures</li>
+                        <li>Ninja-powered parallel builds with YAML config</li>
+                        <li>Cross-compilation: ARM, x86, RISC-V</li>
                     </ul>
                 </div>
                 <div class="research-image">
@@ -228,14 +231,14 @@
                 <p>Leveraging proven foundations for innovation</p>
             </div>
             <div class="architecture-diagram">
-                <h3>Operating System Architecture Stack</h3>
+                <h3>ForgeOS Architecture Stack</h3>
                 <div class="diagram-layers">
-                    <div class="layer layer-application">Applications & User Space</div>
-                    <div class="layer layer-security">AI/ML Middleware Layer</div>
-                    <div class="layer layer-ai">Linux Kernel / RTOS Core</div>
-                    <div class="layer layer-middleware">Device Drivers & HAL</div>
-                    <div class="layer layer-rtos">Board Support Package (BSP)</div>
-                    <div class="layer layer-hardware">Hardware Platform</div>
+                    <div class="layer layer-application">Product Layer (Applications & User Space)</div>
+                    <div class="layer layer-security">Vendor Layer (OEM Customizations)</div>
+                    <div class="layer layer-ai">Distro Layer (Linux Kernel / RTOS Core)</div>
+                    <div class="layer layer-middleware">BSP Layer (Board Support Package & HAL)</div>
+                    <div class="layer layer-rtos">Core Layer (ForgeOS Build System & Toolchains)</div>
+                    <div class="layer layer-hardware">Hardware Platform — E-Bootloader (Staged Boot: Stage-0 HW Init → Stage-1 A/B Slot Manager)</div>
                 </div>
             </div>
         </div>
@@ -357,11 +360,11 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span style="color: #0099ff;">OS</span> (EoS) Research Foundation</span>
-                <p>EoS - Building Embedded OS from EE Interfaces & CAD Designs. AI + Neural Link optional.</p>
+                <p>Advancing embedded systems, AI, and neural interface technology through open-source collaboration.</p>
                 <div class="footer-social">
                     <a href="#">𝕏</a>
                     <a href="#">in</a>
-                    <a href="https://github.com/embeddedos">GH</a>
+                    <a href="https://github.com/embeddedos-org">GH</a>
                     <a href="#">YT</a>
                 </div>
             </div>
