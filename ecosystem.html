@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="EoS Ecosystem - A complete embedded AI systems stack from boot to cloud. ForgeOS, AIL, NIA, EIPC, E-Bootloader.">
+    <meta name="description" content="EoS Ecosystem - A complete embedded AI systems stack from boot to cloud. EoS, EAI, ENI, EIPC, eBootloader.">
     <title>Ecosystem | EmbeddedOS Research Foundation</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -208,7 +208,7 @@
             </div>
             <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted);">
-                    The EoS ecosystem brings together seven purpose-built projects that span the entire embedded systems lifecycle. From the <strong>E-Bootloader</strong> that initializes hardware, through the <strong>ForgeOS</strong> build system that compiles your OS image, to the <strong>AIL</strong> runtime that powers edge AI, the <strong>EIPC</strong> framework securing inter-process communication, and the <strong>NIA</strong> adapter bridging neural interfaces — every layer is designed to work together as a cohesive, open-source stack.
+                    The EoS ecosystem brings together seven purpose-built projects that span the entire embedded systems lifecycle. From the <strong>eBootloader</strong> that initializes hardware, through the <strong>EoS</strong> build system that compiles your OS image, to the <strong>EAI</strong> runtime that powers edge AI, the <strong>EIPC</strong> framework securing inter-process communication, and the <strong>ENI</strong> adapter bridging neural interfaces — every layer is designed to work together as a cohesive, open-source stack.
                 </p>
             </div>
         </div>
@@ -225,17 +225,17 @@
             <div class="arch-diagram">
                 <div class="arch-layers">
                     <div class="arch-layer">
-                        <div class="layer-name">E-Bootloader</div>
+                        <div class="layer-name">eBootloader</div>
                         <div class="layer-role">Boot</div>
                     </div>
                     <div class="arch-arrow">→</div>
                     <div class="arch-layer">
-                        <div class="layer-name">ForgeOS</div>
+                        <div class="layer-name">EoS</div>
                         <div class="layer-role">Build</div>
                     </div>
                     <div class="arch-arrow">→</div>
                     <div class="arch-layer">
-                        <div class="layer-name">AIL</div>
+                        <div class="layer-name">EAI</div>
                         <div class="layer-role">AI</div>
                     </div>
                     <div class="arch-arrow">↔</div>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="arch-arrow">↔</div>
                     <div class="arch-layer">
-                        <div class="layer-name">NIA</div>
+                        <div class="layer-name">ENI</div>
                         <div class="layer-role">Neural</div>
                     </div>
                 </div>
@@ -286,9 +286,9 @@
                 <p>Explore each component of the EoS stack</p>
             </div>
             <div class="cards-grid cards-grid-2">
-                <!-- ForgeOS -->
+                <!-- EoS -->
                 <div class="ecosystem-card">
-                    <h3>🔧 ForgeOS</h3>
+                    <h3>🔧 EoS</h3>
                     <p>Core embedded OS build system with a Ninja backend, YAML-based configuration, and a layered monorepo architecture (core, BSP, distro, vendor, product). Supports cross-compilation for ARM, x86, and RISC-V targets.</p>
                     <div class="tech-tags">
                         <span class="tech-tag">Ninja</span>
@@ -297,13 +297,13 @@
                         <span class="tech-tag">x86</span>
                         <span class="tech-tag">RISC-V</span>
                     </div>
-                    <a href="https://github.com/embeddedos-org/forgeos" class="btn btn-outline">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/eos" class="btn btn-outline">View on GitHub →</a>
                 </div>
 
-                <!-- AIL -->
+                <!-- EAI -->
                 <div class="ecosystem-card">
-                    <h3>🤖 AIL (AI Layer)</h3>
-                    <p>Two-tier AI platform: <strong>AIL-Min</strong> for edge inference (llama.cpp, ONNX, TFLite) and <strong>AIL-Framework</strong> for industrial AI with MQTT, OPC-UA, and CAN protocol integration.</p>
+                    <h3>🤖 EAI (AI Layer)</h3>
+                    <p>Two-tier AI platform: <strong>EAI-Min</strong> for edge inference (llama.cpp, ONNX, TFLite) and <strong>EAI-Framework</strong> for industrial AI with MQTT, OPC-UA, and CAN protocol integration.</p>
                     <div class="tech-tags">
                         <span class="tech-tag">llama.cpp</span>
                         <span class="tech-tag">ONNX</span>
@@ -311,20 +311,20 @@
                         <span class="tech-tag">MQTT</span>
                         <span class="tech-tag">OPC-UA</span>
                     </div>
-                    <a href="https://github.com/embeddedos-org/AIL" class="btn btn-outline">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/eai" class="btn btn-outline">View on GitHub →</a>
                 </div>
 
-                <!-- NIA -->
+                <!-- ENI -->
                 <div class="ecosystem-card">
-                    <h3>🧠 NIA (Neural Interface Adapter)</h3>
-                    <p>Vendor-neutral brain-computer interface layer. <strong>NIA-Min</strong> provides minimal BCI abstraction while <strong>NIA-Framework</strong> delivers multi-lane routing, signal processing, and real-time neural data streaming.</p>
+                    <h3>🧠 ENI (Neural Interface Adapter)</h3>
+                    <p>Vendor-neutral brain-computer interface layer. <strong>ENI-Min</strong> provides minimal BCI abstraction while <strong>ENI-Framework</strong> delivers multi-lane routing, signal processing, and real-time neural data streaming.</p>
                     <div class="tech-tags">
                         <span class="tech-tag">BCI</span>
                         <span class="tech-tag">Neural</span>
                         <span class="tech-tag">Real-time</span>
                         <span class="tech-tag">Edge</span>
                     </div>
-                    <a href="https://github.com/embeddedos-org/NIA" class="btn btn-outline">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/eni" class="btn btn-outline">View on GitHub →</a>
                 </div>
 
                 <!-- EIPC -->
@@ -337,12 +337,12 @@
                         <span class="tech-tag">Security</span>
                         <span class="tech-tag">Auth</span>
                     </div>
-                    <a href="https://github.com/embeddedos-org/EIPC" class="btn btn-outline">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/eipc" class="btn btn-outline">View on GitHub →</a>
                 </div>
 
-                <!-- E-Bootloader -->
+                <!-- eBootloader -->
                 <div class="ecosystem-card">
-                    <h3>⚡ E-Bootloader</h3>
+                    <h3>⚡ eBootloader</h3>
                     <p>Staged boot platform with Stage-0 and Stage-1 architecture, A/B slot management for safe upgrades, CRC and signature verification, and automatic rollback on failure.</p>
                     <div class="tech-tags">
                         <span class="tech-tag">Boot</span>
@@ -350,7 +350,7 @@
                         <span class="tech-tag">CRC</span>
                         <span class="tech-tag">Recovery</span>
                     </div>
-                    <a href="https://github.com/embeddedos-org/E-Bootloader" class="btn btn-outline">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/eboot" class="btn btn-outline">View on GitHub →</a>
                 </div>
 
                 <!-- Build-tool -->
@@ -362,7 +362,7 @@
                         <span class="tech-tag">Package</span>
                         <span class="tech-tag">Image</span>
                     </div>
-                    <a href="https://github.com/embeddedos-org/Build-tool" class="btn btn-outline">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/ebuild" class="btn btn-outline">View on GitHub →</a>
                 </div>
             </div>
         </div>
@@ -380,9 +380,9 @@
                 <ol class="getting-started-steps">
                     <li>
                         <div class="step-content">
-                            <h4>Clone ForgeOS</h4>
+                            <h4>Clone EoS</h4>
                             <p>Get the core build system repository:</p>
-                            <code>git clone https://github.com/embeddedos-org/forgeos</code>
+                            <code>git clone https://github.com/embeddedos-org/eos</code>
                         </div>
                     </li>
                     <li>
@@ -395,14 +395,14 @@
                         <div class="step-content">
                             <h4>Compile</h4>
                             <p>Run the build system to cross-compile for your target platform:</p>
-                            <code>forge build</code>
+                            <code>eos build</code>
                         </div>
                     </li>
                     <li>
                         <div class="step-content">
                             <h4>Generate OS Image</h4>
                             <p>Create a deployable OS image ready for flashing:</p>
-                            <code>forge system</code>
+                            <code>eos system</code>
                         </div>
                     </li>
                 </ol>
@@ -427,12 +427,12 @@
                 <h4>Ecosystem</h4>
                 <ul>
                     <li><a href="ecosystem.html">Overview</a></li>
-                    <li><a href="https://github.com/embeddedos-org/forgeos">ForgeOS</a></li>
-                    <li><a href="https://github.com/embeddedos-org/AIL">AIL (AI Layer)</a></li>
-                    <li><a href="https://github.com/embeddedos-org/NIA">NIA (Neural Interface)</a></li>
-                    <li><a href="https://github.com/embeddedos-org/EIPC">EIPC (Secure IPC)</a></li>
-                    <li><a href="https://github.com/embeddedos-org/E-Bootloader">E-Bootloader</a></li>
-                    <li><a href="https://github.com/embeddedos-org/Build-tool">Build-tool</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eos">EoS</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eai">EAI (AI Layer)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eni">ENI (Neural Interface)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eipc">EIPC (Secure IPC)</a></li>
+                    <li><a href="https://github.com/embeddedos-org/eboot">eBootloader</a></li>
+                    <li><a href="https://github.com/embeddedos-org/ebuild">Build-tool</a></li>
                     <li><a href="https://github.com/embeddedos-org">GitHub</a></li>
                 </ul>
             </div>
