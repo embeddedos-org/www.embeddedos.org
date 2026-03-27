@@ -1,0 +1,88 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate HTML & CSS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install html-validate
+        run: npm install -g html-validate
+
+      - name: Validate HTML files
+        run: |
+          echo "🔍 Validating HTML files..."
+          ERRORS=0
+          for file in *.html; do
+            echo "  Checking $file"
+            html-validate "$file" || ERRORS=$((ERRORS + 1))
+          done
+          if [ $ERRORS -gt 0 ]; then
+            echo "⚠️ $ERRORS file(s) had validation warnings (non-blocking)"
+          else
+            echo "✅ All HTML files valid"
+          fi
+        continue-on-error: true
+
+      - name: Check for broken internal links
+        run: |
+          echo "🔗 Checking internal links..."
+          MISSING=0
+          for file in *.html; do
+            grep -oP 'href="\K[^"#]+\.html' "$file" 2>/dev/null | sort -u | while read -r link; do
+              if [ ! -f "$link" ]; then
+                echo "  ❌ $file → $link (missing)"
+                MISSING=$((MISSING + 1))
+              fi
+            done
+          done
+          if [ $MISSING -gt 0 ]; then
+            echo "⚠️ Found $MISSING broken link(s)"
+            exit 1
+          else
+            echo "✅ All internal links valid"
+          fi
+
+  deploy:
+    name: Deploy
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

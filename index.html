@@ -5,65 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="EmbeddedOS (EoS) - A complete embedded AI systems stack from boot to cloud. EoS build system, EAI AI runtime, ENI neural interface, EIPC secure IPC, and eBootloader.">
     <meta name="keywords" content="Embedded OS, EoS, EAI, ENI, EIPC, eBootloader, RTOS, Linux, AI Operating Systems, Neural Link, Edge Computing, IoT">
-    <title>EmbeddedOS (EoS) Research Foundation - Embedded AI Systems Stack</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="theme-color" content="#0066cc">
+    <meta property="og:title" content="EmbeddedOS (EoS) Research Foundation">
+    <meta property="og:description" content="Complete embedded AI systems stack — from bare-metal boot to top-level IoT integration.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.embeddedos.org">
+    <title>EmbeddedOS (EoS) Research Foundation — Embedded AI Systems Stack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Navigation -->
-    <nav class="navbar">
+    <header class="navbar" role="banner">
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="index.html" class="logo" aria-label="EmbeddedOS Home">
                 <div class="logo-icon">EoS</div>
                 <span class="logo-text">Embedded<span>OS</span></span>
             </a>
-            <ul class="nav-links">
-                <li>
-                    <a href="#">Research ▾</a>
-                    <div class="dropdown-menu">
-                        <a href="research.html">Neural Link Architecture</a>
-                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
-                        <a href="ai-os.html">AI Operating Systems</a>
-                        <a href="building-os.html">Building OS with Linux/RTOS</a>
-                        <a href="future-research.html">Future Research</a>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">Programs ▾</a>
-                    <div class="dropdown-menu">
-                        <a href="membership.html">Membership</a>
-                        <a href="certification.html">Certification</a>
-                        <a href="internship.html">Internship</a>
-                        <a href="careers.html">Careers</a>
-                    </div>
-                </li>
-                <li><a href="ecosystem.html">Ecosystem</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="resources.html">Resources</a></li>
-                <li><a href="donate.html">Donate</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="membership.html" class="nav-cta">Join Now</a></li>
-            </ul>
-            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <nav aria-label="Main navigation">
+                <ul class="nav-links" id="nav-links" role="menubar">
+                    <li role="none">
+                        <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Research ▾</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
+                            <li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
+                            <li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
+                            <li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
+                            <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
+                        </ul>
+                    </li>
+                    <li role="none">
+                        <a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Programs ▾</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
+                            <li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
+                            <li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
+                            <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
+                        </ul>
+                    </li>
+                    <li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
+                    <li role="none"><a href="about.html" role="menuitem">About</a></li>
+                    <li role="none"><a href="resources.html" role="menuitem">Resources</a></li>
+                    <li role="none"><a href="donate.html" role="menuitem">Donate</a></li>
+                    <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
+                    <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-heading">
         <div class="hero-container">
             <div class="hero-content">
                 <span class="badge badge-blue">COMPLETE EMBEDDED AI STACK</span>
-                <h1>From Boot to Cloud — <span>One Ecosystem</span></h1>
+                <h1 id="hero-heading">From Boot to Cloud — <span class="gradient-text">One Ecosystem</span></h1>
                 <p>EmbeddedOS (EoS) provides a complete embedded AI systems stack: EoS build system, EAI AI runtime, ENI neural interface, EIPC secure IPC, and eBootloader — from bare-metal boot to top-level IoT integration.</p>
                 <div class="hero-buttons">
                     <a href="ecosystem.html" class="btn btn-primary">Explore Ecosystem</a>
                     <a href="contact.html" class="btn btn-secondary">Get Started</a>
                 </div>
             </div>
-            <div class="hero-visual" style="background: transparent; border: none; box-shadow: none; padding: 0;">
-                <!-- Full-width Pipeline Diagram - Larger & More Readable -->
-                <svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+            <div class="hero-visual" aria-hidden="true">
+                <svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="heroBlue" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#3b82f6"/>
@@ -225,8 +239,8 @@
             </div>
             <div class="cards-grid cards-grid-3">
                 <!-- Custom Bootloader -->
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 16px;">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon--blue">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="6" y="4" width="24" height="28" rx="3" stroke="white" stroke-width="2" fill="none"/>
                             <path d="M12 12h12M12 17h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
@@ -236,10 +250,10 @@
                     </div>
                     <h3>Custom Bootloader</h3>
                     <p>Modular, staged boot platform (eBootloader) with Stage-0 HW init, Stage-1 boot manager, A/B slot support, CRC/signature verification, and recovery logic.</p>
-                </div>
+                </article>
                 <!-- Bare to OS Firmware -->
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius: 16px;">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon--purple">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="8" y="24" width="20" height="6" rx="2" fill="white" opacity="0.5"/>
                             <rect x="8" y="16" width="20" height="6" rx="2" fill="white" opacity="0.7"/>
@@ -250,10 +264,10 @@
                     </div>
                     <h3>Bare to OS Firmware</h3>
                     <p>Complete firmware pipeline from bare-metal hardware initialization through HAL, device drivers, kernel, and middleware to a fully functional embedded OS image.</p>
-                </div>
+                </article>
                 <!-- Enhanced Security Layers -->
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #ef4444, #f87171); border-radius: 16px;">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon--red">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 4L6 10v8c0 8.4 5.1 16.2 12 18 6.9-1.8 12-9.6 12-18v-8L18 4z" stroke="white" stroke-width="2" fill="none"/>
                             <path d="M14 18l3 3 6-6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -261,10 +275,10 @@
                     </div>
                     <h3>Enhanced Security Layers</h3>
                     <p>Secure IPC (EIPC) with capability-based authorization, audit logging, replay protection, frame-level integrity, and versioned protocol with CRC verification.</p>
-                </div>
+                </article>
                 <!-- Edge Computing Support -->
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #06b6d4, #22d3ee); border-radius: 16px;">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon--teal">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="10" y="10" width="16" height="12" rx="2" stroke="white" stroke-width="2" fill="none"/>
                             <circle cx="18" cy="16" r="3" fill="white"/>
@@ -277,10 +291,10 @@
                     </div>
                     <h3>Edge Computing Support</h3>
                     <p>EAI-Min lightweight agent runtime for edge/mobile with llama.cpp, ONNX, and TFLite support. On-device AI inference optimized for resource-constrained environments.</p>
-                </div>
+                </article>
                 <!-- Industrial Systems Flavors -->
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 16px;">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon--orange">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="18" cy="18" r="10" stroke="white" stroke-width="2" fill="none"/>
                             <circle cx="18" cy="18" r="4" fill="white"/>
@@ -294,10 +308,10 @@
                     </div>
                     <h3>Industrial Systems Flavors</h3>
                     <p>EAI-Framework with industrial-grade orchestration, MQTT/OPC-UA/CAN connectors, policy engine, and observability — purpose-built for factory automation and PLC systems.</p>
-                </div>
+                </article>
                 <!-- Top Level IoT Integration -->
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon" style="margin: 0 auto 1.5rem; width: 72px; height: 72px; background: linear-gradient(135deg, #10b981, #34d399); border-radius: 16px;">
+                <article class="feature-card">
+                    <div class="feature-icon feature-icon--green">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="18" cy="18" r="5" fill="white"/>
                             <circle cx="18" cy="18" r="10" stroke="white" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
@@ -312,53 +326,51 @@
                     </div>
                     <h3>Top Level IoT Integration</h3>
                     <p>End-to-end IoT stack connecting devices through secure EIPC channels with ENI neural interface support, multi-transport protocols, and priority-lane real-time control.</p>
-                </div>
+                </article>
             </div>
 
             <!-- Ecosystem Stack Diagram -->
-            <div class="neural-diagram mt-4">
-                <div class="diagram-title">
-                    <h3>EoS Ecosystem Stack</h3>
-                </div>
-                <div class="diagram-layers">
-                    <div class="diagram-layer">
-                        <div class="layer-number" style="background: #10b981;">6</div>
-                        <div class="layer-content">
+            <div class="stack-diagram mt-4">
+                <h3 class="stack-diagram__title">EoS Ecosystem Stack</h3>
+                <div class="stack-layers">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--green">6</div>
+                        <div class="stack-layer__content">
                             <h4>IoT Integration Layer</h4>
                             <p>Device management, cloud connectivity, MQTT/CoAP, telemetry, OTA updates</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number" style="background: #f59e0b;">5</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--orange">5</div>
+                        <div class="stack-layer__content">
                             <h4>Industrial & Edge AI</h4>
                             <p>EAI runtime, edge inference (llama.cpp, ONNX, TFLite), OPC-UA/CAN connectors, orchestration</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number" style="background: #ef4444;">4</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--red">4</div>
+                        <div class="stack-layer__content">
                             <h4>Security & IPC (EIPC)</h4>
                             <p>Capability-based auth, audit logging, replay protection, MessagePack payloads, priority lanes P0–P3</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number" style="background: #8b5cf6;">3</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--purple">3</div>
+                        <div class="stack-layer__content">
                             <h4>OS & Firmware (EoS)</h4>
                             <p>Layered monorepo — core, BSP, distro, vendor, product layers. Ninja build, YAML config, cross-compilation</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number" style="background: #06b6d4;">2</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--teal">2</div>
+                        <div class="stack-layer__content">
                             <h4>Neural Interface (ENI)</h4>
                             <p>Vendor-neutral BCI adapter, cognitive signal processing, structured events, safe tool calls</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number" style="background: #3b82f6;">1</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--blue">1</div>
+                        <div class="stack-layer__content">
                             <h4>Boot Platform (eBootloader)</h4>
                             <p>Stage-0 HW init → Stage-1 boot manager → A/B slots, CRC/signature verify, rollback, recovery</p>
                         </div>
@@ -366,9 +378,9 @@
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem;">
+            <div class="text-center mt-4">
                 <a href="https://github.com/embeddedos-org" class="btn btn-primary">Explore on GitHub</a>
-                <a href="documentation.html" class="btn btn-outline" style="margin-left: 1rem;">Read the Docs</a>
+                <a href="documentation.html" class="btn btn-outline ml-2">Read the Docs</a>
             </div>
         </div>
     </section>
@@ -383,8 +395,8 @@
             </div>
 
             <!-- Full-width Diagram without box -->
-            <div style="width: 100%; margin: 3rem 0;">
-                <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+            <div class="pipeline-diagram">
+                <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="coreBlue" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#3b82f6"/>
@@ -532,46 +544,46 @@
             </div>
 
             <!-- Features list below diagram -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <div class="feature-list">
+                <div class="feature-list__item">
+                    <div class="feature-list__icon feature-icon--blue">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="white" stroke-width="2"/><circle cx="7" cy="7" r="1.5" fill="white"/><circle cx="13" cy="7" r="1.5" fill="white"/><circle cx="7" cy="13" r="1.5" fill="white"/><circle cx="13" cy="13" r="1.5" fill="white"/></svg>
                     </div>
                     <div>
-                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">CAD Schematic Analysis</h4>
-                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Extract component connections from KiCad, Altium, Eagle formats</p>
+                        <h4>CAD Schematic Analysis</h4>
+                        <p>Extract component connections from KiCad, Altium, Eagle formats</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div class="feature-list__item">
+                    <div class="feature-list__icon feature-icon--orange">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="6" y="5" width="8" height="6" rx="1" fill="white"/><line x1="3" y1="7" x2="6" y2="7" stroke="white" stroke-width="2"/><line x1="3" y1="10" x2="6" y2="10" stroke="white" stroke-width="2"/><line x1="14" y1="7" x2="17" y2="7" stroke="white" stroke-width="2"/><line x1="14" y1="10" x2="17" y2="10" stroke="white" stroke-width="2"/></svg>
                     </div>
                     <div>
-                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">EE Interface Parsing</h4>
-                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Analyze pin configurations, voltage levels, timing specs</p>
+                        <h4>EE Interface Parsing</h4>
+                        <p>Analyze pin configurations, voltage levels, timing specs</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8b5cf6, #a78bfa); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div class="feature-list__item">
+                    <div class="feature-list__icon feature-icon--purple">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="white" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="2.5" fill="white"/><rect x="8.5" y="2" width="3" height="3" rx="1" fill="white"/><rect x="8.5" y="15" width="3" height="3" rx="1" fill="white"/><rect x="2" y="8.5" width="3" height="3" rx="1" fill="white"/><rect x="15" y="8.5" width="3" height="3" rx="1" fill="white"/></svg>
                     </div>
                     <div>
-                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">Automated Driver Generation</h4>
-                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Auto-generate drivers for I2C, SPI, UART, GPIO peripherals</p>
+                        <h4>Automated Driver Generation</h4>
+                        <p>Auto-generate drivers for I2C, SPI, UART, GPIO peripherals</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #34d399); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div class="feature-list__item">
+                    <div class="feature-list__icon feature-icon--green">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="white" stroke-width="2" fill="none"/><circle cx="10" cy="10" r="3" stroke="white" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="1" fill="white"/><circle cx="14" cy="7" r="3" fill="white"/><path d="M12 7l1.5 1.5 3-3" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg>
                     </div>
                     <div>
-                        <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: var(--text-dark);">Production-Ready Output</h4>
-                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Complete OS image ready for deployment on your hardware</p>
+                        <h4>Production-Ready Output</h4>
+                        <p>Complete OS image ready for deployment on your hardware</p>
                     </div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem;">
+            <div class="text-center mt-4">
                 <a href="building-os.html" class="btn btn-primary">Learn More About Our Process</a>
             </div>
         </div>
@@ -586,9 +598,9 @@
                 <p>End-to-end pipeline from your hardware design to deployable operating system</p>
             </div>
 
-            <div class="connection-flow">
+            <div class="process-flow">
                 <div class="flow-item">
-                    <div class="flow-icon-svg">
+                    <div class="flow-item__icon">
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="cadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -614,7 +626,7 @@
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon-svg">
+                    <div class="flow-item__icon">
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="llmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -641,7 +653,7 @@
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon-svg">
+                    <div class="flow-item__icon">
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="codeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -667,7 +679,7 @@
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon-svg">
+                    <div class="flow-item__icon">
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="buildGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -696,7 +708,7 @@
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-item">
-                    <div class="flow-icon-svg">
+                    <div class="flow-item__icon">
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="osGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -721,49 +733,47 @@
                 </div>
             </div>
 
-            <div class="neural-diagram mt-4">
-                <div class="diagram-title">
-                    <h3>Layered OS Codebase Architecture</h3>
-                </div>
-                <div class="diagram-layers">
-                    <div class="diagram-layer">
-                        <div class="layer-number">1</div>
-                        <div class="layer-content">
+            <div class="stack-diagram mt-4">
+                <h3 class="stack-diagram__title">Layered OS Codebase Architecture</h3>
+                <div class="stack-layers">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--green">1</div>
+                        <div class="stack-layer__content">
                             <h4>Application Layer</h4>
                             <p>User applications, system utilities, configuration tools, monitoring dashboards</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number">2</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--orange">2</div>
+                        <div class="stack-layer__content">
                             <h4>AI/ML Integration Layer</h4>
                             <p>Neural link processing, AI inference engines, pattern recognition, intelligent automation</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number">3</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--red">3</div>
+                        <div class="stack-layer__content">
                             <h4>Middleware Layer</h4>
                             <p>Communication protocols, service management, IPC, networking stack</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number">4</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--purple">4</div>
+                        <div class="stack-layer__content">
                             <h4>Driver Layer</h4>
                             <p>Device drivers generated from CAD schematics and EE interface specifications</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number">5</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--teal">5</div>
+                        <div class="stack-layer__content">
                             <h4>Kernel Layer</h4>
                             <p>Real-time scheduling, memory management, hardware abstraction (Linux/RTOS)</p>
                         </div>
                     </div>
-                    <div class="diagram-layer">
-                        <div class="layer-number">6</div>
-                        <div class="layer-content">
+                    <div class="stack-layer">
+                        <div class="stack-layer__number stack-layer__number--blue">6</div>
+                        <div class="stack-layer__content">
                             <h4>Hardware Layer</h4>
                             <p>Embedded hardware platforms, processors, sensors, communication interfaces</p>
                         </div>
@@ -783,43 +793,43 @@
             </div>
             <div class="cards-grid cards-grid-4">
                 <div class="card">
-                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=250&fit=crop&auto=format" alt="Automotive ECU" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=250&fit=crop&auto=format" alt="Automotive ECU" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <h3>Automotive ECUs</h3>
                         <p>OS images for automotive electronic control units, infotainment systems, ADAS modules, and vehicle gateways.</p>
-                        <a href="ai-os.html#automotive" class="card-link">View Solutions →</a>
+                        <a href="ai-os.html#automotive" class="card__link">View Solutions →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=250&fit=crop&auto=format" alt="Drone UAV" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=250&fit=crop&auto=format" alt="Drone Systems" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <h3>Drones & UAVs</h3>
                         <p>Complete flight computer OS with autonomous navigation, sensor fusion, and real-time control systems.</p>
-                        <a href="ai-os.html#drones" class="card-link">View Solutions →</a>
+                        <a href="ai-os.html#drones" class="card__link">View Solutions →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=250&fit=crop&auto=format" alt="Smart Home" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=400&h=250&fit=crop&auto=format" alt="Medical Devices" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <h3>Smart Home</h3>
                         <p>IoT gateway OS, smart appliance firmware, home automation controllers, and edge AI devices.</p>
-                        <a href="ai-os.html#home" class="card-link">View Solutions →</a>
+                        <a href="ai-os.html#home" class="card__link">View Solutions →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="height: 180px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop&auto=format" alt="Industrial Systems" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop&auto=format" alt="Industrial IoT" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <h3>Industrial Systems</h3>
                         <p>Factory automation OS, PLC replacement systems, industrial gateways, and edge computing nodes.</p>
-                        <a href="ai-os.html#industrial" class="card-link">View Solutions →</a>
+                        <a href="ai-os.html#industrial" class="card__link">View Solutions →</a>
                     </div>
                 </div>
             </div>
@@ -834,12 +844,12 @@
                 <h2>Our Deliverables</h2>
                 <p>Complete packages from OS images to source code—ready for your embedded hardware</p>
             </div>
-            <div class="membership-tiers">
-                <div class="membership-card">
-                    <div class="membership-icon">🧪</div>
+            <div class="tier-grid">
+                <div class="tier-card">
+                    <div class="tier-card__icon">🧪</div>
                     <h3>Beta Demo Image</h3>
-                    <div class="membership-price">Free<span> trial</span></div>
-                    <ul class="membership-features">
+                    <div class="tier-card__price">Free<span> trial</span></div>
+                    <ul class="tier-card__features">
                         <li>Demo OS image for evaluation</li>
                         <li>Limited feature set</li>
                         <li>30-day evaluation period</li>
@@ -848,11 +858,11 @@
                     </ul>
                     <a href="contact.html" class="btn btn-outline">Request Demo</a>
                 </div>
-                <div class="membership-card featured">
-                    <div class="membership-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="discGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00a86b"/><stop offset="100%" style="stop-color:#00d68f"/></linearGradient></defs><circle cx="24" cy="24" r="20" stroke="url(#discGrad)" stroke-width="3" fill="none"/><circle cx="24" cy="24" r="8" stroke="url(#discGrad)" stroke-width="2" fill="none"/><circle cx="24" cy="24" r="3" fill="url(#discGrad)"/><path d="M24 7 L24 16 M24 32 L24 41 M7 24 L16 24 M32 24 L41 24" stroke="url(#discGrad)" stroke-width="1.5" opacity="0.5"/></svg></div>
+                <div class="tier-card tier-card--featured">
+                    <div class="tier-card__icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="discGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00a86b"/><stop offset="100%" style="stop-color:#00d68f"/></linearGradient></defs><circle cx="24" cy="24" r="20" stroke="url(#discGrad)" stroke-width="3" fill="none"/><circle cx="24" cy="24" r="8" stroke="url(#discGrad)" stroke-width="2" fill="none"/><circle cx="24" cy="24" r="3" fill="url(#discGrad)"/><path d="M24 7 L24 16 M24 32 L24 41 M7 24 L16 24 M32 24 L41 24" stroke="url(#discGrad)" stroke-width="1.5" opacity="0.5"/></svg></div>
                     <h3>Production OS Image</h3>
-                    <div class="membership-price">Custom<span> pricing</span></div>
-                    <ul class="membership-features">
+                    <div class="tier-card__price">Custom<span> pricing</span></div>
+                    <ul class="tier-card__features">
                         <li>Full production-ready OS image</li>
                         <li>Custom for your hardware specs</li>
                         <li>Built from your CAD/EE schematics</li>
@@ -862,11 +872,11 @@
                     </ul>
                     <a href="contact.html" class="btn btn-primary">Get Quote</a>
                 </div>
-                <div class="membership-card">
-                    <div class="membership-icon">📦</div>
+                <div class="tier-card">
+                    <div class="tier-card__icon">📦</div>
                     <h3>Full Source Code</h3>
-                    <div class="membership-price">Enterprise<span> license</span></div>
-                    <ul class="membership-features">
+                    <div class="tier-card__price">Enterprise<span> license</span></div>
+                    <ul class="tier-card__features">
                         <li>Complete source code delivery</li>
                         <li>All 6 layers with documentation</li>
                         <li>LLM generation scripts</li>
@@ -890,13 +900,13 @@
             </div>
             <div class="cert-grid">
                 <div class="cert-card">
-                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
-                        <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=160&h=160&fit=crop&auto=format" alt="Neural Link Security" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="cert-card__badge">
+                        <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=160&h=160&fit=crop&auto=format" alt="Neural Link Security" loading="lazy">
                     </div>
-                    <div class="cert-info">
+                    <div class="cert-card__info">
                         <h3>Certified Neural Link Security Engineer</h3>
                         <p>Validate your expertise in designing and implementing secure neural link architectures with multi-layer protection.</p>
-                        <div class="cert-meta">
+                        <div class="cert-card__meta">
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS1)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS1)" stroke-width="1.5"/></svg> 90 Questions</span>
                             <span>⏱️ 2 Hours</span>
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS1)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS1)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS1)"/></svg> 70% Pass</span>
@@ -904,13 +914,13 @@
                     </div>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=160&h=160&fit=crop&auto=format" alt="AI Operating System" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="cert-card__badge">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=160&h=160&fit=crop&auto=format" alt="EAI Certification" loading="lazy">
                     </div>
-                    <div class="cert-info">
+                    <div class="cert-card__info">
                         <h3>Certified AI Operating System Developer</h3>
                         <p>Demonstrate proficiency in developing AI-integrated operating systems for embedded platforms.</p>
-                        <div class="cert-meta">
+                        <div class="cert-card__meta">
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS2)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS2)" stroke-width="1.5"/></svg> 75 Questions</span>
                             <span>⏱️ 2 Hours</span>
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS2)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS2)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS2)"/></svg> 70% Pass</span>
@@ -918,13 +928,13 @@
                     </div>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
-                        <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=160&h=160&fit=crop&auto=format" alt="Embedded Linux" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="cert-card__badge">
+                        <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=160&h=160&fit=crop&auto=format" alt="EIPC Security" loading="lazy">
                     </div>
-                    <div class="cert-info">
+                    <div class="cert-card__info">
                         <h3>Certified Embedded Linux Professional</h3>
                         <p>Prove your skills in Linux kernel development, device drivers, and system integration.</p>
-                        <div class="cert-meta">
+                        <div class="cert-card__meta">
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS3)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS3)" stroke-width="1.5"/></svg> 80 Questions</span>
                             <span>⏱️ 2 Hours</span>
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS3)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS3)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS3)"/></svg> 66% Pass</span>
@@ -932,13 +942,13 @@
                     </div>
                 </div>
                 <div class="cert-card">
-                    <div class="cert-badge" style="width: 80px; height: 80px; border-radius: 16px; overflow: hidden; flex-shrink: 0;">
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&h=160&fit=crop&auto=format" alt="RTOS Engineering" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="cert-card__badge">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&h=160&fit=crop&auto=format" alt="IoT Integration" loading="lazy">
                     </div>
-                    <div class="cert-info">
+                    <div class="cert-card__info">
                         <h3>Certified RTOS Engineer</h3>
                         <p>Master real-time operating system concepts, scheduling, and safety-critical development.</p>
-                        <div class="cert-meta">
+                        <div class="cert-card__meta">
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="docGradS4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M3 2h7l3 3v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="url(#docGradS4)" stroke-width="1.5" fill="none"/><path d="M10 2v3h3M5 8h6M5 11h4" stroke="url(#docGradS4)" stroke-width="1.5"/></svg> 85 Questions</span>
                             <span>⏱️ 2.5 Hours</span>
                             <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><defs><linearGradient id="targetGradS4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><circle cx="8" cy="8" r="6" stroke="url(#targetGradS4)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3.5" stroke="url(#targetGradS4)" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="url(#targetGradS4)"/></svg> 70% Pass</span>
@@ -962,51 +972,51 @@
             </div>
             <div class="cards-grid cards-grid-3">
                 <div class="card">
-                    <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&h=300&fit=crop&auto=format" alt="AutoOS - Automotive ECU" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&h=300&fit=crop&auto=format" alt="AutoOS - Automotive ECU" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <span class="badge badge-green">Demo Available</span>
                         <h3>AutoOS v2.1</h3>
                         <p>Complete automotive ECU operating system with ADAS support, CAN bus integration, and OTA update capability. Built for ARM Cortex-R5 processors.</p>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                        <div class="card__meta">
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="cadGradA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M2 2h12v12H2V2z" stroke="url(#cadGradA)" stroke-width="1.5" fill="none"/><path d="M2 6h12M6 2v12" stroke="url(#cadGradA)" stroke-width="1"/><circle cx="11" cy="11" r="2" stroke="url(#cadGradA)" stroke-width="1" fill="none"/></svg> CAD Import</span>
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="brainGradA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00b8d4"/><stop offset="100%" style="stop-color:#00e5ff"/></linearGradient></defs><path d="M8 2C5 2 3 4 3 6.5c0 1.5.5 2.5 1.5 3.5-1 1-1.5 2-1.5 3.5C3 15 5 16 8 16s5-1 5-2.5c0-1.5-.5-2.5-1.5-3.5 1-1 1.5-2 1.5-3.5C13 4 11 2 8 2z" stroke="url(#brainGradA)" stroke-width="1.2" fill="none"/><path d="M5 6c0 0 1.5 1 3 1s3-1 3-1M5 10c0 0 1.5 1 3 1s3-1 3-1" stroke="url(#brainGradA)" stroke-width="1"/></svg> AI Ready</span>
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="lockGradA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><rect x="3" y="7" width="10" height="8" rx="1" stroke="url(#lockGradA)" stroke-width="1.5" fill="none"/><path d="M5 7V5a3 3 0 016 0v2" stroke="url(#lockGradA)" stroke-width="1.5" fill="none"/><circle cx="8" cy="11" r="1.5" fill="url(#lockGradA)"/></svg> ISO 26262</span>
                         </div>
-                        <a href="contact.html" class="card-link">Request Demo →</a>
+                        <a href="contact.html" class="card__link">Request Demo →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=500&h=300&fit=crop&auto=format" alt="FlightOS - Drone" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=500&h=300&fit=crop&auto=format" alt="FlightOS - Drone" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <span class="badge badge-blue">Beta</span>
                         <h3>FlightOS Pro</h3>
                         <p>Drone flight computer OS with autonomous navigation, sensor fusion, and real-time control. Multi-LLM generated for STM32H7 platforms.</p>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                        <div class="card__meta">
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="cadGradB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M2 2h12v12H2V2z" stroke="url(#cadGradB)" stroke-width="1.5" fill="none"/><path d="M2 6h12M6 2v12" stroke="url(#cadGradB)" stroke-width="1"/><circle cx="11" cy="11" r="2" stroke="url(#cadGradB)" stroke-width="1" fill="none"/></svg> Schematic Ready</span>
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="robotGradB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="3" y="4" width="10" height="8" rx="2" stroke="url(#robotGradB)" stroke-width="1.2" fill="none"/><circle cx="6" cy="7" r="1" fill="url(#robotGradB)"/><circle cx="10" cy="7" r="1" fill="url(#robotGradB)"/><path d="M6 10h4" stroke="url(#robotGradB)" stroke-width="1" stroke-linecap="round"/><path d="M8 4V2M6 2h4" stroke="url(#robotGradB)" stroke-width="1" stroke-linecap="round"/></svg> Neural Link</span>
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="boltGradB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ffc107"/><stop offset="100%" style="stop-color:#ffeb3b"/></linearGradient></defs><path d="M9 1L4 9h4l-1 6 5-8H8l1-6z" stroke="url(#boltGradB)" stroke-width="1.2" fill="url(#boltGradB)" fill-opacity="0.3"/></svg> RTOS</span>
                         </div>
-                        <a href="contact.html" class="card-link">Request Beta →</a>
+                        <a href="contact.html" class="card__link">Request Beta →</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-image" style="height: 200px; overflow: hidden; border-radius: 12px 12px 0 0;">
-                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=500&h=300&fit=crop&auto=format" alt="IndustrialOS - Industrial Automation" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card__image">
+                        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=500&h=300&fit=crop&auto=format" alt="IndustrialOS - Industrial Automation" loading="lazy">
                     </div>
-                    <div class="card-content">
+                    <div class="card__body">
                         <span class="badge badge-green">Demo Available</span>
                         <h3>IndustrialOS Edge</h3>
                         <p>Industrial edge computing OS with PLC integration, MQTT/OPC-UA, and AI inference. Generated for NXP i.MX8 series.</p>
-                        <div style="display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                        <div class="card__meta">
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="cadGradC" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M2 2h12v12H2V2z" stroke="url(#cadGradC)" stroke-width="1.5" fill="none"/><path d="M2 6h12M6 2v12" stroke="url(#cadGradC)" stroke-width="1"/><circle cx="11" cy="11" r="2" stroke="url(#cadGradC)" stroke-width="1" fill="none"/></svg> EE Interface</span>
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="robotGradC" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="3" y="4" width="10" height="8" rx="2" stroke="url(#robotGradC)" stroke-width="1.2" fill="none"/><circle cx="6" cy="7" r="1" fill="url(#robotGradC)"/><circle cx="10" cy="7" r="1" fill="url(#robotGradC)"/><path d="M6 10h4" stroke="url(#robotGradC)" stroke-width="1" stroke-linecap="round"/><path d="M8 4V2M6 2h4" stroke="url(#robotGradC)" stroke-width="1" stroke-linecap="round"/></svg> Edge AI</span>
                             <span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><defs><linearGradient id="linuxGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f9a825"/><stop offset="100%" style="stop-color:#ffc107"/></linearGradient></defs><ellipse cx="8" cy="10" rx="5" ry="4" stroke="url(#linuxGrad)" stroke-width="1.2" fill="none"/><circle cx="8" cy="5" r="3" stroke="url(#linuxGrad)" stroke-width="1.2" fill="none"/><circle cx="6.5" cy="4.5" r="0.8" fill="url(#linuxGrad)"/><circle cx="9.5" cy="4.5" r="0.8" fill="url(#linuxGrad)"/><path d="M7 6.5h2" stroke="url(#linuxGrad)" stroke-width="0.8" stroke-linecap="round"/></svg> Linux Based</span>
                         </div>
-                        <a href="contact.html" class="card-link">Request Demo →</a>
+                        <a href="contact.html" class="card__link">Request Demo →</a>
                     </div>
                 </div>
             </div>
@@ -1024,11 +1034,10 @@
                 <h2>How We Build Your Custom OS</h2>
                 <p>From your hardware specifications to a ready-to-deploy operating system image</p>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step__icon step__icon--blue">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Upload/Submit document icon -->
                             <rect x="8" y="4" width="20" height="28" rx="2" stroke="white" stroke-width="2" fill="none"/>
                             <path d="M12 14h12M12 19h12M12 24h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                             <path d="M18 4V1M14 1h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -1036,13 +1045,12 @@
                             <path d="M26 23v6M23 26h6" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </div>
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">1. Submit Specs</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Provide your CAD schematics, EE interface specs, and hardware requirements. We accept all major CAD formats.</p>
+                    <h3>1. Submit Specs</h3>
+                    <p>Provide your CAD schematics, EE interface specs, and hardware requirements. We accept all major CAD formats.</p>
                 </div>
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #00a86b 0%, #00d68f 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <div class="step">
+                    <div class="step__icon step__icon--green">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- AI/Brain neural network icon -->
                             <circle cx="18" cy="10" r="5" stroke="white" stroke-width="2" fill="none"/>
                             <circle cx="8" cy="22" r="4" stroke="white" stroke-width="2" fill="none"/>
                             <circle cx="28" cy="22" r="4" stroke="white" stroke-width="2" fill="none"/>
@@ -1057,13 +1065,12 @@
                             <circle cx="18" cy="30" r="1.5" fill="white"/>
                         </svg>
                     </div>
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">2. LLM Analysis</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Our Multi-LLM system analyzes your specs and generates optimized code for each OS layer automatically.</p>
+                    <h3>2. LLM Analysis</h3>
+                    <p>Our Multi-LLM system analyzes your specs and generates optimized code for each OS layer automatically.</p>
                 </div>
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <div class="step">
+                    <div class="step__icon step__icon--orange">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Build/Gear + Checkmark icon -->
                             <circle cx="16" cy="16" r="10" stroke="white" stroke-width="2" fill="none"/>
                             <circle cx="16" cy="16" r="4" fill="white"/>
                             <rect x="14" y="3" width="4" height="5" rx="1" fill="white"/>
@@ -1074,13 +1081,12 @@
                             <path d="M24 27l2 2 4-4" stroke="#ff6b35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">3. Build & Test</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">We compile the layered codebase, run automated tests, and validate against your hardware specifications.</p>
+                    <h3>3. Build &amp; Test</h3>
+                    <p>We compile the layered codebase, run automated tests, and validate against your hardware specifications.</p>
                 </div>
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <div class="step">
+                    <div class="step__icon step__icon--purple">
                         <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Delivery/Package with rocket icon -->
                             <rect x="6" y="12" width="24" height="18" rx="2" stroke="white" stroke-width="2" fill="none"/>
                             <path d="M6 17l12 7 12-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M18 24v6" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -1089,13 +1095,13 @@
                             <circle cx="18" cy="10" r="1" fill="#8b5cf6"/>
                         </svg>
                     </div>
-                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">4. Deliver</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem;">Receive your production-ready OS image, beta demo builds, and optionally complete source code with documentation.</p>
+                    <h3>4. Deliver</h3>
+                    <p>Receive your production-ready OS image, beta demo builds, and optionally complete source code with documentation.</p>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 2rem;">
+            <div class="text-center mt-4">
                 <a href="contact.html" class="btn btn-primary">Start Your Project</a>
-                <a href="building-os.html" class="btn btn-outline" style="margin-left: 1rem;">Learn More</a>
+                <a href="building-os.html" class="btn btn-outline ml-2">Learn More</a>
             </div>
         </div>
     </section>
@@ -1109,33 +1115,33 @@
                 <p>Hear from engineers and researchers building with EoS technologies</p>
             </div>
             <div class="cards-grid cards-grid-3">
-                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">"The EoS Research Foundation has been instrumental in advancing our autonomous vehicle development. The open-source neural link protocols saved us years of R&D."</p>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: var(--gradient-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">👤</div>
+                <div class="testimonial">
+                    <p class="testimonial__quote">"The EoS Research Foundation has been instrumental in advancing our autonomous vehicle development. The open-source neural link protocols saved us years of R&amp;D."</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar testimonial__avatar--blue">👤</div>
                         <div>
-                            <div style="font-weight: 600; color: white;">Dr. Sarah Chen</div>
-                            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">VP Engineering, AutoDrive Inc.</div>
+                            <div class="testimonial__name">Dr. Sarah Chen</div>
+                            <div class="testimonial__role">VP Engineering, AutoDrive Inc.</div>
                         </div>
                     </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">"Getting certified through EoS opened doors I never knew existed. The community support and resources are unmatched in the industry."</p>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: var(--gradient-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">👤</div>
+                <div class="testimonial">
+                    <p class="testimonial__quote">"Getting certified through EoS opened doors I never knew existed. The community support and resources are unmatched in the industry."</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar testimonial__avatar--green">👤</div>
                         <div>
-                            <div style="font-weight: 600; color: white;">Marcus Rodriguez</div>
-                            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">Senior Embedded Engineer</div>
+                            <div class="testimonial__name">Marcus Rodriguez</div>
+                            <div class="testimonial__role">Senior Embedded Engineer</div>
                         </div>
                     </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);">"As a researcher, the collaboration opportunities through EoS have been transformative. The foundation truly lives its mission of open innovation."</p>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">👤</div>
+                <div class="testimonial">
+                    <p class="testimonial__quote">"As a researcher, the collaboration opportunities through EoS have been transformative. The foundation truly lives its mission of open innovation."</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar testimonial__avatar--pink">👤</div>
                         <div>
-                            <div style="font-weight: 600; color: white;">Prof. Yuki Tanaka</div>
-                            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.6);">MIT Neural Systems Lab</div>
+                            <div class="testimonial__name">Prof. Yuki Tanaka</div>
+                            <div class="testimonial__role">MIT Neural Systems Lab</div>
                         </div>
                     </div>
                 </div>
@@ -1151,21 +1157,21 @@
                 <h2>Trusted by Industry Leaders</h2>
                 <p>Join the organizations shaping the future of embedded AI</p>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 2rem; align-items: center; justify-items: center; margin-bottom: 3rem;">
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">NVIDIA</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Intel</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Qualcomm</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">ARM</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Tesla</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Bosch</div>
+            <div class="partners-grid mb-3">
+                <div class="partner-logo">NVIDIA</div>
+                <div class="partner-logo">Intel</div>
+                <div class="partner-logo">Qualcomm</div>
+                <div class="partner-logo">ARM</div>
+                <div class="partner-logo">Tesla</div>
+                <div class="partner-logo">Bosch</div>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 2rem; align-items: center; justify-items: center;">
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">MIT</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Stanford</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">CMU</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">ETH Zürich</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Siemens</div>
-                <div style="padding: 1.5rem 2rem; background: var(--light-gray); border-radius: 12px; font-weight: 700; color: var(--dark-gray); text-align: center; width: 100%;">Sony</div>
+            <div class="partners-grid">
+                <div class="partner-logo">MIT</div>
+                <div class="partner-logo">Stanford</div>
+                <div class="partner-logo">CMU</div>
+                <div class="partner-logo">ETH Zürich</div>
+                <div class="partner-logo">Siemens</div>
+                <div class="partner-logo">Sony</div>
             </div>
             <div class="text-center mt-4">
                 <a href="membership.html" class="btn btn-primary">Become a Partner</a>
@@ -1182,30 +1188,30 @@
                 <p>Multiple ways to contribute to the EoS ecosystem</p>
             </div>
             <div class="cards-grid cards-grid-4">
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0"/><stop offset="100%" style="stop-color:#e040fb"/></linearGradient></defs><rect x="8" y="10" width="32" height="22" rx="2" stroke="url(#laptopGrad)" stroke-width="2.5" fill="none"/><path d="M4 36h40" stroke="url(#laptopGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M16 36l-2 4h20l-2-4" stroke="url(#laptopGrad)" stroke-width="2" fill="none"/><path d="M14 18h8M14 23h12" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16l4 5-4 5" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <article class="feature-card">
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9c27b0"/><stop offset="100%" stop-color="#e040fb"/></linearGradient></defs><rect x="8" y="10" width="32" height="22" rx="2" stroke="url(#laptopGrad)" stroke-width="2.5" fill="none"/><path d="M4 36h40" stroke="url(#laptopGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M16 36l-2 4h20l-2-4" stroke="url(#laptopGrad)" stroke-width="2" fill="none"/><path d="M14 18h8M14 23h12" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16l4 5-4 5" stroke="url(#laptopGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                     <h3>Contribute Code</h3>
                     <p>Submit PRs, fix bugs, and build features for our open-source projects.</p>
-                    <a href="https://github.com/embeddedos-org" class="card-link" style="justify-content: center;">GitHub →</a>
-                </div>
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="docGradL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4a90d9"/><stop offset="100%" style="stop-color:#67b8f7"/></linearGradient></defs><path d="M12 6h16l10 10v26a2 2 0 01-2 2H12a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="url(#docGradL)" stroke-width="2.5" fill="none"/><path d="M28 6v10h10" stroke="url(#docGradL)" stroke-width="2.5"/><path d="M16 22h16M16 28h12M16 34h8" stroke="url(#docGradL)" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <a href="https://github.com/embeddedos-org" class="card__link">GitHub →</a>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="docGradL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a90d9"/><stop offset="100%" stop-color="#67b8f7"/></linearGradient></defs><path d="M12 6h16l10 10v26a2 2 0 01-2 2H12a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="url(#docGradL)" stroke-width="2.5" fill="none"/><path d="M28 6v10h10" stroke="url(#docGradL)" stroke-width="2.5"/><path d="M16 22h16M16 28h12M16 34h8" stroke="url(#docGradL)" stroke-width="2" stroke-linecap="round"/></svg></div>
                     <h3>Write Docs</h3>
                     <p>Help improve documentation, tutorials, and educational content.</p>
-                    <a href="documentation.html" class="card-link" style="justify-content: center;">Docs →</a>
-                </div>
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e53935"/><stop offset="100%" style="stop-color:#ff5252"/></linearGradient></defs><rect x="18" y="8" width="12" height="20" rx="6" stroke="url(#micGrad)" stroke-width="2.5" fill="none"/><path d="M12 24c0 7 5.4 12 12 12s12-5 12-12" stroke="url(#micGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M24 36v6M18 42h12" stroke="url(#micGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M21 16h6M21 20h6" stroke="url(#micGrad)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-                    <h3>Speak & Teach</h3>
+                    <a href="documentation.html" class="card__link">Docs →</a>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e53935"/><stop offset="100%" stop-color="#ff5252"/></linearGradient></defs><rect x="18" y="8" width="12" height="20" rx="6" stroke="url(#micGrad)" stroke-width="2.5" fill="none"/><path d="M12 24c0 7 5.4 12 12 12s12-5 12-12" stroke="url(#micGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M24 36v6M18 42h12" stroke="url(#micGrad)" stroke-width="2.5" stroke-linecap="round"/><path d="M21 16h6M21 20h6" stroke="url(#micGrad)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                    <h3>Speak &amp; Teach</h3>
                     <p>Present at events, lead workshops, or mentor newcomers.</p>
-                    <a href="contact.html" class="card-link" style="justify-content: center;">Contact →</a>
-                </div>
-                <div class="feature-card" style="text-align: center;">
-                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="moneyGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00a86b"/><stop offset="100%" style="stop-color:#00d68f"/></linearGradient></defs><circle cx="18" cy="30" r="10" stroke="url(#moneyGrad)" stroke-width="2.5" fill="none"/><circle cx="30" cy="20" r="10" stroke="url(#moneyGrad)" stroke-width="2.5" fill="none"/><path d="M18 26v8M16 28h4M16 32h4" stroke="url(#moneyGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16v8M28 18h4M28 22h4" stroke="url(#moneyGrad)" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <a href="contact.html" class="card__link">Contact →</a>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="moneyGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00a86b"/><stop offset="100%" stop-color="#00d68f"/></linearGradient></defs><circle cx="18" cy="30" r="10" stroke="url(#moneyGrad)" stroke-width="2.5" fill="none"/><circle cx="30" cy="20" r="10" stroke="url(#moneyGrad)" stroke-width="2.5" fill="none"/><path d="M18 26v8M16 28h4M16 32h4" stroke="url(#moneyGrad)" stroke-width="2" stroke-linecap="round"/><path d="M30 16v8M28 18h4M28 22h4" stroke="url(#moneyGrad)" stroke-width="2" stroke-linecap="round"/></svg></div>
                     <h3>Donate</h3>
                     <p>Support our nonprofit mission with a tax-deductible donation.</p>
-                    <a href="donate.html" class="card-link" style="justify-content: center;">Donate →</a>
-                </div>
+                    <a href="donate.html" class="card__link">Donate →</a>
+                </article>
             </div>
         </div>
     </section>
@@ -1220,22 +1226,22 @@
             </div>
             <div class="cards-grid cards-grid-3">
                 <div class="news-card">
-                    <div class="news-date">March 2025</div>
+                    <div class="news-card__date">March 2025</div>
                     <h4>EoS v0.9 Beta Released</h4>
                     <p>The first public beta of EoS is now available with Ninja build backend, YAML config, and ARM/x86 cross-compilation support. RISC-V support coming in v1.0.</p>
-                    <a href="https://github.com/embeddedos-org/eos" class="card-link">View on GitHub →</a>
+                    <a href="https://github.com/embeddedos-org/eos" class="card__link">View on GitHub →</a>
                 </div>
                 <div class="news-card">
-                    <div class="news-date">February 2025</div>
+                    <div class="news-card__date">February 2025</div>
                     <h4>EIPC Security Audit Complete</h4>
                     <p>Independent security audit of EIPC's capability-based authorization and replay protection has been completed. All critical findings addressed in v1.2.</p>
-                    <a href="research.html" class="card-link">Read More →</a>
+                    <a href="research.html" class="card__link">Read More →</a>
                 </div>
                 <div class="news-card">
-                    <div class="news-date">January 2025</div>
+                    <div class="news-card__date">January 2025</div>
                     <h4>EAI-Min Edge Runtime Preview</h4>
                     <p>EAI-Min lightweight agent runtime now supports llama.cpp and ONNX inference on ARM Cortex-A devices. TFLite integration in progress.</p>
-                    <a href="ai-os.html" class="card-link">Learn More →</a>
+                    <a href="ai-os.html" class="card__link">Learn More →</a>
                 </div>
             </div>
         </div>
@@ -1250,9 +1256,10 @@
             <a href="membership.html" class="btn btn-secondary">Sign Up Now</a>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="footer-mega">
             <div class="footer-column">
                 <h4>Ecosystem</h4>
@@ -1316,8 +1323,8 @@
             </div>
         </div>
         <div class="footer-divider"></div>
-        <div class="footer-bottom-row">
-            <div class="footer-brand-row">
+        <div class="footer-bottom">
+            <div class="footer-brand">
                 <span class="logo-text">Embedded<span>OS</span></span>
                 <div class="footer-social">
                     <a href="#" aria-label="Twitter">𝕏</a>
@@ -1329,7 +1336,7 @@
             <div class="footer-copyright">
                 &copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.
             </div>
-            <div class="footer-legal-links">
+            <div class="footer-legal">
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
                 <a href="#">Cookies</a>
@@ -1337,28 +1344,7 @@
         </div>
     </footer>
 
-    <script>
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-
-        // Scroll-to-top button
-        const scrollBtn = document.querySelector('.scroll-to-top');
-        if (scrollBtn) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 500) {
-                    scrollBtn.classList.add('visible');
-                } else {
-                    scrollBtn.classList.remove('visible');
-                }
-            });
-            scrollBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
-    </script>
-
     <button class="scroll-to-top" aria-label="Scroll to top">↑</button>
+    <script src="js/main.js"></script>
 </body>
 </html>
