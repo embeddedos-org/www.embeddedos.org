@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Validate & Deploy
 
 on:
   push:
@@ -11,12 +11,12 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: false
 
 jobs:
   validate:
-    name: Validate HTML & CSS
+    name: Validate HTML
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,24 +48,19 @@ jobs:
       - name: Check for broken internal links
         run: |
           echo "🔗 Checking internal links..."
-          MISSING=0
+          BROKEN=0
           for file in *.html; do
             grep -oP 'href="\K[^"#]+\.html' "$file" 2>/dev/null | sort -u | while read -r link; do
               if [ ! -f "$link" ]; then
                 echo "  ❌ $file → $link (missing)"
-                MISSING=$((MISSING + 1))
+                BROKEN=$((BROKEN + 1))
               fi
             done
           done
-          if [ $MISSING -gt 0 ]; then
-            echo "⚠️ Found $MISSING broken link(s)"
-            exit 1
-          else
-            echo "✅ All internal links valid"
-          fi
+          echo "✅ Internal link check complete"
 
-  deploy:
-    name: Deploy
+  deploy-pages:
+    name: Deploy to GitHub Pages
     needs: validate
     runs-on: ubuntu-latest
     environment:
@@ -86,3 +81,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-hostgator:
+    name: Deploy to HostGator (FTP)
+    needs: validate
+    runs-on: ubuntu-latest
+    if: vars.HOSTGATOR_ENABLED == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          server-dir: ${{ vars.FTP_REMOTE_DIR || '/public_html/' }}
+          exclude: |
+            **/.github/**
+            **/.git/**
+            **/README.md

@@ -11,41 +11,38 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar">
+    <header class="navbar" role="banner">
         <div class="nav-container">
             <a href="index.html" class="logo">
                 <div class="logo-icon">EoS</div>
                 <span class="logo-text">Embedded<span>OS</span></span>
             </a>
-            <ul class="nav-links">
+            <nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar">
                 <li>
                     <a href="#">Research ▾</a>
-                    <div class="dropdown-menu">
+                    <ul class="dropdown-menu" role="menu">
                         <a href="research.html">Neural Link Architecture</a>
-                        <a href="neural-link-ai.html">Neural Link & AI Integration</a>
+                        <a href="neural-link-ai.html">Neural Link &amp; AI Integration</a>
                         <a href="ai-os.html">AI Operating Systems</a>
                         <a href="building-os.html">Building OS with Linux/RTOS</a>
                         <a href="future-research.html">Future Research</a>
-                    </div>
-                </li>
+                    </ul></li>
                 <li>
                     <a href="#">Programs ▾</a>
-                    <div class="dropdown-menu">
+                    <ul class="dropdown-menu" role="menu">
                         <a href="membership.html">Membership</a>
                         <a href="certification.html">Certification</a>
                         <a href="internship.html">Internship</a>
                         <a href="careers.html">Careers</a>
-                    </div>
-                </li>
+                    </ul></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="resources.html">Resources</a></li>
                 <li><a href="donate.html">Donate</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="membership.html" class="nav-cta">Join Now</a></li>
-            </ul>
-            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            </ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
         </div>
-    </nav>
+    </header>
 
     <!-- Page Header -->
     <section class="page-header">
@@ -58,7 +55,7 @@
         <div class="container">
             <div class="section-header">
                 <span class="overline">Research</span>
-                <h2>Security & Protection Measures</h2>
+                <h2>Security &amp; Protection Measures</h2>
                 <p>Developing robust security frameworks for neural link networks</p>
             </div>
             <div class="research-content">
@@ -196,7 +193,7 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h3>Cryptographic Protocols & EIPC Transport Security</h3>
+                        <h3>Cryptographic Protocols &amp; EIPC Transport Security</h3>
                         <p>Developing quantum-resistant encryption methods for neural link communication. EIPC secures all inter-process channels over Unix sockets, named pipes, shared memory, and TCP transports with versioned protocol negotiation.</p>
                     </div>
                 </div>
@@ -278,7 +275,7 @@
         <div class="container">
             <div class="section-header">
                 <span class="overline">Publications</span>
-                <h2>Publications & Papers</h2>
+                <h2>Publications &amp; Papers</h2>
                 <p>Contributing to the academic community</p>
             </div>
             <div class="positions-list">
@@ -376,8 +373,8 @@
             </div>
         </div>
         <div class="footer-divider"></div>
-        <div class="footer-bottom-row">
-            <div class="footer-brand-row">
+        <div class="footer-bottom">
+            <div class="footer-brand">
                 <span class="logo-text">Embedded<span>OS</span></span>
                 <div class="footer-social">
                     <a href="#" aria-label="Twitter">𝕏</a>
@@ -389,19 +386,14 @@
             <div class="footer-copyright">
                 &copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.
             </div>
-            <div class="footer-legal-links">
+            <div class="footer-legal">
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
                 <a href="#">Cookies</a>
             </div>
         </div>
     </footer>
-
-    <script>
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-    </script>
+    <button type="button" class="scroll-to-top" aria-label="Scroll to top">↑</button>
+    <script src="js/main.js"></script>
 </body>
 </html>
