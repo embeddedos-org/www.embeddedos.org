@@ -897,3 +897,48 @@ h4{font-size:1.25rem}
   .section-gray::before,.section-dark::before{display:none}
   .feature-card:hover{transform:translateY(-4px)}
 }
+
+/* ===== Cookie Consent Banner ===== */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--clr-dark);color:white;padding:1.25rem 2rem;z-index:10001;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);box-shadow:0 -4px 20px rgba(0,0,0,.3)}
+.cookie-banner.visible{transform:translateY(0)}
+.cookie-banner__inner{max-width:var(--max-w);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.cookie-banner__text{flex:1;min-width:300px;font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.6}
+.cookie-banner__text a{color:var(--clr-blue-lt);text-decoration:underline}
+.cookie-banner__actions{display:flex;gap:.75rem;flex-shrink:0}
+.cookie-banner__actions .btn{padding:10px 24px;font-size:.85rem;border-radius:var(--r-sm)}
+.btn-accept{background:var(--clr-blue);color:white}
+.btn-accept:hover{background:var(--clr-blue-lt)}
+.btn-decline{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2)}
+.btn-decline:hover{background:rgba(255,255,255,.15);color:white}
+@media(max-width:576px){.cookie-banner__inner{flex-direction:column;text-align:center}.cookie-banner__actions{width:100%;justify-content:center}}
+
+/* ===== Newsletter Footer ===== */
+.footer-newsletter{background:linear-gradient(135deg,rgba(0,102,204,.15),rgba(139,92,246,.1));border:1px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:2rem;margin-bottom:2rem;text-align:center}
+.footer-newsletter h4{color:white;font-size:1.15rem;margin-bottom:.5rem}
+.footer-newsletter p{color:rgba(255,255,255,.6);font-size:.9rem;margin-bottom:1.25rem}
+.newsletter-form{display:flex;gap:.5rem;max-width:440px;margin-inline:auto}
+.newsletter-form input{flex:1;padding:10px 16px;border-radius:var(--r-sm);border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:white;font-size:.9rem;outline:none;transition:border-color .2s}
+.newsletter-form input::placeholder{color:rgba(255,255,255,.35)}
+.newsletter-form input:focus{border-color:var(--clr-blue)}
+.newsletter-form button{padding:10px 20px;border-radius:var(--r-sm);background:var(--clr-blue);color:white;font-weight:600;font-size:.85rem;border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
+.newsletter-form button:hover{background:var(--clr-blue-lt)}
+.newsletter-msg{margin-top:.75rem;font-size:.8rem;color:#22c55e;display:none}
+@media(max-width:480px){.newsletter-form{flex-direction:column}.newsletter-form button{width:100%}}
+
+/* ===== Search Overlay ===== */
+.search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:10002;display:none;align-items:flex-start;justify-content:center;padding-top:15vh}
+.search-overlay.active{display:flex}
+.search-box{width:90%;max-width:640px;animation:fadeUp .3s ease-out both}
+.search-input-wrap{display:flex;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-md);padding:4px;transition:border-color .2s}
+.search-input-wrap:focus-within{border-color:var(--clr-blue)}
+.search-input-wrap svg{margin-left:14px;flex-shrink:0;opacity:.5}
+.search-input{flex:1;padding:14px 16px;background:transparent;border:none;color:white;font-size:1.1rem;outline:none}
+.search-input::placeholder{color:rgba(255,255,255,.4)}
+.search-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:1.5rem;cursor:pointer;padding:8px 14px;line-height:1;transition:color .2s}
+.search-close:hover{color:white}
+.search-results{margin-top:1rem;max-height:50vh;overflow-y:auto}
+.search-result-item{display:block;padding:12px 16px;color:rgba(255,255,255,.8);border-radius:var(--r-sm);transition:background .15s;text-decoration:none}
+.search-result-item:hover{background:rgba(255,255,255,.1);color:white}
+.search-result-item .title{font-weight:600;font-size:.95rem}
+.search-result-item .desc{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:2px}
+.search-hint{text-align:center;margin-top:1rem;font-size:.8rem;color:rgba(255,255,255,.3)}

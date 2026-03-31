@@ -10,6 +10,8 @@
     <meta property="og:description" content="Complete embedded AI systems stack — from bare-metal boot to top-level IoT integration.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.embeddedos.org">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066cc'/><text x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='48' font-weight='800' fill='white' text-anchor='middle'>EoS</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066cc'/><text x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='48' font-weight='800' fill='white' text-anchor='middle'>EoS</text></svg>">
     <title>EmbeddedOS (EoS) Research Foundation — Embedded AI Systems Stack</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1461,6 +1463,15 @@
                 </ul>
             </div>
         </div>
+        <div class="footer-newsletter">
+            <h4>📬 Stay in the Loop</h4>
+            <p>Get research updates, release notes, and community news — no spam, ever.</p>
+            <form class="newsletter-form" id="newsletterForm" onsubmit="return false">
+                <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
+                <button type="submit">Subscribe</button>
+            </form>
+            <div class="newsletter-msg" id="newsletterMsg">✓ Thanks for subscribing!</div>
+        </div>
         <div class="footer-divider"></div>
         <div class="footer-bottom">
             <div class="footer-brand">
@@ -1484,5 +1495,7 @@
     <button type="button" class="scroll-to-top" aria-label="Scroll to top">↑</button>
     <script src="js/monitor.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/cookies.js"></script>
+    <script src="js/search.js"></script>
 </body>
 </html>

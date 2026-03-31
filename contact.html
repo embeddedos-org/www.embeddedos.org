@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066cc'/><text x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='48' font-weight='800' fill='white' text-anchor='middle'>EoS</text></svg>">
     <link rel="stylesheet" href="css/style.css">
     <meta property="og:title" content="Contact EmbeddedOS Foundation | EmbeddedOS Foundation">
     <meta property="og:description" content="Contact EmbeddedOS Research Foundation - Get in touch with our team for support, collaboration, or volunteering opportunities">
@@ -16,7 +17,7 @@
 </head>
 <body>
 
-    
+
     <a href="#main-content" class="skip-link">Skip to main content</a>
 <!-- Navigation -->
     <header class="navbar">
@@ -50,7 +51,7 @@
                 <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
                 <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
             </ul></nav>
-            </ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+            <button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
         </div>
     </header>
 
@@ -519,7 +520,15 @@
                 </ul>
             </div>
         </div>
-        <div class="footer-divider"></div>
+                <div class="footer-newsletter">
+            <h4>&#x1F4EC; Stay in the Loop</h4>
+            <p>Get research updates, release notes, and community news — no spam, ever.</p>
+            <form class="newsletter-form" id="newsletterForm" onsubmit="return false">
+                <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
+                <button type="submit">Subscribe</button>
+            </form>
+            <div class="newsletter-msg" id="newsletterMsg">&#x2713; Thanks for subscribing!</div>
+        </div>        <div class="footer-divider"></div>
         <div class="footer-bottom">
             <div class="footer-brand">
                 <span class="logo-text">Embedded<span>OS</span></span>
@@ -539,115 +548,11 @@
         </div>
     </footer>
 
-    <script>
-        // Inject Web3Forms key from config (set via deploy workflow or manually)
-        (function() {
-            var key = window.__WEB3FORMS_KEY__ || '';
-            var keyField = document.getElementById('web3forms-key');
-            if (key && keyField) keyField.value = key;
-        })();
-
-        // Field validation
-        document.querySelectorAll('#contactForm input[required], #contactForm select[required], #contactForm textarea[required]').forEach(field => {
-            field.addEventListener('blur', function() {
-                validateField(this);
-            });
-            field.addEventListener('input', function() {
-                if (this.classList.contains('field-error')) validateField(this);
-            });
-        });
-
-        function validateField(field) {
-            const errorEl = field.parentElement.querySelector('.field-error-msg');
-            if (errorEl) errorEl.remove();
-
-            if (!field.value.trim() && field.required) {
-                showFieldError(field, 'This field is required');
-                return false;
-            }
-            if (field.type === 'email' && field.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
-                showFieldError(field, 'Please enter a valid email address');
-                return false;
-            }
-            field.classList.remove('field-error');
-            field.style.borderColor = '#22c55e';
-            return true;
-        }
-
-        function showFieldError(field, message) {
-            field.classList.add('field-error');
-            field.style.borderColor = '#ef4444';
-            const msg = document.createElement('span');
-            msg.className = 'field-error-msg';
-            msg.style.cssText = 'color:#ef4444;font-size:.8rem;margin-top:4px;display:block';
-            msg.textContent = message;
-            field.parentElement.appendChild(msg);
-        }
-
-        // Web3Forms AJAX submission
-        const form = document.getElementById('contactForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const formSuccess = document.getElementById('formSuccess');
-        const formError = document.getElementById('formError');
-
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            // Validate all fields
-            let isValid = true;
-            form.querySelectorAll('input[required], select[required], textarea[required]').forEach(f => {
-                if (!validateField(f)) isValid = false;
-            });
-            if (!isValid) return;
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" style="animation:spin 1s linear infinite;margin-right:8px"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="3" fill="none" stroke-dasharray="31" stroke-dashoffset="10"/></svg> Sending...';
-            formError.style.display = 'none';
-
-            const formData = new FormData(form);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-
-            try {
-                const response = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: json
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    form.style.display = 'none';
-                    formSuccess.removeAttribute('hidden');
-                    formSuccess.style.display = 'block';
-                    form.reset();
-                } else {
-                    formError.removeAttribute('hidden');
-                    formError.style.display = 'block';
-                }
-            } catch (error) {
-                formError.removeAttribute('hidden');
-                formError.style.display = 'block';
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send Message';
-        });
-
-        function resetForm() {
-            document.getElementById('formSuccess').style.display = 'none';
-            document.getElementById('formError').style.display = 'none';
-            document.getElementById('contactForm').style.display = 'block';
-            document.querySelectorAll('.field-error-msg').forEach(el => el.remove());
-            document.querySelectorAll('.field-error').forEach(el => {
-                el.classList.remove('field-error');
-                el.style.borderColor = '';
-            });
-        }
-    </script>
     <button type="button" class="scroll-to-top" aria-label="Scroll to top">↑</button>
     <script src="js/monitor.js"></script>
     <script src="js/forms.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/cookies.js"></script>
+    <script src="js/search.js"></script>
 </body>
 </html>
