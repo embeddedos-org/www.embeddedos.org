@@ -227,21 +227,4 @@
       }
     });
   }
-}
-
-// === NEWSLETTER FORM ===
-var newsletterForm = document.getElementById('newsletterForm');
-if (newsletterForm) {
-  newsletterForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var emailInput = newsletterForm.querySelector('input[type="email"]');
-    var msgEl = document.getElementById('newsletterMsg');
-    if (!emailInput || !emailInput.value.trim()) return;
-    if (msgEl) {
-      msgEl.style.display = 'block';
-      emailInput.value = '';
-      setTimeout(function () { msgEl.style.display = 'none'; }, 4000);
-    }
-  });
-}
 })();
