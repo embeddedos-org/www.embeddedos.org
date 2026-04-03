@@ -180,6 +180,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy via FTP
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
