@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eServiceApps - Mobile Super App | EmbeddedOS</title>
+    <meta name="description" content="Feature-modular Flutter application for social, ride, travel, and delivery services — built with Riverpod, GoRouter, Material 3, and Firebase.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar"><div class="nav-container"><a href="index.html" class="logo" aria-label="EmbeddedOS Home"><div class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><nav aria-label="Main navigation"><ul class="nav-links" id="nav-links" role="menubar"><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Research &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li><li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI</a></li><li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li><li role="none"><a href="building-os.html" role="menuitem">Building OS</a></li><li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li></ul></li><li role="none"><a href="#" aria-haspopup="true" aria-expanded="false">Programs &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="membership.html" role="menuitem">Membership</a></li><li role="none"><a href="certification.html" role="menuitem">Certification</a></li><li role="none"><a href="internship.html" role="menuitem">Internship</a></li><li role="none"><a href="careers.html" role="menuitem">Careers</a></li></ul></li><li role="none"><a href="#" role="menuitem" aria-haspopup="true" aria-expanded="false">Products &#9662;</a><ul class="dropdown-menu" role="menu"><li role="none"><a href="product-eos.html" role="menuitem">EoS Core</a></li><li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li><li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li><li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li><li role="none"><a href="product-eboot.html" role="menuitem">eBoot</a></li><li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li><li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li><li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li><li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li><li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li><li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li><li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li><li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li></ul></li><li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li><li role="none"><a href="about.html" role="menuitem">About</a></li><li role="none"><a href="resources.html" role="menuitem">Resources</a></li><li role="none"><a href="donate.html" role="menuitem">Donate</a></li><li role="none"><a href="contact.html" role="menuitem">Contact</a></li><li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li></ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button></div></header>
+
+<nav class="product-nav" aria-label="Ecosystem products">
+    <div class="container">
+        <div class="product-nav__links">
+            <a href="product-eos.html" class="product-nav__item"><span class="product-nav__icon">&#9881;</span> EoS</a>
+            <a href="product-eboot.html" class="product-nav__item"><span class="product-nav__icon">&#9889;</span> eBootloader</a>
+            <a href="product-ebuild.html" class="product-nav__item"><span class="product-nav__icon">&#127959;</span> eBuild</a>
+            <a href="product-eai.html" class="product-nav__item"><span class="product-nav__icon">&#129302;</span> EAI</a>
+            <a href="product-eni.html" class="product-nav__item"><span class="product-nav__icon">&#129504;</span> ENI</a>
+            <a href="product-eipc.html" class="product-nav__item"><span class="product-nav__icon">&#128274;</span> EIPC</a>
+            <a href="product-eapps.html" class="product-nav__item"><span class="product-nav__icon">&#128241;</span> eApps</a>
+            <a href="product-eosim.html" class="product-nav__item"><span class="product-nav__icon">&#128187;</span> EoSim</a>
+            <a href="product-eostudio.html" class="product-nav__item"><span class="product-nav__icon">&#127912;</span> EoStudio</a>
+            <a href="product-edb.html" class="product-nav__item"><span class="product-nav__icon">&#128451;</span> eDB</a>
+            <a href="product-ebowser.html" class="product-nav__item"><span class="product-nav__icon">&#127760;</span> eBowser</a>
+            <a href="product-eoffice.html" class="product-nav__item"><span class="product-nav__icon">&#128196;</span> eOffice</a>
+            <a href="product-eserviceapps.html" class="product-nav__item product-nav__item--active"><span class="product-nav__icon">&#128241;</span> eServiceApps</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+
+    <section class="section section-white">
+        <div class="container">
+            <nav aria-label="Breadcrumb" style="margin-bottom:1.5rem;">
+                <a href="index.html">Home</a> &rsaquo; <a href="ecosystem.html">Ecosystem</a> &rsaquo; <strong>eServiceApps</strong>
+            </nav>
+            <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+                <span class="badge">MOBILE</span>
+                <span class="badge">Dart/Flutter</span>
+                <span class="badge">v1.0.0</span>
+                <span class="badge">MIT</span>
+            </div>
+            <h1>eServiceApps <span style="font-weight:400;">Mobile Super App</span></h1>
+            <p style="font-size:1.25rem;max-width:48rem;margin-top:1rem;">Feature-modular Flutter application for social, ride, travel, and delivery services — one app, four powerful modules.</p>
+        </div>
+    </section>
+
+    <section class="section section-gray">
+        <div class="container">
+            <h2 style="text-align:center;margin-bottom:2.5rem;">Core Features</h2>
+            <div class="cards-grid cards-grid-3">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon--blue">&#128241;</div>
+                    <h3>4 Service Modules</h3>
+                    <p>Social networking, ride-sharing, travel planning, and package delivery — all integrated into a single cohesive super app experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon--purple">&#9881;</div>
+                    <h3>Modern Flutter Stack</h3>
+                    <p>Riverpod state management, GoRouter navigation, and Material 3 design system for a polished, maintainable codebase.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon--orange">&#128293;</div>
+                    <h3>Firebase Backend</h3>
+                    <p>Authentication, Firestore, Storage, Analytics, and Crashlytics — production-ready backend infrastructure out of the box.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <h2 style="text-align:center;margin-bottom:2.5rem;">Architecture</h2>
+            <div class="stack-diagram">
+                <div class="stack-diagram__layer stack-diagram__layer--top">Feature Modules (Social / Ride / Travel / Delivery)</div>
+                <div class="stack-diagram__layer">Shared Services &amp; State</div>
+                <div class="stack-diagram__layer">Firebase Backend</div>
+                <div class="stack-diagram__layer stack-diagram__layer--bottom">Analytics &amp; Monitoring</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-gray">
+        <div class="container">
+            <h2 style="text-align:center;margin-bottom:2.5rem;">Specifications</h2>
+            <div class="cards-grid cards-grid-4">
+                <div class="feature-card" style="text-align:center;">
+                    <div class="feature-icon feature-icon--blue">&#128296;</div>
+                    <h3>Dart/Flutter</h3>
+                    <p>Language</p>
+                </div>
+                <div class="feature-card" style="text-align:center;">
+                    <div class="feature-icon feature-icon--purple">&#127991;</div>
+                    <h3>v1.0.0</h3>
+                    <p>Version</p>
+                </div>
+                <div class="feature-card" style="text-align:center;">
+                    <div class="feature-icon feature-icon--green">&#128241;</div>
+                    <h3>4 Modules</h3>
+                    <p>Included</p>
+                </div>
+                <div class="feature-card" style="text-align:center;">
+                    <div class="feature-icon feature-icon--orange">&#128220;</div>
+                    <h3>MIT</h3>
+                    <p>License</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <div class="source-links-card">
+                <h3>&#128279; Source Code</h3>
+                <p>eServiceApps is fully open-source under the MIT license.</p>
+                <a href="https://github.com/embeddedos-org/eServiceApps" class="btn btn-dark" target="_blank" rel="noopener">GitHub &rarr; embeddedos-org/eServiceApps</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container" style="text-align:center;">
+            <h2>Build Your Super App</h2>
+            <p>Social, ride, travel, delivery — four services, one Flutter codebase.</p>
+            <a href="https://github.com/embeddedos-org/eServiceApps" class="btn btn-primary" target="_blank" rel="noopener">Get Started</a>
+            <a href="ecosystem.html" class="btn btn-outline">Explore Ecosystem</a>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer"><div class="footer-mega"><div class="footer-column"><h4>Ecosystem</h4><ul><li><a href="ecosystem.html">Overview</a></li><li><a href="product-eos.html">EoS</a></li><li><a href="product-eai.html">EAI</a></li><li><a href="product-eni.html">ENI</a></li><li><a href="product-eipc.html">EIPC</a></li><li><a href="product-eboot.html">eBootloader</a></li><li><a href="product-ebuild.html">eBuild</a></li><li><a href="product-eapps.html">eApps</a></li><li><a href="product-eosim.html">EoSim</a></li><li><a href="product-eostudio.html">EoStudio</a></li><li><a href="product-edb.html">eDB</a></li><li><a href="product-ebowser.html">eBowser</a></li><li><a href="product-eoffice.html">eOffice</a></li><li><a href="product-eserviceapps.html">eServiceApps</a></li></ul></div><div class="footer-column"><h4>Research</h4><ul><li><a href="research.html">Neural Link</a></li><li><a href="ai-os.html">AI Operating Systems</a></li><li><a href="building-os.html">Building OS</a></li><li><a href="documentation.html">Documentation</a></li></ul></div><div class="footer-column"><h4>Programs</h4><ul><li><a href="membership.html">Membership</a></li><li><a href="certification.html">Certification</a></li><li><a href="careers.html">Careers</a></li><li><a href="donate.html">Donate</a></li></ul></div><div class="footer-column"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-column"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="licenses.html">Licenses</a></li></ul></div></div><div class="footer-newsletter"><h4>&#x1F4EC; Stay in the Loop</h4><p>Get research updates, release notes, and community news — no spam, ever.</p><form class="newsletter-form" id="newsletterForm" onsubmit="return false"><input type="email" placeholder="your@email.com" required aria-label="Email for newsletter"><button type="submit">Subscribe</button></form><div class="newsletter-msg" id="newsletterMsg">&#x2713; Thanks for subscribing!</div></div><div class="footer-divider"></div><div class="footer-bottom"><div class="footer-brand"><span class="logo-text">Embedded<span>OS</span></span></div><div class="footer-copyright">&copy; 2026 EmbeddedOS Foundation. MIT License.</div><div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div></footer>
+<button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button>
+<script src="js/monitor.js"></script><script src="js/main.js"></script><script src="js/forms.js"></script><script src="js/cookies.js"></script><script src="js/search.js"></script>
+
+</body>
+</html>
