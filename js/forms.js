@@ -202,14 +202,16 @@
     var form = document.getElementById('contactForm');
     var successEl = document.getElementById('formSuccess');
     var errorEl = document.getElementById('formError');
-    if (form) form.style.display = 'block';
+    if (form) {
+      form.style.display = 'block';
+      form.querySelectorAll('.field-error-msg').forEach(function (el) { el.remove(); });
+      form.querySelectorAll('.field-error').forEach(function (el) {
+        el.classList.remove('field-error');
+        el.style.borderColor = '';
+      });
+    }
     if (successEl) { successEl.style.display = 'none'; successEl.setAttribute('hidden', ''); }
     if (errorEl) { errorEl.style.display = 'none'; errorEl.setAttribute('hidden', ''); }
-    form.querySelectorAll('.field-error-msg').forEach(function (el) { el.remove(); });
-    form.querySelectorAll('.field-error').forEach(function (el) {
-      el.classList.remove('field-error');
-      el.style.borderColor = '';
-    });
   };
 
   // === NEWSLETTER FORM ===

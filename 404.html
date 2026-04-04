@@ -72,7 +72,9 @@
                     <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
                 </ul>
             </nav>
-            <button class="mobile-menu-btn" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false">
+            <button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
         </div>
@@ -153,7 +155,7 @@
         <div class="footer-newsletter">
             <h4>&#128236; Stay in the Loop</h4>
             <p>Get research updates, release notes, and community news - no spam, ever.</p>
-            <form class="newsletter-form" id="newsletterForm" onsubmit="return false">
+            <form class="newsletter-form" id="newsletterForm">
                 <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
                 <button type="submit">Subscribe</button>
             </form>
@@ -181,5 +183,7 @@
     <button type="button" class="scroll-to-top" aria-label="Scroll to top"></button>
     <script src="js/monitor.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/cookies.js"></script>
+    <script src="js/search.js" defer></script>
 </body>
 </html>

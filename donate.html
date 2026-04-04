@@ -69,7 +69,8 @@
                 <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
                 <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
             </ul></nav>
-            </ul></nav><button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+            </ul></nav>
+            <button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
         </div>
     </header>
 
@@ -589,7 +590,7 @@
                 <div class="footer-newsletter">
             <h4>&#x1F4EC; Stay in the Loop</h4>
             <p>Get research updates, release notes, and community news — no spam, ever.</p>
-            <form class="newsletter-form" id="newsletterForm" onsubmit="return false">
+            <form class="newsletter-form" id="newsletterForm">
                 <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
                 <button type="submit">Subscribe</button>
             </form>
@@ -609,53 +610,16 @@
                 &copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.
             </div>
             <div class="footer-legal"><a href="privacy.html">Privacy</a>
-                <a href="terms.html">Terms</a>
-    <script>
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-        function selectAmount(amount) {
-            document.querySelectorAll('.donation-card').forEach(card => {
-            updateDonateButton(amount);
-                card.classList.remove('selected');
+                <a href="terms.html">Terms</a><a href="privacy.html">Cookies</a>
+            </div>
+        </div>
+    </footer>
 
-        document.getElementById('customAmount').addEventListener('input', function() {
-            document.querySelectorAll('.donation-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            if (this.value) updateDonateButton(this.value);
-        });
-
-        function updateDonateButton(amount) {
-            const btn = document.querySelector('.btn-success');
-            if (btn && amount) {
-                btn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:8px"><path fill="white" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Donate $${amount}`;
-            }
-        }
-
-        document.querySelector('.btn-success')?.addEventListener('click', function(e) {
-            e.preventDefault();
-            const selectedCard = document.querySelector('.donation-card.selected');
-            const customAmount = document.getElementById('customAmount').value;
-            const amount = customAmount || (selectedCard ? selectedCard.querySelector('.donation-amount').textContent.replace('$','') : '250');
-            const frequency = document.querySelector('input[name="frequency"]:checked')?.value || 'one-time';
-
-            // Redirect to Stripe payment link placeholder
-            const stripeUrl = `https://donate.stripe.com/embeddedos?amount=${amount}&frequency=${frequency}`;
-            window.open(stripeUrl, '_blank');
-        });
-            });
-            // Add selected class to clicked card
-            event.currentTarget.classList.add('selected');
-            // Clear custom amount
-            document.getElementById('customAmount').value = '';
-        }
-    </script>
     <button type="button" class="scroll-to-top" aria-label="Scroll to top">↑</button>
     <script src="js/monitor.js"></script>
     <script src="js/forms.js"></script>
     <script src="js/main.js"></script>
     <script src="js/cookies.js"></script>
-    <script src="js/search.js"></script>
+    <script src="js/search.js" defer></script>
 </body>
 </html>
