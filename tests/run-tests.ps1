@@ -609,15 +609,13 @@ Test "SEO" "All data-include paths resolve" ($badIncludes.Count -eq 0) ($badIncl
 # === Section 10 — Publication Tests (auto, do not edit by hand) ===
 Write-Host "`n--- 10. PUBLICATION TESTS ---" -ForegroundColor Magenta
 
-# 10.1 Two-tier header on every page
-$missingTwoTier = @()
+# 10.1 Brand-bar nav on every page (utility-bar removed in v18 — single-tier design)
+$missingNav = @()
 foreach ($page in $allPages) {
     $content = (Get-Content "$SiteDir\$page" -Raw -ErrorAction SilentlyContinue); if ($null -eq $content) { $content = [string]::Empty }
-    if ($content -notmatch 'class="utility-bar"' -or $content -notmatch 'class="brand-bar"') {
-        $missingTwoTier += $page
-    }
+    if ($content -notmatch 'class="brand-bar"') { $missingNav += $page }
 }
-Test "Publication" "Two-tier header on all pages" ($missingTwoTier.Count -eq 0) ($missingTwoTier -join ", ")
+Test "Publication" "Brand-bar nav on all pages" ($missingNav.Count -eq 0) ($missingNav -join ", ")
 
 # 10.2 News hub exists
 Test "Publication" "news.html exists" (Test-Path "$SiteDir\news.html") ""
