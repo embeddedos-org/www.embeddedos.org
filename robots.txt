@@ -1,7 +1,47 @@
-# https://www.robotstxt.org/robotstxt.html
+# EmbeddedOS — robots.txt
+# Updated: 2026-05-13
+
 User-agent: *
 Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /img/
+Disallow: /partials/
+Disallow: /tests/
 Disallow: /.github/
-Disallow: /README.md
+Disallow: /.git/
+Disallow: /tools/
+Disallow: /*.json$
+Disallow: /CODEOWNERS
 
-Sitemap: https://embeddedos.org/sitemap.xml
+# Crawl-budget hints
+Crawl-delay: 1
+
+# AI crawlers — allow respectfully (foundation values open knowledge)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Block known low-value scrapers
+User-agent: AhrefsBot
+Crawl-delay: 5
+
+User-agent: SemrushBot
+Crawl-delay: 5
+
+# Sitemaps
+Sitemap: https://www.embeddedos.org/sitemap.xml
+Sitemap: https://www.embeddedos.org/sitemap-news.xml
+Sitemap: https://www.embeddedos.org/sitemap-image.xml
+Sitemap: https://www.embeddedos.org/rss.xml

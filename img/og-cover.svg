@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="EmbeddedOS — From Boot to Cloud, One Ecosystem">
+  <defs>
+    <linearGradient id="ogBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="55%" stop-color="#0d1a35"/>
+      <stop offset="100%" stop-color="#0a0f1f"/>
+    </linearGradient>
+    <linearGradient id="ogAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="ogTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="ogGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="ogGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#ogBg)"/>
+  <rect width="1200" height="630" fill="url(#ogGrid)"/>
+  <circle cx="900" cy="180" r="320" fill="url(#ogGlow)"/>
+  <circle cx="200" cy="520" r="260" fill="url(#ogGlow)" opacity="0.6"/>
+
+  <!-- Logo block -->
+  <g transform="translate(80, 110)">
+    <rect width="120" height="120" rx="24" fill="url(#ogAccent)"/>
+    <text x="60" y="84" font-family="Inter, system-ui, sans-serif" font-size="58" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="-2">EoS</text>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="230" y="170" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="700" fill="#e2e8f0">Embedded<tspan fill="#60a5fa">OS</tspan></text>
+  <text x="230" y="210" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="500" fill="#94a3b8">Research Foundation · 501(c)(3) nonprofit</text>
+
+  <!-- Headline -->
+  <text x="80" y="340" font-family="Inter, system-ui, sans-serif" font-size="76" font-weight="800" fill="#ffffff" letter-spacing="-2">From Boot to Cloud —</text>
+  <text x="80" y="425" font-family="Inter, system-ui, sans-serif" font-size="76" font-weight="800" fill="url(#ogTeal)" letter-spacing="-2">One Ecosystem.</text>
+
+  <!-- Subline / chips -->
+  <g font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600">
+    <g transform="translate(80, 480)">
+      <rect width="220" height="50" rx="25" fill="#0f172a" stroke="#1e3a8a" stroke-width="1.5"/>
+      <text x="110" y="33" fill="#93c5fd" text-anchor="middle">14 components</text>
+    </g>
+    <g transform="translate(320, 480)">
+      <rect width="180" height="50" rx="25" fill="#0f172a" stroke="#581c87" stroke-width="1.5"/>
+      <text x="90" y="33" fill="#c4b5fd" text-anchor="middle">60+ apps</text>
+    </g>
+    <g transform="translate(520, 480)">
+      <rect width="240" height="50" rx="25" fill="#0f172a" stroke="#0e7490" stroke-width="1.5"/>
+      <text x="120" y="33" fill="#67e8f9" text-anchor="middle">12 architectures</text>
+    </g>
+    <g transform="translate(780, 480)">
+      <rect width="260" height="50" rx="25" fill="#0f172a" stroke="#065f46" stroke-width="1.5"/>
+      <text x="130" y="33" fill="#6ee7b7" text-anchor="middle">52+ sim platforms</text>
+    </g>
+  </g>
+
+  <!-- URL -->
+  <text x="80" y="585" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748b">www.embeddedos.org</text>
+</svg>

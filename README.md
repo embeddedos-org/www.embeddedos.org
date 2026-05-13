@@ -4,8 +4,8 @@
 [![Website Tests](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/tests.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/tests.yml)
 [![Weekly Release](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/weekly-release.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/weekly-release.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Pages](https://img.shields.io/badge/Pages-26-green.svg)](#site-structure)
-[![Tests](https://img.shields.io/badge/Tests-66%20Passing-brightgreen.svg)](#test-suite)
+[![Pages](https://img.shields.io/badge/Pages-35-green.svg)](#site-structure)
+[![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)](#test-suite)
 
 > A complete embedded AI systems stack — from bare-metal boot to top-level IoT integration.
 
