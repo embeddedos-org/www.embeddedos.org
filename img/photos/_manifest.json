@@ -135,7 +135,6 @@
     "file": "img/photos/ev-summit.jpg"
   },
   "ev-india": {
-    "url": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1600&q=80&fm=jpg&auto=format&fit=crop",
     "alt": "Bangalore tech meetup audience",
     "file": "img/photos/ev-india.jpg"
   },
@@ -178,8 +177,7 @@
     "file": "img/photos/res-neural-3.jpg"
   },
   "res-nai-1": {
-    "url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=82&fm=jpg&auto=format&fit=crop",
-    "alt": "AI inference visualisation \u2014 EAI integration",
+    "alt": "Secure neural-AI integration close-up",
     "file": "img/photos/res-nai-1.jpg"
   },
   "res-nai-2": {
@@ -228,8 +226,39 @@
     "file": "img/photos/res-future-1.jpg"
   },
   "res-future-2": {
-    "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=82&fm=jpg&auto=format&fit=crop",
-    "alt": "Microcontroller close-up \u2014 research substrate",
+    "alt": "Quantum computing array \u2014 future of embedded AI",
     "file": "img/photos/res-future-2.jpg"
+  },
+  "alt-platform": {
+    "alt": "Embedded systems engineering \u2014 platform",
+    "file": "img/photos/alt-platform.jpg"
+  },
+  "alt-llm": {
+    "alt": "AI / LLM data visualisation",
+    "file": "img/photos/alt-llm.jpg"
+  },
+  "alt-neural": {
+    "alt": "Neural network synapses",
+    "file": "img/photos/alt-neural.jpg"
+  },
+  "alt-secure": {
+    "alt": "Cryptographic chip \u2014 secure boot",
+    "file": "img/photos/alt-secure.jpg"
+  },
+  "alt-hil": {
+    "alt": "Hardware-in-the-loop test bench",
+    "file": "img/photos/alt-hil.jpg"
+  },
+  "alt-encrypt": {
+    "alt": "Storage media \u2014 encryption at rest",
+    "file": "img/photos/alt-encrypt.jpg"
+  },
+  "alt-members": {
+    "alt": "Foundation working group meeting",
+    "file": "img/photos/alt-members.jpg"
+  },
+  "alt-kernel": {
+    "alt": "Code on screen \u2014 kernel development",
+    "file": "img/photos/alt-kernel.jpg"
   }
 }
