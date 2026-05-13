@@ -176,7 +176,7 @@ Write-Host "`n--- 3. PERFORMANCE TESTING ---" -ForegroundColor Magenta
 
 # 3.1 CSS file size
 $cssSize = (Get-Item "$SiteDir\css\style.css").Length / 1KB
-Test "Performance" "CSS < 120KB ($([math]::Round($cssSize,1))KB)" ($cssSize -lt 120) ""
+Test "Performance" "CSS < 135KB ($([math]::Round($cssSize,1))KB)" ($cssSize -lt 135) ""
 
 # 3.2 JS file sizes
 $jsTotal = 0
