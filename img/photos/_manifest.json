@@ -161,5 +161,75 @@
   "research-hero": {
     "alt": "Glowing neural-net visualisation \u2014 foundation research",
     "file": "img/photos/research-hero.jpg"
+  },
+  "res-neural-1": {
+    "url": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Neural network visualisation \u2014 Neural Link architecture",
+    "file": "img/photos/res-neural-1.jpg"
+  },
+  "res-neural-2": {
+    "url": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Layered network topology \u2014 node integrity",
+    "file": "img/photos/res-neural-2.jpg"
+  },
+  "res-neural-3": {
+    "url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Glowing connections \u2014 secure neural protocol",
+    "file": "img/photos/res-neural-3.jpg"
+  },
+  "res-nai-1": {
+    "url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "AI inference visualisation \u2014 EAI integration",
+    "file": "img/photos/res-nai-1.jpg"
+  },
+  "res-nai-2": {
+    "url": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Quantum / neural systems \u2014 research",
+    "file": "img/photos/res-nai-2.jpg"
+  },
+  "res-nai-3": {
+    "url": "https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Bus traces \u2014 neural-AI integration",
+    "file": "img/photos/res-nai-3.jpg"
+  },
+  "res-nai-4": {
+    "url": "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Glowing PCB \u2014 closed-loop neural interface",
+    "file": "img/photos/res-nai-4.jpg"
+  },
+  "res-aios-1": {
+    "url": "https://images.unsplash.com/photo-1592434134753-a70baf7979d5?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Smart home / IoT \u2014 AI OS in consumer devices",
+    "file": "img/photos/res-aios-1.jpg"
+  },
+  "res-aios-2": {
+    "url": "https://images.unsplash.com/photo-1581090700227-1e37b190418e?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Software stack visualisation \u2014 AI OS architecture",
+    "file": "img/photos/res-aios-2.jpg"
+  },
+  "res-aios-3": {
+    "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Microcontroller \u2014 embedded AI OS substrate",
+    "file": "img/photos/res-aios-3.jpg"
+  },
+  "res-build-1": {
+    "url": "https://images.unsplash.com/photo-1601132359864-c974e79890ac?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Schematic and PCB layout \u2014 building an OS substrate",
+    "file": "img/photos/res-build-1.jpg"
+  },
+  "res-build-2": {
+    "url": "https://images.unsplash.com/photo-1587620931276-bca37b04bf04?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Bare-metal embedded development bench",
+    "file": "img/photos/res-build-2.jpg"
+  },
+  "res-future-1": {
+    "url": "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Quantum computing array \u2014 future of embedded AI",
+    "file": "img/photos/res-future-1.jpg"
+  },
+  "res-future-2": {
+    "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=82&fm=jpg&auto=format&fit=crop",
+    "alt": "Microcontroller close-up \u2014 research substrate",
+    "file": "img/photos/res-future-2.jpg"
   }
 }
