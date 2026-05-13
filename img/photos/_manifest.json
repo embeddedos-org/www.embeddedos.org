@@ -153,5 +153,13 @@
     "url": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1600&q=80&fm=jpg&auto=format&fit=crop",
     "alt": "Foundation members hybrid event",
     "file": "img/photos/ev-members-day.jpg"
+  },
+  "homepage-hero": {
+    "alt": "Macro of an embedded microcontroller \u2014 open-source embedded AI",
+    "file": "img/photos/homepage-hero.jpg"
+  },
+  "research-hero": {
+    "alt": "Glowing neural-net visualisation \u2014 foundation research",
+    "file": "img/photos/research-hero.jpg"
   }
 }
