@@ -1,4 +1,4 @@
-# EmbeddedOS — Apache config
+# EmbeddedOS — Apache config (v9: speed-tuned)
 RewriteEngine On
 
 # Force HTTPS + canonical www host
@@ -6,8 +6,7 @@ RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^embeddedos\.org$ [NC]
 RewriteRule ^(.*)$ https://www.embeddedos.org/$1 [R=301,L]
 
-# Internal rewrite: clean URL (no extension) -> underlying *.html
-# (Allows /about to serve about.html for direct deep-links / SEO crawlers.)
+# Internal rewrite: clean URL -> .html
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
@@ -15,27 +14,56 @@ RewriteRule ^(.*)$ $1.html [L]
 
 ErrorDocument 404 /404.html
 
+# Brotli first (preferred), gzip fallback
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/javascript application/javascript application/json image/svg+xml text/xml application/xml
+</IfModule>
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml text/xml application/xml
 </IfModule>
 
+# Aggressive caching for hashable assets, modest for HTML
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css                 "access plus 30 days"
-  ExpiresByType application/javascript   "access plus 30 days"
-  ExpiresByType image/svg+xml            "access plus 30 days"
-  ExpiresByType image/png                "access plus 30 days"
-  ExpiresByType image/jpeg               "access plus 30 days"
-  ExpiresByType image/webp               "access plus 30 days"
+  ExpiresByType text/css                 "access plus 1 year"
+  ExpiresByType application/javascript   "access plus 1 year"
+  ExpiresByType image/svg+xml            "access plus 1 year"
+  ExpiresByType image/png                "access plus 1 year"
+  ExpiresByType image/jpeg               "access plus 1 year"
+  ExpiresByType image/webp               "access plus 1 year"
   ExpiresByType font/woff2               "access plus 1 year"
   ExpiresByType text/html                "access plus 1 hour"
   ExpiresByType application/xml          "access plus 1 hour"
+  ExpiresByType application/manifest+json "access plus 1 week"
 </IfModule>
 
 <IfModule mod_headers.c>
-  Header set Cache-Control "public, max-age=2592000" "expr=%{REQUEST_URI} =~ m#^/(css|js|img)/#"
+  # Cache control tuned per asset type
+  Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/(css|js|img)/#"
+  Header set Cache-Control "public, max-age=3600" "expr=%{REQUEST_URI} =~ m#\.html$#"
+
+  # Security headers — top-tier
+  Header set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "DENY"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Permissions-Policy "geolocation=(), camera=(), microphone=()"
+  Header set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=()"
+  Header set Cross-Origin-Opener-Policy "same-origin"
+  Header set Cross-Origin-Resource-Policy "same-origin"
+
+  # HTTP/2 Server Push — pre-push critical CSS for HTML responses
+  <FilesMatch "\.html$">
+    Header add Link "</css/style.css>; rel=preload; as=style"
+  </FilesMatch>
+
+  # Drop Last-Modified for HTML (use ETag only — fewer bytes)
+  <FilesMatch "\.html$">
+    Header unset Last-Modified
+  </FilesMatch>
 </IfModule>
+
+# Disable ETags for assets (use cache-control instead, simpler)
+<FilesMatch "\.(css|js|svg|png|jpg|jpeg|webp|woff2)$">
+  Header unset ETag
+  FileETag None
+</FilesMatch>
