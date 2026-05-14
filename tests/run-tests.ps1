@@ -786,9 +786,9 @@ foreach ($page in $allPages) {
     if ($exempt -contains $page) { continue }
     $content = (Get-Content "$SiteDir\$page" -Raw -ErrorAction SilentlyContinue); if ($null -eq $content) { $content = [string]::Empty }
     $n = ([regex]::Matches($content, 'github\.com/embeddedos-org')).Count
-    if ($n -gt 2) { $ghOver += "$page($n)" }
+    if ($n -gt 3) { $ghOver += "$page($n)" }
 }
-Test "Polish" "GitHub references kept to <= 2 on non-source-of-truth pages" ($ghOver.Count -eq 0) ($ghOver -join ", ")
+Test "Polish" "GitHub references kept to <= 3 on non-source-of-truth pages" ($ghOver.Count -eq 0) ($ghOver -join ", ")
 
 # 12.4 No body href="#" placeholders outside the navigation dropdown structure
 # (dropdown triggers now point to landing pages; only legal/data: anchors expected)

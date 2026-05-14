@@ -17,3 +17,10 @@
   Standards: HTML5, CSS3, ECMAScript 2018+, Schema.org JSON-LD
   Components: 14 open-source projects across RTOS, AI, neural interface,
               security, tools, applications, and platforms.
+
+/* SOCIAL */
+  GitHub:   https://github.com/embeddedos-org
+  X:        https://x.com/EmbeddedOS_ORG
+  LinkedIn: https://www.linkedin.com/company/embedded-operating-systems-research-foundation
+  YouTube:  https://www.youtube.com/@EmbeddedOS_ORG
+  Facebook: https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/
