@@ -1,5 +1,14 @@
 # EmbeddedOS (EoS) Research Foundation
 
+<!-- begin: org-uniform badges (audit-2026-05) -->
+[![CI](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/ci.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/codeql.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/embeddedos-org/www.embeddedos.org/badge)](https://securityscorecards.dev/viewer/?uri=github.com/embeddedos-org/www.embeddedos.org)
+[![Release](https://img.shields.io/github/v/tag/embeddedos-org/www.embeddedos.org?label=release&sort=semver)](https://github.com/embeddedos-org/www.embeddedos.org/releases)
+[![License](https://img.shields.io/github/license/embeddedos-org/www.embeddedos.org)](LICENSE)
+<!-- end: org-uniform badges (audit-2026-05) -->
+
+
 [![Validate & Deploy](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/deploy.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/deploy.yml)
 [![Website Tests](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/tests.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/tests.yml)
 [![Weekly Release](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/weekly-release.yml/badge.svg)](https://github.com/embeddedos-org/www.embeddedos.org/actions/workflows/weekly-release.yml)
@@ -164,6 +173,19 @@ gh variable set SENTRY_DSN --body "https://...@sentry"  # Error monitoring
 | [embeddedos-org.github.io](https://embeddedos-org.github.io) | Developer portal — docs, getting started, hardware lab |
 | [embeddedos-org.github.io/eApps](https://embeddedos-org.github.io/eApps/) | App Store — browse/download 60+ apps |
 | [github.com/embeddedos-org](https://github.com/embeddedos-org) | GitHub organization — all source code |
+
+<!-- begin: release-model (audit-2026-05) -->
+## Release model
+
+`master` is the line of development; every PR lands here. `release` is a
+rolling pointer to the latest released `vX.Y.Z` tag, updated automatically
+by [`.github/workflows/sync-release-branch.yml`](.github/workflows/sync-release-branch.yml).
+Tags are immutable.
+
+See [embeddedos-org/.github/STANDARDS.md](https://github.com/embeddedos-org/.github/blob/master/STANDARDS.md)
+for the org-wide tag scheme, release model, and the compliance frameworks
+every product targets.
+<!-- end: release-model (audit-2026-05) -->
 
 ## License
 
