@@ -187,11 +187,11 @@
     var successEl = document.getElementById('formSuccess');
     var errorEl = document.getElementById('formError');
     if (type === 'success' && successEl) {
-      successEl.innerHTML = html;
+      successEl.textContent = html;
       successEl.style.display = 'block';
       successEl.removeAttribute('hidden');
     } else if (type === 'error' && errorEl) {
-      errorEl.innerHTML = html;
+      errorEl.textContent = html;
       errorEl.style.display = 'block';
       errorEl.removeAttribute('hidden');
     }

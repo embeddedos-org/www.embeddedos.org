@@ -136,9 +136,9 @@ ignoreErrors: [
 /^Script error\.?$/
 ],
 denyUrls: [
-/extensions\
-/^chrome:\/\
-/^moz-extension:\/\
+  /extensions\//,
+  /^chrome:\/\//,
+  /^moz-extension:\/\//
 ]
 });
 window.Sentry.setTag('page', window.location.pathname);
