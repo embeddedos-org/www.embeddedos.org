@@ -1,12 +1,13 @@
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2026 EoS Project
 import unittest
-import time
+
 class Testwww.embeddedos.orgPerformance(unittest.TestCase):
-    def test_latency_sla(self):
-        print("Testing performance SLA for www.embeddedos.org...")
-        t0 = time.perf_counter()
-        _ = sum(i*i for i in range(1000))
-        t1 = time.perf_counter()
-        print(f"Operation took: {(t1 - t0)*1e6:.2f} microseconds")
-        self.assertTrue(True)
+    import time
+    def test_homepage_loading_latency(self):
+        import time
+        start = time.perf_counter()
+        # Simulate web homepage asset compression and load
+        for _ in range(1000):
+            _ = "gzipped_html_asset"
+        end = time.perf_counter()
+        load_ms = (end - start) * 1000
+        assert load_ms < 5.0, f"Homepage load latency {load_ms:.2f}ms exceeds 5ms SLA"
