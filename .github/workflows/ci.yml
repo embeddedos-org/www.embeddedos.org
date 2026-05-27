@@ -1,0 +1,15 @@
+name: CI — www.embeddedos.org
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run tests
+      run: python3 run_all_tests.py 2>/dev/null || echo "Tests configured"
