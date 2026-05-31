@@ -1,6 +1,6 @@
 import unittest
 import time
-class Testwww.embeddedos.orgPerformance(unittest.TestCase):
+class TestWwwEmbeddedOsOrgPerformance(unittest.TestCase):
     def test_perf_sla(self):
         start = time.perf_counter()
         for _ in range(100):
