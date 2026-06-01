@@ -3,653 +3,692 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0066cc">
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<meta name="description" content="EmbeddedOS products — 14 world-class open-source components from bare-metal RTOS to on-device LLM inference, neural interfaces, browser extensions, mobile apps, and desktop tools.">
+<meta name="theme-color" content="#060912">
+<meta name="description" content="All 14 EmbeddedOS products — EoS RTOS, EAI on-device LLM, ENI neural interface, eIPC, eVera, EoStudio, EoSim, eOffice, eBrowser, HEALTH-KEY ULTRA, HEALTH-BAND Neuro, eDB, eBoot, ebuild. Full specs, compatibility matrix, and release binaries.">
 <title>Products — EmbeddedOS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066cc'/><text x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='48' font-weight='800' fill='white' text-anchor='middle'>EoS</text></svg>">
-<link rel="apple-touch-icon" href="img/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233b82f6'/><text x='50' y='68' font-family='Inter,sans-serif' font-size='44' font-weight='900' fill='white' text-anchor='middle'>EoS</text></svg>">
 <link rel="stylesheet" href="css/style.css">
-<link rel="canonical" href="https://www.embeddedos.org/products">
-<meta property="og:title" content="Products — EmbeddedOS">
-<meta property="og:description" content="14 world-class open-source components. Firmware, desktop, mobile, browser extensions, and web. Best-in-class at every layer.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.embeddedos.org/products">
-<meta property="og:image" content="https://www.embeddedos.org/img/og-cover.svg">
-<meta property="og:site_name" content="EmbeddedOS">
-<meta name="twitter:card" content="summary_large_image">
 <style>
-.products-hero{background:#050810;padding:7rem 2rem 4rem;position:relative;overflow:hidden}
-.products-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 30% 50%,rgba(0,102,204,.2),transparent 60%),radial-gradient(ellipse 40% 40% at 80% 30%,rgba(139,92,246,.12),transparent 55%);pointer-events:none}
-.products-hero__inner{position:relative;max-width:1200px;margin:0 auto}
-.products-hero__badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,102,204,.15);border:1px solid rgba(0,102,204,.35);border-radius:99px;padding:.4rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem}
-.products-hero h1{font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.08;margin:0 0 1.2rem}
-.products-hero h1 em{font-style:normal;background:linear-gradient(90deg,#0099ff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.products-hero p{font-size:1.1rem;color:rgba(255,255,255,.7);max-width:620px;line-height:1.65;margin-bottom:2rem}
-/* Tier nav */
-.tier-nav{background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
-.tier-nav__inner{max-width:1200px;margin:0 auto;display:flex;gap:.25rem;padding:.75rem 2rem;overflow-x:auto;scrollbar-width:none}
-.tier-nav__inner::-webkit-scrollbar{display:none}
-.tier-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:8px;font-size:.85rem;font-weight:600;color:#4b5563;text-decoration:none;white-space:nowrap;transition:all .15s;border:1px solid transparent}
-.tier-btn:hover{background:#f3f4f6;color:#111827}
-.tier-btn.active{background:#eff6ff;color:#0066cc;border-color:#bfdbfe}
-.tier-dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.6}
+/* Page-specific styles */
+.page-hero {
+  padding: 5rem 1.5rem 3.5rem;
+  background: var(--bg-base);
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,130,246,.2), transparent 60%);
+  pointer-events: none;
+}
+.page-hero__inner { position: relative; max-width: 1100px; margin: 0 auto; }
+.page-hero h1 { font-size: clamp(2rem,4vw,3.2rem); font-weight: 900; letter-spacing: -.05em; color: var(--text-primary); margin-bottom: .75rem; }
+.page-hero p { font-size: 1.05rem; color: var(--text-secondary); max-width: 640px; line-height: 1.7; }
+
 /* Product detail cards */
-.product-section{padding:5rem 2rem;border-bottom:1px solid #f1f3f5}
-.product-section:nth-child(even){background:#fafbfc}
-.product-section__inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
-.product-section__info{}
-.product-section__id{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--prod-color,#0066cc);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
-.product-section__name{font-size:2rem;font-weight:800;color:#111827;letter-spacing:-.025em;margin:0 0 .25rem}
-.product-section__tagline{font-size:1rem;color:#6b7280;margin:0 0 1.25rem;font-style:italic}
-.product-section__desc{font-size:.95rem;color:#374151;line-height:1.7;margin-bottom:1.5rem}
-.product-section__highlights{list-style:none;padding:0;margin:0 0 1.5rem;display:flex;flex-direction:column;gap:.5rem}
-.product-section__highlights li{display:flex;align-items:flex-start;gap:.6rem;font-size:.9rem;color:#374151;line-height:1.5}
-.product-section__highlights li::before{content:'&#10003;';color:var(--prod-color,#0066cc);font-weight:800;flex-shrink:0;margin-top:.05rem}
-.product-section__actions{display:flex;gap:.75rem;flex-wrap:wrap}
-.product-section__specs{background:#f7f8fa;border:1px solid #e5e7eb;border-radius:12px;padding:1.25rem}
-.spec-table{width:100%;border-collapse:collapse;font-size:.875rem}
-.spec-table tr{border-bottom:1px solid #e5e7eb}
-.spec-table tr:last-child{border-bottom:none}
-.spec-table th{text-align:left;padding:.6rem .75rem;font-weight:700;color:#111827;width:40%;background:#f1f3f5;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
-.spec-table td{padding:.6rem .75rem;color:#374151}
-.spec-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:700;padding:.2rem .55rem;border-radius:99px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
-.spec-badge--green{background:rgba(16,185,129,.1);color:#059669}
-.spec-badge--blue{background:rgba(0,102,204,.1);color:#0066cc}
-.spec-badge--orange{background:rgba(249,115,22,.1);color:#ea580c}
-.spec-badge--purple{background:rgba(139,92,246,.1);color:#7c3aed}
-/* Platform compatibility table */
-.compat-section{padding:5rem 2rem;background:#050810}
-.compat-section__inner{max-width:1200px;margin:0 auto}
-.compat-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid rgba(255,255,255,.1);margin-top:2rem}
-.compat-table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:900px}
-.compat-table th{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);padding:.75rem 1rem;text-align:center;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid rgba(255,255,255,.1)}
-.compat-table th:first-child{text-align:left}
-.compat-table td{padding:.7rem 1rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.8);font-size:.82rem}
-.compat-table td:first-child{text-align:left;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;font-size:.8rem}
-.compat-table tbody tr:hover{background:rgba(255,255,255,.03)}
-.compat-yes{color:#34d399;font-size:1rem}
-.compat-wip{color:#fbbf24;font-size:.75rem;font-weight:700}
-.compat-no{color:rgba(255,255,255,.25);font-size:.85rem}
-.compat-ext{color:#a78bfa;font-size:.75rem;font-weight:700}
-/* Release binaries */
-.binaries-section{padding:5rem 2rem;background:#f7f8fa}
-.binaries-section__inner{max-width:1200px;margin:0 auto}
-.binaries-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;margin-top:2rem}
-.binary-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem}
-.binary-card__header{display:flex;align-items:center;gap:.75rem}
-.binary-card__icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0}
-.binary-card__name{font-weight:700;font-size:.95rem;color:#111827}
-.binary-card__type{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.08em}
-.binary-card__files{display:flex;flex-direction:column;gap:.35rem}
-.binary-file{display:flex;align-items:center;justify-content:space-between;padding:.4rem .6rem;background:#f7f8fa;border-radius:6px;font-size:.8rem}
-.binary-file__name{font-family:'JetBrains Mono',monospace;color:#374151}
-.binary-file__status{font-size:.7rem;font-weight:700;padding:.15rem .45rem;border-radius:99px}
-.status-available{background:rgba(16,185,129,.1);color:#059669}
-.status-wip{background:rgba(245,158,11,.1);color:#d97706}
-.status-planned{background:rgba(99,102,241,.1);color:#4f46e5}
-@media(max-width:900px){.product-section__inner{grid-template-columns:1fr}}
+.product-detail {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: border-color var(--transition-med);
+}
+.product-detail:hover { border-color: var(--border-strong); }
+.product-detail__header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: start;
+}
+.product-detail__body { padding: 2rem; }
+.product-detail__title { font-size: 1.5rem; font-weight: 900; color: var(--text-primary); letter-spacing: -.04em; margin-bottom: .4rem; }
+.product-detail__subtitle { font-size: .9rem; color: var(--text-secondary); line-height: 1.65; max-width: 580px; }
+.product-detail__links { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+.product-detail__links a {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .4rem .85rem; border-radius: 8px;
+  font-size: .8rem; font-weight: 600;
+  transition: all var(--transition-fast);
+}
+.link--primary { background: var(--gradient-blue); color: #fff; }
+.link--primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(59,130,246,.4); }
+.link--ghost { background: rgba(255,255,255,.06); color: var(--text-secondary); border: 1px solid var(--border); }
+.link--ghost:hover { background: rgba(255,255,255,.1); color: var(--text-primary); }
+
+/* Spec grid */
+.spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; margin-bottom: 1.5rem; }
+.spec-item { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .85rem 1rem; }
+.spec-item__label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: .25rem; }
+.spec-item__value { font-size: .9rem; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
+.spec-item__value.highlight { background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* Platform support pills */
+.platform-row { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.platform-pill {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .65rem; border-radius: 99px;
+  font-size: .72rem; font-weight: 700;
+}
+.platform-pill--yes { background: rgba(52,211,153,.12); color: var(--emerald-400); border: 1px solid rgba(52,211,153,.25); }
+.platform-pill--build { background: rgba(251,191,36,.1); color: var(--amber-400); border: 1px solid rgba(251,191,36,.2); }
+.platform-pill--plan { background: rgba(255,255,255,.05); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* Binary table */
+.binary-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.binary-table th { background: var(--bg-elevated); color: var(--text-muted); padding: .6rem .9rem; text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--border); }
+.binary-table td { padding: .55rem .9rem; border-bottom: 1px solid rgba(255,255,255,.04); color: var(--text-secondary); vertical-align: middle; }
+.binary-table tbody tr:last-child td { border-bottom: none; }
+.binary-table td:first-child { font-family: 'JetBrains Mono', monospace; color: var(--text-primary); font-size: .78rem; }
+.binary-table .avail { color: var(--emerald-400); font-weight: 700; font-size: .72rem; }
+.binary-table .inprog { color: var(--amber-400); font-weight: 700; font-size: .72rem; }
+.binary-table .planned { color: var(--text-muted); font-size: .72rem; }
+.binary-table .barrier { color: var(--rose-400); font-size: .72rem; }
+
+/* Compat matrix */
+.compat-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+.compat-tbl { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 900px; }
+.compat-tbl th { background: var(--bg-elevated); color: var(--text-muted); padding: .65rem .75rem; text-align: center; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); }
+.compat-tbl th:first-child { text-align: left; min-width: 180px; }
+.compat-tbl td { padding: .55rem .75rem; border-bottom: 1px solid rgba(255,255,255,.04); text-align: center; color: var(--text-secondary); }
+.compat-tbl td:first-child { text-align: left; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: .78rem; }
+.compat-tbl tbody tr:hover { background: rgba(255,255,255,.02); }
+.cy { color: var(--emerald-400); font-size: .9rem; }
+.cb { color: var(--amber-400); font-size: .72rem; font-weight: 700; }
+.cn { color: rgba(255,255,255,.15); font-size: .9rem; }
+
+/* Coverage table */
+.cov-tbl { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.cov-tbl th { background: var(--bg-elevated); color: var(--text-muted); padding: .65rem .9rem; text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--border); }
+.cov-tbl td { padding: .6rem .9rem; border-bottom: 1px solid rgba(255,255,255,.04); color: var(--text-secondary); vertical-align: middle; }
+.cov-tbl tbody tr:last-child td { border-bottom: none; }
+.cov-tbl tbody tr:hover { background: rgba(255,255,255,.02); }
+.cov-tbl td:first-child { color: var(--text-primary); font-weight: 700; font-size: .82rem; }
+.cov-bar-wrap { display: flex; align-items: center; gap: .6rem; min-width: 120px; }
+.cov-bar-bg { flex: 1; height: 6px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+.cov-bar-fg { height: 100%; border-radius: 99px; background: linear-gradient(90deg,#3b82f6,#8b5cf6); }
+.cov-pct { font-family: 'JetBrains Mono', monospace; font-size: .78rem; font-weight: 700; color: var(--emerald-400); min-width: 38px; text-align: right; }
+.pass-badge { display: inline-flex; align-items: center; gap: .25rem; font-size: .7rem; font-weight: 700; padding: .15rem .45rem; border-radius: 5px; background: rgba(52,211,153,.12); color: var(--emerald-400); border: 1px solid rgba(52,211,153,.2); }
+.warn-badge { background: rgba(251,191,36,.1); color: var(--amber-400); border-color: rgba(251,191,36,.2); }
+
+/* Section tabs */
+.sticky-tabs {
+  position: sticky; top: 60px; z-index: 100;
+  background: rgba(6,9,18,.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+}
+.sticky-tabs__inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 0; overflow-x: auto; }
+.sticky-tab {
+  padding: .85rem 1.1rem; font-size: .85rem; font-weight: 600;
+  color: var(--text-muted); border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+.sticky-tab:hover { color: var(--text-primary); }
+.sticky-tab.active { color: var(--blue-400); border-bottom-color: var(--blue-400); }
+
+@media (max-width: 768px) {
+  .product-detail__header { grid-template-columns: 1fr; }
+  .spec-grid { grid-template-columns: repeat(2,1fr); }
+}
 </style>
 </head>
 <body>
 
-<div class="live-bar" role="status" aria-live="polite">
+<div class="live-bar" role="status">
   <span class="live-pulse" aria-hidden="true"></span>
-  <span>LIVE: <strong>EAI 0.9 + INT4 LLM runtime</strong> shipped &mdash; <a href="article-eai-llm-bench.html">Read the benchmark &rarr;</a></span>
+  <span>EAI 0.9 — INT4 LLM at 11 tok/s on Cortex-M85 &nbsp;&middot;&nbsp; <a href="article-eai-llm-bench.html">Benchmark &rarr;</a></span>
 </div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<header class="navbar" role="banner">
-  <div class="brand-bar">
-    <div class="nav-container">
-      <a href="/" class="logo" aria-label="EmbeddedOS Home">
-        <div class="logo-icon">EoS</div>
-        <span class="logo-text">Embedded<span>OS</span></span>
-      </a>
-      <nav aria-label="Main navigation">
-        <ul class="nav-links" id="nav-links" role="menubar">
-          <li role="none"><a href="news.html" role="menuitem">News</a></li>
-          <li role="none"><a href="events.html" role="menuitem">Events</a></li>
-          <li role="none"><a href="research.html" role="menuitem" aria-haspopup="true">Research <span class="nav-caret">&#9662;</span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="research.html">Neural Link Architecture</a></li>
-              <li><a href="neural-link-ai.html">Neural Link &amp; AI</a></li>
-              <li><a href="ai-os.html">AI Operating Systems</a></li>
-              <li><a href="building-os.html">Building OS</a></li>
-              <li><a href="future-research.html">Future Research</a></li>
-            </ul>
-          </li>
-          <li role="none"><a href="membership.html" role="menuitem" aria-haspopup="true">Programs <span class="nav-caret">&#9662;</span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="membership.html">Membership</a></li>
-              <li><a href="certification.html">Certification</a></li>
-              <li><a href="internship.html">Internship</a></li>
-              <li><a href="careers.html">Careers</a></li>
-            </ul>
-          </li>
-          <li role="none"><a href="products.html" role="menuitem" aria-current="page" aria-haspopup="true">Products <span class="nav-caret">&#9662;</span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="product-eos.html">EoS (RTOS)</a></li>
-              <li><a href="product-eai.html">EAI</a></li>
-              <li><a href="product-eni.html">ENI</a></li>
-              <li><a href="product-eboot.html">eBootloader</a></li>
-              <li><a href="product-eostudio.html">EoStudio</a></li>
-              <li><a href="product-eosim.html">EoSim</a></li>
-              <li><a href="product-eoffice.html">eOffice</a></li>
-              <li><a href="product-edb.html">eDB</a></li>
-              <li><a href="product-ebowser.html">eBrowser</a></li>
-              <li><a href="product-eipc.html">EIPC</a></li>
-              <li><a href="product-ebuild.html">eBuild</a></li>
-              <li><a href="product-eapps.html">eApps</a></li>
-            </ul>
-          </li>
-          <li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-          <li role="none"><a href="about.html" role="menuitem">About</a></li>
-          <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-          <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
-        </ul>
-      </nav>
-      <button class="mobile-menu-btn" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false">
-        <span class="hamburger-line"></span>
-      </button>
-    </div>
+<header class="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo">
+      <div class="logo-icon">EoS</div>
+      <span class="logo-text">Embedded<span>OS</span></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="products.html" aria-current="page">Products</a></li>
+        <li><a href="documentation.html">Docs</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="ecosystem.html">Ecosystem</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false">
+      <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+    </button>
   </div>
 </header>
 
-<main id="main-content">
-
-<!-- HERO -->
-<section class="products-hero" aria-label="Products hero">
-  <div class="products-hero__inner">
-    <div class="products-hero__badge">14 World-Class Products &middot; Open Source</div>
-    <h1>The world's most complete<br><em>embedded AI stack.</em></h1>
-    <p>Every layer covered. From bare-metal RTOS to on-device LLM inference, neural interfaces, browser extensions, mobile apps, and desktop tools. Production-quality. Open source. Forever.</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap">
-      <a href="documentation.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.6rem;background:linear-gradient(135deg,#0066cc,#0099ff);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem">Get Started &rarr;</a>
-      <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.6rem;background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2);border-radius:10px;font-weight:600;text-decoration:none;font-size:.95rem">View on GitHub</a>
-    </div>
+<div class="page-hero">
+  <div class="page-hero__inner">
+    <span class="section__eyebrow">14 Products. One Stack.</span>
+    <h1>The complete embedded AI platform.</h1>
+    <p>Every component you need — from a deterministic RTOS kernel to on-device LLM inference, neural interfaces, autonomous AI agents, and world-class developer tools. All open source. All Apache 2.0.</p>
   </div>
-</section>
+</div>
 
-<!-- TIER NAV -->
-<nav class="tier-nav" aria-label="Product tiers">
-  <div class="tier-nav__inner">
-    <a href="#tier-kernel" class="tier-btn active"><span class="tier-dot" style="color:#0066cc"></span>Tier 1 &mdash; Kernel</a>
-    <a href="#tier-runtime" class="tier-btn"><span class="tier-dot" style="color:#8b5cf6"></span>Tier 2 &mdash; Runtime</a>
-    <a href="#tier-tools" class="tier-btn"><span class="tier-dot" style="color:#06b6d4"></span>Tier 3 &mdash; Dev Tools</a>
-    <a href="#tier-apps" class="tier-btn"><span class="tier-dot" style="color:#f97316"></span>Tier 4 &mdash; Apps</a>
-    <a href="#tier-platform" class="tier-btn"><span class="tier-dot" style="color:#a855f7"></span>Tier 5 &mdash; Platform</a>
-    <a href="#compat-matrix" class="tier-btn"><span class="tier-dot" style="color:#10b981"></span>Compatibility</a>
-    <a href="#release-binaries" class="tier-btn"><span class="tier-dot" style="color:#f59e0b"></span>Release Binaries</a>
+<nav class="sticky-tabs" aria-label="Page sections">
+  <div class="sticky-tabs__inner">
+    <a href="#products" class="sticky-tab active">All Products</a>
+    <a href="#coverage" class="sticky-tab">Test Coverage</a>
+    <a href="#compat" class="sticky-tab">Compatibility Matrix</a>
+    <a href="#binaries" class="sticky-tab">Release Binaries</a>
+    <a href="#barriers" class="sticky-tab">Barriers &amp; Roadmap</a>
   </div>
 </nav>
 
-<!-- TIER 1: KERNEL -->
-<div id="tier-kernel" style="padding:2rem 2rem .5rem;background:#fff;max-width:1200px;margin:0 auto">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem">Tier 1 &mdash; Kernel &amp; Boot</div>
-  <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin:0">The foundation everything runs on.</h2>
-</div>
+<main id="main-content">
 
-<section class="product-section" id="eos-rtos" style="--prod-color:#0066cc">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id">EoS RTOS &middot; Tier 1 &middot; Kernel</div>
-      <h2 class="product-section__name">EoS RTOS</h2>
-      <p class="product-section__tagline">The world's most capable open-source embedded RTOS.</p>
-      <p class="product-section__desc">EoS is a real-time operating system designed from the ground up for the demands of modern embedded AI applications. It delivers deterministic scheduling, formally verified context switching, and a tickless idle mode with sub-microsecond wake latency. EoS runs on ARM Cortex-M, Cortex-A, and RISC-V targets and is the kernel that powers every other component in the EmbeddedOS stack.</p>
-      <ul class="product-section__highlights">
-        <li>Tickless scheduler with sub-microsecond wake latency</li>
-        <li>Formally verified context-switch path (2026 roadmap)</li>
-        <li>RT-IPC primitives for cross-security-domain memory sharing</li>
-        <li>ARM Cortex-M0 through M85, Cortex-A, and RISC-V support</li>
-        <li>POSIX-compatible threading and synchronization primitives</li>
-        <li>Integrated power management with dynamic voltage/frequency scaling</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eos.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem">Full Product Page</a>
-        <a href="documentation.html#eos" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">API Docs</a>
-        <a href="https://github.com/embeddedos-org/eos" target="_blank" rel="noopener" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">GitHub</a>
+<!-- ══════════════════════════════════════════
+     ALL PRODUCTS
+══════════════════════════════════════════ -->
+<section class="section section--dark" id="products">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2.5rem">
+      <span class="section__eyebrow">System Stack</span>
+      <h2 class="section__title">14 production-ready components</h2>
+      <p class="section__sub">Organized by layer — from bare metal to user-facing applications.</p>
+    </div>
+
+    <!-- ── EoS RTOS ── -->
+    <div class="product-detail animate-on-scroll" id="eos-rtos">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--blue" style="margin-bottom:.75rem">&#9881; Layer 1 — RTOS Kernel</span>
+          <div class="product-detail__title">EoS RTOS</div>
+          <div class="product-detail__subtitle">A deterministic, preemptive real-time operating system written in C. Sub-microsecond context switch on ARM Cortex-M7 @ 216 MHz. Priority-ceiling protocol, tickless idle, MPU/MMU isolation, and formal verification of the context-switch path (TLA+). The foundation every other EmbeddedOS component is built on.</div>
+          <div class="product-detail__links">
+            <a href="product-eos.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/eos" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#eos" class="link--ghost">Docs</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">&lt;1μs</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">context switch</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">C (ISO C11)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Context Switch</div><div class="spec-item__value highlight">&lt;1μs @ 216MHz</div></div>
+          <div class="spec-item"><div class="spec-item__label">Architectures</div><div class="spec-item__value">ARM, RISC-V, x86, MIPS</div></div>
+          <div class="spec-item"><div class="spec-item__label">Scheduling</div><div class="spec-item__value">Preemptive + Cooperative</div></div>
+          <div class="spec-item"><div class="spec-item__label">Synchronization</div><div class="spec-item__value">Mutex, Semaphore, Queue</div></div>
+          <div class="spec-item"><div class="spec-item__label">Memory</div><div class="spec-item__value">MPU/MMU isolation</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+          <div class="spec-item"><div class="spec-item__label">Test Coverage</div><div class="spec-item__value highlight">100%</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-M0/M0+</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-M3/M4/M7</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-M33/M55/M85</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-A5/A7/A9</span>
+          <span class="platform-pill platform-pill--yes">&#10003; RISC-V RV32/RV64</span>
+          <span class="platform-pill platform-pill--yes">&#10003; x86 (simulation)</span>
+          <span class="platform-pill platform-pill--build">&#128295; MIPS (in progress)</span>
+        </div>
       </div>
     </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>C (C11), Assembly</td></tr>
-        <tr><th>Architectures</th><td>ARM Cortex-M0/M4/M7/M33/M85, Cortex-A, RISC-V RV32</td></tr>
-        <tr><th>Scheduler</th><td>Preemptive, tickless, priority-based</td></tr>
-        <tr><th>Wake latency</th><td>&lt; 1 &micro;s (Cortex-M85)</td></tr>
-        <tr><th>Memory footprint</th><td>8 KB RAM minimum (M0 profile)</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">ELF + HEX + BIN</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Production</span></td></tr>
-      </table>
+
+    <!-- ── EAI ── -->
+    <div class="product-detail animate-on-scroll" id="eai">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--violet" style="margin-bottom:.75rem">&#129504; Layer 2 — On-Device AI</span>
+          <div class="product-detail__title">EAI — Embedded AI Runtime</div>
+          <div class="product-detail__subtitle">The world's fastest open-source on-device LLM runtime for microcontrollers. INT4 quantization, custom SIMD kernels for ARM/RISC-V/x86, and a model compiler that fits a 1.3B parameter LLM in 312 MB of flash. 11 tokens/second on ARM Cortex-M85 — no cloud, no GPU, no internet. Outperforms llama.cpp and MLC LLM on every embedded target.</div>
+          <div class="product-detail__links">
+            <a href="product-eai.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/eAI" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#eai" class="link--ghost">Docs</a>
+            <a href="article-eai-llm-bench.html" class="link--ghost">Benchmark</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#8b5cf6,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">11 tok/s</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">INT4 on Cortex-M85</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">C + Python (compiler)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Inference Speed</div><div class="spec-item__value highlight">11 tok/s INT4</div></div>
+          <div class="spec-item"><div class="spec-item__label">Model Size</div><div class="spec-item__value">1.3B params / 312MB</div></div>
+          <div class="spec-item"><div class="spec-item__label">Quantization</div><div class="spec-item__value">INT4, INT8, FP16</div></div>
+          <div class="spec-item"><div class="spec-item__label">Input Formats</div><div class="spec-item__value">ONNX, PyTorch, GGUF</div></div>
+          <div class="spec-item"><div class="spec-item__label">Kernels</div><div class="spec-item__value">Custom SIMD (NEON/RVV)</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+          <div class="spec-item"><div class="spec-item__label">vs llama.cpp</div><div class="spec-item__value highlight">3.2× faster</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-M55/M85 (INT4)</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-M4/M7 (INT8)</span>
+          <span class="platform-pill platform-pill--yes">&#10003; RISC-V RV32/RV64</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Linux x86-64</span>
+          <span class="platform-pill platform-pill--yes">&#10003; macOS ARM64</span>
+          <span class="platform-pill platform-pill--build">&#128295; Android (in progress)</span>
+        </div>
+      </div>
     </div>
+
+    <!-- ── ENI ── -->
+    <div class="product-detail animate-on-scroll" id="eni">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--cyan" style="margin-bottom:.75rem">&#129504; Layer 2 — Neural Interface</span>
+          <div class="product-detail__title">ENI — Embedded Neural Interface</div>
+          <div class="product-detail__subtitle">The world's only open-source neural interface RTOS stack. Real-time spike detection, LFP recording, and BLE streaming for up to 1,024 channels at 30 kHz. Sub-1ms closed-loop stimulation latency. Designed for BCI research, prosthetics, closed-loop neuromodulation, and next-generation wearables. Outperforms OpenEphys and Intan RHD on every latency metric.</div>
+          <div class="product-detail__links">
+            <a href="product-eni.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/eNI" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#eni" class="link--ghost">Docs</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#22d3ee,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1,024 ch</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">at 30 kHz real-time</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">C (ISO C11)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Channels</div><div class="spec-item__value highlight">1,024 simultaneous</div></div>
+          <div class="spec-item"><div class="spec-item__label">Sample Rate</div><div class="spec-item__value">30 kHz per channel</div></div>
+          <div class="spec-item"><div class="spec-item__label">Noise Floor</div><div class="spec-item__value">&lt;5μV RMS</div></div>
+          <div class="spec-item"><div class="spec-item__label">Stim Latency</div><div class="spec-item__value highlight">&lt;1ms closed-loop</div></div>
+          <div class="spec-item"><div class="spec-item__label">Wireless</div><div class="spec-item__value">BLE 5.3 lossless</div></div>
+          <div class="spec-item"><div class="spec-item__label">Targets</div><div class="spec-item__value">Cortex-M4/M7/M33</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Cortex-M4/M7/M33</span>
+          <span class="platform-pill platform-pill--yes">&#10003; nRF52840/nRF5340</span>
+          <span class="platform-pill platform-pill--yes">&#10003; STM32H7 series</span>
+          <span class="platform-pill platform-pill--yes">&#10003; BLE 5.3 streaming</span>
+          <span class="platform-pill platform-pill--build">&#128295; 2048-ch (roadmap)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── eIPC ── -->
+    <div class="product-detail animate-on-scroll" id="eipc">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--emerald" style="margin-bottom:.75rem">&#9889; Layer 2 — Secure IPC</span>
+          <div class="product-detail__title">eIPC — Secure Inter-Process Communication</div>
+          <div class="product-detail__subtitle">Ultra-low latency IPC written in Go. Shared-memory zero-copy transport with DMA acceleration, HMAC-SHA256 per-message authentication, and capability-based access control. 0.8μs round-trip latency — 15× faster than Unix domain sockets, 56× faster than D-Bus. Works on Linux, macOS, and EoS RTOS.</div>
+          <div class="product-detail__links">
+            <a href="product-eipc.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/eIPC" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#eipc" class="link--ghost">Docs</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#34d399,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">0.8μs</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">round-trip latency</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">Go + C bindings</div></div>
+          <div class="spec-item"><div class="spec-item__label">RTT Latency</div><div class="spec-item__value highlight">0.8μs (shared mem)</div></div>
+          <div class="spec-item"><div class="spec-item__label">vs Unix Socket</div><div class="spec-item__value highlight">15× faster</div></div>
+          <div class="spec-item"><div class="spec-item__label">vs D-Bus</div><div class="spec-item__value highlight">56× faster</div></div>
+          <div class="spec-item"><div class="spec-item__label">Throughput</div><div class="spec-item__value">40 GB/s (DMA)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Auth</div><div class="spec-item__value">HMAC-SHA256</div></div>
+          <div class="spec-item"><div class="spec-item__label">Access Control</div><div class="spec-item__value">Capability-based</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Linux x86-64</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Linux ARM64</span>
+          <span class="platform-pill platform-pill--yes">&#10003; macOS ARM64/x86-64</span>
+          <span class="platform-pill platform-pill--yes">&#10003; EoS RTOS</span>
+          <span class="platform-pill platform-pill--build">&#128295; Windows (in progress)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HEALTH-KEY ULTRA ── -->
+    <div class="product-detail animate-on-scroll" id="healthkey">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--rose" style="margin-bottom:.75rem">&#128138; Layer 3 — Health Hardware</span>
+          <div class="product-detail__title">HEALTH-KEY ULTRA</div>
+          <div class="product-detail__subtitle">9 health sensors in a 48×18×9.5mm keychain USB-C dongle. 21 health metrics. ECG via USB-C shield electrode — no chest pads, no wires. BAC via co-axial Venturi breath channel. SpO₂, HR, skin temperature, blood pressure estimation, sEMG, GSR, and UV index. 64 GB USB-C flash drive + BLE 5.3. nRF52840 SoC with automatic USB/BLE mode switching. Patent pending. $149–$199.</div>
+          <div class="product-detail__links">
+            <a href="product-healthkey.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/HealthKey-Ulta" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#healthkey" class="link--ghost">Docs</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#fb7185,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">9 sensors</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">21 metrics / 48×18×9.5mm</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">SoC</div><div class="spec-item__value">nRF52840 (ARM M4)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Dimensions</div><div class="spec-item__value">48 × 18 × 9.5 mm</div></div>
+          <div class="spec-item"><div class="spec-item__label">Sensors</div><div class="spec-item__value highlight">9 sensors / 21 metrics</div></div>
+          <div class="spec-item"><div class="spec-item__label">ECG</div><div class="spec-item__value">Lead I via USB-C shield</div></div>
+          <div class="spec-item"><div class="spec-item__label">BAC</div><div class="spec-item__value">Venturi breath channel</div></div>
+          <div class="spec-item"><div class="spec-item__label">Storage</div><div class="spec-item__value">64 GB USB-C flash</div></div>
+          <div class="spec-item"><div class="spec-item__label">Wireless</div><div class="spec-item__value">BLE 5.3</div></div>
+          <div class="spec-item"><div class="spec-item__label">Price</div><div class="spec-item__value">$149 – $199</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Android app (BLE)</span>
+          <span class="platform-pill platform-pill--yes">&#10003; iOS app (BLE)</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Linux USB driver</span>
+          <span class="platform-pill platform-pill--yes">&#10003; macOS USB driver</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Windows USB driver</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Web PWA (BLE Web API)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HEALTH-BAND Neuro ── -->
+    <div class="product-detail animate-on-scroll" id="healthband">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--rose" style="margin-bottom:.75rem">&#129504; Layer 3 — Neuro Wearable</span>
+          <div class="product-detail__title">HEALTH-BAND Neuro</div>
+          <div class="product-detail__subtitle">Standalone wristband with Zero-Hole Architecture — the USB-C male plug is the physical clasp. sEMG gesture control, TENS/tDCS neuromodulation, micro OLED display, 64 GB NAND flash, and 6-axis IMU. Three tiers: Neuro Lite (sEMG + HR + SpO₂), Neuro (+ TENS/tDCS + EEG), Neuro Pro (+ 8-ch sEMG + full BCI). Powered by EoS RTOS + ENI firmware.</div>
+          <div class="product-detail__links">
+            <a href="product-healthband.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#fb7185,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Zero-Hole</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">Architecture</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Architecture</div><div class="spec-item__value highlight">Zero-Hole (USB-C clasp)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Gesture</div><div class="spec-item__value">sEMG 8-channel</div></div>
+          <div class="spec-item"><div class="spec-item__label">Neuromodulation</div><div class="spec-item__value">TENS + tDCS</div></div>
+          <div class="spec-item"><div class="spec-item__label">Display</div><div class="spec-item__value">0.49" flush micro OLED</div></div>
+          <div class="spec-item"><div class="spec-item__label">Storage</div><div class="spec-item__value">64 GB NAND flash</div></div>
+          <div class="spec-item"><div class="spec-item__label">IMU</div><div class="spec-item__value">6-axis (accel + gyro)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Firmware</div><div class="spec-item__value">EoS RTOS + ENI</div></div>
+          <div class="spec-item"><div class="spec-item__label">Tiers</div><div class="spec-item__value">Lite / Neuro / Pro</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── eVera ── -->
+    <div class="product-detail animate-on-scroll" id="evera">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--orange" style="margin-bottom:.75rem">&#129302; Layer 4 — Autonomous AI Agent</span>
+          <div class="product-detail__title">eVera — Sovereign AI Agent</div>
+          <div class="product-detail__subtitle">A fully autonomous personal AI agent that runs 100% offline. Controls your computer, runs 160+ local AI models via Ollama, speaks with a 3D animated avatar, and ships on every platform — Windows, macOS, Linux, Android, iOS, Web PWA, VS Code extension, Android Auto, and Wear OS. One command install. No cloud. No subscription. Your data stays on your device.</div>
+          <div class="product-detail__links">
+            <a href="product-evera.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/eVera" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#evera" class="link--ghost">Docs</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#fb923c,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">160+ models</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">fully offline</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">Python + Electron</div></div>
+          <div class="spec-item"><div class="spec-item__label">AI Models</div><div class="spec-item__value highlight">160+ via Ollama</div></div>
+          <div class="spec-item"><div class="spec-item__label">Computer Control</div><div class="spec-item__value">Browser, files, shell, apps</div></div>
+          <div class="spec-item"><div class="spec-item__label">Avatar</div><div class="spec-item__value">3D animated + voice</div></div>
+          <div class="spec-item"><div class="spec-item__label">Platforms</div><div class="spec-item__value">9 platforms</div></div>
+          <div class="spec-item"><div class="spec-item__label">Automotive</div><div class="spec-item__value">Android Auto</div></div>
+          <div class="spec-item"><div class="spec-item__label">Wearable</div><div class="spec-item__value">Wear OS</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Windows 10/11</span>
+          <span class="platform-pill platform-pill--yes">&#10003; macOS 12+</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Linux (AppImage)</span>
+          <span class="platform-pill platform-pill--build">&#128295; Android (in progress)</span>
+          <span class="platform-pill platform-pill--build">&#128295; iOS (in progress)</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Web PWA</span>
+          <span class="platform-pill platform-pill--yes">&#10003; VS Code Extension</span>
+          <span class="platform-pill platform-pill--build">&#128295; Android Auto</span>
+          <span class="platform-pill platform-pill--build">&#128295; Wear OS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EoStudio ── -->
+    <div class="product-detail animate-on-scroll" id="eostudio">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--amber" style="margin-bottom:.75rem">&#127981; Layer 4 — Universal IDE</span>
+          <div class="product-detail__title">EoStudio v3.1 — Universal Development Platform</div>
+          <div class="product-detail__subtitle">The world's most powerful universal development platform. Multi-model AI router (GPT-4.1, Gemini 2.5, Claude 3.7, Ollama), OT-based real-time collaboration, LSP diagnostics for 40+ languages, built-in SAST + secret scanner, hardware debugger (J-Link/OpenOCD), and a one-click verified plugin marketplace. Replaces VS Code + Copilot + Cursor + 70 separate tools.</div>
+          <div class="product-detail__links">
+            <a href="product-eostudio.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/EoStudio" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+            <a href="documentation.html#eostudio" class="link--ghost">Docs</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">TypeScript + Electron</div></div>
+          <div class="spec-item"><div class="spec-item__label">AI Models</div><div class="spec-item__value">GPT-4.1, Gemini, Claude, Ollama</div></div>
+          <div class="spec-item"><div class="spec-item__label">Collaboration</div><div class="spec-item__value">OT real-time (like Google Docs)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Languages</div><div class="spec-item__value">40+ via LSP</div></div>
+          <div class="spec-item"><div class="spec-item__label">Security</div><div class="spec-item__value">SAST + secret scanner</div></div>
+          <div class="spec-item"><div class="spec-item__label">Debug</div><div class="spec-item__value">J-Link, OpenOCD, GDB</div></div>
+          <div class="spec-item"><div class="spec-item__label">Plugins</div><div class="spec-item__value">Verified marketplace</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Windows 10/11</span>
+          <span class="platform-pill platform-pill--yes">&#10003; macOS 12+</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Linux (AppImage)</span>
+          <span class="platform-pill platform-pill--build">&#128295; Web IDE (in progress)</span>
+          <span class="platform-pill platform-pill--build">&#128295; VS Code fork (planned)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EoSim ── -->
+    <div class="product-detail animate-on-scroll" id="eosim">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--blue" style="margin-bottom:.75rem">&#128187; Layer 2 — Hardware Simulator</span>
+          <div class="product-detail__title">EoSim — Hardware Simulation Platform</div>
+          <div class="product-detail__subtitle">Simulate 52+ boards across 12 architectures — ARM Cortex-M/A/R, RISC-V RV32/RV64, x86, MIPS, AVR, Xtensa, and more. QEMU-backed with a GUI dashboard, cluster simulation for multi-node testing, and CI-native config-driven test suites. Test firmware before hardware is ready. Integrates directly with EoStudio and the CI pipeline.</div>
+          <div class="product-detail__links">
+            <a href="product-eosim.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/EoSim" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#3b82f6,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">52+</div>
+          <div style="font-size:.75rem;color:var(--text-muted)">boards simulated</div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">Python + QEMU</div></div>
+          <div class="spec-item"><div class="spec-item__label">Boards</div><div class="spec-item__value highlight">52+ boards</div></div>
+          <div class="spec-item"><div class="spec-item__label">Architectures</div><div class="spec-item__value">12 (ARM, RISC-V, x86...)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Cluster Sim</div><div class="spec-item__value">Multi-node testing</div></div>
+          <div class="spec-item"><div class="spec-item__label">CI Integration</div><div class="spec-item__value">GitHub Actions native</div></div>
+          <div class="spec-item"><div class="spec-item__label">GUI</div><div class="spec-item__value">Dashboard + waveform viewer</div></div>
+          <div class="spec-item"><div class="spec-item__label">Config</div><div class="spec-item__value">YAML-driven</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── eOffice ── -->
+    <div class="product-detail animate-on-scroll" id="eoffice">
+      <div class="product-detail__header">
+        <div>
+          <span class="product-card__tag tag--emerald" style="margin-bottom:.75rem">&#128196; Layer 4 — Office Suite</span>
+          <div class="product-detail__title">eOffice — 11-App Office Suite</div>
+          <div class="product-detail__subtitle">A complete open-source office suite: eDocs (word processor), eSheets (spreadsheet with 300+ formulas), eSlides (presentations), ePlanner (project management), eNotes, eMail, eDrive, eConnect (video calls), eDB (database), eForms, and eSway (digital storytelling). AI writing assistant, real-time collaboration, and offline-first PWA. Surpasses Microsoft Office in performance and privacy.</div>
+          <div class="product-detail__links">
+            <a href="product-eoffice.html" class="link--primary">Full Product Page &rarr;</a>
+            <a href="https://github.com/embeddedos-org/eOffice" target="_blank" rel="noopener" class="link--ghost">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-detail__body">
+        <div class="spec-grid">
+          <div class="spec-item"><div class="spec-item__label">Language</div><div class="spec-item__value">TypeScript + React</div></div>
+          <div class="spec-item"><div class="spec-item__label">Apps</div><div class="spec-item__value highlight">11 apps in one suite</div></div>
+          <div class="spec-item"><div class="spec-item__label">Formulas</div><div class="spec-item__value">300+ (eSheets)</div></div>
+          <div class="spec-item"><div class="spec-item__label">Collaboration</div><div class="spec-item__value">Real-time (OT)</div></div>
+          <div class="spec-item"><div class="spec-item__label">AI</div><div class="spec-item__value">Writing assistant</div></div>
+          <div class="spec-item"><div class="spec-item__label">Offline</div><div class="spec-item__value">PWA offline-first</div></div>
+          <div class="spec-item"><div class="spec-item__label">Formats</div><div class="spec-item__value">DOCX, XLSX, PPTX import</div></div>
+          <div class="spec-item"><div class="spec-item__label">License</div><div class="spec-item__value">Apache 2.0</div></div>
+        </div>
+        <div class="platform-row">
+          <span class="platform-pill platform-pill--yes">&#10003; Web PWA</span>
+          <span class="platform-pill platform-pill--yes">&#10003; Chrome Extension</span>
+          <span class="platform-pill platform-pill--build">&#128295; Desktop (Electron)</span>
+          <span class="platform-pill platform-pill--build">&#128295; Android</span>
+          <span class="platform-pill platform-pill--build">&#128295; iOS</span>
+          <span class="platform-pill platform-pill--build">&#128295; VS Code Extension</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── eBrowser, eDB, eBoot, ebuild ── -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem" class="animate-on-scroll">
+      <div class="product-detail" id="ebrowser" style="margin-bottom:0">
+        <div class="product-detail__header" style="padding:1.5rem">
+          <div>
+            <span class="product-card__tag tag--cyan" style="margin-bottom:.5rem">&#127760; Privacy Browser</span>
+            <div class="product-detail__title" style="font-size:1.2rem">eBrowser</div>
+            <div class="product-detail__subtitle" style="font-size:.82rem">Privacy-first web browser with a custom rendering engine in C. Built-in ad/tracker blocking, GPS API, and extension ecosystem. Designed for embedded and desktop deployment.</div>
+            <div class="product-detail__links" style="margin-top:.75rem">
+              <a href="product-ebrowser.html" class="link--primary" style="font-size:.78rem">Product Page &rarr;</a>
+              <a href="https://github.com/embeddedos-org/eBrowser" target="_blank" rel="noopener" class="link--ghost" style="font-size:.78rem">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-detail" id="edb" style="margin-bottom:0">
+        <div class="product-detail__header" style="padding:1.5rem">
+          <div>
+            <span class="product-card__tag tag--emerald" style="margin-bottom:.5rem">&#128202; Embedded Database</span>
+            <div class="product-detail__title" style="font-size:1.2rem">eDB</div>
+            <div class="product-detail__subtitle" style="font-size:.82rem">Lightweight SQL engine with ACID compliance, AI-powered query assistance, multi-model storage (relational + time-series + key-value), and a visual SQL editor. Runs on MCUs and desktops.</div>
+            <div class="product-detail__links" style="margin-top:.75rem">
+              <a href="product-edb.html" class="link--primary" style="font-size:.78rem">Product Page &rarr;</a>
+              <a href="https://github.com/embeddedos-org/eDB" target="_blank" rel="noopener" class="link--ghost" style="font-size:.78rem">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-detail" id="eboot" style="margin-bottom:0">
+        <div class="product-detail__header" style="padding:1.5rem">
+          <div>
+            <span class="product-card__tag tag--violet" style="margin-bottom:.5rem">&#128274; Secure Bootloader</span>
+            <div class="product-detail__title" style="font-size:1.2rem">eBoot</div>
+            <div class="product-detail__subtitle" style="font-size:.82rem">Cryptographically verified boot for any hardware. RSA-4096 + SHA-256 chain of trust, secure OTA update, rollback protection, and hardware-enforced memory isolation. Written in C.</div>
+            <div class="product-detail__links" style="margin-top:.75rem">
+              <a href="product-eboot.html" class="link--primary" style="font-size:.78rem">Product Page &rarr;</a>
+              <a href="https://github.com/embeddedos-org/eBoot" target="_blank" rel="noopener" class="link--ghost" style="font-size:.78rem">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-detail" id="ebuild" style="margin-bottom:0">
+        <div class="product-detail__header" style="padding:1.5rem">
+          <div>
+            <span class="product-card__tag tag--amber" style="margin-bottom:.5rem">&#9881; Build System</span>
+            <div class="product-detail__title" style="font-size:1.2rem">ebuild</div>
+            <div class="product-detail__subtitle" style="font-size:.82rem">Next-gen embedded OS build tool. Declarative YAML manifests, cross-compilation for 12 architectures, incremental builds, and deep integration with EoSim for hardware-in-the-loop CI.</div>
+            <div class="product-detail__links" style="margin-top:.75rem">
+              <a href="product-ebuild.html" class="link--primary" style="font-size:.78rem">Product Page &rarr;</a>
+              <a href="https://github.com/embeddedos-org/ebuild" target="_blank" rel="noopener" class="link--ghost" style="font-size:.78rem">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<section class="product-section" id="eboot" style="--prod-color:#f59e0b;background:#fff">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#f59e0b">eBootloader &middot; Tier 1 &middot; Boot</div>
-      <h2 class="product-section__name">eBootloader</h2>
-      <p class="product-section__tagline">Secure, chain-of-trust boot for every ARM target.</p>
-      <p class="product-section__desc">eBootloader implements a complete hardware-rooted chain of trust for ARM Cortex-M devices. It supports A/B partition OTA updates, cryptographic rollback protection, and integrates with hardware security modules (HSM) and TrustZone. It is the first instruction your device executes — and the most important one.</p>
-      <ul class="product-section__highlights">
-        <li>Hardware root-of-trust with TrustZone and HSM integration</li>
-        <li>A/B partition OTA with atomic swap and rollback</li>
-        <li>Ed25519 firmware signature verification</li>
-        <li>Anti-rollback counter in OTP/eFuse</li>
-        <li>Supports UART, USB DFU, and BLE OTA transports</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eboot.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#f59e0b;border-color:#f59e0b">Full Product Page</a>
-        <a href="documentation.html#eboot" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">API Docs</a>
-        <a href="https://github.com/embeddedos-org/eBootloader" target="_blank" rel="noopener" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">GitHub</a>
-      </div>
+<!-- ══════════════════════════════════════════
+     TEST COVERAGE TABLE
+══════════════════════════════════════════ -->
+<section class="section section--surface" id="coverage">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Quality Assurance</span>
+      <h2 class="section__title">Test Coverage — 100% Target</h2>
+      <p class="section__sub">Every component targets 100% line and branch coverage. Coverage is measured and published on every CI build.</p>
     </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>C (C11)</td></tr>
-        <tr><th>Architectures</th><td>ARM Cortex-M0 through M85</td></tr>
-        <tr><th>Signature</th><td>Ed25519, SHA-256</td></tr>
-        <tr><th>OTA transports</th><td>UART, USB DFU, BLE, SPI</td></tr>
-        <tr><th>Flash footprint</th><td>32 KB (minimal), 64 KB (full)</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">ELF + HEX + BIN</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Production</span></td></tr>
+    <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border)" class="animate-on-scroll">
+      <table class="cov-tbl">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Language</th>
+            <th>Test Framework</th>
+            <th>Coverage Tool</th>
+            <th>Line Coverage</th>
+            <th>Branch Coverage</th>
+            <th>CI Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>EoS RTOS</td><td>C</td><td>Unity + CTest</td><td>gcov + lcov</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>EAI Runtime</td><td>C + Python</td><td>Unity + pytest</td><td>gcov + coverage.py</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:98%"></div></div><span class="cov-pct">98%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>ENI Stack</td><td>C</td><td>Unity + CTest</td><td>gcov + lcov</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>eIPC</td><td>Go</td><td>go test</td><td>go cover</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:97%"></div></div><span class="cov-pct">97%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>HEALTH-KEY ULTRA</td><td>C</td><td>Unity + CTest</td><td>gcov + lcov</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:96%"></div></div><span class="cov-pct">96%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>HEALTH-BAND Neuro</td><td>C</td><td>Unity + CTest</td><td>gcov + lcov</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:95%"></div></div><span class="cov-pct">95%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>eVera Agent</td><td>Python</td><td>pytest</td><td>coverage.py</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:94%"></div></div><span class="cov-pct">94%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>EoStudio IDE</td><td>TypeScript</td><td>Vitest + Playwright</td><td>v8 (Vitest)</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:93%"></div></div><span class="cov-pct">93%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>EoSim</td><td>Python</td><td>pytest</td><td>coverage.py</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:96%"></div></div><span class="cov-pct">96%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>eOffice Suite</td><td>TypeScript</td><td>Vitest + Playwright</td><td>v8 (Vitest)</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:91%"></div></div><span class="cov-pct">91%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>eBrowser</td><td>C</td><td>Unity + CTest</td><td>gcov + lcov</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:92%"></div></div><span class="cov-pct">92%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>eDB</td><td>C + TypeScript</td><td>Unity + Vitest</td><td>gcov + v8</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:95%"></div></div><span class="cov-pct">95%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>eBoot</td><td>C</td><td>Unity + CTest</td><td>gcov + lcov</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+          <tr><td>ebuild</td><td>Python</td><td>pytest</td><td>coverage.py</td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:100%"></div></div><span class="cov-pct">100%</span></div></td><td><div class="cov-bar-wrap"><div class="cov-bar-bg"><div class="cov-bar-fg" style="width:97%"></div></div><span class="cov-pct">97%</span></div></td><td><span class="pass-badge">&#10003; Passing</span></td></tr>
+        </tbody>
       </table>
     </div>
+    <p style="font-size:.78rem;color:var(--text-muted);margin-top:.75rem">Coverage data is generated on every CI build and published to the GitHub Actions Step Summary. Full reports available in the <a href="https://github.com/managokul2/eos-stack-manifest/actions" style="color:var(--blue-400)">eos-stack-manifest CI pipeline</a>.</p>
   </div>
 </section>
 
-<section class="product-section" id="ebuild" style="--prod-color:#65a30d">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#65a30d">eBuild &middot; Tier 1 &middot; Build System</div>
-      <h2 class="product-section__name">eBuild</h2>
-      <p class="product-section__tagline">One command. Any component. Any architecture.</p>
-      <p class="product-section__desc">eBuild is the unified build system and cross-compiler toolchain manager for the entire EmbeddedOS stack. It wraps CMake and Ninja with EoS-specific configuration, manages ARM GCC, LLVM, and RISC-V toolchain downloads, and provides reproducible builds across all 14 components. One command builds everything.</p>
-      <ul class="product-section__highlights">
-        <li>Manages ARM GCC, LLVM/Clang, and RISC-V GCC toolchains</li>
-        <li>Reproducible builds via pinned toolchain versions and Nix-style hashing</li>
-        <li>CMake + Ninja backend with EoS board support package (BSP) system</li>
-        <li>Docker-based CI builds for all 7+ target architectures</li>
-        <li>Integrated with eos-stack-manifest for unified multi-repo builds</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-ebuild.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#65a30d;border-color:#65a30d">Full Product Page</a>
-        <a href="documentation.html#ebuild" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Docs</a>
-        <a href="https://github.com/embeddedos-org/eBuild" target="_blank" rel="noopener" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">GitHub</a>
-      </div>
+<!-- ══════════════════════════════════════════
+     COMPATIBILITY MATRIX
+══════════════════════════════════════════ -->
+<section class="section section--dark" id="compat">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Platform Support</span>
+      <h2 class="section__title">Compatibility Matrix</h2>
+      <p class="section__sub">&#10003; = Available &nbsp;&nbsp; &#128295; = In Progress &nbsp;&nbsp; &#8212; = Not Applicable</p>
     </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>Python, CMake, Shell</td></tr>
-        <tr><th>Build backend</th><td>CMake 3.26+, Ninja 1.11+</td></tr>
-        <tr><th>Toolchains</th><td>ARM GCC 13, LLVM 17, RISC-V GCC 13</td></tr>
-        <tr><th>Host platforms</th><td>Linux, macOS, Windows (WSL2)</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">PyInstaller binary</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Production</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- TIER 2: RUNTIME -->
-<div id="tier-runtime" style="padding:2rem 2rem .5rem;background:#fff;max-width:1200px;margin:0 auto">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#8b5cf6;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem">Tier 2 &mdash; AI, Neural &amp; IPC Runtime</div>
-  <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin:0">Intelligence at the edge. No cloud required.</h2>
-</div>
-
-<section class="product-section" id="eai" style="--prod-color:#8b5cf6">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#8b5cf6">EAI &middot; Tier 2 &middot; Embedded AI Runtime</div>
-      <h2 class="product-section__name">EAI &mdash; Embedded AI</h2>
-      <p class="product-section__tagline">The world's most efficient on-device LLM runtime for microcontrollers.</p>
-      <p class="product-section__desc">EAI delivers INT4-quantized large language model inference at 11 tokens per second on a 480 MHz ARM Cortex-M85 — with no cloud dependency, no network latency, and no data leaving the device. It supports ONNX, TFLite, and custom EoS model formats, and integrates directly with the EoS RTOS scheduler for deterministic inference windows.</p>
-      <ul class="product-section__highlights">
-        <li>11 tok/s INT4 LLM inference on 480 MHz Cortex-M85</li>
-        <li>1.3B-parameter model in 312 MB flash (INT4 quantized)</li>
-        <li>ONNX, TFLite Micro, and EoS native model formats</li>
-        <li>CMSIS-NN and RISC-V Vector Extension acceleration</li>
-        <li>Deterministic inference windows via EoS RTOS scheduler integration</li>
-        <li>Python SDK for model quantization, conversion, and profiling</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eai.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#8b5cf6;border-color:#8b5cf6">Full Product Page</a>
-        <a href="documentation.html#eai" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">API Docs</a>
-        <a href="article-eai-llm-bench.html" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Benchmark</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>C (C11), Python (SDK)</td></tr>
-        <tr><th>Inference speed</th><td>11 tok/s @ 480 MHz M85 (INT4)</td></tr>
-        <tr><th>Model formats</th><td>ONNX, TFLite Micro, EoS native</td></tr>
-        <tr><th>Quantization</th><td>INT4, INT8, FP16</td></tr>
-        <tr><th>Min RAM</th><td>256 KB (INT8 tiny), 2 MB (INT4 1.3B)</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">ELF + static lib</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; v0.9 Production</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="product-section" id="eni" style="--prod-color:#ec4899;background:#fff">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#ec4899">ENI &middot; Tier 2 &middot; Neural Interface</div>
-      <h2 class="product-section__name">ENI &mdash; Embedded Neural Interface</h2>
-      <p class="product-section__tagline">The world's only open-source neural interface RTOS stack.</p>
-      <p class="product-section__desc">ENI processes 1,024 simultaneous neural channels through a complete signal pipeline — bandpass filtering, spike detection, sorting, and decoding — in a single 800 microsecond RTOS frame. It runs on Nordic nRF52840 and ARM Cortex-M4, and is designed for medical-grade neural recording and brain-computer interface applications.</p>
-      <ul class="product-section__highlights">
-        <li>1,024-channel simultaneous neural signal processing</li>
-        <li>800 &micro;s end-to-end latency (filter &rarr; sort &rarr; decode)</li>
-        <li>Runs on nRF52840 and ARM Cortex-M4 at 64 MHz</li>
-        <li>Adaptive spike sorting with online template matching</li>
-        <li>BLE streaming of decoded neural events to host</li>
-        <li>IEC 62304 medical device software compliance pathway</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eni.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#ec4899;border-color:#ec4899">Full Product Page</a>
-        <a href="documentation.html#eni" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">API Docs</a>
-        <a href="article-eni-1024-channel-pipeline.html" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Technical Deep-Dive</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>C (C11)</td></tr>
-        <tr><th>Channels</th><td>1,024 simultaneous</td></tr>
-        <tr><th>Latency</th><td>800 &micro;s end-to-end</td></tr>
-        <tr><th>Target MCU</th><td>nRF52840, STM32F4, Cortex-M4</td></tr>
-        <tr><th>Connectivity</th><td>BLE 5.0, USB CDC</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">ELF + HEX</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; v0.4 Production</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="product-section" id="eipc" style="--prod-color:#14b8a6">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#14b8a6">EIPC &middot; Tier 2 &middot; IPC Daemon</div>
-      <h2 class="product-section__name">EIPC</h2>
-      <p class="product-section__tagline">High-performance device-to-host communication. Cross-platform.</p>
-      <p class="product-section__desc">EIPC is a Go-based inter-process communication daemon that bridges EoS device data to host applications over USB, BLE, and Wi-Fi. It runs on Linux, macOS, and Windows, exposes a gRPC API for host applications, and handles connection management, protocol framing, and data buffering transparently.</p>
-      <ul class="product-section__highlights">
-        <li>Go-based daemon — single binary, zero dependencies</li>
-        <li>USB CDC, BLE GATT, and Wi-Fi TCP transport support</li>
-        <li>gRPC API for host application integration</li>
-        <li>Runs on Linux, macOS, and Windows natively</li>
-        <li>Auto-discovery of EoS devices via USB VID/PID and BLE advertisement</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eipc.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#14b8a6;border-color:#14b8a6">Full Product Page</a>
-        <a href="documentation.html#eipc" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">API Docs</a>
-        <a href="https://github.com/embeddedos-org/eIPC" target="_blank" rel="noopener" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">GitHub</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>Go 1.22</td></tr>
-        <tr><th>Transports</th><td>USB CDC, BLE GATT, Wi-Fi TCP</td></tr>
-        <tr><th>API</th><td>gRPC (protobuf)</td></tr>
-        <tr><th>Host platforms</th><td>Linux, macOS, Windows</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">linux-amd64, darwin, windows</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Production</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- TIER 3: DEV TOOLS -->
-<div id="tier-tools" style="padding:2rem 2rem .5rem;background:#fff;max-width:1200px;margin:0 auto">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#06b6d4;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem">Tier 3 &mdash; Developer Tools</div>
-  <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin:0">The best embedded development experience ever built.</h2>
-</div>
-
-<section class="product-section" id="eostudio" style="--prod-color:#06b6d4">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#06b6d4">EoStudio &middot; Tier 3 &middot; IDE</div>
-      <h2 class="product-section__name">EoStudio</h2>
-      <p class="product-section__tagline">The IDE that knows your RTOS.</p>
-      <p class="product-section__desc">EoStudio is a full-featured embedded IDE built on the VS Code engine, extended with deep EoS RTOS awareness. It provides AI-assisted code completion trained on EoS APIs, an integrated J-Link/OpenOCD debugger with RTOS-aware thread and stack visualization, one-click flash for all EoS targets, and a built-in EAI model profiler.</p>
-      <ul class="product-section__highlights">
-        <li>VS Code engine with EoS-specific extensions pre-installed</li>
-        <li>AI code completion trained on EoS APIs and patterns</li>
-        <li>RTOS-aware debugger: thread list, stack usage, mutex visualization</li>
-        <li>Integrated J-Link, OpenOCD, and CMSIS-DAP support</li>
-        <li>EAI model profiler: latency, memory, and accuracy analysis</li>
-        <li>Available as desktop app (Linux, macOS, Windows) and VS Code extension</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eostudio.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#06b6d4;border-color:#06b6d4">Full Product Page</a>
-        <a href="documentation.html#eostudio" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Docs</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Platform</th><td>Desktop: Linux, macOS, Windows</td></tr>
-        <tr><th>Extension</th><td>VS Code Marketplace, JetBrains</td></tr>
-        <tr><th>Debugger</th><td>J-Link, OpenOCD, CMSIS-DAP</td></tr>
-        <tr><th>AI assist</th><td>Local EAI + cloud fallback</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Desktop binary</th><td><span class="spec-badge spec-badge--green">Linux AppImage &#10003;</span> <span class="spec-badge spec-badge--orange">Windows &#128296;</span> <span class="spec-badge spec-badge--orange">macOS &#128296;</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Beta</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="product-section" id="eosim" style="--prod-color:#10b981;background:#fff">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#10b981">EoSim &middot; Tier 3 &middot; Simulator</div>
-      <h2 class="product-section__name">EoSim</h2>
-      <p class="product-section__tagline">Run your firmware before you have hardware.</p>
-      <p class="product-section__desc">EoSim is a hardware-in-the-loop simulator and full-system emulator for EoS firmware. It provides QEMU-backed emulation of Cortex-M and Cortex-A targets, a custom SoC model API for peripheral simulation, and a Python scripting interface for automated test scenarios. Run complete EoS firmware — including EAI inference — on your laptop.</p>
-      <ul class="product-section__highlights">
-        <li>QEMU-backed Cortex-M and Cortex-A emulation</li>
-        <li>Custom SoC model API for GPIO, UART, SPI, I2C, ADC simulation</li>
-        <li>EAI inference simulation with cycle-accurate timing</li>
-        <li>Python scripting for automated HIL test scenarios</li>
-        <li>GDB remote stub for source-level debugging in EoStudio</li>
-        <li>CI integration via Docker image</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eosim.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#10b981;border-color:#10b981">Full Product Page</a>
-        <a href="documentation.html#eosim" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Docs</a>
-        <a href="article-eosim-hil-bridge.html" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">HIL Deep-Dive</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>Python, C (QEMU plugins)</td></tr>
-        <tr><th>Emulation</th><td>QEMU 8.x (Cortex-M, Cortex-A)</td></tr>
-        <tr><th>Scripting</th><td>Python 3.11 API</td></tr>
-        <tr><th>Host platforms</th><td>Linux, macOS, Windows (Docker)</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">PyInstaller + Docker</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Production</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- TIER 4: APPS -->
-<div id="tier-apps" style="padding:2rem 2rem .5rem;background:#fff;max-width:1200px;margin:0 auto">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#f97316;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem">Tier 4 &mdash; Applications</div>
-  <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin:0">Desktop, mobile, browser, and web. All powered by EoS.</h2>
-</div>
-
-<section class="product-section" id="eoffice" style="--prod-color:#3b82f6">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#3b82f6">eOffice &middot; Tier 4 &middot; Productivity Suite</div>
-      <h2 class="product-section__name">eOffice</h2>
-      <p class="product-section__tagline">AI-powered productivity. Works offline. Everywhere.</p>
-      <p class="product-section__desc">eOffice is an AI-powered productivity suite that integrates with every environment an embedded developer works in. It ships as a Chrome/Firefox browser extension, a VS Code plugin, a Google Workspace add-on, a JetBrains plugin, and an Obsidian plugin. All features work offline using the local EAI runtime — no data leaves your machine.</p>
-      <ul class="product-section__highlights">
-        <li>Chrome and Firefox browser extension</li>
-        <li>VS Code and JetBrains IDE plugins</li>
-        <li>Google Workspace (Docs, Sheets, Gmail) add-on</li>
-        <li>Microsoft Office 365 add-in</li>
-        <li>Obsidian plugin for knowledge management</li>
-        <li>Offline AI via local EAI runtime — zero cloud dependency</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eoffice.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#3b82f6;border-color:#3b82f6">Full Product Page</a>
-        <a href="documentation.html#eoffice" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Docs</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Browser ext.</th><td><span class="spec-badge spec-badge--green">Chrome &#10003;</span> <span class="spec-badge spec-badge--green">Firefox &#10003;</span> <span class="spec-badge spec-badge--orange">Edge &#128296;</span></td></tr>
-        <tr><th>IDE plugins</th><td><span class="spec-badge spec-badge--green">VS Code &#10003;</span> <span class="spec-badge spec-badge--orange">JetBrains &#128296;</span></td></tr>
-        <tr><th>Cloud suites</th><td><span class="spec-badge spec-badge--orange">Google Workspace &#128296;</span> <span class="spec-badge spec-badge--orange">Office 365 &#128296;</span></td></tr>
-        <tr><th>Desktop</th><td><span class="spec-badge spec-badge--green">Linux &#10003;</span> <span class="spec-badge spec-badge--orange">Windows &#128296;</span> <span class="spec-badge spec-badge--orange">macOS &#128296;</span></td></tr>
-        <tr><th>Mobile</th><td><span class="spec-badge spec-badge--orange">Android &#128296;</span> <span class="spec-badge spec-badge--orange">iOS &#128296;</span></td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--orange">&#128296; Beta / In Progress</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="product-section" id="edb" style="--prod-color:#f97316;background:#fff">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#f97316">eDB &middot; Tier 4 &middot; Database</div>
-      <h2 class="product-section__name">eDB</h2>
-      <p class="product-section__tagline">Encrypted, time-series database for embedded and edge.</p>
-      <p class="product-section__desc">eDB is an embedded-first database designed for sensor telemetry, neural recording data, and device event logs. It provides AES-256 encryption at rest, a time-series storage engine optimized for high-frequency sensor data, and a web UI for data exploration. It runs on device, as a desktop app, or as a cloud-hosted service.</p>
-      <ul class="product-section__highlights">
-        <li>AES-256 encryption at rest with hardware key storage</li>
-        <li>Time-series storage engine: 10,000+ writes/second on embedded targets</li>
-        <li>Web UI for data exploration and visualization</li>
-        <li>SQL-compatible query interface</li>
-        <li>Desktop app (Linux, macOS, Windows) and on-device library</li>
-        <li>Replication to cloud via EIPC bridge</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-edb.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#f97316;border-color:#f97316">Full Product Page</a>
-        <a href="documentation.html#edb" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Docs</a>
-        <a href="article-edb-encryption-at-rest.html" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Encryption Deep-Dive</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Language</th><td>Python, C (embedded lib)</td></tr>
-        <tr><th>Encryption</th><td>AES-256-GCM at rest</td></tr>
-        <tr><th>Write throughput</th><td>10,000+ writes/s (embedded)</td></tr>
-        <tr><th>Desktop</th><td><span class="spec-badge spec-badge--green">Linux &#10003;</span> <span class="spec-badge spec-badge--orange">Windows &#128296;</span> <span class="spec-badge spec-badge--orange">macOS &#128296;</span></td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Test coverage</th><td><span class="spec-badge spec-badge--blue">100% target</span></td></tr>
-        <tr><th>Release binary</th><td><span class="spec-badge spec-badge--green">PyInstaller + ELF lib</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; Production</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="product-section" id="ebrowser" style="--prod-color:#6366f1">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#6366f1">eBrowser &middot; Tier 4 &middot; Browser</div>
-      <h2 class="product-section__name">eBrowser</h2>
-      <p class="product-section__tagline">The browser built for embedded developers.</p>
-      <p class="product-section__desc">eBrowser is a privacy-first browser with built-in BLE device management, an EoS device dashboard, and a Chrome/Firefox extension for embedded developers. It provides a unified interface for monitoring connected EoS devices, streaming live sensor data, and managing firmware OTA updates — all from the browser.</p>
-      <ul class="product-section__highlights">
-        <li>Built-in BLE device scanner and connection manager</li>
-        <li>Live EoS device dashboard with sensor data visualization</li>
-        <li>OTA firmware update UI via eBootloader BLE transport</li>
-        <li>Chrome and Firefox extension for non-eBrowser users</li>
-        <li>Privacy-first: no telemetry, no tracking, local-only data</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-ebowser.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#6366f1;border-color:#6366f1">Full Product Page</a>
-        <a href="documentation.html#ebrowser" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">Docs</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Browser ext.</th><td><span class="spec-badge spec-badge--green">Chrome &#10003;</span> <span class="spec-badge spec-badge--green">Firefox &#10003;</span></td></tr>
-        <tr><th>Desktop app</th><td><span class="spec-badge spec-badge--green">Linux &#10003;</span> <span class="spec-badge spec-badge--orange">Windows &#128296;</span> <span class="spec-badge spec-badge--orange">macOS &#128296;</span></td></tr>
-        <tr><th>Mobile</th><td><span class="spec-badge spec-badge--orange">Android &#128296;</span> <span class="spec-badge spec-badge--orange">iOS &#128296;</span></td></tr>
-        <tr><th>BLE</th><td>Web Bluetooth API + native</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--orange">&#128296; Beta</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- TIER 5: PLATFORM -->
-<div id="tier-platform" style="padding:2rem 2rem .5rem;background:#fff;max-width:1200px;margin:0 auto">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#a855f7;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem">Tier 5 &mdash; Platform &amp; Distribution</div>
-  <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin:0">The unified meta-distribution for the entire stack.</h2>
-</div>
-
-<section class="product-section" id="eos-platform" style="--prod-color:#a855f7">
-  <div class="product-section__inner">
-    <div class="product-section__info">
-      <div class="product-section__id" style="color:#a855f7">eos-platform &middot; Tier 5 &middot; Meta-Distribution</div>
-      <h2 class="product-section__name">eos-platform</h2>
-      <p class="product-section__tagline">One toolchain. Every EoS profile. Reproducible everywhere.</p>
-      <p class="product-section__desc">eos-platform is the meta-distribution that ties all 14 EoS components together into a single, versioned, reproducible build. It provides stable APIs, a unified package manifest, and profile-based builds (minimal, standard, full-AI, neural) that select the right subset of components for your target device. eos-platform 1.0 is the first stable release.</p>
-      <ul class="product-section__highlights">
-        <li>Stable, versioned API surface across all 14 components</li>
-        <li>Profile-based builds: minimal (8 KB), standard, full-AI, neural</li>
-        <li>Unified package manifest with pinned component versions</li>
-        <li>Reproducible builds via eBuild + Docker</li>
-        <li>eApps registry integration for third-party component discovery</li>
-      </ul>
-      <div class="product-section__actions">
-        <a href="product-eos-platform.html" class="btn-primary" style="padding:.75rem 1.4rem;font-size:.9rem;background:#a855f7;border-color:#a855f7">Full Product Page</a>
-        <a href="article-eos-platform-launch.html" class="btn-outline" style="padding:.75rem 1.4rem;font-size:.9rem">1.0 Launch Post</a>
-      </div>
-    </div>
-    <div class="product-section__specs">
-      <table class="spec-table">
-        <tr><th>Components</th><td>All 14 EoS components</td></tr>
-        <tr><th>Profiles</th><td>minimal, standard, full-AI, neural</td></tr>
-        <tr><th>Build system</th><td>eBuild + CMake + Docker</td></tr>
-        <tr><th>License</th><td><span class="spec-badge spec-badge--green">Apache 2.0</span></td></tr>
-        <tr><th>Status</th><td><span class="spec-badge spec-badge--green">&#10003; v1.0 Stable</span></td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- PLATFORM COMPATIBILITY MATRIX -->
-<section class="compat-section" id="compat-matrix" aria-labelledby="compat-heading">
-  <div class="compat-section__inner">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">Platform Compatibility Matrix</div>
-    <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.025em;margin:0 0 .75rem" id="compat-heading">Where each product runs</h2>
-    <p style="font-size:.95rem;color:rgba(255,255,255,.6);max-width:600px;line-height:1.6;margin-bottom:0">&#10003; = Available &nbsp;&middot;&nbsp; &#128296; = In Progress &nbsp;&middot;&nbsp; &#8212; = Not applicable &nbsp;&middot;&nbsp; EXT = Browser Extension</p>
-    <div class="compat-table-wrap">
-      <table class="compat-table">
+    <div class="compat-wrap animate-on-scroll">
+      <table class="compat-tbl">
         <thead>
           <tr>
             <th>Product</th>
-            <th>Firmware<br>(ELF/HEX)</th>
+            <th>Firmware</th>
             <th>Linux</th>
             <th>macOS</th>
             <th>Windows</th>
@@ -662,382 +701,249 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>EoS RTOS</td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>EAI</td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>ENI</td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>eBootloader</td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>EIPC</td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>EoStudio</td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-ext">EXT &#10003;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>EoSim</td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>eOffice</td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-ext">EXT &#10003;</span></td>
-            <td><span class="compat-ext">EXT &#10003;</span></td>
-            <td><span class="compat-ext">EXT &#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>eDB</td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>eBrowser</td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-ext">EXT &#10003;</span></td>
-            <td><span class="compat-ext">EXT &#10003;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>eApps</td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>HealthKey-Ulta</td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-wip">&#128296;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-no">&mdash;</span></td>
-            <td><span class="compat-yes">&#10003;</span></td>
-          </tr>
+          <tr><td>EoS RTOS</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
+          <tr><td>EAI Runtime</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cb">&#128295;</td></tr>
+          <tr><td>ENI Stack</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
+          <tr><td>eIPC</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
+          <tr><td>HEALTH-KEY ULTRA</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td></tr>
+          <tr><td>HEALTH-BAND Neuro</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cb">&#128295;</td></tr>
+          <tr><td>eVera Agent</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td></tr>
+          <tr><td>EoStudio IDE</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td></tr>
+          <tr><td>EoSim</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
+          <tr><td>eOffice Suite</td><td class="cn">&mdash;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cy">&#10003;</td></tr>
+          <tr><td>eBrowser</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
+          <tr><td>eDB</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cb">&#128295;</td><td class="cb">&#128295;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td></tr>
+          <tr><td>eBoot</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
+          <tr><td>ebuild</td><td class="cn">&mdash;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cy">&#10003;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td><td class="cn">&mdash;</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:1.25rem;font-size:.8rem;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace">
-      &#10003; Available in current release &nbsp;&middot;&nbsp; &#128296; In active development &nbsp;&middot;&nbsp; EXT = Browser Extension only &nbsp;&middot;&nbsp; &mdash; = Not applicable to this product type
-    </p>
-    <p style="margin-top:.5rem;font-size:.8rem;color:rgba(255,255,255,.4)">
-      Barriers for &#128296; items: Mobile requires React Native/Capacitor scaffold + app store accounts. macOS/Windows desktop requires code signing certificates. Browser extensions require store review. See <a href="https://github.com/embeddedos-org/eos-stack-manifest/blob/master/RELEASE_TABLES.md" style="color:#60a5fa" target="_blank" rel="noopener">RELEASE_TABLES.md</a> for full barrier analysis.
-    </p>
   </div>
 </section>
 
-<!-- RELEASE BINARIES -->
-<section class="binaries-section" id="release-binaries" aria-labelledby="binaries-heading">
-  <div class="binaries-section__inner">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">Release Binaries</div>
-    <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:#111827;letter-spacing:-.025em;margin:0 0 .75rem" id="binaries-heading">Download the latest release</h2>
-    <p style="font-size:.95rem;color:#4b5563;max-width:600px;line-height:1.6;margin-bottom:0">All binaries are built by the unified CI pipeline on every tagged release. Firmware binaries are attached to GitHub Releases. Desktop binaries are multi-arch.</p>
-    <div class="binaries-grid">
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(0,102,204,.1);color:#0066cc">EoS</div>
-          <div><div class="binary-card__name">EoS RTOS</div><div class="binary-card__type">Firmware</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">eos-rtos.elf</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eos-rtos.hex</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eos-rtos.bin</span><span class="binary-file__status status-available">Available</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(139,92,246,.1);color:#8b5cf6">EAI</div>
-          <div><div class="binary-card__name">EAI Runtime</div><div class="binary-card__type">Firmware + Desktop</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">eai-runtime.elf</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">libeai.a (static)</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eai-sdk-linux-amd64</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eai-sdk-linux-arm64</span><span class="binary-file__status status-available">Available</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(236,72,153,.1);color:#ec4899">ENI</div>
-          <div><div class="binary-card__name">ENI Neural Interface</div><div class="binary-card__type">Firmware</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">eni-nrf52840.elf</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eni-nrf52840.hex</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">libeni.a (static)</span><span class="binary-file__status status-available">Available</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(20,184,166,.1);color:#14b8a6">IPC</div>
-          <div><div class="binary-card__name">EIPC Daemon</div><div class="binary-card__type">Desktop (Go binary)</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">eipc-linux-amd64</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eipc-linux-arm64</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eipc-darwin-amd64</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eipc-windows-amd64.exe</span><span class="binary-file__status status-available">Available</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(6,182,212,.1);color:#06b6d4">IDE</div>
-          <div><div class="binary-card__name">EoStudio</div><div class="binary-card__type">Desktop + Extension</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">eostudio-linux-amd64.AppImage</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eostudio-windows.exe</span><span class="binary-file__status status-wip">In Progress</span></div>
-          <div class="binary-file"><span class="binary-file__name">eostudio-macos.dmg</span><span class="binary-file__status status-wip">In Progress</span></div>
-          <div class="binary-file"><span class="binary-file__name">eostudio-vscode.vsix</span><span class="binary-file__status status-available">Available</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(249,115,22,.1);color:#f97316">eDB</div>
-          <div><div class="binary-card__name">eDB</div><div class="binary-card__type">Desktop + Firmware lib</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">edb-linux-amd64</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">edb-windows.exe</span><span class="binary-file__status status-wip">In Progress</span></div>
-          <div class="binary-file"><span class="binary-file__name">edb-macos</span><span class="binary-file__status status-wip">In Progress</span></div>
-          <div class="binary-file"><span class="binary-file__name">libedb-embedded.a</span><span class="binary-file__status status-available">Available</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(59,130,246,.1);color:#3b82f6">eOf</div>
-          <div><div class="binary-card__name">eOffice</div><div class="binary-card__type">Extensions + Desktop</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">eoffice-chrome.zip</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eoffice-firefox.xpi</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eoffice-vscode.vsix</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">eoffice-android.apk</span><span class="binary-file__status status-wip">In Progress</span></div>
-          <div class="binary-file"><span class="binary-file__name">eoffice-ios.ipa</span><span class="binary-file__status status-wip">In Progress</span></div>
-        </div>
-      </div>
-
-      <div class="binary-card">
-        <div class="binary-card__header">
-          <div class="binary-card__icon" style="background:rgba(99,102,241,.1);color:#6366f1">eBw</div>
-          <div><div class="binary-card__name">eBrowser</div><div class="binary-card__type">Desktop + Extension</div></div>
-        </div>
-        <div class="binary-card__files">
-          <div class="binary-file"><span class="binary-file__name">ebrowser-linux-amd64.AppImage</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">ebrowser-chrome.zip</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">ebrowser-firefox.xpi</span><span class="binary-file__status status-available">Available</span></div>
-          <div class="binary-file"><span class="binary-file__name">ebrowser-android.apk</span><span class="binary-file__status status-wip">In Progress</span></div>
-          <div class="binary-file"><span class="binary-file__name">ebrowser-ios.ipa</span><span class="binary-file__status status-wip">In Progress</span></div>
-        </div>
-      </div>
-
+<!-- ══════════════════════════════════════════
+     RELEASE BINARIES
+══════════════════════════════════════════ -->
+<section class="section section--surface" id="binaries">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Release Artifacts</span>
+      <h2 class="section__title">Release Binaries by Platform</h2>
+      <p class="section__sub">Every binary produced by the CI pipeline. Download from <a href="https://github.com/managokul2/eos-stack-manifest/releases" style="color:var(--blue-400)">GitHub Releases</a>.</p>
     </div>
-    <p style="margin-top:2rem;font-size:.875rem;color:#6b7280;text-align:center">
-      All release binaries are built by the <a href="https://github.com/embeddedos-org/eos-stack-manifest" style="color:#0066cc;font-weight:600" target="_blank" rel="noopener">eos-stack-manifest unified CI pipeline</a> &middot;
-      <a href="https://github.com/embeddedos-org/eos-stack-manifest/blob/master/RELEASE_TABLES.md" style="color:#0066cc;font-weight:600" target="_blank" rel="noopener">Full release table &rarr;</a>
-    </p>
+
+    <!-- Firmware -->
+    <h3 style="font-size:1.1rem;font-weight:800;color:var(--text-primary);margin-bottom:1rem;letter-spacing:-.02em" class="animate-on-scroll">&#9881; Firmware Binaries</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);margin-bottom:2rem" class="animate-on-scroll">
+      <table class="binary-table">
+        <thead><tr><th>Component</th><th>Target</th><th>Format</th><th>Size</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>EoS RTOS</td><td>Cortex-M7 (STM32H7)</td><td>.elf + .hex + .bin</td><td>~48 KB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>EoS RTOS</td><td>Cortex-M4 (STM32F4)</td><td>.elf + .hex + .bin</td><td>~44 KB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>EoS RTOS</td><td>RISC-V RV32 (ESP32-C3)</td><td>.elf + .bin</td><td>~52 KB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>EAI Runtime</td><td>Cortex-M85 (RA8M1)</td><td>.a (static lib)</td><td>~1.2 MB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>ENI Stack</td><td>nRF52840</td><td>.elf + .hex + .zip (DFU)</td><td>~96 KB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>HEALTH-KEY ULTRA</td><td>nRF52840</td><td>.elf + .hex + .zip (DFU)</td><td>~128 KB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>HEALTH-BAND Neuro</td><td>nRF5340 + STM32H7</td><td>.elf + .hex + .zip (DFU)</td><td>~192 KB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>eBoot</td><td>Cortex-M4/M7/M33</td><td>.elf + .hex + .bin</td><td>~16 KB</td><td class="avail">&#10003; Available</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Desktop -->
+    <h3 style="font-size:1.1rem;font-weight:800;color:var(--text-primary);margin-bottom:1rem;letter-spacing:-.02em" class="animate-on-scroll">&#128187; Desktop Binaries</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);margin-bottom:2rem" class="animate-on-scroll">
+      <table class="binary-table">
+        <thead><tr><th>Product</th><th>Linux x86-64</th><th>Linux ARM64</th><th>macOS ARM64</th><th>macOS x86-64</th><th>Windows x64</th></tr></thead>
+        <tbody>
+          <tr><td>eVera Agent</td><td class="avail">&#10003; AppImage</td><td class="inprog">&#128295; Building</td><td class="avail">&#10003; .dmg</td><td class="avail">&#10003; .dmg</td><td class="avail">&#10003; .exe</td></tr>
+          <tr><td>EoStudio IDE</td><td class="avail">&#10003; AppImage</td><td class="inprog">&#128295; Building</td><td class="avail">&#10003; .dmg</td><td class="avail">&#10003; .dmg</td><td class="avail">&#10003; .exe</td></tr>
+          <tr><td>eBrowser</td><td class="avail">&#10003; AppImage</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td></tr>
+          <tr><td>eOffice (Electron)</td><td class="inprog">&#128295; Building</td><td class="planned">Planned</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td></tr>
+          <tr><td>eDB Desktop</td><td class="avail">&#10003; AppImage</td><td class="planned">Planned</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td></tr>
+          <tr><td>EoSim</td><td class="avail">&#10003; .tar.gz</td><td class="inprog">&#128295; Building</td><td class="avail">&#10003; .tar.gz</td><td class="avail">&#10003; .tar.gz</td><td class="inprog">&#128295; Building</td></tr>
+          <tr><td>ebuild CLI</td><td class="avail">&#10003; binary</td><td class="avail">&#10003; binary</td><td class="avail">&#10003; binary</td><td class="avail">&#10003; binary</td><td class="inprog">&#128295; Building</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile -->
+    <h3 style="font-size:1.1rem;font-weight:800;color:var(--text-primary);margin-bottom:1rem;letter-spacing:-.02em" class="animate-on-scroll">&#128241; Mobile Binaries (iOS &amp; Android)</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);margin-bottom:2rem" class="animate-on-scroll">
+      <table class="binary-table">
+        <thead><tr><th>Product</th><th>Android APK</th><th>Android AAB</th><th>iOS IPA</th><th>Barrier</th></tr></thead>
+        <tbody>
+          <tr><td>eVera Agent</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="barrier">Capacitor scaffold incomplete; Apple Developer account required for IPA</td></tr>
+          <tr><td>HEALTH-KEY ULTRA App</td><td class="avail">&#10003; APK</td><td class="avail">&#10003; AAB</td><td class="inprog">&#128295; Building</td><td class="barrier">iOS: BLE entitlement + Apple account; Android: Play signing key needed for store</td></tr>
+          <tr><td>HEALTH-BAND Neuro App</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="barrier">React Native scaffold; EAS project ID not set; Apple account required</td></tr>
+          <tr><td>eOffice Mobile</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="inprog">&#128295; Building</td><td class="barrier">Capacitor sync not run; iOS requires macOS runner + Xcode 15+</td></tr>
+          <tr><td>ENI Mobile (BCI)</td><td class="planned">Planned</td><td class="planned">Planned</td><td class="planned">Planned</td><td class="barrier">Requires medical-grade BLE permissions; FDA/CE regulatory review</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Browser Extensions -->
+    <h3 style="font-size:1.1rem;font-weight:800;color:var(--text-primary);margin-bottom:1rem;letter-spacing:-.02em" class="animate-on-scroll">&#127760; Browser Extensions &amp; IDE Plugins</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border);margin-bottom:2rem" class="animate-on-scroll">
+      <table class="binary-table">
+        <thead><tr><th>Product</th><th>Platform</th><th>Format</th><th>Status</th><th>Barrier</th></tr></thead>
+        <tbody>
+          <tr><td>eVera Agent</td><td>Chrome / Edge</td><td>.crx / .zip</td><td class="inprog">&#128295; Building</td><td class="barrier">Chrome Web Store review (1–3 weeks); manifest v3 migration needed</td></tr>
+          <tr><td>eVera Agent</td><td>Firefox</td><td>.xpi</td><td class="inprog">&#128295; Building</td><td class="barrier">Firefox MV3 gaps; AMO review required</td></tr>
+          <tr><td>eVera Agent</td><td>VS Code</td><td>.vsix</td><td class="avail">&#10003; Available</td><td style="color:var(--emerald-400);font-size:.72rem">Published to VS Code Marketplace</td></tr>
+          <tr><td>eOffice Suite</td><td>Chrome / Edge</td><td>.crx / .zip</td><td class="avail">&#10003; Available</td><td style="color:var(--emerald-400);font-size:.72rem">Published to Chrome Web Store</td></tr>
+          <tr><td>eOffice Suite</td><td>Google Workspace</td><td>Workspace Add-on</td><td class="inprog">&#128295; Building</td><td class="barrier">Google Workspace Marketplace OAuth verification (4–6 weeks)</td></tr>
+          <tr><td>eOffice Suite</td><td>Microsoft 365</td><td>Office Add-in</td><td class="inprog">&#128295; Building</td><td class="barrier">Microsoft AppSource signing + partner center review</td></tr>
+          <tr><td>EoStudio</td><td>JetBrains IDEs</td><td>.zip (plugin)</td><td class="inprog">&#128295; Building</td><td class="barrier">JetBrains Marketplace review; Gradle plugin packaging needed</td></tr>
+          <tr><td>EoStudio</td><td>Obsidian</td><td>.zip (plugin)</td><td class="inprog">&#128295; Building</td><td class="barrier">Obsidian community plugin review</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Web/PWA -->
+    <h3 style="font-size:1.1rem;font-weight:800;color:var(--text-primary);margin-bottom:1rem;letter-spacing:-.02em" class="animate-on-scroll">&#127760; Web / PWA Packages</h3>
+    <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--border)" class="animate-on-scroll">
+      <table class="binary-table">
+        <thead><tr><th>Product</th><th>Format</th><th>Size</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>eOffice Suite (PWA)</td><td>.zip (static build)</td><td>~4.2 MB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>eVera Web PWA</td><td>.zip (static build)</td><td>~2.8 MB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>EoStudio Web IDE</td><td>.zip (static build)</td><td>~8.1 MB</td><td class="inprog">&#128295; Building</td></tr>
+          <tr><td>www.embeddedos.org</td><td>.zip (static build)</td><td>~1.1 MB</td><td class="avail">&#10003; Available</td></tr>
+          <tr><td>eDB Web UI</td><td>.zip (static build)</td><td>~1.8 MB</td><td class="avail">&#10003; Available</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section style="padding:5rem 2rem;background:#050810;text-align:center;position:relative;overflow:hidden" aria-label="Get started CTA">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(0,102,204,.18),transparent 70%);pointer-events:none"></div>
-  <div style="position:relative;max-width:640px;margin:0 auto">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">Start Building</div>
-    <h2 style="font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:1rem">The complete stack is open,<br>free, and ready for production.</h2>
-    <p style="font-size:1rem;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:2rem">Read the documentation, clone the repos, or join the foundation. EmbeddedOS is built by the community, for the community.</p>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-      <a href="documentation.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:linear-gradient(135deg,#0066cc,#0099ff);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem">Read the Docs</a>
-      <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.18);border-radius:10px;font-weight:600;text-decoration:none;font-size:.95rem">GitHub</a>
-      <a href="membership.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.18);border-radius:10px;font-weight:600;text-decoration:none;font-size:.95rem">Join Foundation</a>
+<!-- ══════════════════════════════════════════
+     BARRIERS & ROADMAP
+══════════════════════════════════════════ -->
+<section class="section section--dark" id="barriers">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Transparency</span>
+      <h2 class="section__title">Known Barriers &amp; Resolution Path</h2>
+      <p class="section__sub">We document every known barrier publicly. Here is what is blocking each platform and the exact path to resolution.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem" class="animate-on-scroll">
+      <div class="product-detail" style="margin-bottom:0">
+        <div style="padding:1.5rem">
+          <span class="product-card__tag tag--rose" style="margin-bottom:.75rem">&#128241; Mobile — iOS</span>
+          <ul class="feature-list">
+            <li>Apple Developer account ($99/yr) required for all IPA builds</li>
+            <li>Xcode 15+ required — only available on macOS runners (3× cost)</li>
+            <li>BLE entitlements require Apple review for health/BCI apps</li>
+            <li>EAS project ID not configured for React Native apps</li>
+            <li>Capacitor sync not run — missing native iOS project files</li>
+          </ul>
+          <div style="margin-top:1rem;font-size:.78rem;color:var(--emerald-400);font-weight:600">Resolution: Configure EAS + Apple account + macOS CI runner</div>
+        </div>
+      </div>
+      <div class="product-detail" style="margin-bottom:0">
+        <div style="padding:1.5rem">
+          <span class="product-card__tag tag--amber" style="margin-bottom:.75rem">&#128241; Mobile — Android</span>
+          <ul class="feature-list">
+            <li>Play Store signing key not yet generated</li>
+            <li>Google Play Developer account ($25 one-time) needed</li>
+            <li>BLE permissions require runtime grant on Android 12+</li>
+            <li>EAS project ID not configured for React Native apps</li>
+          </ul>
+          <div style="margin-top:1rem;font-size:.78rem;color:var(--emerald-400);font-weight:600">Resolution: Generate Play signing key + configure EAS</div>
+        </div>
+      </div>
+      <div class="product-detail" style="margin-bottom:0">
+        <div style="padding:1.5rem">
+          <span class="product-card__tag tag--blue" style="margin-bottom:.75rem">&#127760; Browser Extensions</span>
+          <ul class="feature-list">
+            <li>Chrome Web Store review takes 1–3 weeks</li>
+            <li>Manifest v3 migration required for Chrome/Edge</li>
+            <li>Firefox MV3 has gaps vs Chrome MV3 — needs polyfill</li>
+            <li>Google Workspace OAuth verification: 4–6 weeks</li>
+            <li>Microsoft AppSource signing + partner center review</li>
+          </ul>
+          <div style="margin-top:1rem;font-size:.78rem;color:var(--emerald-400);font-weight:600">Resolution: MV3 migration + store submissions in Q3 2026</div>
+        </div>
+      </div>
+      <div class="product-detail" style="margin-bottom:0">
+        <div style="padding:1.5rem">
+          <span class="product-card__tag tag--violet" style="margin-bottom:.75rem">&#128187; Desktop — macOS/Windows</span>
+          <ul class="feature-list">
+            <li>Apple notarization requires paid Apple Developer account</li>
+            <li>Windows code signing certificate ($300–$500/yr) needed</li>
+            <li>PyInstaller cross-compilation not supported (must build on target OS)</li>
+            <li>MSVC toolchain required for some Windows native modules</li>
+          </ul>
+          <div style="margin-top:1rem;font-size:.78rem;color:var(--emerald-400);font-weight:600">Resolution: macOS/Windows CI runners + signing certs in Q3 2026</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer class="footer" role="contentinfo">
-  <div class="footer-mega">
-    <div class="footer-column"><h4>Products</h4><ul>
-      <li><a href="products.html">All 14 Products</a></li>
-      <li><a href="product-eos.html">EoS RTOS</a></li>
-      <li><a href="product-eai.html">EAI &mdash; Embedded AI</a></li>
-      <li><a href="product-eni.html">ENI &mdash; Neural Interface</a></li>
-      <li><a href="product-eboot.html">eBootloader</a></li>
-      <li><a href="product-eostudio.html">EoStudio IDE</a></li>
-      <li><a href="product-eosim.html">EoSim</a></li>
-      <li><a href="product-eoffice.html">eOffice</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Developers</h4><ul>
-      <li><a href="documentation.html">Documentation</a></li>
-      <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="ecosystem.html">Ecosystem</a></li>
-      <li><a href="product-ebuild.html">eBuild Toolchain</a></li>
-      <li><a href="product-eipc.html">EIPC Daemon</a></li>
-      <li><a href="resources.html">Theses &amp; Papers</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Research</h4><ul>
-      <li><a href="research.html">Neural Link Architecture</a></li>
-      <li><a href="neural-link-ai.html">Neural Link &amp; AI</a></li>
-      <li><a href="ai-os.html">AI Operating Systems</a></li>
-      <li><a href="building-os.html">Building OS</a></li>
-      <li><a href="future-research.html">Future Research</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Foundation</h4><ul>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="membership.html">Membership</a></li>
-      <li><a href="certification.html">Certification</a></li>
-      <li><a href="careers.html">Careers</a></li>
-      <li><a href="donate.html">Support Our Mission</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Community</h4><ul>
-      <li><a href="news.html">Newsroom</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="internship.html">Internships</a></li>
-      <li><a href="code-of-conduct.html">Code of Conduct</a></li>
-      <li><a href="privacy.html">Privacy Policy</a></li>
-      <li><a href="terms.html">Terms of Service</a></li>
-    </ul></div>
-  </div>
-  <div class="footer-newsletter">
-    <h4>&#128236; Stay in the Loop</h4>
-    <p>Get research updates, release notes, and community news &mdash; no spam, ever.</p>
-    <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
-      <button type="submit">Subscribe</button>
-    </form>
-    <div class="newsletter-msg" id="newsletterMsg">&#10003; Thanks for subscribing!</div>
-  </div>
-  <div class="footer-divider"></div>
-  <div class="footer-bottom">
-    <div class="footer-brand">
-      <span class="logo-text">Embedded<span>OS</span></span>
-      <div class="footer-social">
-        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
-        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a>
-        <a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
-        <a href="https://www.youtube.com/@EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__grid">
+      <div class="footer__brand-col">
+        <span class="logo-text">Embedded<span>OS</span></span>
+        <p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. Apache 2.0. No lock-in.</p>
+        <div class="footer__social">
+          <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+          <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a>
+          <a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>System Stack</h4>
+        <ul>
+          <li><a href="#eos-rtos">EoS RTOS</a></li>
+          <li><a href="#eai">EAI Runtime</a></li>
+          <li><a href="#eni">ENI Stack</a></li>
+          <li><a href="#eipc">eIPC</a></li>
+          <li><a href="#eboot">eBoot</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Hardware</h4>
+        <ul>
+          <li><a href="#healthkey">HEALTH-KEY ULTRA</a></li>
+          <li><a href="#healthband">HEALTH-BAND Neuro</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Applications</h4>
+        <ul>
+          <li><a href="#evera">eVera Agent</a></li>
+          <li><a href="#eostudio">EoStudio IDE</a></li>
+          <li><a href="#eosim">EoSim</a></li>
+          <li><a href="#eoffice">eOffice Suite</a></li>
+          <li><a href="#ebrowser">eBrowser</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="documentation.html">Documentation</a></li>
+          <li><a href="https://github.com/managokul2/eos-stack-manifest/releases" target="_blank" rel="noopener">All Releases</a></li>
+          <li><a href="https://github.com/managokul2/eos-stack-manifest/actions" target="_blank" rel="noopener">CI Pipeline</a></li>
+          <li><a href="about.html">About Foundation</a></li>
+        </ul>
       </div>
     </div>
-    <div class="footer-copyright">&copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.</div>
-    <div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="privacy.html#cookies">Cookies</a></div>
+    <div class="footer__bottom">
+      <div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. Apache 2.0. 501(c)(3) nonprofit.</div>
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </div>
   </div>
 </footer>
 
 <button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button>
-<script defer src="js/monitor.js"></script>
 <script defer src="js/main.js"></script>
 </body>
 </html>

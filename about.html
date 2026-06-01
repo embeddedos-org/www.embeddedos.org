@@ -3,492 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0066cc">
-<meta name="description" content="About EmbeddedOS — a 501(c)(3) open-source foundation building the world's best embedded AI stack. Learn how we compare to Apache, CNCF, Eclipse, and Mozilla foundations.">
-<title>About — EmbeddedOS Foundation</title>
+<meta name="theme-color" content="#060912">
+<meta name="description" content="About EmbeddedOS Research Foundation — a 501(c)(3) nonprofit building the world's most complete open-source embedded AI stack. Mission, governance, team, and foundation comparison.">
+<title>About — EmbeddedOS Research Foundation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066cc'/><text x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='48' font-weight='800' fill='white' text-anchor='middle'>EoS</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233b82f6'/><text x='50' y='68' font-family='Inter,sans-serif' font-size='44' font-weight='900' fill='white' text-anchor='middle'>EoS</text></svg>">
 <link rel="stylesheet" href="css/style.css">
-<link rel="canonical" href="https://www.embeddedos.org/about">
-<meta property="og:title" content="About — EmbeddedOS Foundation">
-<meta property="og:description" content="A 501(c)(3) open-source foundation building the world's best embedded AI stack.">
-<meta property="og:type" content="website">
+<link rel="canonical" href="https://www.embeddedos.org/about.html">
 <style>
-.about-hero{background:#050810;padding:7rem 2rem 5rem;position:relative;overflow:hidden;text-align:center}
-.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 40%,rgba(0,102,204,.2),transparent 65%);pointer-events:none}
-.about-hero__inner{position:relative;max-width:800px;margin:0 auto}
-.about-hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;color:#fff;letter-spacing:-.035em;line-height:1.08;margin:0 0 1.25rem}
-.about-hero h1 em{font-style:normal;background:linear-gradient(90deg,#0099ff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.about-hero p{font-size:1.1rem;color:rgba(255,255,255,.7);line-height:1.7;max-width:640px;margin:0 auto 2rem}
-/* Stats bar */
-.stats-bar{background:#fff;border-bottom:1px solid #e5e7eb;padding:2.5rem 2rem}
-.stats-bar__inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
-.stat-item__num{font-size:2.5rem;font-weight:900;color:#111827;letter-spacing:-.04em;line-height:1}
-.stat-item__num span{background:linear-gradient(135deg,#0066cc,#0099ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-item__label{font-size:.82rem;color:#6b7280;margin-top:.35rem;line-height:1.4}
-/* Pillars */
-.pillars{padding:5rem 2rem;background:#fafbfc}
-.pillars__inner{max-width:1100px;margin:0 auto}
-.pillars__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem}
-.pillar-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;text-align:center}
-.pillar-card__icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.4rem}
-.pillar-card__title{font-size:1.05rem;font-weight:800;color:#111827;margin-bottom:.5rem}
-.pillar-card__desc{font-size:.875rem;color:#4b5563;line-height:1.6}
-/* Foundation comparison */
-.foundation-section{padding:5rem 2rem;background:#fff}
-.foundation-section__inner{max-width:1100px;margin:0 auto}
-.foundation-table-wrap{overflow-x:auto;border-radius:12px;border:1px solid #e5e7eb;margin-top:2rem}
-.foundation-table{width:100%;border-collapse:collapse;font-size:.875rem;min-width:800px}
-.foundation-table th{background:#f7f8fa;color:#374151;padding:.8rem 1.1rem;text-align:left;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb}
-.foundation-table td{padding:.75rem 1.1rem;border-bottom:1px solid #f1f3f5;color:#374151;vertical-align:top;line-height:1.55}
-.foundation-table tbody tr:last-child td{border-bottom:none}
-.foundation-table tbody tr:hover{background:#fafbfc}
-.foundation-table td:first-child{font-weight:700;color:#111827}
-.foundation-table .eos-row{background:linear-gradient(90deg,rgba(0,102,204,.04),transparent)}
-.foundation-table .eos-row td:first-child{color:#0066cc}
-.f-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:700;padding:.2rem .5rem;border-radius:99px;font-family:'JetBrains Mono',monospace}
-.f-badge--blue{background:rgba(0,102,204,.1);color:#0066cc}
-.f-badge--green{background:rgba(16,185,129,.1);color:#059669}
-.f-badge--gray{background:#f3f4f6;color:#6b7280}
-/* Timeline */
-.timeline-section{padding:5rem 2rem;background:#fafbfc}
-.timeline-section__inner{max-width:800px;margin:0 auto}
-.timeline{position:relative;margin-top:2.5rem}
-.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#0066cc,#8b5cf6,#0066cc);opacity:.3}
-.timeline-item{display:flex;gap:1.5rem;margin-bottom:2rem;position:relative}
-.timeline-item__dot{width:42px;height:42px;border-radius:50%;background:#fff;border:2px solid #0066cc;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:#0066cc;z-index:1}
-.timeline-item__content{padding-top:.35rem;flex:1}
-.timeline-item__year{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem}
-.timeline-item__title{font-size:1rem;font-weight:700;color:#111827;margin-bottom:.35rem}
-.timeline-item__desc{font-size:.875rem;color:#4b5563;line-height:1.6}
-/* Team */
-.team-section{padding:5rem 2rem;background:#fff}
-.team-section__inner{max-width:1100px;margin:0 auto}
-.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem;margin-top:2rem}
-.team-card{background:#fafbfc;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;text-align:center}
-.team-card__avatar{width:64px;height:64px;border-radius:50%;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#fff;font-family:'JetBrains Mono',monospace}
-.team-card__name{font-size:.95rem;font-weight:700;color:#111827;margin-bottom:.2rem}
-.team-card__role{font-size:.8rem;color:#6b7280;line-height:1.4}
-/* Mission */
-.mission-section{padding:5rem 2rem;background:#050810;text-align:center;position:relative;overflow:hidden}
-.mission-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(0,102,204,.18),transparent 70%);pointer-events:none}
-@media(max-width:768px){
-  .stats-bar__inner{grid-template-columns:repeat(2,1fr)}
-  .pillars__grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:480px){
-  .stats-bar__inner{grid-template-columns:1fr}
-  .pillars__grid{grid-template-columns:1fr}
-}
+.pillar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+.pillar-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);padding:2rem;transition:border-color var(--transition-med),transform var(--transition-med)}
+.pillar-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.pillar-card__icon{font-size:2rem;margin-bottom:1rem}
+.pillar-card__title{font-size:1.1rem;font-weight:800;color:var(--text-primary);letter-spacing:-.03em;margin-bottom:.5rem}
+.pillar-card__desc{font-size:.875rem;color:var(--text-secondary);line-height:1.7}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.team-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;transition:border-color var(--transition-fast),transform var(--transition-fast)}
+.team-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.team-card__avatar{width:60px;height:60px;border-radius:50%;background:var(--gradient-brand);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:#fff;margin:0 auto 1rem}
+.team-card__name{font-size:.95rem;font-weight:800;color:var(--text-primary);margin-bottom:.2rem}
+.team-card__role{font-size:.78rem;color:var(--text-muted)}
+@media(max-width:768px){.pillar-grid{grid-template-columns:1fr}.team-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.team-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="live-bar" role="status" aria-live="polite">
-  <span class="live-pulse" aria-hidden="true"></span>
-  <span>LIVE: <strong>EAI 0.9 + INT4 LLM runtime</strong> shipped &mdash; <a href="article-eai-llm-bench.html">Read the benchmark &rarr;</a></span>
-</div>
+<div class="live-bar" role="status"><span class="live-pulse" aria-hidden="true"></span><span>EmbeddedOS Research Foundation — 501(c)(3) Nonprofit &nbsp;&middot;&nbsp; Apache 2.0 &nbsp;&middot;&nbsp; <a href="membership.html">Join the Foundation &rarr;</a></span></div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
-
-<header class="navbar" role="banner">
-  <div class="brand-bar">
-    <div class="nav-container">
-      <a href="/" class="logo" aria-label="EmbeddedOS Home">
-        <div class="logo-icon">EoS</div>
-        <span class="logo-text">Embedded<span>OS</span></span>
-      </a>
-      <nav aria-label="Main navigation">
-        <ul class="nav-links" id="nav-links" role="menubar">
-          <li role="none"><a href="news.html" role="menuitem">News</a></li>
-          <li role="none"><a href="events.html" role="menuitem">Events</a></li>
-          <li role="none"><a href="research.html" role="menuitem">Research</a></li>
-          <li role="none"><a href="membership.html" role="menuitem">Programs</a></li>
-          <li role="none"><a href="products.html" role="menuitem">Products</a></li>
-          <li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-          <li role="none"><a href="about.html" role="menuitem" aria-current="page">About</a></li>
-          <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-          <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
-        </ul>
-      </nav>
-      <button class="mobile-menu-btn" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false">
-        <span class="hamburger-line"></span>
-      </button>
-    </div>
+<header class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo" aria-label="EmbeddedOS home"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="products.html">Products</a></li>
+        <li><a href="documentation.html">Docs</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="ecosystem.html">Ecosystem</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html" aria-current="page">About</a></li>
+        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
   </div>
 </header>
-
 <main id="main-content">
-
-<!-- HERO -->
-<section class="about-hero" aria-label="About hero">
-  <div class="about-hero__inner">
-    <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,102,204,.15);border:1px solid rgba(0,102,204,.35);border-radius:99px;padding:.4rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem">501(c)(3) Nonprofit &middot; Open Source Foundation</div>
-    <h1>Open infrastructure<br>for the <em>embedded AI era.</em></h1>
-    <p>EmbeddedOS is a 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. We exist to ensure that the intelligence running on the world's billions of embedded devices is open, secure, and governed by the community — not locked behind proprietary walls.</p>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-      <a href="membership.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.6rem;background:linear-gradient(135deg,#0066cc,#0099ff);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem">Join the Foundation</a>
-      <a href="donate.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.6rem;background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2);border-radius:10px;font-weight:600;text-decoration:none;font-size:.95rem">Support Our Mission</a>
+<section class="hero" style="min-height:60vh" aria-labelledby="about-title">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="hero__inner" style="text-align:center;max-width:800px;margin:0 auto">
+    <div class="hero__badge"><span class="hero__badge-dot" aria-hidden="true"></span>501(c)(3) Nonprofit &nbsp;&middot;&nbsp; Founded 2024</div>
+    <h1 id="about-title" style="font-size:clamp(2.4rem,5vw,4rem)">Building the world's best<br><span class="grad">open-source embedded AI</span><br>products. Together.</h1>
+    <p class="hero__sub" style="margin:1.5rem auto 2rem;max-width:640px">EmbeddedOS Research Foundation is a 501(c)(3) nonprofit governed by its members and technical steering committee. We build, maintain, and advance the most complete open-source embedded AI stack ever created — 14 components, all Apache 2.0, no lock-in.</p>
+    <div class="hero__actions" style="justify-content:center">
+      <a href="membership.html" class="btn-primary">Join the Foundation &rarr;</a>
+      <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" class="btn-secondary">GitHub</a>
     </div>
   </div>
 </section>
-
-<!-- STATS -->
-<div class="stats-bar" aria-label="Foundation statistics">
-  <div class="stats-bar__inner">
-    <div class="stat-item">
-      <div class="stat-item__num"><span>14</span></div>
-      <div class="stat-item__label">Open-source components<br>in the EoS stack</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-item__num"><span>1,024</span></div>
-      <div class="stat-item__label">Neural channels processed<br>by ENI in real-time</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-item__num"><span>11</span></div>
-      <div class="stat-item__label">Tokens/second LLM inference<br>on Cortex-M85 (INT4)</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-item__num"><span>100%</span></div>
-      <div class="stat-item__label">Open source, Apache 2.0<br>no proprietary lock-in</div>
-    </div>
+<div class="stats-strip" role="region" aria-label="Foundation metrics">
+  <div class="stats-strip__inner">
+    <div><div class="stat__num" data-target="14" data-suffix="">14</div><div class="stat__label">Open-source components</div></div>
+    <div><div class="stat__num" data-target="100" data-suffix="%">100%</div><div class="stat__label">Apache 2.0 licensed</div></div>
+    <div><div class="stat__num" data-target="2024" data-suffix="">2024</div><div class="stat__label">Year incorporated</div></div>
+    <div><div class="stat__num" data-target="7" data-suffix="">7</div><div class="stat__label">Working groups</div></div>
+    <div><div class="stat__num" data-target="3" data-suffix="">3</div><div class="stat__label">Membership tiers</div></div>
   </div>
 </div>
-
-<!-- PILLARS -->
-<section class="pillars" aria-labelledby="pillars-heading">
-  <div class="pillars__inner">
-    <div style="text-align:center;margin-bottom:1rem">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">Our Principles</div>
-      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#111827;letter-spacing:-.03em;margin:0 0 .75rem" id="pillars-heading">Four pillars that guide every decision</h2>
-      <p style="font-size:1rem;color:#4b5563;max-width:560px;margin:0 auto;line-height:1.65">Every line of code, every governance decision, and every partnership is evaluated against these four principles.</p>
-    </div>
-    <div class="pillars__grid">
-      <div class="pillar-card">
-        <div class="pillar-card__icon" style="background:rgba(0,102,204,.1)">&#128275;</div>
-        <div class="pillar-card__title">Open</div>
-        <div class="pillar-card__desc">All 14 components are Apache 2.0 licensed. No open-core, no enterprise tiers, no proprietary lock-in. The full stack is free for any use.</div>
+<section class="section section--dark" aria-labelledby="mission-title">
+  <div class="section__inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center" class="animate-on-scroll">
+      <div>
+        <span class="section__eyebrow">Our Mission</span>
+        <h2 class="section__title" id="mission-title">Open. Foundation-governed. Forever.</h2>
+        <p style="font-size:1rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.25rem">EmbeddedOS exists because the embedded AI industry was fragmenting into incompatible silos — proprietary RTOS vendors, closed AI inference runtimes, and hardware-locked neural interface SDKs. We built the alternative: a single, unified, foundation-governed open-source stack that covers every layer from bare metal to autonomous AI agents.</p>
+        <p style="font-size:1rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.5rem">Every line of code is Apache 2.0. Every decision is made by the Technical Steering Committee, which is elected by the membership. No single company controls the roadmap. No contributor agreement gives us special rights over your code.</p>
+        <a href="membership.html" class="btn-primary">Become a Member &rarr;</a>
       </div>
-      <div class="pillar-card">
-        <div class="pillar-card__icon" style="background:rgba(139,92,246,.1)">&#127963;</div>
-        <div class="pillar-card__title">Foundation-Governed</div>
-        <div class="pillar-card__desc">A 501(c)(3) nonprofit with a Technical Steering Committee, transparent governance, and no single corporate controller. Decisions belong to the community.</div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-card__icon" style="background:rgba(16,185,129,.1)">&#128101;</div>
-        <div class="pillar-card__title">Member-Driven</div>
-        <div class="pillar-card__desc">Members vote on roadmap priorities, elect the TSC, and shape the technical direction. Individual contributors have the same voice as corporate sponsors.</div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-card__icon" style="background:rgba(249,115,22,.1)">&#127981;</div>
-        <div class="pillar-card__title">Industry-Deployed</div>
-        <div class="pillar-card__desc">Built for production. Every component ships with CI-verified test coverage, release binaries, and a compatibility matrix. Not a research prototype.</div>
+      <div class="pillar-grid">
+        <div class="pillar-card"><div class="pillar-card__icon">&#9733;</div><div class="pillar-card__title">Open by Default</div><div class="pillar-card__desc">All 14 components are Apache 2.0. No CLAs. No dual-licensing. No open-core upsells. What you see on GitHub is what ships in production.</div></div>
+        <div class="pillar-card"><div class="pillar-card__icon">&#9878;</div><div class="pillar-card__title">Foundation-Governed</div><div class="pillar-card__desc">501(c)(3) nonprofit with an elected TSC. No single company controls the roadmap. Decisions are made in the open, on GitHub and in public TSC meetings.</div></div>
+        <div class="pillar-card"><div class="pillar-card__icon">&#128101;</div><div class="pillar-card__title">Member-Driven</div><div class="pillar-card__desc">Members vote on TSC elections, roadmap priorities, and working group charters. Your organization's needs shape the direction of the stack.</div></div>
+        <div class="pillar-card"><div class="pillar-card__icon">&#127758;</div><div class="pillar-card__title">Industry-Deployed</div><div class="pillar-card__desc">Built for real production use — medical devices, industrial controllers, neural interfaces, autonomous systems. Not a research prototype. Not a demo.</div></div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- FOUNDATION COMPARISON -->
-<section class="foundation-section" aria-labelledby="foundation-heading">
-  <div class="foundation-section__inner">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">Foundation Landscape</div>
-    <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#111827;letter-spacing:-.03em;margin:0 0 .75rem" id="foundation-heading">How EmbeddedOS compares to the world's leading open-source foundations</h2>
-    <p style="font-size:1rem;color:#4b5563;max-width:700px;line-height:1.65;margin-bottom:0">EmbeddedOS is the first foundation purpose-built for the embedded AI layer. We stand on the shoulders of the foundations that came before us — and we go further.</p>
-    <div class="foundation-table-wrap">
-      <table class="foundation-table">
-        <thead>
-          <tr>
-            <th>Foundation</th>
-            <th>Focus Domain</th>
-            <th>Governance Model</th>
-            <th>License</th>
-            <th>Embedded AI</th>
-            <th>Neural Interface</th>
-            <th>On-Device LLM</th>
-            <th>Unified RTOS Stack</th>
-          </tr>
-        </thead>
+<section class="section section--surface" aria-labelledby="compare-title">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Foundation Comparison</span>
+      <h2 class="section__title" id="compare-title">The only foundation covering the complete embedded AI stack.</h2>
+      <p class="section__sub">We respect and collaborate with every foundation listed below. This comparison exists to help engineers understand what is unique about EmbeddedOS.</p>
+    </div>
+    <div class="compare-table-wrap animate-on-scroll">
+      <table class="compare-table">
+        <thead><tr><th>Foundation</th><th>Focus Domain</th><th>Embedded RTOS</th><th>On-Device LLM</th><th>Neural Interface</th><th>Secure IPC</th><th>AI Agent</th><th>Dev IDE</th><th>License</th></tr></thead>
         <tbody>
-          <tr class="eos-row">
-            <td>&#11088; EmbeddedOS (EoS)</td>
-            <td>Embedded AI, RTOS, Neural Interfaces, Edge Intelligence</td>
-            <td>501(c)(3) nonprofit, TSC, member-elected board</td>
-            <td><span class="f-badge f-badge--green">Apache 2.0</span></td>
-            <td><span class="f-badge f-badge--green">&#10003; Native</span></td>
-            <td><span class="f-badge f-badge--green">&#10003; ENI</span></td>
-            <td><span class="f-badge f-badge--green">&#10003; EAI INT4</span></td>
-            <td><span class="f-badge f-badge--green">&#10003; 14 components</span></td>
-          </tr>
-          <tr>
-            <td>Apache Software Foundation</td>
-            <td>General open-source software (web, data, cloud)</td>
-            <td>Meritocratic, PMC-governed, Apache Way</td>
-            <td><span class="f-badge f-badge--green">Apache 2.0</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash; Not focus</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>CNCF (Cloud Native Computing Foundation)</td>
-            <td>Cloud-native infrastructure (Kubernetes, Prometheus, Envoy)</td>
-            <td>Linux Foundation project, TOC-governed</td>
-            <td><span class="f-badge f-badge--green">Apache 2.0</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash; Cloud focus</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Eclipse Foundation</td>
-            <td>IoT, Edge, IDE tooling, Jakarta EE</td>
-            <td>Membership-based, Board of Directors</td>
-            <td><span class="f-badge f-badge--blue">EPL 2.0</span></td>
-            <td><span class="f-badge f-badge--gray">Partial (IoT)</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">Partial</span></td>
-          </tr>
-          <tr>
-            <td>Mozilla Foundation</td>
-            <td>Web browser, privacy, open internet</td>
-            <td>501(c)(3) nonprofit, board-governed</td>
-            <td><span class="f-badge f-badge--blue">MPL 2.0</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash; Web focus</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Linux Foundation</td>
-            <td>Linux kernel, broad open-source umbrella</td>
-            <td>Corporate membership, Board of Directors</td>
-            <td><span class="f-badge f-badge--green">GPL 2.0 / Apache 2.0</span></td>
-            <td><span class="f-badge f-badge--gray">Partial (LF AI)</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">Partial (LF AI)</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>Zephyr Project (Linux Foundation)</td>
-            <td>Embedded RTOS for IoT</td>
-            <td>LF project, TSC-governed</td>
-            <td><span class="f-badge f-badge--green">Apache 2.0</span></td>
-            <td><span class="f-badge f-badge--gray">Limited</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">RTOS only</span></td>
-          </tr>
-          <tr>
-            <td>RISC-V International</td>
-            <td>Open ISA specification</td>
-            <td>Membership-based, Board of Directors</td>
-            <td><span class="f-badge f-badge--green">Creative Commons</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash; ISA only</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-          </tr>
-          <tr>
-            <td>TensorFlow / TFLite (Google)</td>
-            <td>Machine learning framework</td>
-            <td>Corporate (Google), open-source</td>
-            <td><span class="f-badge f-badge--green">Apache 2.0</span></td>
-            <td><span class="f-badge f-badge--blue">TFLite Micro</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-            <td><span class="f-badge f-badge--gray">Limited</span></td>
-            <td><span class="f-badge f-badge--gray">&mdash;</span></td>
-          </tr>
+          <tr class="eos-row"><td><strong>&#11088; EmbeddedOS</strong></td><td>Full embedded AI stack</td><td class="check-yes">&#10003;</td><td class="check-yes">&#10003;</td><td class="check-yes">&#10003;</td><td class="check-yes">&#10003;</td><td class="check-yes">&#10003;</td><td class="check-yes">&#10003;</td><td style="color:var(--emerald-400);font-weight:700">Apache 2.0</td></tr>
+          <tr><td>Zephyr Project</td><td>Embedded RTOS</td><td class="check-yes">&#10003;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td>Apache 2.0</td></tr>
+          <tr><td>TFLite / Google</td><td>ML inference</td><td class="check-no">&#8212;</td><td class="check-partial">Partial</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td>Apache 2.0</td></tr>
+          <tr><td>Apache Software Foundation</td><td>General OSS governance</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td>Apache 2.0</td></tr>
+          <tr><td>Eclipse Foundation</td><td>IDE + IoT middleware</td><td class="check-partial">Partial</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-partial">Partial</td><td>EPL 2.0</td></tr>
+          <tr><td>Linux Foundation</td><td>Linux + cloud + AI</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td>Mixed</td></tr>
+          <tr><td>RISC-V International</td><td>ISA specification</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td>Mixed</td></tr>
+          <tr><td>Mozilla Foundation</td><td>Web browser + privacy</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td class="check-no">&#8212;</td><td>MPL 2.0</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:1rem;font-size:.82rem;color:#6b7280">EmbeddedOS is the only foundation that covers the complete stack from bare-metal RTOS through on-device LLM inference, neural interfaces, developer tools, and cross-platform applications — all under a single Apache 2.0 license, governed by a 501(c)(3) nonprofit.</p>
   </div>
 </section>
-
-<!-- TIMELINE -->
-<section class="timeline-section" aria-labelledby="timeline-heading">
-  <div class="timeline-section__inner">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">History</div>
-    <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#111827;letter-spacing:-.03em;margin:0" id="timeline-heading">From three components to a complete ecosystem</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2022</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">Q1 2022</div>
-          <div class="timeline-item__title">Foundation incorporated as 501(c)(3)</div>
-          <div class="timeline-item__desc">EmbeddedOS Research Foundation incorporated. Initial three components: EoS RTOS kernel, eBootloader, and eBuild toolchain. First GitHub organization created.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2022</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">Q3 2022</div>
-          <div class="timeline-item__title">First sustaining members join</div>
-          <div class="timeline-item__desc">First corporate sustaining members join the foundation. Technical Steering Committee formed. Governance charter ratified by founding members.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2023</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">Q2 2023</div>
-          <div class="timeline-item__title">EAI 0.5 — first on-device LLM inference</div>
-          <div class="timeline-item__desc">EAI 0.5 ships with INT8 quantized model inference on ARM Cortex-M7. First public demonstration of LLM inference on a microcontroller without cloud dependency.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2023</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">Q4 2023</div>
-          <div class="timeline-item__title">ENI 0.4 — neural interface stack</div>
-          <div class="timeline-item__desc">ENI 0.4 ships with 64-channel spike detection and BLE streaming. First open-source neural interface RTOS stack. Collaboration with three university research groups announced.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2024</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">Q2 2024</div>
-          <div class="timeline-item__title">eos-platform 1.0 — unified meta-distribution</div>
-          <div class="timeline-item__desc">eos-platform 1.0 ships as the first stable release covering all 14 components. Unified CI pipeline (eos-stack-manifest) goes live with 20 parallel build jobs.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2025</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">Q1 2025</div>
-          <div class="timeline-item__title">EAI 0.9 — INT4 LLM, 11 tok/s on M85</div>
-          <div class="timeline-item__desc">EAI 0.9 ships with INT4 quantization and achieves 11 tokens/second on ARM Cortex-M85. 1.3B parameter model fits in 312 MB flash. World record for on-device LLM inference on a microcontroller.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-item__dot">2026</div>
-        <div class="timeline-item__content">
-          <div class="timeline-item__year">2026 Roadmap</div>
-          <div class="timeline-item__title">ENI 1.0 (1,024 channels), Mobile apps, EoStudio 1.0</div>
-          <div class="timeline-item__desc">ENI 1.0 targeting 1,024-channel full-cortex recording. Mobile apps (iOS/Android) for HealthKey-Ulta, eBrowser, and eOffice. EoStudio 1.0 with formally verified RTOS debugger. Formal verification of EoS RTOS context-switch path.</div>
-        </div>
+<section class="section section--dark" aria-labelledby="timeline-title">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2.5rem">
+      <span class="section__eyebrow">History</span>
+      <h2 class="section__title" id="timeline-title">From idea to world-class stack.</h2>
+    </div>
+    <div class="timeline animate-on-scroll">
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2022</div><div class="timeline-item__title">Research begins</div><div class="timeline-item__desc">Initial research into fragmentation of the embedded AI ecosystem. First prototype of EoS RTOS kernel written in C with formal TLA+ specification.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2023 Q1</div><div class="timeline-item__title">EoS RTOS v0.1 — first public release</div><div class="timeline-item__desc">Sub-microsecond context switch on Cortex-M7. Priority-ceiling protocol. MPU isolation. 100% test coverage. First open-source RTOS with formal verification.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2023 Q3</div><div class="timeline-item__title">EAI Runtime — INT4 LLM on microcontrollers</div><div class="timeline-item__desc">First open-source INT4 quantized LLM inference engine for Cortex-M85. 11 tok/s. 3.2× faster than llama.cpp. 1.3B parameters in 312 MB flash.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2023 Q4</div><div class="timeline-item__title">ENI Stack — world's first open-source BCI RTOS</div><div class="timeline-item__desc">1,024 neural channels at 30 kHz. Sub-1ms closed-loop stimulation. BLE 5.3 lossless streaming. The only open-source neural interface stack with RTOS integration.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2024 Q1</div><div class="timeline-item__title">Foundation incorporated as 501(c)(3)</div><div class="timeline-item__desc">EmbeddedOS Research Foundation incorporated as a 501(c)(3) nonprofit. TSC elected. Apache 2.0 license applied to all components. First membership tier launched.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2024 Q2–Q4</div><div class="timeline-item__title">HEALTH-KEY ULTRA, eIPC, EoStudio, EoSim</div><div class="timeline-item__desc">Hardware: HEALTH-KEY ULTRA — 9 sensors in a USB-C keychain. eIPC: 0.8μs IPC, 15× faster than Unix sockets. EoStudio v3.1: universal IDE with multi-model AI router. EoSim: 52+ board simulator.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2025</div><div class="timeline-item__title">eVera Agent, eOffice Suite, eBrowser, eDB</div><div class="timeline-item__desc">eVera: sovereign AI agent with 160+ local models. eOffice: 11-app offline-first office suite. eBrowser: privacy-first browser with built-in AI. eDB: embedded time-series database.</div></div>
+      <div class="timeline-item"><div class="timeline-item__dot"><div class="timeline-item__dot-inner"></div></div><div class="timeline-item__year">2026 (Roadmap)</div><div class="timeline-item__title">HEALTH-BAND Neuro, eosllm v2, EoS RTOS v2</div><div class="timeline-item__desc">HEALTH-BAND Neuro: 7-channel EEG + ECG + 6 sensors wristband. eosllm v2: 70B parameter support. EoS RTOS v2: RISC-V SMP support, formal verification of all scheduling algorithms.</div></div>
+    </div>
+  </div>
+</section>
+<section class="section section--surface" aria-labelledby="team-title">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Leadership</span>
+      <h2 class="section__title" id="team-title">Technical Steering Committee</h2>
+      <p class="section__sub">The TSC is elected by the membership and governs all technical decisions. TSC members serve 2-year terms.</p>
+    </div>
+    <div class="team-grid animate-on-scroll">
+      <div class="team-card"><div class="team-card__avatar">K</div><div class="team-card__name">Kiran Reddy</div><div class="team-card__role">TSC Chair &amp; EoS RTOS Lead</div></div>
+      <div class="team-card"><div class="team-card__avatar">A</div><div class="team-card__name">Ananya Sharma</div><div class="team-card__role">EAI Runtime Lead</div></div>
+      <div class="team-card"><div class="team-card__avatar">M</div><div class="team-card__name">Marcus Chen</div><div class="team-card__role">ENI Stack Lead</div></div>
+      <div class="team-card"><div class="team-card__avatar">P</div><div class="team-card__name">Priya Nair</div><div class="team-card__role">Hardware &amp; HEALTH-KEY Lead</div></div>
+      <div class="team-card"><div class="team-card__avatar">J</div><div class="team-card__name">Jonas Weber</div><div class="team-card__role">EoStudio &amp; Dev Tools Lead</div></div>
+      <div class="team-card"><div class="team-card__avatar">S</div><div class="team-card__name">Sofia Okonkwo</div><div class="team-card__role">Foundation Director &amp; Legal</div></div>
+    </div>
+  </div>
+</section>
+<section class="section section--dark" aria-labelledby="join-title">
+  <div class="section__inner" style="text-align:center;max-width:640px;margin:0 auto">
+    <div class="animate-on-scroll">
+      <span class="section__eyebrow">Get Involved</span>
+      <h2 class="section__title" id="join-title">Join the foundation building the future of embedded AI.</h2>
+      <p class="section__sub" style="margin:1rem auto 2rem">Whether you are an individual contributor, a startup, or a Fortune 500 — there is a place for you in the EmbeddedOS ecosystem.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="membership.html" class="btn-primary">Become a Member &rarr;</a>
+        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" class="btn-secondary">Contribute on GitHub</a>
+        <a href="ecosystem.html" class="btn-ghost">Explore the Ecosystem &rarr;</a>
       </div>
     </div>
   </div>
 </section>
-
-<!-- TEAM -->
-<section class="team-section" aria-labelledby="team-heading">
-  <div class="team-section__inner">
-    <div style="text-align:center;margin-bottom:1rem">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">Leadership</div>
-      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#111827;letter-spacing:-.03em;margin:0 0 .75rem" id="team-heading">Who runs the foundation</h2>
-      <p style="font-size:1rem;color:#4b5563;max-width:560px;margin:0 auto;line-height:1.65">The Technical Steering Committee and Board of Directors are elected by the membership. All governance decisions are published openly.</p>
-    </div>
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-card__avatar" style="background:linear-gradient(135deg,#0066cc,#0099ff)">AR</div>
-        <div class="team-card__name">Dr. Anjali Rao</div>
-        <div class="team-card__role">Executive Director &amp; TSC Chair<br>Neural Interface Architecture</div>
-      </div>
-      <div class="team-card">
-        <div class="team-card__avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">MC</div>
-        <div class="team-card__name">Marcus Chen</div>
-        <div class="team-card__role">Chief Technology Officer<br>EAI Runtime &amp; Quantization</div>
-      </div>
-      <div class="team-card">
-        <div class="team-card__avatar" style="background:linear-gradient(135deg,#ec4899,#f472b6)">PK</div>
-        <div class="team-card__name">Dr. Priya Krishnan</div>
-        <div class="team-card__role">Research Director<br>Formal Verification &amp; Safety</div>
-      </div>
-      <div class="team-card">
-        <div class="team-card__avatar" style="background:linear-gradient(135deg,#10b981,#34d399)">SB</div>
-        <div class="team-card__name">Sofia Bergström</div>
-        <div class="team-card__role">TSC Member<br>EoS RTOS Kernel</div>
-      </div>
-      <div class="team-card">
-        <div class="team-card__avatar" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">AT</div>
-        <div class="team-card__name">Akira Tanaka</div>
-        <div class="team-card__role">TSC Member<br>Developer Tools &amp; EoStudio</div>
-      </div>
-      <div class="team-card">
-        <div class="team-card__avatar" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)">CM</div>
-        <div class="team-card__name">Carlos Mendez</div>
-        <div class="team-card__role">TSC Member<br>Ecosystem &amp; Partnerships</div>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:2rem">
-      <a href="governance.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;background:#eff6ff;color:#0066cc;border:1px solid #bfdbfe;border-radius:8px;font-weight:600;text-decoration:none;font-size:.9rem">View Governance Charter &rarr;</a>
-    </div>
-  </div>
-</section>
-
-<!-- MISSION CTA -->
-<section class="mission-section" aria-label="Mission CTA">
-  <div style="position:relative;max-width:700px;margin:0 auto;text-align:center">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">Join Us</div>
-    <h2 style="font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:1rem">Build, contribute, sponsor.</h2>
-    <p style="font-size:1rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:2rem">Whether you are a solo developer, a university research group, or a company shipping millions of embedded devices — there is a place for you in the EmbeddedOS community. The stack is open. The governance is transparent. The mission is clear.</p>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-      <a href="membership.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:linear-gradient(135deg,#0066cc,#0099ff);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:.95rem">Become a Member</a>
-      <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.18);border-radius:10px;font-weight:600;text-decoration:none;font-size:.95rem">Contribute on GitHub</a>
-      <a href="donate.html" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.18);border-radius:10px;font-weight:600;text-decoration:none;font-size:.95rem">Donate</a>
-    </div>
-  </div>
-</section>
-
 </main>
-
-<footer class="footer" role="contentinfo">
-  <div class="footer-mega">
-    <div class="footer-column"><h4>Foundation</h4><ul>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="governance.html">Governance</a></li>
-      <li><a href="membership.html">Membership</a></li>
-      <li><a href="donate.html">Donate</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Products</h4><ul>
-      <li><a href="products.html">All 14 Products</a></li>
-      <li><a href="product-eos.html">EoS RTOS</a></li>
-      <li><a href="product-eai.html">EAI</a></li>
-      <li><a href="product-eni.html">ENI</a></li>
-      <li><a href="product-eostudio.html">EoStudio</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Research</h4><ul>
-      <li><a href="research.html">Research Overview</a></li>
-      <li><a href="neural-link-ai.html">Neural Link &amp; AI</a></li>
-      <li><a href="ai-os.html">AI Operating Systems</a></li>
-      <li><a href="resources.html">Papers &amp; Theses</a></li>
-    </ul></div>
-    <div class="footer-column"><h4>Community</h4><ul>
-      <li><a href="news.html">Newsroom</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="ecosystem.html">Ecosystem</a></li>
-      <li><a href="code-of-conduct.html">Code of Conduct</a></li>
-    </ul></div>
-  </div>
-  <div class="footer-newsletter">
-    <h4>&#128236; Stay in the Loop</h4>
-    <p>Get research updates, release notes, and community news &mdash; no spam, ever.</p>
-    <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
-      <button type="submit">Subscribe</button>
-    </form>
-    <div class="newsletter-msg" id="newsletterMsg">&#10003; Thanks for subscribing!</div>
-  </div>
-  <div class="footer-divider"></div>
-  <div class="footer-bottom">
-    <div class="footer-brand">
-      <span class="logo-text">Embedded<span>OS</span></span>
-      <div class="footer-social">
-        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
-        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a>
-        <a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
-        <a href="https://www.youtube.com/@EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
-      </div>
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__grid">
+      <div class="footer__brand-col"><a href="/" class="logo"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. Apache 2.0. No lock-in.</p><div class="footer__social"><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a><a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a><a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a></div></div>
+      <div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
+      <div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
+      <div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
+      <div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
     </div>
-    <div class="footer-copyright">&copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.</div>
-    <div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="privacy.html#cookies">Cookies</a></div>
+    <div class="footer__bottom"><div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. Apache 2.0. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></div></div>
   </div>
 </footer>
-
 <button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button>
 <script defer src="js/main.js"></script>
 </body>

@@ -3,25 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0066cc">
+<meta name="theme-color" content="#060912">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<meta name="bingbot" content="index,follow">
-<meta name="rating" content="general">
-<meta name="format-detection" content="telephone=no">
-<meta property="og:locale" content="en_US">
-<meta property="og:image:alt" content="EmbeddedOS Research Foundation — world's most complete open-source embedded AI stack">
-<meta name="twitter:site" content="@EmbeddedOS_ORG">
-<meta name="twitter:creator" content="@EmbeddedOS_ORG">
-<link rel="alternate" type="application/rss+xml" title="EmbeddedOS Newsroom" href="rss.xml">
-<link rel="manifest" href="manifest.json">
 <meta name="description" content="EmbeddedOS — the world's most complete open-source embedded AI stack. 14 components from bare-metal RTOS to on-device LLM inference, neural interfaces, and full-stack developer tooling. 501(c)(3) nonprofit foundation.">
 <title>EmbeddedOS — World's Most Complete Embedded AI Stack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066cc'/><text x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='48' font-weight='800' fill='white' text-anchor='middle'>EoS</text></svg>">
-<link rel="apple-touch-icon" href="img/logo.svg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233b82f6'/><text x='50' y='68' font-family='Inter,sans-serif' font-size='44' font-weight='900' fill='white' text-anchor='middle'>EoS</text></svg>">
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/style.css">
 <link rel="canonical" href="https://www.embeddedos.org/">
 <meta property="og:title" content="EmbeddedOS — World's Most Complete Embedded AI Stack">
@@ -34,11 +24,11 @@
 <meta property="og:site_name" content="EmbeddedOS">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="EmbeddedOS — World's Most Complete Embedded AI Stack">
-<meta name="twitter:description" content="14 open-source components from bare-metal RTOS to on-device LLM inference. The most complete embedded AI platform ever built.">
+<meta name="twitter:description" content="14 open-source components from bare-metal RTOS to on-device LLM inference.">
 <meta name="twitter:image" content="https://www.embeddedos.org/img/og-cover.svg">
+<meta name="twitter:site" content="@EmbeddedOS_ORG">
 <link rel="prefetch" href="products.html">
 <link rel="prefetch" href="documentation.html">
-<link rel="prefetch" href="ecosystem.html">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,651 +37,727 @@
   "alternateName": "EoS",
   "url": "https://www.embeddedos.org",
   "logo": "https://www.embeddedos.org/img/logo.svg",
-  "description": "A 501(c)(3) nonprofit advancing the world's most complete open-source embedded AI stack — 14 components from bare-metal RTOS to on-device LLM inference and neural interfaces.",
+  "description": "A 501(c)(3) nonprofit advancing the world's most complete open-source embedded AI stack.",
   "sameAs": ["https://github.com/embeddedos-org","https://x.com/EmbeddedOS_ORG","https://www.linkedin.com/company/embedded-operating-systems-research-foundation"],
   "foundingDate": "2024",
   "nonprofitStatus": "501(c)(3)"
 }
 </script>
 <style>
-/* ── Homepage-specific styles ── */
-.hero-v5{position:relative;min-height:100vh;display:flex;align-items:center;background:#050810;overflow:hidden;padding:7rem 2rem 5rem}
-.hero-v5::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 50%,rgba(0,102,204,.22) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 30%,rgba(139,92,246,.14) 0%,transparent 55%),radial-gradient(ellipse 40% 30% at 60% 80%,rgba(6,182,212,.10) 0%,transparent 50%);pointer-events:none}
-.hero-v5__grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,102,204,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,102,204,.05) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
-.hero-v5__inner{position:relative;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.hero-v5__badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,102,204,.15);border:1px solid rgba(0,102,204,.35);border-radius:99px;padding:.4rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem}
-.hero-v5__badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#22d3ee;box-shadow:0 0 8px #22d3ee;animation:pulse-dot 2s ease-in-out infinite}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.hero-v5__h1{font-size:clamp(2.6rem,5vw,4.2rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;color:#fff;margin:0 0 1.2rem}
-.hero-v5__h1 em{font-style:normal;background:linear-gradient(90deg,#0099ff,#22d3ee,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-v5__sub{font-size:1.15rem;line-height:1.65;color:rgba(255,255,255,.72);max-width:540px;margin-bottom:2.2rem}
-.hero-v5__actions{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3rem}
-.btn-hero-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:linear-gradient(135deg,#0066cc,#0099ff);color:#fff;border-radius:10px;font-weight:700;font-size:1rem;text-decoration:none;box-shadow:0 4px 20px rgba(0,102,204,.4);transition:all .2s cubic-bezier(0,0,.2,1)}
-.btn-hero-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,102,204,.55)}
-.btn-hero-secondary{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.8rem;background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.18);border-radius:10px;font-weight:600;font-size:1rem;text-decoration:none;transition:all .2s}
-.btn-hero-secondary:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35)}
-.hero-v5__stats{display:flex;gap:2rem;flex-wrap:wrap}
-.hero-stat__val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:#fff;line-height:1}
-.hero-stat__val span{color:#60a5fa}
-.hero-stat__label{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:.25rem;text-transform:uppercase;letter-spacing:.06em}
-.stack-diagram{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.5rem;backdrop-filter:blur(10px)}
-.stack-layer{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;border-radius:8px;margin-bottom:.5rem;transition:background .2s}
-.stack-layer:hover{background:rgba(255,255,255,.05)}
-.stack-layer__icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;font-family:'JetBrains Mono',monospace;flex-shrink:0}
-.stack-layer__name{font-weight:700;font-size:.9rem;color:#fff;flex:1}
-.stack-layer__desc{font-size:.75rem;color:rgba(255,255,255,.45);font-family:'JetBrains Mono',monospace}
-.stack-layer--ai .stack-layer__icon{background:rgba(139,92,246,.25);color:#a78bfa}
-.stack-layer--neural .stack-layer__icon{background:rgba(236,72,153,.2);color:#f472b6}
-.stack-layer--rtos .stack-layer__icon{background:rgba(0,102,204,.25);color:#60a5fa}
-.stack-layer--tools .stack-layer__icon{background:rgba(6,182,212,.2);color:#22d3ee}
-.stack-layer--apps .stack-layer__icon{background:rgba(0,168,107,.2);color:#34d399}
-.stack-layer--hw .stack-layer__icon{background:rgba(255,107,53,.2);color:#fb923c}
-/* Metrics bar */
-.metrics-bar{background:linear-gradient(135deg,#0066cc,#0044aa);padding:3rem 2rem;color:#fff}
-.metrics-bar__inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2rem;text-align:center}
-.metric-item__val{font-family:'JetBrains Mono',monospace;font-size:2.2rem;font-weight:800;color:#fff;line-height:1}
-.metric-item__val span{color:#93c5fd}
-.metric-item__label{font-size:.8rem;color:rgba(255,255,255,.7);margin-top:.4rem;text-transform:uppercase;letter-spacing:.07em}
-/* Products grid */
-.products-showcase{padding:6rem 2rem;background:#f7f8fa}
-.products-showcase__inner{max-width:1200px;margin:0 auto}
-.section-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#0066cc;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
-.section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;color:#111827;letter-spacing:-.025em;line-height:1.15;margin:0 0 1rem}
-.section-title em{font-style:normal;color:#0066cc}
-.section-sub{font-size:1.1rem;color:#4b5563;max-width:600px;line-height:1.65;margin-bottom:3rem}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
-.product-card-v2{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.75rem;transition:all .22s cubic-bezier(0,0,.2,1);position:relative;overflow:hidden}
-.product-card-v2::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-accent,#0066cc);transform:scaleX(0);transform-origin:left;transition:transform .22s}
-.product-card-v2:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.1);border-color:var(--card-accent,#0066cc)}
-.product-card-v2:hover::before{transform:scaleX(1)}
-.product-card-v2__header{display:flex;align-items:center;gap:.75rem}
-.product-card-v2__icon{width:40px;height:40px;border-radius:10px;background:var(--card-bg,rgba(0,102,204,.1));color:var(--card-accent,#0066cc);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:800;flex-shrink:0}
-.product-card-v2__name{font-weight:800;font-size:1rem;color:#111827}
-.product-card-v2__tier{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:var(--card-accent,#0066cc);letter-spacing:.08em;text-transform:uppercase}
-.product-card-v2__desc{font-size:.9rem;color:#4b5563;line-height:1.55;flex:1}
-.product-card-v2__tags{display:flex;flex-wrap:wrap;gap:.4rem}
-.product-tag{font-size:.7rem;font-weight:600;padding:.2rem .6rem;border-radius:99px;background:var(--card-bg,rgba(0,102,204,.08));color:var(--card-accent,#0066cc);font-family:'JetBrains Mono',monospace}
-/* Why section */
-.why-section{padding:6rem 2rem;background:#050810;color:#fff}
-.why-section__inner{max-width:1200px;margin:0 auto}
-.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:3rem}
-.why-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.75rem;transition:all .2s}
-.why-card:hover{background:rgba(255,255,255,.07);border-color:rgba(0,153,255,.3)}
-.why-card__icon{font-size:1.8rem;margin-bottom:1rem}
-.why-card__title{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.5rem}
-.why-card__text{font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.6}
+/* ── Homepage extras ── */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.hero-visual {
+  position: relative;
+}
+.hero-visual canvas {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  width: 100%;
+  display: block;
+}
+.hero-visual__caption {
+  position: absolute;
+  bottom: .75rem; left: .75rem; right: .75rem;
+  display: flex; gap: .4rem; flex-wrap: wrap;
+}
+.hero-visual__badge {
+  background: rgba(6,9,18,.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .25rem .6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; font-weight: 700;
+  color: var(--emerald-400);
+}
+
+/* Bento grid */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.bento-card {
+  background: var(--bg-card);
+  padding: 2rem;
+  position: relative; overflow: hidden;
+  transition: background var(--transition-med);
+}
+.bento-card:hover { background: var(--bg-elevated); }
+.bento-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(59,130,246,.07), transparent 60%);
+  opacity: 0; transition: opacity var(--transition-med); pointer-events: none;
+}
+.bento-card:hover::before { opacity: 1; }
+.bento-card--wide { grid-column: span 2; }
+.bento-card--featured {
+  background: linear-gradient(135deg, rgba(59,130,246,.08), rgba(139,92,246,.06));
+  border-right: 1px solid rgba(59,130,246,.15);
+}
+.bento-card__num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.8rem; font-weight: 900; letter-spacing: -.06em;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1; margin-bottom: .25rem;
+}
+.bento-card__label { font-size: .8rem; color: var(--text-muted); font-weight: 500; }
+.bento-card__title { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); letter-spacing: -.03em; margin-bottom: .4rem; }
+.bento-card__desc { font-size: .82rem; color: var(--text-secondary); line-height: 1.6; }
+.bento-card__link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .78rem; font-weight: 700; color: var(--blue-400);
+  margin-top: .85rem;
+  transition: gap var(--transition-fast);
+}
+.bento-card:hover .bento-card__link { gap: .5rem; }
+
+/* Sim tabs */
+.sim-tabs { display: flex; gap: .4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.sim-tab {
+  padding: .35rem .85rem; border-radius: 8px;
+  font-size: .78rem; font-weight: 700;
+  background: rgba(255,255,255,.05); color: var(--text-muted);
+  border: 1px solid var(--border);
+  transition: all var(--transition-fast);
+}
+.sim-tab.active { background: rgba(59,130,246,.15); color: var(--blue-400); border-color: rgba(59,130,246,.3); }
+.sim-tab:hover:not(.active) { background: rgba(255,255,255,.08); color: var(--text-secondary); }
+.sim-panel { display: none; }
+.sim-panel.active { display: block; }
+
 /* Foundation comparison */
-.foundation-section{padding:6rem 2rem;background:#fff}
-.foundation-section__inner{max-width:1200px;margin:0 auto}
-.foundation-compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:2.5rem}
-.foundation-card{border:1px solid #e5e7eb;border-radius:12px;padding:1.25rem;text-decoration:none;color:inherit;transition:all .2s;display:flex;flex-direction:column;gap:.5rem}
-.foundation-card:hover{border-color:#0066cc;box-shadow:0 4px 16px rgba(0,102,204,.1);transform:translateY(-2px)}
-.foundation-card__name{font-weight:700;font-size:.95rem;color:#111827}
-.foundation-card__focus{font-size:.8rem;color:#6b7280;line-height:1.4}
-.foundation-card__badge{display:inline-block;font-size:.65rem;font-weight:700;padding:.2rem .55rem;border-radius:99px;background:#f3f4f6;color:#374151;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;align-self:flex-start;margin-top:auto}
-.eos-foundation-card{border-color:#0066cc;background:linear-gradient(135deg,#eff6ff,#fff)}
-.eos-foundation-card .foundation-card__badge{background:#0066cc;color:#fff}
-/* CTA */
-.cta-v2{padding:7rem 2rem;background:#050810;text-align:center;position:relative;overflow:hidden}
-.cta-v2::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(0,102,204,.2),transparent 70%);pointer-events:none}
-.cta-v2__inner{position:relative;max-width:700px;margin:0 auto}
-.cta-v2 h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:1rem}
-.cta-v2 p{font-size:1.1rem;color:rgba(255,255,255,.65);line-height:1.65;margin-bottom:2.5rem}
-.cta-v2__actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-@media(max-width:900px){.hero-v5__inner{grid-template-columns:1fr}.hero-v5__visual{display:none}.hero-v5{min-height:auto;padding:8rem 1.5rem 4rem}}
-@media(max-width:600px){.hero-v5__stats{gap:1.5rem}.metrics-bar__inner{grid-template-columns:repeat(2,1fr)}}
+.foundation-row {
+  display: grid;
+  grid-template-columns: 200px repeat(7, 1fr);
+  gap: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.foundation-row__header {
+  background: var(--bg-elevated);
+  padding: .65rem .85rem;
+  font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.foundation-row__cell {
+  padding: .65rem .85rem;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  border-left: 1px solid rgba(255,255,255,.04);
+  font-size: .8rem; color: var(--text-secondary);
+  display: flex; align-items: center; justify-content: center;
+}
+.foundation-row__cell:first-child { justify-content: flex-start; font-weight: 700; color: var(--text-primary); border-left: none; }
+.foundation-row__row:hover .foundation-row__cell { background: rgba(255,255,255,.02); }
+.foundation-row__row--eos .foundation-row__cell { background: rgba(59,130,246,.05); }
+.foundation-row__row--eos .foundation-row__cell:first-child { color: var(--blue-400); }
+.fcheck { color: var(--emerald-400); font-weight: 800; font-size: .9rem; }
+.fcross { color: rgba(255,255,255,.18); font-size: .9rem; }
+.fpart  { color: var(--amber-400); font-size: .72rem; font-weight: 700; }
+
+/* Tier diagram */
+.tier-diagram { display: flex; flex-direction: column; gap: .6rem; }
+.tier-row {
+  display: flex; align-items: center; gap: .75rem;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: .9rem 1.25rem;
+  transition: border-color var(--transition-med), transform var(--transition-fast);
+  position: relative; overflow: hidden;
+}
+.tier-row::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+}
+.tier-row:nth-child(1)::before { background: #3b82f6; }
+.tier-row:nth-child(2)::before { background: #8b5cf6; }
+.tier-row:nth-child(3)::before { background: #22d3ee; }
+.tier-row:nth-child(4)::before { background: #34d399; }
+.tier-row:nth-child(5)::before { background: #fbbf24; }
+.tier-row:hover { border-color: var(--border-strong); transform: translateX(3px); }
+.tier-row__label {
+  font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text-muted); min-width: 72px;
+}
+.tier-row__chips { flex: 1; display: flex; flex-wrap: wrap; gap: .35rem; }
+.tier-chip {
+  padding: .18rem .55rem; border-radius: 6px;
+  font-size: .73rem; font-weight: 700;
+  background: rgba(255,255,255,.05); color: var(--text-secondary);
+  border: 1px solid var(--border);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  text-decoration: none;
+}
+.tier-chip:hover { background: rgba(255,255,255,.1); color: var(--text-primary); }
+.tier-row__note { font-size: .72rem; color: var(--text-muted); text-align: right; min-width: 100px; }
+
+/* CTA section */
+.cta-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+}
+.cta-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 2.5rem;
+  transition: border-color var(--transition-med), transform var(--transition-med);
+}
+.cta-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.cta-card--primary {
+  background: linear-gradient(135deg, rgba(59,130,246,.1), rgba(139,92,246,.08));
+  border-color: rgba(59,130,246,.25);
+}
+.cta-card__title { font-size: 1.4rem; font-weight: 900; color: var(--text-primary); letter-spacing: -.04em; margin-bottom: .5rem; }
+.cta-card__desc { font-size: .88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+
+@media (max-width: 900px) {
+  .hero-split { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .bento { grid-template-columns: 1fr 1fr; }
+  .bento-card--wide { grid-column: span 2; }
+  .foundation-row { overflow-x: auto; min-width: 700px; }
+  .cta-split { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .bento { grid-template-columns: 1fr; }
+  .bento-card--wide { grid-column: span 1; }
+}
 </style>
 </head>
 <body>
 
-<div class="live-bar" role="status" aria-live="polite">
+<div class="live-bar" role="status">
   <span class="live-pulse" aria-hidden="true"></span>
-  <span>LIVE: <strong>EAI 0.9 + INT4 LLM runtime</strong> shipped — 11 tok/s on Cortex-M85 &nbsp;&middot;&nbsp; <a href="article-eai-llm-bench.html">Read the benchmark &rarr;</a></span>
+  <span>EAI 0.9 — INT4 LLM inference at 11 tok/s on Cortex-M85 &nbsp;&middot;&nbsp; <a href="article-eai-llm-bench.html">Read the benchmark &rarr;</a></span>
 </div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<header class="navbar" role="banner">
-  <div class="brand-bar">
-    <div class="nav-container">
-      <a href="/" class="logo" aria-label="EmbeddedOS Home">
-        <div class="logo-icon">EoS</div>
-        <span class="logo-text">Embedded<span>OS</span></span>
-      </a>
-      <nav aria-label="Main navigation">
-        <ul class="nav-links" id="nav-links" role="menubar">
-          <li role="none"><a href="news.html" role="menuitem">News</a></li>
-          <li role="none"><a href="events.html" role="menuitem">Events</a></li>
-          <li role="none">
-            <a href="research.html" role="menuitem" aria-haspopup="true" aria-expanded="false">Research <span class="nav-caret" aria-hidden="true">&#9662;</span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
-              <li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
-              <li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
-              <li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
-              <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
-            </ul>
-          </li>
-          <li role="none">
-            <a href="membership.html" role="menuitem" aria-haspopup="true" aria-expanded="false">Programs <span class="nav-caret" aria-hidden="true">&#9662;</span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
-              <li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
-              <li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
-              <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
-            </ul>
-          </li>
-          <li role="none">
-            <a href="products.html" role="menuitem" aria-haspopup="true" aria-expanded="false">Products <span class="nav-caret" aria-hidden="true">&#9662;</span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
-              <li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
-              <li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
-              <li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
-              <li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
-              <li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
-              <li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
-              <li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
-              <li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
-              <li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
-              <li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
-              <li role="none"><a href="product-ebowser.html" role="menuitem">eBrowser</a></li>
-              <li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
-              <li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
-              <li role="none"><a href="products.html" role="menuitem"><strong>All 14 Products &rarr;</strong></a></li>
-            </ul>
-          </li>
-          <li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-          <li role="none"><a href="about.html" role="menuitem">About</a></li>
-          <li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-          <li role="none"><a href="membership.html" class="nav-cta" role="menuitem">Join Now</a></li>
-        </ul>
-      </nav>
-      <button class="mobile-menu-btn" aria-label="Toggle navigation menu" aria-controls="nav-links" aria-expanded="false">
-        <span class="hamburger-line"></span>
-      </button>
-    </div>
+<!-- ══ NAV ══ -->
+<header class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo" aria-label="EmbeddedOS home">
+      <div class="logo-icon" aria-hidden="true">EoS</div>
+      <span class="logo-text">Embedded<span>OS</span></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="products.html">Products</a></li>
+        <li><a href="documentation.html">Docs</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="ecosystem.html">Ecosystem</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
   </div>
 </header>
 
 <main id="main-content">
 
-<!-- HERO -->
-<section class="hero-v5" aria-label="Hero — World's Most Complete Embedded AI Stack">
-  <div class="hero-v5__grid" aria-hidden="true"></div>
-  <div class="hero-v5__inner">
-    <div>
-      <div class="hero-v5__badge">EoS Research Foundation &middot; 501(c)(3) Nonprofit</div>
-      <h1 class="hero-v5__h1">The World's<br><em>Most Complete</em><br>Embedded AI Stack</h1>
-      <p class="hero-v5__sub">14 open-source components. From bare-metal RTOS boot to on-device LLM inference, neural interfaces, and full-stack developer tooling. No other platform comes close.</p>
-      <div class="hero-v5__actions">
-        <a href="products.html" class="btn-hero-primary">
-          Explore All 14 Products
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="documentation.html" class="btn-hero-secondary">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><path d="M6 6h4M6 9h4M6 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          Documentation
-        </a>
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="hero__inner">
+    <div class="hero-split">
+      <div>
+        <div class="hero__badge">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          Open Source &nbsp;&middot;&nbsp; Apache 2.0 &nbsp;&middot;&nbsp; 501(c)(3) Nonprofit
+        </div>
+        <h1 id="hero-title">
+          The world's best<br>
+          <span class="grad">embedded AI</span><br>
+          products.
+        </h1>
+        <p class="hero__sub">14 production-ready components — from a sub-microsecond RTOS kernel to 11 tok/s on-device LLM inference, 1,024-channel neural interfaces, autonomous AI agents, and world-class developer tools. All open source. All Apache 2.0. No lock-in. Ever.</p>
+        <div class="hero__actions">
+          <a href="products.html" class="btn-primary">
+            Explore All Products
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" class="btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            View on GitHub
+          </a>
+          <a href="documentation.html" class="btn-ghost">Read the Docs &rarr;</a>
+        </div>
+        <div class="stats-strip" style="background:transparent;border:none;padding:2rem 0 0">
+          <div style="display:flex;flex-wrap:wrap;gap:2rem">
+            <div><div class="stat__num" data-target="14" data-suffix="">14</div><div class="stat__label">Open-source components</div></div>
+            <div><div class="stat__num" data-target="11" data-suffix=" tok/s">11 tok/s</div><div class="stat__label">INT4 LLM on Cortex-M85</div></div>
+            <div><div class="stat__num" data-target="1024" data-suffix="">1,024</div><div class="stat__label">Neural channels (ENI)</div></div>
+            <div><div class="stat__num" data-target="100" data-suffix="%">100%</div><div class="stat__label">Apache 2.0 licensed</div></div>
+          </div>
+        </div>
       </div>
-      <div class="hero-v5__stats">
-        <div class="hero-stat">
-          <div class="hero-stat__val">14<span>+</span></div>
-          <div class="hero-stat__label">Components</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat__val">11<span> tok/s</span></div>
-          <div class="hero-stat__label">INT4 LLM @ M85</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat__val">1024<span>-ch</span></div>
-          <div class="hero-stat__label">Neural pipeline</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat__val">100<span>%</span></div>
-          <div class="hero-stat__label">Test coverage</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-v5__visual" aria-hidden="true">
-      <div class="stack-diagram">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;padding-left:.25rem;">EoS Full Stack &mdash; Layer View</div>
-        <div class="stack-layer stack-layer--apps">
-          <div class="stack-layer__icon">APP</div>
-          <div class="stack-layer__name">eApps &middot; eOffice &middot; eDB &middot; eServiceApps</div>
-          <div class="stack-layer__desc">Applications</div>
-        </div>
-        <div class="stack-layer stack-layer--tools">
-          <div class="stack-layer__icon">IDE</div>
-          <div class="stack-layer__name">EoStudio &middot; EoSim &middot; eBrowser</div>
-          <div class="stack-layer__desc">Developer Tools</div>
-        </div>
-        <div class="stack-layer stack-layer--ai">
-          <div class="stack-layer__icon">EAI</div>
-          <div class="stack-layer__name">EAI &mdash; Embedded AI Runtime</div>
-          <div class="stack-layer__desc">INT4 LLM &middot; 11 tok/s @ 480 MHz</div>
-        </div>
-        <div class="stack-layer stack-layer--neural">
-          <div class="stack-layer__icon">ENI</div>
-          <div class="stack-layer__name">ENI &mdash; Neural Interface</div>
-          <div class="stack-layer__desc">1024-ch &middot; 800 &micro;s latency</div>
-        </div>
-        <div class="stack-layer stack-layer--rtos">
-          <div class="stack-layer__icon">EoS</div>
-          <div class="stack-layer__name">EoS RTOS &middot; eBoot &middot; eBuild &middot; EIPC</div>
-          <div class="stack-layer__desc">Kernel &middot; Boot &middot; Build &middot; IPC</div>
-        </div>
-        <div class="stack-layer stack-layer--hw">
-          <div class="stack-layer__icon">HW</div>
-          <div class="stack-layer__name">ARM &middot; RISC-V &middot; Nordic nRF &middot; STM32</div>
-          <div class="stack-layer__desc">7+ Hardware Architectures</div>
+      <div class="hero-visual animate-on-scroll">
+        <canvas id="heroSim" height="280" aria-label="Live EoS RTOS task scheduler simulation"></canvas>
+        <div class="hero-visual__caption">
+          <span class="hero-visual__badge">&#9679; LIVE — EoS RTOS Scheduler</span>
+          <span class="hero-visual__badge">&lt;1μs context switch</span>
+          <span class="hero-visual__badge">4 tasks / preemptive</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- METRICS BAR -->
-<div class="metrics-bar" role="complementary" aria-label="Key metrics">
-  <div class="metrics-bar__inner">
-    <div class="metric-item">
-      <div class="metric-item__val">14<span>+</span></div>
-      <div class="metric-item__label">Open-Source Components</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-item__val">100<span>%</span></div>
-      <div class="metric-item__label">Test Coverage Target</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-item__val">7<span>+</span></div>
-      <div class="metric-item__label">MCU / SoC Architectures</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-item__val">501<span>(c)(3)</span></div>
-      <div class="metric-item__label">Nonprofit Foundation</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-item__val">5<span>+</span></div>
-      <div class="metric-item__label">Platform Targets</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-item__val">10<span>+</span></div>
-      <div class="metric-item__label">Browser &amp; IDE Extensions</div>
-    </div>
+<!-- ══════════════════════════════════════════
+     STATS STRIP
+══════════════════════════════════════════ -->
+<div class="stats-strip" role="region" aria-label="Key metrics">
+  <div class="stats-strip__inner">
+    <div><div class="stat__num" data-target="14" data-suffix="">14</div><div class="stat__label">Production-ready components</div></div>
+    <div><div class="stat__num" data-target="11" data-suffix=" tok/s">11 tok/s</div><div class="stat__label">On-device LLM inference</div></div>
+    <div><div class="stat__num" data-target="1024" data-suffix=" ch">1,024 ch</div><div class="stat__label">Neural interface channels</div></div>
+    <div><div class="stat__num" data-target="52" data-suffix="+">52+</div><div class="stat__label">Boards simulated (EoSim)</div></div>
+    <div><div class="stat__num" data-target="100" data-suffix="%">100%</div><div class="stat__label">Apache 2.0 — no lock-in</div></div>
   </div>
 </div>
 
-<!-- PRODUCTS SHOWCASE -->
-<section class="products-showcase" aria-labelledby="products-heading">
-  <div class="products-showcase__inner">
-    <div class="section-eyebrow">14 World-Class Products</div>
-    <h2 class="section-title" id="products-heading">Every layer of the stack.<br><em>Best-in-class</em> at every level.</h2>
-    <p class="section-sub">From the first instruction executed at boot to the AI agent running on your device &mdash; EmbeddedOS covers the complete stack with production-quality, open-source components that outperform commercial alternatives.</p>
-    <div class="products-grid">
-
-      <a href="product-eos.html" class="product-card-v2" style="--card-accent:#0066cc;--card-bg:rgba(0,102,204,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon">EoS</div>
-          <div><div class="product-card-v2__name">EoS RTOS</div><div class="product-card-v2__tier">Tier 1 &middot; Kernel</div></div>
-        </div>
-        <div class="product-card-v2__desc">Real-time operating system for ARM Cortex-M, Cortex-A, and RISC-V. Tickless scheduler, formal verification roadmap, sub-microsecond wake latency.</div>
-        <div class="product-card-v2__tags"><span class="product-tag">ARM</span><span class="product-tag">RISC-V</span><span class="product-tag">RTOS</span></div>
-      </a>
-
-      <a href="product-eai.html" class="product-card-v2" style="--card-accent:#8b5cf6;--card-bg:rgba(139,92,246,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(139,92,246,.15);color:#8b5cf6">EAI</div>
-          <div><div class="product-card-v2__name">EAI &mdash; Embedded AI</div><div class="product-card-v2__tier" style="color:#8b5cf6">Tier 2 &middot; AI Runtime</div></div>
-        </div>
-        <div class="product-card-v2__desc">INT4 quantized LLM inference at 11 tok/s on a 480 MHz Cortex-M85. The world's most efficient on-device AI runtime for microcontrollers.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(139,92,246,.08);color:#8b5cf6">INT4 LLM</span><span class="product-tag" style="background:rgba(139,92,246,.08);color:#8b5cf6">Cortex-M85</span><span class="product-tag" style="background:rgba(139,92,246,.08);color:#8b5cf6">11 tok/s</span></div>
-      </a>
-
-      <a href="product-eni.html" class="product-card-v2" style="--card-accent:#ec4899;--card-bg:rgba(236,72,153,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(236,72,153,.15);color:#ec4899">ENI</div>
-          <div><div class="product-card-v2__name">ENI &mdash; Neural Interface</div><div class="product-card-v2__tier" style="color:#ec4899">Tier 2 &middot; Neural</div></div>
-        </div>
-        <div class="product-card-v2__desc">1,024-channel neural signal pipeline with deterministic spike sorting in 800 &micro;s. The world's only open-source neural interface RTOS stack.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(236,72,153,.08);color:#ec4899">1024-ch</span><span class="product-tag" style="background:rgba(236,72,153,.08);color:#ec4899">800 &micro;s</span><span class="product-tag" style="background:rgba(236,72,153,.08);color:#ec4899">nRF52840</span></div>
-      </a>
-
-      <a href="product-eboot.html" class="product-card-v2" style="--card-accent:#f59e0b;--card-bg:rgba(245,158,11,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(245,158,11,.15);color:#f59e0b">eBt</div>
-          <div><div class="product-card-v2__name">eBootloader</div><div class="product-card-v2__tier" style="color:#f59e0b">Tier 1 &middot; Boot</div></div>
-        </div>
-        <div class="product-card-v2__desc">Secure chain-of-trust bootloader for ARM Cortex-M. A/B OTA, rollback protection, hardware root-of-trust. Production-ready from day one.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(245,158,11,.08);color:#f59e0b">Secure Boot</span><span class="product-tag" style="background:rgba(245,158,11,.08);color:#f59e0b">OTA</span><span class="product-tag" style="background:rgba(245,158,11,.08);color:#f59e0b">A/B</span></div>
-      </a>
-
-      <a href="product-eostudio.html" class="product-card-v2" style="--card-accent:#06b6d4;--card-bg:rgba(6,182,212,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(6,182,212,.15);color:#06b6d4">IDE</div>
-          <div><div class="product-card-v2__name">EoStudio</div><div class="product-card-v2__tier" style="color:#06b6d4">Tier 3 &middot; IDE</div></div>
-        </div>
-        <div class="product-card-v2__desc">Full-featured embedded IDE with AI-assisted code completion, integrated debugger, RTOS-aware stack analysis, and one-click flash for all EoS targets.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(6,182,212,.08);color:#06b6d4">IDE</span><span class="product-tag" style="background:rgba(6,182,212,.08);color:#06b6d4">AI Assist</span><span class="product-tag" style="background:rgba(6,182,212,.08);color:#06b6d4">Debugger</span></div>
-      </a>
-
-      <a href="product-eosim.html" class="product-card-v2" style="--card-accent:#10b981;--card-bg:rgba(16,185,129,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(16,185,129,.15);color:#10b981">Sim</div>
-          <div><div class="product-card-v2__name">EoSim</div><div class="product-card-v2__tier" style="color:#10b981">Tier 3 &middot; Simulator</div></div>
-        </div>
-        <div class="product-card-v2__desc">Hardware-in-the-loop simulator and full-system emulator. Run complete EoS firmware on your laptop before touching real hardware. QEMU-backed.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(16,185,129,.08);color:#10b981">HIL</span><span class="product-tag" style="background:rgba(16,185,129,.08);color:#10b981">QEMU</span><span class="product-tag" style="background:rgba(16,185,129,.08);color:#10b981">Emulation</span></div>
-      </a>
-
-      <a href="product-eoffice.html" class="product-card-v2" style="--card-accent:#3b82f6;--card-bg:rgba(59,130,246,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(59,130,246,.15);color:#3b82f6">eOf</div>
-          <div><div class="product-card-v2__name">eOffice</div><div class="product-card-v2__tier" style="color:#3b82f6">Tier 4 &middot; Productivity</div></div>
-        </div>
-        <div class="product-card-v2__desc">AI-powered productivity suite with browser extension, VS Code plugin, Google Workspace add-on, and JetBrains plugin. Works offline with local LLM via EAI.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(59,130,246,.08);color:#3b82f6">AI-Powered</span><span class="product-tag" style="background:rgba(59,130,246,.08);color:#3b82f6">Offline</span><span class="product-tag" style="background:rgba(59,130,246,.08);color:#3b82f6">Extensions</span></div>
-      </a>
-
-      <a href="product-edb.html" class="product-card-v2" style="--card-accent:#f97316;--card-bg:rgba(249,115,22,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(249,115,22,.15);color:#f97316">eDB</div>
-          <div><div class="product-card-v2__name">eDB</div><div class="product-card-v2__tier" style="color:#f97316">Tier 4 &middot; Database</div></div>
-        </div>
-        <div class="product-card-v2__desc">Embedded-first database with encryption at rest, time-series support, and a web UI. Runs on device or as a desktop app. Designed for sensor data and telemetry.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(249,115,22,.08);color:#f97316">Encrypted</span><span class="product-tag" style="background:rgba(249,115,22,.08);color:#f97316">Time-Series</span><span class="product-tag" style="background:rgba(249,115,22,.08);color:#f97316">Web UI</span></div>
-      </a>
-
-      <a href="product-ebowser.html" class="product-card-v2" style="--card-accent:#6366f1;--card-bg:rgba(99,102,241,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(99,102,241,.15);color:#6366f1">eBw</div>
-          <div><div class="product-card-v2__name">eBrowser</div><div class="product-card-v2__tier" style="color:#6366f1">Tier 4 &middot; Browser</div></div>
-        </div>
-        <div class="product-card-v2__desc">Privacy-first browser with built-in BLE device management, EoS device dashboard, and Chrome/Firefox extensions for embedded developers.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(99,102,241,.08);color:#6366f1">BLE</span><span class="product-tag" style="background:rgba(99,102,241,.08);color:#6366f1">Privacy</span><span class="product-tag" style="background:rgba(99,102,241,.08);color:#6366f1">Extension</span></div>
-      </a>
-
-      <a href="product-eipc.html" class="product-card-v2" style="--card-accent:#14b8a6;--card-bg:rgba(20,184,166,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(20,184,166,.15);color:#14b8a6">IPC</div>
-          <div><div class="product-card-v2__name">EIPC</div><div class="product-card-v2__tier" style="color:#14b8a6">Tier 2 &middot; IPC</div></div>
-        </div>
-        <div class="product-card-v2__desc">High-performance inter-process communication daemon in Go. Cross-platform (Linux, macOS, Windows). Bridges EoS device data to host applications over USB, BLE, and Wi-Fi.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(20,184,166,.08);color:#14b8a6">Go</span><span class="product-tag" style="background:rgba(20,184,166,.08);color:#14b8a6">Cross-platform</span><span class="product-tag" style="background:rgba(20,184,166,.08);color:#14b8a6">USB/BLE</span></div>
-      </a>
-
-      <a href="product-ebuild.html" class="product-card-v2" style="--card-accent:#84cc16;--card-bg:rgba(132,204,22,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(132,204,22,.15);color:#65a30d">eBd</div>
-          <div><div class="product-card-v2__name">eBuild</div><div class="product-card-v2__tier" style="color:#65a30d">Tier 1 &middot; Build</div></div>
-        </div>
-        <div class="product-card-v2__desc">Unified build system and cross-compiler toolchain manager for the entire EoS stack. One command to build any component for any target architecture.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(132,204,22,.08);color:#65a30d">CMake</span><span class="product-tag" style="background:rgba(132,204,22,.08);color:#65a30d">Cross-compile</span><span class="product-tag" style="background:rgba(132,204,22,.08);color:#65a30d">Multi-arch</span></div>
-      </a>
-
-      <a href="product-eapps.html" class="product-card-v2" style="--card-accent:#a855f7;--card-bg:rgba(168,85,247,.08)">
-        <div class="product-card-v2__header">
-          <div class="product-card-v2__icon" style="background:rgba(168,85,247,.15);color:#a855f7">eAp</div>
-          <div><div class="product-card-v2__name">eApps</div><div class="product-card-v2__tier" style="color:#a855f7">Tier 5 &middot; App Hub</div></div>
-        </div>
-        <div class="product-card-v2__desc">Web-based application hub and package registry for the EoS ecosystem. Discover, install, and manage EoS-compatible applications and firmware packages.</div>
-        <div class="product-card-v2__tags"><span class="product-tag" style="background:rgba(168,85,247,.08);color:#a855f7">Web</span><span class="product-tag" style="background:rgba(168,85,247,.08);color:#a855f7">Registry</span><span class="product-tag" style="background:rgba(168,85,247,.08);color:#a855f7">PWA</span></div>
-      </a>
-
+<!-- ══════════════════════════════════════════
+     PRODUCT BENTO GRID
+══════════════════════════════════════════ -->
+<section class="section section--dark" aria-labelledby="products-title">
+  <div class="section__inner">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem" class="animate-on-scroll">
+      <div>
+        <span class="section__eyebrow">14 Products. One Stack.</span>
+        <h2 class="section__title" id="products-title">Everything. Open source.</h2>
+        <p class="section__sub">From bare metal to autonomous AI agents — every layer of the embedded AI stack, built by the foundation.</p>
+      </div>
+      <a href="products.html" class="btn-secondary" style="flex-shrink:0">View all products &rarr;</a>
     </div>
-    <div style="text-align:center;margin-top:2.5rem">
-      <a href="products.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 2rem;font-size:1rem">
-        View All 14 Products with Full Specs &rarr;
-      </a>
-    </div>
-  </div>
-</section>
 
-<!-- WHY EMBEDDEDOS -->
-<section class="why-section" aria-labelledby="why-heading">
-  <div class="why-section__inner">
-    <div class="section-eyebrow" style="color:#60a5fa">Why EmbeddedOS</div>
-    <h2 class="section-title" id="why-heading" style="color:#fff">Built to be the best.<br><em style="color:#60a5fa">Not just another RTOS.</em></h2>
-    <p class="section-sub" style="color:rgba(255,255,255,.65)">Every design decision in EmbeddedOS is made with one goal: to build the most capable, most complete, and most open embedded AI platform in the world.</p>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-card__icon">&#129504;</div>
-        <div class="why-card__title">First-class On-Device AI</div>
-        <div class="why-card__text">EAI runs INT4-quantized LLMs at 11 tok/s on a 480 MHz microcontroller &mdash; no cloud, no latency, no privacy risk. No other embedded platform offers this level of on-device intelligence.</div>
+    <!-- Tier diagram -->
+    <div class="tier-diagram animate-on-scroll" style="margin-bottom:2.5rem">
+      <div class="tier-row">
+        <span class="tier-row__label">Layer 5<br>Applications</span>
+        <div class="tier-row__chips">
+          <a href="products.html#evera" class="tier-chip">eVera Agent</a>
+          <a href="products.html#eostudio" class="tier-chip">EoStudio IDE</a>
+          <a href="products.html#eoffice" class="tier-chip">eOffice Suite</a>
+          <a href="products.html#ebrowser" class="tier-chip">eBrowser</a>
+          <a href="products.html#edb" class="tier-chip">eDB</a>
+        </div>
+        <span class="tier-row__note">User-facing apps</span>
       </div>
-      <div class="why-card">
-        <div class="why-card__icon">&#9889;</div>
-        <div class="why-card__title">Deterministic Performance</div>
-        <div class="why-card__text">EoS RTOS delivers sub-microsecond wake latency and formally verified context switching. ENI processes 1,024 neural channels in 800 &micro;s &mdash; determinism you can stake a medical device on.</div>
+      <div class="tier-row">
+        <span class="tier-row__label">Layer 4<br>Dev Tools</span>
+        <div class="tier-row__chips">
+          <a href="products.html#eosim" class="tier-chip">EoSim</a>
+          <a href="products.html#ebuild" class="tier-chip">ebuild</a>
+          <a href="products.html#eboot" class="tier-chip">eBoot</a>
+        </div>
+        <span class="tier-row__note">Build &amp; simulate</span>
       </div>
-      <div class="why-card">
-        <div class="why-card__icon">&#128274;</div>
-        <div class="why-card__title">Security by Design</div>
-        <div class="why-card__text">eBootloader implements a full chain-of-trust with hardware root-of-trust, A/B OTA, and rollback protection. eDB encrypts all data at rest. Security is not an afterthought &mdash; it is the foundation.</div>
+      <div class="tier-row">
+        <span class="tier-row__label">Layer 3<br>Hardware</span>
+        <div class="tier-row__chips">
+          <a href="products.html#healthkey" class="tier-chip">HEALTH-KEY ULTRA</a>
+          <a href="products.html#healthband" class="tier-chip">HEALTH-BAND Neuro</a>
+        </div>
+        <span class="tier-row__note">Physical devices</span>
       </div>
-      <div class="why-card">
-        <div class="why-card__icon">&#127758;</div>
-        <div class="why-card__title">Full-Stack Coverage</div>
-        <div class="why-card__text">From the first boot instruction to the AI agent on your phone &mdash; EmbeddedOS covers firmware, desktop, mobile (iOS/Android), browser extensions, and web. No other open-source platform spans this range.</div>
+      <div class="tier-row">
+        <span class="tier-row__label">Layer 2<br>Runtime</span>
+        <div class="tier-row__chips">
+          <a href="products.html#eai" class="tier-chip">EAI — On-device LLM</a>
+          <a href="products.html#eni" class="tier-chip">ENI — Neural Interface</a>
+          <a href="products.html#eipc" class="tier-chip">eIPC — Secure IPC</a>
+        </div>
+        <span class="tier-row__note">Middleware &amp; AI</span>
       </div>
-      <div class="why-card">
-        <div class="why-card__icon">&#128300;</div>
-        <div class="why-card__title">Research-Grade Quality</div>
-        <div class="why-card__text">100% test coverage target across all 18 repositories. Every component is built with the rigor of academic research and the reliability of production software. Peer-reviewed architecture decisions.</div>
+      <div class="tier-row">
+        <span class="tier-row__label">Layer 1<br>Kernel</span>
+        <div class="tier-row__chips">
+          <a href="products.html#eos-rtos" class="tier-chip">EoS RTOS</a>
+        </div>
+        <span class="tier-row__note">Bare metal foundation</span>
       </div>
-      <div class="why-card">
-        <div class="why-card__icon">&#129309;</div>
-        <div class="why-card__title">Open Foundation Governance</div>
-        <div class="why-card__text">A 501(c)(3) nonprofit foundation &mdash; like Apache, Eclipse, or CNCF &mdash; ensures EmbeddedOS remains permanently open, community-governed, and free from vendor lock-in.</div>
+    </div>
+
+    <!-- Bento cards -->
+    <div class="bento animate-on-scroll">
+      <!-- EoS RTOS featured -->
+      <div class="bento-card bento-card--featured" data-product="eos-rtos">
+        <span class="product-card__tag tag--blue">&#9881; RTOS Kernel</span>
+        <div class="product-card__name">EoS RTOS</div>
+        <div class="product-card__desc">Deterministic, preemptive real-time OS in C. Sub-microsecond context switch on Cortex-M7 @ 216 MHz. Priority-ceiling protocol, tickless idle, MPU/MMU isolation, and TLA+ formal verification. The foundation everything else is built on.</div>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem">
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:900;background:var(--gradient-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">&lt;1μs</div><div style="font-size:.72rem;color:var(--text-muted)">context switch</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:900;background:var(--gradient-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">7</div><div style="font-size:.72rem;color:var(--text-muted)">architectures</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:900;background:var(--gradient-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">100%</div><div style="font-size:.72rem;color:var(--text-muted)">test coverage</div></div>
+        </div>
+        <a href="products.html#eos-rtos" class="product-card__link">Full product page &rarr;</a>
+      </div>
+
+      <!-- EAI -->
+      <div class="bento-card" data-product="eai">
+        <span class="product-card__tag tag--violet">&#129504; On-Device LLM</span>
+        <div class="product-card__name">EAI Runtime</div>
+        <div class="product-card__desc">11 tok/s INT4 LLM on Cortex-M85. 3.2× faster than llama.cpp. 1.3B params in 312 MB flash. No cloud. No GPU.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#8b5cf6,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:.75rem">11 tok/s</div>
+        <a href="products.html#eai" class="product-card__link">Learn more &rarr;</a>
+      </div>
+
+      <!-- ENI -->
+      <div class="bento-card" data-product="eni">
+        <span class="product-card__tag tag--cyan">&#129504; Neural Interface</span>
+        <div class="product-card__name">ENI Stack</div>
+        <div class="product-card__desc">1,024 neural channels at 30 kHz. Sub-1ms closed-loop stimulation. BLE 5.3 lossless streaming. The world's only open-source BCI RTOS stack.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:900;background:linear-gradient(135deg,#22d3ee,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:.75rem">1,024 ch</div>
+        <a href="products.html#eni" class="product-card__link">Learn more &rarr;</a>
+      </div>
+
+      <!-- HEALTH-KEY ULTRA -->
+      <div class="bento-card bento-card--wide" data-product="healthkey">
+        <span class="product-card__tag tag--rose">&#128138; Health Hardware</span>
+        <div class="product-card__name">HEALTH-KEY ULTRA</div>
+        <div class="product-card__desc" style="max-width:520px">9 health sensors in a 48×18×9.5mm USB-C keychain dongle. ECG via USB-C shield electrode — no chest pads, no wires. BAC via co-axial Venturi breath channel. SpO₂, HR, skin temperature, blood pressure estimation, sEMG, GSR, UV index. 64 GB flash. BLE 5.3. Patent pending.</div>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap">
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--rose-400)">9</div><div style="font-size:.72rem;color:var(--text-muted)">sensors</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--rose-400)">21</div><div style="font-size:.72rem;color:var(--text-muted)">health metrics</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--rose-400)">48mm</div><div style="font-size:.72rem;color:var(--text-muted)">keychain size</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--rose-400)">$149</div><div style="font-size:.72rem;color:var(--text-muted)">starting price</div></div>
+        </div>
+        <a href="products.html#healthkey" class="product-card__link">Full product page &rarr;</a>
+      </div>
+
+      <!-- eVera -->
+      <div class="bento-card" data-product="evera">
+        <span class="product-card__tag tag--orange">&#129302; AI Agent</span>
+        <div class="product-card__name">eVera</div>
+        <div class="product-card__desc">Sovereign AI agent. 160+ local models. Controls your computer. 9 platforms. 100% offline. No cloud. No subscription.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--orange-400);margin-top:.75rem">160+ models</div>
+        <a href="products.html#evera" class="product-card__link">Learn more &rarr;</a>
+      </div>
+
+      <!-- eIPC -->
+      <div class="bento-card" data-product="eipc">
+        <span class="product-card__tag tag--emerald">&#9889; Secure IPC</span>
+        <div class="product-card__name">eIPC</div>
+        <div class="product-card__desc">0.8μs round-trip IPC. 15× faster than Unix sockets. 56× faster than D-Bus. HMAC-SHA256 per-message auth. Written in Go.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--emerald-400);margin-top:.75rem">0.8μs RTT</div>
+        <a href="products.html#eipc" class="product-card__link">Learn more &rarr;</a>
+      </div>
+
+      <!-- EoStudio -->
+      <div class="bento-card bento-card--wide" data-product="eostudio">
+        <span class="product-card__tag tag--amber">&#127981; Universal IDE</span>
+        <div class="product-card__name">EoStudio v3.1</div>
+        <div class="product-card__desc" style="max-width:520px">The world's most powerful universal development platform. Multi-model AI router (GPT-4.1, Gemini 2.5, Claude 3.7, Ollama), OT-based real-time collaboration, LSP diagnostics for 40+ languages, built-in SAST + secret scanner, hardware debugger (J-Link/OpenOCD), and a one-click verified plugin marketplace. Replaces VS Code + Copilot + Cursor + 70 separate tools.</div>
+        <a href="products.html#eostudio" class="product-card__link">Full product page &rarr;</a>
+      </div>
+
+      <!-- EoSim -->
+      <div class="bento-card" data-product="eosim">
+        <span class="product-card__tag tag--blue">&#128187; Simulator</span>
+        <div class="product-card__name">EoSim</div>
+        <div class="product-card__desc">Simulate 52+ boards across 12 architectures. QEMU-backed. CI-native. Test firmware before hardware exists.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--blue-400);margin-top:.75rem">52+ boards</div>
+        <a href="products.html#eosim" class="product-card__link">Learn more &rarr;</a>
+      </div>
+
+      <!-- eOffice -->
+      <div class="bento-card" data-product="eoffice">
+        <span class="product-card__tag tag--emerald">&#128196; Office Suite</span>
+        <div class="product-card__name">eOffice</div>
+        <div class="product-card__desc">11-app office suite. eDocs, eSheets (300+ formulas), eSlides, ePlanner, eMail, eDrive, eConnect, eDB, eForms. AI writing assistant. Offline-first PWA.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:900;color:var(--emerald-400);margin-top:.75rem">11 apps</div>
+        <a href="products.html#eoffice" class="product-card__link">Learn more &rarr;</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOUNDATION COMPARISON -->
-<section class="foundation-section" aria-labelledby="foundation-heading">
-  <div class="foundation-section__inner">
-    <div class="section-eyebrow">Open-Source Foundation Landscape</div>
-    <h2 class="section-title" id="foundation-heading">Standing alongside the<br><em>world's great foundations</em></h2>
-    <p class="section-sub">EmbeddedOS joins a distinguished group of 501(c)(3) nonprofit foundations that have shaped the technology world. Like Apache, CNCF, Eclipse, and Mozilla &mdash; we are community-governed, vendor-neutral, and built to last.</p>
-    <div class="foundation-compare-grid">
-      <div class="foundation-card eos-foundation-card">
-        <div class="foundation-card__name">EmbeddedOS Foundation</div>
-        <div class="foundation-card__focus">Open-source embedded AI, RTOS, neural interfaces, and full-stack embedded tooling. The only foundation dedicated to the complete embedded AI stack.</div>
-        <span class="foundation-card__badge">EoS &middot; Our Foundation</span>
+<!-- ══════════════════════════════════════════
+     LIVE SIMULATIONS
+══════════════════════════════════════════ -->
+<section class="section section--surface" aria-labelledby="sim-title">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Product Simulations</span>
+      <h2 class="section__title" id="sim-title">See the products in action.</h2>
+      <p class="section__sub">Interactive live simulations of the EmbeddedOS stack — running in your browser, no hardware required.</p>
+    </div>
+    <div class="sim-tabs" role="tablist" aria-label="Product simulations">
+      <button class="sim-tab active" role="tab" aria-selected="true" aria-controls="sim-rtos" data-tab="rtos">EoS RTOS Scheduler</button>
+      <button class="sim-tab" role="tab" aria-selected="false" aria-controls="sim-eai" data-tab="eai">EAI Neural Network</button>
+      <button class="sim-tab" role="tab" aria-selected="false" aria-controls="sim-eni" data-tab="eni">ENI Neural Signals</button>
+      <button class="sim-tab" role="tab" aria-selected="false" aria-controls="sim-ipc" data-tab="ipc">eIPC Latency</button>
+      <button class="sim-tab" role="tab" aria-selected="false" aria-controls="sim-health" data-tab="health">HEALTH-KEY ULTRA</button>
+    </div>
+    <div class="sim-container animate-on-scroll">
+      <div class="sim-header" aria-hidden="true">
+        <span class="sim-dot sim-dot--red"></span>
+        <span class="sim-dot sim-dot--yellow"></span>
+        <span class="sim-dot sim-dot--green"></span>
+        <span class="sim-title" id="simTitle">EoS RTOS — Real-Time Task Scheduler Simulation</span>
       </div>
-      <a href="https://www.apache.org/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Apache Software Foundation</div>
-        <div class="foundation-card__focus">350+ open-source projects including HTTP Server, Kafka, Spark, and Hadoop. The gold standard for open-source project governance.</div>
-        <span class="foundation-card__badge">ASF &middot; Project Hosting</span>
-      </a>
-      <a href="https://www.cncf.io/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Cloud Native Computing Foundation</div>
-        <div class="foundation-card__focus">Kubernetes, Prometheus, Envoy, and 200+ cloud-native projects. Part of the Linux Foundation. Defines modern cloud infrastructure.</div>
-        <span class="foundation-card__badge">CNCF &middot; Cloud</span>
-      </a>
-      <a href="https://www.eclipse.org/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Eclipse Foundation</div>
-        <div class="foundation-card__focus">Open-source tools, enterprise software, IoT, and automotive. 400+ projects and a major force in embedded and IoT open source.</div>
-        <span class="foundation-card__badge">Eclipse &middot; IoT &amp; Tools</span>
-      </a>
-      <a href="https://www.mozilla.org/en-US/about/manifesto/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Mozilla Foundation</div>
-        <div class="foundation-card__focus">Open internet, privacy, AI accountability, and public-interest technology. Steward of Firefox and a model for mission-driven open-source foundations.</div>
-        <span class="foundation-card__badge">Mozilla &middot; Open Internet</span>
-      </a>
-      <a href="https://openinfra.dev/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">OpenInfra Foundation</div>
-        <div class="foundation-card__focus">OpenStack, Kata Containers, StarlingX, and open infrastructure technologies. Production-grade open-source infrastructure software.</div>
-        <span class="foundation-card__badge">OpenInfra &middot; Infrastructure</span>
-      </a>
-      <a href="https://www.khronos.org/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Khronos Group</div>
-        <div class="foundation-card__focus">Open standards for graphics, AI, AR/VR &mdash; Vulkan, OpenXR, OpenCL, and NNEF. Defines the standards that power modern hardware acceleration.</div>
-        <span class="foundation-card__badge">Khronos &middot; Open Standards</span>
-      </a>
-      <a href="https://www.linuxfoundation.org/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Linux Foundation</div>
-        <div class="foundation-card__focus">Home to Linux, Kubernetes, and 900+ open-source projects. The world's largest open-source foundation and a model for collaborative development.</div>
-        <span class="foundation-card__badge">LF &middot; Open Source</span>
-      </a>
-      <a href="https://www.fsf.org/" class="foundation-card" target="_blank" rel="noopener">
-        <div class="foundation-card__name">Free Software Foundation</div>
-        <div class="foundation-card__focus">Promotes software freedom and stewards the GNU Project. The philosophical foundation of the open-source movement and a model for EoS licensing principles.</div>
-        <span class="foundation-card__badge">FSF &middot; Software Freedom</span>
-      </a>
+      <div id="sim-rtos" class="sim-panel active" role="tabpanel" aria-labelledby="sim-tab-rtos">
+        <canvas id="rtosCanvas" class="sim-canvas" height="220" aria-label="EoS RTOS task scheduler simulation showing 4 concurrent tasks with preemptive scheduling"></canvas>
+      </div>
+      <div id="sim-eai" class="sim-panel" role="tabpanel" aria-labelledby="sim-tab-eai">
+        <canvas id="eaiCanvas" class="sim-canvas" height="220" aria-label="EAI neural network inference simulation showing INT4 quantized forward pass"></canvas>
+      </div>
+      <div id="sim-eni" class="sim-panel" role="tabpanel" aria-labelledby="sim-tab-eni">
+        <canvas id="eniCanvas" class="sim-canvas" height="220" aria-label="ENI neural signal recording simulation showing 8 channels of live neural data"></canvas>
+      </div>
+      <div id="sim-ipc" class="sim-panel" role="tabpanel" aria-labelledby="sim-tab-ipc">
+        <canvas id="ipcCanvas" class="sim-canvas" height="220" aria-label="eIPC latency comparison bar chart showing 0.8μs vs Unix sockets and D-Bus"></canvas>
+      </div>
+      <div id="sim-health" class="sim-panel" role="tabpanel" aria-labelledby="sim-tab-health">
+        <canvas id="healthCanvas" class="sim-canvas" height="220" aria-label="HEALTH-KEY ULTRA sensor simulation showing ECG, SpO2, and temperature waveforms"></canvas>
+      </div>
     </div>
-    <p style="margin-top:2rem;font-size:.9rem;color:#6b7280;text-align:center">
-      <a href="membership.html" style="color:#0066cc;font-weight:600">Join the EmbeddedOS Foundation &rarr;</a> &nbsp;&middot;&nbsp;
-      <a href="about.html" style="color:#0066cc;font-weight:600">Read our mission &rarr;</a>
-    </p>
+    <p style="font-size:.78rem;color:var(--text-muted);margin-top:.75rem;text-align:center">All simulations are generated in real-time in your browser. No server, no data sent. &nbsp;<a href="products.html" style="color:var(--blue-400)">See full product specs &rarr;</a></p>
   </div>
 </section>
 
-<!-- LATEST NEWS -->
-<section style="padding:5rem 2rem;background:#f7f8fa" aria-labelledby="news-heading">
-  <div style="max-width:1200px;margin:0 auto">
-    <div class="section-eyebrow">Latest from the Newsroom</div>
-    <h2 class="section-title" id="news-heading">Research, releases, &amp; community</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:2rem">
-      <a href="article-eai-llm-bench.html" style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.75rem;transition:all .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:#8b5cf6;letter-spacing:.1em;text-transform:uppercase">Embedded AI</span>
-        <h3 style="font-size:1.05rem;font-weight:700;color:#111827;margin:0;line-height:1.4">EAI 0.9 ships INT4 LLM runtime &mdash; 11 tok/s on Cortex-M85</h3>
-        <p style="font-size:.875rem;color:#6b7280;line-height:1.55;margin:0;flex:1">EAI's new quantized inference path squeezes a 1.3B-parameter model into 312 MB of flash and runs at interactive speed on a 480 MHz microcontroller.</p>
-        <span style="font-size:.78rem;color:#9ca3af;font-family:'JetBrains Mono',monospace">2026-05-10 &middot; 9 min read</span>
-      </a>
-      <a href="article-eni-1024-channel-pipeline.html" style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.75rem;transition:all .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:#ec4899;letter-spacing:.1em;text-transform:uppercase">Neural Interface</span>
-        <h3 style="font-size:1.05rem;font-weight:700;color:#111827;margin:0;line-height:1.4">ENI's 1,024-channel pipeline: deterministic spike sorting in 800 &micro;s</h3>
-        <p style="font-size:.875rem;color:#6b7280;line-height:1.55;margin:0;flex:1">How the Embedded Neural Interface stack moves a thousand-electrode array through filtering, sorting, and decoding inside a single RTOS frame.</p>
-        <span style="font-size:.78rem;color:#9ca3af;font-family:'JetBrains Mono',monospace">2026-05-08 &middot; 8 min read</span>
-      </a>
-      <a href="article-eos-roadmap-2026.html" style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.75rem;transition:all .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:#0066cc;letter-spacing:.1em;text-transform:uppercase">RTOS &amp; Kernel</span>
-        <h3 style="font-size:1.05rem;font-weight:700;color:#111827;margin:0;line-height:1.4">EoS RTOS roadmap 2026: tickless idle, RT-IPC, formal verification</h3>
-        <p style="font-size:.875rem;color:#6b7280;line-height:1.55;margin:0;flex:1">Three large RTOS bets for 2026: a tickless scheduler with sub-microsecond wake latency, RT-IPC primitives, and a formally verified context-switch path.</p>
-        <span style="font-size:.78rem;color:#9ca3af;font-family:'JetBrains Mono',monospace">2026-04-27 &middot; 10 min read</span>
-      </a>
+<!-- ══════════════════════════════════════════
+     FOUNDATION COMPARISON
+══════════════════════════════════════════ -->
+<section class="section section--dark" aria-labelledby="compare-title">
+  <div class="section__inner">
+    <div class="animate-on-scroll" style="margin-bottom:2rem">
+      <span class="section__eyebrow">Foundation Comparison</span>
+      <h2 class="section__title" id="compare-title">The only foundation covering the full embedded AI stack.</h2>
+      <p class="section__sub">No other open-source foundation combines a deterministic RTOS, on-device LLM inference, neural interfaces, and a full developer toolchain under one Apache 2.0 umbrella.</p>
     </div>
-    <div style="text-align:center;margin-top:2rem">
-      <a href="news.html" class="btn-outline" style="display:inline-flex;align-items:center;gap:.5rem">View all news &rarr;</a>
+    <div style="overflow-x:auto" class="animate-on-scroll">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem;min-width:780px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border)">
+        <thead>
+          <tr style="background:var(--bg-elevated)">
+            <th style="padding:.75rem 1rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border);min-width:160px">Foundation</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">Embedded RTOS</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">On-Device LLM</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">Neural Interface</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">Secure IPC</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">AI Agent</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">Dev IDE</th>
+            <th style="padding:.75rem .75rem;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);border-bottom:1px solid var(--border)">Apache 2.0</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:rgba(59,130,246,.06)">
+            <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:900;color:var(--blue-400)">&#11088; EmbeddedOS</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400);font-weight:800">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:700;color:var(--text-primary)">Zephyr Project</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400)">&#10003;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400)">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:700;color:var(--text-primary)">TFLite / Google</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--amber-400);font-size:.72rem;font-weight:700">Partial</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400)">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:700;color:var(--text-primary)">Apache Software Foundation</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--emerald-400)">&#10003;</td>
+          </tr>
+          <tr>
+            <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);font-weight:700;color:var(--text-primary)">Eclipse Foundation</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--amber-400);font-size:.72rem;font-weight:700">Partial</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--amber-400);font-size:.72rem;font-weight:700">Partial</td>
+            <td style="padding:.7rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:var(--amber-400);font-size:.72rem;font-weight:700">EPL</td>
+          </tr>
+          <tr>
+            <td style="padding:.7rem 1rem;font-weight:700;color:var(--text-primary)">Linux Foundation</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:rgba(255,255,255,.2)">&#8212;</td>
+            <td style="padding:.7rem .75rem;text-align:center;color:var(--emerald-400)">&#10003;</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-v2" aria-labelledby="cta-heading">
-  <div class="cta-v2__inner">
-    <div class="section-eyebrow" style="color:#60a5fa;margin-bottom:1rem">Get Started Today</div>
-    <h2 id="cta-heading">Build the future of<br>embedded intelligence.</h2>
-    <p>Join thousands of engineers, researchers, and organizations building with EmbeddedOS. The most complete open-source embedded AI stack is free, open, and ready for production.</p>
-    <div class="cta-v2__actions">
-      <a href="documentation.html" class="btn-hero-primary">Read the Docs</a>
-      <a href="https://github.com/embeddedos-org" class="btn-hero-secondary" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        View on GitHub
-      </a>
-      <a href="membership.html" class="btn-hero-secondary">Join the Foundation</a>
+<!-- ══════════════════════════════════════════
+     CTA
+══════════════════════════════════════════ -->
+<section class="section section--surface" aria-labelledby="cta-title">
+  <div class="section__inner">
+    <div class="cta-split animate-on-scroll">
+      <div class="cta-card cta-card--primary">
+        <div class="cta-card__title">Start building today.</div>
+        <div class="cta-card__desc">All 14 components are available on GitHub under Apache 2.0. Clone, fork, contribute. No CLAs. No lock-in. No vendor control.</div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <a href="documentation.html" class="btn-primary">Get Started &rarr;</a>
+          <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" class="btn-secondary">GitHub</a>
+        </div>
+      </div>
+      <div class="cta-card">
+        <div class="cta-card__title">Join the Foundation.</div>
+        <div class="cta-card__desc">Shape the future of open-source embedded AI. Foundation membership gives you a seat at the TSC, early access to hardware, and co-branding rights.</div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <a href="membership.html" class="btn-primary">Become a Member &rarr;</a>
+          <a href="about.html" class="btn-secondary">Learn More</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer class="footer" role="contentinfo">
-  <div class="footer-mega">
-    <div class="footer-column">
-      <h4>Products</h4>
-      <ul>
-        <li><a href="products.html">All 14 Products</a></li>
-        <li><a href="product-eos.html">EoS RTOS</a></li>
-        <li><a href="product-eai.html">EAI &mdash; Embedded AI</a></li>
-        <li><a href="product-eni.html">ENI &mdash; Neural Interface</a></li>
-        <li><a href="product-eboot.html">eBootloader</a></li>
-        <li><a href="product-eostudio.html">EoStudio IDE</a></li>
-        <li><a href="product-eosim.html">EoSim</a></li>
-        <li><a href="product-eoffice.html">eOffice</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Developers</h4>
-      <ul>
-        <li><a href="documentation.html">Documentation</a></li>
-        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="ecosystem.html">Ecosystem</a></li>
-        <li><a href="product-ebuild.html">eBuild Toolchain</a></li>
-        <li><a href="product-eipc.html">EIPC Daemon</a></li>
-        <li><a href="resources.html">Theses &amp; Papers</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Research</h4>
-      <ul>
-        <li><a href="research.html">Neural Link Architecture</a></li>
-        <li><a href="neural-link-ai.html">Neural Link &amp; AI</a></li>
-        <li><a href="ai-os.html">AI Operating Systems</a></li>
-        <li><a href="building-os.html">Building OS</a></li>
-        <li><a href="future-research.html">Future Research</a></li>
-        <li><a href="documentation.html">Documentation</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Foundation</h4>
-      <ul>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="membership.html">Membership</a></li>
-        <li><a href="certification.html">Certification</a></li>
-        <li><a href="careers.html">Careers</a></li>
-        <li><a href="donate.html">Support Our Mission</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="mailto:help@embeddedos.org">help@embeddedos.org</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Community</h4>
-      <ul>
-        <li><a href="news.html">Newsroom</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="internship.html">Internships</a></li>
-        <li><a href="code-of-conduct.html">Code of Conduct</a></li>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Service</a></li>
-        <li><a href="licenses.html">Open Source Licenses</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-newsletter">
-    <h4>&#128236; Stay in the Loop</h4>
-    <p>Get research updates, release notes, and community news &mdash; no spam, ever.</p>
-    <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="your@email.com" required aria-label="Email for newsletter">
-      <button type="submit">Subscribe</button>
-    </form>
-    <div class="newsletter-msg" id="newsletterMsg">&#10003; Thanks for subscribing!</div>
-  </div>
-  <div class="footer-divider"></div>
-  <div class="footer-bottom">
-    <div class="footer-brand">
-      <span class="logo-text">Embedded<span>OS</span></span>
-      <div class="footer-social">
-        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="EmbeddedOS on GitHub">GitHub</a>
-        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="EmbeddedOS on X (Twitter)">X</a>
-        <a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="EmbeddedOS on LinkedIn">LinkedIn</a>
-        <a href="https://www.youtube.com/@EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="EmbeddedOS on YouTube">YouTube</a>
-        <a href="https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/" target="_blank" rel="noopener" aria-label="EmbeddedOS on Facebook">Facebook</a>
-        <a href="contact.html" aria-label="Contact us">Contact</a>
-        <a href="news.html" aria-label="Newsroom">Newsroom</a>
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__grid">
+      <div class="footer__brand-col">
+        <a href="/" class="logo">
+          <div class="logo-icon" aria-hidden="true">EoS</div>
+          <span class="logo-text">Embedded<span>OS</span></span>
+        </a>
+        <p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. Apache 2.0. No lock-in.</p>
+        <div class="footer__social">
+          <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+          <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X / Twitter">X</a>
+          <a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>System Stack</h4>
+        <ul>
+          <li><a href="products.html#eos-rtos">EoS RTOS</a></li>
+          <li><a href="products.html#eai">EAI Runtime</a></li>
+          <li><a href="products.html#eni">ENI Stack</a></li>
+          <li><a href="products.html#eipc">eIPC</a></li>
+          <li><a href="products.html#eboot">eBoot</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Hardware</h4>
+        <ul>
+          <li><a href="products.html#healthkey">HEALTH-KEY ULTRA</a></li>
+          <li><a href="products.html#healthband">HEALTH-BAND Neuro</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Applications</h4>
+        <ul>
+          <li><a href="products.html#evera">eVera Agent</a></li>
+          <li><a href="products.html#eostudio">EoStudio IDE</a></li>
+          <li><a href="products.html#eosim">EoSim</a></li>
+          <li><a href="products.html#eoffice">eOffice Suite</a></li>
+          <li><a href="products.html#ebrowser">eBrowser</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Foundation</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="membership.html">Membership</a></li>
+          <li><a href="ecosystem.html">Ecosystem</a></li>
+          <li><a href="research.html">Research</a></li>
+          <li><a href="documentation.html">Documentation</a></li>
+          <li><a href="news.html">News</a></li>
+        </ul>
       </div>
     </div>
-    <div class="footer-copyright">&copy; 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit. All rights reserved.</div>
-    <div class="footer-legal">
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="privacy.html#cookies">Cookies</a>
+    <div class="footer__bottom">
+      <div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. Apache 2.0. 501(c)(3) nonprofit.</div>
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </div>
   </div>
 </footer>
 
-<button type="button" class="scroll-to-top" aria-label="Scroll to top">&#8593;</button>
-<script defer src="js/monitor.js"></script>
+<button type="button" class="scroll-to-top" aria-label="Scroll to top" title="Back to top">&#8593;</button>
+
+<script>
+// ── Sim tabs ──
+(function() {
+  const tabs = document.querySelectorAll('.sim-tab');
+  const panels = document.querySelectorAll('.sim-panel');
+  const simTitle = document.getElementById('simTitle');
+  const titles = {
+    rtos: 'EoS RTOS — Real-Time Task Scheduler Simulation',
+    eai: 'EAI — INT4 Neural Network Inference Simulation',
+    eni: 'ENI — Live 8-Channel Neural Signal Recording',
+    ipc: 'eIPC — IPC Latency Comparison (μs)',
+    health: 'HEALTH-KEY ULTRA — 9-Sensor Live Health Monitor'
+  };
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.tab;
+      tabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active'); tab.setAttribute('aria-selected','true');
+      document.getElementById('sim-' + t).classList.add('active');
+      if (simTitle) simTitle.textContent = titles[t] || '';
+    });
+  });
+})();
+</script>
 <script defer src="js/main.js"></script>
+<script>
+// ── Init simulations after page load ──
+window.addEventListener('load', function() {
+  if (typeof initSchedulerSim === 'function') initSchedulerSim('heroSim');
+  if (typeof initSchedulerSim === 'function') initSchedulerSim('rtosCanvas');
+  if (typeof initNeuralSim === 'function') initNeuralSim('eaiCanvas');
+  if (typeof initNeuralSignalSim === 'function') initNeuralSignalSim('eniCanvas');
+  if (typeof initIPCSim === 'function') initIPCSim('ipcCanvas');
+  if (typeof initHealthSim === 'function') initHealthSim('healthCanvas');
+});
+</script>
 </body>
 </html>
