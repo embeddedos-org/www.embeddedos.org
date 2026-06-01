@@ -78,29 +78,42 @@ if (nForm) {
 }
 
 /* ── Animated counter ── */
-function animateCounter(el) {
+// Pre-fill all counters with final values immediately so they never show wrong numbers
+document.querySelectorAll('[data-target]').forEach(el => {
   const target = parseFloat(el.dataset.target);
   const suffix = el.dataset.suffix || '';
   const prefix = el.dataset.prefix || '';
-  const duration = 1800;
+  const val = target < 10 ? target.toFixed(1) : Math.round(target).toLocaleString();
+  el.textContent = prefix + val + suffix;
+});
+function animateCounter(el) {
+  if (el._animated) return;
+  el._animated = true;
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  const duration = 1200;
   const start = performance.now();
   function step(now) {
     const p = Math.min((now - start) / duration, 1);
     const ease = 1 - Math.pow(1 - p, 4);
-    const val = target < 10 ? (ease * target).toFixed(1) : Math.round(ease * target);
+    const val = target < 10 ? (ease * target).toFixed(1) : Math.round(ease * target).toLocaleString();
     el.textContent = prefix + val + suffix;
     if (p < 1) requestAnimationFrame(step);
+    else {
+      const finalVal = target < 10 ? target.toFixed(1) : Math.round(target).toLocaleString();
+      el.textContent = prefix + finalVal + suffix;
+    }
   }
   requestAnimationFrame(step);
 }
 const counterObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting && !e.target.dataset.counted) {
-      e.target.dataset.counted = '1';
+    if (e.isIntersecting && !e.target._animated) {
       animateCounter(e.target);
     }
   });
-}, { threshold: 0.5 });
+}, { threshold: 0.3 });
 document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
 
 /* ── EoS RTOS Scheduler Simulation ── */
