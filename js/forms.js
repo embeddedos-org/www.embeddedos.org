@@ -187,11 +187,16 @@
     var successEl = document.getElementById('formSuccess');
     var errorEl = document.getElementById('formError');
     if (type === 'success' && successEl) {
-      successEl.textContent = html;
+      // Use createRange to safely set HTML content
+      successEl.textContent = '';
+      var frag = document.createRange().createContextualFragment(html);
+      successEl.appendChild(frag);
       successEl.style.display = 'block';
       successEl.removeAttribute('hidden');
     } else if (type === 'error' && errorEl) {
-      errorEl.textContent = html;
+      errorEl.textContent = '';
+      var frag2 = document.createRange().createContextualFragment(html);
+      errorEl.appendChild(frag2);
       errorEl.style.display = 'block';
       errorEl.removeAttribute('hidden');
     }
