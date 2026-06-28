@@ -567,3 +567,152 @@ code, pre, .mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* ── Research Page ── */
+.research-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+.research-text h3 {
+  font-size: 1.4rem; font-weight: 800; color: var(--text-primary);
+  letter-spacing: -.03em; margin-bottom: 1rem;
+}
+.research-text p { font-size: .95rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1rem; }
+.research-text ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; margin-bottom: 1.75rem; }
+.research-text ul li {
+  font-size: .9rem; color: var(--text-secondary); padding-left: 1.25rem; position: relative;
+}
+.research-text ul li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--blue-400); font-size: .75rem; top: .15rem;
+}
+.research-image { width: 100%; }
+.research-img-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+
+/* ── Neural Diagram ── */
+.neural-diagram {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); overflow: hidden;
+  max-width: 860px; margin: 0 auto;
+}
+.diagram-title {
+  background: var(--bg-elevated); border-bottom: 1px solid var(--border);
+  padding: 1.25rem 1.75rem;
+}
+.diagram-title h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+.diagram-layers { display: flex; flex-direction: column; }
+.diagram-layer {
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition-fast);
+}
+.diagram-layer:last-child { border-bottom: none; }
+.diagram-layer:hover { background: rgba(255,255,255,.025); }
+.layer-number {
+  min-width: 56px; display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 800;
+  color: var(--blue-400); background: rgba(59,130,246,.07);
+  border-right: 1px solid var(--border);
+  padding: 1.25rem .75rem;
+}
+.layer-content { padding: 1.1rem 1.5rem; }
+.layer-content h4 { font-size: .9rem; font-weight: 700; color: var(--text-primary); margin-bottom: .3rem; }
+.layer-content p { font-size: .82rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* ── Positions / Publications List ── */
+.positions-list { display: flex; flex-direction: column; gap: 1.25rem; }
+.position-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.5rem 1.75rem;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+.position-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.position-card h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: .4rem; }
+.position-card p { font-size: .875rem; color: var(--text-secondary); line-height: 1.65; }
+.position-card .type {
+  font-family: 'JetBrains Mono', monospace; font-size: .72rem; font-weight: 700;
+  color: var(--blue-400); text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: .6rem; display: block;
+}
+
+/* ── Section variants used in research/internship pages ── */
+.section-white { background: var(--bg-surface); }
+.section-dark { background: var(--bg-base); }
+.section-gray { background: var(--bg-elevated); }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-header .overline {
+  font-family: 'JetBrains Mono', monospace; font-size: .72rem; font-weight: 700;
+  color: var(--blue-400); letter-spacing: .12em; text-transform: uppercase;
+  display: block; margin-bottom: .6rem;
+}
+.section-header h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900;
+  letter-spacing: -.04em; color: var(--text-primary); margin-bottom: .6rem;
+}
+.section-header p { font-size: 1rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; }
+
+/* ── Cards Grid ── */
+.cards-grid { display: grid; gap: 1.5rem; }
+.cards-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+.card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+.card-image { padding: 1.5rem 1.5rem 0; }
+.card-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.2);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-content { padding: 1.25rem 1.5rem 1.5rem; }
+.card-content h3 { font-size: .95rem; font-weight: 700; color: var(--text-primary); margin-bottom: .5rem; }
+.card-content p { font-size: .85rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── Page Header ── */
+.page-header {
+  padding: 5rem 1.5rem 4rem;
+  background: var(--bg-base);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(59,130,246,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-header h1 {
+  font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 900;
+  letter-spacing: -.05em; color: var(--text-primary); line-height: 1.1;
+  margin-bottom: .75rem; position: relative;
+}
+.page-header p {
+  font-size: 1.05rem; color: var(--text-secondary); max-width: 580px;
+  margin: 0 auto; line-height: 1.7; position: relative;
+}
+
+/* ── Breadcrumb ── */
+.breadcrumb {
+  padding: .75rem 1.5rem; max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .82rem; color: var(--text-muted);
+}
+.breadcrumb a { color: var(--text-muted); transition: color var(--transition-fast); }
+.breadcrumb a:hover { color: var(--text-primary); }
+.breadcrumb .separator { color: var(--text-muted); opacity: .5; }
+.breadcrumb .current { color: var(--text-secondary); }
+
+/* ── Research Responsive ── */
+@media (max-width: 900px) {
+  .research-content { grid-template-columns: 1fr; gap: 2rem; }
+  .research-content .research-image { order: -1; }
+  .cards-grid-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .cards-grid-3 { grid-template-columns: 1fr; }
+  .layer-number { min-width: 44px; font-size: .9rem; }
+}

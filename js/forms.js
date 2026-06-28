@@ -230,3 +230,22 @@
     });
   }
 })();
+
+// ── Donation amount selection (replaces inline onclick) ──
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('[data-amount]');
+  if (btn) {
+    var amount = btn.getAttribute('data-amount');
+    var customInput = document.getElementById('customAmount');
+    if (customInput) customInput.value = amount;
+    document.querySelectorAll('[data-amount]').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+  // Reset contact form
+  if (e.target.closest('[data-action="reset-contact"]')) {
+    var form = document.getElementById('contactForm');
+    if (form) form.reset();
+  }
+});
