@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Complete map of the EmbeddedOS product ecosystem: all 10 components, their dependencies, and how they fit together into the full embedded AI platform.">
+<meta name="keywords" content="EmbeddedOS ecosystem, embedded OS stack, EoS, EAI, ENI, EIPC, eBootloader, eBuild, EoSim, EoStudio, eDB">
+<meta name="author" content="EmbeddedOS Research Foundation">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="theme-color" content="#0066cc">
+<meta property="og:title" content="Ecosystem Map — EmbeddedOS">
+<meta property="og:description" content="Complete map of the EmbeddedOS product ecosystem: all 10 components, their dependencies, and how they fit together into the full embedded AI platform.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.embeddedos.org/ecosystem-map">
+<meta property="og:image" content="https://www.embeddedos.org/img/og-cover.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@EmbeddedOS_ORG">
+<meta name="twitter:title" content="Ecosystem Map — EmbeddedOS">
+<meta name="twitter:description" content="Complete map of the EmbeddedOS product ecosystem: all 10 components, their dependencies, and how they fit together into the full embedded AI platform.">
+<link rel="canonical" href="https://www.embeddedos.org/ecosystem-map">
+<link rel="apple-touch-icon" href="img/logo.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<title>Ecosystem Map — EmbeddedOS</title>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<header class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo" aria-label="EmbeddedOS home"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="products.html">Products</a></li>
+        <li><a href="documentation.html">Docs</a></li>
+        <li><a href="research.html">Research</a></li>
+              <li><a href="roadmap.html">Roadmap</a></li>
+              <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="ecosystem.html">Ecosystem</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html" aria-current="page">About</a></li>
+              <li><a href="security.html">Security Architecture</a></li>
+        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+  </div>
+</header>
+<main id="main-content">
+
+<section class="page-header" aria-labelledby="eco-h1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a> · <a href="ecosystem.html">Ecosystem</a> · <span>Ecosystem Map</span>
+    </nav>
+    <h1 id="eco-h1">Ecosystem Map</h1>
+    <p class="lede">A complete map of the EmbeddedOS product ecosystem — showing how every component fits together, what it depends on, and what it enables.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="eco-stack">
+  <div class="container">
+    <div class="section-header">
+      <span class="overline">Full Stack</span>
+      <h2 id="eco-stack">The EmbeddedOS Stack</h2>
+      <p>Every layer of the stack is an independent open-source project that can be used standalone or as part of the full platform.</p>
+    </div>
+    <div class="diagram-wrap">
+      <img src="img/photos/alt-platform.svg" alt="EmbeddedOS full stack diagram" loading="lazy" class="arch-diagram" width="860" height="480">
+    </div>
+  </div>
+</section>
+
+<section class="section section-gray" aria-labelledby="eco-products">
+  <div class="container">
+    <div class="section-header">
+      <span class="overline">Products</span>
+      <h2 id="eco-products">All Products at a Glance</h2>
+    </div>
+    <div class="specs-table-wrap">
+      <table class="specs-table" aria-label="EmbeddedOS product overview">
+        <tbody>
+          <tr><th scope="row"><a href="product-eos.html">EoS</a></th><td>Foundation real-time embedded OS kernel — scheduler, HAL, BSP, capability security. The base layer everything else builds on.</td></tr>
+          <tr><th scope="row"><a href="product-eboot.html">eBootloader</a></th><td>Multi-architecture secure bootloader with ECDSA-256 chain of trust, anti-rollback, and OTA dual-bank update.</td></tr>
+          <tr><th scope="row"><a href="product-eai.html">EAI</a></th><td>Embedded AI inference runtime — INT4/INT8/FP16, TFLite/ONNX/GGUF, Helium MVE acceleration, 11 tok/s on Cortex-M85.</td></tr>
+          <tr><th scope="row"><a href="product-eni.html">ENI</a></th><td>1,024-channel neural interface — 24-bit ADC, real-time spike sorting, BCI protocol stack, &lt; 1 ms latency.</td></tr>
+          <tr><th scope="row"><a href="product-eipc.html">EIPC</a></th><td>Secure inter-process communication — capability-gated message queues, zero-copy shared memory, &lt; 500 ns latency.</td></tr>
+          <tr><th scope="row"><a href="product-ebuild.html">eBuild</a></th><td>Cross-compilation build system — CMake + Ninja, 8 toolchains, 41 target profiles, SDK generation, CI/CD integration.</td></tr>
+          <tr><th scope="row"><a href="product-eosim.html">EoSim</a></th><td>Embedded systems simulator — QEMU backend, HIL bridge, virtual peripherals, GDB remote, fault injection, coverage.</td></tr>
+          <tr><th scope="row"><a href="product-eostudio.html">EoStudio</a></th><td>Embedded IDE — VS Code extension, RTOS-aware debug, peripheral view, power profiler, AI code assist, EoSim integration.</td></tr>
+          <tr><th scope="row"><a href="product-edb.html">eDB</a></th><td>Embedded database — ACID transactions, AES-256-XTS encryption, B-Tree index, SQL subset, 64 KB min RAM.</td></tr>
+          <tr><th scope="row"><a href="product-eos-platform.html">eOS Platform</a></th><td>Integrated platform SDK combining all components with versioned compatibility guarantees and long-term support.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="eco-deps">
+  <div class="container">
+    <div class="section-header">
+      <span class="overline">Dependencies</span>
+      <h2 id="eco-deps">Dependency Graph</h2>
+      <p>How the components depend on each other. Arrows point from dependent to dependency.</p>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <h3>EoS ← Foundation</h3>
+        <p>EoS has no EmbeddedOS dependencies. It depends only on a C11 compiler and a BSP for the target hardware. Everything else builds on top of EoS.</p>
+      </div>
+      <div class="card">
+        <h3>eBootloader ← EoS (optional)</h3>
+        <p>eBootloader can run standalone (before EoS is loaded) or as an EoS task for A/B update management. It depends on the EoS HAL for flash and crypto peripherals.</p>
+      </div>
+      <div class="card">
+        <h3>EIPC ← EoS</h3>
+        <p>EIPC is a kernel-level component that requires EoS for process isolation, memory mapping, and capability token management.</p>
+      </div>
+      <div class="card">
+        <h3>EAI ← EoS + EIPC</h3>
+        <p>EAI uses EoS for task scheduling and HAL access (DMA, NPU), and EIPC for inter-process model sharing and result streaming.</p>
+      </div>
+      <div class="card">
+        <h3>ENI ← EoS + EIPC + EAI</h3>
+        <p>ENI uses EoS for real-time ADC acquisition, EIPC for streaming neural data to consumer tasks, and EAI for on-device spike classification.</p>
+      </div>
+      <div class="card">
+        <h3>eDB ← EoS</h3>
+        <p>eDB uses EoS for flash HAL access, task scheduling, and mutex/semaphore primitives. It can also use EIPC for multi-process database access.</p>
+      </div>
+      <div class="card">
+        <h3>eBuild ← Host Tool</h3>
+        <p>eBuild runs on the development host (Linux/macOS/Windows). It has no runtime dependency on EoS — it generates the binaries that run on EoS.</p>
+      </div>
+      <div class="card">
+        <h3>EoSim ← eBuild + EoS</h3>
+        <p>EoSim simulates EoS-based firmware. It uses eBuild to compile firmware for the QEMU virtual target and wraps QEMU with EoS-specific machine models.</p>
+      </div>
+      <div class="card">
+        <h3>EoStudio ← eBuild + EoSim</h3>
+        <p>EoStudio orchestrates eBuild for compilation and EoSim for simulation. It connects to real hardware via GDB/JTAG and to EoSim via GDB remote protocol.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__grid">
+      <div class="footer__brand-col"><a href="/" class="logo"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a><a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a><a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a></div></div>
+      <div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
+      <div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
+      <div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
+      <div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+    </div>
+    <div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></div>
+    <div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem;color:var(--text-muted,rgba(255,255,255,.35))">Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted,rgba(255,255,255,.5));font-weight:600;text-decoration:none;transition:color .15s ease">InterServer</a></div>
+</div>
+  </div>
+</footer>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+<script src="js/main.js" defer></script>
+<script src="js/cookies.js" defer></script>
+</body>
+</html>

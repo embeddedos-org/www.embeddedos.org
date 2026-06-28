@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="EmbeddedOS changelog: all notable changes across EoS, eBootloader, EAI, ENI, EIPC, eBuild, EoSim, EoStudio, and eDB following Keep a Changelog conventions.">
+<meta name="keywords" content="EmbeddedOS changelog, release notes, version history, RTOS updates">
+<meta name="author" content="EmbeddedOS Research Foundation">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="theme-color" content="#0066cc">
+<meta property="og:title" content="Changelog — EmbeddedOS">
+<meta property="og:description" content="EmbeddedOS changelog: all notable changes across EoS, eBootloader, EAI, ENI, EIPC, eBuild, EoSim, EoStudio, and eDB following Keep a Changelog conventions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.embeddedos.org/changelog">
+<meta property="og:image" content="https://www.embeddedos.org/img/og-cover.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@EmbeddedOS_ORG">
+<meta name="twitter:title" content="Changelog — EmbeddedOS">
+<meta name="twitter:description" content="EmbeddedOS changelog: all notable changes across EoS, eBootloader, EAI, ENI, EIPC, eBuild, EoSim, EoStudio, and eDB following Keep a Changelog conventions.">
+<link rel="canonical" href="https://www.embeddedos.org/changelog">
+<link rel="apple-touch-icon" href="img/logo.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<title>Changelog — EmbeddedOS</title>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<header class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo" aria-label="EmbeddedOS home"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
+    <nav aria-label="Main navigation">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="products.html">Products</a></li>
+        <li><a href="documentation.html">Docs</a></li>
+        <li><a href="research.html">Research</a></li>
+              <li><a href="roadmap.html">Roadmap</a></li>
+              <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="ecosystem.html">Ecosystem</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="about.html" aria-current="page">About</a></li>
+              <li><a href="security.html">Security Architecture</a></li>
+        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+  </div>
+</header>
+<main id="main-content">
+
+<section class="page-header" aria-labelledby="cl-h1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a> · <span>Changelog</span>
+    </nav>
+    <h1 id="cl-h1">Changelog</h1>
+    <p class="lede">A record of all notable changes across the EmbeddedOS product family. Follows <a href="https://keepachangelog.com" rel="noopener" target="_blank">Keep a Changelog</a> conventions and <a href="https://semver.org" rel="noopener" target="_blank">Semantic Versioning</a>.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="cl-latest">
+  <div class="container">
+    <div class="section-header"><span class="overline">Latest</span><h2 id="cl-latest">v0.1.0 — 2025-Q2</h2></div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag tag-eos">EoS</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>Preemptive priority-based real-time scheduler with time-slicing</li>
+            <li>SMP (Symmetric Multi-Processing) and AMP (Asymmetric Multi-Processing) multicore modes</li>
+            <li>33-peripheral Hardware Abstraction Layer (HAL): UART, SPI, I²C, GPIO, CAN, USB, ETH, ADC, PWM, Timer, DMA, RTC, Crypto, and more</li>
+            <li>41 Board Support Package (BSP) product profiles</li>
+            <li>Capability-based security model with unforgeable process tokens</li>
+            <li>Hot-pluggable driver framework</li>
+            <li>POSIX-compatible system call interface</li>
+            <li>C11 kernel implementation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag tag-eboot">eBootloader</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>ECDSA-256 (NIST P-256) firmware signature verification</li>
+            <li>SHA-256 hash chain for multi-stage boot integrity</li>
+            <li>Anti-rollback counter in OTP/eFuse with configurable policy</li>
+            <li>AES-256-GCM encrypted firmware image support</li>
+            <li>ARM TrustZone secure world handoff</li>
+            <li>Dual-bank A/B OTA update with atomic swap and automatic rollback</li>
+            <li>JTAG/SWD debug lock-out in production mode</li>
+            <li>Support for ARM Cortex-M/A/R, RISC-V RV32/RV64, x86 (UEFI), MIPS, ARC, Xtensa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag tag-eai">EAI</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>INT4, INT8, FP16, and FP32 quantized inference runtime</li>
+            <li>ARM Helium MVE acceleration for Cortex-M55 and M85</li>
+            <li>TFLite Micro, ONNX Runtime, PyTorch Mobile, CMSIS-NN, and GGUF model format support</li>
+            <li>Post-training quantization (PTQ) and quantization-aware training (QAT) toolchain</li>
+            <li>11.2 tok/s LLM inference on Cortex-M85 @ 480 MHz (INT4)</li>
+            <li>200+ operator coverage including Transformer attention and depthwise separable convolutions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag tag-ebuild">eBuild</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>CMake 3.25+ with Ninja generator for parallel builds</li>
+            <li>Support for GCC 13+, Clang/LLVM 17+, ARM Compiler 6, IAR EWARM, RISC-V GCC, Xtensa GCC, MinGW-w64, MSVC 2022</li>
+            <li>41 pre-configured target profile presets</li>
+            <li>Automatic SDK generation with headers, libraries, and CMake package config</li>
+            <li>GitHub Actions, GitLab CI, Jenkins, and Buildkite native CI/CD integration</li>
+            <li>Integrated clang-tidy, cppcheck, and MISRA-C 2012 static analysis</li>
+            <li>GCOV/LCOV code coverage reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-gray" aria-labelledby="cl-upcoming">
+  <div class="container">
+    <div class="section-header"><span class="overline">Upcoming</span><h2 id="cl-upcoming">v0.2.0 — Planned Q4 2025</h2></div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag">ENI</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>1,024-channel neural signal acquisition at 30 kS/s per channel</li>
+            <li>24-bit ADC array with configurable bandpass filtering</li>
+            <li>Real-time spike sorting with 99.2% accuracy</li>
+            <li>BCI protocol stack with USB 3.0 and LVDS output</li>
+            <li>EoSim HIL integration for closed-loop BCI simulation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag">EIPC</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>Zero-copy shared memory channels with page-mapped regions</li>
+            <li>Lock-free inter-core queues for SMP systems</li>
+            <li>Capability token delegation and revocation</li>
+            <li>Runtime deadlock detection with cycle detection (debug builds)</li>
+            <li>Priority inheritance on mutexes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag">EoSim</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>Sub-microsecond HIL bridge latency</li>
+            <li>16-peripheral simulation (UART, SPI, I²C, GPIO, CAN, USB, ETH, ADC, PWM, Timer, DMA, RTC, Flash, SDIO, QSPI, LCD)</li>
+            <li>Fault injection framework: bit-flip, peripheral timeout, power-loss</li>
+            <li>EoStudio one-click launch integration</li>
+            <li>Branch coverage in instrumented builds</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="changelog-entry">
+      <div class="changelog-product"><span class="tag">eDB</span></div>
+      <div class="changelog-changes">
+        <div class="changelog-section"><span class="changelog-type type-added">Added</span>
+          <ul>
+            <li>ACID transactions with Write-Ahead Logging (WAL) and MVCC</li>
+            <li>AES-256-XTS per-page encryption with HKDF-SHA256 key derivation</li>
+            <li>B-Tree and Hash index types</li>
+            <li>SQL subset query language with JSON Path support</li>
+            <li>NOR Flash, NAND Flash, SD/eMMC, QSPI Flash, and SRAM backends</li>
+            <li>64 KB minimum RAM configuration</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__grid">
+      <div class="footer__brand-col"><a href="/" class="logo"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a><a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a><a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a></div></div>
+      <div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
+      <div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
+      <div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
+      <div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+    </div>
+    <div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></div>
+    <div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem;color:var(--text-muted,rgba(255,255,255,.35))">Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted,rgba(255,255,255,.5));font-weight:600;text-decoration:none;transition:color .15s ease">InterServer</a></div>
+</div>
+  </div>
+</footer>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+<script src="js/main.js" defer></script>
+<script src="js/cookies.js" defer></script>
+</body>
+</html>

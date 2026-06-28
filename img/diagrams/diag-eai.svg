@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 520" width="860" height="520" role="img" aria-label="EAI Embedded AI Runtime Pipeline">
+  <defs>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="gc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="ge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="860" height="520" fill="#060912" rx="16"/>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1e2a3a"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981"/>
+    </marker>
+  </defs>
+  <circle cx="430" cy="260" r="300" fill="#8b5cf6" opacity="0.05"/>
+  <circle cx="200" cy="200" r="120" fill="#3b82f6" opacity="0.04"/>
+  <circle cx="660" cy="320" r="120" fill="#22d3ee" opacity="0.04"/>
+  <text x="430" y="28" fill="#f1f5f9" font-size="18" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="800">EAI — Embedded AI Runtime</text>
+  <text x="430" y="48" fill="#94a3b8" font-size="11" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="normal">INT4/INT8/FP16 Quantization  ·  11 tok/s on Cortex-M85  ·  CMSIS-NN  ·  TFLite Micro</text>
+  <rect x="60" y="90" width="100" height="70" fill="#8b5cf6" opacity="0.12" rx="10"/>
+  <rect x="60" y="90" width="100" height="70" fill="none" stroke="#8b5cf6" stroke-width="1.5" rx="10" opacity="0.5"/>
+  <text x="110" y="120" fill="#8b5cf6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Model</text>
+  <text x="110" y="136" fill="#8b5cf6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Input</text>
+  <line x1="160" y1="125" x2="220" y2="125" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <rect x="180" y="90" width="100" height="70" fill="#3b82f6" opacity="0.12" rx="10"/>
+  <rect x="180" y="90" width="100" height="70" fill="none" stroke="#3b82f6" stroke-width="1.5" rx="10" opacity="0.5"/>
+  <text x="230" y="120" fill="#3b82f6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Quantize</text>
+  <text x="230" y="136" fill="#3b82f6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">INT4/INT8</text>
+  <line x1="280" y1="125" x2="340" y2="125" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <rect x="300" y="90" width="100" height="70" fill="#3b82f6" opacity="0.12" rx="10"/>
+  <rect x="300" y="90" width="100" height="70" fill="none" stroke="#3b82f6" stroke-width="1.5" rx="10" opacity="0.5"/>
+  <text x="350" y="120" fill="#3b82f6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Graph</text>
+  <text x="350" y="136" fill="#3b82f6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Optimizer</text>
+  <line x1="400" y1="125" x2="460" y2="125" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <rect x="420" y="90" width="100" height="70" fill="#22d3ee" opacity="0.12" rx="10"/>
+  <rect x="420" y="90" width="100" height="70" fill="none" stroke="#22d3ee" stroke-width="1.5" rx="10" opacity="0.5"/>
+  <text x="470" y="120" fill="#22d3ee" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Kernel</text>
+  <text x="470" y="136" fill="#22d3ee" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Dispatch</text>
+  <line x1="520" y1="125" x2="580" y2="125" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <rect x="540" y="90" width="100" height="70" fill="#10b981" opacity="0.12" rx="10"/>
+  <rect x="540" y="90" width="100" height="70" fill="none" stroke="#10b981" stroke-width="1.5" rx="10" opacity="0.5"/>
+  <text x="590" y="120" fill="#10b981" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">SIMD</text>
+  <text x="590" y="136" fill="#10b981" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Execution</text>
+  <line x1="640" y1="125" x2="700" y2="125" stroke="#10b981" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <rect x="660" y="90" width="100" height="70" fill="#f59e0b" opacity="0.12" rx="10"/>
+  <rect x="660" y="90" width="100" height="70" fill="none" stroke="#f59e0b" stroke-width="1.5" rx="10" opacity="0.5"/>
+  <text x="710" y="120" fill="#f59e0b" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Output</text>
+  <text x="710" y="136" fill="#f59e0b" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Tensor</text>
+  <text x="430" y="195" fill="#f1f5f9" font-size="13" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Supported Model Formats</text>
+  <rect x="60" y="210" width="115" height="28" fill="#8b5cf6" opacity="0.1" rx="6"/>
+  <rect x="60" y="210" width="115" height="28" fill="none" stroke="#8b5cf6" stroke-width="1" rx="6" opacity="0.3"/>
+  <text x="117" y="229" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">TFLite Micro</text>
+  <rect x="185" y="210" width="115" height="28" fill="#8b5cf6" opacity="0.1" rx="6"/>
+  <rect x="185" y="210" width="115" height="28" fill="none" stroke="#8b5cf6" stroke-width="1" rx="6" opacity="0.3"/>
+  <text x="242" y="229" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">ONNX Runtime</text>
+  <rect x="310" y="210" width="115" height="28" fill="#8b5cf6" opacity="0.1" rx="6"/>
+  <rect x="310" y="210" width="115" height="28" fill="none" stroke="#8b5cf6" stroke-width="1" rx="6" opacity="0.3"/>
+  <text x="367" y="229" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">PyTorch Mobile</text>
+  <rect x="435" y="210" width="115" height="28" fill="#8b5cf6" opacity="0.1" rx="6"/>
+  <rect x="435" y="210" width="115" height="28" fill="none" stroke="#8b5cf6" stroke-width="1" rx="6" opacity="0.3"/>
+  <text x="492" y="229" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">CMSIS-NN</text>
+  <rect x="560" y="210" width="115" height="28" fill="#8b5cf6" opacity="0.1" rx="6"/>
+  <rect x="560" y="210" width="115" height="28" fill="none" stroke="#8b5cf6" stroke-width="1" rx="6" opacity="0.3"/>
+  <text x="617" y="229" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">Custom IR</text>
+  <rect x="685" y="210" width="115" height="28" fill="#8b5cf6" opacity="0.1" rx="6"/>
+  <rect x="685" y="210" width="115" height="28" fill="none" stroke="#8b5cf6" stroke-width="1" rx="6" opacity="0.3"/>
+  <text x="742" y="229" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">GGUF / llama.cpp</text>
+  <text x="430" y="268" fill="#f1f5f9" font-size="13" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Hardware Acceleration</text>
+  <rect x="60" y="282" width="115" height="52" fill="#111827" stroke="#3b82f6" stroke-width="1" rx="8"/>
+  <text x="117" y="303" fill="#3b82f6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Cortex-M55/M85</text>
+  <text x="117" y="319" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="400">Helium MVE</text>
+  <rect x="185" y="282" width="115" height="52" fill="#111827" stroke="#3b82f6" stroke-width="1" rx="8"/>
+  <text x="242" y="303" fill="#3b82f6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Cortex-A55/A78</text>
+  <text x="242" y="319" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="400">NEON SIMD</text>
+  <rect x="310" y="282" width="115" height="52" fill="#111827" stroke="#22d3ee" stroke-width="1" rx="8"/>
+  <text x="367" y="303" fill="#22d3ee" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">RISC-V + V-ext</text>
+  <text x="367" y="319" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="400">Vector ISA</text>
+  <rect x="435" y="282" width="115" height="52" fill="#111827" stroke="#10b981" stroke-width="1" rx="8"/>
+  <text x="492" y="303" fill="#10b981" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">NPU / DSP</text>
+  <text x="492" y="319" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="400">Dedicated AI</text>
+  <rect x="560" y="282" width="115" height="52" fill="#111827" stroke="#8b5cf6" stroke-width="1" rx="8"/>
+  <text x="617" y="303" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">GPU (OpenCL)</text>
+  <text x="617" y="319" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="400">Parallel compute</text>
+  <rect x="685" y="282" width="115" height="52" fill="#111827" stroke="#f59e0b" stroke-width="1" rx="8"/>
+  <text x="742" y="303" fill="#f59e0b" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">FPGA</text>
+  <text x="742" y="319" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="400">Custom HW</text>
+  <text x="430" y="358" fill="#f1f5f9" font-size="13" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Quantization Precision vs. Performance</text>
+  <rect x="60" y="370" width="200" height="20" fill="#0d1117" rx="4"/>
+  <rect x="60" y="370" width="200" height="20" fill="#475569" opacity="0.7" rx="4"/>
+  <text x="270" y="384" fill="#475569" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="700">FP32</text>
+  <text x="340" y="384" fill="#94a3b8" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="start" font-weight="400">Baseline</text>
+  <rect x="60" y="398" width="200" height="20" fill="#0d1117" rx="4"/>
+  <rect x="60" y="398" width="150" height="20" fill="#f59e0b" opacity="0.7" rx="4"/>
+  <text x="270" y="412" fill="#f59e0b" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="700">FP16</text>
+  <text x="340" y="412" fill="#94a3b8" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="start" font-weight="400">2× faster</text>
+  <rect x="60" y="426" width="200" height="20" fill="#0d1117" rx="4"/>
+  <rect x="60" y="426" width="100" height="20" fill="#3b82f6" opacity="0.7" rx="4"/>
+  <text x="270" y="440" fill="#3b82f6" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="700">INT8</text>
+  <text x="340" y="440" fill="#94a3b8" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="start" font-weight="400">4× faster</text>
+  <rect x="60" y="454" width="200" height="20" fill="#0d1117" rx="4"/>
+  <rect x="60" y="454" width="50" height="20" fill="#10b981" opacity="0.7" rx="4"/>
+  <text x="270" y="468" fill="#10b981" font-size="11" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="700">INT4</text>
+  <text x="340" y="468" fill="#94a3b8" font-size="10" font-family="Inter, system-ui, sans-serif" text-anchor="start" font-weight="400">8× faster</text>
+  <rect x="500" y="365" width="320" height="110" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="10"/>
+  <text x="660" y="385" fill="#f1f5f9" font-size="11" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Benchmark: Cortex-M85 @ 480 MHz</text>
+  <text x="520" y="400" fill="#94a3b8" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="400">MobileNetV3-S INT4</text>
+  <text x="800" y="400" fill="#10b981" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="end" font-weight="700">11.2 tok/s</text>
+  <text x="520" y="418" fill="#94a3b8" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="400">BERT-Tiny INT8</text>
+  <text x="800" y="418" fill="#10b981" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="end" font-weight="700">4.8 inf/s</text>
+  <text x="520" y="436" fill="#94a3b8" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="400">ResNet-8 INT4</text>
+  <text x="800" y="436" fill="#10b981" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="end" font-weight="700">28.6 fps</text>
+  <text x="520" y="454" fill="#94a3b8" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="start" font-weight="400">Keyword Detect</text>
+  <text x="800" y="454" fill="#10b981" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="end" font-weight="700">< 1 ms</text>
+  <rect x="80" y="490" width="120" height="22" fill="#8b5cf6" opacity="0.1" rx="4"/>
+  <text x="140" y="505" fill="#8b5cf6" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">INT4  ·  Min Precision</text>
+  <rect x="220" y="490" width="120" height="22" fill="#8b5cf6" opacity="0.1" rx="4"/>
+  <text x="280" y="505" fill="#8b5cf6" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">11 tok/s  ·  LLM on M85</text>
+  <rect x="360" y="490" width="120" height="22" fill="#8b5cf6" opacity="0.1" rx="4"/>
+  <text x="420" y="505" fill="#8b5cf6" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">< 16 KB  ·  Runtime RAM</text>
+  <rect x="500" y="490" width="120" height="22" fill="#8b5cf6" opacity="0.1" rx="4"/>
+  <text x="560" y="505" fill="#8b5cf6" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">6 Formats  ·  Model Support</text>
+  <rect x="640" y="490" width="120" height="22" fill="#8b5cf6" opacity="0.1" rx="4"/>
+  <text x="700" y="505" fill="#8b5cf6" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">MIT  ·  License</text>
+
+</svg>
