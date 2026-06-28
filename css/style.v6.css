@@ -3379,3 +3379,398 @@ h1, h2, h3, h4, h5, h6, p {
   display: block;
   border-radius: 8px;
 }
+
+
+/* ═══════════════════════════════════════════════════════
+   FIX v5 — E2E browser audit fixes 2026-06-28
+═══════════════════════════════════════════════════════ */
+
+/* ── Inner page hero override ── */
+/* Only index.html gets the full 93vh hero; all inner pages get compact hero */
+body:not(.page-home) .hero {
+  min-height: 45vh;
+  padding: 6rem 1.5rem 3.5rem;
+}
+body:not(.page-home) .hero .hero-container {
+  max-width: 900px;
+}
+
+/* ── Stats bar ── */
+.stats-bar {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--clr-border);
+  border-bottom: 1px solid var(--clr-border);
+  padding: 2rem 1.5rem;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.stat-item-large .number {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  background: var(--gradient-aurora);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.stat-item-large .label {
+  font-size: 0.85rem;
+  color: var(--clr-muted);
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+
+/* ── Documentation layout ── */
+.docs-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+}
+.docs-sidebar {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--clr-border);
+  padding: 2rem 1rem;
+}
+.docs-sidebar nav a {
+  display: block;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--clr-muted);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.docs-sidebar nav a:hover,
+.docs-sidebar nav a.active {
+  color: var(--clr-text);
+  background: var(--bg-elevated);
+}
+.docs-sidebar .sidebar-section {
+  margin-bottom: 1.5rem;
+}
+.docs-sidebar .sidebar-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clr-muted);
+  padding: 0.5rem 0.75rem 0.25rem;
+}
+.docs-content {
+  padding: 3rem 4rem;
+  max-width: 860px;
+}
+@media (max-width: 900px) {
+  .docs-layout { grid-template-columns: 1fr; }
+  .docs-sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--clr-border); }
+  .docs-content { padding: 2rem 1.25rem; }
+}
+
+/* ── Event card image fix ── */
+.event-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: var(--bg-elevated);
+  display: block;
+}
+.event-card-img svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Contact page grid ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+.contact-info-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Certification page ── */
+.cert-hero { text-align: center; }
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.cert-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.cert-card:hover {
+  border-color: var(--clr-accent);
+  transform: translateY(-2px);
+}
+.cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* ── Membership tiers ── */
+.membership-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.membership-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.membership-card.featured {
+  border-color: var(--clr-accent);
+}
+.membership-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--clr-accent);
+}
+.membership-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--clr-text);
+  line-height: 1;
+}
+.membership-price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--clr-muted);
+}
+
+/* ── Future research page ── */
+.future-research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.research-area-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: border-color 0.2s;
+}
+.research-area-card:hover {
+  border-color: var(--clr-accent);
+}
+
+/* ── Neural link AI page ── */
+.neural-link-diagram {
+  background: var(--bg-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ── Page-specific hero heights ── */
+.page-donate .hero,
+.page-contact .hero,
+.page-membership .hero,
+.page-certification .hero {
+  min-height: 50vh;
+}
+
+/* ── Breadcrumb fix — ensure it's below nav ── */
+.breadcrumb {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  font-size: 0.82rem;
+  color: var(--clr-muted);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.breadcrumb a {
+  color: var(--clr-muted);
+  text-decoration: none;
+}
+.breadcrumb a:hover { color: var(--clr-text); }
+.breadcrumb-sep { margin: 0 0.4rem; opacity: 0.4; }
+
+/* ── Section spacing fix ── */
+.section {
+  padding: 4rem 1.5rem;
+}
+.section-sm {
+  padding: 2.5rem 1.5rem;
+}
+.section-lg {
+  padding: 6rem 1.5rem;
+}
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Fix for blank gap on pages with .hero but no background ── */
+.hero:not(:has(.hero__bg)) {
+  background: linear-gradient(135deg, var(--bg-void) 0%, var(--bg-surface) 100%);
+}
+
+/* ── Page header nav clearance fix ── */
+.page-header {
+  padding-top: calc(80px + 2rem) !important;
+  padding-bottom: 3rem;
+}
+.page-header .breadcrumb-nav {
+  margin-bottom: 1.5rem;
+}
+
+/* ── Inner page hero height fix ── */
+/* All pages except index.html get a compact hero */
+html:not([data-page="home"]) .hero {
+  min-height: 40vh;
+  padding: 5.5rem 1.5rem 3rem;
+}
+
+/* ── Animation & functional CSS ── */
+
+/* ── Scroll animations ── */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1), transform 0.5s cubic-bezier(0.23,1,0.32,1);
+}
+.animate-on-scroll.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── Form error states ── */
+input.is-error, textarea.is-error, select.is-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239,68,68,.2);
+}
+.field-error { color: #ef4444; font-size: .8rem; display: block; margin-top: .25rem; }
+
+/* ── Nav scrolled state ── */
+nav.nav--scrolled {
+  background: rgba(3,5,13,.95) !important;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(255,255,255,.08);
+}
+nav.nav--hidden {
+  transform: translateY(-100%);
+}
+nav {
+  transition: transform 0.3s cubic-bezier(0.23,1,0.32,1), background 0.3s;
+}
+
+/* ── Dropdown panel ── */
+.dropdown-menu {
+  transition: opacity 0.18s cubic-bezier(0.23,1,0.32,1), transform 0.18s cubic-bezier(0.23,1,0.32,1) !important;
+  transform-origin: top center;
+}
+.dropdown-menu[style*="opacity: 0"] {
+  transform: translateY(-8px) scale(0.97);
+}
+.dropdown-menu[style*="opacity: 1"] {
+  transform: translateY(0) scale(1);
+}
+
+/* ── Mobile menu open state ── */
+.nav-links.is-open, .nav-menu.is-open {
+  display: flex !important;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(3,5,13,.98);
+  z-index: 998;
+  padding: 5rem 2rem 2rem;
+  overflow-y: auto;
+  animation: slideInLeft 0.25s cubic-bezier(0.23,1,0.32,1);
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* ── Copy button ── */
+.copy-btn:hover {
+  background: rgba(255,255,255,.2) !important;
+  border-color: rgba(255,255,255,.4) !important;
+}
+
+/* ── Search dialog open state ── */
+[role="dialog"].is-open {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ── Canvas simulation containers ── */
+canvas {
+  display: block;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-md);
+  background: #0a0f1e;
+}
+.canvas-sim {
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+.canvas-sim canvas {
+  height: 220px;
+}
+
+/* ── Active nav link ── */
+a[aria-current="page"] {
+  color: var(--clr-text) !important;
+  font-weight: 600;
+}
