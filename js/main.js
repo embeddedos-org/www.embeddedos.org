@@ -597,3 +597,61 @@ initIPCSim('ipcCanvas');
 initHealthSim('healthCanvas');
 initDBSim('dbCanvas');
 initBuildSim('buildCanvas');
+
+// ── Dropdown Navigation ──────────────────────────────────────────
+(function initDropdownNav() {
+  const navLinks = document.getElementById('nav-links');
+  if (!navLinks) return;
+  
+  const dropdownItems = navLinks.querySelectorAll('li[role="none"]');
+  
+  dropdownItems.forEach(li => {
+    const trigger = li.querySelector('a[aria-haspopup="true"]');
+    const menu = li.querySelector('.dropdown-menu');
+    if (!trigger || !menu) return;
+    
+    // Desktop: hover handled by CSS
+    // Mobile: click to toggle
+    trigger.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        const isOpen = li.classList.contains('open');
+        // Close all others
+        dropdownItems.forEach(other => other.classList.remove('open'));
+        if (!isOpen) li.classList.add('open');
+        trigger.setAttribute('aria-expanded', !isOpen);
+      }
+    });
+    
+    // Keyboard navigation
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const isOpen = li.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen);
+      }
+      if (e.key === 'Escape') {
+        li.classList.remove('open');
+        trigger.setAttribute('aria-expanded', false);
+        trigger.focus();
+      }
+    });
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target)) {
+      dropdownItems.forEach(li => li.classList.remove('open'));
+    }
+  });
+  
+  // Mark active page
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  navLinks.querySelectorAll('a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+      a.classList.add('nav-active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+})();

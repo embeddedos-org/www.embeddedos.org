@@ -39,13 +39,11 @@
     "description": "501(c)(3) nonprofit building the world\'s most complete open-source embedded AI stack."
   }
   </script>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
 <meta content="#060912" name="theme-color"/>
 <title>Products — EmbeddedOS Foundation</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="css/style.css" rel="stylesheet"/>
+<link href="css/style.css?v=4" rel="stylesheet"/>
 <style>
 /* Page-specific styles */
 .page-hero {
@@ -174,29 +172,64 @@
 </div>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <header class="navbar">
+<div class="brand-bar">
 <div class="nav-container">
-<a class="logo" href="/">
+<a aria-label="EmbeddedOS Home" class="logo" href="/">
 <div class="logo-icon">EoS</div>
 <span class="logo-text">Embedded<span>OS</span></span>
 </a>
 <nav aria-label="Main navigation">
-<ul class="nav-links" id="nav-links">
-<li><a aria-current="page" href="products.html">Products</a></li>
-<li><a href="documentation.html">Docs</a></li>
-<li><a href="research.html">Research</a></li>
-<li><a href="roadmap.html">Roadmap</a></li>
-<li><a href="changelog.html">Changelog</a></li>
-<li><a href="ecosystem.html">Ecosystem</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="security.html">Security Architecture</a></li>
-<li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li>
-<li><a class="nav-cta" href="membership.html">Join Foundation</a></li>
+<ul class="nav-links" id="nav-links" role="menubar">
+<li role="none"><a href="news.html" role="menuitem">News</a></li>
+<li role="none">
+<a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
+<ul class="dropdown-menu" role="menu">
+<li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
+<li role="none"><a href="roadmap.html" role="menuitem">Roadmap</a></li>
+<li role="none"><a href="changelog.html" role="menuitem">Changelog</a></li>
+<li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
+<li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
+<li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
+<li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
+</ul>
+</li>
+<li role="none">
+<a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
+<ul class="dropdown-menu" role="menu">
+<li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
+<li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
+<li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
+<li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
+</ul>
+</li>
+<li role="none">
+<a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
+<ul class="dropdown-menu" role="menu">
+<li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
+<li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
+<li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
+<li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
+<li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
+<li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
+<li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
+<li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
+<li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
+<li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
+<li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
+<li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li>
+<li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
+<li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
+</ul>
+</li>
+<li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
+<li role="none"><a href="about.html" role="menuitem">About</a></li>
+<li role="none"><a href="security.html" role="menuitem">Security</a></li>
+<li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
+<li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
 </ul>
 </nav>
-<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation" class="mobile-menu-btn" type="button">
-<span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
-</button>
+<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+</div>
 </div>
 </header>
 <div class="page-hero">

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the…" name="description"/><meta content="#0066cc" name="theme-color"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="googlebot"/><meta content="index,follow" name="bingbot"/><meta content="general" name="rating"/><meta content="telephone=no" name="format-detection"/><meta content="en_US" property="og:locale"/><meta content="EmbeddedOS Research Foundation — open-source embedded AI systems stack" property="og:image:alt"/><meta content="@EmbeddedOS_ORG" name="twitter:site"/><meta content="@EmbeddedOS_ORG" name="twitter:creator"/><link href="rss.xml" rel="alternate" title="EmbeddedOS Newsroom" type="application/rss+xml"/><link href="manifest.json" rel="manifest"/><meta content="EoS Editorial" name="author"/><meta content="eDB ships AES-XTS at-rest encryption — even on 64 KB devices — EmbeddedOS" property="og:title"/><meta content="eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the smallest target. Here's how." property="og:description"/><meta content="article" property="og:type"/><meta content="2026-05-02T08:00:00Z" property="article:published_time"/><meta content="2026-05-02T08:00:00Z" property="article:modified_time"/><meta content="EoS Editorial" property="article:author"/><meta content="Security &amp; Boot" property="article:section"/><meta content="Security &amp; Boot" property="article:tag"/><meta content="EmbeddedOS" property="article:tag"/><meta content="Open Source" property="article:tag"/><meta content="https://www.embeddedos.org/article-edb-encryption-at-rest" property="og:url"/><meta content="https://www.embeddedos.org/img/og-cover.svg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="EmbeddedOS" property="og:site_name"/><meta content="summary_large_image" name="twitter:card"/><meta content="eDB ships AES-XTS at-rest encryption — even on 64 KB devices — EmbeddedOS" name="twitter:title"/><meta content="eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the smallest target. Here's how." name="twitter:description"/><meta content="https://www.embeddedos.org/img/og-cover.svg" name="twitter:image"/><link href="https://www.embeddedos.org/article-edb-encryption-at-rest" rel="canonical"/><link href="img/logo.svg" rel="apple-touch-icon"/><link href="https://fonts.googleapis.com" rel="dns-prefetch"/><link href="favicon.svg" rel="icon" type="image/svg+xml"/><title>eDB AES-XTS At-Rest Encryption | EmbeddedOS</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@600&amp;display=swap" rel="stylesheet"/><link href="css/style.css" rel="stylesheet"/> <script type="application/ld+json">
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><meta content="eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the…" name="description"/><meta content="#0066cc" name="theme-color"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="googlebot"/><meta content="index,follow" name="bingbot"/><meta content="general" name="rating"/><meta content="telephone=no" name="format-detection"/><meta content="en_US" property="og:locale"/><meta content="EmbeddedOS Research Foundation — open-source embedded AI systems stack" property="og:image:alt"/><meta content="@EmbeddedOS_ORG" name="twitter:site"/><meta content="@EmbeddedOS_ORG" name="twitter:creator"/><link href="rss.xml" rel="alternate" title="EmbeddedOS Newsroom" type="application/rss+xml"/><link href="manifest.json" rel="manifest"/><meta content="EoS Editorial" name="author"/><meta content="eDB ships AES-XTS at-rest encryption — even on 64 KB devices — EmbeddedOS" property="og:title"/><meta content="eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the smallest target. Here's how." property="og:description"/><meta content="article" property="og:type"/><meta content="2026-05-02T08:00:00Z" property="article:published_time"/><meta content="2026-05-02T08:00:00Z" property="article:modified_time"/><meta content="EoS Editorial" property="article:author"/><meta content="Security &amp; Boot" property="article:section"/><meta content="Security &amp; Boot" property="article:tag"/><meta content="EmbeddedOS" property="article:tag"/><meta content="Open Source" property="article:tag"/><meta content="https://www.embeddedos.org/article-edb-encryption-at-rest" property="og:url"/><meta content="https://www.embeddedos.org/img/og-cover.svg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="EmbeddedOS" property="og:site_name"/><meta content="summary_large_image" name="twitter:card"/><meta content="eDB ships AES-XTS at-rest encryption — even on 64 KB devices — EmbeddedOS" name="twitter:title"/><meta content="eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the smallest target. Here's how." name="twitter:description"/><meta content="https://www.embeddedos.org/img/og-cover.svg" name="twitter:image"/><link href="https://www.embeddedos.org/article-edb-encryption-at-rest" rel="canonical"/><link href="img/logo.svg" rel="apple-touch-icon"/><link href="favicon.svg" rel="icon" type="image/svg+xml"/><title>eDB AES-XTS At-Rest Encryption | EmbeddedOS</title>
+<link href="css/style.css?v=4" rel="stylesheet"/> <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@graph": [
@@ -53,21 +54,67 @@
     ]
 }
     </script>
-<link href="https://www.embeddedos.org/article-edb-encryption-at-rest" hreflang="en" rel="alternate"/><link href="https://www.embeddedos.org/article-edb-encryption-at-rest" hreflang="x-default" rel="alternate"/><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://www.embeddedos.org/article-edb-encryption-at-rest#webpage","url":"https://www.embeddedos.org/article-edb-encryption-at-rest","speakable":{"@type":"SpeakableSpecification","cssSelector":[".article-hero__title",".article-hero__dek",".prose p:first-of-type"]},"isPartOf":{"@id":"https://www.embeddedos.org/#website"}}</script></head><body><a class="skip-link" href="#main-content">Skip to main content</a><header class="navbar"><div class="brand-bar"><div class="nav-container"><a aria-label="EmbeddedOS Home" class="logo" href="/"><div class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><nav aria-label="Main navigation">
-<ul class="nav-links" id="nav-links">
-<li><a href="products.html">Products</a></li>
-<li><a href="documentation.html">Docs</a></li>
-<li><a href="research.html">Research</a></li>
-<li><a href="roadmap.html">Roadmap</a></li>
-<li><a href="changelog.html">Changelog</a></li>
-<li><a href="ecosystem.html">Ecosystem</a></li>
-<li><a href="news.html">News</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="security.html">Security Architecture</a></li>
-<li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li>
-<li><a class="nav-cta" href="membership.html">Join Foundation</a></li>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://www.embeddedos.org/article-edb-encryption-at-rest#webpage","url":"https://www.embeddedos.org/article-edb-encryption-at-rest","speakable":{"@type":"SpeakableSpecification","cssSelector":[".article-hero__title",".article-hero__dek",".prose p:first-of-type"]},"isPartOf":{"@id":"https://www.embeddedos.org/#website"}}</script></head><body><a class="skip-link" href="#main-content">Skip to main content</a><header class="navbar">
+<div class="brand-bar">
+<div class="nav-container">
+<a aria-label="EmbeddedOS Home" class="logo" href="/">
+<div class="logo-icon">EoS</div>
+<span class="logo-text">Embedded<span>OS</span></span>
+</a>
+<nav aria-label="Main navigation">
+<ul class="nav-links" id="nav-links" role="menubar">
+<li role="none"><a href="news.html" role="menuitem">News</a></li>
+<li role="none">
+<a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
+<ul class="dropdown-menu" role="menu">
+<li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
+<li role="none"><a href="roadmap.html" role="menuitem">Roadmap</a></li>
+<li role="none"><a href="changelog.html" role="menuitem">Changelog</a></li>
+<li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
+<li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
+<li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
+<li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
 </ul>
-</nav><button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span></button></div></div></header><main data-topic="security-boot" id="main-content"><header class="article-hero"><nav aria-label="Breadcrumb" class="article-hero__crumbs"><a href="index.html">Home</a> · <a href="news.html">News</a> · <a href="news.html#topic-security-boot">Security &amp; Boot</a></nav><span class="kicker kicker--blue"><a class="kicker" href="news.html#topic-security-boot">Security &amp; Boot</a></span><h1 class="article-hero__title">eDB ships AES-XTS at-rest encryption — even on 64 KB devices</h1><p class="article-hero__dek">eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the smallest target. Here's how.</p><div class="byline"><span class="byline__avatar">EE</span><span>EoS Editorial</span><span class="byline__sep">·</span><time datetime="2026-05-02">2026-05-02</time><span class="byline__sep">·</span><span>7 min read</span></div><div aria-label="Decorative cover for Security &amp; Boot" class="article-hero__media" role="img"><img alt="Storage chip macro — eDB AES-XTS encryption" decoding="async" height="520" loading="lazy" src="img/photos/encryption-storage.svg" width="1200"/></div></header><div class="layout-article"><article class="layout-article__main prose"><h2>The constraint</h2><p>eDB targets every EoS device, and the smallest one in scope ships with 64 KB of flash and 16 KB of RAM. There was room for exactly 6 KB of code for the encryption layer — including the AES core, key schedule, page format, and the integration shim with the existing storage manager.</p><h2>Why AES-XTS</h2><p>AES-XTS is the modern standard for storage encryption: deterministic per-block, no IV management, no nonce reuse risk, and well-suited to fixed-size pages. The downside — two AES keys per tweak — is irrelevant on devices where the hardware accelerator handles round operations in parallel.</p><h2>Hardware key offload</h2><p>On supported MCUs (STM32 with PKA, NXP CAAM, RP2040 PIO+PIO-AES), the page key never enters CPU-accessible memory. It's loaded into a key slot at boot and referenced by handle thereafter. The fallback software path (constant-time AES-NI-style on Cortex-M) costs roughly 8 cycles/byte on M7.</p> <pre><code>// eDB page write (simplified)
+</li>
+<li role="none">
+<a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
+<ul class="dropdown-menu" role="menu">
+<li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
+<li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
+<li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
+<li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
+</ul>
+</li>
+<li role="none">
+<a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
+<ul class="dropdown-menu" role="menu">
+<li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
+<li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
+<li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
+<li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
+<li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
+<li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
+<li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
+<li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
+<li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
+<li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
+<li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
+<li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li>
+<li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
+<li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
+</ul>
+</li>
+<li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
+<li role="none"><a href="about.html" role="menuitem">About</a></li>
+<li role="none"><a href="security.html" role="menuitem">Security</a></li>
+<li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
+<li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
+</ul>
+</nav>
+<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+</div>
+</div>
+</header><main data-topic="security-boot" id="main-content"><header class="article-hero"><nav aria-label="Breadcrumb" class="article-hero__crumbs"><a href="index.html">Home</a> · <a href="news.html">News</a> · <a href="news.html#topic-security-boot">Security &amp; Boot</a></nav><span class="kicker kicker--blue"><a class="kicker" href="news.html#topic-security-boot">Security &amp; Boot</a></span><h1 class="article-hero__title">eDB ships AES-XTS at-rest encryption — even on 64 KB devices</h1><p class="article-hero__dek">eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The catch: it had to fit in 6 KB of code on the smallest target. Here's how.</p><div class="byline"><span class="byline__avatar">EE</span><span>EoS Editorial</span><span class="byline__sep">·</span><time datetime="2026-05-02">2026-05-02</time><span class="byline__sep">·</span><span>7 min read</span></div><div aria-label="Decorative cover for Security &amp; Boot" class="article-hero__media" role="img"><img alt="Storage chip macro — eDB AES-XTS encryption" decoding="async" height="520" loading="lazy" src="img/photos/encryption-storage.svg" width="1200"/></div></header><div class="layout-article"><article class="layout-article__main prose"><h2>The constraint</h2><p>eDB targets every EoS device, and the smallest one in scope ships with 64 KB of flash and 16 KB of RAM. There was room for exactly 6 KB of code for the encryption layer — including the AES core, key schedule, page format, and the integration shim with the existing storage manager.</p><h2>Why AES-XTS</h2><p>AES-XTS is the modern standard for storage encryption: deterministic per-block, no IV management, no nonce reuse risk, and well-suited to fixed-size pages. The downside — two AES keys per tweak — is irrelevant on devices where the hardware accelerator handles round operations in parallel.</p><h2>Hardware key offload</h2><p>On supported MCUs (STM32 with PKA, NXP CAAM, RP2040 PIO+PIO-AES), the page key never enters CPU-accessible memory. It's loaded into a key slot at boot and referenced by handle thereafter. The fallback software path (constant-time AES-NI-style on Cortex-M) costs roughly 8 cycles/byte on M7.</p> <pre><code>// eDB page write (simplified)
 status = aes_xts_encrypt(
     page_key_handle,    // hardware key slot
     page-&gt;lba,          // tweak = logical block address
