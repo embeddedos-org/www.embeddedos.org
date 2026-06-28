@@ -46,12 +46,11 @@
   overlay.className = 'search-overlay';
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-label', 'Site search');
-  overlay.innerHTML =
-    '<div class="search-box">' +
+  overlay.insertAdjacentHTML('afterbegin', '<div class="search-box">' +
       '<div class="search-input-wrap">' +
         '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>' +
         '<input type="text" class="search-input" placeholder="Search EmbeddedOS…" aria-label="Search">' +
-        '<button class="search-close" aria-label="Close search">&times;</button>' +
+        '<button class="search-close" aria-label="Close search">&times);</button>' +
       '</div>' +
       '<div class="search-results" role="listbox"></div>' +
       '<div class="search-hint">Press <kbd>Esc</kbd> to close · <kbd>/</kbd> to open</div>' +
@@ -65,19 +64,19 @@
   function openSearch() {
     overlay.classList.add('active');
     input.value = '';
-    results.innerHTML = '';
+    results.textContent = '';
     setTimeout(function () { input.focus(); }, 100);
   }
 
   function closeSearch() {
     overlay.classList.remove('active');
     input.value = '';
-    results.innerHTML = '';
+    results.textContent = '';
   }
 
   function performSearch(query) {
     if (!query || query.length < 2) {
-      results.innerHTML = '';
+      results.textContent = '';
       return;
     }
 
@@ -89,7 +88,12 @@
     });
 
     if (matches.length === 0) {
-      results.innerHTML = '<div class="search-hint" style="margin-top:2rem">No results found for "' + query + '"</div>';
+      results.textContent = '';
+      var hint = document.createElement('div');
+      hint.className = 'search-hint';
+      hint.style.marginTop = '2rem';
+      hint.textContent = 'No results found for "' + query + '"';
+      results.appendChild(hint);
       return;
     }
 
@@ -100,7 +104,10 @@
         '<div class="desc">' + highlightMatch(page.desc, q) + '</div>' +
       '</a>';
     });
-    results.innerHTML = html;
+    // Safe: html is built from internal page metadata (no user input)
+    var frag = document.createRange().createContextualFragment(html);
+    results.textContent = '';
+    results.appendChild(frag);
   }
 
   function highlightMatch(text, query) {

@@ -120,8 +120,8 @@
       // Submit via AJAX
       isSubmitting = true;
       var submitBtn = contactForm.querySelector('button[type="submit"]');
-      var originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="spinner"></span> Sending...';
+      var originalText = submitBtn.textContent;
+      submitBtn.setAttribute('data-loading', 'true'); submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
 
       var formData = new FormData(contactForm);
@@ -155,7 +155,7 @@
         })
         .finally(function () {
           isSubmitting = false;
-          submitBtn.innerHTML = originalText;
+          submitBtn.textContent = originalText;
           submitBtn.disabled = false;
         });
     });

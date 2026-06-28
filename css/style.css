@@ -119,7 +119,7 @@ body::before {
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
-  z-index: 9999;
+  z-index: 999;
   opacity: 0.4;
 }
 
@@ -127,7 +127,7 @@ body::before {
 .skip-link {
   position: absolute; top: -50px; left: 1rem;
   background: var(--gradient-blue); color: #fff;
-  padding: .6rem 1.25rem; z-index: 10000;
+  padding: .6rem 1.25rem; z-index: 999;
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   font-weight: 700; font-size: .85rem;
   transition: top .2s var(--ease-out);
@@ -165,7 +165,7 @@ body::before {
 
 /* ── Navbar ── */
 .navbar {
-  position: sticky; top: 0; z-index: 1000;
+  position: sticky; top: 0; z-index: 999;
   background: rgba(3, 5, 13, 0.75);
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
@@ -1246,4 +1246,110 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .hero__orb { animation: none !important; }
+}
+
+/* ── 320px Small Phone Breakpoint ──────────────────────────────── */
+@media (max-width: 375px) {
+  .hero__title { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .hero__subtitle { font-size: 0.9rem; }
+  .hero__actions { flex-direction: column; gap: 0.75rem; }
+  .hero__actions .btn { width: 100%; text-align: center; }
+  .nav__links { display: none; }
+  .section-title { font-size: 1.4rem; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .specs-table { font-size: 0.8rem; }
+  .specs-table td, .specs-table th { padding: 0.4rem 0.5rem; }
+  .footer__grid { grid-template-columns: 1fr; }
+  .page-header { padding: 4rem 1rem 2rem; }
+  .container { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+}
+
+/* ── Performance: will-change hints ──────────────────────────── */
+.btn,
+.card,
+.product-card,
+.nav__link,
+.hero__orb,
+.hero__orb--1,
+.hero__orb--2,
+.hero__orb--3 {
+  will-change: transform;
+}
+.btn::after {
+  will-change: opacity, transform;
+}
+
+/* ── Footer Newsletter ──────────────────────────────────────── */
+.footer__newsletter {
+  grid-column: 1 / -1;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-lg, 12px);
+  padding: 1.5rem 2rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.footer__newsletter h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary, #3b82f6);
+  margin: 0;
+  flex: 0 0 auto;
+}
+.footer__newsletter p {
+  font-size: 0.85rem;
+  color: var(--text-secondary, rgba(255,255,255,0.6));
+  margin: 0;
+  flex: 1 1 200px;
+}
+.footer__newsletter .newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1 1 300px;
+}
+.footer__newsletter .newsletter-form input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary, #e2e8f0);
+  font-size: 0.875rem;
+}
+.footer__newsletter .newsletter-form button {
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-primary, #3b82f6);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.footer__newsletter .newsletter-form button:hover {
+  background: var(--color-primary-dark, #2563eb);
+}
+
+/* ── Text Overflow Handling ─────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+p, li, td, th {
+  overflow-wrap: break-word;
+}
+.card__title,
+.section-title,
+.hero__title {
+  text-overflow: ellipsis;
+}
+code, pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
 }

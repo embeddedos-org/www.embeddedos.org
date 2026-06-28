@@ -78,7 +78,10 @@
 .docs-warn{background:#fffbeb;border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:.75rem 1rem;margin:1rem 0;font-size:.875rem;color:#92400e;line-height:1.55}
 @media(max-width:900px){.docs-layout{grid-template-columns:1fr}.docs-sidebar{display:none}.docs-content{padding:1.5rem 1rem 3rem}}
 </style>
-</head>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Documentation — EmbeddedOS Foundation" name="twitter:title"/>
+<meta content="EmbeddedOS documentation — Quick-start guides, full API reference, tutorials, and test coverage reports for all 14 EoS components." name="twitter:description"/>
+<meta content="@EmbeddedOS_ORG" name="twitter:site"/></head>
 <body>
 <div aria-live="polite" class="live-bar" role="status">
 <span aria-hidden="true" class="live-pulse"></span>
@@ -108,7 +111,7 @@
 <li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
 </ul>
 </nav>
-<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn">
+<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button">
 <span class="hamburger-line"></span>
 </button>
 </div>
@@ -117,7 +120,7 @@
 <main id="main-content">
 <section aria-label="Documentation hero" class="docs-hero">
 <div class="docs-hero__inner">
-<div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#60a5fa;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">Documentation · v1.0</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">Documentation · v1.0</div>
 <h1>Build with the world's best<br/><em>embedded AI stack.</em></h1>
 <p>Complete API reference, quick-start guides, tutorials, and test coverage reports for all 14 EoS components. Everything you need to go from zero to production.</p>
 <div aria-label="Documentation search" class="docs-search" role="search">
@@ -130,10 +133,10 @@
 <div style="background:#fff;border-bottom:1px solid #e5e7eb">
 <div class="docs-layout" style="display:block;padding:1rem 2rem;max-width:1400px;margin:0 auto">
 <nav aria-label="Breadcrumb">
-<ol style="display:flex;gap:.5rem;list-style:none;padding:0;margin:0;font-size:.85rem;color:#6b7280">
-<li><a href="/" style="color:#0066cc;text-decoration:none">Home</a></li>
-<li style="color:#d1d5db">/</li>
-<li style="color:#111827;font-weight:600">Documentation</li>
+<ol style="display:flex;gap:.5rem;list-style:none;padding:0;margin:0;font-size:.85rem">
+<li><a href="/" style="text-decoration:none">Home</a></li>
+<li>/</li>
+<li style="font-weight:600">Documentation</li>
 </ol>
 </nav>
 </div>
@@ -200,37 +203,37 @@
 <h2 class="docs-h2" id="quickstart">Quick Start Guides</h2>
 <p class="docs-p">Choose the guide that matches your goal. Each guide takes 5–15 minutes and produces a working EoS application on real hardware or the EoSim simulator.</p>
 <div class="qs-grid">
-<a class="qs-card" href="#first-project" style="--card-color:#0066cc;--card-bg:rgba(0,102,204,.08)">
+<a class="qs-card" href="#first-project" style="--card---card-bg:rgba(0,102,204,.08)">
 <div class="qs-card__icon">EoS</div>
 <div class="qs-card__title">Hello World on EoS RTOS</div>
 <div class="qs-card__desc">Create a task, blink an LED, and print to UART. The canonical first project for any EoS target.</div>
 <div class="qs-card__time">⏱ 5 min · Cortex-M4</div>
 </a>
-<a class="qs-card" href="#eai-inference" style="--card-color:#8b5cf6;--card-bg:rgba(139,92,246,.08)">
+<a class="qs-card" href="#eai-inference" style="--card---card-bg:rgba(139,92,246,.08)">
 <div class="qs-card__icon">EAI</div>
 <div class="qs-card__title">Run an LLM on a Microcontroller</div>
 <div class="qs-card__desc">Load a 1.3B INT4 model, run inference, and stream tokens over UART — all on a 480 MHz Cortex-M85.</div>
 <div class="qs-card__time">⏱ 15 min · Cortex-M85</div>
 </a>
-<a class="qs-card" href="#eni-pipeline" style="--card-color:#ec4899;--card-bg:rgba(236,72,153,.08)">
+<a class="qs-card" href="#eni-pipeline" style="--card---card-bg:rgba(236,72,153,.08)">
 <div class="qs-card__icon">ENI</div>
 <div class="qs-card__title">Neural Signal Acquisition</div>
 <div class="qs-card__desc">Configure the ENI pipeline for 64-channel spike detection and stream decoded events over BLE.</div>
 <div class="qs-card__time">⏱ 20 min · nRF52840</div>
 </a>
-<a class="qs-card" href="#eosim" style="--card-color:#10b981;--card-bg:rgba(16,185,129,.08)">
+<a class="qs-card" href="#eosim" style="--card---card-bg:rgba(16,185,129,.08)">
 <div class="qs-card__icon">Sim</div>
 <div class="qs-card__title">Simulate Firmware Without Hardware</div>
 <div class="qs-card__desc">Run your EoS firmware in EoSim, attach GDB, and run automated HIL tests — no board required.</div>
 <div class="qs-card__time">⏱ 10 min · Any host</div>
 </a>
-<a class="qs-card" href="#eboot" style="--card-color:#f59e0b;--card-bg:rgba(245,158,11,.08)">
+<a class="qs-card" href="#eboot" style="--card---card-bg:rgba(245,158,11,.08)">
 <div class="qs-card__icon">OTA</div>
 <div class="qs-card__title">Secure OTA Update via BLE</div>
 <div class="qs-card__desc">Set up eBootloader with Ed25519 signing, build an A/B partition layout, and push an OTA update.</div>
 <div class="qs-card__time">⏱ 25 min · Cortex-M4</div>
 </a>
-<a class="qs-card" href="#eipc" style="--card-color:#14b8a6;--card-bg:rgba(20,184,166,.08)">
+<a class="qs-card" href="#eipc" style="--card---card-bg:rgba(20,184,166,.08)">
 <div class="qs-card__icon">IPC</div>
 <div class="qs-card__title">Connect Device to Host App</div>
 <div class="qs-card__desc">Run the EIPC daemon, connect your EoS device over USB, and stream sensor data to a Python host app.</div>
@@ -503,13 +506,13 @@ print("PASS: blink_test")
 <table class="coverage-table">
 <thead>
 <tr>
-<th>Component</th>
-<th>Tier</th>
-<th>Language</th>
-<th>Test Framework</th>
-<th>Line Coverage</th>
-<th>Branch Coverage</th>
-<th>Status</th>
+<th scope="col">Component</th>
+<th scope="col">Tier</th>
+<th scope="col">Language</th>
+<th scope="col">Test Framework</th>
+<th scope="col">Line Coverage</th>
+<th scope="col">Branch Coverage</th>
+<th scope="col">Status</th>
 </tr>
 </thead>
 <tbody>
@@ -642,7 +645,7 @@ print("PASS: blink_test")
 </tbody>
 </table>
 </div>
-<p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">Coverage measured on every build by the <a href="https://github.com/embeddedos-org/eos-stack-manifest" rel="noopener" style="color:#0066cc" target="_blank">eos-stack-manifest unified CI pipeline</a>. Target: 100% for all components. 🔨 items are actively being improved.</p>
+<p style="font-size:.8rem;margin-top:.5rem">Coverage measured on every build by the <a href="https://github.com/embeddedos-org/eos-stack-manifest" rel="noopener" target="_blank">eos-stack-manifest unified CI pipeline</a>. Target: 100% for all components. 🔨 items are actively being improved.</p>
 <!-- CI PIPELINE -->
 <h2 class="docs-h2" id="ci-pipeline">CI Pipeline</h2>
 <p class="docs-p">Every commit to any EoS component repository triggers the unified build pipeline via <code>eos-stack-manifest</code>. The pipeline runs 20 parallel jobs — one per component — and produces coverage reports, release binaries, and a compatibility matrix on every run.</p>
@@ -663,7 +666,7 @@ gh workflow run unified-build.yml \
 <!-- RELEASE PROCESS -->
 <h2 class="docs-h2" id="release-process">Release Process</h2>
 <p class="docs-p">EmbeddedOS follows semantic versioning. A release is triggered by pushing a <code>v*</code> tag to the <code>eos-stack-manifest</code> repository. The CI pipeline then:</p>
-<ol style="font-size:.95rem;color:#374151;line-height:1.8;padding-left:1.5rem;margin:0 0 1rem">
+<ol style="font-size:.95rem;line-height:1.8;padding-left:1.5rem;margin:0 0 1rem">
 <li>Builds all 14 components from the pinned versions in <code>manifest.json</code></li>
 <li>Runs the full test suite and generates coverage reports</li>
 <li>Packages firmware binaries (ELF/HEX/BIN), desktop binaries, and extension ZIPs</li>
@@ -682,7 +685,7 @@ git push origin v1.0.1
 </main>
 <footer class="footer" role="contentinfo">
 <div class="footer-mega">
-<div class="footer-column"><h4>Documentation</h4><ul>
+<div class="footer-column"><h3>Documentation</h3><ul>
 <li><a href="documentation.html#quickstart">Quick Start</a></li>
 <li><a href="documentation.html#eos">EoS RTOS API</a></li>
 <li><a href="documentation.html#eai">EAI API</a></li>
@@ -732,7 +735,7 @@ git push origin v1.0.1
 <div class="footer-copyright">© 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit.</div>
 <div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
 </div>
-<div style="text-align:center;padding:.6rem 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:.75rem;font-size:.75rem;color:rgba(255,255,255,.35)">Powered by <a href="https://www.interserver.net" rel="noopener" style="color:rgba(255,255,255,.5);font-weight:600;text-decoration:none" target="_blank">InterServer</a></div>
+<div style="text-align:center;padding:.6rem 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener" style="font-weight:600;text-decoration:none" target="_blank">InterServer</a></div>
 </footer>
 <button aria-label="Scroll to top" class="scroll-top" type="button">↑</button>
 <script defer="" src="js/main.js"></script>
