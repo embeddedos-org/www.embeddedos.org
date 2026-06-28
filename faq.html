@@ -1,162 +1,158 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Frequently asked questions about EmbeddedOS: licensing, hardware support, production readiness, technical details, and community contribution.">
-<meta name="keywords" content="EmbeddedOS FAQ, embedded OS questions, RTOS FAQ, open source embedded AI FAQ">
-<meta name="author" content="EmbeddedOS Research Foundation">
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<meta name="theme-color" content="#0066cc">
-<meta property="og:title" content="FAQ — EmbeddedOS">
-<meta property="og:description" content="Frequently asked questions about EmbeddedOS: licensing, hardware support, production readiness, technical details, and community contribution.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.embeddedos.org/faq">
-<meta property="og:image" content="https://www.embeddedos.org/img/og-cover.svg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="en_US">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@EmbeddedOS_ORG">
-<meta name="twitter:title" content="FAQ — EmbeddedOS">
-<meta name="twitter:description" content="Frequently asked questions about EmbeddedOS: licensing, hardware support, production readiness, technical details, and community contribution.">
-<link rel="canonical" href="https://www.embeddedos.org/faq">
-<link rel="apple-touch-icon" href="img/logo.svg">
-<link rel="manifest" href="manifest.json">
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Frequently asked questions about EmbeddedOS: licensing, hardware support, production readiness, technical details, and community contribution." name="description"/>
+<meta content="EmbeddedOS FAQ, embedded OS questions, RTOS FAQ, open source embedded AI FAQ" name="keywords"/>
+<meta content="EmbeddedOS Research Foundation" name="author"/>
+<meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
+<meta content="#0066cc" name="theme-color"/>
+<meta content="FAQ — EmbeddedOS" property="og:title"/>
+<meta content="Frequently asked questions about EmbeddedOS: licensing, hardware support, production readiness, technical details, and community contribution." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://www.embeddedos.org/faq" property="og:url"/>
+<meta content="https://www.embeddedos.org/img/og-cover.svg" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@EmbeddedOS_ORG" name="twitter:site"/>
+<meta content="FAQ — EmbeddedOS" name="twitter:title"/>
+<meta content="Frequently asked questions about EmbeddedOS: licensing, hardware support, production readiness, technical details, and community contribution." name="twitter:description"/>
+<link href="https://www.embeddedos.org/faq" rel="canonical"/>
+<link href="img/logo.svg" rel="apple-touch-icon"/>
+<link href="manifest.json" rel="manifest"/>
+<link href="https://fonts.googleapis.com" rel="dns-prefetch"/>
+<link crossorigin="" href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet"/>
 <title>FAQ — EmbeddedOS</title>
 </head>
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header class="navbar" id="navbar">
-  <div class="nav-container">
-    <a href="/" class="logo" aria-label="EmbeddedOS home"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
-    <nav aria-label="Main navigation">
-      <ul class="nav-links" id="nav-links">
-        <li><a href="products.html">Products</a></li>
-        <li><a href="documentation.html">Docs</a></li>
-        <li><a href="research.html">Research</a></li>
-              <li><a href="roadmap.html">Roadmap</a></li>
-              <li><a href="changelog.html">Changelog</a></li>
-        <li><a href="ecosystem.html">Ecosystem</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="about.html" aria-current="page">About</a></li>
-              <li><a href="security.html">Security Architecture</a></li>
-        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
-      </ul>
-    </nav>
-    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
-  </div>
+<div class="nav-container">
+<a aria-label="EmbeddedOS home" class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
+<nav aria-label="Main navigation">
+<ul class="nav-links" id="nav-links">
+<li><a href="products.html">Products</a></li>
+<li><a href="documentation.html">Docs</a></li>
+<li><a href="research.html">Research</a></li>
+<li><a href="roadmap.html">Roadmap</a></li>
+<li><a href="changelog.html">Changelog</a></li>
+<li><a href="ecosystem.html">Ecosystem</a></li>
+<li><a href="news.html">News</a></li>
+<li><a aria-current="page" href="about.html">About</a></li>
+<li><a href="security.html">Security Architecture</a></li>
+<li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li>
+<li><a class="nav-cta" href="membership.html">Join Foundation</a></li>
+</ul>
+</nav>
+<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation" class="mobile-menu-btn"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+</div>
 </header>
 <main id="main-content">
-
-<section class="page-header" aria-labelledby="faq-h1">
-  <div class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a> · <span>FAQ</span>
-    </nav>
-    <h1 id="faq-h1">Frequently Asked Questions</h1>
-    <p class="lede">Answers to the most common questions about EmbeddedOS, its products, licensing, and community.</p>
-  </div>
+<section aria-labelledby="faq-h1" class="page-header">
+<div class="container">
+<nav aria-label="Breadcrumb" class="breadcrumb">
+<a href="index.html">Home</a> · <span>FAQ</span>
+</nav>
+<h1 id="faq-h1">Frequently Asked Questions</h1>
+<p class="lede">Answers to the most common questions about EmbeddedOS, its products, licensing, and community.</p>
+</div>
 </section>
-
-<section class="section" aria-labelledby="faq-general">
-  <div class="container">
-    <div class="section-header"><span class="overline">General</span><h2 id="faq-general">About EmbeddedOS</h2></div>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary class="faq-q">What is EmbeddedOS?</summary>
-        <div class="faq-a"><p>EmbeddedOS is a 501(c)(3) nonprofit research foundation building the world's most complete open-source embedded AI systems stack. We develop EoS (the RTOS kernel), EAI (AI inference runtime), ENI (neural interface), EIPC (secure IPC), eBootloader (secure boot), eBuild (build system), EoSim (simulator), EoStudio (IDE), and eDB (embedded database) — all under the MIT license.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Is EmbeddedOS free to use commercially?</summary>
-        <div class="faq-a"><p>Yes. All EmbeddedOS products are released under the MIT license, which permits unrestricted commercial use, modification, and redistribution without royalty payments. You only need to include the MIT license notice in your product documentation or about screen.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">How does EmbeddedOS compare to FreeRTOS, Zephyr, or RTEMS?</summary>
-        <div class="faq-a"><p>EmbeddedOS is not just an RTOS — it is a full embedded AI platform. EoS (the kernel) is comparable to FreeRTOS or Zephyr in scope, but the broader EmbeddedOS stack adds AI inference (EAI), neural interfaces (ENI), secure boot (eBootloader), and an integrated IDE (EoStudio) that no other open-source embedded platform provides. EoS is also designed from the ground up with capability-based security, which is more robust than the permission models in FreeRTOS or Zephyr.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">What hardware does EmbeddedOS support?</summary>
-        <div class="faq-a"><p>EoS supports ARM Cortex-M/A/R, RISC-V RV32/RV64, x86, MIPS, ARC, and Xtensa architectures. eBuild includes 41 pre-configured product profiles covering sensor nodes, gateways, infotainment, robotics, and edge servers. New BSP profiles can be added by the community.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Is EmbeddedOS production-ready?</summary>
-        <div class="faq-a"><p>EmbeddedOS is currently in active development (v0.1.x). The core components (EoS kernel, eBootloader, eBuild) are approaching production readiness for non-safety-critical applications. Safety-critical certification (DO-178C, IEC 61508) artifacts are on the v1.0 roadmap. We recommend evaluating EmbeddedOS for new designs and providing feedback through GitHub.</p></div>
-      </details>
-    </div>
-  </div>
+<section aria-labelledby="faq-general" class="section">
+<div class="container">
+<div class="section-header"><span class="overline">General</span><h2 id="faq-general">About EmbeddedOS</h2></div>
+<div class="faq-list">
+<details class="faq-item">
+<summary class="faq-q">What is EmbeddedOS?</summary>
+<div class="faq-a"><p>EmbeddedOS is a 501(c)(3) nonprofit research foundation building the world's most complete open-source embedded AI systems stack. We develop EoS (the RTOS kernel), EAI (AI inference runtime), ENI (neural interface), EIPC (secure IPC), eBootloader (secure boot), eBuild (build system), EoSim (simulator), EoStudio (IDE), and eDB (embedded database) — all under the MIT license.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">Is EmbeddedOS free to use commercially?</summary>
+<div class="faq-a"><p>Yes. All EmbeddedOS products are released under the MIT license, which permits unrestricted commercial use, modification, and redistribution without royalty payments. You only need to include the MIT license notice in your product documentation or about screen.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">How does EmbeddedOS compare to FreeRTOS, Zephyr, or RTEMS?</summary>
+<div class="faq-a"><p>EmbeddedOS is not just an RTOS — it is a full embedded AI platform. EoS (the kernel) is comparable to FreeRTOS or Zephyr in scope, but the broader EmbeddedOS stack adds AI inference (EAI), neural interfaces (ENI), secure boot (eBootloader), and an integrated IDE (EoStudio) that no other open-source embedded platform provides. EoS is also designed from the ground up with capability-based security, which is more robust than the permission models in FreeRTOS or Zephyr.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">What hardware does EmbeddedOS support?</summary>
+<div class="faq-a"><p>EoS supports ARM Cortex-M/A/R, RISC-V RV32/RV64, x86, MIPS, ARC, and Xtensa architectures. eBuild includes 41 pre-configured product profiles covering sensor nodes, gateways, infotainment, robotics, and edge servers. New BSP profiles can be added by the community.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">Is EmbeddedOS production-ready?</summary>
+<div class="faq-a"><p>EmbeddedOS is currently in active development (v0.1.x). The core components (EoS kernel, eBootloader, eBuild) are approaching production readiness for non-safety-critical applications. Safety-critical certification (DO-178C, IEC 61508) artifacts are on the v1.0 roadmap. We recommend evaluating EmbeddedOS for new designs and providing feedback through GitHub.</p></div>
+</details>
+</div>
+</div>
 </section>
-
-<section class="section section-gray" aria-labelledby="faq-tech">
-  <div class="container">
-    <div class="section-header"><span class="overline">Technical</span><h2 id="faq-tech">Technical Questions</h2></div>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary class="faq-q">What is the minimum hardware requirement for EoS?</summary>
-        <div class="faq-a"><p>EoS requires a minimum of 4 KB flash and 2 KB RAM for the bare scheduler and HAL. A typical sensor node application with UART, SPI, and GPIO uses approximately 16 KB flash and 4 KB RAM. The full EoS stack with networking and file system requires approximately 64 KB flash and 16 KB RAM.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Can I run EAI on a Cortex-M4?</summary>
-        <div class="faq-a"><p>Yes, but with limitations. Cortex-M4 does not have Helium MVE acceleration, so EAI uses the generic C backend. You can run INT8 quantized models like keyword spotters and small CNNs. For LLM inference (INT4), we recommend Cortex-M55 or M85 with Helium MVE, which achieves 11 tok/s on TinyLlama-1.1B.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">How does eBootloader handle OTA updates?</summary>
-        <div class="faq-a"><p>eBootloader implements a dual-bank A/B update scheme. The new firmware image is downloaded to the inactive bank, its ECDSA-256 signature is verified, and the anti-rollback version counter is checked. If all checks pass, the bootloader atomically swaps the active bank pointer and reboots. If the new firmware fails to boot (watchdog timeout), eBootloader automatically reverts to the previous bank.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Does EoSim require physical hardware?</summary>
-        <div class="faq-a"><p>No. EoSim runs entirely in software using QEMU as the simulation backend. You can develop, debug, and test EoS firmware on any Linux, macOS, or Windows machine without a physical development board. The optional HIL bridge mode connects the simulator to real hardware peripherals for mixed virtual/physical testing.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">What SQL features does eDB support?</summary>
-        <div class="faq-a"><p>eDB supports a practical subset of SQL: SELECT (with WHERE, ORDER BY, LIMIT, JOIN), INSERT, UPDATE, DELETE, CREATE TABLE, CREATE INDEX, DROP TABLE, and transactions (BEGIN, COMMIT, ROLLBACK). It also supports JSON Path queries for semi-structured data. Full SQL-92 compliance is not a goal — the focus is on the operations most useful in embedded applications.</p></div>
-      </details>
-    </div>
-  </div>
+<section aria-labelledby="faq-tech" class="section section-gray">
+<div class="container">
+<div class="section-header"><span class="overline">Technical</span><h2 id="faq-tech">Technical Questions</h2></div>
+<div class="faq-list">
+<details class="faq-item">
+<summary class="faq-q">What is the minimum hardware requirement for EoS?</summary>
+<div class="faq-a"><p>EoS requires a minimum of 4 KB flash and 2 KB RAM for the bare scheduler and HAL. A typical sensor node application with UART, SPI, and GPIO uses approximately 16 KB flash and 4 KB RAM. The full EoS stack with networking and file system requires approximately 64 KB flash and 16 KB RAM.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">Can I run EAI on a Cortex-M4?</summary>
+<div class="faq-a"><p>Yes, but with limitations. Cortex-M4 does not have Helium MVE acceleration, so EAI uses the generic C backend. You can run INT8 quantized models like keyword spotters and small CNNs. For LLM inference (INT4), we recommend Cortex-M55 or M85 with Helium MVE, which achieves 11 tok/s on TinyLlama-1.1B.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">How does eBootloader handle OTA updates?</summary>
+<div class="faq-a"><p>eBootloader implements a dual-bank A/B update scheme. The new firmware image is downloaded to the inactive bank, its ECDSA-256 signature is verified, and the anti-rollback version counter is checked. If all checks pass, the bootloader atomically swaps the active bank pointer and reboots. If the new firmware fails to boot (watchdog timeout), eBootloader automatically reverts to the previous bank.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">Does EoSim require physical hardware?</summary>
+<div class="faq-a"><p>No. EoSim runs entirely in software using QEMU as the simulation backend. You can develop, debug, and test EoS firmware on any Linux, macOS, or Windows machine without a physical development board. The optional HIL bridge mode connects the simulator to real hardware peripherals for mixed virtual/physical testing.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">What SQL features does eDB support?</summary>
+<div class="faq-a"><p>eDB supports a practical subset of SQL: SELECT (with WHERE, ORDER BY, LIMIT, JOIN), INSERT, UPDATE, DELETE, CREATE TABLE, CREATE INDEX, DROP TABLE, and transactions (BEGIN, COMMIT, ROLLBACK). It also supports JSON Path queries for semi-structured data. Full SQL-92 compliance is not a goal — the focus is on the operations most useful in embedded applications.</p></div>
+</details>
+</div>
+</div>
 </section>
-
-<section class="section" aria-labelledby="faq-community">
-  <div class="container">
-    <div class="section-header"><span class="overline">Community</span><h2 id="faq-community">Community &amp; Contribution</h2></div>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary class="faq-q">How do I get started contributing?</summary>
-        <div class="faq-a"><p>Start by reading the <a href="code-of-conduct.html">Code of Conduct</a> and the CONTRIBUTING.md file in the repository you want to contribute to. Then browse issues labelled <strong>good first issue</strong> on GitHub. Join the community forum to introduce yourself and ask questions.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">Can my company become a member of the foundation?</summary>
-        <div class="faq-a"><p>Yes. Organizational membership is available at several tiers. Members gain voting rights on governance decisions, early access to roadmap previews, logo placement on the website, and recognition in our annual report. See the <a href="membership.html">membership page</a> for details.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary class="faq-q">How are decisions made about the roadmap?</summary>
-        <div class="faq-a"><p>The Technical Steering Committee (TSC) makes final decisions on the roadmap, but all proposals are discussed publicly in GitHub Discussions. Foundation members have voting rights on major roadmap decisions. We aim for consensus-driven governance with transparent decision records.</p></div>
-      </details>
-    </div>
-  </div>
+<section aria-labelledby="faq-community" class="section">
+<div class="container">
+<div class="section-header"><span class="overline">Community</span><h2 id="faq-community">Community &amp; Contribution</h2></div>
+<div class="faq-list">
+<details class="faq-item">
+<summary class="faq-q">How do I get started contributing?</summary>
+<div class="faq-a"><p>Start by reading the <a href="code-of-conduct.html">Code of Conduct</a> and the CONTRIBUTING.md file in the repository you want to contribute to. Then browse issues labelled <strong>good first issue</strong> on GitHub. Join the community forum to introduce yourself and ask questions.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">Can my company become a member of the foundation?</summary>
+<div class="faq-a"><p>Yes. Organizational membership is available at several tiers. Members gain voting rights on governance decisions, early access to roadmap previews, logo placement on the website, and recognition in our annual report. See the <a href="membership.html">membership page</a> for details.</p></div>
+</details>
+<details class="faq-item">
+<summary class="faq-q">How are decisions made about the roadmap?</summary>
+<div class="faq-a"><p>The Technical Steering Committee (TSC) makes final decisions on the roadmap, but all proposals are discussed publicly in GitHub Discussions. Foundation members have voting rights on major roadmap decisions. We aim for consensus-driven governance with transparent decision records.</p></div>
+</details>
+</div>
+</div>
 </section>
-
 </main>
 <footer class="footer">
-  <div class="footer__inner">
-    <div class="footer__grid">
-      <div class="footer__brand-col"><a href="/" class="logo"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a><a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a><a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a></div></div>
-      <div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
-      <div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
-      <div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
-      <div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
-    </div>
-    <div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></div>
-    <div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem;color:var(--text-muted,rgba(255,255,255,.35))">Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted,rgba(255,255,255,.5));font-weight:600;text-decoration:none;transition:color .15s ease">InterServer</a></div>
+<div class="footer__inner">
+<div class="footer__grid">
+<div class="footer__brand-col"><a class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GH</a><a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener" target="_blank">X</a><a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener" target="_blank">in</a></div></div>
+<div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
+<div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
+<div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
+<div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
 </div>
-  </div>
+<div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">© 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></div>
+<div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem;color:var(--text-muted,rgba(255,255,255,.35))">Powered by <a href="https://www.interserver.net" rel="noopener" style="color:var(--text-muted,rgba(255,255,255,.5));font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
+</div>
+</div>
 </footer>
-<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
-<script src="js/main.js" defer></script>
-<script src="js/cookies.js" defer></script>
+<button aria-label="Scroll to top" class="scroll-top" id="scrollTop">↑</button>
+<script defer="" src="js/main.js"></script>
+<script defer="" src="js/cookies.js"></script>
 </body>
 </html>

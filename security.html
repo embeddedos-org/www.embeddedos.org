@@ -1,206 +1,201 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="EmbeddedOS defence-in-depth security architecture: hardware root of trust, ECDSA-256 secure boot, capability-based kernel, encrypted storage, and compliance standards.">
-<meta name="keywords" content="embedded security, secure boot, capability security, ECDSA, AES-XTS, IEC 62443, ISO 21434">
-<meta name="author" content="EmbeddedOS Research Foundation">
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<meta name="theme-color" content="#0066cc">
-<meta property="og:title" content="Security Architecture — EmbeddedOS">
-<meta property="og:description" content="EmbeddedOS defence-in-depth security architecture: hardware root of trust, ECDSA-256 secure boot, capability-based kernel, encrypted storage, and compliance standards.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.embeddedos.org/security">
-<meta property="og:image" content="https://www.embeddedos.org/img/og-cover.svg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="en_US">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@EmbeddedOS_ORG">
-<meta name="twitter:title" content="Security Architecture — EmbeddedOS">
-<meta name="twitter:description" content="EmbeddedOS defence-in-depth security architecture: hardware root of trust, ECDSA-256 secure boot, capability-based kernel, encrypted storage, and compliance standards.">
-<link rel="canonical" href="https://www.embeddedos.org/security">
-<link rel="apple-touch-icon" href="img/logo.svg">
-<link rel="manifest" href="manifest.json">
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="EmbeddedOS defence-in-depth security architecture: hardware root of trust, ECDSA-256 secure boot, capability-based kernel, encrypted storage, and compliance standards." name="description"/>
+<meta content="embedded security, secure boot, capability security, ECDSA, AES-XTS, IEC 62443, ISO 21434" name="keywords"/>
+<meta content="EmbeddedOS Research Foundation" name="author"/>
+<meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
+<meta content="#0066cc" name="theme-color"/>
+<meta content="Security Architecture — EmbeddedOS" property="og:title"/>
+<meta content="EmbeddedOS defence-in-depth security architecture: hardware root of trust, ECDSA-256 secure boot, capability-based kernel, encrypted storage, and compliance standards." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://www.embeddedos.org/security" property="og:url"/>
+<meta content="https://www.embeddedos.org/img/og-cover.svg" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@EmbeddedOS_ORG" name="twitter:site"/>
+<meta content="Security Architecture — EmbeddedOS" name="twitter:title"/>
+<meta content="EmbeddedOS defence-in-depth security architecture: hardware root of trust, ECDSA-256 secure boot, capability-based kernel, encrypted storage, and compliance standards." name="twitter:description"/>
+<link href="https://www.embeddedos.org/security" rel="canonical"/>
+<link href="img/logo.svg" rel="apple-touch-icon"/>
+<link href="manifest.json" rel="manifest"/>
+<link href="https://fonts.googleapis.com" rel="dns-prefetch"/>
+<link crossorigin="" href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet"/>
 <title>Security Architecture — EmbeddedOS</title>
 </head>
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header class="navbar" id="navbar">
-  <div class="nav-container">
-    <a href="/" class="logo" aria-label="EmbeddedOS home"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
-    <nav aria-label="Main navigation">
-      <ul class="nav-links" id="nav-links">
-        <li><a href="products.html">Products</a></li>
-        <li><a href="documentation.html">Docs</a></li>
-        <li><a href="research.html">Research</a></li>
-              <li><a href="roadmap.html">Roadmap</a></li>
-              <li><a href="changelog.html">Changelog</a></li>
-        <li><a href="ecosystem.html">Ecosystem</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="about.html" aria-current="page">About</a></li>
-              <li><a href="security.html">Security Architecture</a></li>
-        <li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="membership.html" class="nav-cta">Join Foundation</a></li>
-      </ul>
-    </nav>
-    <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
-  </div>
+<div class="nav-container">
+<a aria-label="EmbeddedOS home" class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a>
+<nav aria-label="Main navigation">
+<ul class="nav-links" id="nav-links">
+<li><a href="products.html">Products</a></li>
+<li><a href="documentation.html">Docs</a></li>
+<li><a href="research.html">Research</a></li>
+<li><a href="roadmap.html">Roadmap</a></li>
+<li><a href="changelog.html">Changelog</a></li>
+<li><a href="ecosystem.html">Ecosystem</a></li>
+<li><a href="news.html">News</a></li>
+<li><a aria-current="page" href="about.html">About</a></li>
+<li><a href="security.html">Security Architecture</a></li>
+<li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li>
+<li><a class="nav-cta" href="membership.html">Join Foundation</a></li>
+</ul>
+</nav>
+<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation" class="mobile-menu-btn"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+</div>
 </header>
 <main id="main-content">
-
-<section class="page-header" aria-labelledby="sec-h1">
-  <div class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Home</a> · <span>Security Architecture</span>
-    </nav>
-    <h1 id="sec-h1">Security Architecture</h1>
-    <p class="lede">The EmbeddedOS stack is designed with security as a first-class property — not an afterthought. Every layer from hardware root of trust to application sandbox enforces the principle of least privilege.</p>
-  </div>
+<section aria-labelledby="sec-h1" class="page-header">
+<div class="container">
+<nav aria-label="Breadcrumb" class="breadcrumb">
+<a href="index.html">Home</a> · <span>Security Architecture</span>
+</nav>
+<h1 id="sec-h1">Security Architecture</h1>
+<p class="lede">The EmbeddedOS stack is designed with security as a first-class property — not an afterthought. Every layer from hardware root of trust to application sandbox enforces the principle of least privilege.</p>
+</div>
 </section>
-
-<section class="section" aria-labelledby="sec-model">
-  <div class="container">
-    <div class="section-header">
-      <span class="overline">Model</span>
-      <h2 id="sec-model">Defence-in-Depth Model</h2>
-      <p>Seven concentric security rings, each independently enforced.</p>
-    </div>
-    <div class="diagram-wrap">
-      <img src="img/photos/alt-secure.svg" alt="EmbeddedOS defence-in-depth security model" loading="lazy" class="arch-diagram" width="860" height="480">
-    </div>
-    <div class="cards-grid" style="margin-top:2rem;">
-      <div class="card">
-        <div class="ft-icon">🔑</div>
-        <h3>Hardware Root of Trust</h3>
-        <p>Immutable ROM code, OTP-fused public keys, and hardware secure elements (TPM 2.0, ARM TrustZone, RISC-V PMP) form the unforgeable foundation of trust.</p>
-      </div>
-      <div class="card">
-        <div class="ft-icon">🔒</div>
-        <h3>Verified Boot (eBootloader)</h3>
-        <p>ECDSA-256 signature verification at every boot stage. Anti-rollback counters in OTP prevent downgrade attacks. AES-256-GCM encrypted firmware images.</p>
-      </div>
-      <div class="card">
-        <div class="ft-icon">🛡️</div>
-        <h3>Capability-Based Kernel (EoS)</h3>
-        <p>No ambient authority. Every process holds explicit capability tokens for each resource it accesses. Capabilities cannot be forged or escalated without kernel mediation.</p>
-      </div>
-      <div class="card">
-        <div class="ft-icon">🔐</div>
-        <h3>Process Isolation</h3>
-        <p>MPU/MMU-enforced memory isolation between processes. Stack canaries, ASLR (on capable targets), and NX/XN bit enforcement prevent code injection.</p>
-      </div>
-      <div class="card">
-        <div class="ft-icon">📡</div>
-        <h3>Secure IPC (EIPC)</h3>
-        <p>All inter-process communication flows through EIPC capability-gated channels. No shared mutable state without explicit capability grant.</p>
-      </div>
-      <div class="card">
-        <div class="ft-icon">🗄️</div>
-        <h3>Encrypted Storage (eDB)</h3>
-        <p>AES-256-XTS per-page encryption with HKDF-SHA256 key derivation. Integrity-protected WAL prevents silent data corruption.</p>
-      </div>
-    </div>
-  </div>
+<section aria-labelledby="sec-model" class="section">
+<div class="container">
+<div class="section-header">
+<span class="overline">Model</span>
+<h2 id="sec-model">Defence-in-Depth Model</h2>
+<p>Seven concentric security rings, each independently enforced.</p>
+</div>
+<div class="diagram-wrap">
+<img alt="EmbeddedOS defence-in-depth security model" class="arch-diagram" height="480" loading="lazy" src="img/photos/alt-secure.svg" width="860"/>
+</div>
+<div class="cards-grid" style="margin-top:2rem;">
+<div class="card">
+<div class="ft-icon">🔑</div>
+<h3>Hardware Root of Trust</h3>
+<p>Immutable ROM code, OTP-fused public keys, and hardware secure elements (TPM 2.0, ARM TrustZone, RISC-V PMP) form the unforgeable foundation of trust.</p>
+</div>
+<div class="card">
+<div class="ft-icon">🔒</div>
+<h3>Verified Boot (eBootloader)</h3>
+<p>ECDSA-256 signature verification at every boot stage. Anti-rollback counters in OTP prevent downgrade attacks. AES-256-GCM encrypted firmware images.</p>
+</div>
+<div class="card">
+<div class="ft-icon">🛡️</div>
+<h3>Capability-Based Kernel (EoS)</h3>
+<p>No ambient authority. Every process holds explicit capability tokens for each resource it accesses. Capabilities cannot be forged or escalated without kernel mediation.</p>
+</div>
+<div class="card">
+<div class="ft-icon">🔐</div>
+<h3>Process Isolation</h3>
+<p>MPU/MMU-enforced memory isolation between processes. Stack canaries, ASLR (on capable targets), and NX/XN bit enforcement prevent code injection.</p>
+</div>
+<div class="card">
+<div class="ft-icon">📡</div>
+<h3>Secure IPC (EIPC)</h3>
+<p>All inter-process communication flows through EIPC capability-gated channels. No shared mutable state without explicit capability grant.</p>
+</div>
+<div class="card">
+<div class="ft-icon">🗄️</div>
+<h3>Encrypted Storage (eDB)</h3>
+<p>AES-256-XTS per-page encryption with HKDF-SHA256 key derivation. Integrity-protected WAL prevents silent data corruption.</p>
+</div>
+</div>
+</div>
 </section>
-
-<section class="section section-gray" aria-labelledby="sec-crypto">
-  <div class="container">
-    <div class="section-header">
-      <span class="overline">Cryptography</span>
-      <h2 id="sec-crypto">Cryptographic Primitives</h2>
-    </div>
-    <div class="specs-table-wrap">
-      <table class="specs-table" aria-label="Cryptographic primitives used in EmbeddedOS">
-        <tbody>
-          <tr><th scope="row">Asymmetric Signatures</th><td>ECDSA-256 (NIST P-256); Ed25519 (Curve25519) — used in eBootloader and OTA</td></tr>
-          <tr><th scope="row">Symmetric Encryption</th><td>AES-256-GCM (authenticated encryption); AES-256-XTS (disk encryption in eDB)</td></tr>
-          <tr><th scope="row">Hash Functions</th><td>SHA-256, SHA-384, SHA-512 (FIPS 180-4); BLAKE3 (high-speed integrity)</td></tr>
-          <tr><th scope="row">Key Derivation</th><td>HKDF-SHA256 (RFC 5869); PBKDF2-SHA256 (password-based)</td></tr>
-          <tr><th scope="row">Random Number Generation</th><td>Hardware TRNG (where available); ChaCha20-based CSPRNG fallback</td></tr>
-          <tr><th scope="row">Key Exchange</th><td>ECDH (P-256); X25519 — used in OTA update channel</td></tr>
-          <tr><th scope="row">Certificate Format</th><td>X.509 v3 (DER encoding); compact CBOR-based certificates for constrained devices</td></tr>
-          <tr><th scope="row">Implementation</th><td>mbedTLS 3.x (primary); TinyCrypt (ultra-constrained targets &lt; 32 KB flash)</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<section aria-labelledby="sec-crypto" class="section section-gray">
+<div class="container">
+<div class="section-header">
+<span class="overline">Cryptography</span>
+<h2 id="sec-crypto">Cryptographic Primitives</h2>
+</div>
+<div class="specs-table-wrap">
+<table aria-label="Cryptographic primitives used in EmbeddedOS" class="specs-table">
+<tbody>
+<tr><th scope="row">Asymmetric Signatures</th><td>ECDSA-256 (NIST P-256); Ed25519 (Curve25519) — used in eBootloader and OTA</td></tr>
+<tr><th scope="row">Symmetric Encryption</th><td>AES-256-GCM (authenticated encryption); AES-256-XTS (disk encryption in eDB)</td></tr>
+<tr><th scope="row">Hash Functions</th><td>SHA-256, SHA-384, SHA-512 (FIPS 180-4); BLAKE3 (high-speed integrity)</td></tr>
+<tr><th scope="row">Key Derivation</th><td>HKDF-SHA256 (RFC 5869); PBKDF2-SHA256 (password-based)</td></tr>
+<tr><th scope="row">Random Number Generation</th><td>Hardware TRNG (where available); ChaCha20-based CSPRNG fallback</td></tr>
+<tr><th scope="row">Key Exchange</th><td>ECDH (P-256); X25519 — used in OTA update channel</td></tr>
+<tr><th scope="row">Certificate Format</th><td>X.509 v3 (DER encoding); compact CBOR-based certificates for constrained devices</td></tr>
+<tr><th scope="row">Implementation</th><td>mbedTLS 3.x (primary); TinyCrypt (ultra-constrained targets &lt; 32 KB flash)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-
-<section class="section" aria-labelledby="sec-compliance">
-  <div class="container">
-    <div class="section-header">
-      <span class="overline">Compliance</span>
-      <h2 id="sec-compliance">Standards &amp; Certifications</h2>
-      <p>The EmbeddedOS stack is designed to support the following industry standards. Certification artifacts are provided as community resources.</p>
-    </div>
-    <div class="cards-grid">
-      <div class="card">
-        <h3>IEC 62443</h3>
-        <p>Industrial cybersecurity standard. EoS capability model and EIPC isolation architecture align with IEC 62443-4-2 component security requirements.</p>
-      </div>
-      <div class="card">
-        <h3>ISO 21434</h3>
-        <p>Automotive cybersecurity engineering. eBootloader secure boot chain and OTA update protocol support ISO 21434 risk assessment and threat modeling.</p>
-      </div>
-      <div class="card">
-        <h3>IEC 62304</h3>
-        <p>Medical device software lifecycle. EoS process isolation and EIPC typed channels support IEC 62304 Class C software architecture requirements.</p>
-      </div>
-      <div class="card">
-        <h3>NIST SP 800-193</h3>
-        <p>Platform firmware resiliency guidelines. eBootloader implements all three NIST resiliency goals: protection, detection, and recovery.</p>
-      </div>
-      <div class="card">
-        <h3>DO-178C</h3>
-        <p>Avionics software standard. EoS deterministic scheduler and formal verification roadmap target DO-178C Level A certification artifacts.</p>
-      </div>
-      <div class="card">
-        <h3>FIPS 140-3</h3>
-        <p>Cryptographic module standard. The EoS crypto HAL uses FIPS 140-3 validated algorithms (AES-256, SHA-256, ECDSA-256) with hardware acceleration.</p>
-      </div>
-    </div>
-  </div>
+<section aria-labelledby="sec-compliance" class="section">
+<div class="container">
+<div class="section-header">
+<span class="overline">Compliance</span>
+<h2 id="sec-compliance">Standards &amp; Certifications</h2>
+<p>The EmbeddedOS stack is designed to support the following industry standards. Certification artifacts are provided as community resources.</p>
+</div>
+<div class="cards-grid">
+<div class="card">
+<h3>IEC 62443</h3>
+<p>Industrial cybersecurity standard. EoS capability model and EIPC isolation architecture align with IEC 62443-4-2 component security requirements.</p>
+</div>
+<div class="card">
+<h3>ISO 21434</h3>
+<p>Automotive cybersecurity engineering. eBootloader secure boot chain and OTA update protocol support ISO 21434 risk assessment and threat modeling.</p>
+</div>
+<div class="card">
+<h3>IEC 62304</h3>
+<p>Medical device software lifecycle. EoS process isolation and EIPC typed channels support IEC 62304 Class C software architecture requirements.</p>
+</div>
+<div class="card">
+<h3>NIST SP 800-193</h3>
+<p>Platform firmware resiliency guidelines. eBootloader implements all three NIST resiliency goals: protection, detection, and recovery.</p>
+</div>
+<div class="card">
+<h3>DO-178C</h3>
+<p>Avionics software standard. EoS deterministic scheduler and formal verification roadmap target DO-178C Level A certification artifacts.</p>
+</div>
+<div class="card">
+<h3>FIPS 140-3</h3>
+<p>Cryptographic module standard. The EoS crypto HAL uses FIPS 140-3 validated algorithms (AES-256, SHA-256, ECDSA-256) with hardware acceleration.</p>
+</div>
+</div>
+</div>
 </section>
-
-<section class="section section-gray" aria-labelledby="sec-vuln">
-  <div class="container">
-    <div class="section-header">
-      <span class="overline">Disclosure</span>
-      <h2 id="sec-vuln">Vulnerability Disclosure Policy</h2>
-    </div>
-    <div class="prose" style="max-width:720px;">
-      <p>EmbeddedOS follows a coordinated vulnerability disclosure (CVD) policy. Security researchers who discover vulnerabilities are encouraged to report them privately before public disclosure.</p>
-      <p><strong>Reporting:</strong> Send vulnerability reports to <a href="mailto:security@embeddedos.org">security@embeddedos.org</a> encrypted with our <a href="https://github.com/embeddedos-org/.github/blob/main/SECURITY.md" rel="noopener" target="_blank">PGP public key</a>.</p>
-      <p><strong>Response timeline:</strong> We acknowledge reports within 48 hours, provide a triage assessment within 7 days, and aim to release patches within 90 days of confirmation.</p>
-      <p><strong>CVE assignment:</strong> We coordinate CVE assignment through MITRE for confirmed vulnerabilities in released versions.</p>
-      <p><strong>Bug bounty:</strong> We do not currently operate a paid bug bounty program, but we publicly credit researchers in our security advisories and release notes.</p>
-    </div>
-  </div>
+<section aria-labelledby="sec-vuln" class="section section-gray">
+<div class="container">
+<div class="section-header">
+<span class="overline">Disclosure</span>
+<h2 id="sec-vuln">Vulnerability Disclosure Policy</h2>
+</div>
+<div class="prose" style="max-width:720px;">
+<p>EmbeddedOS follows a coordinated vulnerability disclosure (CVD) policy. Security researchers who discover vulnerabilities are encouraged to report them privately before public disclosure.</p>
+<p><strong>Reporting:</strong> Send vulnerability reports to <a href="mailto:security@embeddedos.org">security@embeddedos.org</a> encrypted with our <a href="https://github.com/embeddedos-org/.github/blob/main/SECURITY.md" rel="noopener" target="_blank">PGP public key</a>.</p>
+<p><strong>Response timeline:</strong> We acknowledge reports within 48 hours, provide a triage assessment within 7 days, and aim to release patches within 90 days of confirmation.</p>
+<p><strong>CVE assignment:</strong> We coordinate CVE assignment through MITRE for confirmed vulnerabilities in released versions.</p>
+<p><strong>Bug bounty:</strong> We do not currently operate a paid bug bounty program, but we publicly credit researchers in our security advisories and release notes.</p>
+</div>
+</div>
 </section>
-
 </main>
 <footer class="footer">
-  <div class="footer__inner">
-    <div class="footer__grid">
-      <div class="footer__brand-col"><a href="/" class="logo"><div class="logo-icon" aria-hidden="true">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" aria-label="GitHub">GH</a><a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener" aria-label="X">X</a><a href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" target="_blank" rel="noopener" aria-label="LinkedIn">in</a></div></div>
-      <div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
-      <div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
-      <div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
-      <div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
-    </div>
-    <div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">&copy; 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub</a></div>
-    <div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem;color:var(--text-muted,rgba(255,255,255,.35))">Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted,rgba(255,255,255,.5));font-weight:600;text-decoration:none;transition:color .15s ease">InterServer</a></div>
+<div class="footer__inner">
+<div class="footer__grid">
+<div class="footer__brand-col"><a class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GH</a><a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener" target="_blank">X</a><a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener" target="_blank">in</a></div></div>
+<div class="footer__col"><h4>Products</h4><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
+<div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
+<div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
+<div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
 </div>
-  </div>
+<div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">© 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></div>
+<div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem;color:var(--text-muted,rgba(255,255,255,.35))">Powered by <a href="https://www.interserver.net" rel="noopener" style="color:var(--text-muted,rgba(255,255,255,.5));font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
+</div>
+</div>
 </footer>
-<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
-<script src="js/main.js" defer></script>
-<script src="js/cookies.js" defer></script>
+<button aria-label="Scroll to top" class="scroll-top" id="scrollTop">↑</button>
+<script defer="" src="js/main.js"></script>
+<script defer="" src="js/cookies.js"></script>
 </body>
 </html>
