@@ -1,1 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"><rect width="800" height="400" fill="#060912"/><text x="400" y="200" font-family="monospace" font-size="12" fill="#22d3ee" text-anchor="middle">Neural Interface Hardware Design</text><text x="400" y="360" font-family="monospace" font-size="10" fill="rgba(255,255,255,.25)" text-anchor="middle">EmbeddedOS Neural Research</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#060912"/>
+      <stop offset="100%" stop-color="#0a0f2e"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <rect width="800" height="400" fill="url(#glow)"/>
+  <!-- Neural network visualization -->
+  <!-- Layer 1 - Input -->
+  <g>
+    <circle cx="100" cy="100" r="14" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="100" cy="160" r="14" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="100" cy="220" r="14" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="100" cy="280" r="14" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="100" cy="340" r="14" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="1.5"/>
+  </g>
+  <!-- Layer 2 -->
+  <g>
+    <circle cx="250" cy="80" r="14" fill="rgba(139,92,246,0.2)" stroke="#8b5cf6" stroke-width="1.5"/>
+    <circle cx="250" cy="150" r="14" fill="rgba(139,92,246,0.2)" stroke="#8b5cf6" stroke-width="1.5"/>
+    <circle cx="250" cy="220" r="14" fill="rgba(139,92,246,0.2)" stroke="#8b5cf6" stroke-width="1.5"/>
+    <circle cx="250" cy="290" r="14" fill="rgba(139,92,246,0.2)" stroke="#8b5cf6" stroke-width="1.5"/>
+    <circle cx="250" cy="360" r="14" fill="rgba(139,92,246,0.2)" stroke="#8b5cf6" stroke-width="1.5"/>
+  </g>
+  <!-- Layer 3 -->
+  <g>
+    <circle cx="400" cy="110" r="16" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="2"/>
+    <circle cx="400" cy="200" r="16" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="2"/>
+    <circle cx="400" cy="290" r="16" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="2"/>
+  </g>
+  <!-- Layer 4 -->
+  <g>
+    <circle cx="550" cy="140" r="14" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1.5"/>
+    <circle cx="550" cy="220" r="14" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1.5"/>
+    <circle cx="550" cy="300" r="14" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1.5"/>
+  </g>
+  <!-- Output -->
+  <g>
+    <circle cx="700" cy="160" r="18" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="2"/>
+    <circle cx="700" cy="240" r="18" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="2"/>
+  </g>
+  <!-- Connections (simplified) -->
+  <g stroke="rgba(59,130,246,0.08)" stroke-width="1">
+    <line x1="114" y1="100" x2="236" y2="80"/><line x1="114" y1="100" x2="236" y2="150"/>
+    <line x1="114" y1="160" x2="236" y2="80"/><line x1="114" y1="160" x2="236" y2="220"/>
+    <line x1="114" y1="220" x2="236" y2="150"/><line x1="114" y1="220" x2="236" y2="290"/>
+    <line x1="114" y1="280" x2="236" y2="220"/><line x1="114" y1="280" x2="236" y2="360"/>
+    <line x1="114" y1="340" x2="236" y2="290"/><line x1="114" y1="340" x2="236" y2="360"/>
+  </g>
+  <g stroke="rgba(139,92,246,0.1)" stroke-width="1">
+    <line x1="264" y1="80" x2="384" y2="110"/><line x1="264" y1="150" x2="384" y2="110"/>
+    <line x1="264" y1="220" x2="384" y2="200"/><line x1="264" y1="290" x2="384" y2="290"/>
+    <line x1="264" y1="360" x2="384" y2="290"/>
+  </g>
+  <!-- Security shield overlay -->
+  <path d="M 680 40 L 720 55 L 720 90 Q 720 110 700 120 Q 680 110 680 90 Z" 
+    fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.5)" stroke-width="1.5"/>
+  <text x="700" y="85" font-family="monospace" font-size="10" fill="#3b82f6" text-anchor="middle">EIPC</text>
+  <!-- Labels -->
+  <text x="100" y="375" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">Input</text>
+  <text x="250" y="375" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">Hidden</text>
+  <text x="400" y="375" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">Hidden</text>
+  <text x="550" y="375" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">Hidden</text>
+  <text x="700" y="375" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">Output</text>
+  <text x="400" y="25" font-family="monospace" font-size="13" font-weight="bold" fill="#60a5fa" text-anchor="middle">Neural Interface Hardware Design</text>
+</svg>
