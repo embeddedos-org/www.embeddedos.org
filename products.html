@@ -4,11 +4,11 @@
 <head>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="EmbeddedOS Foundation — Products — EmbeddedOS Foundation. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8">
+<meta charset="utf-8"/>
 <!-- SEO: Primary -->
-<meta content="Explore all 14 EmbeddedOS products: EoS RTOS, EAI LLM runtime, ENI neural stack, eIPC, EoStudio IDE, EoSim, eBoot, eBuild, eVera, eOffice, eBrowser, eDB,…" name="description">
-<meta content="EoS RTOS, EAI runtime, ENI neural interface, eIPC, EoStudio, EoSim, eBoot, eBuild, eVera, eOffice, eBrowser, eDB, HEALTH-KEY ULTRA, embedded AI products" name="keywords"/>
-<meta content="EmbeddedOS Research Foundation" name="author"/>
+<meta content="Explore all 14 EmbeddedOS products: EoS RTOS, EAI LLM runtime, ENI neural stack, eIPC, EoStudio IDE, EoSim, eBoot, eBuild, eVera, eOffice, eBrowser, eDB,…" name="description"/>
+<meta content="EoS RTOS, EAI runtime, ENI neural interface, eIPC, EoStudio, EoSim, eBoot, eBuild, eVera, eOffice, eBrowser, eDB, HEALTH-KEY ULTRA, embedded AI products" name="keywords">
+<meta content="EmbeddedOS Research Foundation" name="author">
 <meta content="index, follow" name="robots"/>
 <link href="https://embeddedos.org/products.html" rel="canonical"/>
 <!-- SEO: Open Graph -->
@@ -41,7 +41,7 @@
     "description": "501(c)(3) nonprofit building the world\'s most complete open-source embedded AI stack."
   }
   </script>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
 <meta content="#060912" name="theme-color"/>
 <title>Products — EmbeddedOS Foundation</title>
 <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
@@ -184,7 +184,7 @@
 <nav aria-label="Main navigation">
 <ul class="nav-links" id="nav-links" role="menubar">
 <li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
@@ -196,7 +196,7 @@
 <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
 </ul>
 </li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
@@ -205,7 +205,7 @@
 <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
 </ul>
 </li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
@@ -271,7 +271,7 @@
 <div class="product-detail__subtitle">A deterministic, preemptive real-time operating system written in C. Sub-microsecond context switch on ARM Cortex-M7 @ 216 MHz. Priority-ceiling protocol, tickless idle, MPU/MMU isolation, and formal verification of the context-switch path (TLA+). The foundation every other EmbeddedOS component is built on.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eos.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eos" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eos" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#eos">Docs</a>
 </div>
 </div>
@@ -311,7 +311,7 @@
 <div class="product-detail__subtitle">The world's fastest open-source on-device LLM runtime for microcontrollers. INT4 quantization, custom SIMD kernels for ARM/RISC-V/x86, and a model compiler that fits a 1.3B parameter LLM in 312 MB of flash. 11 tokens/second on ARM Cortex-M85 — no cloud, no GPU, no internet. Outperforms llama.cpp and MLC LLM on every embedded target.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eai.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eAI" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eAI" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#eai">Docs</a>
 <a class="link--ghost" href="article-eai-llm-bench.html">Benchmark</a>
 </div>
@@ -351,7 +351,7 @@
 <div class="product-detail__subtitle">The world's only open-source neural interface RTOS stack. Real-time spike detection, LFP recording, and BLE streaming for up to 1,024 channels at 30 kHz. Sub-1ms closed-loop stimulation latency. Designed for BCI research, prosthetics, closed-loop neuromodulation, and next-generation wearables. Outperforms OpenEphys and Intan RHD on every latency metric.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eni.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eNI" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eNI" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#eni">Docs</a>
 </div>
 </div>
@@ -389,7 +389,7 @@
 <div class="product-detail__subtitle">Ultra-low latency IPC written in Go. Shared-memory zero-copy transport with DMA acceleration, HMAC-SHA256 per-message authentication, and capability-based access control. 0.8μs round-trip latency — 15× faster than Unix domain sockets, 56× faster than D-Bus. Works on Linux, macOS, and EoS RTOS.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eipc.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eIPC" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eIPC" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#eipc">Docs</a>
 </div>
 </div>
@@ -427,7 +427,7 @@
 <div class="product-detail__subtitle">9 health sensors in a 48×18×9.5mm keychain USB-C dongle. 21 health metrics. ECG via USB-C shield electrode — no chest pads, no wires. BAC via co-axial Venturi breath channel. SpO₂, HR, skin temperature, blood pressure estimation, sEMG, GSR, and UV index. 64 GB USB-C flash drive + BLE 5.3. nRF52840 SoC with automatic USB/BLE mode switching. Patent pending. $149–$199.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="products.html#healthkey">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/HealthKey-Ulta" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/HealthKey-Ulta" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#healthkey">Docs</a>
 </div>
 </div>
@@ -466,7 +466,7 @@
 <div class="product-detail__subtitle">Standalone wristband with Zero-Hole Architecture — the USB-C male plug is the physical clasp. sEMG gesture control, TENS/tDCS neuromodulation, micro OLED display, 64 GB NAND flash, and 6-axis IMU. Three tiers: Neuro Lite (sEMG + HR + SpO₂), Neuro (+ TENS/tDCS + EEG), Neuro Pro (+ 8-ch sEMG + full BCI). Powered by EoS RTOS + ENI firmware.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="products.html#healthband">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/HEALTH-BAND-Neuro" rel="noopener noreferrer" target="_blank">GitHub</a>
 </div>
 </div>
 <div style="text-align:right">
@@ -496,7 +496,7 @@
 <div class="product-detail__subtitle">A fully autonomous personal AI agent that runs 100% offline. Controls your computer, runs 160+ local AI models via Ollama, speaks with a 3D animated avatar, and ships on every platform — Windows, macOS, Linux, Android, iOS, Web PWA, VS Code extension, Android Auto, and Wear OS. One command install. No cloud. No subscription. Your data stays on your device.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="products.html#evera">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eVera" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eVera" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#evera">Docs</a>
 </div>
 </div>
@@ -538,7 +538,7 @@
 <div class="product-detail__subtitle">The world's most powerful universal development platform. Multi-model AI router (GPT-4.1, Gemini 2.5, Claude 3.7, Ollama), OT-based real-time collaboration, LSP diagnostics for 40+ languages, built-in SAST + secret scanner, hardware debugger (J-Link/OpenOCD), and a one-click verified plugin marketplace. Replaces VS Code + Copilot + Cursor + 70 separate tools.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eostudio.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/EoStudio" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/EoStudio" rel="noopener noreferrer" target="_blank">GitHub</a>
 <a class="link--ghost" href="documentation.html#eostudio">Docs</a>
 </div>
 </div>
@@ -572,7 +572,7 @@
 <div class="product-detail__subtitle">Simulate 52+ boards across 12 architectures — ARM Cortex-M/A/R, RISC-V RV32/RV64, x86, MIPS, AVR, Xtensa, and more. QEMU-backed with a GUI dashboard, cluster simulation for multi-node testing, and CI-native config-driven test suites. Test firmware before hardware is ready. Integrates directly with EoStudio and the CI pipeline.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eosim.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/EoSim" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/EoSim" rel="noopener noreferrer" target="_blank">GitHub</a>
 </div>
 </div>
 <div style="text-align:right">
@@ -602,7 +602,7 @@
 <div class="product-detail__subtitle">A complete open-source office suite: eDocs (word processor), eSheets (spreadsheet with 300+ formulas), eSlides (presentations), ePlanner (project management), eNotes, eMail, eDrive, eConnect (video calls), eDB (database), eForms, and eSway (digital storytelling). AI writing assistant, real-time collaboration, and offline-first PWA. Surpasses Microsoft Office in performance and privacy.</div>
 <div class="product-detail__links">
 <a class="link--primary" href="product-eoffice.html">Full Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eOffice" rel="noopener" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eOffice" rel="noopener noreferrer" target="_blank">GitHub</a>
 </div>
 </div>
 </div>
@@ -637,7 +637,7 @@
 <div class="product-detail__subtitle" style="font-size:.82rem">Privacy-first web browser with a custom rendering engine in C. Built-in ad/tracker blocking, GPS API, and extension ecosystem. Designed for embedded and desktop deployment.</div>
 <div class="product-detail__links" style="margin-top:.75rem">
 <a class="link--primary" href="products.html#ebrowser" style="font-size:.78rem">Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eBrowser" rel="noopener" style="font-size:.78rem" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eBrowser" rel="noopener noreferrer" style="font-size:.78rem" target="_blank">GitHub</a>
 </div>
 </div>
 </div>
@@ -650,7 +650,7 @@
 <div class="product-detail__subtitle" style="font-size:.82rem">Lightweight SQL engine with ACID compliance, AI-powered query assistance, multi-model storage (relational + time-series + key-value), and a visual SQL editor. Runs on MCUs and desktops.</div>
 <div class="product-detail__links" style="margin-top:.75rem">
 <a class="link--primary" href="product-edb.html" style="font-size:.78rem">Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eDB" rel="noopener" style="font-size:.78rem" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eDB" rel="noopener noreferrer" style="font-size:.78rem" target="_blank">GitHub</a>
 </div>
 </div>
 </div>
@@ -663,7 +663,7 @@
 <div class="product-detail__subtitle" style="font-size:.82rem">Cryptographically verified boot for any hardware. RSA-4096 + SHA-256 chain of trust, secure OTA update, rollback protection, and hardware-enforced memory isolation. Written in C.</div>
 <div class="product-detail__links" style="margin-top:.75rem">
 <a class="link--primary" href="product-eboot.html" style="font-size:.78rem">Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/eBoot" rel="noopener" style="font-size:.78rem" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/eBoot" rel="noopener noreferrer" style="font-size:.78rem" target="_blank">GitHub</a>
 </div>
 </div>
 </div>
@@ -676,7 +676,7 @@
 <div class="product-detail__subtitle" style="font-size:.82rem">Next-gen embedded OS build tool. Declarative YAML manifests, cross-compilation for 12 architectures, incremental builds, and deep integration with EoSim for hardware-in-the-loop CI.</div>
 <div class="product-detail__links" style="margin-top:.75rem">
 <a class="link--primary" href="product-ebuild.html" style="font-size:.78rem">Product Page →</a>
-<a class="link--ghost" href="https://github.com/embeddedos-org/ebuild" rel="noopener" style="font-size:.78rem" target="_blank">GitHub</a>
+<a class="link--ghost" href="https://github.com/embeddedos-org/ebuild" rel="noopener noreferrer" style="font-size:.78rem" target="_blank">GitHub</a>
 </div>
 </div>
 </div>
@@ -937,9 +937,9 @@
 <span class="logo-text">Embedded<span>OS</span></span>
 <p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p>
 <div class="footer__social">
-<a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GH</a>
-<a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener" target="_blank">X</a>
-<a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener" target="_blank">in</a>
+<a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GH</a>
+<a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener noreferrer" target="_blank">X</a>
+<a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener noreferrer" target="_blank">in</a>
 </div>
 </div>
 <div class="footer__col">
@@ -973,8 +973,8 @@
 <h4>Resources</h4>
 <ul>
 <li><a href="documentation.html">Documentation</a></li>
-<li><a href="https://github.com/managokul2/eos-stack-manifest/releases" rel="noopener" target="_blank">All Releases</a></li>
-<li><a href="https://github.com/managokul2/eos-stack-manifest/actions" rel="noopener" target="_blank">CI Pipeline</a></li>
+<li><a href="https://github.com/managokul2/eos-stack-manifest/releases" rel="noopener noreferrer" target="_blank">All Releases</a></li>
+<li><a href="https://github.com/managokul2/eos-stack-manifest/actions" rel="noopener noreferrer" target="_blank">CI Pipeline</a></li>
 <li><a href="about.html">About Foundation</a></li>
 </ul>
 </div>
@@ -985,7 +985,7 @@
 <a href="privacy.html">Privacy</a>
 <a href="terms.html">Terms</a>
 </div>
-<div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener" style="font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
+<div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener noreferrer" style="font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
 </div>
 </div>
 </footer>

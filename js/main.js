@@ -116,7 +116,7 @@ function initMobileMenu() {
    DROPDOWN MENUS — hover + keyboard accessible
 ═══════════════════════════════════════════════════════════════════════════ */
 function initDropdowns() {
-  const dropdowns = $$('.nav-item.has-dropdown, .dropdown');
+  const dropdowns = $$('.nav-links > li.has-dropdown, .nav-item.has-dropdown, .dropdown');
   
   dropdowns.forEach(item => {
     const trigger = $('a[role="menuitem"], button', item) || item.firstElementChild;
@@ -193,7 +193,7 @@ function initDropdowns() {
 
   // Close all dropdowns on outside click
   on(document, 'click', e => {
-    if (!e.target.closest('.nav-item.has-dropdown, .dropdown')) {
+    if (!e.target.closest('.nav-links > li.has-dropdown, .nav-item.has-dropdown, .dropdown')) {
       dropdowns.forEach(d => {
         d.classList.remove('is-open');
         const p = $('.dropdown-menu', d);

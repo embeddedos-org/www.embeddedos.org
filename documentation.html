@@ -9,12 +9,12 @@
 <meta content="#0066cc" name="theme-color"/>
 <meta content="EmbeddedOS documentation — Quick-start guides, full API reference, tutorials, and test coverage reports for all 14 EoS components." name="description"/>
 <title>Documentation — EmbeddedOS Foundation</title>
-<link href="favicon.svg" rel="icon" type="image/svg+xml">
-<link href="css/style.v6.css" rel="stylesheet"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="css/style.v6.css" rel="stylesheet">
 <link href="https://www.embeddedos.org/documentation" rel="canonical"/>
-<meta content="Documentation — EmbeddedOS" property="og:title">
-<meta content="Quick-start guides, full API reference, tutorials, and test coverage for all 14 EoS components." property="og:description">
-<meta content="website" property="og:type"/>
+<meta content="Documentation — EmbeddedOS" property="og:title"/>
+<meta content="Quick-start guides, full API reference, tutorials, and test coverage for all 14 EoS components." property="og:description"/>
+<meta content="website" property="og:type">
 <style>
 .docs-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 80px);max-width:1400px;margin:0 auto;padding:0 1.5rem}
 .docs-sidebar{position:sticky;top:80px;height:calc(100vh - 80px);overflow-y:auto;padding:2rem 1rem 2rem 0;border-right:1px solid #e5e7eb;scrollbar-width:thin}
@@ -77,7 +77,7 @@
 .docs-warn{background:#fffbeb;border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:.75rem 1rem;margin:1rem 0;font-size:.875rem;color:#92400e;line-height:1.55}
 @media(max-width:900px){.docs-layout{grid-template-columns:1fr}.docs-sidebar{display:none}.docs-content{padding:1.5rem 1rem 3rem}}
 </style>
-<meta content="summary_large_image" name="twitter:card"/>
+<meta content="summary_large_image" name="twitter:card">
 <meta content="Documentation — EmbeddedOS Foundation" name="twitter:title"/>
 <meta content="EmbeddedOS documentation — Quick-start guides, full API reference, tutorials, and test coverage reports for all 14 EoS components." name="twitter:description"/>
 <meta content="@EmbeddedOS_ORG" name="twitter:site"/> <link href="https://www.embeddedos.org/documentation.html" rel="canonical"/>
@@ -98,7 +98,7 @@
 <nav aria-label="Main navigation">
 <ul class="nav-links" id="nav-links" role="menubar">
 <li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
@@ -110,7 +110,7 @@
 <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
 </ul>
 </li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
@@ -119,7 +119,7 @@
 <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
 </ul>
 </li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
@@ -267,7 +267,7 @@
 <a class="docs-sidebar__link" href="#api-reference">Full API Reference</a>
 <a class="docs-sidebar__link" href="#changelog">Changelog</a>
 <a class="docs-sidebar__link" href="#migration">Migration Guides</a>
-<a class="docs-sidebar__link" href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub ↗</a>
+<a class="docs-sidebar__link" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub ↗</a>
 </div>
 </aside>
 <!-- MAIN CONTENT -->
@@ -718,7 +718,7 @@ print("PASS: blink_test")
 </tbody>
 </table>
 </div>
-<p style="font-size:.8rem;margin-top:.5rem">Coverage measured on every build by the <a href="https://github.com/embeddedos-org/eos-stack-manifest" rel="noopener" target="_blank">eos-stack-manifest unified CI pipeline</a>. Target: 100% for all components. 🔨 items are actively being improved.</p>
+<p style="font-size:.8rem;margin-top:.5rem">Coverage measured on every build by the <a href="https://github.com/embeddedos-org/eos-stack-manifest" rel="noopener noreferrer" target="_blank">eos-stack-manifest unified CI pipeline</a>. Target: 100% for all components. 🔨 items are actively being improved.</p>
 <!-- CI PIPELINE -->
 <h2 class="docs-h2" id="ci-pipeline">CI Pipeline</h2>
 <p class="docs-p">Every commit to any EoS component repository triggers the unified build pipeline via <code>eos-stack-manifest</code>. The pipeline runs 20 parallel jobs — one per component — and produces coverage reports, release binaries, and a compatibility matrix on every run.</p>
@@ -782,7 +782,7 @@ git push origin v1.0.1
 <div class="footer-column"><h4>Community</h4><ul>
 <li><a href="news.html">Newsroom</a></li>
 <li><a href="events.html">Events</a></li>
-<li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li>
+<li><a href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a></li>
 <li><a href="code-of-conduct.html">Code of Conduct</a></li>
 </ul></div>
 </div>
@@ -800,15 +800,15 @@ git push origin v1.0.1
 <div class="footer-brand">
 <span class="logo-text">Embedded<span>OS</span></span>
 <div class="footer-social">
-<a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a>
-<a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener" target="_blank">X</a>
-<a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener" target="_blank">LinkedIn</a>
+<a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a>
+<a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener noreferrer" target="_blank">X</a>
+<a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener noreferrer" target="_blank">LinkedIn</a>
 </div>
 </div>
 <div class="footer-copyright">© 2026 EmbeddedOS (EoS) Research Foundation. A 501(c)(3) nonprofit.</div>
 <div class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
 </div>
-<div style="text-align:center;padding:.6rem 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener" style="font-weight:600;text-decoration:none" target="_blank">InterServer</a></div>
+<div style="text-align:center;padding:.6rem 0 0;border-top:1px solid rgba(255,255,255,.08);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener noreferrer" style="font-weight:600;text-decoration:none" target="_blank">InterServer</a></div>
 </footer>
 <button aria-label="Scroll to top" class="scroll-top" type="button">↑</button>
 <script defer="" src="js/main.js"></script>

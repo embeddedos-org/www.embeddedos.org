@@ -4,10 +4,10 @@
 <head>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="EmbeddedOS Foundation — Changelog — EmbeddedOS. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-<meta content="EmbeddedOS changelog: all notable changes across EoS, eBootloader, EAI, ENI, EIPC, eBuild, EoSim, EoStudio, and eDB following Keep a Changelog conventions." name="description"/>
-<meta content="EmbeddedOS changelog, release notes, version history, RTOS updates" name="keywords"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<meta content="EmbeddedOS changelog: all notable changes across EoS, eBootloader, EAI, ENI, EIPC, eBuild, EoSim, EoStudio, and eDB following Keep a Changelog conventions." name="description">
+<meta content="EmbeddedOS changelog, release notes, version history, RTOS updates" name="keywords">
 <meta content="EmbeddedOS Research Foundation" name="author"/>
 <meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/>
 <meta content="#0066cc" name="theme-color"/>
@@ -29,7 +29,7 @@
 <link href="css/style.v6.css" rel="stylesheet"/>
 <title>Changelog — EmbeddedOS</title>
 <link href="https://www.embeddedos.org/changelog.html" rel="canonical"/>
-</link></meta></meta></head>
+</meta></meta></link></head>
 <body class="page-changelog">
 <a class="skip-link" href="#main-content">Skip to main content</a>
 <header class="navbar">
@@ -42,7 +42,7 @@
 <nav aria-label="Main navigation">
 <ul class="nav-links" id="nav-links" role="menubar">
 <li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
@@ -54,7 +54,7 @@
 <li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
 </ul>
 </li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
@@ -63,7 +63,7 @@
 <li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
 </ul>
 </li>
-<li role="none">
+<li class="has-dropdown" role="none">
 <a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
 <ul class="dropdown-menu" role="menu">
 <li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
@@ -94,13 +94,13 @@
 </div>
 </header>
 <main id="main-content">
-<section aria-labelledby="cl-h1" class="page-header">
+<section aria-labelledby="cl-h1" class="page-header"><div aria-hidden="true" class="hero__bg"><div class="hero__orb hero__orb--1"></div><div class="hero__orb hero__orb--2"></div></div>
 <div class="container">
 <nav aria-label="Breadcrumb" class="breadcrumb">
 <a href="index.html">Home</a> · <span>Changelog</span>
 </nav>
 <h1 id="cl-h1">Changelog</h1>
-<p class="lede">A record of all notable changes across the EmbeddedOS product family. Follows <a href="https://keepachangelog.com" rel="noopener" target="_blank">Keep a Changelog</a> conventions and <a href="https://semver.org" rel="noopener" target="_blank">Semantic Versioning</a>.</p>
+<p class="lede">A record of all notable changes across the EmbeddedOS product family. Follows <a href="https://keepachangelog.com" rel="noopener noreferrer" target="_blank">Keep a Changelog</a> conventions and <a href="https://semver.org" rel="noopener noreferrer" target="_blank">Semantic Versioning</a>.</p>
 </div>
 </section>
 <section aria-labelledby="cl-latest" class="section">
@@ -239,14 +239,14 @@
 <footer class="footer">
 <div class="footer__inner">
 <div class="footer__grid">
-<div class="footer__brand-col"><a class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GH</a><a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener" target="_blank">X</a><a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener" target="_blank">in</a></div></div>
+<div class="footer__brand-col"><a class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GH</a><a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener noreferrer" target="_blank">X</a><a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener noreferrer" target="_blank">in</a></div></div>
 <div class="footer__col"><h3>Products</h3><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
 <div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
-<div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
+<div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
 <div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
 </div>
-<div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">© 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" rel="noopener" target="_blank">GitHub</a></div>
-<div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener" style="font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
+<div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">© 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a></div>
+<div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener noreferrer" style="font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
 </div>
 </div>
 </footer>

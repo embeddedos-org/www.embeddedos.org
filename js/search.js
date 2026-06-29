@@ -50,11 +50,11 @@
       '<div class="search-input-wrap">' +
         '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>' +
         '<input type="text" class="search-input" placeholder="Search EmbeddedOS…" aria-label="Search">' +
-        '<button class="search-close" aria-label="Close search">&times);</button>' +
+        '<button type="button" class="search-close" aria-label="Close search">&times;</button>' +
       '</div>' +
       '<div class="search-results" role="listbox"></div>' +
       '<div class="search-hint">Press <kbd>Esc</kbd> to close · <kbd>/</kbd> to open</div>' +
-    '</div>';
+    '</div>');
   document.body.appendChild(overlay);
 
   var input = overlay.querySelector('.search-input');
