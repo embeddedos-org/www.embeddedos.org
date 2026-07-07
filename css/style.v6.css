@@ -3403,8 +3403,8 @@ h1, h2, h3, h4, h5, h6, p {
 /* ── Inner page hero override ── */
 /* Only index.html gets the full 93vh hero; all inner pages get compact hero */
 body:not(.page-home) .hero {
-  min-height: auto;
-  padding: 5rem 1.5rem 3rem;
+  min-height: auto !important;
+  padding: 5rem 1.5rem 3rem !important;
 }
 body:not(.page-home) .hero .hero-container {
   max-width: 900px;
@@ -3633,7 +3633,8 @@ body:not(.page-home) .hero .hero-container {
 .page-contact .hero,
 .page-membership .hero,
 .page-certification .hero {
-  min-height: auto;
+  min-height: auto !important;
+  padding: 5rem 1.5rem 3rem !important;
 }
 
 /* ── Breadcrumb fix — ensure it's below nav ── */
