@@ -865,6 +865,11 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
   pointer-events: none;
 }
+.page-header__bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: var(--gradient-hero, linear-gradient(135deg, var(--bg-void) 0%, var(--bg-surface) 100%));
+  opacity: 0.6;
+}
 .page-header h1 {
   font-size: clamp(2rem, 4.5vw, 3.6rem); font-weight: 900;
   letter-spacing: -.055em; color: var(--text-primary); line-height: 1.08;
@@ -1644,6 +1649,11 @@ details.faq-item .faq-answer {
 .section-header {
   margin-bottom: 3rem;
 }
+/* ── Hero section-header: remove extra margin-bottom ── */
+.hero .section-header,
+.hero .hero-content.section-header {
+  margin-bottom: 0;
+}
 
 .section-header .overline {
   display: block;
@@ -2198,8 +2208,11 @@ details.faq-item .faq-answer {
 
 /* ── Page header — proper top padding to clear sticky nav ── */
 .page-header {
+  position: relative;
+  overflow: hidden;
   padding-top: 5rem;
   padding-bottom: 3.5rem;
+  background: var(--bg-void);
 }
 
 /* ── Breadcrumb nav — below page-header ── */
@@ -3390,8 +3403,8 @@ h1, h2, h3, h4, h5, h6, p {
 /* ── Inner page hero override ── */
 /* Only index.html gets the full 93vh hero; all inner pages get compact hero */
 body:not(.page-home) .hero {
-  min-height: 45vh;
-  padding: 6rem 1.5rem 3.5rem;
+  min-height: auto;
+  padding: 5rem 1.5rem 3rem;
 }
 body:not(.page-home) .hero .hero-container {
   max-width: 900px;
@@ -3620,7 +3633,7 @@ body:not(.page-home) .hero .hero-container {
 .page-contact .hero,
 .page-membership .hero,
 .page-certification .hero {
-  min-height: 50vh;
+  min-height: auto;
 }
 
 /* ── Breadcrumb fix — ensure it's below nav ── */
@@ -3663,6 +3676,8 @@ body:not(.page-home) .hero .hero-container {
 .page-header {
   padding-top: 5rem;
   padding-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
 }
 .page-header .breadcrumb-nav {
   margin-bottom: 1.5rem;
@@ -3671,8 +3686,8 @@ body:not(.page-home) .hero .hero-container {
 /* ── Inner page hero height fix ── */
 /* All pages except index.html get a compact hero */
 html:not([data-page="home"]) .hero {
-  min-height: 40vh;
-  padding: 5.5rem 1.5rem 3rem;
+  min-height: auto;
+  padding: 5rem 1.5rem 2.5rem;
 }
 
 /* ── Animation & functional CSS ── */

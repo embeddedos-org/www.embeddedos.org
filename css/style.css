@@ -2196,8 +2196,11 @@ details.faq-item .faq-answer {
 
 /* ── Page header — proper top padding to clear sticky nav ── */
 .page-header {
+  position: relative;
+  overflow: hidden;
   padding-top: 5rem;
   padding-bottom: 3.5rem;
+  background: var(--bg-void);
 }
 
 /* ── Breadcrumb nav — below page-header ── */
