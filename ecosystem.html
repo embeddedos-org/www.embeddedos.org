@@ -1,98 +1,33 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="EmbeddedOS Foundation — Ecosystem — EmbeddedOS Foundation. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8"/>
-<!-- SEO: Primary -->
-<meta content="The EmbeddedOS ecosystem: 7-layer architecture from bare metal to autonomous AI agents. Platform compatibility across Linux, Windows, macOS, Android, iOS,…" name="description"/>
-<meta content="EmbeddedOS ecosystem, embedded AI stack, platform compatibility, firmware, mobile, browser extension, desktop" name="keywords">
-<meta content="EmbeddedOS Research Foundation" name="author">
-<meta content="index, follow" name="robots"/>
-<link href="https://embeddedos.org/ecosystem.html" rel="canonical"/>
-<!-- SEO: Open Graph -->
-<meta content="website" property="og:type"/>
-<meta content="Ecosystem — EmbeddedOS Foundation" property="og:title"/>
-<meta content="The EmbeddedOS ecosystem: 7-layer architecture from bare metal to autonomous AI agents. Platform compatibility across Linux, Windows, macOS, Android, iOS, browsers, and firmware." property="og:description"/>
-<meta content="https://embeddedos.org/ecosystem.html" property="og:url"/>
-<meta content="https://embeddedos.org/img/og-cover.svg" property="og:image"/>
-<meta content="EmbeddedOS Foundation" property="og:site_name"/>
-<meta content="en_US" property="og:locale"/>
-<!-- SEO: Twitter Card -->
-<meta content="summary_large_image" name="twitter:card"/>
-<meta content="@EmbeddedOS_ORG" name="twitter:site"/>
-<meta content="Ecosystem — EmbeddedOS Foundation" name="twitter:title"/>
-<meta content="The EmbeddedOS ecosystem: 7-layer architecture from bare metal to autonomous AI agents. Platform compatibility across Linux, Windows, macOS, Android, iOS, browsers, and firmware." name="twitter:description"/>
-<meta content="https://embeddedos.org/img/og-cover.svg" name="twitter:image"/>
-<!-- SEO: JSON-LD -->
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "EmbeddedOS Research Foundation",
-    "url": "https://embeddedos.org",
-    "logo": "https://embeddedos.org/img/logo.svg",
-    "sameAs": [
-      "https://github.com/embeddedos-org",
-      "https://x.com/EmbeddedOS_ORG",
-      "https://www.linkedin.com/company/embedded-operating-systems-research-foundation"
-    ],
-    "description": "501(c)(3) nonprofit building the world\'s most complete open-source embedded AI stack."
-  }
-  </script>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
-<meta content="#060912" name="theme-color"/>
-<title>Ecosystem — EmbeddedOS Foundation</title>
-<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="css/style.v6.css" rel="stylesheet"/>
-<link href="https://www.embeddedos.org/ecosystem.html" rel="canonical"/>
-<style>
-.layer-stack{display:flex;flex-direction:column;gap:.75rem;max-width:900px;margin:0 auto}
-.layer{border-radius:var(--radius-xl);padding:1.5rem 2rem;border:1px solid var(--border);transition:border-color var(--transition-med),transform var(--transition-med)}
-.layer:hover{border-color:var(--border-strong);transform:translateX(4px)}
-.layer--kernel{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(99,102,241,.08))}
-.layer--runtime{background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(168,85,247,.08))}
-.layer--neural{background:linear-gradient(135deg,rgba(20,184,166,.12),rgba(6,182,212,.08))}
-.layer--ipc{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(251,191,36,.06))}
-.layer--tools{background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(52,211,153,.06))}
-.layer--apps{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(248,113,113,.06))}
-.layer--hw{background:linear-gradient(135deg,rgba(236,72,153,.1),rgba(244,114,182,.06))}
-.layer__header{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
-.layer__tier{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:6px;background:rgba(255,255,255,.08);color:var(--text-muted)}
-.layer__title{font-size:1.05rem;font-weight:800;color:var(--text-primary)}
-.layer__components{display:flex;flex-wrap:wrap;gap:.5rem}
-.layer__chip{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:600;padding:.3rem .7rem;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--text-secondary);transition:background var(--transition-fast),color var(--transition-fast);text-decoration:none;display:inline-block}
-.layer__chip:hover{background:rgba(255,255,255,.12);color:var(--text-primary)}
-.layer__desc{font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem;line-height:1.6}
-
-.compat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-.compat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;transition:border-color var(--transition-fast),transform var(--transition-fast)}
-.compat-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
-.compat-card__platform{font-size:.9rem;font-weight:800;color:var(--text-primary);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
-.compat-card__items{display:flex;flex-direction:column;gap:.4rem}
-.compat-item{display:flex;align-items:center;justify-content:space-between;font-size:.8rem}
-.compat-item__name{color:var(--text-secondary);font-family:'JetBrains Mono',monospace}
-.compat-avail{color:var(--emerald-400);font-weight:700;font-size:.72rem}
-.compat-wip{color:var(--amber-400);font-weight:700;font-size:.72rem}
-.compat-plan{color:var(--text-muted);font-weight:600;font-size:.72rem}
-.compat-barrier{color:var(--rose-400);font-weight:600;font-size:.72rem}
-
-.barrier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-.barrier-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
-.barrier-card__title{font-size:.9rem;font-weight:800;color:var(--text-primary);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
-.barrier-card__title span{font-size:1.1rem}
-.barrier-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
-.barrier-list li{font-size:.8rem;color:var(--text-secondary);line-height:1.55;padding-left:1rem;position:relative}
-.barrier-list li::before{content:'→';position:absolute;left:0;color:var(--rose-400);font-weight:700}
-.barrier-list li strong{color:var(--text-primary)}
-</style>
-<link href="https://www.embeddedos.org/ecosystem.html" rel="canonical"/>
-</link></meta></meta></head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/style.v6.css">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <title>Product Ecosystem — EmbeddedOS Foundation</title>
+  <meta name="description" content="Explore the complete EmbeddedOS product ecosystem: 14 open-source products from bare-metal kernel to AI inference to browser, all built to work together.">
+  <meta property="og:title" content="EmbeddedOS Ecosystem — 14 Products, One Unified Stack">
+  <meta property="og:description" content="From EoS RTOS kernel to EAI neural inference to eDB embedded database — the complete open-source embedded OS stack.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EmbeddedOS Ecosystem">
+  <meta name="twitter:description" content="14 open-source products. One unified embedded OS stack.">
+</head>
 <body class="page-ecosystem">
-<div class="live-bar" role="status"><span aria-hidden="true" class="live-pulse"></span><span>EmbeddedOS Research Foundation — 501(c)(3) Nonprofit  ·  MIT  ·  <a href="membership.html">Join the Foundation →</a></span></div>
 <a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="live-bar" role="status">
+<span aria-hidden="true" class="live-pulse"></span>
+<span>EAI 0.9 — INT4 LLM inference at 11 tok/s on Cortex-M85  ·  <a href="article-eai-llm-bench.html">Read the benchmark →</a></span>
+</div>
 <header class="navbar">
+<div class="live-bar">
+<span class="live-pulse"></span>
+  EAI 0.9 — INT4 LLM inference at 11 tok/s on Cortex-M85  · 
+  <a href="article-eai-llm-bench.html">Read the benchmark →</a>
+</div>
 <div class="brand-bar">
 <div class="nav-container">
 <a aria-label="EmbeddedOS Home" class="logo" href="/">
@@ -154,279 +89,466 @@
 </div>
 </header>
 <main id="main-content">
-<section aria-labelledby="eco-title" class="hero" style="min-height:55vh">
-<div aria-hidden="true" class="hero__bg"></div>
-<div aria-hidden="true" class="hero__grid"></div>
-<div class="hero__inner" style="text-align:center;max-width:800px;margin:0 auto">
-<div class="hero__badge"><span aria-hidden="true" class="hero__badge-dot"></span>14 Components  ·  7 Platform Tiers  ·  MIT</div>
-<h1 id="eco-title" style="font-size:clamp(2.4rem,5vw,4rem)">The complete<br/><span class="grad">embedded AI ecosystem</span><br/>in one stack.</h1>
-<p class="hero__sub" style="margin:1.5rem auto 2rem;max-width:640px">From bare-metal RTOS kernel to sovereign AI agents, browser extensions, and medical-grade hardware — every component is open-source, foundation-governed, and production-ready.</p>
-<div class="hero__actions" style="justify-content:center">
-<a class="btn-primary" href="documentation.html">Get Started →</a>
-<a class="btn-secondary" href="products.html">View All Products</a>
-</div>
-</div>
-</section>
-<!-- Layer Stack -->
-<section aria-labelledby="layers-title" class="section section--dark">
-<div class="section__inner">
-<div class="animate-on-scroll" style="margin-bottom:2.5rem;text-align:center">
-<span class="section__eyebrow">Architecture</span>
-<h2 class="section__title" id="layers-title">Seven layers. One unified stack.</h2>
-<p class="section__sub">Every layer is independently usable. Together, they form the most complete embedded AI platform ever built.</p>
-</div>
-<div class="layer-stack animate-on-scroll">
-<div class="layer layer--hw">
-<div class="layer__header"><span class="layer__tier">Layer 0 — Hardware</span><span class="layer__title">Physical Devices</span></div>
-<div class="layer__desc">Purpose-built hardware designed for the EoS stack — medical-grade sensors, neural interfaces, and edge compute modules.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#healthkey">HEALTH-KEY ULTRA</a>
-<a class="layer__chip" href="products.html#healthband">HEALTH-BAND Neuro</a>
-</div>
-</div>
-<div class="layer layer--kernel">
-<div class="layer__header"><span class="layer__tier">Layer 1 — Kernel</span><span class="layer__title">Real-Time Operating System</span></div>
-<div class="layer__desc">The foundation of the stack. Formally verified, sub-microsecond context switch, MPU isolation, and priority-ceiling protocol.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#eos-rtos">EoS RTOS</a>
-</div>
-</div>
-<div class="layer layer--runtime">
-<div class="layer__header"><span class="layer__tier">Layer 2 — AI Runtime</span><span class="layer__title">On-Device Intelligence</span></div>
-<div class="layer__desc">INT4 quantized LLM inference directly on microcontrollers. 11 tok/s on Cortex-M85. No cloud. No latency. No data leaving the device.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#eai">EAI Runtime</a>
-<a class="layer__chip" href="products.html#eosllm">eosllm</a>
-</div>
-</div>
-<div class="layer layer--neural">
-<div class="layer__header"><span class="layer__tier">Layer 3 — Neural Interface</span><span class="layer__title">Brain-Computer Interface Stack</span></div>
-<div class="layer__desc">The world's only open-source BCI RTOS. 1,024 channels at 30 kHz. Sub-1ms closed-loop stimulation. BLE 5.3 lossless streaming.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#eni">ENI Stack</a>
-</div>
-</div>
-<div class="layer layer--ipc">
-<div class="layer__header"><span class="layer__tier">Layer 4 — Communication</span><span class="layer__title">Inter-Process Communication</span></div>
-<div class="layer__desc">0.8μs IPC latency. 15× faster than Unix domain sockets. Zero-copy shared memory. Type-safe Go API. Lock-free ring buffers.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#eipc">eIPC</a>
-</div>
-</div>
-<div class="layer layer--tools">
-<div class="layer__header"><span class="layer__tier">Layer 5 — Dev Tools</span><span class="layer__title">Development &amp; Simulation</span></div>
-<div class="layer__desc">Universal IDE with multi-model AI router. 52+ board simulator. Hardware-in-the-loop testing. One-click cross-compilation for 12 targets.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#eostudio">EoStudio</a>
-<a class="layer__chip" href="products.html#eosim">EoSim</a>
-</div>
-</div>
-<div class="layer layer--apps">
-<div class="layer__header"><span class="layer__tier">Layer 6 — Applications</span><span class="layer__title">End-User Software Suite</span></div>
-<div class="layer__desc">A complete sovereign software stack — AI agent, office suite, browser, database. All offline-first. All open-source. All EoS-native.</div>
-<div class="layer__components">
-<a class="layer__chip" href="products.html#evera">eVera Agent</a>
-<a class="layer__chip" href="products.html#eoffice">eOffice Suite</a>
-<a class="layer__chip" href="products.html#ebrowser">eBrowser</a>
-<a class="layer__chip" href="products.html#edb">eDB</a>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Platform Availability -->
-<section aria-labelledby="platform-title" class="section section--surface">
-<div class="section__inner">
-<div class="animate-on-scroll" style="margin-bottom:2rem">
-<span class="section__eyebrow">Platform Availability</span>
-<h2 class="section__title" id="platform-title">Where each product runs today.</h2>
-<p class="section__sub">✓ Available   🔨 In Progress   ◦ Planned   ✗ Barrier (see below)</p>
-</div>
-<div class="compat-grid animate-on-scroll">
-<div class="compat-card">
-<div class="compat-card__platform">🖥️ Desktop — Linux</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoStudio</span><span class="compat-avail">✓ AppImage</span></div>
-<div class="compat-item"><span class="compat-item__name">eVera Agent</span><span class="compat-avail">✓ AppImage</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Suite</span><span class="compat-avail">✓ AppImage</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser</span><span class="compat-avail">✓ AppImage</span></div>
-<div class="compat-item"><span class="compat-item__name">EoSim</span><span class="compat-avail">✓ AppImage</span></div>
-<div class="compat-item"><span class="compat-item__name">eDB</span><span class="compat-avail">✓ Binary</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">🪟 Desktop — Windows</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoStudio</span><span class="compat-wip">🔨 Electron pkg</span></div>
-<div class="compat-item"><span class="compat-item__name">eVera Agent</span><span class="compat-wip">🔨 Electron pkg</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Suite</span><span class="compat-wip">🔨 Electron pkg</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser</span><span class="compat-wip">🔨 Chromium port</span></div>
-<div class="compat-item"><span class="compat-item__name">EoSim</span><span class="compat-wip">🔨 Electron pkg</span></div>
-<div class="compat-item"><span class="compat-item__name">eDB</span><span class="compat-plan">◦ Planned Q3 2026</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">🍎 Desktop — macOS</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoStudio</span><span class="compat-wip">🔨 Notarization</span></div>
-<div class="compat-item"><span class="compat-item__name">eVera Agent</span><span class="compat-wip">🔨 Notarization</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Suite</span><span class="compat-wip">🔨 Notarization</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser</span><span class="compat-barrier">✗ Apple signing</span></div>
-<div class="compat-item"><span class="compat-item__name">EoSim</span><span class="compat-wip">🔨 Notarization</span></div>
-<div class="compat-item"><span class="compat-item__name">eDB</span><span class="compat-plan">◦ Planned Q4 2026</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">🤖 Mobile — Android</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">eVera Agent</span><span class="compat-wip">🔨 React Native</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Suite</span><span class="compat-wip">🔨 Capacitor</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser</span><span class="compat-barrier">✗ Play policy</span></div>
-<div class="compat-item"><span class="compat-item__name">EoStudio</span><span class="compat-plan">◦ Planned 2027</span></div>
-<div class="compat-item"><span class="compat-item__name">HEALTH-KEY app</span><span class="compat-wip">🔨 BLE scaffold</span></div>
-<div class="compat-item"><span class="compat-item__name">HEALTH-BAND app</span><span class="compat-wip">🔨 BLE scaffold</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">📱 Mobile — iOS</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">eVera Agent</span><span class="compat-barrier">✗ Apple account</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Suite</span><span class="compat-barrier">✗ EAS project ID</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser</span><span class="compat-barrier">✗ WebKit only</span></div>
-<div class="compat-item"><span class="compat-item__name">HEALTH-KEY app</span><span class="compat-barrier">✗ BLE entitlement</span></div>
-<div class="compat-item"><span class="compat-item__name">HEALTH-BAND app</span><span class="compat-barrier">✗ BLE entitlement</span></div>
-<div class="compat-item"><span class="compat-item__name">EoStudio</span><span class="compat-plan">◦ Not planned</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">🌐 Browser — Chrome/Edge</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoStudio Extension</span><span class="compat-wip">🔨 vsce packaging</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Web</span><span class="compat-avail">✓ PWA</span></div>
-<div class="compat-item"><span class="compat-item__name">eVera Web</span><span class="compat-avail">✓ PWA</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser Engine</span><span class="compat-wip">🔨 Chromium fork</span></div>
-<div class="compat-item"><span class="compat-item__name">eDB Dashboard</span><span class="compat-avail">✓ Web UI</span></div>
-<div class="compat-item"><span class="compat-item__name">EoSim Web</span><span class="compat-wip">🔨 WASM port</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">🦊 Browser — Firefox</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoStudio Extension</span><span class="compat-barrier">✗ MV3 gaps</span></div>
-<div class="compat-item"><span class="compat-item__name">eOffice Web</span><span class="compat-avail">✓ PWA</span></div>
-<div class="compat-item"><span class="compat-item__name">eVera Web</span><span class="compat-avail">✓ PWA</span></div>
-<div class="compat-item"><span class="compat-item__name">eBrowser Engine</span><span class="compat-plan">◦ Gecko fork planned</span></div>
-<div class="compat-item"><span class="compat-item__name">eDB Dashboard</span><span class="compat-avail">✓ Web UI</span></div>
-<div class="compat-item"><span class="compat-item__name">EoSim Web</span><span class="compat-plan">◦ Planned</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">💻 VS Code / JetBrains</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoStudio VS Code</span><span class="compat-wip">🔨 .vsix packaging</span></div>
-<div class="compat-item"><span class="compat-item__name">EoStudio JetBrains</span><span class="compat-wip">🔨 Plugin SDK</span></div>
-<div class="compat-item"><span class="compat-item__name">eVera Copilot</span><span class="compat-wip">🔨 LSP bridge</span></div>
-<div class="compat-item"><span class="compat-item__name">EoSim Debug</span><span class="compat-plan">◦ DAP planned</span></div>
-<div class="compat-item"><span class="compat-item__name">Obsidian Plugin</span><span class="compat-plan">◦ Planned</span></div>
-<div class="compat-item"><span class="compat-item__name">Office365 Add-in</span><span class="compat-barrier">✗ MS signing</span></div>
-</div>
-</div>
-<div class="compat-card">
-<div class="compat-card__platform">⚡ Firmware / Bare Metal</div>
-<div class="compat-card__items">
-<div class="compat-item"><span class="compat-item__name">EoS RTOS (Cortex-M)</span><span class="compat-avail">✓ ELF/HEX/BIN</span></div>
-<div class="compat-item"><span class="compat-item__name">EAI Runtime</span><span class="compat-avail">✓ Static lib</span></div>
-<div class="compat-item"><span class="compat-item__name">ENI Stack</span><span class="compat-avail">✓ ELF/HEX/BIN</span></div>
-<div class="compat-item"><span class="compat-item__name">HEALTH-KEY FW</span><span class="compat-avail">✓ ELF/HEX/BIN</span></div>
-<div class="compat-item"><span class="compat-item__name">HEALTH-BAND FW</span><span class="compat-wip">🔨 EEG calibration</span></div>
-<div class="compat-item"><span class="compat-item__name">RISC-V (EoS v2)</span><span class="compat-plan">◦ Planned Q4 2026</span></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Barriers & Resolution -->
-<section aria-labelledby="barriers-title" class="section section--dark">
-<div class="section__inner">
-<div class="animate-on-scroll" style="margin-bottom:2rem">
-<span class="section__eyebrow">Known Barriers</span>
-<h2 class="section__title" id="barriers-title">What is blocking each platform — and how we resolve it.</h2>
-<p class="section__sub">We are transparent about what is not yet available and exactly what is needed to ship it. Every barrier has a resolution path.</p>
-</div>
-<div class="barrier-grid animate-on-scroll">
-<div class="barrier-card">
-<div class="barrier-card__title"><span>📱</span> iOS / Apple Platform</div>
-<ul class="barrier-list">
-<li><strong>Apple Developer Account</strong> — $99/year enrollment required for all iOS distribution. Resolution: Foundation membership funds enrollment.</li>
-<li><strong>EAS Project ID</strong> — Expo Application Services project must be registered per app. Resolution: CI automation via EAS CLI.</li>
-<li><strong>BLE Core Bluetooth entitlement</strong> — NSBluetoothAlwaysUsageDescription + entitlement required. Resolution: Info.plist update + provisioning profile.</li>
-<li><strong>WebKit-only browser engine</strong> — Apple mandates WebKit for all iOS browsers. eBrowser cannot use its own engine on iOS. Resolution: WebKit-wrapped build.</li>
-<li><strong>macOS notarization</strong> — All macOS binaries must be notarized via Apple's notary service. Resolution: CI notarization step with Apple ID credentials.</li>
-</ul>
-</div>
-<div class="barrier-card">
-<div class="barrier-card__title"><span>🤖</span> Android / Google Play</div>
-<ul class="barrier-list">
-<li><strong>Play Store policy for browsers</strong> — Google Play restricts alternative browser engines. eBrowser requires side-loading or F-Droid distribution. Resolution: F-Droid listing + direct APK.</li>
-<li><strong>BLE permissions (Android 12+)</strong> — BLUETOOTH_SCAN, BLUETOOTH_CONNECT, and BLUETOOTH_ADVERTISE permissions required. Resolution: Runtime permission request flow.</li>
-<li><strong>Play signing key</strong> — Google Play App Signing requires upload key + Play signing key pair. Resolution: Foundation-managed keystore in CI secrets.</li>
-<li><strong>Capacitor sync</strong> — eOffice web assets must be synced to Android project via npx cap sync. Resolution: CI step added to web build job.</li>
-</ul>
-</div>
-<div class="barrier-card">
-<div class="barrier-card__title"><span>🌐</span> Browser Extensions</div>
-<ul class="barrier-list">
-<li><strong>Chrome Web Store review</strong> — 2–7 day review cycle for new extensions. Resolution: Submit EoStudio extension; review in progress.</li>
-<li><strong>Firefox MV3 gaps</strong> — Firefox's Manifest V3 implementation is incomplete vs Chrome. Some EoStudio extension APIs unavailable. Resolution: MV2 fallback build for Firefox.</li>
-<li><strong>vsce packaging</strong> — VS Code extensions require vsce CLI + publisher account. Resolution: Foundation publisher account; CI step added.</li>
-<li><strong>Office 365 Add-in signing</strong> — Microsoft requires a code-signing certificate for Office Add-ins. Resolution: EV certificate procurement via Foundation budget.</li>
-<li><strong>JetBrains Marketplace</strong> — Plugin must pass JetBrains compatibility verification. Resolution: Plugin SDK integration in progress.</li>
-</ul>
-</div>
-<div class="barrier-card">
-<div class="barrier-card__title"><span>🖥️</span> Desktop (Windows / macOS)</div>
-<ul class="barrier-list">
-<li><strong>Windows code signing</strong> — EV certificate required to avoid SmartScreen warnings. Resolution: DigiCert EV certificate via Foundation budget.</li>
-<li><strong>Apple notarization CI</strong> — Requires Apple ID + app-specific password in CI secrets. Resolution: Foundation Apple ID configured; notarization step pending.</li>
-<li><strong>Electron packaging</strong> — electron-builder configuration for each app required. Resolution: Shared electron-builder config template added to eFab.</li>
-<li><strong>PyInstaller cross-compile</strong> — eVera PyInstaller builds must run on target OS (no cross-compile). Resolution: GitHub-hosted Windows/macOS runners in CI.</li>
-<li><strong>MSVC toolchain</strong> — Some C extensions in eVera require MSVC on Windows. Resolution: windows-latest runner with MSVC pre-installed.</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<!-- CTA -->
-<section aria-labelledby="eco-cta-title" class="section section--surface">
-<div class="section__inner" style="text-align:center;max-width:640px;margin:0 auto">
-<div class="animate-on-scroll">
-<span class="section__eyebrow">Get Started</span>
-<h2 class="section__title" id="eco-cta-title">Pick a layer. Start building.</h2>
-<p class="section__sub" style="margin:1rem auto 2rem">Every component has a 5-minute quick-start guide, full API reference, and working examples. No account required.</p>
-<div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-<a class="btn-primary" href="documentation.html">Read the Docs →</a>
-<a class="btn-secondary" href="products.html">Browse Products</a>
-<a class="btn-ghost" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a>
-</div>
-</div>
-</div>
-</section>
+
+  <div class="page-header">
+    <div class="page-header__bg"></div>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Ecosystem</span>
+      </nav>
+      <h1>The <span class="grad">EmbeddedOS Ecosystem</span></h1>
+      <p class="page-header__sub">14 open-source products built to work together — from bare-metal kernel to AI inference engine to full IDE. Every layer of the embedded stack, free forever.</p>
+    </div>
+  </div>
+
+  <!-- Visual Stack Diagram -->
+  <section class="section section--surface" style="padding:5rem 0;">
+    <div class="container section__inner">
+      <div style="text-align:center;margin-bottom:3rem;">
+        <span class="section__eyebrow">Architecture</span>
+        <h2 class="section__title">Full-Stack Embedded Platform</h2>
+        <p class="section__sub" style="margin:0 auto;">Every product is designed to integrate seamlessly. Use one product or the entire stack.</p>
+      </div>
+
+      <div class="eco-full-stack">
+
+        <!-- Layer 5: Applications -->
+        <div class="eco-layer eco-layer--apps">
+          <div class="eco-layer__label">Application Layer</div>
+          <div class="eco-layer__products">
+            <a href="product-eapps.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">📱</span>
+              <span>eApps</span>
+              <small>App Framework</small>
+            </a>
+            <a href="product-ebowser.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">🌐</span>
+              <span>eBowser</span>
+              <small>Browser</small>
+            </a>
+            <a href="product-eoffice.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">📄</span>
+              <span>eOffice</span>
+              <small>Office Suite</small>
+            </a>
+            <a href="product-eserviceapps.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">⚙️</span>
+              <span>eServiceApps</span>
+              <small>Services</small>
+            </a>
+          </div>
+        </div>
+
+        <!-- Layer 4: AI & Intelligence -->
+        <div class="eco-layer eco-layer--ai">
+          <div class="eco-layer__label">AI &amp; Intelligence Layer</div>
+          <div class="eco-layer__products">
+            <a href="product-eai.html" class="eco-product-chip eco-product-chip--featured">
+              <span class="eco-product-chip__icon">🧠</span>
+              <span>EAI</span>
+              <small>AI Inference Engine</small>
+            </a>
+            <a href="product-eni.html" class="eco-product-chip eco-product-chip--featured">
+              <span class="eco-product-chip__icon">🧬</span>
+              <span>ENI</span>
+              <small>Neural Interface</small>
+            </a>
+          </div>
+        </div>
+
+        <!-- Layer 3: Services & IPC -->
+        <div class="eco-layer eco-layer--services">
+          <div class="eco-layer__label">Services Layer</div>
+          <div class="eco-layer__products">
+            <a href="product-eipc.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">⚡</span>
+              <span>EIPC</span>
+              <small>IPC Bus</small>
+            </a>
+            <a href="product-edb.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">🗄</span>
+              <span>eDB</span>
+              <small>Database</small>
+            </a>
+            <a href="product-eos-platform.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">🏗</span>
+              <span>EoS Platform</span>
+              <small>Platform SDK</small>
+            </a>
+          </div>
+        </div>
+
+        <!-- Layer 2: Dev Tools -->
+        <div class="eco-layer eco-layer--tools">
+          <div class="eco-layer__label">Developer Tools Layer</div>
+          <div class="eco-layer__products">
+            <a href="product-eostudio.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">💻</span>
+              <span>EoStudio</span>
+              <small>IDE</small>
+            </a>
+            <a href="product-ebuild.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">🔧</span>
+              <span>eBuild</span>
+              <small>Build System</small>
+            </a>
+            <a href="product-eosim.html" class="eco-product-chip">
+              <span class="eco-product-chip__icon">🖥</span>
+              <span>EoSim</span>
+              <small>Simulator</small>
+            </a>
+          </div>
+        </div>
+
+        <!-- Layer 1: Kernel & Boot -->
+        <div class="eco-layer eco-layer--kernel">
+          <div class="eco-layer__label">Kernel &amp; Boot Layer</div>
+          <div class="eco-layer__products">
+            <a href="product-eos.html" class="eco-product-chip eco-product-chip--core">
+              <span class="eco-product-chip__icon">🔮</span>
+              <span>EoS</span>
+              <small>RTOS Kernel</small>
+            </a>
+            <a href="product-eboot.html" class="eco-product-chip eco-product-chip--core">
+              <span class="eco-product-chip__icon">🔐</span>
+              <span>eBootloader</span>
+              <small>Secure Boot</small>
+            </a>
+          </div>
+        </div>
+
+        <!-- Layer 0: Hardware -->
+        <div class="eco-layer eco-layer--hw">
+          <div class="eco-layer__label">Hardware</div>
+          <div class="eco-layer__products">
+            <div class="eco-hw-chip">ARM Cortex-M/A</div>
+            <div class="eco-hw-chip">RISC-V</div>
+            <div class="eco-hw-chip">x86 / x86-64</div>
+            <div class="eco-hw-chip">Custom SoC</div>
+            <div class="eco-hw-chip">FPGA</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Cards Grid -->
+  <section class="section section--dark" style="padding:5rem 0;">
+    <div class="container section__inner">
+      <div style="text-align:center;margin-bottom:3rem;">
+        <span class="section__eyebrow">All Products</span>
+        <h2 class="section__title">Every Product, Explained</h2>
+      </div>
+      <div class="mkt-eco-grid">
+        <a href="product-eos.html" class="mkt-eco-card mkt-eco-card--core">
+          <div class="mkt-eco-card__icon">🔮</div>
+          <div class="mkt-eco-card__name">EoS</div>
+          <div class="mkt-eco-card__tag">Core RTOS Kernel</div>
+          <p class="mkt-eco-card__desc">Real-time kernel with capability-based security, SMP/AMP support, deterministic scheduling, and a hardware abstraction layer for 50+ MCU families.</p>
+          <div class="mkt-eco-card__specs">
+            <span>≤10μs context switch</span>
+            <span>ARM · RISC-V · x86</span>
+            <span>C11 standard</span>
+          </div>
+        </a>
+        <a href="product-eboot.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🔐</div>
+          <div class="mkt-eco-card__name">eBootloader</div>
+          <div class="mkt-eco-card__tag">Secure Boot Chain</div>
+          <p class="mkt-eco-card__desc">5-stage verified boot with hardware root of trust, rollback protection, A/B partition updates, and cryptographic signature verification.</p>
+          <div class="mkt-eco-card__specs">
+            <span>Ed25519 signatures</span>
+            <span>A/B updates</span>
+            <span>&lt;64KB footprint</span>
+          </div>
+        </a>
+        <a href="product-eai.html" class="mkt-eco-card mkt-eco-card--ai">
+          <div class="mkt-eco-card__icon">🧠</div>
+          <div class="mkt-eco-card__name">EAI</div>
+          <div class="mkt-eco-card__tag">AI Inference Engine</div>
+          <p class="mkt-eco-card__desc">On-device neural inference at sub-1ms latency. Runs quantised LLMs, CNNs, and transformers on microcontrollers with as little as 256KB RAM.</p>
+          <div class="mkt-eco-card__specs">
+            <span>&lt;1ms inference</span>
+            <span>INT8/INT4 quant</span>
+            <span>256KB min RAM</span>
+          </div>
+        </a>
+        <a href="product-eni.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🧬</div>
+          <div class="mkt-eco-card__name">ENI</div>
+          <div class="mkt-eco-card__tag">Neural Interface</div>
+          <p class="mkt-eco-card__desc">1,024-channel neural signal acquisition at 30kHz with 24-bit ADC, real-time spike sorting, and low-latency BCI output for brain-computer interfaces.</p>
+          <div class="mkt-eco-card__specs">
+            <span>1,024 channels</span>
+            <span>30kHz sample rate</span>
+            <span>24-bit ADC</span>
+          </div>
+        </a>
+        <a href="product-eipc.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">⚡</div>
+          <div class="mkt-eco-card__name">EIPC</div>
+          <div class="mkt-eco-card__tag">IPC Bus</div>
+          <p class="mkt-eco-card__desc">Zero-copy inter-process communication with capability tokens, message queues, shared memory, and sub-microsecond latency between isolated processes.</p>
+          <div class="mkt-eco-card__specs">
+            <span>&lt;1μs latency</span>
+            <span>Zero-copy</span>
+            <span>Capability tokens</span>
+          </div>
+        </a>
+        <a href="product-ebuild.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🔧</div>
+          <div class="mkt-eco-card__name">eBuild</div>
+          <div class="mkt-eco-card__tag">Build System</div>
+          <p class="mkt-eco-card__desc">Declarative cross-compilation build system with reproducible builds, SDK generation, and support for 20+ toolchains including GCC, Clang, and LLVM.</p>
+          <div class="mkt-eco-card__specs">
+            <span>Reproducible builds</span>
+            <span>20+ toolchains</span>
+            <span>SDK generation</span>
+          </div>
+        </a>
+        <a href="product-eosim.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🖥</div>
+          <div class="mkt-eco-card__name">EoSim</div>
+          <div class="mkt-eco-card__tag">System Simulator</div>
+          <p class="mkt-eco-card__desc">QEMU-based full-system simulator with virtual peripherals, GDB integration, hardware-in-the-loop bridge, and cycle-accurate timing for deterministic testing.</p>
+          <div class="mkt-eco-card__specs">
+            <span>QEMU backend</span>
+            <span>HIL bridge</span>
+            <span>GDB integration</span>
+          </div>
+        </a>
+        <a href="product-eostudio.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">💻</div>
+          <div class="mkt-eco-card__name">EoStudio</div>
+          <div class="mkt-eco-card__tag">IDE</div>
+          <p class="mkt-eco-card__desc">RTOS-aware IDE with live task inspector, memory map visualiser, one-click flash, integrated EoSim, and real-time CPU/memory profiling dashboards.</p>
+          <div class="mkt-eco-card__specs">
+            <span>RTOS task view</span>
+            <span>Memory map</span>
+            <span>One-click flash</span>
+          </div>
+        </a>
+        <a href="product-edb.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🗄</div>
+          <div class="mkt-eco-card__name">eDB</div>
+          <div class="mkt-eco-card__tag">Embedded Database</div>
+          <p class="mkt-eco-card__desc">Full SQL embedded database with AES-XTS encryption at rest, write-ahead logging for crash safety, B-tree indexing, and a 64KB minimum footprint.</p>
+          <div class="mkt-eco-card__specs">
+            <span>AES-XTS encryption</span>
+            <span>WAL crash safety</span>
+            <span>64KB footprint</span>
+          </div>
+        </a>
+        <a href="product-eos-platform.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🏗</div>
+          <div class="mkt-eco-card__name">EoS Platform</div>
+          <div class="mkt-eco-card__tag">Platform SDK</div>
+          <p class="mkt-eco-card__desc">Unified platform SDK that integrates all EoS products into a single development environment with shared APIs, documentation, and tooling.</p>
+          <div class="mkt-eco-card__specs">
+            <span>Unified API</span>
+            <span>All products</span>
+            <span>One SDK</span>
+          </div>
+        </a>
+        <a href="product-eapps.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">📱</div>
+          <div class="mkt-eco-card__name">eApps</div>
+          <div class="mkt-eco-card__tag">App Framework</div>
+          <p class="mkt-eco-card__desc">Lightweight application framework for building embedded UIs and services on EoS, with a component model, event system, and hardware-accelerated rendering.</p>
+          <div class="mkt-eco-card__specs">
+            <span>Component model</span>
+            <span>HW-accelerated</span>
+            <span>Event system</span>
+          </div>
+        </a>
+        <a href="product-ebowser.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">🌐</div>
+          <div class="mkt-eco-card__name">eBowser</div>
+          <div class="mkt-eco-card__tag">Embedded Browser</div>
+          <p class="mkt-eco-card__desc">Lightweight web browser for embedded devices with HTML5, CSS3, and JavaScript support. Runs on devices with as little as 4MB RAM.</p>
+          <div class="mkt-eco-card__specs">
+            <span>HTML5 / CSS3</span>
+            <span>4MB min RAM</span>
+            <span>JavaScript</span>
+          </div>
+        </a>
+        <a href="product-eoffice.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">📄</div>
+          <div class="mkt-eco-card__name">eOffice</div>
+          <div class="mkt-eco-card__tag">Office Suite</div>
+          <p class="mkt-eco-card__desc">Embedded office suite with document viewer, spreadsheet engine, and presentation renderer. Compatible with standard office formats.</p>
+          <div class="mkt-eco-card__specs">
+            <span>DOCX / XLSX</span>
+            <span>PDF renderer</span>
+            <span>Offline first</span>
+          </div>
+        </a>
+        <a href="product-eserviceapps.html" class="mkt-eco-card">
+          <div class="mkt-eco-card__icon">⚙️</div>
+          <div class="mkt-eco-card__name">eServiceApps</div>
+          <div class="mkt-eco-card__tag">System Services</div>
+          <p class="mkt-eco-card__desc">Collection of system service applications: network manager, update daemon, logging service, health monitor, and remote management agent.</p>
+          <div class="mkt-eco-card__specs">
+            <span>OTA updates</span>
+            <span>Health monitor</span>
+            <span>Remote mgmt</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="section section--surface" style="padding:5rem 0;">
+    <div class="container section__inner">
+      <div style="text-align:center;margin-bottom:3rem;">
+        <span class="section__eyebrow">Use Cases</span>
+        <h2 class="section__title">Where EmbeddedOS Powers the World</h2>
+      </div>
+      <div class="mkt-usecase-grid">
+        <div class="mkt-usecase-card">
+          <div class="mkt-usecase-card__icon">🏥</div>
+          <h3>Medical Devices</h3>
+          <p>Pacemakers, insulin pumps, neural implants, and surgical robots. EoS + ENI + EAI provide the safety-critical stack for FDA-grade medical devices.</p>
+          <div class="mkt-usecase-card__products">
+            <span>EoS</span><span>ENI</span><span>EAI</span><span>eBootloader</span>
+          </div>
+        </div>
+        <div class="mkt-usecase-card">
+          <div class="mkt-usecase-card__icon">🚗</div>
+          <h3>Automotive</h3>
+          <p>ADAS, infotainment, body control modules, and EV battery management. ISO 26262 ASIL-B compliant profiles available.</p>
+          <div class="mkt-usecase-card__products">
+            <span>EoS</span><span>EIPC</span><span>eDB</span><span>EAI</span>
+          </div>
+        </div>
+        <div class="mkt-usecase-card">
+          <div class="mkt-usecase-card__icon">🛰</div>
+          <h3>Aerospace &amp; Space</h3>
+          <p>Satellite firmware, drone flight controllers, and space-grade OS profiles. Radiation-tolerant builds for LEO and GEO missions.</p>
+          <div class="mkt-usecase-card__products">
+            <span>EoS</span><span>eBootloader</span><span>eBuild</span><span>EoSim</span>
+          </div>
+        </div>
+        <div class="mkt-usecase-card">
+          <div class="mkt-usecase-card__icon">🏭</div>
+          <h3>Industrial IoT</h3>
+          <p>PLCs, SCADA systems, factory automation, and predictive maintenance. Real-time determinism with OTA update capability.</p>
+          <div class="mkt-usecase-card__products">
+            <span>EoS</span><span>EIPC</span><span>eServiceApps</span><span>eDB</span>
+          </div>
+        </div>
+        <div class="mkt-usecase-card">
+          <div class="mkt-usecase-card__icon">🧠</div>
+          <h3>Brain-Computer Interfaces</h3>
+          <p>Neural signal acquisition, spike sorting, and closed-loop stimulation for next-generation BCI devices and neuroprosthetics.</p>
+          <div class="mkt-usecase-card__products">
+            <span>ENI</span><span>EAI</span><span>EoS</span><span>EIPC</span>
+          </div>
+        </div>
+        <div class="mkt-usecase-card">
+          <div class="mkt-usecase-card__icon">🤖</div>
+          <h3>Robotics &amp; AI</h3>
+          <p>Autonomous robots, collaborative arms, and AI-powered edge devices. EAI brings on-device intelligence to microcontrollers.</p>
+          <div class="mkt-usecase-card__products">
+            <span>EAI</span><span>EoS</span><span>ENI</span><span>EoStudio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mkt-fundraise-banner" style="padding:5rem 0;">
+    <div class="mkt-fundraise-banner__bg"></div>
+    <div class="container mkt-fundraise-banner__inner">
+      <div class="mkt-fundraise-banner__text">
+        <h2>Start Building Today</h2>
+        <p>All 14 products are free, open-source, and production-ready. Get started with the EoS Platform SDK or explore individual products.</p>
+      </div>
+      <div class="mkt-fundraise-banner__actions">
+        <a href="documentation.html" class="btn-primary">Get Started →</a>
+        <a href="fundraising.html" class="btn-secondary">💛 Support the Mission</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 <footer class="footer">
 <div class="footer__inner">
 <div class="footer__grid">
-<div class="footer__brand-col"><a class="logo" href="/"><div aria-hidden="true" class="logo-icon">EoS</div><span class="logo-text">Embedded<span>OS</span></span></a><p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p><div class="footer__social"><a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GH</a><a aria-label="X" href="https://x.com/EmbeddedOS_ORG" rel="noopener noreferrer" target="_blank">X</a><a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener noreferrer" target="_blank">in</a></div></div>
-<div class="footer__col"><h3>Products</h3><ul><li><a href="products.html#eos-rtos">EoS RTOS</a></li><li><a href="products.html#eai">EAI Runtime</a></li><li><a href="products.html#eni">ENI Stack</a></li><li><a href="products.html#evera">eVera Agent</a></li><li><a href="products.html#eostudio">EoStudio</a></li></ul></div>
-<div class="footer__col"><h4>Foundation</h4><ul><li><a href="about.html">About</a></li><li><a href="membership.html">Membership</a></li><li><a href="ecosystem.html">Ecosystem</a></li><li><a href="research.html">Research</a></li></ul></div>
-<div class="footer__col"><h4>Developers</h4><ul><li><a href="documentation.html">Documentation</a></li><li><a href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a></li><li><a href="news.html">News</a></li></ul></div>
-<div class="footer__col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+<div class="footer__brand-col">
+<a class="logo" href="/">
+<div aria-hidden="true" class="logo-icon">EoS</div>
+<span class="logo-text">Embedded<span>OS</span></span>
+</a>
+<p class="footer__brand-desc">A 501(c)(3) nonprofit foundation building the world's most complete open-source embedded AI stack. 14 components. MIT. No lock-in.</p>
+<div class="footer__social">
+<a aria-label="GitHub" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GH</a>
+<a aria-label="X / Twitter" href="https://x.com/EmbeddedOS_ORG" rel="noopener noreferrer" target="_blank">X</a>
+<a aria-label="LinkedIn" href="https://www.linkedin.com/company/embedded-operating-systems-research-foundation" rel="noopener noreferrer" target="_blank">in</a>
 </div>
-<div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem"><div class="footer__copy">© 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div><div class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a></div>
+</div>
+<div class="footer__col">
+<h3>System Stack</h3>
+<ul>
+<li><a href="products.html#eos-rtos">EoS RTOS</a></li>
+<li><a href="products.html#eai">EAI Runtime</a></li>
+<li><a href="products.html#eni">ENI Stack</a></li>
+<li><a href="products.html#eipc">eIPC</a></li>
+<li><a href="products.html#eboot">eBoot</a></li>
+</ul>
+</div>
+<div class="footer__col">
+<h4>Hardware</h4>
+<ul>
+<li><a href="products.html#healthkey">HEALTH-KEY ULTRA</a></li>
+<li><a href="products.html#healthband">HEALTH-BAND Neuro</a></li>
+</ul>
+</div>
+<div class="footer__col">
+<h4>Applications</h4>
+<ul>
+<li><a href="products.html#evera">eVera Agent</a></li>
+<li><a href="products.html#eostudio">EoStudio IDE</a></li>
+<li><a href="products.html#eosim">EoSim</a></li>
+<li><a href="products.html#eoffice">eOffice Suite</a></li>
+<li><a href="products.html#ebrowser">eBrowser</a></li>
+</ul>
+</div>
+<div class="footer__col">
+<h4>Foundation</h4>
+<ul>
+<li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
+<li><a href="donate.html">Donate</a></li><li><a href="membership.html">Membership</a></li>
+<li><a href="ecosystem.html">Ecosystem</a></li>
+<li><a href="research.html">Research</a></li>
+<li><a href="documentation.html">Documentation</a></li>
+<li><a href="news.html">News</a></li>
+</ul>
+</div>
+</div>
+<div class="footer__newsletter">
+<h4>Stay in the Loop</h4>
+<p>Research updates, release notes, and community news — no spam, ever.</p>
+<form action="#" class="newsletter-form" id="newsletterForm" method="post">
+<input aria-label="Email for newsletter" placeholder="your@email.com" required="" type="email">
+<button type="submit">Subscribe</button>
+</input></form>
+</div><div class="footer__bottom" style="flex-wrap:wrap;gap:.75rem">
+<div class="footer__copy">© 2026 EmbeddedOS Research Foundation. MIT. 501(c)(3) nonprofit.</div>
+<div class="footer__legal">
+<a href="privacy.html">Privacy</a>
+<a href="terms.html">Terms</a>
+<a href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub</a>
+</div>
 <div class="footer__powered" style="text-align:center;padding:.75rem 0 0;border-top:1px solid rgba(255,255,255,.06);margin-top:.75rem;font-size:.75rem">Powered by <a href="https://www.interserver.net" rel="noopener noreferrer" style="font-weight:600;text-decoration:none;transition:color .15s ease" target="_blank">InterServer</a></div>
 </div>
 </div>
-</footer>
-<button aria-label="Scroll to top" class="scroll-top" type="button">↑</button>
-<script defer="" src="js/main.js"></script>
+<div style="display:none"><a href="faq.html">FAQ</a></div></footer>
+<script src="js/main.js" defer></script>
 </body>
 </html>

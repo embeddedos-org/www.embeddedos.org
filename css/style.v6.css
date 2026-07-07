@@ -3871,82 +3871,210 @@ a[aria-current="page"] {
 .mt-2 { margin-top:.75rem; }
 .mb-2 { margin-bottom:.75rem; }
 
-/* ============================================================
-   CERTIFICATION PAGE — COMPLETE STYLES
-   ============================================================ */
 
-/* Hero */
-.cert-hero { padding: 7rem 1.5rem 4rem; text-align: center; position: relative; }
-.cert-hero__kicker { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-400); margin-bottom: 1rem; font-family: var(--font-mono); }
-.cert-hero__title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -.04em; }
-.cert-hero__sub { font-size: 1.1rem; color: var(--text-secondary); max-width: 620px; margin: 0 auto 2.5rem; line-height: 1.7; }
-.cert-hero__cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+/* ═══════════════════════════════════════════════
+   MARKETING PAGES — New CSS
+═══════════════════════════════════════════════ */
 
-/* Stats bar */
-.cert-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; padding: 2.5rem 1.5rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; background: var(--bg-surface); }
-.cert-stat { text-align: center; }
-.cert-stat__num { display: block; font-size: 2.2rem; font-weight: 900; background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
-.cert-stat__label { font-size: .78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: .3rem; }
+/* ── Homepage Hero Split Layout ── */
+.mkt-hero { min-height: 100vh; display: flex; align-items: center; }
+.mkt-hero__split { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding: 8rem 0 5rem; }
+.mkt-hero__left { z-index: 2; }
+.mkt-hero__right { z-index: 2; }
+.mkt-hero__trust { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+.trust-item { font-size: 0.8rem; color: var(--clr-text-muted); display: flex; align-items: center; gap: 0.3rem; }
 
-/* Filter bar */
-.cert-filters { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; padding: 0 1.5rem; }
-.cert-filter-btn { padding: .45rem 1.1rem; border-radius: 999px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-secondary); font-size: .82rem; font-weight: 500; cursor: pointer; transition: all .2s; }
-.cert-filter-btn:hover { border-color: var(--blue-400); color: var(--blue-400); }
-.cert-filter-btn.active, .cert-filter-btn[aria-pressed="true"] { background: var(--gradient-blue); border-color: transparent; color: #fff; box-shadow: 0 4px 16px rgba(59,130,246,.4); }
+/* ── Stack Diagram in Hero ── */
+.mkt-hero__visual { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(20px); }
+.mkt-stack-diagram { display: flex; flex-direction: column; gap: 0.5rem; }
+.mkt-stack-layer { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.07); transition: all 0.2s; }
+.mkt-stack-layer:hover { border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.06); transform: translateX(4px); }
+.mkt-stack-layer--kernel { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.3); }
+.mkt-stack-layer--services { background: rgba(139,92,246,0.08); }
+.mkt-stack-layer--tools { background: rgba(6,182,212,0.06); }
+.mkt-stack-layer--app { background: rgba(16,185,129,0.06); }
+.mkt-stack-layer--hw { background: rgba(245,158,11,0.06); }
+.mkt-stack-icon { font-size: 1.4rem; flex-shrink: 0; }
+.mkt-stack-layer strong { display: block; font-size: 0.95rem; color: var(--clr-text); }
+.mkt-stack-layer small { font-size: 0.75rem; color: var(--clr-text-muted); }
 
-/* Track section */
-.cert-track { margin-bottom: 4rem; padding: 0 1.5rem; max-width: 1200px; margin-left: auto; margin-right: auto; }
-.cert-track-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-.cert-track-icon { width: 2.75rem; height: 2.75rem; border-radius: .6rem; background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
-.cert-track-title { font-size: 1.25rem; font-weight: 800; margin: 0 0 .2rem; letter-spacing: -.02em; }
-.cert-track-desc { font-size: .88rem; color: var(--text-secondary); margin: 0; }
+/* ── Stats Strip ── */
+.mkt-stats .stat__num { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; background: var(--grad-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.mkt-stats .stat__label { font-size: 0.85rem; color: var(--clr-text-muted); margin-top: 0.3rem; }
 
-/* Cert grid */
-.cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.25rem; }
+/* ── Mission Section ── */
+.mkt-mission__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.mkt-mission__pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2rem; }
+.mkt-pillar { display: flex; gap: 1rem; align-items: flex-start; }
+.mkt-pillar__icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.mkt-pillar strong { display: block; font-size: 0.95rem; color: var(--clr-text); margin-bottom: 0.3rem; }
+.mkt-pillar p { font-size: 0.85rem; color: var(--clr-text-muted); margin: 0; }
+.mkt-mission__card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+.mkt-mission__quote { font-size: 1.05rem; font-style: italic; color: var(--clr-text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+.mkt-mission__author { display: flex; align-items: center; gap: 1rem; }
+.mkt-mission__avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--grad-aurora); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: #fff; flex-shrink: 0; }
+.mkt-mission__author strong { display: block; font-size: 0.9rem; }
+.mkt-mission__author span { font-size: 0.78rem; color: var(--clr-text-muted); }
+.mkt-mission__impact-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.mkt-impact-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.2rem; text-align: center; }
+.mkt-impact-card__num { display: block; font-size: 1.8rem; font-weight: 800; background: var(--grad-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.mkt-impact-card__label { font-size: 0.75rem; color: var(--clr-text-muted); margin-top: 0.3rem; display: block; }
 
-/* Cert card */
-.cert-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; transition: transform .2s var(--ease-out), box-shadow .2s, border-color .2s; cursor: default; }
-.cert-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(59,130,246,.2); border-color: rgba(59,130,246,.3); }
-.cert-card-header { display: flex; align-items: flex-start; gap: .85rem; }
-.cert-badge { width: 3rem; height: 3rem; border-radius: .7rem; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
-.cert-badge--foundation { background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.25); }
-.cert-badge--professional { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.25); }
-.cert-badge--expert { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.25); }
-.cert-badge--specialist { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.25); }
-.cert-badge--architect { background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.25); }
-.cert-card-name { font-size: .98rem; font-weight: 700; line-height: 1.35; margin: 0 0 .15rem; }
-.cert-card-acronym { font-size: .72rem; font-weight: 700; color: var(--blue-400); letter-spacing: .08em; font-family: var(--font-mono); }
-.cert-card-desc { font-size: .84rem; color: var(--text-secondary); line-height: 1.55; flex: 1; }
-.cert-card-meta { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: auto; }
-.cert-meta-tag { font-size: .7rem; font-weight: 600; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-muted); }
-.cert-meta-tag--level { border-color: rgba(59,130,246,.35); color: var(--blue-400); }
-.cert-meta-tag--duration { border-color: rgba(16,185,129,.3); color: var(--emerald-400); }
-.cert-card-link { display: inline-flex; align-items: center; gap: .35rem; font-size: .82rem; font-weight: 600; color: var(--blue-400); text-decoration: none; margin-top: .25rem; transition: color .15s; }
-.cert-card-link:hover { color: var(--cyan-400); text-decoration: underline; }
+/* ── Ecosystem Product Grid ── */
+.mkt-eco-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+.mkt-eco-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.8rem; text-decoration: none; color: inherit; transition: all 0.25s; display: flex; flex-direction: column; gap: 0.5rem; }
+.mkt-eco-card:hover { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.08); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(99,102,241,0.15); }
+.mkt-eco-card--core { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.06); }
+.mkt-eco-card--ai { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.06); }
+.mkt-eco-card--more { border-style: dashed; }
+.mkt-eco-card__icon { font-size: 2rem; }
+.mkt-eco-card__name { font-size: 1.15rem; font-weight: 700; color: var(--clr-text); }
+.mkt-eco-card__tag { font-size: 0.72rem; font-weight: 600; color: var(--clr-accent); text-transform: uppercase; letter-spacing: 0.08em; }
+.mkt-eco-card__desc { font-size: 0.85rem; color: var(--clr-text-muted); line-height: 1.6; margin: 0; flex: 1; }
+.mkt-eco-card__specs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.mkt-eco-card__specs span { font-size: 0.7rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 0.15rem 0.5rem; color: var(--clr-text-muted); }
 
-/* Process steps */
-.cert-process { padding: 5rem 1.5rem; background: var(--bg-surface); }
-.cert-process-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; text-align: center; margin-bottom: 2.5rem; letter-spacing: -.03em; }
-.cert-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
-.cert-step { text-align: center; padding: 2rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); transition: border-color .2s, transform .2s; }
-.cert-step:hover { border-color: rgba(59,130,246,.3); transform: translateY(-3px); }
-.cert-step-num { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--gradient-blue); color: #fff; font-weight: 800; font-size: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto .85rem; box-shadow: 0 4px 16px rgba(59,130,246,.4); }
-.cert-step-title { font-weight: 700; margin-bottom: .4rem; font-size: .95rem; }
-.cert-step-desc { font-size: .83rem; color: var(--text-secondary); line-height: 1.5; }
+/* ── Fundraising Banner ── */
+.mkt-fundraise-banner { position: relative; overflow: hidden; }
+.mkt-fundraise-banner__bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.1) 50%, rgba(245,158,11,0.08) 100%); }
+.mkt-fundraise-banner__inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center; padding: 4rem 0; }
+.mkt-fundraise-banner__text h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 0.8rem; }
+.mkt-fundraise-banner__text p { color: var(--clr-text-muted); max-width: 560px; }
+.mkt-fundraise-banner__actions { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+.mkt-fundraise-banner__note { font-size: 0.78rem; color: var(--clr-text-muted); margin: 0; }
+.mkt-progress-bar { height: 12px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; margin: 1rem 0 0.5rem; }
+.mkt-progress-bar--lg { height: 20px; }
+.mkt-progress-fill { height: 100%; background: var(--grad-aurora); border-radius: 99px; position: relative; transition: width 1s ease; }
+.mkt-progress-glow { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; background: rgba(99,102,241,0.8); border-radius: 50%; filter: blur(8px); }
+.mkt-progress-labels { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--clr-text-muted); }
 
-/* CTA section */
-.cert-cta { text-align: center; padding: 6rem 1.5rem; }
-.cert-cta__title { font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight: 900; margin-bottom: 1rem; letter-spacing: -.04em; }
-.cert-cta__sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto 2rem; line-height: 1.7; }
-.cert-cta__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+/* ── Vision Grid ── */
+.mkt-vision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.mkt-vision-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem; }
+.mkt-vision-card--active { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); }
+.mkt-vision-card__phase { font-size: 0.75rem; font-weight: 600; color: var(--clr-accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+.mkt-vision-card h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+.mkt-vision-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.mkt-vision-card li { font-size: 0.88rem; color: var(--clr-text-muted); }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .cert-stats { gap: 1.5rem; }
-  .cert-grid { grid-template-columns: 1fr 1fr; }
-  .cert-steps { grid-template-columns: 1fr 1fr; }
+/* ── Programs Grid ── */
+.mkt-programs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.mkt-program-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem; text-decoration: none; color: inherit; transition: all 0.25s; display: flex; flex-direction: column; gap: 0.8rem; }
+.mkt-program-card:hover { border-color: rgba(99,102,241,0.5); transform: translateY(-4px); }
+.mkt-program-card__icon { font-size: 2.2rem; }
+.mkt-program-card h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.mkt-program-card p { font-size: 0.85rem; color: var(--clr-text-muted); margin: 0; flex: 1; }
+.mkt-program-card__cta { font-size: 0.82rem; color: var(--clr-accent); font-weight: 600; margin-top: auto; }
+
+/* ── Newsletter ── */
+.mkt-newsletter__form { display: flex; gap: 0.8rem; max-width: 480px; margin: 0 auto; }
+.mkt-newsletter__input { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 0.8rem 1.2rem; color: var(--clr-text); font-size: 0.95rem; outline: none; }
+.mkt-newsletter__input:focus { border-color: rgba(99,102,241,0.5); }
+.mkt-newsletter__note { font-size: 0.78rem; color: var(--clr-text-muted); margin-top: 0.8rem; }
+
+/* ── Fundraising Page ── */
+.mkt-campaign-progress { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 2.5rem; }
+.mkt-campaign-progress__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.mkt-campaign-progress__raised { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; background: var(--grad-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.mkt-campaign-progress__raised span { font-size: 1.2rem; font-weight: 400; color: var(--clr-text-muted); }
+.mkt-campaign-progress__goal { font-size: 0.9rem; color: var(--clr-text-muted); margin-top: 0.3rem; }
+.mkt-campaign-progress__pct { font-size: 3rem; font-weight: 800; color: var(--clr-accent); }
+.mkt-campaign-progress__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.mkt-campaign-stat { text-align: center; }
+.mkt-campaign-stat strong { display: block; font-size: 1.4rem; font-weight: 700; color: var(--clr-text); }
+.mkt-campaign-stat span { font-size: 0.78rem; color: var(--clr-text-muted); }
+.mkt-zeffy-embed { border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.mkt-zeffy-note { text-align: center; font-size: 0.8rem; color: var(--clr-text-muted); margin-top: 1rem; }
+.mkt-zeffy-note a { color: var(--clr-accent); }
+.mkt-impact-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.mkt-impact-tier { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.mkt-impact-tier--featured { border-color: rgba(245,158,11,0.5); background: rgba(245,158,11,0.06); position: relative; }
+.mkt-impact-tier__badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--clr-gold); color: #000; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.8rem; border-radius: 99px; white-space: nowrap; }
+.mkt-impact-tier__amount { font-size: 2rem; font-weight: 800; background: var(--grad-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.mkt-impact-tier__icon { font-size: 1.8rem; }
+.mkt-impact-tier h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.mkt-impact-tier p { font-size: 0.85rem; color: var(--clr-text-muted); flex: 1; margin: 0; }
+.mkt-why-donate { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.mkt-why-list { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.mkt-why-list li { font-size: 0.9rem; color: var(--clr-text-muted); }
+.mkt-why-stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+.mkt-why-stat__num { font-size: 2rem; font-weight: 800; background: var(--grad-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block; }
+.mkt-why-stat__label { font-size: 0.82rem; color: var(--clr-text-muted); margin-top: 0.3rem; display: block; }
+
+/* ── Sponsors Page ── */
+.mkt-sponsor-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.mkt-sponsor-why-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem; }
+.mkt-sponsor-why-card__icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+.mkt-sponsor-why-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.mkt-sponsor-why-card p { font-size: 0.85rem; color: var(--clr-text-muted); margin: 0; }
+.mkt-sponsor-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; align-items: start; }
+.mkt-sponsor-tier { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.mkt-sponsor-tier--platinum { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.08); }
+.mkt-sponsor-tier--gold { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.05); }
+.mkt-sponsor-tier__badge { font-size: 1rem; font-weight: 700; }
+.mkt-sponsor-tier__price { font-size: 1.8rem; font-weight: 800; background: var(--grad-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.mkt-sponsor-tier__price span { font-size: 0.9rem; font-weight: 400; color: var(--clr-text-muted); }
+.mkt-sponsor-tier__benefits { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
+.mkt-sponsor-tier__benefits li { font-size: 0.83rem; color: var(--clr-text-muted); }
+.mkt-sponsor-placeholder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.mkt-sponsor-placeholder__card { background: rgba(255,255,255,0.02); border: 2px dashed rgba(255,255,255,0.1); border-radius: 16px; padding: 3rem 2rem; text-align: center; }
+.mkt-sponsor-placeholder__logo { font-size: 1rem; color: rgba(255,255,255,0.2); font-weight: 600; margin-bottom: 0.8rem; }
+.mkt-sponsor-placeholder__tier { font-size: 0.78rem; color: rgba(255,255,255,0.15); }
+
+/* ── Ecosystem Full Stack Diagram ── */
+.eco-full-stack { display: flex; flex-direction: column; gap: 0.8rem; max-width: 900px; margin: 0 auto; }
+.eco-layer { border-radius: 16px; padding: 1.2rem 1.5rem; border: 1px solid rgba(255,255,255,0.08); }
+.eco-layer--kernel { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.3); }
+.eco-layer--services { background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.2); }
+.eco-layer--ai { background: rgba(236,72,153,0.08); border-color: rgba(236,72,153,0.2); }
+.eco-layer--tools { background: rgba(6,182,212,0.06); border-color: rgba(6,182,212,0.15); }
+.eco-layer--apps { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.15); }
+.eco-layer--hw { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.eco-layer__label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--clr-text-muted); margin-bottom: 0.8rem; }
+.eco-layer__products { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.eco-product-chip { display: flex; align-items: center; gap: 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.6rem 1rem; text-decoration: none; color: inherit; transition: all 0.2s; }
+.eco-product-chip:hover { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.1); transform: translateY(-2px); }
+.eco-product-chip--featured { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.1); }
+.eco-product-chip--core { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.12); }
+.eco-product-chip__icon { font-size: 1.2rem; }
+.eco-product-chip span { font-weight: 600; font-size: 0.9rem; }
+.eco-product-chip small { font-size: 0.72rem; color: var(--clr-text-muted); display: block; }
+.eco-hw-chip { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 0.4rem 0.9rem; font-size: 0.82rem; color: var(--clr-text-muted); }
+
+/* ── Use Cases Grid ── */
+.mkt-usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.mkt-usecase-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem; transition: all 0.25s; }
+.mkt-usecase-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-3px); }
+.mkt-usecase-card__icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+.mkt-usecase-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+.mkt-usecase-card p { font-size: 0.85rem; color: var(--clr-text-muted); margin-bottom: 1rem; }
+.mkt-usecase-card__products { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.mkt-usecase-card__products span { font-size: 0.72rem; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.2); border-radius: 4px; padding: 0.15rem 0.5rem; color: var(--clr-accent); }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .mkt-hero__split { grid-template-columns: 1fr; gap: 3rem; padding: 7rem 0 4rem; }
+  .mkt-mission__inner { grid-template-columns: 1fr; }
+  .mkt-programs-grid { grid-template-columns: repeat(2, 1fr); }
+  .mkt-impact-tiers { grid-template-columns: repeat(2, 1fr); }
+  .mkt-sponsor-tiers { grid-template-columns: repeat(2, 1fr); }
+  .mkt-vision-grid { grid-template-columns: 1fr; }
+  .mkt-fundraise-banner__inner { grid-template-columns: 1fr; }
+  .mkt-why-donate { grid-template-columns: 1fr; }
+  .mkt-sponsor-why-grid { grid-template-columns: repeat(2, 1fr); }
+  .mkt-usecase-grid { grid-template-columns: repeat(2, 1fr); }
+  .mkt-campaign-progress__stats { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 480px) {
-  .cert-grid { grid-template-columns: 1fr; }
-  .cert-steps { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
+  .mkt-programs-grid { grid-template-columns: 1fr; }
+  .mkt-impact-tiers { grid-template-columns: 1fr; }
+  .mkt-sponsor-tiers { grid-template-columns: 1fr; }
+  .mkt-sponsor-why-grid { grid-template-columns: 1fr; }
+  .mkt-usecase-grid { grid-template-columns: 1fr; }
+  .mkt-mission__pillars { grid-template-columns: 1fr; }
+  .mkt-mission__impact-cards { grid-template-columns: 1fr; }
+  .mkt-newsletter__form { flex-direction: column; }
+  .mkt-sponsor-placeholder { grid-template-columns: 1fr; }
+  .mkt-campaign-progress__stats { grid-template-columns: repeat(2, 1fr); }
+  .mkt-eco-grid { grid-template-columns: 1fr; }
 }
