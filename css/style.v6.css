@@ -3870,3 +3870,83 @@ a[aria-current="page"] {
 .mb-4 { margin-bottom:1.5rem; }
 .mt-2 { margin-top:.75rem; }
 .mb-2 { margin-bottom:.75rem; }
+
+/* ============================================================
+   CERTIFICATION PAGE — COMPLETE STYLES
+   ============================================================ */
+
+/* Hero */
+.cert-hero { padding: 7rem 1.5rem 4rem; text-align: center; position: relative; }
+.cert-hero__kicker { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-400); margin-bottom: 1rem; font-family: var(--font-mono); }
+.cert-hero__title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -.04em; }
+.cert-hero__sub { font-size: 1.1rem; color: var(--text-secondary); max-width: 620px; margin: 0 auto 2.5rem; line-height: 1.7; }
+.cert-hero__cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* Stats bar */
+.cert-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; padding: 2.5rem 1.5rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 3rem; background: var(--bg-surface); }
+.cert-stat { text-align: center; }
+.cert-stat__num { display: block; font-size: 2.2rem; font-weight: 900; background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+.cert-stat__label { font-size: .78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: .3rem; }
+
+/* Filter bar */
+.cert-filters { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; padding: 0 1.5rem; }
+.cert-filter-btn { padding: .45rem 1.1rem; border-radius: 999px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-secondary); font-size: .82rem; font-weight: 500; cursor: pointer; transition: all .2s; }
+.cert-filter-btn:hover { border-color: var(--blue-400); color: var(--blue-400); }
+.cert-filter-btn.active, .cert-filter-btn[aria-pressed="true"] { background: var(--gradient-blue); border-color: transparent; color: #fff; box-shadow: 0 4px 16px rgba(59,130,246,.4); }
+
+/* Track section */
+.cert-track { margin-bottom: 4rem; padding: 0 1.5rem; max-width: 1200px; margin-left: auto; margin-right: auto; }
+.cert-track-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.cert-track-icon { width: 2.75rem; height: 2.75rem; border-radius: .6rem; background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.cert-track-title { font-size: 1.25rem; font-weight: 800; margin: 0 0 .2rem; letter-spacing: -.02em; }
+.cert-track-desc { font-size: .88rem; color: var(--text-secondary); margin: 0; }
+
+/* Cert grid */
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.25rem; }
+
+/* Cert card */
+.cert-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; transition: transform .2s var(--ease-out), box-shadow .2s, border-color .2s; cursor: default; }
+.cert-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(59,130,246,.2); border-color: rgba(59,130,246,.3); }
+.cert-card-header { display: flex; align-items: flex-start; gap: .85rem; }
+.cert-badge { width: 3rem; height: 3rem; border-radius: .7rem; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+.cert-badge--foundation { background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.25); }
+.cert-badge--professional { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.25); }
+.cert-badge--expert { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.25); }
+.cert-badge--specialist { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.25); }
+.cert-badge--architect { background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.25); }
+.cert-card-name { font-size: .98rem; font-weight: 700; line-height: 1.35; margin: 0 0 .15rem; }
+.cert-card-acronym { font-size: .72rem; font-weight: 700; color: var(--blue-400); letter-spacing: .08em; font-family: var(--font-mono); }
+.cert-card-desc { font-size: .84rem; color: var(--text-secondary); line-height: 1.55; flex: 1; }
+.cert-card-meta { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: auto; }
+.cert-meta-tag { font-size: .7rem; font-weight: 600; padding: .2rem .55rem; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-muted); }
+.cert-meta-tag--level { border-color: rgba(59,130,246,.35); color: var(--blue-400); }
+.cert-meta-tag--duration { border-color: rgba(16,185,129,.3); color: var(--emerald-400); }
+.cert-card-link { display: inline-flex; align-items: center; gap: .35rem; font-size: .82rem; font-weight: 600; color: var(--blue-400); text-decoration: none; margin-top: .25rem; transition: color .15s; }
+.cert-card-link:hover { color: var(--cyan-400); text-decoration: underline; }
+
+/* Process steps */
+.cert-process { padding: 5rem 1.5rem; background: var(--bg-surface); }
+.cert-process-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; text-align: center; margin-bottom: 2.5rem; letter-spacing: -.03em; }
+.cert-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+.cert-step { text-align: center; padding: 2rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); transition: border-color .2s, transform .2s; }
+.cert-step:hover { border-color: rgba(59,130,246,.3); transform: translateY(-3px); }
+.cert-step-num { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--gradient-blue); color: #fff; font-weight: 800; font-size: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto .85rem; box-shadow: 0 4px 16px rgba(59,130,246,.4); }
+.cert-step-title { font-weight: 700; margin-bottom: .4rem; font-size: .95rem; }
+.cert-step-desc { font-size: .83rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* CTA section */
+.cert-cta { text-align: center; padding: 6rem 1.5rem; }
+.cert-cta__title { font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight: 900; margin-bottom: 1rem; letter-spacing: -.04em; }
+.cert-cta__sub { font-size: 1.05rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto 2rem; line-height: 1.7; }
+.cert-cta__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cert-stats { gap: 1.5rem; }
+  .cert-grid { grid-template-columns: 1fr 1fr; }
+  .cert-steps { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .cert-grid { grid-template-columns: 1fr; }
+  .cert-steps { grid-template-columns: 1fr; }
+}
