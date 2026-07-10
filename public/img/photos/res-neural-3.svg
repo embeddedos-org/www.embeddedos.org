@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#060912"/>
+      <stop offset="100%" stop-color="#0a1628"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="40%" r="30%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="70%" cy="60%" r="30%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <rect width="800" height="400" fill="url(#glow1)"/>
+  <rect width="800" height="400" fill="url(#glow2)"/>
+  <!-- Glowing connection lines -->
+  <g stroke-width="2" fill="none">
+    <line x1="100" y1="200" x2="300" y2="120" stroke="rgba(59,130,246,0.6)"/>
+    <line x1="100" y1="200" x2="300" y2="280" stroke="rgba(59,130,246,0.4)"/>
+    <line x1="300" y1="120" x2="500" y2="80" stroke="rgba(139,92,246,0.6)"/>
+    <line x1="300" y1="120" x2="500" y2="200" stroke="rgba(139,92,246,0.4)"/>
+    <line x1="300" y1="280" x2="500" y2="200" stroke="rgba(59,130,246,0.4)"/>
+    <line x1="300" y1="280" x2="500" y2="320" stroke="rgba(59,130,246,0.6)"/>
+    <line x1="500" y1="80" x2="700" y2="150" stroke="rgba(16,185,129,0.6)"/>
+    <line x1="500" y1="200" x2="700" y2="150" stroke="rgba(16,185,129,0.4)"/>
+    <line x1="500" y1="200" x2="700" y2="250" stroke="rgba(16,185,129,0.4)"/>
+    <line x1="500" y1="320" x2="700" y2="250" stroke="rgba(16,185,129,0.6)"/>
+  </g>
+  <!-- Glowing nodes -->
+  <circle cx="100" cy="200" r="20" fill="rgba(59,130,246,0.3)" stroke="#3b82f6" stroke-width="2"/>
+  <circle cx="300" cy="120" r="16" fill="rgba(139,92,246,0.3)" stroke="#8b5cf6" stroke-width="2"/>
+  <circle cx="300" cy="280" r="16" fill="rgba(139,92,246,0.3)" stroke="#8b5cf6" stroke-width="2"/>
+  <circle cx="500" cy="80" r="16" fill="rgba(16,185,129,0.3)" stroke="#10b981" stroke-width="2"/>
+  <circle cx="500" cy="200" r="20" fill="rgba(16,185,129,0.3)" stroke="#10b981" stroke-width="2"/>
+  <circle cx="500" cy="320" r="16" fill="rgba(16,185,129,0.3)" stroke="#10b981" stroke-width="2"/>
+  <circle cx="700" cy="150" r="18" fill="rgba(245,158,11,0.3)" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="700" cy="250" r="18" fill="rgba(245,158,11,0.3)" stroke="#f59e0b" stroke-width="2"/>
+  <!-- Protocol labels -->
+  <rect x="170" y="135" width="80" height="22" rx="4" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+  <text x="210" y="150" font-family="monospace" font-size="8" fill="#60a5fa" text-anchor="middle">EIPC Secure</text>
+  <rect x="370" y="90" width="80" height="22" rx="4" fill="rgba(139,92,246,0.15)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
+  <text x="410" y="105" font-family="monospace" font-size="8" fill="#a78bfa" text-anchor="middle">Encrypted</text>
+  <text x="400" y="25" font-family="monospace" font-size="13" font-weight="bold" fill="#60a5fa" text-anchor="middle">Glowing Connections — Secure Neural Protocol</text>
+  <text x="400" y="385" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">EmbeddedOS Neural Research · EIPC Transport Security</text>
+</svg>

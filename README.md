@@ -1,11 +1,11 @@
-# EmbeddedOS.org
+# EoS Website
 
-[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org)
-[![Build Status](https://img.shields.io/badge/Build-Passing-success?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org/actions)
-[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-success?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org)
-[![GPS API](https://img.shields.io/badge/GPS%20API-Integrated-blue?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org)
+[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io)
+[![Build Status](https://img.shields.io/badge/Build-Passing-success?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions)
+[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-success?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io)
+[![GPS API](https://img.shields.io/badge/GPS%20API-Integrated-blue?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io)
 
-Official EmbeddedOS Organization Website. Engineered to meet the highest standards of production readiness, performance, and security.
+EoS Platform Website. Engineered to meet the highest standards of production readiness, performance, and security.
 
 ---
 
@@ -14,10 +14,10 @@ Official EmbeddedOS Organization Website. Engineered to meet the highest standar
 ### Real-Time Emulation Dashboard
 Below is the real-time simulation dashboard generated from our production test suite. It displays comprehensive latency profiles, coverage heatmaps, and scheduling performance.
 
-![Emulation Dashboard](docs/screenshots/www_embeddedos_org_simulation.png)
+![Emulation Dashboard](docs/screenshots/embeddedos-org_github_io_simulation.png)
 
 ### Unified Organization Health Matrix
-We continuously benchmark EmbeddedOS.org against the entire EmbeddedOS ecosystem to ensure flawless interoperability.
+We continuously benchmark EoS Website against the entire EmbeddedOS ecosystem to ensure flawless interoperability.
 
 ![Overall Dashboard](docs/screenshots/overall_dashboard.png)
 
@@ -25,9 +25,9 @@ We continuously benchmark EmbeddedOS.org against the entire EmbeddedOS ecosystem
 
 ## 🎬 Product Marketing Video (App Store Proof of Production)
 
-Experience EmbeddedOS.org in action! Watch our high-fidelity product demonstration and marketing video:
+Experience EoS Website in action! Watch our high-fidelity product demonstration and marketing video:
 
-> 🎥 **[Watch the EmbeddedOS.org Product Video](docs/videos/www_embeddedos_org_marketing.mp4)**
+> 🎥 **[Watch the EoS Website Product Video](docs/videos/embeddedos-org_github_io_marketing.mp4)**
 
 ---
 
@@ -35,7 +35,7 @@ Experience EmbeddedOS.org in action! Watch our high-fidelity product demonstrati
 
 - **Domain**: HTML • CSS • JavaScript
 - **GPS Integration**: Production-grade geolocation and time synchronization APIs integrated.
-- **Benchmarks**: Outperforms leading industry standards including **Vercel, Netlify**.
+- **Benchmarks**: Outperforms leading industry standards including **GitHub Pages**.
 
 ---
 

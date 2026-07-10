@@ -1,0 +1,26 @@
+/* TEAM */
+  Foundation: EmbeddedOS Research Foundation
+  Type: 501(c)(3) nonprofit
+  Site: https://www.embeddedos.org
+  Contact: hello [at] embeddedos.org
+
+/* THANKS */
+  All foundation members, contributors, and partners.
+  Industry partners: Embedded.com, Embedded Summit, Embedded India, Toradex,
+                     Generis Group, ESWEEK, Embedded Online Conference,
+                     Embedded World NA.
+
+/* SITE */
+  Last update: 2026-05-13
+  Language: English
+  Doctype: HTML5
+  Standards: HTML5, CSS3, ECMAScript 2018+, Schema.org JSON-LD
+  Components: 14 open-source projects across RTOS, AI, neural interface,
+              security, tools, applications, and platforms.
+
+/* SOCIAL */
+  GitHub:   https://github.com/embeddedos-org
+  X:        https://x.com/EmbeddedOS_ORG
+  LinkedIn: https://www.linkedin.com/company/embedded-operating-systems-research-foundation
+  YouTube:  https://www.youtube.com/@EmbeddedOS_ORG
+  Facebook: https://www.facebook.com/people/Embedded-Operating-Systems-Research-Foundation/61588978691494/

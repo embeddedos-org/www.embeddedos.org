@@ -1,0 +1,19 @@
+node_modules/
+tests/screenshots/
+playwright-report/
+test-results/
+lighthouse-results/
+build/
+build-*/
+dist/
+.astro/
+.lighthouseci/
+__pycache__/
+*.pyc
+.venv/
+target/
+.pytest_cache/
+.DS_Store
+# large media kept out of git history (were never tracked); deploy separately
+*.mp4
+docs/.FullName

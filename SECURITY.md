@@ -1,13 +1,32 @@
 # Security Policy
 
+## Supported Versions
+
+| Version | Supported |
+|---------|-----------|
+| latest  | Yes       |
+
 ## Reporting a Vulnerability
 
-Please email `security@embeddedos.org` to report security vulnerabilities.
+**Email:** security@embeddedos.org
 
-We follow responsible disclosure with 90-day fix timelines for critical issues.
+> Do **NOT** open public GitHub issues for security vulnerabilities.
 
-## Standards
+### What to Include
 
-- ISO/IEC 27001 — Information security management
-- OWASP Embedded Application Security
-- CERT C Coding Standard
+- Affected component(s) and version(s)
+- Step-by-step reproduction instructions
+- Proof-of-concept code or crash dump (if available)
+- Impact assessment
+
+## Response SLA
+
+| Phase | Timeline |
+|-------|----------|
+| Acknowledge | 24 hours |
+| Triage | 72 hours |
+| Fix released | 90 days |
+
+## Safe Harbor
+
+We consider security research conducted in good faith to be authorized and will not pursue legal action against researchers who follow responsible disclosure practices.

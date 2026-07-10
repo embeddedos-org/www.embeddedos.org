@@ -1,0 +1,45 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+// rawHead = page-specific <head> tags carried over verbatim from the original
+//           page (title, description, canonical, OG/Twitter, JSON-LD, robots…)
+//           so all SEO is preserved. The layout supplies the shared boilerplate
+//           (charset, viewport, fonts, stylesheets) exactly once.
+const {
+  bodyClass = '',
+  legacy = false,
+  rawHead = '',
+  lang = 'en',
+  cssHref = '',
+} = Astro.props;
+
+const baseCss = cssHref || (legacy ? '/style.css' : '/css/style.v7.css');
+---
+<!DOCTYPE html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href={baseCss} />
+    <!-- theme loaded last so the unified light/editorial theme wins the cascade -->
+    <link rel="stylesheet" href="/css/theme-light.css" />
+    <Fragment set:html={rawHead} />
+  </head>
+  <body class={bodyClass}>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <Nav />
+    <div id="main-content" tabindex="-1">
+      <slot />
+    </div>
+    <Footer />
+  </body>
+</html>

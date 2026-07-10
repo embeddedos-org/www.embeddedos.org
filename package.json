@@ -1,0 +1,41 @@
+{
+  "name": "embeddedos-website",
+  "version": "3.0.1",
+  "private": true,
+  "description": "EmbeddedOS Developer Portal - Production website with comprehensive testing and CI/CD",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/postbuild.mjs",
+    "preview": "astro preview",
+    "migrate": "node scripts/convert-to-astro.mjs",
+    "test:unit": "node --test tests/unit/menu.test.mjs",
+    "test:site": "node scripts/test-suite.mjs",
+    "test:all": "npm run build && npm run test:unit && npm run test:site && npm audit",
+    "serve": "npx http-server . -p 8080 -s",
+    "test": "npx playwright test tests/",
+    "test:headed": "npx playwright test tests/ --headed",
+    "test:chromium": "npx playwright test tests/ --project=chromium",
+    "test:links": "npx playwright test tests/links.spec.js --project=chromium",
+    "test:seo": "npx playwright test tests/seo.spec.js --project=chromium",
+    "test:perf": "npx playwright test tests/performance.spec.js --project=chromium",
+    "test:a11y": "npx playwright test tests/accessibility.spec.js --project=chromium",
+    "test:responsive": "npx playwright test tests/responsive.spec.js",
+    "check:links": "npx linkinator http://localhost:8080 --recurse --skip 'github.com|googletagmanager|toradex.com|generisgp.com|opencollective.com' --timeout 10000",
+    "lint:html": "npx html-validate '*.html' 'docs/*.html' || true",
+    "lighthouse": "npx @lhci/cli collect --url=http://localhost:8080/index.html --settings.preset=desktop",
+    "audit": "npm run test && npm run check:links"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.0",
+    "esbuild": "^0.28.1",
+    "html-validate": "^8.0.0",
+    "http-server": "^14.1.0",
+    "linkinator": "^7.6.1",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.0.7",
+    "cheerio": "^1.2.0"
+  }
+}

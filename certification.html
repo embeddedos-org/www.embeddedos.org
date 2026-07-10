@@ -12,13 +12,13 @@
 <meta content="60 professional certifications across 12 tracks for embedded systems engineers, AI/ML practitioners, and neural interface developers." property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="en_US" property="og:locale"/>
-<meta content="https://www.embeddedos.org/images/og-image.png" property="og:image"/>
+<meta content="https://embeddedos-org.github.io/og-image.png" property="og:image"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="@EmbeddedOS_ORG" name="twitter:site"/>
 <meta content="@EmbeddedOS_ORG" name="twitter:creator"/>
 <meta content="Professional Certifications — EmbeddedOS Foundation" name="twitter:title"/>
 <meta content="60 professional certifications across 12 tracks for embedded systems engineers." name="twitter:description"/>
-<meta content="https://www.embeddedos.org/images/og-image.png" name="twitter:image"/>
+<meta content="https://embeddedos-org.github.io/og-image.png" name="twitter:image"/>
 <link href="https://www.embeddedos.org/certification.html" rel="canonical"/>
 <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="manifest.json" rel="manifest"/>
@@ -107,14 +107,22 @@
 .cert-cta h2{font-size:1.8rem;font-weight:800;margin-bottom:.75rem}
 .cert-cta p{color:rgba(255,255,255,.65);margin-bottom:1.5rem;max-width:520px;margin-left:auto;margin-right:auto}
 .cert-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cert-master-list{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:1rem;padding:1.5rem;margin:0 0 2.5rem}
+.cert-master-list h2{font-size:1.25rem;margin:0 0 .8rem}
+.cert-master-list p{color:rgba(255,255,255,.6);font-size:.9rem;margin:0 0 1rem}
+.cert-master-list ol{margin:0;padding-left:1.3rem;columns:2;column-gap:2rem}
+.cert-master-list li{break-inside:avoid;margin:0 0 .45rem;color:rgba(255,255,255,.9);font-size:.88rem;line-height:1.45}
 
 @media(max-width:640px){
   .cert-stats{gap:1.5rem}
   .cert-cards{grid-template-columns:1fr}
   .apply-steps{grid-template-columns:1fr 1fr}
   .cert-cta-btns{flex-direction:column;align-items:center}
+  .cert-master-list ol{columns:1}
 }
 </style>
+  <link rel="stylesheet" href="/css/theme-light.css"/>
+  <script defer src="/js/site-chrome.js"></script>
 </head>
 <body class="page-certification">
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -237,6 +245,72 @@
 <button aria-selected="false" class="cert-filter-btn" data-track="networking" role="tab">Networking</button>
 <button aria-selected="false" class="cert-filter-btn" data-track="tools" role="tab">Tools &amp; DevOps</button>
 </div>
+<section class="cert-master-list" aria-label="EmbeddedOS Certification Names">
+<h2>EmbeddedOS Certification Names</h2>
+<p>Official certification names and abbreviations.</p>
+<ol>
+<li>Certified EmbeddedOS Associate (CEA)</li>
+<li>Certified EmbeddedOS Foundation (CEF)</li>
+<li>Certified C Programmer for Embedded Systems (CCPES)</li>
+<li>Certified Embedded Linux Associate (CELA)</li>
+<li>Certified Embedded Linux Developer (CELD)</li>
+<li>Certified Embedded Linux Professional (CELP)</li>
+<li>Certified Linux Kernel Associate (CLKA)</li>
+<li>Certified Linux Kernel Engineer (CLKE)</li>
+<li>Certified Linux Device Driver Developer (CLDDD)</li>
+<li>Certified Linux Device Driver Engineer (CLDDE)</li>
+<li>Certified Bootloader Developer (CBD)</li>
+<li>Certified U-Boot Developer (CUBD)</li>
+<li>Certified Buildroot Developer (CBRD)</li>
+<li>Certified Yocto Project Developer (CYPD)</li>
+<li>Certified Yocto Professional (CYP)</li>
+<li>Certified RTOS Associate (CRA)</li>
+<li>Certified RTOS Developer (CRD)</li>
+<li>Certified RTOS Professional (CRP)</li>
+<li>Certified FreeRTOS Developer (CFRD)</li>
+<li>Certified Zephyr RTOS Developer (CZRD)</li>
+<li>Certified Embedded Firmware Developer (CEFD)</li>
+<li>Certified Embedded Firmware Engineer (CEFE)</li>
+<li>Certified Embedded C Developer (CECD)</li>
+<li>Certified Embedded C++ Developer (CECPD)</li>
+<li>Certified ARM Cortex-M Developer (CACMD)</li>
+<li>Certified ARM Cortex-A Developer (CACAD)</li>
+<li>Certified STM32 Developer (CSTM32D)</li>
+<li>Certified ESP32 Developer (CESP32D)</li>
+<li>Certified Raspberry Pi Embedded Developer (CRPED)</li>
+<li>Certified Microcontroller Programmer (CMP)</li>
+<li>Certified Embedded Networking Engineer (CENE)</li>
+<li>Certified Embedded IoT Developer (CEID)</li>
+<li>Certified Embedded IoT Engineer (CEIE)</li>
+<li>Certified MQTT Developer (CMQTTD)</li>
+<li>Certified CAN Bus Engineer (CCBE)</li>
+<li>Certified BLE Developer (CBLED)</li>
+<li>Certified Embedded Security Associate (CESA)</li>
+<li>Certified Embedded Security Engineer (CESE)</li>
+<li>Certified Secure Boot Developer (CSBD)</li>
+<li>Certified Trusted Firmware Developer (CTFD)</li>
+<li>Certified TinyML Developer (CTMD)</li>
+<li>Certified Edge AI Developer (CEAID)</li>
+<li>Certified Embedded AI Engineer (CEAIE)</li>
+<li>Certified Robotics Embedded Developer (CRED)</li>
+<li>Certified Automotive Embedded Developer (CAED)</li>
+<li>Certified Automotive Embedded Engineer (CAEE)</li>
+<li>Certified AUTOSAR Associate (CAA)</li>
+<li>Certified AUTOSAR Professional (CAP)</li>
+<li>Certified Functional Safety Associate (CFSA)</li>
+<li>Certified Functional Safety Engineer (CFSE)</li>
+<li>Certified Embedded DevOps Engineer (CEDE)</li>
+<li>Certified Embedded CI/CD Engineer (CECICD)</li>
+<li>Certified Embedded Test Engineer (CETE)</li>
+<li>Certified Embedded Quality Assurance Engineer (CEQAE)</li>
+<li>Certified Embedded Systems Professional (CESP)</li>
+<li>Certified Embedded Systems Expert (CESEX)</li>
+<li>Certified Embedded Systems Architect (CESA)</li>
+<li>Certified Open Source Embedded Contributor (COSEC)</li>
+<li>Certified Open Source Maintainer (COSM)</li>
+<li>Certified EmbeddedOS Fellow (CEF)</li>
+</ol>
+</section>
 <!-- ============================================================
      TRACK 1: EMBEDDED SYSTEMS ENGINEERING
      ============================================================ -->

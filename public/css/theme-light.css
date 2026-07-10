@@ -1,0 +1,450 @@
+/* ============================================================================
+   EmbeddedOS — Unified Light / Editorial Theme  (theme-light.css)
+   ---------------------------------------------------------------------------
+   Single source of truth for the site's visual language. Loaded LAST on every
+   page so it overrides both stylesheets that pages historically shipped with:
+     • css/style.v7.css   (modern "v7" pages — token names: --bg-void, --bg-base…)
+     • style.css          (legacy github.io-origin pages — --bg-primary, --blue…)
+   It re-maps every dark design token to a bright editorial palette, neutralises
+   the hard-coded dark surfaces, and fully styles the shared chrome (navbar +
+   footer) injected by js/site-chrome.js. No page markup is required beyond a
+   single <link> — the theme cascades everywhere.
+   ========================================================================== */
+
+/* ---- 1. Design tokens ---------------------------------------------------- */
+:root {
+  /* Editorial palette */
+  --e-bg:        #ffffff;   /* page canvas                    */
+  --e-bg-alt:    #f6f7f9;   /* alternating section tint       */
+  --e-bg-tint:   #eef1f6;   /* deeper tint / rails            */
+  --e-surface:   #ffffff;   /* cards, panels                  */
+  --e-ink:       #0d1220;   /* primary text (near-black)      */
+  --e-ink-2:     #414b5a;   /* secondary text                 */
+  --e-ink-3:     #6b7480;   /* muted text                     */
+  --e-line:      #e4e7ec;   /* hairline borders               */
+  --e-line-2:    #d3d9e2;   /* stronger borders               */
+  --e-accent:    #1d4ed8;   /* brand blue                     */
+  --e-accent-ink:#1746c0;   /* link colour (AA on white)      */
+  --e-accent-2:  #0e7490;   /* teal secondary                 */
+  --e-warm:      #c2410c;   /* editorial warm highlight       */
+  --e-focus:     #2563eb;
+
+  --e-shadow-sm: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+  --e-shadow-md: 0 4px 6px -2px rgba(16,24,40,.05), 0 12px 24px -6px rgba(16,24,40,.12);
+  --e-shadow-lg: 0 24px 48px -12px rgba(16,24,40,.18);
+
+  --e-fs-hero:  clamp(2.6rem, 6vw, 4.6rem);
+  --e-fs-h1:    clamp(2rem, 4.2vw, 3.1rem);
+  --e-fs-h2:    clamp(1.6rem, 3vw, 2.3rem);
+  --e-maxw:     1180px;
+
+  /* ---- Re-map "v7" tokens (css/style.v7.css) ---- */
+  --bg-void:      var(--e-bg-tint);
+  --bg-base:      var(--e-bg);
+  --bg-surface:   var(--e-bg-alt);
+  --bg-elevated:  var(--e-surface);
+  --bg-card:      var(--e-surface);
+  --bg-card-hover:var(--e-bg-alt);
+  --bg-glass:     rgba(255,255,255,.85);
+  --border:       var(--e-line);
+  --border-strong:var(--e-line-2);
+  --border-glow:  rgba(29,78,216,.28);
+  --text-primary: var(--e-ink);
+  --text-secondary:var(--e-ink-2);
+
+  /* ---- Re-map legacy tokens (style.css) ---- */
+  --bg-primary:   var(--e-bg);
+  --bg-secondary: var(--e-bg-alt);
+  --bg-tertiary:  var(--e-bg-tint);
+  --bg-hover:     var(--e-bg-alt);
+  --text-muted:   var(--e-ink-3);
+  --border-color: var(--e-line);
+  --border-light: var(--e-bg-tint);
+  --blue:   #1d4ed8;
+  --green:  #15803d;
+  --purple: #7c3aed;
+  --orange: #c2410c;
+  --cyan:   #0e7490;
+  --pink:   #be185d;
+  --yellow: #a16207;
+  --red:    #b91c1c;
+  --blue-dim:   rgba(29,78,216,.10);
+  --green-dim:  rgba(21,128,61,.10);
+  --purple-dim: rgba(124,58,237,.10);
+  --orange-dim: rgba(194,65,12,.10);
+  --cyan-dim:   rgba(14,116,144,.10);
+  --pink-dim:   rgba(190,24,93,.10);
+  --yellow-dim: rgba(161,98,7,.10);
+  --red-dim:    rgba(185,28,28,.10);
+  --gradient-hero: linear-gradient(160deg,#ffffff 0%,#f2f6ff 45%,#eef1f9 100%);
+  --shadow-sm: var(--e-shadow-sm);
+  --shadow-md: var(--e-shadow-md);
+  --shadow-lg: var(--e-shadow-lg);
+}
+
+/* ---- 2. Base -------------------------------------------------------------- */
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--e-bg) !important;
+  color: var(--e-ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: rgba(29,78,216,.16); }
+
+h1, h2, h3, h4, h5, h6 { color: var(--e-ink); letter-spacing: -.018em; }
+h1 { line-height: 1.08; }
+h2 { line-height: 1.15; }
+p, li { color: var(--e-ink-2); }
+
+a { color: var(--e-accent-ink); }
+a:hover { color: var(--e-accent); }
+
+hr { border-color: var(--e-line); }
+img { max-width: 100%; }
+
+/* legacy heading rule used a dark underline — soften it */
+h2[style], .prose h2, main h2 { border-bottom-color: var(--e-line) !important; }
+
+:focus-visible {
+  outline: 3px solid rgba(37,99,235,.45);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- 3. Surfaces & sections ---------------------------------------------- */
+section, .section { background-color: transparent; }
+.section-alt, .bg-surface, .bg-alt { background: var(--e-bg-alt) !important; }
+
+.card, .product-card, .usecase-card, .community-card, .security-card,
+.membership-card, .position-card, .roadmap-item, .mkt-vision-card,
+.mkt-usecase-card, .mkt-program-card, .tier-card, .stat-item-large,
+.feature-card, .project-card, .value-card, .info-card, .doc-card {
+  background: var(--e-surface) !important;
+  border: 1px solid var(--e-line) !important;
+  box-shadow: var(--e-shadow-sm);
+  color: var(--e-ink-2);
+}
+.card:hover, .product-card:hover, .usecase-card:hover, .community-card:hover,
+.feature-card:hover, .project-card:hover, .doc-card:hover {
+  border-color: var(--e-line-2) !important;
+  box-shadow: var(--e-shadow-md);
+  transform: translateY(-2px);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card h1,.card h2,.card h3,.card h4,.product-card h3,.product-card h4 { color: var(--e-ink); }
+
+/* ---- 4. Hero / page headers ---------------------------------------------- */
+.hero, .page-header, .mkt-hero, .hero-section, header.hero {
+  background: linear-gradient(165deg,#ffffff 0%,#f3f6ff 55%,#eaf0fb 100%) !important;
+  color: var(--e-ink) !important;
+  border-bottom: 1px solid var(--e-line);
+}
+.hero h1, .page-header h1, .mkt-hero h1, .hero-section h1 {
+  color: var(--e-ink) !important;
+  font-size: var(--e-fs-hero);
+}
+.hero p, .page-header p, .mkt-hero p, .hero-section p,
+.hero .subtitle, .hero-subtitle { color: var(--e-ink-2) !important; }
+.hero .badge, .page-header .badge { backdrop-filter: none; }
+
+/* ---- 5. Buttons ---------------------------------------------------------- */
+.btn-primary, .btn.btn-primary, a.btn-primary, .nav-cta, .cta-primary {
+  background: var(--e-accent) !important;
+  border: 1px solid var(--e-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 1px 2px rgba(16,24,40,.12);
+}
+.btn-primary:hover, a.btn-primary:hover, .nav-cta:hover, .cta-primary:hover {
+  background: #1743bd !important;
+  border-color: #1743bd !important;
+  color: #fff !important;
+}
+.btn-secondary, .btn.btn-secondary, a.btn-secondary, .cta-secondary {
+  background: #fff !important;
+  border: 1px solid var(--e-line-2) !important;
+  color: var(--e-ink) !important;
+}
+.btn-secondary:hover, a.btn-secondary:hover, .cta-secondary:hover {
+  background: var(--e-bg-alt) !important;
+  border-color: var(--e-accent) !important;
+  color: var(--e-accent) !important;
+}
+
+/* ---- 6. Tables ----------------------------------------------------------- */
+.specs-table, .compare-table, .compat-matrix, .coverage-table, .data-table,
+.ecosystem-table, table {
+  background: var(--e-surface);
+  border-color: var(--e-line);
+  color: var(--e-ink-2);
+}
+.specs-table th, .compare-table th, .compat-matrix th, .coverage-table th,
+.data-table th, .ecosystem-table th, table thead th {
+  background: var(--e-bg-tint) !important;
+  color: var(--e-ink) !important;
+  border-color: var(--e-line) !important;
+}
+.specs-table td, .compare-table td, .compat-matrix td, .coverage-table td,
+.data-table td, .ecosystem-table td, table td {
+  border-color: var(--e-line) !important;
+}
+tbody tr:nth-child(even) td { background: var(--e-bg-alt); }
+
+/* ---- 7. Code — intentionally kept dark for editorial contrast ------------ */
+.code-block, pre, .terminal, .code-window {
+  background: #0e1420 !important;
+  border: 1px solid #1c2740 !important;
+  color: #e6edf6 !important;
+  border-radius: 12px;
+}
+.code-block code, pre code { color: #e6edf6; }
+:not(pre) > code {
+  background: var(--e-bg-tint);
+  color: var(--e-warm);
+  padding: .12em .4em;
+  border-radius: 5px;
+  font-size: .9em;
+}
+
+/* ---- 8. Badges / chips --------------------------------------------------- */
+.badge, .eco-product-chip, .tag, .pill {
+  border: 1px solid var(--e-line-2);
+  background: var(--e-bg-alt);
+  color: var(--e-ink-2);
+}
+.badge-blue   { background: var(--blue-dim);   color: var(--blue);   border-color: rgba(29,78,216,.25); }
+.badge-green  { background: var(--green-dim);  color: var(--green);  border-color: rgba(21,128,61,.25); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); border-color: rgba(124,58,237,.25); }
+.badge-orange { background: var(--orange-dim); color: var(--orange); border-color: rgba(194,65,12,.25); }
+
+/* ---- 9. Forms ------------------------------------------------------------ */
+input, textarea, select {
+  background: #fff !important;
+  border: 1px solid var(--e-line-2) !important;
+  color: var(--e-ink) !important;
+}
+input::placeholder, textarea::placeholder { color: var(--e-ink-3); }
+input:focus, textarea:focus, select:focus { border-color: var(--e-accent) !important; }
+
+/* ==========================================================================
+   10. Shared chrome — NAVBAR (markup injected by js/site-chrome.js)
+   ========================================================================== */
+.site-chrome-pending .navbar { visibility: hidden; }
+
+header.navbar, nav.navbar {
+  position: sticky; top: 0; z-index: 1000;
+  height: auto; min-height: 66px;
+  display: block; padding: 0;
+  background: rgba(255,255,255,.86) !important;
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--e-line) !important;
+}
+.nav-inner {
+  max-width: var(--e-maxw); margin: 0 auto;
+  display: flex; align-items: center; gap: 1.25rem;
+  padding: .7rem 1.5rem; min-height: 66px;
+}
+.navbar .logo {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em;
+  color: var(--e-ink) !important; text-decoration: none !important;
+}
+.navbar .logo:hover { color: var(--e-ink) !important; }
+.navbar .logo-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 9px;
+  font-size: .8rem; font-weight: 900; color: #fff;
+  background: linear-gradient(135deg,#1d4ed8,#0e7490);
+  box-shadow: 0 2px 6px rgba(29,78,216,.35);
+}
+
+.nav-links {
+  display: flex; align-items: center; gap: .15rem;
+  margin-left: auto; list-style: none;
+}
+.nav-links > a, .nav-dropdown > summary {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .5rem .8rem; border-radius: 8px; cursor: pointer;
+  font-size: .93rem; font-weight: 600; color: var(--e-ink-2) !important;
+  text-decoration: none !important; white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.nav-links > a:hover, .nav-dropdown > summary:hover { background: var(--e-bg-alt); color: var(--e-ink) !important; }
+.nav-links > a.active { color: var(--e-accent) !important; background: var(--blue-dim); }
+.nav-dropdown { position: relative; }
+.nav-dropdown > summary { list-style: none; }
+.nav-dropdown > summary::-webkit-details-marker { display: none; }
+.nav-dropdown > summary::after { content: "▾"; font-size: .7em; color: var(--e-ink-3); }
+.nav-dropdown[open] > summary { background: var(--e-bg-alt); color: var(--e-ink) !important; }
+
+.nav-dropdown__menu {
+  position: absolute; top: calc(100% + 8px); left: 0;
+  min-width: 230px; padding: .5rem;
+  background: #fff; border: 1px solid var(--e-line);
+  border-radius: 14px; box-shadow: var(--e-shadow-lg);
+  display: flex; flex-direction: column; gap: 2px; z-index: 60;
+}
+.nav-dropdown__menu a {
+  display: block; padding: .5rem .7rem; border-radius: 8px;
+  font-size: .9rem; font-weight: 500;
+  color: var(--e-ink-2) !important; text-decoration: none !important;
+}
+.nav-dropdown__menu a:hover { background: var(--e-bg-alt); color: var(--e-accent) !important; }
+.nav-dropdown__menu a.active { color: var(--e-accent) !important; }
+
+.nav-cta, a.nav-cta {
+  background: var(--e-accent) !important; color: #fff !important;
+  padding: .5rem 1.05rem !important; border-radius: 9px; font-weight: 700;
+}
+.nav-cta:hover { background: #1743bd !important; }
+.nav-github {
+  padding: .5rem .8rem; border-radius: 8px; font-weight: 600; font-size: .92rem;
+  color: var(--e-ink-2) !important; text-decoration: none !important;
+}
+.nav-github:hover { background: var(--e-bg-alt); color: var(--e-ink) !important; }
+.nav-donate {
+  color: var(--e-warm) !important; font-weight: 700;
+}
+.nav-search-btn, .nav-toggle {
+  background: transparent; border: 1px solid transparent; cursor: pointer;
+  font-size: 1.1rem; line-height: 1; padding: .45rem .55rem; border-radius: 8px;
+  color: var(--e-ink-2);
+}
+.nav-search-btn:hover { background: var(--e-bg-alt); }
+.nav-toggle { display: none; border-color: var(--e-line-2); }
+
+@media (max-width: 960px) {
+  .nav-toggle { display: inline-flex; margin-left: auto; }
+  .nav-links {
+    position: fixed; inset: 66px 0 auto 0; margin: 0;
+    flex-direction: column; align-items: stretch; gap: 2px;
+    padding: 1rem 1.25rem 1.5rem;
+    background: #fff; border-bottom: 1px solid var(--e-line);
+    box-shadow: var(--e-shadow-lg);
+    max-height: calc(100vh - 66px); overflow-y: auto;
+    transform: translateY(-8px); opacity: 0; pointer-events: none;
+    transition: transform .2s, opacity .2s;
+  }
+  .nav-links.open { transform: none; opacity: 1; pointer-events: auto; }
+  .nav-dropdown__menu {
+    position: static; box-shadow: none; border: none;
+    border-left: 2px solid var(--e-line); border-radius: 0;
+    margin: 0 0 .25rem .6rem; padding-left: .6rem;
+  }
+  .nav-links > a, .nav-dropdown > summary { padding: .7rem .6rem; }
+}
+
+/* ==========================================================================
+   11. Shared chrome — FOOTER (markup injected by js/site-chrome.js)
+   ========================================================================== */
+footer.footer {
+  background: #0d1220 !important;   /* deep ink footer anchors the light page */
+  color: #c4cbd6 !important;
+  border-top: none;
+  margin-top: 4rem;
+}
+.footer-inner {
+  max-width: var(--e-maxw); margin: 0 auto;
+  display: grid; grid-template-columns: 1.6fr repeat(5, 1fr);
+  gap: 2rem 1.75rem; padding: 3.5rem 1.5rem 2rem;
+}
+.footer-brand h3 { color: #fff !important; font-size: 1.25rem; }
+.footer-brand p { color: #99a2b2 !important; font-size: .9rem; max-width: 30ch; }
+footer.footer h4 {
+  color: #fff !important; font-size: .82rem; text-transform: uppercase;
+  letter-spacing: .07em; margin: 0 0 .9rem; border: none; padding: 0;
+}
+footer.footer ul { list-style: none; margin: 0; padding: 0; }
+footer.footer li { margin: 0 0 .5rem; }
+footer.footer a { color: #aab2c0 !important; font-size: .88rem; text-decoration: none; }
+footer.footer a:hover { color: #fff !important; }
+.footer-bottom {
+  max-width: var(--e-maxw); margin: 0 auto;
+  border-top: 1px solid rgba(255,255,255,.10);
+  padding: 1.4rem 1.5rem; color: #7c8593 !important; font-size: .85rem;
+}
+.social-list .social-link { display: inline-flex; align-items: center; gap: .5rem; }
+.social-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 6px;
+  background: rgba(255,255,255,.10); font-size: .72rem; color: #fff;
+}
+@media (max-width: 900px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .footer-inner { grid-template-columns: 1fr; } }
+
+/* Skip old v7 mega-footer / utility-bar leftovers if any survive injection */
+.utility-bar { display: none !important; }
+
+/* ---- 12. Scroll-to-top & misc floating chrome --------------------------- */
+.scroll-top {
+  background: var(--e-accent) !important; color: #fff !important;
+  border: none; box-shadow: var(--e-shadow-md);
+}
+
+/* ---- 13. Third token family (--clr-*) used by ai-os / building-os -------- */
+:root {
+  --clr-bg:         var(--e-bg);
+  --clr-deep:       var(--e-bg-tint);
+  --clr-surface:    var(--e-bg-alt);
+  --clr-border:     var(--e-line);
+  --clr-text:       var(--e-ink);
+  --clr-text-muted: var(--e-ink-3);
+  --clr-muted:      var(--e-ink-3);
+  --clr-accent:     var(--e-accent);
+  --clr-gold:       var(--e-warm);
+}
+
+/* Dark feature/hero surfaces that don't use tokens -> light editorial */
+.product-card--featured {
+  background: linear-gradient(135deg,#f2f6ff 0%,#eef2fb 100%) !important;
+  border: 1px solid var(--e-line-2) !important;
+  color: var(--e-ink-2);
+}
+.product-card--featured h3, .product-card--featured h2 { color: var(--e-ink) !important; }
+.ai-hero, .bo-hero, .ai-section--gray, .bo-section--gray {
+  background: linear-gradient(165deg,#ffffff 0%,#f3f6ff 60%,#eaf0fb 100%) !important;
+  color: var(--e-ink) !important;
+}
+.ai-hero *, .bo-hero * { color: inherit; }
+.ai-hero h1, .bo-hero h1 { color: var(--e-ink) !important; }
+
+/* Simulation canvases stay dark on purpose (they render glowing viz) but
+   give them a defined frame so they read as intentional panels. */
+.canvas-wrap, .canvas-sim { background: #0d1220 !important; border-color: var(--e-line-2) !important; }
+
+/* Deep-space page backgrounds that were applied to <body>/wrappers inline */
+.bg-void, .bg-deep, .section--deep { background: var(--e-bg-tint) !important; color: var(--e-ink) !important; }
+
+/* ============================================================================
+   14. Robustness — never hide content behind JS-dependent reveal animations.
+   Many sections start at opacity:0 and rely on an IntersectionObserver adding
+   a reveal class. If that observer doesn't cover an element (or its JS fails),
+   the content vanishes and the page looks empty. Force all reveal targets
+   visible; motion is pure progressive enhancement, not a gate on content.
+   ========================================================================== */
+.animate-on-scroll,
+.eos-reveal,
+[data-animate],
+.reveal,
+.reveal-on-scroll,
+.fade-in,
+.fade-up,
+.scroll-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+#main-content:focus { outline: none; }
+
+/* Accessible skip-to-content link (visible only on keyboard focus) */
+.skip-link {
+  position: absolute; left: 0; top: 0; z-index: 2000;
+  transform: translateY(-120%);
+  background: var(--e-accent); color: #fff !important;
+  padding: .6rem 1rem; border-radius: 0 0 8px 0; font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus { transform: none; }
+

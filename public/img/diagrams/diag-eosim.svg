@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 500" width="860" height="500" role="img" aria-label="EoSim Simulator Architecture">
+  <defs>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="gc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="ge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="860" height="500" fill="#060912" rx="16"/>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#8b5cf6"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981"/>
+    </marker>
+  </defs>
+  <circle cx="430" cy="250" r="280" fill="#8b5cf6" opacity="0.04"/>
+  <text x="430" y="28" fill="#f1f5f9" font-size="18" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="800">EoSim — Embedded Systems Simulator</text>
+  <text x="430" y="48" fill="#94a3b8" font-size="11" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="normal">HIL Bridge  ·  Virtual Peripherals  ·  Cycle-Accurate  ·  GDB Remote  ·  QEMU Backend</text>
+  <rect x="40" y="70" width="370" height="280" fill="#8b5cf6" opacity="0.06" rx="12"/>
+  <rect x="40" y="70" width="370" height="280" fill="none" stroke="#8b5cf6" stroke-width="1.5" rx="12" opacity="0.3"/>
+  <text x="225" y="92" fill="#8b5cf6" font-size="13" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Virtual World (EoSim)</text>
+  <rect x="450" y="70" width="370" height="280" fill="#10b981" opacity="0.06" rx="12"/>
+  <rect x="450" y="70" width="370" height="280" fill="none" stroke="#10b981" stroke-width="1.5" rx="12" opacity="0.3"/>
+  <text x="635" y="92" fill="#10b981" font-size="13" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Real World (Hardware)</text>
+  <rect x="380" y="160" width="100" height="100" fill="#f59e0b" opacity="0.15" rx="10"/>
+  <rect x="380" y="160" width="100" height="100" fill="none" stroke="#f59e0b" stroke-width="2" rx="10" opacity="0.6"/>
+  <text x="430" y="200" fill="#f59e0b" font-size="14" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">HIL</text>
+  <text x="430" y="218" fill="#f59e0b" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Bridge</text>
+  <text x="430" y="248" fill="#94a3b8" font-size="9" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">< 1 µs</text>
+  <rect x="60" y="110" width="130" height="55" fill="#8b5cf6" opacity="0.1" rx="8"/>
+  <rect x="60" y="110" width="130" height="55" fill="none" stroke="#8b5cf6" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="125" y="132" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Virtual CPU</text>
+  <text x="125" y="148" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">(QEMU)</text>
+  <rect x="60" y="200" width="130" height="55" fill="#3b82f6" opacity="0.1" rx="8"/>
+  <rect x="60" y="200" width="130" height="55" fill="none" stroke="#3b82f6" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="125" y="222" fill="#3b82f6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Virtual UART</text>
+  <text x="125" y="238" fill="#3b82f6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Virtual SPI</text>
+  <rect x="60" y="280" width="130" height="55" fill="#22d3ee" opacity="0.1" rx="8"/>
+  <rect x="60" y="280" width="130" height="55" fill="none" stroke="#22d3ee" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="125" y="302" fill="#22d3ee" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Virtual ETH</text>
+  <text x="125" y="318" fill="#22d3ee" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Virtual CAN</text>
+  <rect x="220" y="110" width="130" height="55" fill="#10b981" opacity="0.1" rx="8"/>
+  <rect x="220" y="110" width="130" height="55" fill="none" stroke="#10b981" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="285" y="132" fill="#10b981" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">GDB Remote</text>
+  <text x="285" y="148" fill="#10b981" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Debugger</text>
+  <rect x="220" y="200" width="130" height="55" fill="#f59e0b" opacity="0.1" rx="8"/>
+  <rect x="220" y="200" width="130" height="55" fill="none" stroke="#f59e0b" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="285" y="222" fill="#f59e0b" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Coverage</text>
+  <text x="285" y="238" fill="#f59e0b" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Tracing</text>
+  <rect x="220" y="280" width="130" height="55" fill="#f43f5e" opacity="0.1" rx="8"/>
+  <rect x="220" y="280" width="130" height="55" fill="none" stroke="#f43f5e" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="285" y="302" fill="#f43f5e" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Fault</text>
+  <text x="285" y="318" fill="#f43f5e" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Injection</text>
+  <rect x="470" y="110" width="130" height="55" fill="#10b981" opacity="0.1" rx="8"/>
+  <rect x="470" y="110" width="130" height="55" fill="none" stroke="#10b981" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="535" y="132" fill="#10b981" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Target MCU</text>
+  <text x="535" y="148" fill="#10b981" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">(Real HW)</text>
+  <rect x="470" y="200" width="130" height="55" fill="#3b82f6" opacity="0.1" rx="8"/>
+  <rect x="470" y="200" width="130" height="55" fill="none" stroke="#3b82f6" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="535" y="222" fill="#3b82f6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">JTAG/SWD</text>
+  <text x="535" y="238" fill="#3b82f6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Probe</text>
+  <rect x="470" y="280" width="130" height="55" fill="#22d3ee" opacity="0.1" rx="8"/>
+  <rect x="470" y="280" width="130" height="55" fill="none" stroke="#22d3ee" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="535" y="302" fill="#22d3ee" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Real UART</text>
+  <text x="535" y="318" fill="#22d3ee" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Real SPI</text>
+  <rect x="630" y="110" width="130" height="55" fill="#f59e0b" opacity="0.1" rx="8"/>
+  <rect x="630" y="110" width="130" height="55" fill="none" stroke="#f59e0b" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="695" y="132" fill="#f59e0b" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Logic</text>
+  <text x="695" y="148" fill="#f59e0b" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Analyzer</text>
+  <rect x="630" y="200" width="130" height="55" fill="#8b5cf6" opacity="0.1" rx="8"/>
+  <rect x="630" y="200" width="130" height="55" fill="none" stroke="#8b5cf6" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="695" y="222" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Power</text>
+  <text x="695" y="238" fill="#8b5cf6" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Monitor</text>
+  <rect x="630" y="280" width="130" height="55" fill="#f43f5e" opacity="0.1" rx="8"/>
+  <rect x="630" y="280" width="130" height="55" fill="none" stroke="#f43f5e" stroke-width="1" rx="8" opacity="0.3"/>
+  <text x="695" y="302" fill="#f43f5e" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="700">Scope</text>
+  <text x="695" y="318" fill="#f43f5e" font-size="10" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="400">Trigger</text>
+  <line x1="378" y1="137" x2="342" y2="137" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="482" y1="137" x2="452" y2="137" stroke="#10b981" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="378" y1="227" x2="342" y2="227" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="482" y1="227" x2="452" y2="227" stroke="#10b981" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="378" y1="307" x2="342" y2="307" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="482" y1="307" x2="452" y2="307" stroke="#10b981" stroke-width="1" stroke-dasharray="4 3"/>
+  <rect x="60" y="368" width="115" height="40" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="6"/>
+  <text x="117" y="385" fill="#8b5cf6" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">QEMU</text>
+  <text x="117" y="400" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="500">Backend</text>
+  <rect x="185" y="368" width="115" height="40" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="6"/>
+  <text x="242" y="385" fill="#8b5cf6" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">HIL Bridge</text>
+  <text x="242" y="400" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="500">Real HW</text>
+  <rect x="310" y="368" width="115" height="40" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="6"/>
+  <text x="367" y="385" fill="#8b5cf6" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">GDB Remote</text>
+  <text x="367" y="400" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="500">Debug</text>
+  <rect x="435" y="368" width="115" height="40" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="6"/>
+  <text x="492" y="385" fill="#8b5cf6" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">Cycle-Acc</text>
+  <text x="492" y="400" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="500">Timing</text>
+  <rect x="560" y="368" width="115" height="40" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="6"/>
+  <text x="617" y="385" fill="#8b5cf6" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">Fault Inj</text>
+  <text x="617" y="400" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="500">Testing</text>
+  <rect x="685" y="368" width="115" height="40" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="6"/>
+  <text x="742" y="385" fill="#8b5cf6" font-size="12" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="800">MIT</text>
+  <text x="742" y="400" fill="#94a3b8" font-size="9" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="500">License</text>
+  <rect x="60" y="420" width="740" height="60" fill="#111827" stroke="#1e2a3a" stroke-width="1" rx="10"/>
+  <text x="430" y="440" fill="#f1f5f9" font-size="11" font-family="Inter, system-ui, sans-serif" text-anchor="middle" font-weight="700">Simulated Peripherals</text>
+  <rect x="75" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="94" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">UART</text>
+  <rect x="119" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="138" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">SPI</text>
+  <rect x="163" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="182" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">I²C</text>
+  <rect x="207" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="226" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">GPIO</text>
+  <rect x="251" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="270" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">CAN</text>
+  <rect x="295" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="314" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">USB</text>
+  <rect x="339" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="358" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">ETH</text>
+  <rect x="383" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="402" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">ADC</text>
+  <rect x="427" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="446" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">PWM</text>
+  <rect x="471" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="490" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">Timer</text>
+  <rect x="515" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="534" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">DMA</text>
+  <rect x="559" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="578" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">RTC</text>
+  <rect x="603" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="622" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">Flash</text>
+  <rect x="647" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="666" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">SDIO</text>
+  <rect x="691" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="710" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">QSPI</text>
+  <rect x="735" y="448" width="38" height="18" fill="#8b5cf6" opacity="0.15" rx="3"/>
+  <text x="754" y="461" fill="#8b5cf6" font-size="8" font-family="JetBrains Mono, Consolas, monospace" text-anchor="middle" font-weight="600">LCD</text>
+
+</svg>

@@ -1,4 +1,4 @@
 import unittest
-class TestWwwEmbeddedOsOrgSimulation(unittest.TestCase):
+class TestEmbeddedOsGitHubIoSimulation(unittest.TestCase):
     def test_simulation_flow(self):
         self.assertTrue(True)
