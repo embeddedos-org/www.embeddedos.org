@@ -71,9 +71,21 @@ export function normalizePath(pathname) {
   return (pathname === '/' || pathname === '') ? '/index.html' : pathname;
 }
 
+/** Collapse the equivalent spellings of a page to one key so active-state
+ *  matching works regardless of how the path is expressed. In particular a
+ *  subdir index is emitted by the build as "/docs.html" but referenced in the
+ *  menu as "/docs/index.html" (and could be served as "/docs/"); all three map
+ *  to the same key. The site root ("/index.html") is left untouched. */
+export function canonicalPath(pathname) {
+  let p = normalizePath(pathname);
+  if (p.endsWith('/')) p += 'index.html';
+  const m = p.match(/^\/(.+)\/index\.html$/);
+  return m ? `/${m[1]}.html` : p;
+}
+
 /** Is this link the current page? (ignores #fragments) */
 export function isActive(href, cur) {
-  return href.split('#')[0] === cur;
+  return canonicalPath(href.split('#')[0]) === canonicalPath(cur);
 }
 
 /** Does any child of a group match the current page? */

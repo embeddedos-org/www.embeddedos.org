@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { MENU, normalizePath, isActive, groupActive, menuTargets } from '../../src/lib/menu.mjs';
+import { MENU, normalizePath, isActive, groupActive, menuTargets, canonicalPath } from '../../src/lib/menu.mjs';
 
 test('normalizePath maps root to /index.html', () => {
   assert.equal(normalizePath('/'), '/index.html');
@@ -12,6 +12,22 @@ test('isActive matches exact page and ignores #fragments', () => {
   assert.equal(isActive('/about.html', '/about.html'), true);
   assert.equal(isActive('/index.html#health-devices', '/index.html'), true);
   assert.equal(isActive('/about.html', '/careers.html'), false);
+});
+
+test('isActive treats subdir index spellings as the same page', () => {
+  // build emits "/docs.html"; menu references "/docs/index.html"; server may
+  // serve "/docs/" — all three are the same page.
+  assert.equal(isActive('/docs/index.html', '/docs.html'), true);
+  assert.equal(isActive('/docs/index.html', '/docs/'), true);
+  assert.equal(isActive('/docs/index.html', '/docs/index.html'), true);
+  // must not collapse the site root or unrelated pages
+  assert.equal(canonicalPath('/index.html'), '/index.html');
+  assert.equal(isActive('/docs/index.html', '/downloads.html'), false);
+});
+
+test('groupActive matches subdir index pages (Learn open on /docs.html)', () => {
+  const learn = MENU.find((m) => m.label === 'Learn').items;
+  assert.equal(groupActive(learn, '/docs.html'), true);
 });
 
 test('groupActive is true when a child matches', () => {
