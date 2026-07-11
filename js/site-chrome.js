@@ -6,6 +6,9 @@
    fallback. Class names match theme-light.css. */
 (function () {
   'use strict';
+  // Disabled: this legacy runtime replaced nav/footer after page load and
+  // caused menu instability and cross-page mismatches.
+  return;
 
   document.documentElement.classList.add('site-chrome-pending');
 

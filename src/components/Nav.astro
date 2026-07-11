@@ -17,7 +17,7 @@ const groupActive = (items) => groupActiveFn(items, cur);
       {MENU.map((m) => m.type === 'link' ? (
         <a href={m.href} class={isActive(m.href) ? 'active' : undefined}>{m.label}</a>
       ) : (
-        <details class="nav-dropdown" open={groupActive(m.items) || undefined}>
+        <details class="nav-dropdown">
           <summary>{m.label}</summary>
           <div class="nav-dropdown__menu">
             {m.items.map((it) => (

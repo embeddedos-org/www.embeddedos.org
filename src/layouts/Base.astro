@@ -37,6 +37,13 @@ const baseCss = cssHref || (legacy ? '/style.css' : '/css/style.v7.css');
   <body class={bodyClass}>
     <a href="#main-content" class="skip-link">Skip to content</a>
     <Nav />
+    <script is:inline>
+      if (window.matchMedia('(min-width: 921px)').matches) {
+        document.querySelectorAll('header.navbar details.nav-dropdown[open]').forEach((d) => {
+          d.open = false;
+        });
+      }
+    </script>
     <div id="main-content" tabindex="-1">
       <slot />
     </div>

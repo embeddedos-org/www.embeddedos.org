@@ -6,6 +6,8 @@
 
 'use strict';
 
+// Legacy chrome injection is intentionally disabled because Astro already
+// renders a shared nav/footer across all pages.
 ensureSharedSiteChrome();
 
 /* ── Utilities ── */
@@ -33,14 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function ensureSharedSiteChrome() {
-  const hasNavbar = !!(document.querySelector('nav.navbar') || document.querySelector('header.navbar'));
-  const hasSharedChrome = !!document.querySelector('script[src*="site-chrome.js"]');
-  if (!hasNavbar || hasSharedChrome) return;
-
-  const script = document.createElement('script');
-  script.src = '/js/site-chrome.js';
-  script.async = false;
-  document.head.appendChild(script);
+  return;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -49,6 +44,11 @@ function ensureSharedSiteChrome() {
 function initNavbar() {
   const nav = $('nav.navbar') || $('nav') || $('.brand-bar')?.closest('nav');
   if (!nav) return;
+  const desktop = window.matchMedia('(min-width: 921px)').matches;
+  if (desktop) {
+    // Prevent an auto-open dropdown from covering top-of-page content.
+    $$('details.nav-dropdown[open]', nav).forEach((d) => { d.open = false; });
+  }
 
   // Mark active nav link
   const currentPath = location.pathname.split('/').pop() || 'index.html';
@@ -81,10 +81,11 @@ function initMobileMenu() {
   if (!toggle || !menu) return;
 
   toggle.setAttribute('aria-expanded', 'false');
-  toggle.setAttribute('aria-controls', 'nav-menu');
-  menu.id = 'nav-menu';
+  if (!menu.id) menu.id = 'nav-menu';
+  toggle.setAttribute('aria-controls', menu.id);
 
   const open = () => {
+    menu.classList.add('open');
     menu.classList.add('is-open');
     toggle.classList.add('is-active');
     toggle.setAttribute('aria-expanded', 'true');
@@ -99,6 +100,7 @@ function initMobileMenu() {
   };
 
   const close = () => {
+    menu.classList.remove('open');
     menu.classList.remove('is-open');
     toggle.classList.remove('is-active');
     toggle.setAttribute('aria-expanded', 'false');
@@ -112,7 +114,7 @@ function initMobileMenu() {
   };
 
   on(toggle, 'click', () => {
-    const isOpen = menu.classList.contains('is-open');
+    const isOpen = menu.classList.contains('is-open') || menu.classList.contains('open');
     isOpen ? close() : open();
   });
 
@@ -123,6 +125,11 @@ function initMobileMenu() {
 
   // Close on Escape
   on(document, 'keydown', e => { if (e.key === 'Escape') close(); });
+
+  // Close after selecting a menu link on mobile.
+  $$('a', menu).forEach((a) => {
+    on(a, 'click', close);
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

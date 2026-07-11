@@ -462,3 +462,67 @@ footer.footer a:hover { color: var(--e-accent-ink) !important; }
   text-decoration: none;
 }
 .skip-link:focus { transform: none; }
+
+/* ---- 15. UX polish layer (global consistency) ---------------------------- */
+main, .content-wrapper, .section, .section-full {
+  width: 100%;
+}
+
+.section, .content-wrapper {
+  max-width: var(--e-maxw);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.section + .section,
+.section-full + .section,
+.section + .section-full {
+  margin-top: 2.25rem;
+}
+
+.hero-buttons .btn,
+.card-buttons .btn,
+.quick-links .quick-link {
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background-color .16s ease;
+}
+
+.hero-buttons .btn:hover,
+.card-buttons .btn:hover,
+.quick-links .quick-link:hover {
+  transform: translateY(-1px);
+}
+
+/* Keep dropdown menus usable even with many items */
+.nav-dropdown__menu {
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+}
+
+/* Ensure nav never blocks content hit targets */
+header.navbar details.nav-dropdown[open] .nav-dropdown__menu {
+  pointer-events: auto;
+}
+
+/* Consistent quick-link card look across pages */
+.quick-link {
+  background: var(--e-surface) !important;
+  border: 1px solid var(--e-line) !important;
+  border-radius: 12px;
+  box-shadow: var(--e-shadow-sm);
+}
+
+.quick-link:hover {
+  border-color: var(--e-line-2) !important;
+  box-shadow: var(--e-shadow-md), var(--e-glow);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
