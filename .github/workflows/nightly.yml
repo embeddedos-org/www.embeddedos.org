@@ -140,7 +140,7 @@ jobs:
               body: `## Test Failures Detected\n\nThe nightly CI/CD audit found test failures.\n\n**Workflow Run:** [View on GitHub](${runUrl})\n**Date:** ${today}\n\n### Failed Tests\n\n\`\`\`\n${failedLines || 'See workflow run for details'}\n\`\`\`\n\n### Categories Tested\n\n- **Links** — internal link validation, placeholder detection, button functionality\n- **SEO** — title tags, meta descriptions, canonical links, OG tags, structured data\n- **Performance** — page load time, resource size, FCP, JS errors\n- **Accessibility** — ARIA landmarks, alt text, keyboard navigation, color contrast`
             });
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: nightly-reports-${{ github.run_number }}
