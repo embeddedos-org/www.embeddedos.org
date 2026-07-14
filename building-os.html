@@ -1,89 +1,179 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="EmbeddedOS Foundation — Building OS with Linux/RTOS — EmbeddedOS Research. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8"/><meta content="#0066cc" name="theme-color"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="googlebot"/><meta content="index,follow" name="bingbot"><meta content="general" name="rating"><meta content="telephone=no" name="format-detection"/><meta content="en_US" property="og:locale"/><meta content="summary_large_image" name="twitter:card"/><meta content="@embeddedos" name="twitter:site"/><meta content="Building OS with Linux/RTOS — EmbeddedOS Research" name="twitter:title"/><meta content="Practical guide to assembling a production embedded operating system using Linux, RTOS, and the EoS component stack: from bootloader to drivers, IPC, and apps." name="twitter:description"/><meta content="https://www.embeddedos.org/og-image.png" name="twitter:image"/><meta content="EmbeddedOS Research Foundation — open-source embedded AI systems stack" property="og:image:alt"/><meta content="@EmbeddedOS_ORG" name="twitter:site"/><meta content="@EmbeddedOS_ORG" name="twitter:creator"/><link href="rss.xml" rel="alternate" title="EmbeddedOS Newsroom" type="application/rss+xml"/><link href="manifest.json" rel="manifest"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><meta content="Practical guide to assembling a production embedded operating system using Linux, RTOS, and the EoS component stack: from bootloader to drivers, IPC, and apps." name="description"/><title>Building OS with Linux/RTOS — EmbeddedOS Research</title>
-<link href="favicon.svg" rel="icon" type="image/svg+xml"><link href="css/style.v7.css" rel="stylesheet"/><meta content="Building an OS with Linux &amp; RTOS — EmbeddedOS" property="og:title"/><meta content="Practical guide to assembling a production embedded operating system using Linux, RTOS, and the EoS component stack: from bootloader to drivers, IPC, and apps." property="og:description"/><meta content="website" property="og:type"/><link href="https://www.embeddedos.org/building-os" rel="canonical"/><link href="img/logo.svg" rel="apple-touch-icon"/> <link href="https://www.embeddedos.org/building-os.html" rel="canonical"/>
-</link></meta></meta>  <link rel="stylesheet" href="/css/theme-light.css"/>
-  <script defer src="/js/site-chrome.js"></script>
-<style>
-/* ── Upgraded nav: mega-menu, donate button, logo-sub ── */
-.logo-sub { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); margin-left: 4px; display: block; line-height: 1; }
-.nav-donate-btn { background: #3fb950 !important; color: #fff !important; border: none !important; font-weight: 700; margin-left: 0.5rem; }
-.nav-donate-btn:hover { background: #56d364 !important; box-shadow: 0 0 16px rgba(63,185,80,0.4); }
-.nav-mega { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 0; min-width: 600px; padding: 1rem !important; }
-.mega-col { padding: 0 1rem; }
-.mega-col + .mega-col { border-left: 1px solid var(--border-color); }
-.mega-col-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
-.mega-col a { display: block; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
-/* ── Social GitHub icon ── */
-.social-github { color: var(--text-secondary) !important; }
-.social-github:hover { color: var(--text-primary) !important; }
-/* ── Footer Apache badge ── */
-.badge-blue { background: var(--blue-dim); color: var(--blue); }
-</style>
-</head><body class="page-building-os"><a class="skip-link" href="#main-content">Skip to main content</a><header class="navbar">
-<div class="brand-bar">
-<div class="nav-container">
-<a aria-label="EmbeddedOS Home" class="logo" href="/">
-<div class="logo-icon">EoS</div>
-<span class="logo-text">Embedded<span>OS</span></span>
-</a>
-<nav aria-label="Main navigation">
-<ul class="nav-links" id="nav-links" role="menubar">
-<li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
-<li role="none"><a href="roadmap.html" role="menuitem">Roadmap</a></li>
-<li role="none"><a href="changelog.html" role="menuitem">Changelog</a></li>
-<li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
-<li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
-<li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
-<li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
-<li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
-<li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
-<li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
-<li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
-<li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
-<li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
-<li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
-<li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
-<li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
-<li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
-<li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
-<li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
-<li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
-<li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li>
-<li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
-<li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
-</ul>
-</li>
-<li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-<li role="none"><a href="about.html" role="menuitem">About</a></li>
-<li role="none"><a href="security.html" role="menuitem">Security</a></li>
-<li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-<li role="none"><a class="nav-cta nav-cta--donate" href="donate.html#donate-now" role="menuitem" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 16px rgba(16,185,129,.35);margin-right:.4rem;">&#9829; Donate</a></li><li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
-</ul>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building an OS from Scratch — EmbeddedOS</title>
+<meta name="description" content="How EmbeddedOS was designed and built.">
+<meta property="og:url" content="https://www.embeddedos.org/building-os.html">
+<meta name="twitter:domain" content="www.embeddedos.org">
+<link rel="canonical" href="https://www.embeddedos.org/building-os.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+<div class="nav-inner">
+  <a href="/index.html" class="logo">
+    <span class="logo-icon">EoS</span>
+    <span>EmbeddedOS</span>
+    <span class="logo-sub">OPEN SOURCE · NONPROFIT</span>
+  </a>
+  <button class="nav-toggle" id="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links-panel">
+    <!-- Projects mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Projects</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Core OS</div>
+          <a href="/docs/eos.html">EoS Kernel</a>
+          <a href="/docs/eboot.html">eBoot Bootloader</a>
+          <a href="/docs/eipc.html">eIPC</a>
+          <a href="/docs/ebuild.html">ebuild</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">AI &amp; Neural</div>
+          <a href="/docs/eai.html">eAI</a>
+          <a href="/docs/eni.html">eNI Neural Interface</a>
+          <a href="/ai-os.html">AI-OS</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Dev Tools</div>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim Simulator</a>
+          <a href="/stacks/index.html">Stacks</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Aerospace</div>
+          <a href="/aerospace.html">AeroSwift Personal</a>
+          <a href="/aerospace.html">AeroSwift Transit</a>
+          <a href="https://github.com/embeddedos-org/eos-aero" target="_blank" rel="noopener">eos-aero ↗</a>
+        </div>
+      </div>
+    </details>
+    <!-- Products mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Products</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Applications</div>
+          <a href="/eApps/index.html">eApps Store</a>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim</a>
+          <a href="/docs/eoffice.html">eOffice Suite</a>
+          <a href="/docs/ebrowser.html">eBrowser</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Health Devices</div>
+          <a href="/health.html">HEALTH-KEY ULTRA</a>
+          <a href="/health.html">HEALTH-BAND Neuro</a>
+          <a href="/health.html">HEALTH-RING</a>
+          <a href="/health.html">HEALTH-LAB</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Hardware</div>
+          <a href="/hardware-lab.html">Hardware Lab</a>
+          <a href="/stacks/index.html">Technology Stacks</a>
+          <a href="/ecosystem.html">Ecosystem Map</a>
+        </div>
+      </div>
+    </details>
+    <!-- Foundation -->
+    <details class="nav-dropdown">
+      <summary>Foundation</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/donate.html">Donate</a>
+        <a href="/membership.html">Membership</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/research.html">Research</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/news.html">News</a>
+      </div>
+    </details>
+    <!-- Docs -->
+    <details class="nav-dropdown">
+      <summary>Docs</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/getting-started.html">Getting Started</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/books.html">Books (14)</a>
+        <a href="/flow.html">eFlow</a>
+        <a href="/hardware-lab.html">Hardware Lab</a>
+        <a href="/kids.html">Kids Edition</a>
+      </div>
+    </details>
+    <!-- Community -->
+    <details class="nav-dropdown">
+      <summary>Community</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/get-involved.html">Get Involved</a>
+        <a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions ↗</a>
+        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener">X / Twitter ↗</a>
+      </div>
+    </details>
+    <a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">GitHub</a>
+    <button class="nav-search-btn" onclick="EosSearch && EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+    <a href="/donate.html" class="btn btn-green btn-sm nav-donate-btn">&#9829; Donate</a>
+  </div>
+</div>
 </nav>
-<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+
+<main id="main-content" class="page-content">
+<div class="container" style="max-width:960px;padding:4rem 1.5rem">
+  <h1 class="page-title" style="font-size:2.5rem;margin-bottom:0.5rem">Building an OS from Scratch</h1>
+  <p class="page-subtitle" style="color:var(--text-secondary);margin-bottom:3rem">A deep dive into how EmbeddedOS was designed and built — the architecture decisions, tradeoffs, and lessons learned.</p>
+
+  <div style="display:flex;flex-direction:column;gap:1.5rem;margin-bottom:3rem">
+    <div class="card" style="padding:2rem">
+      <h2 style="margin-bottom:1rem">1. Why Build a New OS?</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1rem">Existing RTOS options (FreeRTOS, Zephyr, RIOT) are excellent but fragmented. EmbeddedOS was designed to be a coherent, vertically integrated stack: one kernel, one IPC layer, one AI runtime, one build system — all designed to work together from day one.</p>
+      <p style="color:var(--text-secondary)">The goal: a developer should be able to go from a bare STM32 board to a running AI inference application in under 10 minutes, with no dependency hell.</p>
+    </div>
+
+    <div class="card" style="padding:2rem">
+      <h2 style="margin-bottom:1rem">2. Kernel Architecture</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1rem">EoS uses a microkernel-inspired design: the kernel handles scheduling, memory protection, and IPC. Everything else (drivers, filesystems, network stacks) runs in user-space processes communicating via eIPC.</p>
+      <p style="color:var(--text-secondary)">The scheduler is a tickless, priority-based preemptive scheduler with sub-microsecond context-switch latency. The context-switch path is the target for formal verification in 2026.</p>
+      <a href="/docs/eos.html" style="color:var(--blue);font-weight:600">EoS Kernel Documentation →</a>
+    </div>
+
+    <div class="card" style="padding:2rem">
+      <h2 style="margin-bottom:1rem">3. Secure Boot Chain</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1rem">eBoot implements a 3-stage boot chain: immutable ROM stage-0 → signed stage-1 → verified application. Ed25519 (RFC 8032) signatures protect every stage. A/B partitions enable atomic over-the-air updates with automatic rollback on failure.</p>
+      <a href="/docs/eboot.html" style="color:var(--blue);font-weight:600">eBoot Documentation →</a>
+    </div>
+
+    <div class="card" style="padding:2rem">
+      <h2 style="margin-bottom:1rem">4. Inter-Process Communication</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1rem">eIPC provides zero-copy message passing between processes using shared memory regions with hardware MPU protection. The API is inspired by POSIX message queues but designed for deterministic real-time behavior with bounded latency.</p>
+      <a href="/docs/eipc.html" style="color:var(--blue);font-weight:600">eIPC Documentation →</a>
+    </div>
+
+    <div class="card" style="padding:2rem">
+      <h2 style="margin-bottom:1rem">5. The Build System</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1rem">ebuild is a CMake-based build system with a declarative board description format. Adding support for a new board requires only a YAML file describing the chip family, flash/RAM layout, and peripheral map. ebuild generates the linker script, startup code, and BSP automatically.</p>
+      <a href="/docs/ebuild.html" style="color:var(--blue);font-weight:600">ebuild Documentation →</a>
+    </div>
+  </div>
+
+  <div class="card" style="padding:2rem;background:var(--blue-dim);border-color:var(--blue)">
+    <h2 style="margin-bottom:0.5rem">Read the Books</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem">14 free technical books cover every component of EmbeddedOS in depth — from the kernel scheduler to the AI inference engine.</p>
+    <a href="/books.html" class="btn btn-primary">Browse Books →</a>
+  </div>
 </div>
-</div>
-</header><main id="main-content"><section class="bo-hero"><div class="bo-hero__media"><img alt="Schematic and PCB — building an embedded operating system substrate" decoding="async" height="900" loading="lazy" src="img/photos/res-build-1.svg" width="2400"/></div><div class="bo-hero__overlay"><div class="bo-hero__inner"><nav aria-label="Breadcrumb" class="bo-hero__crumbs"><a href="index.html">Home</a><span aria-hidden="true">›</span><a href="research.html">Research</a><span aria-hidden="true">›</span><span aria-current="page">Building OS with Linux/RTOS</span></nav><span class="tech-eyebrow">Research · Substrate Engineering</span><h1>Building operating systems for the embedded world.</h1><p>Hardware choices, schematic design, OS substrate selection — the foundation guides on what you should know before writing a single line of EoS code. Open hardware reference designs, Yocto/buildroot meta-layers, and the EoS RTOS substrate, all under permissive licenses.</p></div></div></section><section class="bo-overview"><div class="bo-overview__inner"><div class="bo-overview__text"><span class="overline">Overview</span><h2>Hardware-software co-design from day one</h2><p>The biggest mistake in embedded development is treating the OS as something you bolt on after silicon arrives. The right approach is co-design: silicon constrains the OS, and the OS shapes silicon choices.</p><p>This page captures what the foundation has learned across hundreds of hardware reviews, schematic critiques, and OS-bring-up exercises with member organisations.</p></div><div class="bo-overview__media"><img alt="Bare-metal embedded development bench" height="400" loading="lazy" src="img/photos/res-build-2.svg" width="600"/></div></div></section><section class="bo-section bo-section--white"><div class="bo-section__inner"><header class="bo-section__head"><span class="overline">The Four Layers</span><h2>From silicon to substrate</h2><p>Hardware interfaces, schematic design, and the two OS-substrate choices the foundation supports.</p></header><div class="bo-layers"><article class="bo-layer"><div class="bo-layer__media"><img alt="Electrical Engineering Interfaces" height="340" loading="lazy" src="img/photos/res-build-1.svg" width="600"/></div><div class="bo-layer__body"><span class="bo-layer__tag">Hardware</span><h3 class="bo-layer__title">Electrical Engineering Interfaces</h3><p class="bo-layer__blurb">Choosing the right MCU/SoC, peripherals, and power tree before any line of OS code is written. The EoS HAL targets 33 peripheral classes — UART, SPI, I²C, CAN, USB, Ethernet, QSPI, MMC, ADC, DAC, PWM, RTC, and more — across Cortex-M0/M4/M7/M85, RV32IMAC, and select RV64.</p><ul class="bo-layer__bullets"><li>33 peripheral classes in HAL</li><li>Cortex-M0/M4/M7/M85 + RV32/RV64</li><li>Power-tree analysis tooling</li><li>DMA + interrupt arbitration patterns</li></ul></div></article><article class="bo-layer"><div class="bo-layer__media"><img alt="Schematic &amp; PCB layout" height="340" loading="lazy" src="img/photos/res-build-2.svg" width="600"/></div><div class="bo-layer__body"><span class="bo-layer__tag">CAD</span><h3 class="bo-layer__title">Schematic &amp; PCB layout</h3><p class="bo-layer__blurb">Open hardware reference designs maintained by the Hardware Reference Designs working group. KiCad sources, full BOMs, gerber output, and JLCPCB-ready production files. Reference designs for 7 popular MCU families published; 12 more in active review.</p><ul class="bo-layer__bullets"><li>KiCad source for all reference boards</li><li>Full BOM + JLCPCB production files</li><li>12 more boards in working-group review</li><li>CC-BY-SA 4.0 hardware license</li></ul></div></article><article class="bo-layer"><div class="bo-layer__media"><img alt="Open-source Linux substrate" height="340" loading="lazy" src="img/photos/p-eos.svg" width="600"/></div><div class="bo-layer__body"><span class="bo-layer__tag">OS Choice</span><h3 class="bo-layer__title">Open-source Linux substrate</h3><p class="bo-layer__blurb">For Cortex-A class targets and Linux-capable RISC-V cores. Yocto + buildroot meta-layers maintained by the foundation; mainline kernel patches contributed back. Use when you need POSIX, full networking stack, and a rich userland.</p><ul class="bo-layer__bullets"><li>Yocto meta-eos layer</li><li>Buildroot defconfig presets</li><li>Mainline kernel patches upstreamed</li><li>systemd-free init option</li></ul></div></article><article class="bo-layer"><div class="bo-layer__media"><img alt="EoS RTOS substrate" height="340" loading="lazy" src="img/photos/p-platform.svg" width="600"/></div><div class="bo-layer__body"><span class="bo-layer__tag">OS Choice</span><h3 class="bo-layer__title">EoS RTOS substrate</h3><p class="bo-layer__blurb">For deterministic real-time on Cortex-M and microcontroller-class RISC-V. Sub-microsecond context switch, deterministic priority ceiling, optional EoS-S Safety-Certified subset for SIL-3. Use when timing matters more than richness.</p><ul class="bo-layer__bullets"><li>Sub-µs context switch</li><li>Priority ceiling protocol</li><li>EoS-S SIL-3 subset (in review)</li><li>Footprint as low as 6 KB code</li></ul></div></article></div></div></section><section class="bo-section bo-section--gray" id="comparison"><div class="bo-section__inner" style="max-width:880px"><header class="bo-section__head"><span class="overline">Decision Matrix</span><h2>Linux or RTOS — which substrate?</h2><p>Side-by-side on the eight axes that usually decide the choice. Both substrates ship in the EoS ecosystem; choose per profile.</p></header><div class="bo-table-wrap"><table class="bo-table"><thead><tr><th scope="col">Aspect</th><th scope="col">Linux substrate</th><th scope="col">EoS RTOS substrate</th></tr></thead><tbody><tr><th scope="row">Determinism</th><td>Soft real-time (PREEMPT_RT helps)</td><td>Hard real-time, sub-µs guarantees</td></tr><tr><th scope="row">Memory footprint</th><td>Linux kernel ~ 4-8 MB minimum</td><td>EoS RTOS from 6 KB</td></tr><tr><th scope="row">Boot time</th><td>1-3 s typical with systemd</td><td>&lt; 50 ms cold boot</td></tr><tr><th scope="row">POSIX</th><td>Full POSIX</td><td>Subset (threads, mutexes, queues)</td></tr><tr><th scope="row">Networking</th><td>Full TCP/IP, BSD sockets</td><td>lwIP integration</td></tr><tr><th scope="row">Filesystem</th><td>ext4, btrfs, F2FS</td><td>FatFs, LittleFS via eDB</td></tr><tr><th scope="row">Userland richness</th><td>Glibc + thousands of packages</td><td>C standard library only</td></tr><tr><th scope="row">Use case</th><td>Gateways, infotainment, edge servers</td><td>Microcontrollers, motors, safety</td></tr></tbody></table></div></div></section><section class="bo-section bo-section--white" id="practices"><div class="bo-section__inner" style="max-width:880px"><header class="bo-section__head"><span class="overline">Best Practices</span><h2>What to do (and what to avoid)</h2><p>Recurring patterns from hundreds of foundation code reviews. The shortcuts that bite you later.</p></header><div class="bo-qa"><details class="bo-q"><summary>DO: separate the HAL from your business logic</summary><p>The EoS HAL exists for a reason — every peripheral access goes through a portable interface. New silicon? Implement the HAL trait once; all your application code Just Works. The most common mistake we see in code reviews is direct register access from app-level code.</p></details><details class="bo-q"><summary>DON'T: build your own scheduler unless you must</summary><p>The EoS RTOS scheduler has been hand-tuned for sub-µs context switch and formally verified for context preservation. There are very few legitimate reasons to write your own. If you think you have one, file an RFC — the kernel WG has probably considered it.</p></details><details class="bo-q"><summary>DO: pin your toolchain version</summary><p>Reproducible builds depend on toolchain stability. The Reproducible Builds working group publishes pinned toolchain bundles for every EoS release. Consume those, not 'latest GCC' from your distro.</p></details><details class="bo-q"><summary>DON'T: skip the eBoot chain of trust</summary><p>Yes, you can boot directly into EoS without eBoot for development. Don't ship that. The chain of trust gives you signed manifests, anti-rollback, and runtime attestation — non-trivial to retrofit later.</p></details><details class="bo-q"><summary>DO: use eos-platform profiles, not hand-rolled configs</summary><p>The eos-platform 1.0 manifest schema captures every configuration choice you'd make manually — and gates them behind validation. Profile inheritance lets you derive variants without copy-paste drift.</p></details></div></div></section><section class="bo-section bo-section--gray" id="related"><div class="bo-section__inner"><header class="bo-section__head"><span class="overline">Related Reading</span><h2>Adjacent foundation research</h2></header><div class="bo-related"><a class="bo-related__card" href="research.html"><span class="overline">Research</span><h3>Neural Link Architecture</h3><p>Closed-loop neural-interface systems built on ENI.</p></a><a class="bo-related__card" href="ai-os.html"><span class="overline">Research</span><h3>AI Operating Systems</h3><p>Adaptive AI-native OS — automotive, drones, smart home, industrial.</p></a><a class="bo-related__card" href="neural-link-ai.html"><span class="overline">Research</span><h3>Neural Link &amp; AI</h3><p>Joining ENI signal pipelines with EAI inference engines.</p></a><a class="bo-related__card" href="future-research.html"><span class="overline">Research</span><h3>Future Research</h3><p>Multi-year bets across the foundation's research portfolio.</p></a></div></div></section><section class="bo-cta"><div class="bo-cta__inner"><h2>Start building. Read the source.</h2><p>Reference designs, meta-layers, and the EoS RTOS — every line is open-source. Or join the Hardware Reference Designs working group.</p><div class="bo-cta__actions"><a class="btn-primary" href="documentation.html">Read the docs</a><a class="btn-outline-light" href="https://github.com/embeddedos-org" rel="noopener noreferrer" target="_blank">GitHub ↗</a><a class="btn-outline-light" href="membership.html">Join a working group</a></div></div></section></main><footer class="footer" role="contentinfo">
+</main>
+
+<footer class="footer" role="contentinfo">
 <div class="footer-inner">
   <div class="footer-brand">
     <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
@@ -159,5 +249,8 @@
 <div class="footer-bottom">
   &copy; 2026 Embedded Operating Systems Research Foundation &bull; Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener" style="color:var(--blue)">MIT</a> &bull; 501(c)(3) Nonprofit &bull; <a href="/privacy.html" style="color:var(--text-muted)">Privacy</a> &bull; <a href="/terms.html" style="color:var(--text-muted)">Terms</a> &bull; <a href="https://github.com/embeddedos-org" style="color:var(--text-muted)">GitHub</a> &bull; Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted)">InterServer</a>
 </div>
-</footer><button aria-label="Scroll to top" class="scroll-top" type="button">↑</button> <script defer="" src="js/monitor.js"></script> <script defer="" src="js/main.js"></script> <script defer="" src="js/forms.js"></script> <script defer="" src="js/cookies.js"></script> <script defer="" src="js/search.js"></script>
-</body></html>
+</footer>
+<button class="scroll-top" aria-label="Scroll to top" type="button">↑</button>
+<script defer src="/js/main.js"></script>
+</body>
+</html>

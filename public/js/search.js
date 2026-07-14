@@ -10,7 +10,7 @@ var EosSearch = (function () {
     { t: 'Kids Guide', u: 'kids.html', d: 'Welcome young explorers to EmbeddedOS', k: 'children learning education beginner' },
     { t: 'Hardware Lab', u: 'hardware-lab.html', d: 'Pick your board and get EoS running on real hardware', k: 'stm32 raspberry pi board flash' },
     { t: 'Book Library', u: 'books.html', d: 'Official reference books for EmbeddedOS ecosystem', k: 'pdf download guide manual' },
-    { t: 'App Store', u: 'https://embeddedos-org.github.io/eApps/', d: '60+ apps across all platforms', k: 'applications marketplace download' },
+    { t: 'App Store', u: 'eApps/index.html', d: '60+ apps across all platforms', k: 'applications marketplace download' },
     { t: 'EoS Kernel', u: 'docs/eos.html', d: 'Modular RTOS kernel with HAL and multicore framework', k: 'rtos hal driver scheduler task' },
     { t: 'eBoot Bootloader', u: 'docs/eboot.html', d: 'Secure A/B bootloader with verified boot chain', k: 'bootloader secure boot firmware update ota' },
     { t: 'ebuild CLI', u: 'docs/ebuild.html', d: 'Unified build system with cross-compilation', k: 'cmake make build compile toolchain sdk' },

@@ -1,89 +1,188 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="EmbeddedOS Foundation — Events — EmbeddedOS Foundation. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><meta content="Foundation-hosted and partner events: AI/ML embedded systems, neural interface research, RTOS internals, secure boot. Online and in-person across the year." name="description"/><meta content="#0066cc" name="theme-color"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="googlebot"><meta content="index,follow" name="bingbot"/><meta content="general" name="rating"/><meta content="telephone=no" name="format-detection"/><meta content="en_US" property="og:locale"/><meta content="EmbeddedOS Research Foundation — open-source embedded AI systems stack" property="og:image:alt"/><meta content="@EmbeddedOS_ORG" name="twitter:site"/><meta content="@EmbeddedOS_ORG" name="twitter:creator"/><link href="rss.xml" rel="alternate" title="EmbeddedOS Newsroom" type="application/rss+xml"><link href="manifest.json" rel="manifest"/><meta content="EoS Editorial" name="author"/><meta content="Events — EmbeddedOS" property="og:title"/><meta content="Foundation-hosted and partner events: AI/ML embedded systems, neural interface research, RTOS internals, secure boot. Online and in-person across the year." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.embeddedos.org/events" property="og:url"/><meta content="https://www.embeddedos.org/img/og-cover.svg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="EmbeddedOS" property="og:site_name"/><meta content="summary_large_image" name="twitter:card"/><meta content="Events — EmbeddedOS" name="twitter:title"/><meta content="Foundation-hosted and partner events: AI/ML embedded systems, neural interface research, RTOS internals, secure boot. Online and in-person across the year." name="twitter:description"/><meta content="https://www.embeddedos.org/img/og-cover.svg" name="twitter:image"/><link href="https://www.embeddedos.org/events" rel="canonical"/><link href="img/logo.svg" rel="apple-touch-icon"/><link href="favicon.svg" rel="icon" type="image/svg+xml"/><title>Events — EmbeddedOS Foundation</title>
-<link href="css/style.v7.css" rel="stylesheet"/><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Event","name":"EoS Foundation @ Embedded World NA 2026","startDate":"2026-06-08","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Booth + main-stage talks on the eos-platform 1.0 release, INT4 inference on Cortex-M85, and the new Industry-Safety working group. Members get 30% off registration.","url":"https://embedded-world-na.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"Place","name":"Nashville Music City Center \u00b7 USA","address":"Nashville Music City Center \u00b7 USA"}},{"@type":"Event","name":"Webinar: 1.3B-parameter LLM at 11 tok/s on a microcontroller","startDate":"2026-08-12","eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Live walkthrough of the EAI 0.9 INT4 runtime \u2014 quantization choices, the block-streamed scheduler, and a live demo running on real STM32H7 hardware. Q&A.","url":"https://embeddedonlineconference.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"VirtualLocation","url":"https://embeddedonlineconference.com/"}},{"@type":"Event","name":"EoS @ ESWEEK 2026: Formal Verification of the Context Switch","startDate":"2026-09-21","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Joint paper presentation with two academic groups: a machine-checked proof of EoS RTOS context-switch correctness on Cortex-M and RV32. Followed by a foundation-hosted reception.","url":"https://esweek.org/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"Place","name":"Berlin \u00b7 Germany","address":"Berlin \u00b7 Germany"}},{"@type":"Event","name":"Toradex \u00d7 EoS Joint Workshop: From Boot to Inference","startDate":"2026-09-30","eventAttendanceMode":"https://schema.org/MixedEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Hands-on workshop covering the full eos-platform stack on Toradex Verdin modules: signed boot via eBoot, the EoS RTOS profile, and on-device inference with EAI. Bring a laptop.","url":"https://www.toradex.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"Place","name":"Lausanne, Switzerland \u00b7 also streamed live","address":"Lausanne, Switzerland \u00b7 also streamed live"}},{"@type":"Event","name":"Keynote @ Embedded Summit 2026: The Next Decade of Open Embedded AI","startDate":"2026-10-15","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Foundation president keynote on the EoS roadmap, the Embedded AI Ethics working group's first public draft, and the launch of the Safety-Certified subset.","url":"https://embeddedsummit.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"Place","name":"Santa Clara, CA \u00b7 USA","address":"Santa Clara, CA \u00b7 USA"}},{"@type":"Event","name":"EoS @ Embedded India 2026 \u2014 Bangalore Chapter Launch","startDate":"2026-11-12","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Launch of the EoS Foundation India Chapter, a regional working group focused on cost-optimized embedded AI for emerging markets. Featuring talks, demos, a hackathon, and a community dinner.","url":"https://www.embedded-india.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"Place","name":"Bangalore International Exhibition Centre \u00b7 India","address":"Bangalore International Exhibition Centre \u00b7 India"}},{"@type":"Event","name":"Generis Roundtable: Embedded Security & Boot Trust","startDate":"2026-07-22","eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Closed-door strategic roundtable on root-of-trust standardization, attestation interoperability, and the security obligations of embedded AI platforms. Foundation invited as panel.","url":"https://generisgp.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"VirtualLocation","url":"https://generisgp.com/"}},{"@type":"Event","name":"Fireside: Building Open Neural Interfaces","startDate":"2026-06-25","eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Editor-led fireside chat with the ENI team on the 1,024-channel deterministic pipeline, open-data licensing, and the new Neural Interface Standards working group.","url":"https://www.embedded.com/","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"VirtualLocation","url":"https://www.embedded.com/"}},{"@type":"Event","name":"EoS Foundation Annual Members Day 2026","startDate":"2026-12-05","eventAttendanceMode":"https://schema.org/MixedEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"Foundation-hosted: annual members assembly, working group reports, governance vote, board elections, and the State of the Ecosystem briefing. Open to all members and observers.","url":"https://www.embeddedos.org/about","organizer":{"@type":"Organization","name":"EmbeddedOS Research Foundation","url":"https://www.embeddedos.org"},"location":{"@type":"Place","name":"San Francisco \u00b7 also streamed live","address":"San Francisco \u00b7 also streamed live"}}]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.embeddedos.org/"},{"@type":"ListItem","position":2,"name":"Events","item":"https://www.embeddedos.org/events"}]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","@id":"https://www.embeddedos.org/events#itemlist","name":"Upcoming events from the EmbeddedOS Foundation","itemListElement":[{"@type":"ListItem","position":1,"url":"https://www.embeddedos.org/events#eos-embedded-world-na-2026","name":"EoS @ Embedded World NA 2026"},{"@type":"ListItem","position":2,"url":"https://www.embeddedos.org/events#eos-embedded-online-int4","name":"Webinar: 1.3B-LLM @ M85"},{"@type":"ListItem","position":3,"url":"https://www.embeddedos.org/events#eos-esweek-2026-talk","name":"EoS @ ESWEEK 2026"},{"@type":"ListItem","position":4,"url":"https://www.embeddedos.org/events#toradex-eos-joint-workshop","name":"Toradex \u00d7 EoS Joint Workshop"},{"@type":"ListItem","position":5,"url":"https://www.embeddedos.org/events#embedded-summit-2026-keynote","name":"Keynote @ Embedded Summit 2026"},{"@type":"ListItem","position":6,"url":"https://www.embeddedos.org/events#embedded-india-2026","name":"EoS @ Embedded India 2026"},{"@type":"ListItem","position":7,"url":"https://www.embeddedos.org/events#generis-roundtable-2026","name":"Generis Roundtable 2026"},{"@type":"ListItem","position":8,"url":"https://www.embeddedos.org/events#embedded-com-fireside-eni","name":"Fireside: Building Open Neural Interfaces"},{"@type":"ListItem","position":9,"url":"https://www.embeddedos.org/events#eos-foundation-members-day","name":"EoS Foundation Annual Members Day 2026"}]}</script> <link href="https://www.embeddedos.org/events.html" rel="canonical"/>
-</link></meta></meta>  <link rel="stylesheet" href="/css/theme-light.css"/>
-  <script defer src="/js/site-chrome.js"></script>
-<style>
-/* ── Upgraded nav: mega-menu, donate button, logo-sub ── */
-.logo-sub { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); margin-left: 4px; display: block; line-height: 1; }
-.nav-donate-btn { background: #3fb950 !important; color: #fff !important; border: none !important; font-weight: 700; margin-left: 0.5rem; }
-.nav-donate-btn:hover { background: #56d364 !important; box-shadow: 0 0 16px rgba(63,185,80,0.4); }
-.nav-mega { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 0; min-width: 600px; padding: 1rem !important; }
-.mega-col { padding: 0 1rem; }
-.mega-col + .mega-col { border-left: 1px solid var(--border-color); }
-.mega-col-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
-.mega-col a { display: block; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
-/* ── Social GitHub icon ── */
-.social-github { color: var(--text-secondary) !important; }
-.social-github:hover { color: var(--text-primary) !important; }
-/* ── Footer Apache badge ── */
-.badge-blue { background: var(--blue-dim); color: var(--blue); }
-</style>
-</head><body class="page-events"><div aria-live="polite" class="live-bar" role="status"><span aria-hidden="true" class="live-pulse"></span><span>LIVE: <strong>EAI 0.9 + INT4 LLM runtime</strong> shipped — <a href="article-eai-llm-bench.html">read the deep-dive →</a></span></div><a class="skip-link" href="#main-content">Skip to main content</a><header class="navbar">
-<div class="brand-bar">
-<div class="nav-container">
-<a aria-label="EmbeddedOS Home" class="logo" href="/">
-<div class="logo-icon">EoS</div>
-<span class="logo-text">Embedded<span>OS</span></span>
-</a>
-<nav aria-label="Main navigation">
-<ul class="nav-links" id="nav-links" role="menubar">
-<li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
-<li role="none"><a href="roadmap.html" role="menuitem">Roadmap</a></li>
-<li role="none"><a href="changelog.html" role="menuitem">Changelog</a></li>
-<li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
-<li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
-<li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
-<li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
-<li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
-<li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
-<li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
-<li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
-<li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
-<li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
-<li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
-<li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
-<li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
-<li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
-<li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
-<li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
-<li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
-<li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li>
-<li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
-<li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
-</ul>
-</li>
-<li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-<li role="none"><a href="about.html" role="menuitem">About</a></li>
-<li role="none"><a href="security.html" role="menuitem">Security</a></li>
-<li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-<li role="none"><a class="nav-cta nav-cta--donate" href="donate.html#donate-now" role="menuitem" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 16px rgba(16,185,129,.35);margin-right:.4rem;">&#9829; Donate</a></li><li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
-</ul>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — EmbeddedOS</title>
+<meta name="description" content="EmbeddedOS conferences, hackathons, and community meetups.">
+<meta property="og:url" content="https://www.embeddedos.org/events.html">
+<meta name="twitter:domain" content="www.embeddedos.org">
+<link rel="canonical" href="https://www.embeddedos.org/events.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+<div class="nav-inner">
+  <a href="/index.html" class="logo">
+    <span class="logo-icon">EoS</span>
+    <span>EmbeddedOS</span>
+    <span class="logo-sub">OPEN SOURCE · NONPROFIT</span>
+  </a>
+  <button class="nav-toggle" id="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links-panel">
+    <!-- Projects mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Projects</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Core OS</div>
+          <a href="/docs/eos.html">EoS Kernel</a>
+          <a href="/docs/eboot.html">eBoot Bootloader</a>
+          <a href="/docs/eipc.html">eIPC</a>
+          <a href="/docs/ebuild.html">ebuild</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">AI &amp; Neural</div>
+          <a href="/docs/eai.html">eAI</a>
+          <a href="/docs/eni.html">eNI Neural Interface</a>
+          <a href="/ai-os.html">AI-OS</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Dev Tools</div>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim Simulator</a>
+          <a href="/stacks/index.html">Stacks</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Aerospace</div>
+          <a href="/aerospace.html">AeroSwift Personal</a>
+          <a href="/aerospace.html">AeroSwift Transit</a>
+          <a href="https://github.com/embeddedos-org/eos-aero" target="_blank" rel="noopener">eos-aero ↗</a>
+        </div>
+      </div>
+    </details>
+    <!-- Products mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Products</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Applications</div>
+          <a href="/eApps/index.html">eApps Store</a>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim</a>
+          <a href="/docs/eoffice.html">eOffice Suite</a>
+          <a href="/docs/ebrowser.html">eBrowser</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Health Devices</div>
+          <a href="/health.html">HEALTH-KEY ULTRA</a>
+          <a href="/health.html">HEALTH-BAND Neuro</a>
+          <a href="/health.html">HEALTH-RING</a>
+          <a href="/health.html">HEALTH-LAB</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Hardware</div>
+          <a href="/hardware-lab.html">Hardware Lab</a>
+          <a href="/stacks/index.html">Technology Stacks</a>
+          <a href="/ecosystem.html">Ecosystem Map</a>
+        </div>
+      </div>
+    </details>
+    <!-- Foundation -->
+    <details class="nav-dropdown">
+      <summary>Foundation</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/donate.html">Donate</a>
+        <a href="/membership.html">Membership</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/research.html">Research</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/news.html">News</a>
+      </div>
+    </details>
+    <!-- Docs -->
+    <details class="nav-dropdown">
+      <summary>Docs</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/getting-started.html">Getting Started</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/books.html">Books (14)</a>
+        <a href="/flow.html">eFlow</a>
+        <a href="/hardware-lab.html">Hardware Lab</a>
+        <a href="/kids.html">Kids Edition</a>
+      </div>
+    </details>
+    <!-- Community -->
+    <details class="nav-dropdown">
+      <summary>Community</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/get-involved.html">Get Involved</a>
+        <a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions ↗</a>
+        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener">X / Twitter ↗</a>
+      </div>
+    </details>
+    <a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">GitHub</a>
+    <button class="nav-search-btn" onclick="EosSearch && EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+    <a href="/donate.html" class="btn btn-green btn-sm nav-donate-btn">&#9829; Donate</a>
+  </div>
+</div>
 </nav>
-<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+
+<main id="main-content" class="page-content">
+<div class="container" style="max-width:960px;padding:4rem 1.5rem">
+  <h1 class="page-title" style="font-size:2.5rem;margin-bottom:0.5rem">Events</h1>
+  <p class="page-subtitle" style="color:var(--text-secondary);margin-bottom:3rem">Conferences, workshops, hackathons, and community meetups for the EmbeddedOS ecosystem.</p>
+
+  <div style="margin-bottom:2rem">
+    <h2 style="margin-bottom:1.5rem">Upcoming Events</h2>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="card" style="padding:1.5rem;display:grid;grid-template-columns:80px 1fr;gap:1.5rem;align-items:start">
+        <div style="text-align:center;background:var(--blue-dim);border-radius:8px;padding:0.75rem">
+          <div style="font-size:1.5rem;font-weight:800;color:var(--blue)">15</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary)">AUG 2026</div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;color:var(--blue);font-weight:600;margin-bottom:0.25rem">WEBINAR</div>
+          <h3 style="margin-bottom:0.3rem;font-size:1.1rem">EmbeddedOS 2.0 Launch — Live Demo &amp; Q&amp;A</h3>
+          <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.5rem">Watch the live demo of EoS 2.0 featuring the new tickless scheduler, AArch64 support, and eAI 1.0 INT4 runtime. Q&amp;A with the core team.</p>
+          <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" style="color:var(--blue);font-size:0.85rem;font-weight:600">Register on GitHub →</a>
+        </div>
+      </div>
+      <div class="card" style="padding:1.5rem;display:grid;grid-template-columns:80px 1fr;gap:1.5rem;align-items:start">
+        <div style="text-align:center;background:var(--green-dim,rgba(63,185,80,0.1));border-radius:8px;padding:0.75rem">
+          <div style="font-size:1.5rem;font-weight:800;color:var(--green)">22</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary)">SEP 2026</div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;color:var(--green);font-weight:600;margin-bottom:0.25rem">HACKATHON</div>
+          <h3 style="margin-bottom:0.3rem;font-size:1.1rem">EmbeddedOS Health Hackathon 2026</h3>
+          <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.5rem">48-hour hackathon building health monitoring applications on EmbeddedOS. Prizes for best use of HEALTH-KEY ULTRA, HEALTH-BAND Neuro, and HEALTH-RING APIs.</p>
+          <a href="mailto:events@embeddedos.org" style="color:var(--blue);font-size:0.85rem;font-weight:600">Express interest →</a>
+        </div>
+      </div>
+      <div class="card" style="padding:1.5rem;display:grid;grid-template-columns:80px 1fr;gap:1.5rem;align-items:start">
+        <div style="text-align:center;background:rgba(139,92,246,0.1);border-radius:8px;padding:0.75rem">
+          <div style="font-size:1.5rem;font-weight:800;color:var(--purple)">10</div>
+          <div style="font-size:0.75rem;color:var(--text-secondary)">OCT 2026</div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;color:var(--purple);font-weight:600;margin-bottom:0.25rem">CONFERENCE</div>
+          <h3 style="margin-bottom:0.3rem;font-size:1.1rem">EmbeddedOS Summit 2026</h3>
+          <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.5rem">Annual community summit: technical talks, working group sessions, roadmap presentations, and networking. Virtual + in-person hybrid event.</p>
+          <a href="mailto:events@embeddedos.org" style="color:var(--blue);font-size:0.85rem;font-weight:600">Get notified →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:2rem;background:var(--blue-dim);border-color:var(--blue)">
+    <h2 style="margin-bottom:0.5rem">Host an EmbeddedOS Event</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem">Want to organize a local meetup, workshop, or hackathon? The Foundation provides speaker support, promotional materials, and community outreach.</p>
+    <a href="mailto:events@embeddedos.org" class="btn btn-primary">events@embeddedos.org →</a>
+  </div>
 </div>
-</div>
-</header><main id="main-content"><section class="news-hero events-hero"><div class="news-hero__inner"><span class="kicker">Events <span aria-hidden="true" class="live-pulse"></span> 9 upcoming</span><h1>Where the foundation shows up</h1><p>Foundation-hosted and partner events across the year — Embedded World NA, ESWEEK, Embedded Summit, Embedded India, and partner webinars with Embedded.com, Toradex, Generis Group, and Embedded Online Conference. Want to host an EoS session at your event? <a href="contact.html"><strong>Get in touch →</strong></a></p><div aria-label="Filter events by mode" class="topic-chips" role="group"><button aria-pressed="true" class="topic-chip topic-chip--active" data-events-filter="all" type="button">All events</button><button aria-pressed="false" class="topic-chip" data-events-filter="online" type="button">🌐 Online</button><button aria-pressed="false" class="topic-chip" data-events-filter="offline" type="button">📍 In-person</button><button aria-pressed="false" class="topic-chip" data-events-filter="hybrid" type="button">⚡ Hybrid</button></div></div></section><section class="events-section"><div class="events-container"><h2 class="pub-section-title">Featured next event</h2><div class="events-grid events-grid--featured" data-events-grid=""><article class="event-card event-card--offline event-card--featured" data-mode="offline" data-topic="apps-platforms" id="eos-embedded-world-na-2026"><div class="event-card__media"><img alt="Embedded World NA conference floor" height="280" loading="lazy" src="img/photos/ev-world.svg" width="800"/><span class="event-card__mode-badge mode-badge--offline">OFFLINE</span></div><div class="event-card__body"><span class="kicker kicker--blue">OFFLINE · TRADE SHOW</span><h3 class="event-card__title">EoS Foundation @ Embedded World NA 2026</h3><p class="event-card__meta"><time datetime="2026-06-08">📅 Jun 8 – 10, 2026</time><span class="event-card__sep">·</span><span>📍 Nashville Music City Center · USA</span></p><p class="event-card__summary">Booth + main-stage talks on the eos-platform 1.0 release, INT4 inference on Cortex-M85, and the new Industry-Safety working group. Members get 30% off registration.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://embedded-world-na.com/" rel="noopener noreferrer" target="_blank">Embedded World NA ↗</a></span><a class="btn-primary event-card__cta" href="https://embedded-world-na.com/" rel="noopener noreferrer" target="_blank">Register at Embedded World NA ↗</a></div></div></article></div><h2 class="pub-section-title" style="margin-top:2.5rem">All upcoming events</h2><div class="events-grid" data-events-grid=""><article class="event-card event-card--online" data-mode="online" data-topic="embedded-ai" id="eos-embedded-online-int4"><div class="event-card__media"><img alt="Online webinar setup with multiple screens" height="280" loading="lazy" src="img/photos/ev-online.svg" width="800"/><span class="event-card__mode-badge mode-badge--online">ONLINE</span></div><div class="event-card__body"><span class="kicker kicker--purple">ONLINE · WEBINAR</span><h3 class="event-card__title">Webinar: 1.3B-parameter LLM at 11 tok/s on a microcontroller</h3><p class="event-card__meta"><time datetime="2026-08-12">📅 Aug 12, 2026 · 17:00 UTC</time><span class="event-card__sep">·</span><span>📍 Online · Embedded Online Conference platform</span></p><p class="event-card__summary">Live walkthrough of the EAI 0.9 INT4 runtime — quantization choices, the block-streamed scheduler, and a live demo running on real STM32H7 hardware. Q&amp;A.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://embeddedonlineconference.com/" rel="noopener noreferrer" target="_blank">Embedded Online Conference ↗</a></span><a class="btn-primary event-card__cta" href="https://embeddedonlineconference.com/" rel="noopener noreferrer" target="_blank">Register on Embedded Online Conf. ↗</a></div></div></article><article class="event-card event-card--hybrid" data-mode="hybrid" data-topic="tools-sim" id="toradex-eos-joint-workshop"><div class="event-card__media"><img alt="Hands-on workshop with embedded modules" height="280" loading="lazy" src="img/photos/ev-toradex.svg" width="800"/><span class="event-card__mode-badge mode-badge--hybrid">HYBRID</span></div><div class="event-card__body"><span class="kicker kicker--orange">HYBRID · WORKSHOP</span><h3 class="event-card__title">Toradex × EoS Joint Workshop: From Boot to Inference</h3><p class="event-card__meta"><time datetime="2026-09-30">📅 Sep 30, 2026 · all day</time><span class="event-card__sep">·</span><span>📍 Lausanne, Switzerland · also streamed live</span></p><p class="event-card__summary">Hands-on workshop covering the full eos-platform stack on Toradex Verdin modules: signed boot via eBoot, the EoS RTOS profile, and on-device inference with EAI. Bring a laptop.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://www.toradex.com/" rel="noopener noreferrer" target="_blank">Toradex ↗</a></span><a class="btn-primary event-card__cta" href="https://www.toradex.com/" rel="noopener noreferrer" target="_blank">Register with Toradex ↗</a></div></div></article><article class="event-card event-card--offline" data-mode="offline" data-topic="community" id="embedded-india-2026"><div class="event-card__media"><img alt="Bangalore tech meetup audience" height="280" loading="lazy" src="img/photos/ev-india.svg" width="800"/><span class="event-card__mode-badge mode-badge--offline">OFFLINE</span></div><div class="event-card__body"><span class="kicker kicker--pink">OFFLINE · CHAPTER LAUNCH</span><h3 class="event-card__title">EoS @ Embedded India 2026 — Bangalore Chapter Launch</h3><p class="event-card__meta"><time datetime="2026-11-12">📅 Nov 12 – 13, 2026</time><span class="event-card__sep">·</span><span>📍 Bangalore International Exhibition Centre · India</span></p><p class="event-card__summary">Launch of the EoS Foundation India Chapter, a regional working group focused on cost-optimized embedded AI for emerging markets. Featuring talks, demos, a hackathon, and a community dinner.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://www.embedded-india.com/" rel="noopener noreferrer" target="_blank">Embedded India ↗</a></span><a class="btn-primary event-card__cta" href="https://www.embedded-india.com/" rel="noopener noreferrer" target="_blank">Register at Embedded India ↗</a></div></div></article><article class="event-card event-card--hybrid" data-mode="hybrid" data-topic="community" id="eos-foundation-members-day"><div class="event-card__media"><img alt="Foundation members hybrid event" height="280" loading="lazy" src="img/photos/ev-members-day.svg" width="800"/><span class="event-card__mode-badge mode-badge--hybrid">HYBRID</span></div><div class="event-card__body"><span class="kicker kicker--pink">HYBRID · ANNUAL</span><h3 class="event-card__title">EoS Foundation Annual Members Day 2026</h3><p class="event-card__meta"><time datetime="2026-12-05">📅 Dec 5, 2026 · all day</time><span class="event-card__sep">·</span><span>📍 San Francisco · also streamed live</span></p><p class="event-card__summary">Foundation-hosted: annual members assembly, working group reports, governance vote, board elections, and the State of the Ecosystem briefing. Open to all members and observers.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="about.html">EmbeddedOS Foundation</a></span><a class="btn-primary event-card__cta" href="about.html">RSVP via Membership portal</a></div></div></article><article class="event-card event-card--online" data-mode="online" data-topic="neural-interface" id="embedded-com-fireside-eni"><div class="event-card__media"><img alt="Fireside chat panel" height="280" loading="lazy" src="img/photos/ev-fireside.svg" width="800"/><span class="event-card__mode-badge mode-badge--online">ONLINE</span></div><div class="event-card__body"><span class="kicker kicker--teal">ONLINE · FIRESIDE</span><h3 class="event-card__title">Fireside: Building Open Neural Interfaces</h3><p class="event-card__meta"><time datetime="2026-06-25">📅 Jun 25, 2026 · 18:00 UTC</time><span class="event-card__sep">·</span><span>📍 Online · Embedded.com Live</span></p><p class="event-card__summary">Editor-led fireside chat with the ENI team on the 1,024-channel deterministic pipeline, open-data licensing, and the new Neural Interface Standards working group.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://www.embedded.com/" rel="noopener noreferrer" target="_blank">Embedded.com ↗</a></span><a class="btn-primary event-card__cta" href="https://www.embedded.com/" rel="noopener noreferrer" target="_blank">Watch on Embedded.com ↗</a></div></div></article><article class="event-card event-card--online" data-mode="online" data-topic="security-boot" id="generis-roundtable-2026"><div class="event-card__media"><img alt="Strategic roundtable discussion" height="280" loading="lazy" src="img/photos/ev-generis.svg" width="800"/><span class="event-card__mode-badge mode-badge--online">ONLINE</span></div><div class="event-card__body"><span class="kicker kicker--green">ONLINE · ROUNDTABLE</span><h3 class="event-card__title">Generis Roundtable: Embedded Security &amp; Boot Trust</h3><p class="event-card__meta"><time datetime="2026-07-22">📅 Jul 22, 2026 · 14:00 UTC</time><span class="event-card__sep">·</span><span>📍 Online · Generis virtual platform</span></p><p class="event-card__summary">Closed-door strategic roundtable on root-of-trust standardization, attestation interoperability, and the security obligations of embedded AI platforms. Foundation invited as panel.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://generisgp.com/" rel="noopener noreferrer" target="_blank">Generis Group ↗</a></span><a class="btn-primary event-card__cta" href="https://generisgp.com/" rel="noopener noreferrer" target="_blank">Apply via Generis ↗</a></div></div></article><article class="event-card event-card--offline" data-mode="offline" data-topic="rtos-kernel" id="eos-esweek-2026-talk"><div class="event-card__media"><img alt="Academic conference venue" height="280" loading="lazy" src="img/photos/ev-esweek.svg" width="800"/><span class="event-card__mode-badge mode-badge--offline">OFFLINE</span></div><div class="event-card__body"><span class="kicker kicker--purple">OFFLINE · ACADEMIC</span><h3 class="event-card__title">EoS @ ESWEEK 2026: Formal Verification of the Context Switch</h3><p class="event-card__meta"><time datetime="2026-09-21">📅 Sep 21 – 25, 2026</time><span class="event-card__sep">·</span><span>📍 Berlin · Germany</span></p><p class="event-card__summary">Joint paper presentation with two academic groups: a machine-checked proof of EoS RTOS context-switch correctness on Cortex-M and RV32. Followed by a foundation-hosted reception.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://esweek.org/" rel="noopener noreferrer" target="_blank">ESWEEK ↗</a></span><a class="btn-primary event-card__cta" href="https://esweek.org/" rel="noopener noreferrer" target="_blank">Find session at ESWEEK ↗</a></div></div></article><article class="event-card event-card--offline" data-mode="offline" data-topic="community" id="embedded-summit-2026-keynote"><div class="event-card__media"><img alt="Keynote stage at Embedded Summit" height="280" loading="lazy" src="img/photos/ev-summit.svg" width="800"/><span class="event-card__mode-badge mode-badge--offline">OFFLINE</span></div><div class="event-card__body"><span class="kicker kicker--pink">OFFLINE · KEYNOTE</span><h3 class="event-card__title">Keynote @ Embedded Summit 2026: The Next Decade of Open Embedded AI</h3><p class="event-card__meta"><time datetime="2026-10-15">📅 Oct 15 – 17, 2026</time><span class="event-card__sep">·</span><span>📍 Santa Clara, CA · USA</span></p><p class="event-card__summary">Foundation president keynote on the EoS roadmap, the Embedded AI Ethics working group's first public draft, and the launch of the Safety-Certified subset.</p><div class="event-card__footer"><span class="event-card__partner">Partner: <a href="https://embeddedsummit.com/" rel="noopener noreferrer" target="_blank">Embedded Summit ↗</a></span><a class="btn-primary event-card__cta" href="https://embeddedsummit.com/" rel="noopener noreferrer" target="_blank">Register at Embedded Summit ↗</a></div></div></article></div></div></section><section class="events-cta-section"><div class="events-cta-inner"><h2>Co-host with us</h2><p>The EmbeddedOS Foundation partners with publishers, conference organizers, hardware vendors, and academic societies to bring open embedded AI research to a global audience. We bring speakers, technical content, and a live demo platform; you bring the audience.</p><div class="events-cta-grid"><a class="events-cta-card" href="contact.html"><h3>Host an EoS session</h3><p>Add us to your conference agenda. Talks, panels, hands-on workshops.</p><span class="ext-arrow">→</span></a><a class="events-cta-card" href="contact.html"><h3>Co-organize a webinar</h3><p>Joint online format with your platform and our speaker lineup.</p><span class="ext-arrow">→</span></a><a class="events-cta-card" href="membership.html"><h3>Member events</h3><p>Foundation members get exclusive briefings and roadmap previews.</p><span class="ext-arrow">→</span></a></div></div></section></main><footer class="footer" role="contentinfo">
+</main>
+
+<footer class="footer" role="contentinfo">
 <div class="footer-inner">
   <div class="footer-brand">
     <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
@@ -159,4 +258,8 @@
 <div class="footer-bottom">
   &copy; 2026 Embedded Operating Systems Research Foundation &bull; Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener" style="color:var(--blue)">MIT</a> &bull; 501(c)(3) Nonprofit &bull; <a href="/privacy.html" style="color:var(--text-muted)">Privacy</a> &bull; <a href="/terms.html" style="color:var(--text-muted)">Terms</a> &bull; <a href="https://github.com/embeddedos-org" style="color:var(--text-muted)">GitHub</a> &bull; Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted)">InterServer</a>
 </div>
-</footer><button aria-label="Scroll to top" class="scroll-top" type="button">↑</button><script defer="" src="js/monitor.js"></script><script defer="" src="js/main.js"></script><script defer="" src="js/events.js"></script></body></html>
+</footer>
+<button class="scroll-top" aria-label="Scroll to top" type="button">↑</button>
+<script defer src="/js/main.js"></script>
+</body>
+</html>

@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 type: software
-title: "embeddedos-org.github.io"
+title: "www.embeddedos.org"
 version: "3.0.0"
 date-released: "2026-05-13"
 authors:
   - name: "EmbeddedOS Project Contributors"
-url: "https://github.com/embeddedos-org/embeddedos-org.github.io"
+url: "https://github.com/embeddedos-org/www.embeddedos.org"
 license: MIT

@@ -93,7 +93,7 @@ for i, (label, c) in enumerate(pills):
               anchor='mm', font=font_stats)
 
 # Bottom URL
-draw.text((W // 2, H - 60), 'embeddedos-org.github.io',
+draw.text((W // 2, H - 60), 'www.embeddedos.org',
           fill=WHITE, anchor='mm', font=font_url)
 
 img.save(OUT, 'PNG', optimize=True)

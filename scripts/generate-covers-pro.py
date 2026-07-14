@@ -109,7 +109,7 @@ PRODUCTS = [
     {"name": "EmbeddedOS", "full": "Complete Ecosystem", "sub": "15 Products \u00b7 One Platform\nFrom Bootloader to Browser",
      "tagline": "The Definitive Reference for the Full EoS Platform",
      "c1": (0.737,0.549,1.0), "c2": (0.345,0.651,1.0), "c3": (0.05,0.03,0.18),
-     "repo": "embeddedos-org.github.io", "icon": "ecosystem", "edition": "Complete Platform Guide"},
+     "repo": "www.embeddedos.org", "icon": "ecosystem", "edition": "Complete Platform Guide"},
 ]
 
 
@@ -627,7 +627,7 @@ def generate_cover(product):
     f_bar_r = load_font("regular", 21)
     f_bar_badge = load_font("bold", 15)
     draw.text((58, bar_y+16), "EmbeddedOS Press", fill=(255,255,255,230), font=f_bar)
-    draw.text((58, bar_y+46), "embeddedos-org.github.io", fill=(255,255,255,153), font=f_bar_sub)
+    draw.text((58, bar_y+46), "www.embeddedos.org", fill=(255,255,255,153), font=f_bar_sub)
     draw.text((W-245, bar_y+16), "April 2026", fill=(255,255,255,178), font=f_bar_r)
     draw.text((W-245, bar_y+46), "Open Source", fill=(255,255,255,127), font=f_bar_badge)
 

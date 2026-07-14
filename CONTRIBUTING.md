@@ -12,8 +12,8 @@ Thank you for your interest in contributing!
 ## Development Setup
 
 ```bash
-git clone https://github.com/embeddedos-org/embeddedos-org.github.io.git
-cd embeddedos-org.github.io
+git clone https://github.com/embeddedos-org/www.embeddedos.org.git
+cd www.embeddedos.org
 npm install
 npm test
 ```

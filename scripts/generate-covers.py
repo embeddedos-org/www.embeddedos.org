@@ -158,7 +158,7 @@ PRODUCTS = [
         "subtitle": "The Complete Platform Guide",
         "color": "#bc8cff",
         "accent": "#58a6ff",
-        "repo": "embeddedos-org.github.io",
+        "repo": "www.embeddedos.org",
         "icon": "ecosystem",
     },
 ]

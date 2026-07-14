@@ -59,7 +59,7 @@ test.describe('SEO: Canonical Links', () => {
       expect(canonical, `Missing canonical on ${page.name}`).not.toBeNull();
       if (canonical) {
         const href = await canonical.getAttribute('href');
-        expect(href).toContain('embeddedos-org.github.io');
+        expect(href).toContain('embeddedos.org');
       }
       await ctx.close();
     });
@@ -149,7 +149,7 @@ test.describe('SEO: Robots & Sitemap', () => {
     const response = await p.goto(`${BASE}/sitemap.xml`);
     expect(response.status()).toBe(200);
     const text = await response.text();
-    expect(text).toContain('embeddedos-org.github.io');
+    expect(text).toContain('embeddedos.org');
     await ctx.close();
   });
 });

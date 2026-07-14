@@ -1,90 +1,198 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="EmbeddedOS Foundation — Open Source Licenses — EmbeddedOS Foundation. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><meta content="Licenses governing the EmbeddedOS open-source projects (MIT, MIT, BSD), trademark guidelines, and third-party attributions." name="description"/><meta content="EmbeddedOS, EoS, legal, policy, licenses" name="keywords"/><meta content="#0066cc" name="theme-color"><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="googlebot"/><meta content="index,follow" name="bingbot"/><meta content="general" name="rating"/><meta content="telephone=no" name="format-detection"/><meta content="en_US" property="og:locale"/><meta content="EmbeddedOS Research Foundation — open-source embedded AI systems stack" property="og:image:alt"/><meta content="@EmbeddedOS_ORG" name="twitter:site"/><meta content="@EmbeddedOS_ORG" name="twitter:creator"/><link href="rss.xml" rel="alternate" title="EmbeddedOS Newsroom" type="application/rss+xml"><link href="manifest.json" rel="manifest"/><meta content="Open Source Licenses — EmbeddedOS" property="og:title"/><meta content="Licenses governing the EmbeddedOS open-source projects (MIT, MIT, BSD), trademark guidelines, and third-party attributions." property="og:description"/><meta content="website" property="og:type"/><link href="https://www.embeddedos.org/licenses" rel="canonical"/><link href="img/logo.svg" rel="apple-touch-icon"/><meta content="https://www.embeddedos.org/licenses" property="og:url"/><meta content="https://www.embeddedos.org/img/og-cover.svg" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="EmbeddedOS" property="og:site_name"/><meta content="summary_large_image" name="twitter:card"/><meta content="Open Source Licenses — EmbeddedOS" name="twitter:title"/><meta content="Licenses governing the EmbeddedOS open-source projects (MIT, MIT, BSD), trademark guidelines, and third-party attributions." name="twitter:description"/><meta content="https://www.embeddedos.org/img/og-cover.svg" name="twitter:image"/><link href="favicon.svg" rel="icon" type="image/svg+xml"/><title>Open Source Licenses — EmbeddedOS Foundation</title>
-<link href="css/style.v7.css" rel="stylesheet"/><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.embeddedos.org/"},{"@type":"ListItem","position":2,"name":"Open Source Licenses","item":"https://www.embeddedos.org/licenses"}]}</script> <link href="https://www.embeddedos.org/licenses.html" rel="canonical"/>
-</link></meta></meta>  <link rel="stylesheet" href="/css/theme-light.css"/>
-  <script defer src="/js/site-chrome.js"></script>
-<style>
-/* ── Upgraded nav: mega-menu, donate button, logo-sub ── */
-.logo-sub { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); margin-left: 4px; display: block; line-height: 1; }
-.nav-donate-btn { background: #3fb950 !important; color: #fff !important; border: none !important; font-weight: 700; margin-left: 0.5rem; }
-.nav-donate-btn:hover { background: #56d364 !important; box-shadow: 0 0 16px rgba(63,185,80,0.4); }
-.nav-mega { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 0; min-width: 600px; padding: 1rem !important; }
-.mega-col { padding: 0 1rem; }
-.mega-col + .mega-col { border-left: 1px solid var(--border-color); }
-.mega-col-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
-.mega-col a { display: block; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
-/* ── Social GitHub icon ── */
-.social-github { color: var(--text-secondary) !important; }
-.social-github:hover { color: var(--text-primary) !important; }
-/* ── Footer Apache badge ── */
-.badge-blue { background: var(--blue-dim); color: var(--blue); }
-</style>
-</head><body class="page-licenses">
-<a class="skip-link" href="#main-content">Skip to main content</a><header class="navbar">
-<div class="brand-bar">
-<div class="nav-container">
-<a aria-label="EmbeddedOS Home" class="logo" href="/">
-<div class="logo-icon">EoS</div>
-<span class="logo-text">Embedded<span>OS</span></span>
-</a>
-<nav aria-label="Main navigation">
-<ul class="nav-links" id="nav-links" role="menubar">
-<li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
-<li role="none"><a href="roadmap.html" role="menuitem">Roadmap</a></li>
-<li role="none"><a href="changelog.html" role="menuitem">Changelog</a></li>
-<li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
-<li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
-<li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
-<li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
-<li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
-<li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
-<li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
-<li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
-<li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
-<li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
-<li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
-<li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
-<li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
-<li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
-<li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
-<li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
-<li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
-<li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li>
-<li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
-<li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
-</ul>
-</li>
-<li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-<li role="none"><a href="about.html" role="menuitem">About</a></li>
-<li role="none"><a href="security.html" role="menuitem">Security</a></li>
-<li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-<li role="none"><a class="nav-cta nav-cta--donate" href="donate.html#donate-now" role="menuitem" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 16px rgba(16,185,129,.35);margin-right:.4rem;">&#9829; Donate</a></li><li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
-</ul>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Licenses — EmbeddedOS</title>
+<meta name="description" content="EmbeddedOS is open-source under the MIT License.">
+<meta property="og:url" content="https://www.embeddedos.org/licenses.html">
+<meta name="twitter:domain" content="www.embeddedos.org">
+<link rel="canonical" href="https://www.embeddedos.org/licenses.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+<div class="nav-inner">
+  <a href="/index.html" class="logo">
+    <span class="logo-icon">EoS</span>
+    <span>EmbeddedOS</span>
+    <span class="logo-sub">OPEN SOURCE · NONPROFIT</span>
+  </a>
+  <button class="nav-toggle" id="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links-panel">
+    <!-- Projects mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Projects</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Core OS</div>
+          <a href="/docs/eos.html">EoS Kernel</a>
+          <a href="/docs/eboot.html">eBoot Bootloader</a>
+          <a href="/docs/eipc.html">eIPC</a>
+          <a href="/docs/ebuild.html">ebuild</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">AI &amp; Neural</div>
+          <a href="/docs/eai.html">eAI</a>
+          <a href="/docs/eni.html">eNI Neural Interface</a>
+          <a href="/ai-os.html">AI-OS</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Dev Tools</div>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim Simulator</a>
+          <a href="/stacks/index.html">Stacks</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Aerospace</div>
+          <a href="/aerospace.html">AeroSwift Personal</a>
+          <a href="/aerospace.html">AeroSwift Transit</a>
+          <a href="https://github.com/embeddedos-org/eos-aero" target="_blank" rel="noopener">eos-aero ↗</a>
+        </div>
+      </div>
+    </details>
+    <!-- Products mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Products</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Applications</div>
+          <a href="/eApps/index.html">eApps Store</a>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim</a>
+          <a href="/docs/eoffice.html">eOffice Suite</a>
+          <a href="/docs/ebrowser.html">eBrowser</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Health Devices</div>
+          <a href="/health.html">HEALTH-KEY ULTRA</a>
+          <a href="/health.html">HEALTH-BAND Neuro</a>
+          <a href="/health.html">HEALTH-RING</a>
+          <a href="/health.html">HEALTH-LAB</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Hardware</div>
+          <a href="/hardware-lab.html">Hardware Lab</a>
+          <a href="/stacks/index.html">Technology Stacks</a>
+          <a href="/ecosystem.html">Ecosystem Map</a>
+        </div>
+      </div>
+    </details>
+    <!-- Foundation -->
+    <details class="nav-dropdown">
+      <summary>Foundation</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/donate.html">Donate</a>
+        <a href="/membership.html">Membership</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/research.html">Research</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/news.html">News</a>
+      </div>
+    </details>
+    <!-- Docs -->
+    <details class="nav-dropdown">
+      <summary>Docs</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/getting-started.html">Getting Started</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/books.html">Books (14)</a>
+        <a href="/flow.html">eFlow</a>
+        <a href="/hardware-lab.html">Hardware Lab</a>
+        <a href="/kids.html">Kids Edition</a>
+      </div>
+    </details>
+    <!-- Community -->
+    <details class="nav-dropdown">
+      <summary>Community</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/get-involved.html">Get Involved</a>
+        <a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions ↗</a>
+        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener">X / Twitter ↗</a>
+      </div>
+    </details>
+    <a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">GitHub</a>
+    <button class="nav-search-btn" onclick="EosSearch && EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+    <a href="/donate.html" class="btn btn-green btn-sm nav-donate-btn">&#9829; Donate</a>
+  </div>
+</div>
 </nav>
-<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+
+<main id="main-content" class="page-content">
+<div class="container" style="max-width:800px;padding:4rem 1.5rem">
+  <h1 class="page-title" style="font-size:2.5rem;margin-bottom:0.5rem">Licenses</h1>
+  <p class="page-subtitle" style="color:var(--text-secondary);margin-bottom:3rem">EmbeddedOS is open-source software. All components are released under the MIT License.</p>
+
+  <div class="card" style="padding:2rem;margin-bottom:2rem;border-left:4px solid var(--blue)">
+    <h2 style="margin-bottom:1rem">MIT License</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem">All EmbeddedOS repositories are licensed under the MIT License:</p>
+    <pre style="background:var(--bg-card);padding:1.5rem;border-radius:8px;font-size:0.85rem;overflow-x:auto;border:1px solid var(--border-color)">MIT License
+
+Copyright (c) 2024–2026 Embedded Operating Systems Research Foundation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+  </div>
+
+  <div class="card" style="padding:2rem;margin-bottom:2rem">
+    <h2 style="margin-bottom:1rem">Repositories Under MIT License</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem">
+      <a href="https://github.com/embeddedos-org/EoS" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">EoS Kernel</a>
+      <a href="https://github.com/embeddedos-org/eBoot" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eBoot</a>
+      <a href="https://github.com/embeddedos-org/eIPC" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eIPC</a>
+      <a href="https://github.com/embeddedos-org/ebuild" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">ebuild</a>
+      <a href="https://github.com/embeddedos-org/eAI" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eAI</a>
+      <a href="https://github.com/embeddedos-org/eNI" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eNI</a>
+      <a href="https://github.com/embeddedos-org/EoSim" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">EoSim</a>
+      <a href="https://github.com/embeddedos-org/EoStudio" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">EoStudio</a>
+      <a href="https://github.com/embeddedos-org/eApps" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eApps</a>
+      <a href="https://github.com/embeddedos-org/eOffice" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eOffice</a>
+      <a href="https://github.com/embeddedos-org/eBrowser" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eBrowser</a>
+      <a href="https://github.com/embeddedos-org/eDB" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eDB</a>
+      <a href="https://github.com/embeddedos-org/eosllm" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eosllm</a>
+      <a href="https://github.com/embeddedos-org/eos-aero" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eos-aero</a>
+      <a href="https://github.com/embeddedos-org/eos-health" target="_blank" rel="noopener" style="padding:0.75rem;background:var(--bg-card);border-radius:6px;border:1px solid var(--border-color);text-decoration:none;color:var(--blue);font-size:0.9rem">eos-health</a>
+    </div>
+  </div>
+
+  <div class="card" style="padding:2rem;margin-bottom:2rem">
+    <h2 style="margin-bottom:1rem">Third-Party Licenses</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem">EmbeddedOS may incorporate third-party components with compatible open-source licenses. Each repository's <code style="background:var(--bg-card);padding:0.2em 0.4em;border-radius:4px">NOTICE</code> file lists all third-party attributions.</p>
+    <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">View on GitHub →</a>
+  </div>
+
+  <div class="card" style="padding:2rem;background:var(--blue-dim);border-color:var(--blue)">
+    <h2 style="margin-bottom:0.5rem">Patent Notice</h2>
+    <p style="color:var(--text-secondary)">Two provisional patent applications are pending for health monitoring technology (U.S. App. No. 64/073,334 and 64/076,078). The MIT license does not grant any patent rights. See <a href="/patents.html" style="color:var(--blue)">patents.html</a> for details.</p>
+  </div>
 </div>
-</div>
-</header><main id="main-content"><section aria-labelledby="hero-licenses" class="product-hero"><div class="container"><nav aria-label="Breadcrumb" class="breadcrumb"><a href="index.html">Home</a> · <span>Open Source Licenses</span></nav><span class="lang-badge"><span class="dot"></span>Last updated: 2026-05-12</span><h1 id="hero-licenses">Open Source Licenses</h1><p class="lede">The licenses governing each EmbeddedOS open-source project, third-party attributions, and trademark guidelines.</p></div></section><section class="section"><div class="container" style="max-width: 820px;"><article class="prose"><h2>EmbeddedOS open-source licenses</h2><p>Most EmbeddedOS projects are licensed under the <strong>Apache License, Version 2.0</strong>. Some legacy / vendor-derived components carry additional licenses; the canonical license file in each repository is authoritative.</p><h2>Project license overview</h2><table class="repo-tag-table" style="width:100%; border-collapse: collapse;"><thead><tr style="text-align:left; border-bottom: 2px solid var(--border-color);"><th scope="col" style="padding: 10px 8px;">Project</th><th scope="col" style="padding: 10px 8px;">License</th><th scope="col" style="padding: 10px 8px;">Repository</th></tr></thead><tbody><tr><td>EoS (RTOS)</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eos" rel="noopener noreferrer" target="_blank">embeddedos-org/eos</a></td></tr><tr><td>eos-platform</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eos-platform" rel="noopener noreferrer" target="_blank">embeddedos-org/eos-platform</a></td></tr><tr><td>eBootloader</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eboot" rel="noopener noreferrer" target="_blank">embeddedos-org/eboot</a></td></tr><tr><td>eBuild</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/ebuild" rel="noopener noreferrer" target="_blank">embeddedos-org/ebuild</a></td></tr><tr><td>EAI</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eai" rel="noopener noreferrer" target="_blank">embeddedos-org/eai</a></td></tr><tr><td>ENI</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eni" rel="noopener noreferrer" target="_blank">embeddedos-org/eni</a></td></tr><tr><td>EIPC</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eipc" rel="noopener noreferrer" target="_blank">embeddedos-org/eipc</a></td></tr><tr><td>eApps</td><td>MIT (per-app may vary)</td><td><a href="https://github.com/embeddedos-org/eApps" rel="noopener noreferrer" target="_blank">embeddedos-org/eApps</a></td></tr><tr><td>EoSim</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eosim" rel="noopener noreferrer" target="_blank">embeddedos-org/eosim</a></td></tr><tr><td>EoStudio</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eostudio" rel="noopener noreferrer" target="_blank">embeddedos-org/eostudio</a></td></tr><tr><td>eDB</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/edb" rel="noopener noreferrer" target="_blank">embeddedos-org/edb</a></td></tr><tr><td>eBowser</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/ebowser" rel="noopener noreferrer" target="_blank">embeddedos-org/ebowser</a></td></tr><tr><td>eOffice</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eoffice" rel="noopener noreferrer" target="_blank">embeddedos-org/eoffice</a></td></tr><tr><td>eServiceApps</td><td>MIT</td><td><a href="https://github.com/embeddedos-org/eserviceapps" rel="noopener noreferrer" target="_blank">embeddedos-org/eserviceapps</a></td></tr></tbody></table><h2>Third-party attributions</h2><p>The site uses the following third-party assets and libraries:</p><ul><li><strong>Inter</strong> typeface by Rasmus Andersson — <a href="https://github.com/rsms/inter/blob/master/LICENSE.txt" rel="noopener noreferrer" target="_blank">SIL Open Font License 1.1</a>.</li><li><strong>Google Fonts CDN</strong> — service terms apply when fonts are loaded from fonts.googleapis.com.</li><li>Per-project third-party licenses are listed in the <code>THIRD_PARTY_NOTICES</code> file inside each repository.</li></ul><h2>Site content</h2><p>The textual content on www.embeddedos.org (excluding open-source code) is © EmbeddedOS Research Foundation and licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener noreferrer" target="_blank">CC BY 4.0</a> unless otherwise noted.</p><h2>Trademarks</h2><p>The EmbeddedOS, EoS, and project component names and associated logos are trademarks of the EmbeddedOS Research Foundation. See the <a href="terms.html#trademark">Trademark Guidelines</a>.</p><h2>Reporting a license issue</h2><p>If you believe a license header is missing, incorrect, or inconsistent in any project, please email <a href="mailto:legal@embeddedos.org">legal@embeddedos.org</a> or open an issue in the relevant repository.</p></article></div></section></main><footer class="footer" role="contentinfo">
+</main>
+
+<footer class="footer" role="contentinfo">
 <div class="footer-inner">
   <div class="footer-brand">
     <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
@@ -160,5 +268,8 @@
 <div class="footer-bottom">
   &copy; 2026 Embedded Operating Systems Research Foundation &bull; Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener" style="color:var(--blue)">MIT</a> &bull; 501(c)(3) Nonprofit &bull; <a href="/privacy.html" style="color:var(--text-muted)">Privacy</a> &bull; <a href="/terms.html" style="color:var(--text-muted)">Terms</a> &bull; <a href="https://github.com/embeddedos-org" style="color:var(--text-muted)">GitHub</a> &bull; Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted)">InterServer</a>
 </div>
-</footer><button aria-label="Scroll to top" class="scroll-top" type="button">↑</button> <script defer="" src="js/monitor.js"></script> <script defer="" src="js/main.js"></script> <script defer="" src="js/cookies.js"></script> <script defer="" src="js/search.js"></script>
-</body></html>
+</footer>
+<button class="scroll-top" aria-label="Scroll to top" type="button">↑</button>
+<script defer src="/js/main.js"></script>
+</body>
+</html>

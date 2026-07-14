@@ -183,11 +183,11 @@ jobs:
       - name: Run Lighthouse CI
         run: |
           lhci autorun \
-            --collect.url="https://embeddedos-org.github.io/www.embeddedos.org/" \
-            --collect.url="https://embeddedos-org.github.io/www.embeddedos.org/ecosystem.html" \
-            --collect.url="https://embeddedos-org.github.io/www.embeddedos.org/product-eos.html" \
-            --collect.url="https://embeddedos-org.github.io/www.embeddedos.org/about.html" \
-            --collect.url="https://embeddedos-org.github.io/www.embeddedos.org/contact.html" \
+            --collect.url="https://www.embeddedos.org/" \
+            --collect.url="https://www.embeddedos.org/ecosystem.html" \
+            --collect.url="https://www.embeddedos.org/product-eos.html" \
+            --collect.url="https://www.embeddedos.org/about.html" \
+            --collect.url="https://www.embeddedos.org/contact.html" \
             --collect.numberOfRuns=1 \
             --collect.settings.chromeFlags="--no-sandbox --headless" \
             --collect.settings.preset="desktop" \

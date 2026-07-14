@@ -1,92 +1,182 @@
 <!DOCTYPE html>
-
-<html lang="en"><head>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="EmbeddedOS Foundation — Future Research Directions — EmbeddedOS Foundation. Open-source embedded OS, neural interfaces, and AI-powered edge computing." name="description"/>
-<meta charset="utf-8"/><meta content="#0066cc" name="theme-color"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="robots"/><meta content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" name="googlebot"/><meta content="index,follow" name="bingbot"/><meta content="general" name="rating"/><meta content="telephone=no" name="format-detection"><meta content="en_US" property="og:locale"><meta content="summary_large_image" name="twitter:card"/><meta content="@embeddedos" name="twitter:site"/><meta content="Future Research Directions — EmbeddedOS Foundation" name="twitter:title"/><meta content="Open research directions at the EmbeddedOS Foundation: neuromorphic compute, quantum-resilient IPC, autonomous swarm OS, and more." name="twitter:description"/><meta content="https://www.embeddedos.org/og-image.png" name="twitter:image"/><meta content="EmbeddedOS Research Foundation — open-source embedded AI systems stack" property="og:image:alt"/><meta content="@EmbeddedOS_ORG" name="twitter:site"/><meta content="@EmbeddedOS_ORG" name="twitter:creator"/><link href="rss.xml" rel="alternate" title="EmbeddedOS Newsroom" type="application/rss+xml"/><link href="manifest.json" rel="manifest"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet"/><meta content="Open research directions at the EmbeddedOS Foundation: neuromorphic compute, quantum-resilient IPC, autonomous swarm OS, and more." name="description"/><title>Future Research Directions — EmbeddedOS Foundation</title>
-<link href="favicon.svg" rel="icon" type="image/svg+xml"/><link href="css/style.v7.css" rel="stylesheet"><meta content="Future Research — EmbeddedOS Foundation" property="og:title"/><meta content="Open research directions at the EmbeddedOS Foundation: neuromorphic compute, quantum-resilient IPC, autonomous swarm OS, and more." property="og:description"/><meta content="website" property="og:type"/><link href="https://www.embeddedos.org/future-research" rel="canonical"/><link href="img/logo.svg" rel="apple-touch-icon"/> <link href="https://www.embeddedos.org/future-research.html" rel="canonical"/>
-</link></meta></meta>  <link rel="stylesheet" href="/css/theme-light.css"/>
-  <script defer src="/js/site-chrome.js"></script>
-<style>
-/* ── Upgraded nav: mega-menu, donate button, logo-sub ── */
-.logo-sub { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-muted); margin-left: 4px; display: block; line-height: 1; }
-.nav-donate-btn { background: #3fb950 !important; color: #fff !important; border: none !important; font-weight: 700; margin-left: 0.5rem; }
-.nav-donate-btn:hover { background: #56d364 !important; box-shadow: 0 0 16px rgba(63,185,80,0.4); }
-.nav-mega { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 0; min-width: 600px; padding: 1rem !important; }
-.mega-col { padding: 0 1rem; }
-.mega-col + .mega-col { border-left: 1px solid var(--border-color); }
-.mega-col-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
-.mega-col a { display: block; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
-/* ── Social GitHub icon ── */
-.social-github { color: var(--text-secondary) !important; }
-.social-github:hover { color: var(--text-primary) !important; }
-/* ── Footer Apache badge ── */
-.badge-blue { background: var(--blue-dim); color: var(--blue); }
-</style>
-</head><body class="page-future-research"><a class="skip-link" href="#main-content">Skip to main content</a><header class="navbar">
-<div class="brand-bar">
-<div class="nav-container">
-<a aria-label="EmbeddedOS Home" class="logo" href="/">
-<div class="logo-icon">EoS</div>
-<span class="logo-text">Embedded<span>OS</span></span>
-</a>
-<nav aria-label="Main navigation">
-<ul class="nav-links" id="nav-links" role="menubar">
-<li role="none"><a href="news.html" role="menuitem">News</a></li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="research.html" role="menuitem">Research <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="research.html" role="menuitem">Neural Link Architecture</a></li>
-<li role="none"><a href="roadmap.html" role="menuitem">Roadmap</a></li>
-<li role="none"><a href="changelog.html" role="menuitem">Changelog</a></li>
-<li role="none"><a href="neural-link-ai.html" role="menuitem">Neural Link &amp; AI Integration</a></li>
-<li role="none"><a href="ai-os.html" role="menuitem">AI Operating Systems</a></li>
-<li role="none"><a href="building-os.html" role="menuitem">Building OS with Linux/RTOS</a></li>
-<li role="none"><a href="future-research.html" role="menuitem">Future Research</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="membership.html" role="menuitem">Programs <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="membership.html" role="menuitem">Membership</a></li>
-<li role="none"><a href="certification.html" role="menuitem">Certification</a></li>
-<li role="none"><a href="internship.html" role="menuitem">Internship</a></li>
-<li role="none"><a href="careers.html" role="menuitem">Careers</a></li>
-</ul>
-</li>
-<li class="has-dropdown" role="none">
-<a aria-expanded="false" aria-haspopup="true" href="products.html" role="menuitem">Products <span aria-hidden="true" class="nav-caret">▾</span></a>
-<ul class="dropdown-menu" role="menu">
-<li role="none"><a href="product-eos.html" role="menuitem">EoS (RTOS)</a></li>
-<li role="none"><a href="product-eos-platform.html" role="menuitem">eos-platform</a></li>
-<li role="none"><a href="product-eboot.html" role="menuitem">eBootloader</a></li>
-<li role="none"><a href="product-ebuild.html" role="menuitem">eBuild</a></li>
-<li role="none"><a href="product-eai.html" role="menuitem">EAI</a></li>
-<li role="none"><a href="product-eni.html" role="menuitem">ENI</a></li>
-<li role="none"><a href="product-eipc.html" role="menuitem">EIPC</a></li>
-<li role="none"><a href="product-eapps.html" role="menuitem">eApps</a></li>
-<li role="none"><a href="product-eosim.html" role="menuitem">EoSim</a></li>
-<li role="none"><a href="product-eostudio.html" role="menuitem">EoStudio</a></li>
-<li role="none"><a href="product-edb.html" role="menuitem">eDB</a></li>
-<li role="none"><a href="product-ebowser.html" role="menuitem">eBowser</a></li>
-<li role="none"><a href="product-eoffice.html" role="menuitem">eOffice</a></li>
-<li role="none"><a href="product-eserviceapps.html" role="menuitem">eServiceApps</a></li>
-</ul>
-</li>
-<li role="none"><a href="ecosystem.html" role="menuitem">Ecosystem</a></li>
-<li role="none"><a href="about.html" role="menuitem">About</a></li>
-<li role="none"><a href="security.html" role="menuitem">Security</a></li>
-<li role="none"><a href="contact.html" role="menuitem">Contact</a></li>
-<li role="none"><a class="nav-cta nav-cta--donate" href="donate.html#donate-now" role="menuitem" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 16px rgba(16,185,129,.35);margin-right:.4rem;">&#9829; Donate</a></li><li role="none"><a class="nav-cta" href="membership.html" role="menuitem">Join Now</a></li>
-</ul>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Research — EmbeddedOS</title>
+<meta name="description" content="Long-term research directions for the EmbeddedOS ecosystem.">
+<meta property="og:url" content="https://www.embeddedos.org/future-research.html">
+<meta name="twitter:domain" content="www.embeddedos.org">
+<link rel="canonical" href="https://www.embeddedos.org/future-research.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+<div class="nav-inner">
+  <a href="/index.html" class="logo">
+    <span class="logo-icon">EoS</span>
+    <span>EmbeddedOS</span>
+    <span class="logo-sub">OPEN SOURCE · NONPROFIT</span>
+  </a>
+  <button class="nav-toggle" id="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="nav-links-panel">
+    <!-- Projects mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Projects</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Core OS</div>
+          <a href="/docs/eos.html">EoS Kernel</a>
+          <a href="/docs/eboot.html">eBoot Bootloader</a>
+          <a href="/docs/eipc.html">eIPC</a>
+          <a href="/docs/ebuild.html">ebuild</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">AI &amp; Neural</div>
+          <a href="/docs/eai.html">eAI</a>
+          <a href="/docs/eni.html">eNI Neural Interface</a>
+          <a href="/ai-os.html">AI-OS</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Dev Tools</div>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim Simulator</a>
+          <a href="/stacks/index.html">Stacks</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Aerospace</div>
+          <a href="/aerospace.html">AeroSwift Personal</a>
+          <a href="/aerospace.html">AeroSwift Transit</a>
+          <a href="https://github.com/embeddedos-org/eos-aero" target="_blank" rel="noopener">eos-aero ↗</a>
+        </div>
+      </div>
+    </details>
+    <!-- Products mega-menu -->
+    <details class="nav-dropdown">
+      <summary>Products</summary>
+      <div class="nav-dropdown__menu nav-mega">
+        <div class="mega-col">
+          <div class="mega-col-title">Applications</div>
+          <a href="/eApps/index.html">eApps Store</a>
+          <a href="/docs/eostudio.html">EoStudio IDE</a>
+          <a href="/docs/eosim.html">EoSim</a>
+          <a href="/docs/eoffice.html">eOffice Suite</a>
+          <a href="/docs/ebrowser.html">eBrowser</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Health Devices</div>
+          <a href="/health.html">HEALTH-KEY ULTRA</a>
+          <a href="/health.html">HEALTH-BAND Neuro</a>
+          <a href="/health.html">HEALTH-RING</a>
+          <a href="/health.html">HEALTH-LAB</a>
+        </div>
+        <div class="mega-col">
+          <div class="mega-col-title">Hardware</div>
+          <a href="/hardware-lab.html">Hardware Lab</a>
+          <a href="/stacks/index.html">Technology Stacks</a>
+          <a href="/ecosystem.html">Ecosystem Map</a>
+        </div>
+      </div>
+    </details>
+    <!-- Foundation -->
+    <details class="nav-dropdown">
+      <summary>Foundation</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/donate.html">Donate</a>
+        <a href="/membership.html">Membership</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/research.html">Research</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/news.html">News</a>
+      </div>
+    </details>
+    <!-- Docs -->
+    <details class="nav-dropdown">
+      <summary>Docs</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/getting-started.html">Getting Started</a>
+        <a href="/docs/index.html">Documentation</a>
+        <a href="/books.html">Books (14)</a>
+        <a href="/flow.html">eFlow</a>
+        <a href="/hardware-lab.html">Hardware Lab</a>
+        <a href="/kids.html">Kids Edition</a>
+      </div>
+    </details>
+    <!-- Community -->
+    <details class="nav-dropdown">
+      <summary>Community</summary>
+      <div class="nav-dropdown__menu">
+        <a href="/get-involved.html">Get Involved</a>
+        <a href="https://github.com/embeddedos-org/eos/discussions" target="_blank" rel="noopener">Discussions ↗</a>
+        <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://x.com/EmbeddedOS_ORG" target="_blank" rel="noopener">X / Twitter ↗</a>
+      </div>
+    </details>
+    <a href="https://github.com/embeddedos-org" class="nav-github" target="_blank" rel="noopener">GitHub</a>
+    <button class="nav-search-btn" onclick="EosSearch && EosSearch.open()" aria-label="Search" title="Search (/)">&#128269;</button>
+    <a href="/donate.html" class="btn btn-green btn-sm nav-donate-btn">&#9829; Donate</a>
+  </div>
+</div>
 </nav>
-<button aria-controls="nav-links" aria-expanded="false" aria-label="Toggle navigation menu" class="mobile-menu-btn" type="button"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+
+<main id="main-content" class="page-content">
+<div class="container" style="max-width:960px;padding:4rem 1.5rem">
+  <h1 class="page-title" style="font-size:2.5rem;margin-bottom:0.5rem">Future Research Directions</h1>
+  <p class="page-subtitle" style="color:var(--text-secondary);margin-bottom:3rem">Long-term research goals and moonshot projects for the EmbeddedOS ecosystem.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:3rem">
+    <div class="card" style="padding:2rem">
+      <div style="font-size:2rem;margin-bottom:1rem">🔬</div>
+      <h3 style="margin-bottom:0.5rem">Formal Verification</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Formally verified context-switch path and memory safety proofs for the EoS kernel using Coq or Lean4. Target: IEC 61508 SIL-3 certification path for medical and aerospace applications.</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div style="font-size:2rem;margin-bottom:1rem">🧬</div>
+      <h3 style="margin-bottom:0.5rem">Closed-Loop Neural Interfaces</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Real-time closed-loop BCI systems: eNI reads neural signals, eAI classifies intent, EoS delivers stimulation feedback within 5ms. Applications: motor rehabilitation, prosthetics, and communication aids.</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div style="font-size:2rem;margin-bottom:1rem">🌐</div>
+      <h3 style="margin-bottom:0.5rem">Distributed Embedded OS</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">eIPC extended to cross-device communication: a cluster of microcontrollers running EoS as a single distributed system with shared memory, message passing, and fault tolerance.</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div style="font-size:2rem;margin-bottom:1rem">🚀</div>
+      <h3 style="margin-bottom:0.5rem">Space-Grade EoS</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Radiation-hardened EoS port for CubeSat and small satellite missions. Collaboration with university space programs to fly EoS on orbit by 2028.</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div style="font-size:2rem;margin-bottom:1rem">⚡</div>
+      <h3 style="margin-bottom:0.5rem">Sub-mW AI Inference</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Ultra-low-power neural network inference on energy-harvesting devices. Target: run a keyword-spotting model on a device powered entirely by ambient RF or solar energy.</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div style="font-size:2rem;margin-bottom:1rem">🔐</div>
+      <h3 style="margin-bottom:0.5rem">Post-Quantum Cryptography</h3>
+      <p style="color:var(--text-secondary);font-size:0.9rem">Integrate NIST-standardized post-quantum algorithms (ML-KEM, ML-DSA) into eBoot and eIPC for quantum-resistant secure boot and inter-process communication.</p>
+    </div>
+  </div>
+
+  <div class="card" style="padding:2rem;background:var(--blue-dim);border-color:var(--blue)">
+    <h2 style="margin-bottom:0.5rem">Contribute to Research</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem">If you are working on any of these research directions, we want to collaborate. Open a discussion on GitHub or email the research team.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener" class="btn btn-primary">GitHub Discussions →</a>
+      <a href="mailto:research@embeddedos.org" class="btn btn-secondary">research@embeddedos.org</a>
+    </div>
+  </div>
 </div>
-</div>
-</header><nav aria-label="Breadcrumb" class="breadcrumb"><a href="index.html">Home</a><span class="separator">›</span><a href="contact.html">Research</a><span class="separator">›</span><span class="current">Future Research</span></nav><main id="main-content"><section class="hero"><div aria-hidden="true" class="hero__orb hero__orb--2"></div>
-<div aria-hidden="true" class="hero__orb hero__orb--1"></div>
-<div aria-hidden="true" class="hero__grid"></div>
-<div aria-hidden="true" class="hero__bg"></div><div class="hero-container"><div class="hero-content section-header"><span class="badge badge-orange">FUTURE RESEARCH</span><h1 class="mt-2">Building Operating Systems <span>Autonomously</span></h1><p>Our vision for the future: Self-generating, self-optimizing operating systems that combine open-source foundations (Linux/RTOS), AI intelligence, neural link integration, and multi-layer security—all built autonomously through advanced AI.</p><div class="hero-buttons"><a class="btn btn-primary" href="#vision">Our Vision</a><a class="btn btn-secondary" href="#roadmap">Research Roadmap</a></div></div></div></section><section class="section section-white" id="vision"><div class="container"><div class="section-header"><span class="overline">The Future</span><h2>Autonomous OS Development</h2><p>Where we're heading: AI systems that design, build, and optimize operating systems</p></div><div class="two-col"><div class="two-col-content"><h3>The Next Frontier</h3><p>Imagine an AI system that can autonomously architect, develop, and deploy complete operating systems tailored for specific embedded applications. This is our long-term research vision.</p><p>By combining advances in large language models, code generation, formal verification, and neural-symbolic AI, we're working toward systems that can:</p><ul><li>Analyze hardware specifications and application requirements</li><li>Generate optimized kernel configurations automatically</li><li>Write and test device drivers with minimal human input</li><li>Integrate security layers based on threat modeling</li><li>Continuously optimize performance through AI feedback loops</li></ul><a class="btn btn-primary" href="donate.html">Support This Research</a></div><div class="two-col-image"><div class="research-img-wrap" style="position:relative;width:100%;border-radius:12px;overflow:hidden;background:#0a0a0a;aspect-ratio:16/9;max-height:380px"><img alt="Quantum computing array — future of embedded AI" decoding="async" height="680" loading="lazy" src="img/photos/res-future-1.svg" width="1200"/></div></div></div></div></section><section class="section section-gray"><div class="container"><div class="section-header"><span class="overline">Architecture</span><h2>Integrated Technology Stack</h2><p>Four pillars of autonomous OS development</p></div><div class="cards-grid cards-grid-4"><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="linuxGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><ellipse cx="24" cy="30" fill="url(#linuxGrad)" rx="14" ry="12"></ellipse><ellipse cx="24" cy="18" fill="url(#linuxGrad)" rx="10" ry="10"></ellipse><circle cx="20" cy="16" fill="#1a1a2e" r="2"></circle><circle cx="28" cy="16" fill="#1a1a2e" r="2"></circle><ellipse cx="24" cy="21" fill="#FF8A65" rx="3" ry="2"></ellipse><ellipse cx="16" cy="38" fill="#FFD54F" rx="4" ry="3"></ellipse><ellipse cx="32" cy="38" fill="#FFD54F" rx="4" ry="3"></ellipse></svg></div></div><div class="card-content"><h3>Open Source Foundation</h3><p>Building on proven open-source platforms like Linux kernel and FreeRTOS, extending them with AI-driven enhancements.</p><ul class="mt-2"><li>Linux Kernel customization</li><li>RTOS variants (FreeRTOS, Zephyr)</li><li>Yocto/Buildroot integration</li><li>Open hardware support</li></ul></div></div><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="robotGrad1" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><rect fill="url(#robotGrad1)" height="24" rx="4" width="28" x="10" y="14"></rect><rect fill="url(#robotGrad1)" height="8" rx="2" width="12" x="18" y="6"></rect><circle cx="24" cy="10" fill="#fff" r="2"></circle><circle cx="18" cy="24" fill="#fff" r="4"></circle><circle cx="30" cy="24" fill="#fff" r="4"></circle><circle cx="18" cy="24" fill="#1a1a2e" r="2"></circle><circle cx="30" cy="24" fill="#1a1a2e" r="2"></circle><rect fill="#fff" height="3" rx="1.5" width="12" x="18" y="32"></rect><rect fill="url(#robotGrad1)" height="10" rx="2" width="6" x="4" y="20"></rect><rect fill="url(#robotGrad1)" height="10" rx="2" width="6" x="38" y="20"></rect></svg></div></div><div class="card-content"><h3>AI-Driven Development</h3><p>Leveraging AI to automate OS component generation, optimization, and testing workflows.</p><ul class="mt-2"><li>LLM-based code generation</li><li>Automated driver synthesis</li><li>AI-guided optimization</li><li>Self-healing systems</li></ul></div></div><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="brainGrad1" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M24 6C16 6 10 12 10 20C10 24 12 28 14 30C14 34 16 38 20 40C22 42 26 42 28 40C32 38 34 34 34 30C36 28 38 24 38 20C38 12 32 6 24 6Z" fill="url(#brainGrad1)"></path><path d="M24 10C20 10 16 14 18 18C14 18 14 24 18 26C16 28 18 32 22 32C22 36 28 36 28 32C32 32 34 28 32 26C36 24 36 18 32 18C34 14 30 10 24 10Z" fill="#fff" fill-opacity="0.3"></path><path d="M20 18C20 20 22 22 24 22C26 22 28 20 28 18" stroke="#fff" stroke-linecap="round" stroke-width="2"></path><path d="M16 24C18 26 22 26 24 24C26 26 30 26 32 24" stroke="#fff" stroke-linecap="round" stroke-width="2"></path><circle cx="18" cy="20" fill="#fff" r="2"></circle><circle cx="30" cy="20" fill="#fff" r="2"></circle><circle cx="24" cy="28" fill="#fff" r="2"></circle></svg></div></div><div class="card-content"><h3>Neural Link Integration</h3><p>Native support for neural interfaces, enabling direct brain-to-OS communication pathways.</p><ul class="mt-2"><li>Neural signal processing</li><li>Intent recognition APIs</li><li>Bidirectional feedback</li><li>Adaptive calibration</li></ul></div></div><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="lockGrad1" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><rect fill="url(#lockGrad1)" height="22" rx="4" width="28" x="10" y="20"></rect><path d="M16 20V14C16 9.58 19.58 6 24 6C28.42 6 32 9.58 32 14V20" fill="none" stroke="url(#lockGrad1)" stroke-linecap="round" stroke-width="4"></path><circle cx="24" cy="30" fill="#fff" r="4"></circle><rect fill="#fff" height="6" rx="1" width="4" x="22" y="32"></rect></svg></div></div><div class="card-content"><h3>Security-First Design</h3><p>Multi-layer security architecture embedded from the ground up, not bolted on afterward.</p><ul class="mt-2"><li>Hardware root of trust</li><li>Secure boot chain</li><li>Runtime attestation</li><li>AI anomaly detection</li></ul></div></div></div></div></section><section class="section section-white"><div class="container"><div class="section-header"><span class="overline">Process</span><h2>Autonomous OS Generation Pipeline</h2><p>From requirements to deployed system—autonomously</p></div><div class="neural-diagram"><div class="diagram-title"><h3>AI-Driven OS Development Flow</h3></div><div class="diagram-layers"><div class="diagram-layer"><div class="layer-number">1</div><div class="layer-content"><h4>Requirements Analysis</h4><p>AI analyzes hardware specs and application needs via EoS YAML configuration, defining performance targets, layers (core, BSP, distro, vendor, product), and security requirements</p></div></div><div class="diagram-layer"><div class="layer-number">2</div><div class="layer-content"><h4>Architecture Design</h4><p>Automated selection of kernel type (Linux/RTOS), subsystem configuration, and component architecture</p></div></div><div class="diagram-layer"><div class="layer-number">3</div><div class="layer-content"><h4>Code Generation</h4><p>LLM-based generation of device drivers, HAL implementations, and application interfaces using the Ninja build backend for fast incremental compilation</p></div></div><div class="diagram-layer"><div class="layer-number">4</div><div class="layer-content"><h4>Security Integration (EIPC)</h4><p>EIPC secure IPC integration with capability-based auth, audit logging, replay protection, and priority lanes for access control</p></div></div><div class="diagram-layer"><div class="layer-number">5</div><div class="layer-content"><h4>Neural Link Binding (ENI)</h4><p>Integration of ENI (Neural Interface Adapter) drivers — ENI-Min for edge real-time and ENI-Framework for industrial — with signal processing pipelines and AI intent recognition</p></div></div><div class="diagram-layer"><div class="layer-number">6</div><div class="layer-content"><h4>Testing &amp; Verification</h4><p>Automated unit testing, integration testing, formal verification, and security auditing</p></div></div><div class="diagram-layer"><div class="layer-number">7</div><div class="layer-content"><h4>Deployment &amp; Optimization</h4><p>Automated deployment, continuous monitoring, and AI-driven runtime optimization</p></div></div></div></div></div></section><section class="section section-gray"><div class="container"><div class="section-header"><span class="overline">Focus Areas</span><h2>Active Research Directions</h2><p>Key challenges we're working to solve</p></div><div class="cards-grid cards-grid-3"><div class="feature-card"><div class="feature-icon"><svg aria-hidden="true" fill="none" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="dnaGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M12 4C12 4 16 8 20 8C24 8 28 4 28 4" stroke="url(#dnaGrad)" stroke-linecap="round" stroke-width="3"></path><path d="M12 12C12 12 16 16 20 16C24 16 28 12 28 12" stroke="url(#dnaGrad)" stroke-linecap="round" stroke-width="3"></path><path d="M12 20C12 20 16 24 20 24C24 24 28 20 28 20" stroke="url(#dnaGrad)" stroke-linecap="round" stroke-width="3"></path><path d="M12 28C12 28 16 32 20 32C24 32 28 28 28 28" stroke="url(#dnaGrad)" stroke-linecap="round" stroke-width="3"></path><path d="M12 36C12 36 16 40 20 40C24 40 28 36 28 36" stroke="url(#dnaGrad)" stroke-linecap="round" stroke-width="3"></path><line stroke="url(#dnaGrad)" stroke-width="2" x1="12" x2="12" y1="4" y2="36"></line><line stroke="url(#dnaGrad)" stroke-width="2" x1="28" x2="28" y1="4" y2="36"></line></svg></div><h3>AI Code Synthesis</h3><p>Training specialized models to generate correct, efficient, and secure systems code from high-level specifications.</p></div><div class="feature-card"><div class="feature-icon"><svg aria-hidden="true" fill="none" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="checkGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><circle cx="20" cy="20" fill="url(#checkGrad)" r="18"></circle><path d="M12 20L17 25L28 14" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path></svg></div><h3>Formal Verification</h3><p>Automated proof generation to mathematically verify correctness and security properties of generated code.</p></div><div class="feature-card"><div class="feature-icon"><svg aria-hidden="true" fill="none" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="refreshGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M20 6C12.27 6 6 12.27 6 20H2L8 28L14 20H10C10 14.48 14.48 10 20 10C22.76 10 25.26 11.12 27.07 12.93L29.9 10.1C27.35 7.55 23.85 6 20 6Z" fill="url(#refreshGrad)"></path><path d="M20 34C27.73 34 34 27.73 34 20H38L32 12L26 20H30C30 25.52 25.52 30 20 30C17.24 30 14.74 28.88 12.93 27.07L10.1 29.9C12.65 32.45 16.15 34 20 34Z" fill="url(#refreshGrad)"></path></svg></div><h3>Self-Optimization</h3><p>Runtime systems that continuously profile, analyze, and optimize their own performance autonomously.</p></div><div class="feature-card"><div class="feature-icon"><svg aria-hidden="true" fill="none" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="shieldGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M20 2L4 8V18C4 27.55 10.84 36.37 20 38C29.16 36.37 36 27.55 36 18V8L20 2Z" fill="url(#shieldGrad)"></path><path d="M20 6L8 10.5V18C8 25.12 13.24 31.68 20 33.5C26.76 31.68 32 25.12 32 18V10.5L20 6Z" fill="#fff" fill-opacity="0.2"></path><path d="M14 20L18 24L26 16" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg></div><h3>Adversarial Security</h3><p>AI systems that anticipate attacks, generate defenses, and adapt security measures in real-time.</p></div><div class="feature-card"><div class="feature-icon"><svg aria-hidden="true" fill="none" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="linkGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M16 24L24 16" stroke="url(#linkGrad)" stroke-linecap="round" stroke-width="4"></path><path d="M22 10L26 6C28.5 3.5 32.5 3.5 35 6C37.5 8.5 37.5 12.5 35 15L31 19" stroke="url(#linkGrad)" stroke-linecap="round" stroke-width="4"></path><path d="M18 30L14 34C11.5 36.5 7.5 36.5 5 34C2.5 31.5 2.5 27.5 5 25L9 21" stroke="url(#linkGrad)" stroke-linecap="round" stroke-width="4"></path><circle cx="26" cy="14" fill="url(#linkGrad)" r="3"></circle><circle cx="14" cy="26" fill="url(#linkGrad)" r="3"></circle></svg></div><h3>Hardware-Software Co-Design</h3><p>Jointly optimizing hardware architectures and software systems through unified AI models.</p></div><div class="feature-card"><div class="feature-icon"><svg aria-hidden="true" fill="none" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="brainGrad2" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M20 4C13 4 8 9 8 16C8 19 9.5 22 11.5 24C11.5 27 13 30 16 32C17.5 34 21 34 23 32C26 30 27.5 27 27.5 24C29.5 22 31 19 31 16C31 9 26 4 20 4Z" fill="url(#brainGrad2)"></path><path d="M20 8C16.5 8 14 11 15.5 14C12.5 14 12.5 18 15.5 20C14 21.5 15.5 24.5 18.5 24.5C18.5 27.5 23 27.5 23 24.5C26 24.5 27.5 21.5 26 20C29 18 29 14 26 14C27.5 11 25 8 20 8Z" fill="#fff" fill-opacity="0.3"></path><circle cx="16" cy="16" fill="#fff" r="2"></circle><circle cx="24" cy="16" fill="#fff" r="2"></circle><circle cx="20" cy="22" fill="#fff" r="2"></circle><path d="M14 34L12 38" stroke="url(#brainGrad2)" stroke-linecap="round" stroke-width="2"></path><path d="M20 35L20 39" stroke="url(#brainGrad2)" stroke-linecap="round" stroke-width="2"></path><path d="M26 34L28 38" stroke="url(#brainGrad2)" stroke-linecap="round" stroke-width="2"></path></svg></div><h3>Neural-OS Symbiosis</h3><p>Deep integration where neural signals and OS operations form a seamless, bidirectional system.</p></div></div></div></section><section class="section section-white" id="roadmap"><div class="container"><div class="section-header"><span class="overline">Timeline</span><h2>Research Roadmap</h2><p>Our multi-year journey toward autonomous OS development</p></div><table class="data-table"><thead><tr><th scope="col">Phase</th><th scope="col">Timeline</th><th scope="col">Goals</th><th scope="col">Status</th></tr></thead><tbody><tr><td>Phase 1: Foundation</td><td>2025-2026</td><td>Establish EoS build system and eBootloader secure boot chain, initial AI code generation experiments, EIPC security framework</td><td><span class="badge badge-green">Active</span></td></tr><tr><td>Phase 2: AI Integration</td><td>2026-2027</td><td>EAI (AI Layer) integration with EAI-Min edge runtime, LLM-assisted driver generation, ENI neural link prototypes</td><td><span class="badge badge-blue">Planned</span></td></tr><tr><td>Phase 3: Autonomy</td><td>2027-2028</td><td>End-to-end autonomous OS generation with EoS + Ninja backend, ENI-Framework industrial deployment, formal verification</td><td><span class="badge badge-blue">Planned</span></td></tr><tr><td>Phase 4: Scale</td><td>2028-2029</td><td>Full EIPC production deployment, EAI-Framework industrial connectors (MQTT, OPC-UA, CAN), commercial pilots</td><td><span class="badge badge-blue">Planned</span></td></tr><tr><td>Phase 5: Ecosystem</td><td>2029+</td><td>Open platform for autonomous OS development, industry adoption, cross-platform standards (ARM/x86/RISC-V)</td><td><span class="badge badge-blue">Vision</span></td></tr></tbody></table></div></section><section class="section section-gray"><div class="container"><div class="two-col"><div class="two-col-image"><div class="research-img-wrap" style="position:relative;width:100%;border-radius:12px;overflow:hidden;background:#0a0a0a;aspect-ratio:16/9;max-height:380px"><img alt="Microcontroller close-up — research substrate" height="680" loading="lazy" src="img/photos/res-future-2.svg" width="1200"/></div></div><div class="two-col-content"><span class="overline">Our Commitment</span><h2>100% Open Source</h2><p>All research outputs from this initiative will be released as open source. We believe that the future of autonomous OS development must be built collaboratively and transparently.</p><ul><li>All code under permissive licenses (MIT, MIT, BSD-3-Clause)</li><li>Research papers published openly</li><li>Training data and models shared with community</li><li>Open governance through the foundation</li></ul><p>Your donations directly fund this open research. Every contribution helps advance the state of the art and keeps it accessible to everyone.</p><a class="btn btn-primary" href="donate.html">Support Open Research</a></div></div></div></section><section class="section section-white"><div class="container"><div class="section-header"><span class="overline">Participate</span><h2>Get Involved in Future Research</h2><p>Multiple ways to contribute to this vision</p></div><div class="cards-grid cards-grid-4"><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="moneyGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><circle cx="24" cy="26" fill="url(#moneyGrad)" r="16"></circle><circle cx="24" cy="26" fill="none" r="12" stroke="#fff" stroke-width="2"></circle><text fill="#fff" font-size="16" font-weight="bold" text-anchor="middle" x="24" y="32">$</text><circle cx="32" cy="18" fill="url(#moneyGrad)" r="8"></circle><circle cx="32" cy="18" fill="none" r="5" stroke="#fff" stroke-width="1.5"></circle><circle cx="16" cy="16" fill="url(#moneyGrad)" r="6"></circle><circle cx="16" cy="16" fill="none" r="4" stroke="#fff" stroke-width="1"></circle></svg></div></div><div class="card-content"><h3>Donate</h3><p>Fund cutting-edge research as a non-profit supporter.</p><a class="card-link" href="donate.html">Make a Donation →</a></div></div><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="scienceGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><path d="M18 6H30V18L36 32C37 35 35 38 32 38H16C13 38 11 35 12 32L18 18V6Z" fill="url(#scienceGrad)"></path><rect fill="url(#scienceGrad)" height="4" rx="1" width="16" x="16" y="4"></rect><path d="M20 18H28" stroke="#fff" stroke-linecap="round" stroke-width="2"></path><circle cx="22" cy="28" fill="#fff" fill-opacity="0.6" r="3"></circle><circle cx="28" cy="32" fill="#fff" fill-opacity="0.6" r="2"></circle><circle cx="20" cy="34" fill="#fff" fill-opacity="0.6" r="2"></circle><path d="M14 32H34" stroke="#fff" stroke-opacity="0.4" stroke-width="1.5"></path></svg></div></div><div class="card-content"><h3>Research</h3><p>Join as a research scientist or collaborating institution.</p><a class="card-link" href="careers.html">View Positions →</a></div></div><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="codeGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><rect fill="url(#codeGrad)" height="28" rx="3" width="40" x="4" y="10"></rect><rect fill="#1a1a2e" height="22" rx="2" width="36" x="6" y="12"></rect><path d="M16 20L10 26L16 32" stroke="#4FC3F7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path><path d="M32 20L38 26L32 32" stroke="#4FC3F7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path><path d="M26 18L22 34" stroke="#81C784" stroke-linecap="round" stroke-width="3"></path></svg></div></div><div class="card-content"><h3>Contribute</h3><p>Contribute code, documentation, or testing to our repos.</p><a class="card-link" href="https://github.com/embeddedos-org">GitHub →</a></div></div><div class="card"><div class="card-image"><div class="card-icon"><svg aria-hidden="true" fill="none" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="buildingGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" style="stop-"></stop><stop offset="100%" style="stop-"></stop></lineargradient></defs><rect fill="url(#buildingGrad)" height="28" width="16" x="8" y="14"></rect><rect fill="url(#buildingGrad)" height="34" width="16" x="24" y="8"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="11" y="18"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="17" y="18"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="11" y="26"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="17" y="26"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="11" y="34"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="17" y="34"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="27" y="12"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="33" y="12"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="27" y="20"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="33" y="20"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="27" y="28"></rect><rect fill="#fff" fill-opacity="0.7" height="4" width="4" x="33" y="28"></rect><rect fill="#4FC3F7" height="6" width="6" x="29" y="36"></rect></svg></div></div><div class="card-content"><h3>Partner</h3><p>Corporate partnerships for research collaboration.</p><a class="card-link" href="membership.html">Enterprise Membership →</a></div></div></div></div></section><section class="cta-section"><h2>Help Build the Future of Computing</h2><p>Your support enables groundbreaking research in autonomous OS development. Join us in shaping the next era of intelligent systems.</p><div class="cta-buttons"><a class="btn btn-dark" href="donate.html">Donate Now</a><a class="btn btn-secondary" href="membership.html">Become a Member</a></div></section></main><footer class="footer" role="contentinfo">
+</main>
+
+<footer class="footer" role="contentinfo">
 <div class="footer-inner">
   <div class="footer-brand">
     <h3 style="margin-bottom:0.5rem">EmbeddedOS</h3>
@@ -162,5 +252,8 @@
 <div class="footer-bottom">
   &copy; 2026 Embedded Operating Systems Research Foundation &bull; Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener" style="color:var(--blue)">MIT</a> &bull; 501(c)(3) Nonprofit &bull; <a href="/privacy.html" style="color:var(--text-muted)">Privacy</a> &bull; <a href="/terms.html" style="color:var(--text-muted)">Terms</a> &bull; <a href="https://github.com/embeddedos-org" style="color:var(--text-muted)">GitHub</a> &bull; Powered by <a href="https://www.interserver.net" target="_blank" rel="noopener" style="color:var(--text-muted)">InterServer</a>
 </div>
-</footer><button aria-label="Scroll to top" class="scroll-top" type="button">↑</button> <script defer="" src="js/monitor.js"></script> <script defer="" src="js/main.js"></script> <script defer="" src="js/forms.js"></script> <script defer="" src="js/cookies.js"></script> <script defer="" src="js/search.js"></script>
-</body></html>
+</footer>
+<button class="scroll-top" aria-label="Scroll to top" type="button">↑</button>
+<script defer src="/js/main.js"></script>
+</body>
+</html>

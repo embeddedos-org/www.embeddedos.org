@@ -89,7 +89,7 @@
         "color": "#64748b",
         "icon": "🌐",
         "description": "EmbeddedOS Foundation website, documentation portal, and community hub.",
-        "repos": ["embeddedos-org", "embeddedos-org.github.io", "www.embeddedos.org"]
+        "repos": ["embeddedos-org", "www.embeddedos.org", "www.embeddedos.org"]
       }
     ]
   },
@@ -670,9 +670,9 @@
       ]
     },
     {
-      "id": "embeddedos-org.github.io",
+      "id": "www.embeddedos.org",
       "name": "EmbeddedOS GitHub Pages",
-      "repo": "embeddedos-org/embeddedos-org.github.io",
+      "repo": "embeddedos-org/www.embeddedos.org",
       "stage": 9,
       "version": "1.2.0",
       "description": "GitHub Pages site for the EmbeddedOS organization — developer documentation, API references, and project guides.",
@@ -691,7 +691,7 @@
         }
       },
       "books": [
-        { "title": "EmbeddedOS Developer Guide", "type": "PDF", "url": "https://embeddedos-org.github.io/developer-guide.pdf", "pages": 156, "description": "Complete developer onboarding guide: setting up the build chain, contributing to repos, and deploying apps." }
+        { "title": "EmbeddedOS Developer Guide", "type": "PDF", "url": "https://www.embeddedos.org/docs/developer-guide.pdf", "pages": 156, "description": "Complete developer onboarding guide: setting up the build chain, contributing to repos, and deploying apps." }
       ]
     },
     {

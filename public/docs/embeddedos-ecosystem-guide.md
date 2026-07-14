@@ -50,7 +50,7 @@ license: "MIT"
   - [Chapter 18: Cross-Product Integration](#chapter-18-cross-product-integration)
 - **Part VI: Organization**
   - [Chapter 19: Governance and Contribution Model](#chapter-19-governance-and-contribution-model)
-  - [Chapter 20: embeddedos-org.github.io — The Documentation Hub](#chapter-20-embeddedos-orggithubio--the-documentation-hub)
+  - [Chapter 20: www.embeddedos.org — The Documentation Hub](#chapter-20-embeddedos-orggithubio--the-documentation-hub)
 - [Appendix A: Repository Quick Reference](#appendix-a-repository-quick-reference)
 - [Appendix B: Technology Stack Summary](#appendix-b-technology-stack-summary)
 - [Appendix C: Getting Started Guide](#appendix-c-getting-started-guide)
@@ -2044,11 +2044,11 @@ All repositories are released under the **MIT License**.
 
 ---
 
-## Chapter 20: embeddedos-org.github.io -- The Documentation Hub
+## Chapter 20: www.embeddedos.org -- The Documentation Hub
 
 ### Overview
 
-**Repository:** `embeddedos-org/embeddedos-org.github.io`
+**Repository:** `embeddedos-org/www.embeddedos.org`
 **Technology:** GitHub Pages, Markdown, Jekyll/Hugo
 **License:** MIT
 **Status:** Active
@@ -2070,7 +2070,7 @@ entire EmbeddedOS ecosystem, aggregating docs from all 16 repositories.
 ### Site Structure
 
 ```
-embeddedos-org.github.io/
+www.embeddedos.org/
 |-- index.html                  # Landing page
 |-- docs/
 |   |-- eos/                    # eos documentation
@@ -2098,8 +2098,8 @@ embeddedos-org.github.io/
 ### Getting Started
 
 ```bash
-git clone https://github.com/embeddedos-org/embeddedos-org.github.io.git
-cd embeddedos-org.github.io
+git clone https://github.com/embeddedos-org/www.embeddedos.org.git
+cd www.embeddedos.org
 bundle install
 bundle exec jekyll serve --livereload
 # Visit http://localhost:4000
@@ -2130,7 +2130,7 @@ bundle exec jekyll serve --livereload
 | 13 | eApps | TypeScript/RN | Mobile app platform (React Native) | Active |
 | 14 | EoSim | C++/Python | Hardware/software simulation | Active |
 | 15 | EoStudio | TypeScript | Integrated development environment | Active |
-| 16 | embeddedos-org.github.io | Markdown/HTML | Organization website and docs | Active |
+| 16 | www.embeddedos.org | Markdown/HTML | Organization website and docs | Active |
 
 ---
 
@@ -2272,8 +2272,8 @@ cd eHardware-Designs-Products
 kicad eRadar360/eRadar360.kicad_pro  # Requires KiCad 7+
 
 # Documentation Hub
-git clone https://github.com/embeddedos-org/embeddedos-org.github.io.git
-cd embeddedos-org.github.io
+git clone https://github.com/embeddedos-org/www.embeddedos.org.git
+cd www.embeddedos.org
 bundle install && bundle exec jekyll serve --livereload
 ```
 

@@ -1,9 +1,9 @@
 # EoS Website
 
-[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io)
-[![Build Status](https://img.shields.io/badge/Build-Passing-success?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io/actions)
-[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-success?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io)
-[![GPS API](https://img.shields.io/badge/GPS%20API-Integrated-blue?style=for-the-badge)](https://github.com/embeddedos-org/embeddedos-org.github.io)
+[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org)
+[![Build Status](https://img.shields.io/badge/Build-Passing-success?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org/actions)
+[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-success?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org)
+[![GPS API](https://img.shields.io/badge/GPS%20API-Integrated-blue?style=for-the-badge)](https://github.com/embeddedos-org/www.embeddedos.org)
 
 EoS Platform Website. Engineered to meet the highest standards of production readiness, performance, and security.
 
