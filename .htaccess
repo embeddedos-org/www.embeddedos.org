@@ -6,6 +6,11 @@ RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^embeddedos\.org$ [NC]
 RewriteRule ^(.*)$ https://www.embeddedos.org/$1 [R=301,L]
 
+# Serve /manus-storage/* images from local img/manus-storage/ directory
+# Images are committed to the repo so no external proxy is needed.
+RewriteCond %{REQUEST_URI} ^/manus-storage/
+RewriteRule ^manus-storage/(.+)$ /img/manus-storage/$1 [L,NC]
+
 # Internal rewrite: clean URL -> .html
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
