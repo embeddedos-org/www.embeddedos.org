@@ -12,7 +12,7 @@ import {
   Wifi, Lock, HardDrive, Brain, Cpu as CpuIcon, Atom
 } from "lucide-react";
 
-const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
+const LOGO_MARK = "/images/embeddedos-logo-mark_bc053888.png";
 
 // ─── NAVIGATION DATA (from real GitHub repos) ──────────────────────────────
 

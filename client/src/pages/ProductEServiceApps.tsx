@@ -11,7 +11,7 @@ export default function ProductEServiceApps() {
       gradient="from-pink-500/20 to-rose-600/20"
       lang="C++ / eUI"
       github="embeddedos-org/eserviceapps"
-      heroImage="/manus-storage/product-eserviceapps_6c6d4f1a.png"
+      heroImage="/images/product-eserviceapps_6c6d4f1a.png"
       stackHighlight="app layer"
       stats={[
         { value: "5", label: "Service Apps" },

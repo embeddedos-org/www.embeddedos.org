@@ -11,7 +11,7 @@ export default function ProductEoSim() {
       gradient="from-cyan-500/20 to-sky-600/20"
       lang="C++ / Python"
       github="embeddedos-org/eosim"
-      heroImage="/manus-storage/product-eosim-sim_78145da3.png"
+      heroImage="/images/product-eosim-sim_78145da3.png"
       stackHighlight="build / ide / sim"
       stats={[
         { value: "63+", label: "Simulated Platforms" },

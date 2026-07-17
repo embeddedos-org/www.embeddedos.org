@@ -127,7 +127,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "Full EmbeddedOS Stack",
     subtitle: "Hardware → OS → AI → Applications",
     desc: "The complete EmbeddedOS ecosystem shown as an interconnected node matrix — from open KiCad hardware designs through the secure bootloader, real-time kernel, AI/neural services, and up to 60+ productivity and service applications.",
-    image: "/manus-storage/arch-eos-kernel_d7d1b4a5.png",
+    image: "/images/arch-eos-kernel_d7d1b4a5.png",
     whyMatters: "This unified stack means a single team can build a complete embedded product — from PCB design to shipping apps — without switching vendors or ecosystems. Every layer is MIT-licensed and open-source.",
     stats: [
       { label: "Supported Platforms", value: "52+" },
@@ -147,7 +147,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "EoS Kernel Architecture",
     subtitle: "HAL → Kernel → Services → Applications",
     desc: "The EoS kernel sits above the Hardware Abstraction Layer (HAL), providing deterministic scheduling with <1µs latency, memory management, virtual filesystem, and IPC. Services like EAI, ENI, EIPC, and eDB run as isolated processes above the kernel.",
-    image: "/manus-storage/arch-eos-kernel_d7d1b4a5.png",
+    image: "/images/arch-eos-kernel_d7d1b4a5.png",
     whyMatters: "A real-time kernel with hard deadline guarantees is critical for medical devices, industrial controllers, and aerospace systems where a missed deadline can mean patient harm or equipment failure.",
     stats: [
       { label: "Scheduling Latency", value: "<1µs" },
@@ -167,7 +167,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "eBoot Secure Boot Chain",
     subtitle: "ROM → TPM → Ed25519 → OTA → EoS",
     desc: "The 5-stage verified boot pipeline flows left to right: an immutable ROM bootstraps eBoot, which performs TPM 2.0 attestation, Ed25519 signature verification, A/B OTA slot selection, and hands off to the EoS kernel entry point.",
-    image: "/manus-storage/arch-eboot-chain_b9f999b5.png",
+    image: "/images/arch-eboot-chain_b9f999b5.png",
     whyMatters: "Secure boot prevents malicious firmware from running on medical implants, industrial PLCs, and connected vehicles — protecting both patients and critical infrastructure from supply-chain attacks.",
     stats: [
       { label: "Boot Stages", value: "5" },
@@ -187,7 +187,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "ENI / EAI Neural Pipeline",
     subtitle: "1,024-channel BCI with on-device AI inference",
     desc: "The EAI inference engine sits at the hub, with 1,024-channel electrode arrays, 24-bit ADC at 30 kHz, spike-sorting DSP, and motor command outputs orbiting as real-time data streams. All inference runs on-device at INT4 precision.",
-    image: "/manus-storage/arch-eai-neural_4d7964d2.png",
+    image: "/images/arch-eai-neural_4d7964d2.png",
     whyMatters: "On-device neural inference eliminates cloud latency for brain-computer interfaces — enabling real-time prosthetic control and closed-loop neurostimulation that could restore movement to paralyzed patients.",
     stats: [
       { label: "Channels", value: "1,024" },
@@ -207,7 +207,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "eOffice Suite Architecture",
     subtitle: "Kernel → Services → Collaboration → Apps",
     desc: "The eOffice dependency tree shows how 11 productivity apps (eDocs, eSheets, eSlides, eMail, eDrive…) are built on a CRDT collaboration layer with eBot AI, backed by EoS services (EIPC, eDB, EAI) and the kernel's process isolation.",
-    image: "/manus-storage/arch-eoffice-suite_d63eacf5.png",
+    image: "/images/arch-eoffice-suite_d63eacf5.png",
     whyMatters: "A full productivity suite running natively on embedded hardware means remote field workers, medical staff, and industrial operators can work offline without depending on cloud connectivity.",
     stats: [
       { label: "Apps in Suite", value: "11" },
@@ -227,7 +227,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "eDB Multi-Model Database",
     subtitle: "Query API → SQL → Document → KV → Flash",
     desc: "eDB's query pipeline flows from the unified REST/tRPC/WebSocket API through three storage engines (SQL with B-tree WAL, JSON/BSON document store, AES-256 key-value cache) down to the flash/NVMe storage layer — all in under 512KB flash.",
-    image: "/manus-storage/arch-eos-kernel_d7d1b4a5.png",
+    image: "/images/arch-eos-kernel_d7d1b4a5.png",
     whyMatters: "Embedded devices need a database that fits in flash memory, survives power loss, and encrypts sensitive patient or industrial data — without requiring a separate database server process.",
     stats: [
       { label: "Storage Models", value: "3" },
@@ -247,7 +247,7 @@ const DIAGRAMS: DiagramDef[] = [
     title: "eRadar360 Sensor Fusion",
     subtitle: "77GHz FMCW + LiDAR + Camera → EKF → AI",
     desc: "The Extended Kalman Filter fusion engine sits at the hub, with 77 GHz FMCW radar, LiDAR, and camera sensors orbiting as live data streams. YOLO-nano perception AI (EAI INT4) processes fused data for object classification and trajectory prediction.",
-    image: "/manus-storage/arch-eai-neural_4d7964d2.png",
+    image: "/images/arch-eai-neural_4d7964d2.png",
     whyMatters: "Multi-sensor fusion running on a single embedded SoC dramatically reduces the cost and complexity of autonomous vehicle perception — making ADAS accessible to mid-range vehicles and agricultural robots.",
     stats: [
       { label: "Radar Freq", value: "77 GHz" },
@@ -308,7 +308,7 @@ export default function Architecture() {
       {/* ── Hero ── */}
       <section className="relative py-24 px-4 overflow-hidden">
         <img
-          src="/manus-storage/architecture-diagram-hero_72436b3f.png"
+          src="/images/architecture-diagram-hero_72436b3f.png"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"

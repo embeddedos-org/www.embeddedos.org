@@ -11,7 +11,7 @@ export default function ProductEBuild() {
       gradient="from-red-500/20 to-rose-600/20"
       lang="Go"
       github="embeddedos-org/ebuild"
-      heroImage="/manus-storage/product-eos-kernel_0ca24d8d.png"
+      heroImage="/images/product-eos-kernel_0ca24d8d.png"
       stackHighlight="build"
       stats={[
         { value: "18", label: "CLI Commands" },

@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Github, Twitter, Youtube, Mail, Heart, Linkedin, Facebook, ExternalLink } from "lucide-react";
 
-const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
+const LOGO_MARK = "/images/embeddedos-logo-mark_bc053888.png";
 
 const FOOTER_LINKS = {
   Foundation: [
