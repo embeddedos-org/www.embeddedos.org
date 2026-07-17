@@ -11,7 +11,7 @@ export default function ProductEIPC() {
       gradient="from-amber-500/20 to-yellow-600/20"
       lang="C"
       github="embeddedos-org/eipc"
-      heroImage="/manus-storage/product-eipc_d1e2f3a4.png"
+      heroImage="/manus-storage/product-eipc-ipc_be829de0.png"
       stackHighlight="ipc fabric"
       stats={[
         { value: "< 1 ms", label: "Cross-Board Latency" },
