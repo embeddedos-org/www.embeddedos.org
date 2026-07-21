@@ -1,24 +1,24 @@
 import { Link } from "wouter";
 import { Github, Twitter, Youtube, Mail, Heart, Linkedin, Facebook, ExternalLink } from "lucide-react";
 
-const LOGO_MARK = "/images/embeddedos-logo-mark_bc053888.png";
+const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
 
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
-    { name: "Contact", href: "mailto:hello@embeddedos.org", external: true },
-    { name: "Donate", href: "/donate" },
-    { name: "Membership", href: "/membership" },
-    { name: "Ecosystem", href: "/projects" },
-    { name: "Research", href: "/docs" },
-    { name: "Documentation", href: "/docs" },
+    { name: "What We Do", href: "/what-we-do" },
     { name: "News", href: "/news" },
+    { name: "Careers", href: "/careers" },
+    { name: "Membership", href: "/membership" },
+    { name: "Donate", href: "/donate" },
+    { name: "Contact", href: "mailto:hello@embeddedos.org", external: true },
   ],
   Projects: [
     { name: "All Projects", href: "/projects" },
     { name: "EoS Kernel", href: "https://github.com/embeddedos-org/EoS", external: true },
     { name: "eBoot", href: "https://github.com/embeddedos-org/eBoot", external: true },
     { name: "eAI", href: "https://github.com/embeddedos-org/eAI", external: true },
+    { name: "Quantum Computing", href: "/quantum" },
     { name: "AeroSwift", href: "/aerospace" },
     { name: "GitHub Org", href: "https://github.com/embeddedos-org", external: true },
   ],

@@ -11,7 +11,7 @@ export default function ProductEOffice() {
       gradient="from-emerald-500/20 to-green-600/20"
       lang="C++ / eUI"
       github="embeddedos-org/eoffice"
-      heroImage="/images/product-eoffice_c4309cdd.png"
+      heroImage="/manus-storage/product-eoffice_c4309cdd.png"
       stackHighlight="app layer"
       stats={[
         { value: "11", label: "Applications" },

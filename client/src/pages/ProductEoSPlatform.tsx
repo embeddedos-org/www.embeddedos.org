@@ -11,7 +11,7 @@ export default function ProductEoSPlatform() {
       gradient="from-indigo-500/20 to-blue-600/20"
       lang="Go / TypeScript"
       github="embeddedos-org/eos-platform"
-      heroImage="/images/product-eos-kernel_0ca24d8d.png"
+      heroImage="/manus-storage/product-eos-kernel_0ca24d8d.png"
       stackHighlight="eos-platform profile"
       stats={[
         { value: "OTA", label: "Firmware Updates" },

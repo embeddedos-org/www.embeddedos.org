@@ -12,7 +12,7 @@ import {
   Wifi, Lock, HardDrive, Brain, Cpu as CpuIcon, Atom
 } from "lucide-react";
 
-const LOGO_MARK = "/images/embeddedos-logo-mark_bc053888.png";
+const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
 
 // ─── NAVIGATION DATA (from real GitHub repos) ──────────────────────────────
 
@@ -88,6 +88,7 @@ const NAV_ITEMS = {
           { name: "eApps", desc: "60+ first-party embedded apps", icon: Package, href: "/product-eapps", color: "#F97316", external: false },
           { name: "eOffice Suite", desc: "11-app embedded office suite", icon: FileText, href: "/product-eoffice", color: "#059669", external: false },
           { name: "eServiceApps", desc: "eSocial, eRide, eTravel, eWallet", icon: Globe, href: "/product-eserviceapps", color: "#EC4899", external: false },
+          { name: "Kids Edition", desc: "Educational embedded platform", icon: Gamepad2, href: "/kids", color: "#F97316", external: false },
         ],
       },
       {
@@ -128,7 +129,6 @@ const NAV_ITEMS = {
           { name: "Stacks", desc: "Technology stacks", icon: Layers, href: "/stacks", color: "#60A5FA", external: false },
           { name: "eFlow", desc: "Visual block programming", icon: Zap, href: "/eflow", color: "#F472B6", external: false },
           { name: "eBuild", desc: "Build, sim & flash tool", icon: Wrench, href: "/ebuild", color: "#34D399", external: false },
-          { name: "Kids Edition", desc: "Educational platform", icon: Gamepad2, href: "/kids", color: "#F97316", external: false },
         ],
       },
     ],
@@ -143,11 +143,24 @@ const NAV_ITEMS = {
           { name: "Membership", desc: "Join the Foundation", icon: Star, href: "/membership", color: "#F59E0B", external: false },
           { name: "GitHub Org", desc: "22 open-source repos", icon: Github, href: "https://github.com/embeddedos-org", color: "#22D3EE", external: true },
           { name: "Discussions", desc: "Community forum", icon: MessageSquare, href: "https://github.com/orgs/embeddedos-org/discussions", color: "#A78BFA", external: true },
+        ],
+      },
+      {
+        title: "Foundation",
+        items: [
           { name: "About", desc: "Foundation & mission", icon: Users, href: "/about", color: "#34D399", external: false },
-          { name: "What We Do", desc: "Company overview & stack", icon: Layers, href: "/what-we-do", color: "#22D3EE", external: false },
+          { name: "What We Do", desc: "Research & product overview", icon: Layers, href: "/what-we-do", color: "#22D3EE", external: false },
+          { name: "News", desc: "Latest updates", icon: FileText, href: "/news", color: "#60A5FA", external: false },
+          { name: "Careers", desc: "Open positions", icon: Star, href: "/careers", color: "#F59E0B", external: false },
+          { name: "Donate", desc: "Support the Foundation", icon: Heart, href: "/donate", color: "#F472B6", external: false },
+        ],
+      },
+      {
+        title: "Research & IP",
+        items: [
           { name: "eCAD Hardware", desc: "Hardware design catalog", icon: CpuIcon, href: "/ecad-hardware", color: "#F97316", external: false },
           { name: "Patents", desc: "IP & provisional patents", icon: Shield, href: "/patents", color: "#A78BFA", external: false },
-          { name: "News", desc: "Latest updates", icon: FileText, href: "/news", color: "#60A5FA", external: false },
+          { name: "Quantum Computing", desc: "EoS quantum platform", icon: Atom, href: "/quantum", color: "#A855F7", external: false },
         ],
       },
     ],
