@@ -23,7 +23,7 @@ const LETTER_URL = "/manus-storage/eos-501c3-determination-letter_688574de.pdf";
 const STATS = [
   { icon: Cpu,      value: "22",   label: "Open-Source Repos",   color: "#F97316" },
   { icon: BookOpen, value: "14",   label: "Free Technical Books", color: "#22D3EE" },
-  { icon: Award,    value: "501(c)(3)", label: "Tax-Exempt Status", color: "#34D399" },
+  { icon: Award,    value: "501(c)(3)", label: "IRC Tax-Exempt · 509(a)(2) Public Charity", color: "#34D399" },
   { icon: Users,    value: "100%", label: "To the Foundation",    color: "#A78BFA" },
 ];
 
@@ -33,7 +33,7 @@ const IMPACT_ITEMS = [
   { icon: Shield,   color: "#34D399", title: "Security Research",       detail: "Secure boot, attestation, and cryptographic research" },
   { icon: Users,    color: "#A78BFA", title: "Open-Source Development", detail: "22 public repositories, MIT-licensed" },
   { icon: Zap,      color: "#F59E0B", title: "Developer Tools",         detail: "EoStudio IDE, EoSim simulator, eBuild toolchain" },
-  { icon: Star,     color: "#60A5FA", title: "Foundation Operations",   detail: "501(c)(3) public charity, EIN 41-4821627" },
+  { icon: Star,     color: "#60A5FA", title: "Foundation Operations",   detail: "IRC 501(c)(3) · Public Charity 509(a)(2) · EIN 41-4821627" },
 ];
 
 const MATCHING_STEPS = [
@@ -194,12 +194,13 @@ export default function Donate() {
                   <p className="text-xs text-white/60">You will receive an automatic tax receipt via email. Contributions are deductible under IRC Section 170.</p>
                 </div>
                 <div className="p-4 rounded-2xl border border-blue-500/20 bg-blue-500/5">
-                  <p className="text-xs text-blue-300 font-semibold mb-2 flex items-center gap-1"><Award className="w-3 h-3" /> 501(c)(3) Status</p>
+                  <p className="text-xs text-blue-300 font-semibold mb-2 flex items-center gap-1"><Award className="w-3 h-3" /> IRS Tax-Exempt Status</p>
                   <div className="space-y-1 text-xs text-white/60">
                     <p><span className="text-white/40">Legal name:</span> {LEGAL_NAME}</p>
                     <p><span className="text-white/40">EIN:</span> <span className="text-white font-mono">{EIN}</span></p>
                     <p><span className="text-white/40">Effective:</span> {EXEMPTION_DATE}</p>
-                    <p><span className="text-white/40">Status:</span> Public Charity 509(a)(2)</p>
+                    <p><span className="text-white/40">Tax-exempt under:</span> <span className="text-white">IRC Section 501(c)(3)</span></p>
+                    <p><span className="text-white/40">Public charity status:</span> <span className="text-white">509(a)(2)</span></p>
                   </div>
                   <a href={LETTER_URL} target="_blank" rel="noopener noreferrer" className="mt-3 flex items-center gap-1.5 text-xs text-orange-400 hover:text-orange-300">
                     <Download className="w-3 h-3" /> Download IRS Determination Letter
@@ -288,7 +289,10 @@ export default function Donate() {
                     </div>
                     <div>
                       <p className="text-xs text-white/40 mb-0.5">IRS Tax Status</p>
-                      <p className="text-white">501(c)(3) Public Charity \u2014 IRC Section 509(a)(2)</p>
+                      <div className="space-y-0.5">
+                        <p className="text-white">Tax-exempt under: <span className="text-green-400 font-semibold">IRC Section 501(c)(3)</span></p>
+                        <p className="text-white">Public charity status: <span className="text-blue-400 font-semibold">509(a)(2)</span></p>
+                      </div>
                     </div>
                     <div>
                       <p className="text-xs text-white/40 mb-0.5">Effective Date of Exemption</p>
