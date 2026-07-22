@@ -11,7 +11,7 @@ const governance = [
 
 const legal = [
   { label: "Legal Name", value: "Embedded Operating Systems Research Foundation" },
-  { label: "Organization Type", value: "501(c)(3) Public Charity" },
+  { label: "Organization Type", value: "501(c)(3) · 509(a)(2) Public Charity" },
   { label: "Public Charity Classification", value: "509(a)(2)" },
   { label: "Jurisdiction", value: "United States" },
   { label: "EIN", value: "41-4821627" },
@@ -42,7 +42,7 @@ export default function Organization() {
               <Building2 className="w-4 h-4" /> FOUNDATION
             </div>
             <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">The EmbeddedOS Foundation</h1>
-            <p className="text-xl text-gray-300">A 501(c)(3) nonprofit organization dedicated to building the future of embedded computing through open-source software, education, and research.</p>
+            <p className="text-xl text-gray-300">A 501(c)(3) · 509(a)(2) nonprofit organization dedicated to building the future of embedded computing through open-source software, education, and research.</p>
           </motion.div>
         </div>
       </section>

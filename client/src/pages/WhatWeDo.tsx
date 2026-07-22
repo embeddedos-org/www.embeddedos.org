@@ -511,7 +511,7 @@ export default function WhatWeDo() {
             </div>
             <h2 className="text-3xl md:text-4xl font-black mb-6">Open Source. Forever.</h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              EmbeddedOS Research Foundation is a 501(c)(3) nonprofit. Every line of code is MIT-licensed.
+              EmbeddedOS Research Foundation is a 501(c)(3) · 509(a)(2) nonprofit. Every line of code is MIT-licensed.
               No vendor lock-in, no proprietary blobs, no closed APIs. We believe the infrastructure
               for intelligent devices should be a public good — freely available to every engineer,
               student, and researcher on Earth.

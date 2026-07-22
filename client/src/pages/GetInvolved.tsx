@@ -78,7 +78,7 @@ export default function GetInvolved() {
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-amber mb-4 inline-flex">
               <Heart size={12} />
-              Foundation · 501(c)(3)
+              Foundation · 501(c)(3) · 509(a)(2)
             </div>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
               Get{" "}
@@ -184,7 +184,7 @@ export default function GetInvolved() {
         <div className="max-w-2xl mx-auto px-4">
           <Users size={32} className="text-[#F97316] mx-auto mb-4" />
           <h2 className="font-heading font-bold text-white text-2xl mb-4">Our Values</h2>
-          <p className="text-white/50 mb-2">Foundation. 501(c)(3). Community-driven. Free forever.</p>
+          <p className="text-white/50 mb-2">Foundation · 501(c)(3) · 509(a)(2) · Community-driven · Free forever.</p>
           <p className="text-white/40 text-sm mb-6">
             EmbeddedOS is licensed under the MIT License. All hardware designs are open hardware.
             We will never add paywalls, ads, or proprietary features.

@@ -25,7 +25,7 @@ const SECTIONS = [
 • Operating and improving the EmbeddedOS website and documentation.
 • Responding to support and contact inquiries.
 • Sending project update emails if you have explicitly opted in.
-• Complying with legal obligations as a 501(c)(3).
+• Complying with legal obligations as a 501(c)(3) · 509(a)(2) public charity.
 
 We do not sell, rent, or share your personal information with third parties for marketing purposes.`,
   },
@@ -107,7 +107,7 @@ export default function Privacy() {
               The Embedded Operating Systems Research Foundation ("Foundation", "we", "us", or "our") operates
               the website at <strong className="text-white">www.embeddedos.org</strong>. This Privacy Policy explains
               how we collect, use, and protect information when you use our website, documentation, and services.
-              As a 501(c)(3), we are committed to transparency and minimal data collection.
+              As a 501(c)(3) · 509(a)(2) public charity, we are committed to transparency and minimal data collection.
             </p>
           </motion.div>
 

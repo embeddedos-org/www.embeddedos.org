@@ -634,7 +634,7 @@ export default function Careers() {
             <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/50">
               <span className="flex items-center gap-1.5"><Briefcase size={14} className="text-[#F97316]" />{JOBS.length} open positions</span>
               <span className="flex items-center gap-1.5"><MapPin size={14} className="text-[#F97316]" />Remote-first · SF Bay Area</span>
-              <span className="flex items-center gap-1.5"><Heart size={14} className="text-[#F97316]" />501(c)(3) · Mission-driven</span>
+              <span className="flex items-center gap-1.5"><Heart size={14} className="text-[#F97316]" />501(c)(3) · 509(a)(2) · Mission-driven</span>
             </motion.div>
           </motion.div>
         </div>

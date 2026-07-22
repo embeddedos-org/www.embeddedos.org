@@ -104,7 +104,7 @@ export default function DonateModal() {
                   </div>
                   <div>
                     <h2 id="donate-title" className="font-heading font-extrabold text-white text-xl">Support EmbeddedOS</h2>
-                    <p className="text-xs text-white/40">501(c)(3) · Tax-deductible</p>
+                    <p className="text-xs text-white/40">501(c)(3) · 509(a)(2) · Tax-deductible</p>
                   </div>
                 </div>
 

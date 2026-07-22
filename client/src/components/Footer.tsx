@@ -6,19 +6,19 @@ const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
-    { name: "What We Do", href: "/what-we-do" },
-    { name: "News", href: "/news" },
-    { name: "Careers", href: "/careers" },
-    { name: "Membership", href: "/membership" },
-    { name: "Donate", href: "/donate" },
     { name: "Contact", href: "mailto:hello@embeddedos.org", external: true },
+    { name: "Donate", href: "/donate" },
+    { name: "Membership", href: "/membership" },
+    { name: "Ecosystem", href: "/projects" },
+    { name: "Research", href: "/docs" },
+    { name: "Documentation", href: "/docs" },
+    { name: "News", href: "/news" },
   ],
   Projects: [
     { name: "All Projects", href: "/projects" },
     { name: "EoS Kernel", href: "https://github.com/embeddedos-org/EoS", external: true },
     { name: "eBoot", href: "https://github.com/embeddedos-org/eBoot", external: true },
     { name: "eAI", href: "https://github.com/embeddedos-org/eAI", external: true },
-    { name: "Quantum Computing", href: "/quantum" },
     { name: "AeroSwift", href: "/aerospace" },
     { name: "GitHub Org", href: "https://github.com/embeddedos-org", external: true },
   ],
@@ -102,7 +102,7 @@ export default function Footer() {
               </div>
               <div>
                 <div className="font-heading font-bold text-white text-base">EmbeddedOS</div>
-                <div className="text-[10px] text-[#F97316] font-bold tracking-[0.15em] uppercase">Foundation · 501(c)(3)</div>
+                <div className="text-[10px] text-[#F97316] font-bold tracking-[0.15em] uppercase">Foundation · 501(c)(3) · 509(a)(2)</div>
               </div>
             </Link>
 
@@ -112,7 +112,7 @@ export default function Footer() {
 
             <p className="text-xs text-white/25 mb-6 max-w-xs leading-relaxed">
               Embedded Operating Systems Research Foundation<br />
-              501(c)(3) · MIT License ·{" "}
+              501(c)(3) · 509(a)(2) · MIT License ·{" "}
               <a href="https://www.embeddedos.org/" target="_blank" rel="noopener noreferrer" className="text-[#F97316]/70 hover:text-[#F97316] transition-colors">
                 www.embeddedos.org
               </a>
@@ -170,7 +170,7 @@ export default function Footer() {
               MIT License
             </a>
             <span className="mx-1.5 text-white/15">·</span>
-            501(c)(3)
+            501(c)(3) · 509(a)(2)
           </div>
 
           <div className="flex items-center gap-1.5 text-white/30">

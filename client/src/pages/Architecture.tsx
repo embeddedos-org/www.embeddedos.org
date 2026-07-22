@@ -719,7 +719,7 @@ export default function Architecture() {
               Donate to the Foundation
             </Link>
             <p className="text-white/30 text-xs mt-3">
-              501(c)(3) nonprofit · 0% platform fees · Tax-deductible
+              501(c)(3) · 509(a)(2) nonprofit · 0% platform fees · Tax-deductible
             </p>
           </motion.div>
         </div>

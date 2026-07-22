@@ -17,7 +17,7 @@ const MILESTONES = [
   { year: "2024", title: "Health Devices & Patents", desc: "HEALTH-KEY ULTRA and HEALTH-BAND Neuro patent applications filed (U.S. App. No. 64/073,334 and 64/076,078)." },
   { year: "2024", title: "AeroSwift Announced", desc: "AeroSwift Personal and Transit VTOL aircraft platforms announced, powered by EmbeddedOS avionics stack." },
   { year: "2025", title: "22 Open-Source Repos", desc: "Ecosystem grows to 22 public repositories covering kernel, AI, dev tools, health, aerospace, and applications." },
-  { year: "2026", title: "501(c)(3) Foundation", desc: "Embedded Operating Systems Research Foundation incorporated as a 501(c)(3) public charity (EIN: 41-4821627), effective March 11, 2026." },
+  { year: "2026", title: "501(c)(3) Foundation", desc: "Embedded Operating Systems Research Foundation incorporated as a 501(c)(3) · 509(a)(2) public charity (EIN: 41-4821627), effective March 11, 2026." },
   { year: "2026", title: "eAI & eNI Released", desc: "On-device AI inference (eAI) and neural interface adapter (eNI) released, enabling edge AI on embedded hardware." },
 ];
 
@@ -25,7 +25,7 @@ const TEAM_VALUES = [
   { icon: Globe, color: "#F97316", title: "Open by Default", desc: "Every line of code, every design decision, every research paper — published openly under MIT license." },
   { icon: Cpu, color: "#22D3EE", title: "Hardware First", desc: "We build for real hardware. From 8-bit microcontrollers to 64-bit SoCs, EmbeddedOS runs everywhere." },
   { icon: BookOpen, color: "#34D399", title: "Education Driven", desc: "14 technical books, a kids edition, and a hardware lab — we invest in the next generation of embedded engineers." },
-  { icon: Heart, color: "#F472B6", title: "Community Powered", desc: "A 501(c)(3) Foundation with no VC funding. Every contribution, donation, and pull request matters." },
+  { icon: Heart, color: "#F472B6", title: "Community Powered", desc: "A 501(c)(3) · 509(a)(2) Foundation with no VC funding. Every contribution, donation, and pull request matters." },
   { icon: Users, color: "#A78BFA", title: "Inclusive Ecosystem", desc: "From hobbyists to aerospace engineers, EmbeddedOS is designed for every skill level and every device." },
   { icon: Github, color: "#60A5FA", title: "Transparent Governance", desc: "Public roadmap, open issues, and community RFCs. No black boxes, no hidden agendas." },
 ];
@@ -44,7 +44,7 @@ export default function About() {
               <span className="text-gradient">Research Foundation</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-              A 501(c)(3) organization dedicated to advancing open-source embedded systems
+              A 501(c)(3) · 509(a)(2) organization dedicated to advancing open-source embedded systems
               research, education, and technology for the benefit of humanity.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -87,7 +87,7 @@ export default function About() {
                 everyone — not locked behind proprietary licenses or vendor lock-in.
               </p>
               <p className="text-white/60 leading-relaxed">
-                As a 501(c)(3), we are accountable to our community, not to shareholders.
+                As a 501(c)(3) · 509(a)(2), we are accountable to our community, not to shareholders.
                 Every dollar donated goes directly to research, development, and education.
               </p>
             </motion.div>
@@ -199,7 +199,7 @@ export default function About() {
               </div>
               <div>
                 <div className="text-white/40 text-xs uppercase tracking-widest mb-1">Tax Status</div>
-                <div className="text-white">501(c)(3) Organization</div>
+                <div className="text-white">501(c)(3) · 509(a)(2) Organization</div>
               </div>
               <div>
                 <div className="text-white/40 text-xs uppercase tracking-widest mb-1">Software License</div>

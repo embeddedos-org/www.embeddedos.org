@@ -47,7 +47,7 @@ export default function Partners() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-6 mb-8 text-center">
-            <p className="text-gray-300">All sponsorship fees are reinvested into open-source development, free certifications, and education. Donations are <strong className="text-white">tax-deductible</strong> as the Foundation is a registered <strong className="text-white">501(c)(3)</strong> nonprofit.</p>
+            <p className="text-gray-300">All sponsorship fees are reinvested into open-source development, free certifications, and education. Donations are <strong className="text-white">tax-deductible</strong> as the Foundation is a registered <strong className="text-white">501(c)(3) · 509(a)(2)</strong> nonprofit.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tiers.map((t, i) => (

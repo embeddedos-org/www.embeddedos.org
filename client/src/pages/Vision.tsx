@@ -6,7 +6,7 @@ const pillars = [
   { icon: Cpu, color: "#F97316", title: "Every Device, Every Architecture", desc: "EmbeddedOS runs on ARM Cortex-M/A/R, RISC-V, x86, MIPS, ARC, and Xtensa — from a 4KB microcontroller to a 64-core server. One OS, every device." },
   { icon: Brain, color: "#A855F7", title: "AI as a First-Class Citizen", desc: "AI inference is not a plugin or an afterthought. EAI is built into the EoS kernel scheduler, memory manager, and power governor — so AI tasks run with the same determinism as real-time tasks." },
   { icon: Shield, color: "#22D3EE", title: "Security Without Compromise", desc: "Capability-based security, verified boot, post-quantum cryptography, and formal verification — not as optional add-ons, but as the foundation every application is built on." },
-  { icon: Globe, color: "#34D399", title: "Free, Forever", desc: "EmbeddedOS is MIT licensed and will remain free forever. The Foundation is a 501(c)(3) nonprofit — no investor pressure, no licensing fees, no vendor lock-in." },
+  { icon: Globe, color: "#34D399", title: "Free, Forever", desc: "EmbeddedOS is MIT licensed and will remain free forever. The Foundation is a 501(c)(3) · 509(a)(2) nonprofit — no investor pressure, no licensing fees, no vendor lock-in." },
   { icon: Zap, color: "#FBBF24", title: "Developer Experience First", desc: "EoStudio, eBuild, EoSim, eFlow — every tool in the EmbeddedOS ecosystem is designed to make embedded development faster, safer, and more accessible than it has ever been." },
   { icon: Star, color: "#F472B6", title: "Education & Access", desc: "10,000 free certifications. Open curriculum. Internships and fellowships for students worldwide. EmbeddedOS believes the next generation of embedded engineers should not be limited by access to tools or education." },
 ];
@@ -18,7 +18,7 @@ const timeline = [
   { year: "2024", event: "EAI v0.1 released — INT8 inference on Cortex-M55 with Helium MVE" },
   { year: "2025", event: "ENI v0.1 released — 1,024-channel neural signal acquisition" },
   { year: "2025", event: "EoStudio, EoSim, eBuild, eFlow, eDB, eBrowser released" },
-  { year: "2026", event: "Foundation incorporated as 501(c)(3) public charity (EIN: 41-4821627)" },
+  { year: "2026", event: "Foundation incorporated as 501(c)(3) · 509(a)(2) public charity (EIN: 41-4821627)" },
   { year: "2026", event: "eHealth365 and eRadar360 hardware products launched" },
   { year: "2027", event: "v1.0 — safety-critical certification, DO-178C DAL-A, IEC 61508 SIL-3" },
   { year: "2030", event: "Vision: EmbeddedOS running on 1 billion devices worldwide" },

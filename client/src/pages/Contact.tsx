@@ -82,7 +82,7 @@ export default function Contact() {
               <MapPin className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
               <div>
                 <div className="text-white font-medium mb-1">EmbeddedOS Research Foundation</div>
-                <div className="text-gray-400 text-sm">501(c)(3) Nonprofit Organization</div>
+                <div className="text-gray-400 text-sm">501(c)(3) · 509(a)(2) Nonprofit Organization</div>
                 <div className="text-gray-400 text-sm mt-1">United States</div>
                 <div className="text-gray-500 text-xs mt-2">EIN available upon request for donation tax receipts.</div>
               </div>

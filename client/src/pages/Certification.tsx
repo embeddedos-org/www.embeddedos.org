@@ -34,7 +34,7 @@ export default function CertificationPage() {
               <Award className="w-4 h-4" /> CERTIFICATION
             </div>
             <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent">Professional Certifications</h1>
-            <p className="text-xl text-gray-400">60 industry-recognized credentials across 12 tracks. Free to attempt, verifiable by employers, and backed by the EmbeddedOS 501(c)(3) Foundation.</p>
+            <p className="text-xl text-gray-400">60 industry-recognized credentials across 12 tracks. Free to attempt, verifiable by employers, and backed by the EmbeddedOS 501(c)(3) · 509(a)(2) Foundation.</p>
             <div className="flex flex-wrap gap-6 justify-center mt-8">
               <div className="text-center"><div className="text-3xl font-bold text-orange-400">60</div><div className="text-gray-500 text-sm">Certifications</div></div>
               <div className="text-center"><div className="text-3xl font-bold text-cyan-400">12</div><div className="text-gray-500 text-sm">Tracks</div></div>

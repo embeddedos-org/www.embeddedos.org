@@ -58,7 +58,7 @@ const benefits = [
   { icon: Star, color: "#FBBF24", title: "Talent Pipeline", desc: "Access to 10,000+ EmbeddedOS-certified engineers. Sponsor job postings reach the most skilled embedded developers globally." },
   { icon: Building2, color: "#22D3EE", title: "R&D Collaboration", desc: "Work directly with the Foundation on research projects. Co-author papers, share IP, and influence the technical roadmap." },
   { icon: Globe, color: "#A855F7", title: "Brand Visibility", desc: "EmbeddedOS reaches 50,000+ developers monthly. Your logo appears on docs, tutorials, and conference materials worldwide." },
-  { icon: CheckCircle2, color: "#34D399", title: "ESG & CSR Impact", desc: "Sponsoring a 501(c)(3) nonprofit counts toward ESG goals. Receive a donation receipt for tax deduction purposes." },
+  { icon: CheckCircle2, color: "#34D399", title: "ESG & CSR Impact", desc: "Sponsoring a 501(c)(3) · 509(a)(2) nonprofit counts toward ESG goals. Receive a donation receipt for tax deduction purposes." },
 ];
 
 export default function SponsorsPage() {

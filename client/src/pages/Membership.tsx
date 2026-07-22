@@ -156,7 +156,7 @@ const perks = [
   },
   {
     icon: Shield,
-    title: "501(c)(3)",
+    title: "501(c)(3) · 509(a)(2)",
     description: "Donations are tax-deductible to the extent permitted by law.",
   },
   {
@@ -200,7 +200,7 @@ export default function Membership() {
             </p>
             <div className="flex items-center justify-center gap-3 text-sm text-muted-foreground">
               <Shield className="w-4 h-4 text-green-400" />
-              <span>501(c)(3) · Tax-deductible donations · MIT License · No vendor lock-in</span>
+              <span>501(c)(3) · 509(a)(2) · Tax-deductible donations · MIT License · No vendor lock-in</span>
             </div>
           </motion.div>
         </div>
@@ -371,7 +371,7 @@ export default function Membership() {
               </a>
             </div>
             <p className="text-xs text-muted-foreground mt-6">
-              Embedded Operating Systems Research Foundation · 501(c)(3) ·
+              Embedded Operating Systems Research Foundation · 501(c)(3) · 509(a)(2) ·
               Donations are tax-deductible to the extent permitted by law.
             </p>
           </motion.div>

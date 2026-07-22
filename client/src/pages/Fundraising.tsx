@@ -27,7 +27,7 @@ export default function FundraisingPage() {
               <Heart className="w-4 h-4" /> FUNDRAISING
             </div>
             <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white via-green-200 to-green-400 bg-clip-text text-transparent">Every Dollar Makes a Difference</h1>
-            <p className="text-xl text-gray-400">Your donation funds open-source OS development, free certifications, and education for embedded engineers worldwide. EmbeddedOS Foundation is a 501(c)(3) nonprofit — all donations are tax-deductible.</p>
+            <p className="text-xl text-gray-400">Your donation funds open-source OS development, free certifications, and education for embedded engineers worldwide. EmbeddedOS Foundation is a 501(c)(3) · 509(a)(2) nonprofit — all donations are tax-deductible.</p>
           </motion.div>
         </div>
       </section>

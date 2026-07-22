@@ -15,7 +15,7 @@ const SECTIONS = [
   },
   {
     title: "2. About the Foundation",
-    content: `The Embedded Operating Systems Research Foundation is a 501(c)(3) organization. Our mission is to advance open-source embedded systems research, education, and technology. All software published by the Foundation is released under the **MIT License** unless otherwise stated.`,
+    content: `The Embedded Operating Systems Research Foundation is a 501(c)(3) · 509(a)(2) organization. Our mission is to advance open-source embedded systems research, education, and technology. All software published by the Foundation is released under the **MIT License** unless otherwise stated.`,
   },
   {
     title: "3. Intellectual Property",
@@ -51,7 +51,7 @@ const SECTIONS = [
   },
   {
     title: "7. Donations",
-    content: `Donations made through this website are processed securely by Stripe under their terms of service. Donations to the Foundation are tax-deductible to the extent permitted by law for U.S. taxpayers. The Foundation is a 501(c)(3) organization. Donations are non-refundable except at the Foundation's sole discretion.`,
+    content: `Donations made through this website are processed securely by Stripe under their terms of service. Donations to the Foundation are tax-deductible to the extent permitted by law for U.S. taxpayers. The Foundation is a 501(c)(3) · 509(a)(2) organization. Donations are non-refundable except at the Foundation's sole discretion.`,
   },
   {
     title: "8. Links to Third-Party Sites",

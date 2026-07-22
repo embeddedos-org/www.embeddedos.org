@@ -143,7 +143,7 @@ export default function Home() {
             <div ref={heroTextRef}>
               <div className="hero-badge badge-amber mb-6 inline-flex opacity-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
-                Foundation · 501(c)(3) · MIT License
+                Foundation · 501(c)(3) · 509(a)(2) · 509(a)(2) · MIT License
               </div>
 
               <h1
@@ -575,7 +575,7 @@ export default function Home() {
                 <span className="text-gradient">for the Community</span>
               </h2>
               <p className="text-white/60 leading-relaxed mb-8">
-                EmbeddedOS is a 501(c)(3), community-driven project — built by embedded engineers, for any embedded hardware. Every line of code, every document, and every tool prioritizes reliability, security, and developer experience.
+                EmbeddedOS is a 501(c)(3) · 509(a)(2), community-driven project — built by embedded engineers, for any embedded hardware. Every line of code, every document, and every tool prioritizes reliability, security, and developer experience.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
@@ -650,7 +650,7 @@ export default function Home() {
               <div className="rounded-3xl bg-[#080F1E] px-8 py-12">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F97316]/10 border border-[#F97316]/20 text-[#F97316] text-xs font-bold mb-6">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
-                  Open Source · 501(c)(3) · MIT License
+                  Open Source · 501(c)(3) · 509(a)(2) · MIT License
                 </div>
                 <h2 id="cta-heading" className="font-heading font-extrabold text-3xl sm:text-5xl text-white mb-6">
                   Ready to build on{" "}
@@ -658,7 +658,7 @@ export default function Home() {
                 </h2>
                 <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto">
                   Join engineers building the next generation of embedded systems.
-                  Free, Foundation-backed, and 501(c)(3) forever.
+                  Free, Foundation-backed, and 501(c)(3) · 509(a)(2) forever.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Link
