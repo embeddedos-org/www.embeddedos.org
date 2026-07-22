@@ -6,12 +6,13 @@ const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
+    { name: "Careers", href: "/careers" },
+    { name: "Internships", href: "/internship" },
     { name: "Contact", href: "mailto:hello@embeddedos.org", external: true },
     { name: "Donate", href: "/donate" },
     { name: "Membership", href: "/membership" },
     { name: "Ecosystem", href: "/projects" },
     { name: "Research", href: "/docs" },
-    { name: "Documentation", href: "/docs" },
     { name: "News", href: "/news" },
   ],
   Projects: [

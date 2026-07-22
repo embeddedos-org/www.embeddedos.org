@@ -405,6 +405,14 @@
 - [ ] Upgrade Quantum, Architecture, Products, Roadmap pages
 - [ ] Run full test suite, save checkpoint, push to GitHub
 
+## Phase 28 — Careers Navbar & Footer Fix (Jul 22 2026)
+- [x] Add Careers link to Navbar Community → Participate section (top position, orange)
+- [x] Add Internships link to Navbar Community → Participate section
+- [x] Add Careers link to Footer Foundation column (position 2, after About)
+- [x] Add Internships link to Footer Foundation column (position 3)
+- [x] Import Briefcase + GraduationCap icons in Navbar.tsx
+- [x] 0 TypeScript errors, HMR confirmed
+
 ## Phase 27 — Product Page Enhancement: How It Works + Usage Examples + Ecosystem Role (Jul 15 2026)
 - [x] Audit all routes — confirmed no 404s from missing route definitions; root cause was thin/empty content
 - [x] Upgraded ProductDetailPage component with 3 new sections: How It Works (numbered workflow), Usage Examples (tabbed code panel), Role in the EoS Ecosystem (importance badge + summary + depends-on/enables-by)

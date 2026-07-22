@@ -9,7 +9,8 @@ import {
   Database, Globe, FileText, FlaskConical, ArrowRight,
   Plane, Activity, Stethoscope, Microscope, Watch, Fingerprint,
   Terminal, Braces, Box, Blocks, Bot, Rocket, LayoutGrid,
-  Wifi, Lock, HardDrive, Brain, Cpu as CpuIcon, Atom
+  Wifi, Lock, HardDrive, Brain, Cpu as CpuIcon, Atom,
+  Briefcase, GraduationCap
 } from "lucide-react";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
@@ -139,7 +140,9 @@ const NAV_ITEMS = {
       {
         title: "Participate",
         items: [
-          { name: "Get Involved", desc: "Contribute to EmbeddedOS", icon: Heart, href: "/get-involved", color: "#F97316", external: false },
+          { name: "Careers", desc: "Open positions & apply now", icon: Briefcase, href: "/careers", color: "#F97316", external: false },
+          { name: "Internships", desc: "F-1 CPT/OPT, research & open source", icon: GraduationCap, href: "/internship", color: "#A78BFA", external: false },
+          { name: "Get Involved", desc: "Contribute to EmbeddedOS", icon: Heart, href: "/get-involved", color: "#34D399", external: false },
           { name: "Membership", desc: "Join the Foundation", icon: Star, href: "/membership", color: "#F59E0B", external: false },
           { name: "GitHub Org", desc: "22 open-source repos", icon: Github, href: "https://github.com/embeddedos-org", color: "#22D3EE", external: true },
           { name: "Discussions", desc: "Community forum", icon: MessageSquare, href: "https://github.com/orgs/embeddedos-org/discussions", color: "#A78BFA", external: true },
