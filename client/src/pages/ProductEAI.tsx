@@ -11,7 +11,7 @@ export default function ProductEAI() {
       gradient="from-purple-500/20 to-violet-600/20"
       lang="C++ / Python"
       github="embeddedos-org/eAI"
-      heroImage="/manus-storage/product-eai-eni_df2d2734.png"
+      heroImage="/manus-storage/product-eai-eni_70fe5807.jpg"
       stackHighlight="ai runtime"
       stats={[
         { value: "3", label: "Model Formats (TFLite, ONNX, GGUF)" },

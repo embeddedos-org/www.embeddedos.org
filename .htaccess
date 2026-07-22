@@ -1,0 +1,19 @@
+# EmbeddedOS — LiteSpeed .htaccess
+# Handles: SPA client-side routing fallback + /manus-storage/* image proxy
+
+Options -Indexes
+RewriteEngine On
+
+# ── 1. Serve existing files/directories directly (assets, fonts, etc.) ──────
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ── 2. Proxy /manus-storage/* to Manus CDN via redirect ─────────────────────
+# The Manus webdev storage proxy endpoint (Express server) handles presigning.
+# On static hosting we redirect to the Manus webdev preview URL which has the proxy.
+# NOTE: Replace the URL below with your Manus webdev project URL if it changes.
+RewriteRule ^manus-storage/(.+)$ https://3000-iax42plodkxt0w5z8lq5a-5fd56826.us2.manus.computer/manus-storage/$1 [R=302,L]
+
+# ── 3. SPA fallback — all other routes → index.html ─────────────────────────
+RewriteRule ^ /index.html [L]

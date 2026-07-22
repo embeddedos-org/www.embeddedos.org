@@ -250,7 +250,7 @@ export default function WhatWeDo() {
     <div className="min-h-screen bg-[#050A14] text-white">
       {/* Hero */}
       <section ref={heroRef} className="relative pt-28 pb-20 px-6 overflow-hidden">
-        <img src="/manus-storage/what-we-do-illustration_4c2ad2f7.png" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none" />
+        <img src="/manus-storage/what-we-do-illustration_4c2ad2f7.jpg" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none" />
         {/* Background grid */}
         <div className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />

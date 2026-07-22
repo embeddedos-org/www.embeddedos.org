@@ -20,10 +20,10 @@ const BootPipeline = React.lazy(() => import("../components/BootPipeline"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
 const ParticleField = React.lazy(() => import("../components/ParticleField"));
 
-const HERO_IMG = "/manus-storage/hero-background_1bafea1c.png";
-const ARCH_IMG = "/manus-storage/architecture-diagram-hero_72436b3f.png";
-const COMMUNITY_IMG = "/manus-storage/community-illustration-eos_6f39c9db.png";
-const OPEN_SOURCE_IMG = "/manus-storage/what-we-do-illustration_4c2ad2f7.png";
+const HERO_IMG = "/manus-storage/hero-background_1bafea1c.jpg";
+const ARCH_IMG = "/manus-storage/architecture-diagram-hero_72436b3f.jpg";
+const COMMUNITY_IMG = "/manus-storage/community-illustration-eos_6f39c9db.jpg";
+const OPEN_SOURCE_IMG = "/manus-storage/what-we-do-illustration_4c2ad2f7.jpg";
 
 const STATS = [
   { value: 22, label: "Repositories", suffix: "", color: "#F97316" },
