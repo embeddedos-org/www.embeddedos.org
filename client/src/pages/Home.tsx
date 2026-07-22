@@ -143,7 +143,7 @@ export default function Home() {
             <div ref={heroTextRef}>
               <div className="hero-badge badge-amber mb-6 inline-flex opacity-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
-                Foundation · 501(c)(3) · 509(a)(2) · 509(a)(2) · MIT License
+                Foundation · 501(c)(3) · 509(a)(2) · MIT License
               </div>
 
               <h1
