@@ -13,7 +13,7 @@ import {
   Briefcase, GraduationCap
 } from "lucide-react";
 
-const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.png";
+const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
 // ─── NAVIGATION DATA (from real GitHub repos) ──────────────────────────────
 

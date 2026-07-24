@@ -444,7 +444,7 @@ export default function EcadHardware() {
     <div className="min-h-screen bg-[#050A14] text-white">
       {/* Hero */}
       <section className="relative pt-28 pb-16 px-6 overflow-hidden">
-        <img src="/manus-storage/product-ecad-hardware_c0556086.jpg" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none" />
+        <img src="/manus-storage/product-ecad-hardware_f5806032.jpg" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none" />
         <div className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         <div className="absolute top-20 left-1/3 w-96 h-96 rounded-full blur-3xl opacity-10"

@@ -11,7 +11,7 @@ export default function ProductEDB() {
       gradient="from-blue-500/20 to-indigo-600/20"
       lang="C"
       github="embeddedos-org/edb"
-      heroImage="/manus-storage/product-edb_d40630d9.jpg"
+      heroImage="/manus-storage/product-edb_9cd0fe0e.jpg"
       stackHighlight="data layer"
       stats={[
         { value: "3", label: "Query Models (SQL, Doc, KV)" },

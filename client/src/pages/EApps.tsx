@@ -40,11 +40,11 @@ const APP_CATEGORIES = [
   },
   {
     title: "Mobile Apps",
-    count: 6,
+    count: 5,
     color: "#34D399",
     icon: Smartphone,
     desc: "Flutter-based mobile apps for iOS and Android.",
-    apps: ["Safer — Women's Safety, Empowerment & Rewards (mysaferapp.com)", "eRide (Transportation)", "eSocial (Social Network)", "eTrack (Asset Tracking)", "eTravel (Travel Planner)", "eWallet (Digital Wallet)"],
+    apps: ["eRide (Transportation)", "eSocial (Social Network)", "eTrack (Asset Tracking)", "eTravel (Travel Planner)", "eWallet (Digital Wallet)"],
   },
   {
     title: "Native LVGL Apps",
@@ -65,9 +65,9 @@ const APP_CATEGORIES = [
 ];
 
 const STATS = [
-  { value: "61+", label: "Total Apps", color: "#F97316" },
+  { value: "60+", label: "Total Apps", color: "#F97316" },
   { value: "11", label: "Browser Extensions", color: "#22D3EE" },
-  { value: "6", label: "Mobile Apps", color: "#34D399" },
+  { value: "5", label: "Mobile Apps", color: "#34D399" },
   { value: "40+", label: "Native LVGL Apps", color: "#A78BFA" },
 ];
 
@@ -118,20 +118,9 @@ export default function EApps() {
             <p className="text-white/50 text-sm">Flagship apps built on EmbeddedOS — available on desktop, mobile, and embedded targets</p>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                {
-                  name: "Safer",
-                  version: "v1.0",
-                  color: "#A78BFA",
-                  icon: "🛡️",
-                  tagline: "Women's Safety, Empowerment & Rewards",
-                  desc: "An all-in-one Flutter app connecting women to vetted guardians via live map, one-tap Safe Call (voice/video), emergency escalation, empowerment modules, and wellness rewards. Built for iOS and Android. Developed by EmbeddedOS Foundation for American Group LLC.",
-                  features: ["Live Guardian Map", "Safe Call (Voice/Video)", "Emergency Escalation", "Empowerment Modules", "Rewards Program", "Guardian Network"],
-                  platforms: ["iOS", "Android"],
-                  href: "https://mysaferapp.com",
-                },
-                {
-                  name: "EoStudio IDE",
+            {[
+              {
+                name: "EoStudio IDE",
                 version: "v3.1",
                 color: "#22D3EE",
                 icon: "💻",

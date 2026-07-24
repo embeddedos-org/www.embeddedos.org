@@ -5,7 +5,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { donationRouter } from "./donationRouter";
-
+import { sendApplicationEmails } from "./email.js";
 // ── eBot system prompt ────────────────────────────────────────────────────────
 const EBOT_SYSTEM = `You are eBot, the AI assistant for EmbeddedOS — the open-source operating system for every device.
 
@@ -117,6 +117,10 @@ export const careersRouter = router({
       await notifyOwner({
         title: `Job Application: ${input.fullName} — ${input.roleCategory}`,
         content: lines.join("\n"),
+      });
+      // Send SMTP emails: notification to careers@embeddedos.org + confirmation to applicant
+      await sendApplicationEmails(input).catch((err) => {
+        console.error("[Careers] Email send failed (non-fatal):", err);
       });
       return { success: true };
     }),

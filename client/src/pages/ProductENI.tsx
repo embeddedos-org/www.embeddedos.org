@@ -11,7 +11,7 @@ export default function ProductENI() {
       gradient="from-emerald-500/20 to-green-600/20"
       lang="C / VHDL"
       github="embeddedos-org/eNI"
-      heroImage="/manus-storage/product-eni-neural_bde582a4.jpg"
+      heroImage="/manus-storage/product-eni-neural_0723fbf2.jpg"
       stackHighlight="neural interface"
       stats={[
         { value: "1,024", label: "Simultaneous Channels" },
