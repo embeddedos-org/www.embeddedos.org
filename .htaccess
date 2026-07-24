@@ -1,0 +1,13 @@
+Options -Indexes
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Serve manus-storage images directly (no rewrite needed, they're static files)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# SPA fallback: serve index.html for all non-file routes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ /index.html [L]
