@@ -3,9 +3,19 @@ import { z } from "zod";
 import { publicProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-06-24.dahlia",
-});
+// Constructed on first use rather than at module scope: Stripe throws when the
+// secret key is absent, and doing that during import made every test suite that
+// transitively imports the router fail to collect.
+let stripeClient: Stripe | undefined;
+
+function getStripe(): Stripe {
+  if (!stripeClient) {
+    stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: "2026-06-24.dahlia",
+    });
+  }
+  return stripeClient;
+}
 
 // Preset donation amounts in cents
 export const DONATION_PRESETS = [
@@ -39,10 +49,10 @@ export const donationRouter = router({
         frequency === "monthly"
           ? "Monthly Donation"
           : frequency === "quarterly"
-          ? "Quarterly Donation"
-          : frequency === "annual"
-          ? "Annual Donation"
-          : "One-Time Donation";
+            ? "Quarterly Donation"
+            : frequency === "annual"
+              ? "Annual Donation"
+              : "One-Time Donation";
 
       const description = `${freqLabel} — Embedded Operating Systems Research Foundation`;
 
@@ -63,7 +73,10 @@ export const donationRouter = router({
           quantity: 1,
         };
       } else {
-        const interval = frequency === "monthly" || frequency === "quarterly" ? "month" : "year";
+        const interval =
+          frequency === "monthly" || frequency === "quarterly"
+            ? "month"
+            : "year";
         const intervalCount = frequency === "quarterly" ? 3 : 1;
         lineItem = {
           price_data: {
@@ -116,7 +129,8 @@ export const donationRouter = router({
       };
 
       try {
-        const session = await stripe.checkout.sessions.create(sessionParams);
+        const session =
+          await getStripe().checkout.sessions.create(sessionParams);
         return { url: session.url! };
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Stripe error";

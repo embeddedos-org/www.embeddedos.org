@@ -17,7 +17,8 @@ const patents = [
       "Combined sEMG + TENS neuromodulation in keychain",
       "64GB flash data vault with BLE 5.0 sync",
     ],
-    githubUrl: "https://github.com/embeddedos-org/HealthKey-Ulta/tree/main/patent",
+    githubUrl:
+      "https://github.com/embeddedos-org/eos-health/tree/main/patent/health-key-ultra",
     color: "from-cyan-500/20 to-blue-600/20",
     accent: "#22D3EE",
   },
@@ -34,7 +35,8 @@ const patents = [
       "Combined BCI + clinical wellness monitoring",
       "TENS neuromodulation in wristband form factor",
     ],
-    githubUrl: "https://github.com/embeddedos-org/HEALTH-BAND-Neuro/tree/main/patent",
+    githubUrl:
+      "https://github.com/embeddedos-org/eos-health/tree/main/patent/health-band-neuro",
     color: "from-purple-500/20 to-pink-600/20",
     accent: "#A855F7",
   },
@@ -48,9 +50,11 @@ export default function Patents() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F1E] via-[#0D1B2A] to-[#0A0F1E]" />
-        <div className="absolute inset-0 opacity-20"
+        <div
+          className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: "radial-gradient(circle at 30% 40%, #22D3EE22 0%, transparent 50%), radial-gradient(circle at 70% 60%, #A855F722 0%, transparent 50%)",
+            backgroundImage:
+              "radial-gradient(circle at 30% 40%, #22D3EE22 0%, transparent 50%), radial-gradient(circle at 70% 60%, #A855F722 0%, transparent 50%)",
           }}
         />
         <div className="relative max-w-5xl mx-auto px-6 text-center">
@@ -69,8 +73,8 @@ export default function Patents() {
               </span>
             </h1>
             <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-              Two U.S. provisional patent applications protecting the world's most advanced
-              wearable health intelligence devices.
+              Two U.S. provisional patent applications protecting the world's
+              most advanced wearable health intelligence devices.
             </p>
           </motion.div>
         </div>
@@ -90,19 +94,27 @@ export default function Patents() {
               {/* App Number */}
               <div
                 className="text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded-full border self-start"
-                style={{ color: patent.accent, borderColor: `${patent.accent}40`, background: `${patent.accent}15` }}
+                style={{
+                  color: patent.accent,
+                  borderColor: `${patent.accent}40`,
+                  background: `${patent.accent}15`,
+                }}
               >
                 {patent.appNumber}
               </div>
 
-              <h2 className="text-2xl font-heading font-black">{patent.title}</h2>
+              <h2 className="text-2xl font-heading font-black">
+                {patent.title}
+              </h2>
 
               <div className="flex items-center gap-2 text-sm text-green-400">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 {patent.filed}
               </div>
 
-              <p className="text-white/70 leading-relaxed text-sm">{patent.description}</p>
+              <p className="text-white/70 leading-relaxed text-sm">
+                {patent.description}
+              </p>
 
               {/* Claims */}
               <div>
@@ -110,9 +122,15 @@ export default function Patents() {
                   Key Claims
                 </h3>
                 <ul className="space-y-2">
-                  {patent.claims.map((claim) => (
-                    <li key={claim} className="flex items-start gap-2 text-sm text-white/80">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: patent.accent }} />
+                  {patent.claims.map(claim => (
+                    <li
+                      key={claim}
+                      className="flex items-start gap-2 text-sm text-white/80"
+                    >
+                      <span
+                        className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ background: patent.accent }}
+                      />
                       {claim}
                     </li>
                   ))}
@@ -150,10 +168,13 @@ export default function Patents() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-10"
         >
-          <h2 className="text-2xl font-heading font-black mb-3">Licensing &amp; Inquiries</h2>
+          <h2 className="text-2xl font-heading font-black mb-3">
+            Licensing &amp; Inquiries
+          </h2>
           <p className="text-white/60 leading-relaxed mb-6 max-w-2xl">
-            For patent licensing inquiries, research collaborations, or commercial partnerships,
-            please contact the Embedded Operating Systems Research Foundation.
+            For patent licensing inquiries, research collaborations, or
+            commercial partnerships, please contact the Embedded Operating
+            Systems Research Foundation.
           </p>
           <div className="flex gap-4 flex-wrap">
             <Link

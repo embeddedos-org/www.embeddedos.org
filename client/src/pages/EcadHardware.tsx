@@ -2,44 +2,172 @@ import { useState, useRef, lazy, Suspense } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import {
-  Heart, Plane, Car, Bot, Factory, Leaf, Building2, Microscope, Rocket,
-  Shield, Wifi, Zap, Brain, Globe, HardDrive, ChevronRight, ArrowRight,
-  ExternalLink, Package, Activity, Layers
+  Heart,
+  Plane,
+  Car,
+  Bot,
+  Factory,
+  Leaf,
+  Building2,
+  Microscope,
+  Rocket,
+  Shield,
+  Wifi,
+  Zap,
+  Brain,
+  Globe,
+  HardDrive,
+  ChevronRight,
+  ArrowRight,
+  ExternalLink,
+  Package,
+  Activity,
+  Layers,
 } from "lucide-react";
 
-const ArchitectureDiagram3D = lazy(() => import("../components/ArchitectureDiagram3D"));
+const ArchitectureDiagram3D = lazy(
+  () => import("../components/ArchitectureDiagram3D")
+);
 
 // eHealth365 sensor fusion block diagram
 const HEALTH_LAYERS = [
-  { label: "Cloud / Mobile App", sublabels: ["iOS", "Android", "Web"], color: "#34D399", y: 1.6, width: 3.6 },
-  { label: "EAI Inference", sublabels: ["Arrhythmia", "SpO₂", "HRV"], color: "#A78BFA", y: 0.9, width: 3.4 },
-  { label: "Signal Processing", sublabels: ["IIR filter", "Pan-Tompkins"], color: "#22D3EE", y: 0.2, width: 3.2 },
-  { label: "ADC / Amplifier", sublabels: ["24-bit", "500 Hz"], color: "#F97316", y: -0.5, width: 3.0 },
-  { label: "Sensors", sublabels: ["ECG", "SpO₂", "PPG", "Temp"], color: "#EF4444", y: -1.2, width: 2.8 },
+  {
+    label: "Cloud / Mobile App",
+    sublabels: ["iOS", "Android", "Web"],
+    color: "#34D399",
+    y: 1.6,
+    width: 3.6,
+  },
+  {
+    label: "EAI Inference",
+    sublabels: ["Arrhythmia", "SpO₂", "HRV"],
+    color: "#A78BFA",
+    y: 0.9,
+    width: 3.4,
+  },
+  {
+    label: "Signal Processing",
+    sublabels: ["IIR filter", "Pan-Tompkins"],
+    color: "#22D3EE",
+    y: 0.2,
+    width: 3.2,
+  },
+  {
+    label: "ADC / Amplifier",
+    sublabels: ["24-bit", "500 Hz"],
+    color: "#F97316",
+    y: -0.5,
+    width: 3.0,
+  },
+  {
+    label: "Sensors",
+    sublabels: ["ECG", "SpO₂", "PPG", "Temp"],
+    color: "#EF4444",
+    y: -1.2,
+    width: 2.8,
+  },
 ];
 
 // eRadar360 sensor fusion block diagram
 const RADAR_LAYERS = [
-  { label: "Decision Output", sublabels: ["Object class", "Trajectory"], color: "#22D3EE", y: 1.6, width: 3.6 },
-  { label: "Sensor Fusion", sublabels: ["Kalman filter", "EKF"], color: "#F97316", y: 0.9, width: 3.4 },
-  { label: "Perception AI", sublabels: ["EAI INT4", "YOLO-nano"], color: "#A78BFA", y: 0.2, width: 3.2 },
-  { label: "Signal Processing", sublabels: ["FFT", "CFAR", "Doppler"], color: "#FBBF24", y: -0.5, width: 3.0 },
-  { label: "Sensor Array", sublabels: ["77GHz FMCW", "LiDAR", "Camera"], color: "#EF4444", y: -1.2, width: 2.8 },
+  {
+    label: "Decision Output",
+    sublabels: ["Object class", "Trajectory"],
+    color: "#22D3EE",
+    y: 1.6,
+    width: 3.6,
+  },
+  {
+    label: "Sensor Fusion",
+    sublabels: ["Kalman filter", "EKF"],
+    color: "#F97316",
+    y: 0.9,
+    width: 3.4,
+  },
+  {
+    label: "Perception AI",
+    sublabels: ["EAI INT4", "YOLO-nano"],
+    color: "#A78BFA",
+    y: 0.2,
+    width: 3.2,
+  },
+  {
+    label: "Signal Processing",
+    sublabels: ["FFT", "CFAR", "Doppler"],
+    color: "#FBBF24",
+    y: -0.5,
+    width: 3.0,
+  },
+  {
+    label: "Sensor Array",
+    sublabels: ["77GHz FMCW", "LiDAR", "Camera"],
+    color: "#EF4444",
+    y: -1.2,
+    width: 2.8,
+  },
 ];
 
 // eAerospace flight control block diagram
 const AERO_LAYERS = [
-  { label: "Mission Computer", sublabels: ["EoS SMP", "EAI autopilot"], color: "#60A5FA", y: 1.6, width: 3.6 },
-  { label: "Flight Control", sublabels: ["PID", "Kalman", "TECS"], color: "#22D3EE", y: 0.9, width: 3.4 },
-  { label: "Sensor Fusion", sublabels: ["IMU", "GPS", "Baro", "Mag"], color: "#F97316", y: 0.2, width: 3.2 },
-  { label: "Actuator Control", sublabels: ["PWM", "CAN", "UAVCAN"], color: "#A78BFA", y: -0.5, width: 3.0 },
-  { label: "Hardware", sublabels: ["Motors", "Servos", "ESC"], color: "#6B7280", y: -1.2, width: 2.8 },
+  {
+    label: "Mission Computer",
+    sublabels: ["EoS SMP", "EAI autopilot"],
+    color: "#60A5FA",
+    y: 1.6,
+    width: 3.6,
+  },
+  {
+    label: "Flight Control",
+    sublabels: ["PID", "Kalman", "TECS"],
+    color: "#22D3EE",
+    y: 0.9,
+    width: 3.4,
+  },
+  {
+    label: "Sensor Fusion",
+    sublabels: ["IMU", "GPS", "Baro", "Mag"],
+    color: "#F97316",
+    y: 0.2,
+    width: 3.2,
+  },
+  {
+    label: "Actuator Control",
+    sublabels: ["PWM", "CAN", "UAVCAN"],
+    color: "#A78BFA",
+    y: -0.5,
+    width: 3.0,
+  },
+  {
+    label: "Hardware",
+    sublabels: ["Motors", "Servos", "ESC"],
+    color: "#6B7280",
+    y: -1.2,
+    width: 2.8,
+  },
 ];
 
 const HW_DIAGRAMS = [
-  { id: "health", title: "eHealth365 Sensor Pipeline", subtitle: "ECG → ADC → AI → Cloud", color: "#EF4444", layers: HEALTH_LAYERS },
-  { id: "radar", title: "eRadar360 Sensor Fusion", subtitle: "77GHz + LiDAR + Camera → AI", color: "#22D3EE", layers: RADAR_LAYERS },
-  { id: "aero", title: "eAerospace Flight Control", subtitle: "Sensors → FCS → Mission Computer", color: "#60A5FA", layers: AERO_LAYERS },
+  {
+    id: "health",
+    title: "eHealth365 Sensor Pipeline",
+    subtitle: "ECG → ADC → AI → Cloud",
+    color: "#EF4444",
+    layers: HEALTH_LAYERS,
+  },
+  {
+    id: "radar",
+    title: "eRadar360 Sensor Fusion",
+    subtitle: "77GHz + LiDAR + Camera → AI",
+    color: "#22D3EE",
+    layers: RADAR_LAYERS,
+  },
+  {
+    id: "aero",
+    title: "eAerospace Flight Control",
+    subtitle: "Sensors → FCS → Mission Computer",
+    color: "#60A5FA",
+    layers: AERO_LAYERS,
+  },
 ];
 
 const CATEGORIES = [
@@ -51,7 +179,12 @@ const CATEGORIES = [
     subtitle: "Wearable Health Platform",
     status: "Production",
     standard: "510(k) Class II",
-    products: ["HEALTH-KEY ULTRA", "HEALTH-BAND Neuro", "HEALTH-RING", "HEALTH-LAB"],
+    products: [
+      "HEALTH-KEY ULTRA",
+      "HEALTH-BAND Neuro",
+      "HEALTH-RING",
+      "HEALTH-LAB",
+    ],
     desc: "Four-device wearable health monitoring ecosystem covering ~90% of all health metrics. From cardiovascular vitals to blood chemistry, neural signals to activity tracking.",
     specs: [
       { label: "MCU", value: "nRF5340 + STM32H7" },
@@ -184,7 +317,12 @@ const CATEGORIES = [
     subtitle: "Battery, Solar & Power Electronics",
     status: "Design",
     standard: "IEC 62619",
-    products: ["BMS Controllers", "Solar Inverters", "DC-DC Converters", "Smart Breakers"],
+    products: [
+      "BMS Controllers",
+      "Solar Inverters",
+      "DC-DC Converters",
+      "Smart Breakers",
+    ],
     desc: "Energy hardware portfolio covering battery management systems, renewable energy controllers, and power electronics. EoS manages real-time power flow and safety cutoffs.",
     specs: [
       { label: "Standard", value: "IEC 62619, IEC 61730" },
@@ -203,7 +341,12 @@ const CATEGORIES = [
     subtitle: "Urban Infrastructure & Utilities",
     status: "Design",
     standard: "IEC 62264",
-    products: ["Traffic Controllers", "Smart Meters", "5G Gateways", "Parking Systems"],
+    products: [
+      "Traffic Controllers",
+      "Smart Meters",
+      "5G Gateways",
+      "Parking Systems",
+    ],
     desc: "Smart city hardware for urban infrastructure, utilities, and telecommunications. EoS runs on traffic lights, smart meters, water/gas monitoring, and 5G IoT gateways.",
     specs: [
       { label: "Standard", value: "IEC 62264, IEC 62056" },
@@ -222,7 +365,12 @@ const CATEGORIES = [
     subtitle: "Tactical & Surveillance Systems",
     status: "Design",
     standard: "MIL-STD-810",
-    products: ["EO/IR Cameras", "Tactical Radios", "Mesh Networks", "Detection Sensors"],
+    products: [
+      "EO/IR Cameras",
+      "Tactical Radios",
+      "Mesh Networks",
+      "Detection Sensors",
+    ],
     desc: "Defense hardware portfolio covering surveillance systems, tactical communications, and protection equipment. All designed to MIL-STD-810 rugged standards.",
     specs: [
       { label: "Standard", value: "MIL-STD-810, 188, 461" },
@@ -241,7 +389,12 @@ const CATEGORIES = [
     subtitle: "Smart Home, Wearables & AR",
     status: "Design",
     standard: "Matter 1.3",
-    products: ["Smart Speakers", "AR Glasses", "Smart Watches", "Industrial AR Helmets"],
+    products: [
+      "Smart Speakers",
+      "AR Glasses",
+      "Smart Watches",
+      "Industrial AR Helmets",
+    ],
     desc: "Consumer hardware portfolio covering smart home devices, personal wearables, and augmented reality devices. Matter 1.3 and BLE 5.3 connectivity.",
     specs: [
       { label: "Standard", value: "Matter 1.3, Zigbee" },
@@ -279,7 +432,12 @@ const CATEGORIES = [
     subtitle: "Autonomous Mining & Construction",
     status: "Design",
     standard: "IECEx / ATEX",
-    products: ["Autonomous Haul Trucks", "Mine Monitoring", "Gas Detection", "Construction Robots"],
+    products: [
+      "Autonomous Haul Trucks",
+      "Mine Monitoring",
+      "Gas Detection",
+      "Construction Robots",
+    ],
     desc: "Mining, heavy industry, and construction hardware portfolio covering autonomous mining equipment, industrial safety systems, and construction robots.",
     specs: [
       { label: "Standard", value: "ISO 17757, IECEx" },
@@ -298,7 +456,12 @@ const CATEGORIES = [
     subtitle: "HSMs, Firewalls & Access Control",
     status: "Design",
     standard: "FIPS 140-3",
-    products: ["Hardware Security Modules", "Firewalls", "Biometric Access", "Perimeter Sensors"],
+    products: [
+      "Hardware Security Modules",
+      "Firewalls",
+      "Biometric Access",
+      "Perimeter Sensors",
+    ],
     desc: "Cybersecurity hardware portfolio covering security appliances, physical security, and access control. FIPS 140-3 and CC EAL4+ certified designs.",
     specs: [
       { label: "Standard", value: "FIPS 140-3, CC EAL4+" },
@@ -317,7 +480,12 @@ const CATEGORIES = [
     subtitle: "Donor-Sponsored Concepts",
     status: "Concept",
     standard: "Various",
-    products: ["eVision (blind aid)", "eHand (prosthetic)", "eBCI-Lite (EEG)", "eCubeSat-1U"],
+    products: [
+      "eVision (blind aid)",
+      "eHand (prosthetic)",
+      "eBCI-Lite (EEG)",
+      "eCubeSat-1U",
+    ],
     desc: "10 concept-stage hardware products for health, accessibility, climate, and research. Each has a datasheet stub, BOM placeholder, and business plan for donor evaluation.",
     specs: [
       { label: "eVision", value: "Obstacle detection band" },
@@ -336,7 +504,13 @@ const STATUS_COLORS: Record<string, string> = {
   Concept: "#A78BFA",
 };
 
-function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number }) {
+function CategoryCard({
+  cat,
+  index,
+}: {
+  cat: (typeof CATEGORIES)[0];
+  index: number;
+}) {
   const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -346,7 +520,11 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: (index % 4) * 0.07, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+      transition={{
+        delay: (index % 4) * 0.07,
+        duration: 0.5,
+        ease: [0.23, 1, 0.32, 1],
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="rounded-2xl border flex flex-col overflow-hidden transition-all duration-300"
@@ -368,13 +546,22 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
         </motion.div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-bold text-white text-lg leading-tight">{cat.title}</h3>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              style={{ background: `${STATUS_COLORS[cat.status]}20`, color: STATUS_COLORS[cat.status] }}>
+            <h3 className="font-bold text-white text-lg leading-tight">
+              {cat.title}
+            </h3>
+            <span
+              className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+              style={{
+                background: `${STATUS_COLORS[cat.status]}20`,
+                color: STATUS_COLORS[cat.status],
+              }}
+            >
               {cat.status}
             </span>
           </div>
-          <div className="text-sm mt-0.5" style={{ color: cat.color }}>{cat.subtitle}</div>
+          <div className="text-sm mt-0.5" style={{ color: cat.color }}>
+            {cat.subtitle}
+          </div>
         </div>
       </div>
 
@@ -385,9 +572,15 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
 
       {/* Product list */}
       <div className="px-5 pb-4 flex flex-wrap gap-1.5">
-        {cat.products.map((p) => (
-          <span key={p} className="text-[11px] px-2 py-0.5 rounded-md font-mono"
-            style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.6)" }}>
+        {cat.products.map(p => (
+          <span
+            key={p}
+            className="text-[11px] px-2 py-0.5 rounded-md font-mono"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              color: "rgba(255,255,255,0.6)",
+            }}
+          >
             {p}
           </span>
         ))}
@@ -395,10 +588,18 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
 
       {/* Specs */}
       <div className="px-5 pb-4 grid grid-cols-2 gap-2">
-        {cat.specs.map((s) => (
-          <div key={s.label} className="rounded-lg p-2" style={{ background: "rgba(255,255,255,0.04)" }}>
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider">{s.label}</div>
-            <div className="text-xs font-semibold text-white mt-0.5">{s.value}</div>
+        {cat.specs.map(s => (
+          <div
+            key={s.label}
+            className="rounded-lg p-2"
+            style={{ background: "rgba(255,255,255,0.04)" }}
+          >
+            <div className="text-[10px] text-gray-500 uppercase tracking-wider">
+              {s.label}
+            </div>
+            <div className="text-xs font-semibold text-white mt-0.5">
+              {s.value}
+            </div>
           </div>
         ))}
       </div>
@@ -411,8 +612,10 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
       </div>
 
       {/* Footer actions */}
-      <div className="mt-auto px-5 py-4 border-t flex items-center justify-between"
-        style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+      <div
+        className="mt-auto px-5 py-4 border-t flex items-center justify-between"
+        style={{ borderColor: "rgba(255,255,255,0.06)" }}
+      >
         <Link href={cat.href}>
           <motion.div
             whileHover={{ x: 3 }}
@@ -436,50 +639,94 @@ function CategoryCard({ cat, index }: { cat: typeof CATEGORIES[0]; index: number
 }
 
 export default function EcadHardware() {
-  const [filter, setFilter] = useState<"all" | "Production" | "Design" | "Concept">("all");
+  const [filter, setFilter] = useState<
+    "all" | "Production" | "Design" | "Concept"
+  >("all");
 
-  const filtered = filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
+  const filtered =
+    filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
 
   return (
     <div className="min-h-screen bg-[#050A14] text-white">
       {/* Hero */}
       <section className="relative pt-28 pb-16 px-6 overflow-hidden">
-        <img src="/manus-storage/product-ecad-hardware_f5806032.jpg" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none" />
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
-        <div className="absolute top-20 left-1/3 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{ background: "radial-gradient(circle, #F97316, transparent)" }} />
-        <div className="absolute top-40 right-1/3 w-80 h-80 rounded-full blur-3xl opacity-10"
-          style={{ background: "radial-gradient(circle, #22D3EE, transparent)" }} />
+        <img
+          loading="lazy"
+          decoding="async"
+          src="/manus-storage/product-ecad-hardware_f5806032.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
+        />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <div
+          className="absolute top-20 left-1/3 w-96 h-96 rounded-full blur-3xl opacity-10"
+          style={{
+            background: "radial-gradient(circle, #F97316, transparent)",
+          }}
+        />
+        <div
+          className="absolute top-40 right-1/3 w-80 h-80 rounded-full blur-3xl opacity-10"
+          style={{
+            background: "radial-gradient(circle, #22D3EE, transparent)",
+          }}
+        />
 
         <div className="relative max-w-5xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
-              style={{ background: "rgba(249,115,22,0.1)", borderColor: "rgba(249,115,22,0.3)", color: "#F97316" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
+              style={{
+                background: "rgba(249,115,22,0.1)",
+                borderColor: "rgba(249,115,22,0.3)",
+                color: "#F97316",
+              }}
+            >
               <Package size={12} /> eCAD HARDWARE PRODUCTS · MIT LICENSE
             </span>
             <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
               Hardware{" "}
-              <span style={{ background: "linear-gradient(135deg, #F97316, #FBBF24)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #F97316, #FBBF24)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
                 Design
               </span>{" "}
               Portfolio
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              15 CAD hardware design categories — from health wearables to aerospace systems,
-              industrial PLCs to personal air mobility vehicles. All engineered to run the EmbeddedOS stack.
-              KiCad schematics, Altium designs, Gerber files, BOMs, and datasheets.
+              15 CAD hardware design categories — from health wearables to
+              aerospace systems, industrial PLCs to personal air mobility
+              vehicles. All engineered to run the EmbeddedOS stack. KiCad
+              schematics, Altium designs, Gerber files, BOMs, and datasheets.
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {(["all", "Production", "Design", "Concept"] as const).map((f) => (
+              {(["all", "Production", "Design", "Concept"] as const).map(f => (
                 <motion.button
                   key={f}
-                  whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => setFilter(f)}
                   className="px-5 py-2 rounded-lg text-sm font-semibold border transition-all"
                   style={{
-                    background: filter === f ? "rgba(249,115,22,0.2)" : "transparent",
-                    borderColor: filter === f ? "#F97316" : "rgba(255,255,255,0.15)",
+                    background:
+                      filter === f ? "rgba(249,115,22,0.2)" : "transparent",
+                    borderColor:
+                      filter === f ? "#F97316" : "rgba(255,255,255,0.15)",
                     color: filter === f ? "#F97316" : "rgba(255,255,255,0.6)",
                   }}
                 >
@@ -497,7 +744,13 @@ export default function EcadHardware() {
       </section>
 
       {/* Stats */}
-      <section className="border-y py-8 px-6" style={{ borderColor: "rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.02)" }}>
+      <section
+        className="border-y py-8 px-6"
+        style={{
+          borderColor: "rgba(255,255,255,0.07)",
+          background: "rgba(255,255,255,0.02)",
+        }}
+      >
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { value: "15", label: "Design Categories", color: "#F97316" },
@@ -505,9 +758,16 @@ export default function EcadHardware() {
             { value: "50+", label: "Product Lines", color: "#22D3EE" },
             { value: "10", label: "Future Concepts", color: "#A78BFA" },
           ].map((s, i) => (
-            <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }} className="text-center">
-              <div className="text-3xl font-black" style={{ color: s.color }}>{s.value}</div>
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07 }}
+              className="text-center"
+            >
+              <div className="text-3xl font-black" style={{ color: s.color }}>
+                {s.value}
+              </div>
               <div className="text-xs text-gray-500 mt-1">{s.label}</div>
             </motion.div>
           ))}
@@ -529,27 +789,86 @@ export default function EcadHardware() {
       </section>
 
       {/* Future Designs Spotlight */}
-      <section className="py-16 px-6" style={{ background: "rgba(139,92,246,0.04)", borderTop: "1px solid rgba(139,92,246,0.15)" }}>
+      <section
+        className="py-16 px-6"
+        style={{
+          background: "rgba(139,92,246,0.04)",
+          borderTop: "1px solid rgba(139,92,246,0.15)",
+        }}
+      >
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-black mb-4">Donor-Sponsored Future Designs</h2>
+            <h2 className="text-3xl font-black mb-4">
+              Donor-Sponsored Future Designs
+            </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              10 concept-stage hardware products for health, accessibility, climate, and research.
-              Each has a datasheet stub, BOM placeholder, and one-page business plan for donor evaluation.
+              10 concept-stage hardware products for health, accessibility,
+              climate, and research. Each has a datasheet stub, BOM placeholder,
+              and one-page business plan for donor evaluation.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {[
-              { icon: "👓", name: "eVision", desc: "Obstacle-detection band for blind users", tier: "$5K" },
-              { icon: "🤖", name: "eHand", desc: "6-DOF myoelectric prosthetic hand", tier: "$2K" },
-              { icon: "🧠", name: "eBCI-Lite", desc: "8-channel dry-electrode EEG headband", tier: "$10K" },
-              { icon: "🌾", name: "eFarm", desc: "Solar LoRaWAN soil sensor mesh", tier: "$1K" },
-              { icon: "💧", name: "eHydro", desc: "Water-quality monitoring buoy", tier: "$3K" },
-              { icon: "🐝", name: "eHive", desc: "Acoustic beehive monitor", tier: "$500" },
-              { icon: "🚙", name: "eRover-Mini", desc: "$400 autonomous research rover", tier: "$2K" },
-              { icon: "🎓", name: "eEdu-Kit", desc: "Classroom STEM dev board + curriculum", tier: "$1K" },
-              { icon: "⚡", name: "eMeshGrid", desc: "Off-grid micro-grid controller", tier: "$25K" },
-              { icon: "🛰️", name: "eCubeSat-1U", desc: "1U CubeSat with EmbeddedOS flight SW", tier: "$30K" },
+              {
+                icon: "👓",
+                name: "eVision",
+                desc: "Obstacle-detection band for blind users",
+                tier: "$5K",
+              },
+              {
+                icon: "🤖",
+                name: "eHand",
+                desc: "6-DOF myoelectric prosthetic hand",
+                tier: "$2K",
+              },
+              {
+                icon: "🧠",
+                name: "eBCI-Lite",
+                desc: "8-channel dry-electrode EEG headband",
+                tier: "$10K",
+              },
+              {
+                icon: "🌾",
+                name: "eFarm",
+                desc: "Solar LoRaWAN soil sensor mesh",
+                tier: "$1K",
+              },
+              {
+                icon: "💧",
+                name: "eHydro",
+                desc: "Water-quality monitoring buoy",
+                tier: "$3K",
+              },
+              {
+                icon: "🐝",
+                name: "eHive",
+                desc: "Acoustic beehive monitor",
+                tier: "$500",
+              },
+              {
+                icon: "🚙",
+                name: "eRover-Mini",
+                desc: "$400 autonomous research rover",
+                tier: "$2K",
+              },
+              {
+                icon: "🎓",
+                name: "eEdu-Kit",
+                desc: "Classroom STEM dev board + curriculum",
+                tier: "$1K",
+              },
+              {
+                icon: "⚡",
+                name: "eMeshGrid",
+                desc: "Off-grid micro-grid controller",
+                tier: "$25K",
+              },
+              {
+                icon: "🛰️",
+                name: "eCubeSat-1U",
+                desc: "1U CubeSat with EmbeddedOS flight SW",
+                tier: "$30K",
+              },
             ].map((item, i) => (
               <motion.div
                 key={item.name}
@@ -559,12 +878,20 @@ export default function EcadHardware() {
                 transition={{ delay: i * 0.05 }}
                 whileHover={{ y: -3, scale: 1.03 }}
                 className="rounded-xl border p-4 text-center cursor-pointer"
-                style={{ background: "rgba(139,92,246,0.06)", borderColor: "rgba(139,92,246,0.2)" }}
+                style={{
+                  background: "rgba(139,92,246,0.06)",
+                  borderColor: "rgba(139,92,246,0.2)",
+                }}
               >
                 <div className="text-3xl mb-2">{item.icon}</div>
                 <div className="font-bold text-white text-sm">{item.name}</div>
-                <div className="text-[11px] text-gray-400 mt-1 leading-tight">{item.desc}</div>
-                <div className="mt-2 text-[10px] font-semibold" style={{ color: "#A78BFA" }}>
+                <div className="text-[11px] text-gray-400 mt-1 leading-tight">
+                  {item.desc}
+                </div>
+                <div
+                  className="mt-2 text-[10px] font-semibold"
+                  style={{ color: "#A78BFA" }}
+                >
                   Donor tier: {item.tier}
                 </div>
               </motion.div>
@@ -573,9 +900,12 @@ export default function EcadHardware() {
           <div className="text-center mt-8">
             <Link href="/donate">
               <motion.button
-                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2 mx-auto"
-                style={{ background: "linear-gradient(135deg, #8B5CF6, #6366F1)" }}
+                style={{
+                  background: "linear-gradient(135deg, #8B5CF6, #6366F1)",
+                }}
               >
                 Sponsor a Future Design <ChevronRight size={18} />
               </motion.button>
@@ -591,17 +921,27 @@ export default function EcadHardware() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-4">
               <Layers className="w-4 h-4" /> BLOCK DIAGRAMS
             </div>
-            <h2 className="text-3xl font-black text-white mb-3">Hardware Architecture</h2>
-            <p className="text-gray-400">Interactive 3D block diagrams for key hardware product pipelines.</p>
+            <h2 className="text-3xl font-black text-white mb-3">
+              Hardware Architecture
+            </h2>
+            <p className="text-gray-400">
+              Interactive 3D block diagrams for key hardware product pipelines.
+            </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {HW_DIAGRAMS.map((d) => (
+            {HW_DIAGRAMS.map(d => (
               <div key={d.id}>
                 <div className="mb-3">
                   <div className="text-white font-bold text-sm">{d.title}</div>
                   <div className="text-white/40 text-xs">{d.subtitle}</div>
                 </div>
-                <Suspense fallback={<div className="h-64 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">Loading…</div>}>
+                <Suspense
+                  fallback={
+                    <div className="h-64 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
+                      Loading…
+                    </div>
+                  }
+                >
                   <ArchitectureDiagram3D layers={d.layers} height={260} />
                 </Suspense>
               </div>
@@ -613,24 +953,35 @@ export default function EcadHardware() {
       {/* CTA */}
       <section className="py-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-black mb-4">Run EmbeddedOS on Your Hardware</h2>
+          <h2 className="text-3xl font-black mb-4">
+            Run EmbeddedOS on Your Hardware
+          </h2>
           <p className="text-gray-400 mb-8">
-            All hardware designs are MIT-licensed and available on GitHub. KiCad schematics,
-            Altium designs, Gerber files, BOMs, and datasheets included.
+            All hardware designs are MIT-licensed and available on GitHub. KiCad
+            schematics, Altium designs, Gerber files, BOMs, and datasheets
+            included.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="https://github.com/embeddedos-org/eCAD-Hardware-Products" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <motion.button
-                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2"
-                style={{ background: "linear-gradient(135deg, #F97316, #EF4444)" }}
+                style={{
+                  background: "linear-gradient(135deg, #F97316, #EF4444)",
+                }}
               >
                 View on GitHub <ExternalLink size={16} />
               </motion.button>
             </a>
             <Link href="/getting-started">
               <motion.button
-                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className="px-8 py-3.5 rounded-xl font-bold border flex items-center gap-2"
                 style={{ borderColor: "rgba(255,255,255,0.2)", color: "white" }}
               >

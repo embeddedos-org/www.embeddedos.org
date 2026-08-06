@@ -54,19 +54,22 @@ export default function ProductEoSim() {
       usageExamples={[
         {
           title: "Automated Firmware Testing",
-          scenario: "A CI pipeline runs 500 firmware test cases in EoSim in under 2 minutes — no hardware needed.",
-          code: '# Run all tests in EoSim (headless)\neosim test tests/ --platform stm32f4-discovery --timeout 120\n\n# Output:\n# Running 500 test cases on stm32f4-discovery...\n# [PASS] test_uart_loopback          (12 ms)\n# [PASS] test_spi_sensor_read        (8 ms)\n# [PASS] test_eai_kws_inference      (45 ms)\n# [PASS] test_edb_insert_query       (23 ms)\n# ...\n# 500/500 passed in 98 s',
+          scenario:
+            "A CI pipeline runs 500 firmware test cases in EoSim in under 2 minutes — no hardware needed.",
+          code: "# Run all tests in EoSim (headless)\neosim test tests/ --platform stm32f4-discovery --timeout 120\n\n# Output:\n# Running 500 test cases on stm32f4-discovery...\n# [PASS] test_uart_loopback          (12 ms)\n# [PASS] test_spi_sensor_read        (8 ms)\n# [PASS] test_eai_kws_inference      (45 ms)\n# [PASS] test_edb_insert_query       (23 ms)\n# ...\n# 500/500 passed in 98 s",
         },
         {
           title: "Multi-Board System Simulation",
-          scenario: "Simulate a 3-board robot (sensor + AI + actuator) communicating via virtual EIPC/UART.",
-          code: '# Launch 3-board simulation\neosim multi \\\n    --board sensor:stm32f4:boards/sensor/firmware.elf \\\n    --board ai:rpi4:boards/ai/firmware.elf \\\n    --board actuator:stm32h7:boards/actuator/firmware.elf \\\n    --connect sensor.uart2:ai.uart1 \\\n    --connect ai.uart2:actuator.uart1 \\\n    --gui',
+          scenario:
+            "Simulate a 3-board robot (sensor + AI + actuator) communicating via virtual EIPC/UART.",
+          code: "# Launch 3-board simulation\neosim multi \\\n    --board sensor:stm32f4:boards/sensor/firmware.elf \\\n    --board ai:rpi4:boards/ai/firmware.elf \\\n    --board actuator:stm32h7:boards/actuator/firmware.elf \\\n    --connect sensor.uart2:ai.uart1 \\\n    --connect ai.uart2:actuator.uart1 \\\n    --gui",
         },
       ]}
       ecosystemRole={{
         importance: "high",
         role: "Development Acceleration Layer",
-        summary: "EoSim dramatically accelerates EoS development by eliminating the hardware dependency during the development and testing cycle. Developers can write, test, and debug firmware on their laptop before a single physical board is available. CI pipelines can run hundreds of firmware test cases in minutes. The HIL bridge means that when real hardware is needed, EoSim can still handle the firmware logic while real sensors and actuators are connected. EoSim is what makes EoS development scalable — a team of 10 developers doesn't need 10 physical boards of every type.",
+        summary:
+          "EoSim dramatically accelerates EoS development by eliminating the hardware dependency during the development and testing cycle. Developers can write, test, and debug firmware on their laptop before a single physical board is available. CI pipelines can run hundreds of firmware test cases in minutes. The HIL bridge means that when real hardware is needed, EoSim can still handle the firmware logic while real sensors and actuators are connected. EoSim is what makes EoS development scalable — a team of 10 developers doesn't need 10 physical boards of every type.",
         dependsOn: [
           "EoS Kernel — simulates the full EoS kernel including scheduler, HAL, and IPC",
           "eBuild — compiles the firmware binary that EoSim loads and executes",
@@ -80,28 +83,81 @@ export default function ProductEoSim() {
         ],
       }}
       features={[
-        { name: "63+ Virtual Platforms", desc: "Pre-configured simulations of STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V SiFive, NVIDIA Jetson, and more." },
-        { name: "Binary Compatible", desc: "Run unmodified .elf or .eos binaries — no recompilation or simulation-specific code." },
-        { name: "GPIO Visualizer", desc: "Graphical pin state display with logic analyzer trace for SPI, I²C, UART, and PWM." },
-        { name: "GDB Stub", desc: "Built-in GDB server on port 3333. Set breakpoints, inspect memory, and step through code." },
-        { name: "HIL Bridge", desc: "Connect virtual peripherals to real hardware via /dev/i2c-*, /dev/ttyUSB*, etc." },
-        { name: "Headless Mode", desc: "Run without GUI for CI pipelines. JSON test result output for automation." },
-        { name: "Multi-Board Simulation", desc: "Simulate multiple boards communicating via virtual UART, SPI, or TCP/EIPC." },
-        { name: "Trace Export", desc: "Export GPIO traces to VCD format for GTKWave analysis." },
+        {
+          name: "63+ Virtual Platforms",
+          desc: "Pre-configured simulations of STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V SiFive, NVIDIA Jetson, and more.",
+        },
+        {
+          name: "Binary Compatible",
+          desc: "Run unmodified .elf or .eos binaries — no recompilation or simulation-specific code.",
+        },
+        {
+          name: "GPIO Visualizer",
+          desc: "Graphical pin state display with logic analyzer trace for SPI, I²C, UART, and PWM.",
+        },
+        {
+          name: "GDB Stub",
+          desc: "Built-in GDB server on port 3333. Set breakpoints, inspect memory, and step through code.",
+        },
+        {
+          name: "HIL Bridge",
+          desc: "Connect virtual peripherals to real hardware via /dev/i2c-*, /dev/ttyUSB*, etc.",
+        },
+        {
+          name: "Headless Mode",
+          desc: "Run without GUI for CI pipelines. JSON test result output for automation.",
+        },
+        {
+          name: "Multi-Board Simulation",
+          desc: "Simulate multiple boards communicating via virtual UART, SPI, or TCP/EIPC.",
+        },
+        {
+          name: "Trace Export",
+          desc: "Export GPIO traces to VCD format for GTKWave analysis.",
+        },
       ]}
       specs={[
-        { key: "Simulated Platforms", value: "63+ (STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V, NVIDIA Jetson, …)" },
-        { key: "Simulation Engine", value: "QEMU-based with EoS-specific peripheral models" },
-        { key: "GDB Protocol", value: "GDB Remote Serial Protocol on configurable port (default: 3333)" },
-        { key: "Trace Format", value: "VCD (Value Change Dump) for GTKWave; JSON for automation" },
-        { key: "HIL Transports", value: "I²C (/dev/i2c-*), UART (/dev/ttyUSB*), SPI (/dev/spidev*)" },
+        {
+          key: "Simulated Platforms",
+          value:
+            "63+ (STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V, NVIDIA Jetson, …)",
+        },
+        {
+          key: "Simulation Engine",
+          value: "QEMU-based with EoS-specific peripheral models",
+        },
+        {
+          key: "GDB Protocol",
+          value:
+            "GDB Remote Serial Protocol on configurable port (default: 3333)",
+        },
+        {
+          key: "Trace Format",
+          value: "VCD (Value Change Dump) for GTKWave; JSON for automation",
+        },
+        {
+          key: "HIL Transports",
+          value: "I²C (/dev/i2c-*), UART (/dev/ttyUSB*), SPI (/dev/spidev*)",
+        },
         { key: "Boot-to-Prompt", value: "< 5 ms for Cortex-M targets" },
         { key: "License", value: "MIT" },
       ]}
       pairs={[
-        { name: "eBuild", route: "/product-ebuild", desc: "eBuild compiles the firmware and launches EoSim with ebuild sim." },
-        { name: "EoStudio", route: "/product-eostudio", desc: "EoStudio's Simulate button launches EoSim with the current project." },
-        { name: "EoS Kernel", route: "/product-eos", desc: "EoSim simulates the full EoS kernel including scheduler, HAL, and IPC primitives." },
+        {
+          name: "eBuild",
+          route: "/product-ebuild",
+          desc: "eBuild compiles the firmware and launches EoSim with ebuild sim.",
+        },
+        {
+          name: "EoStudio",
+          route: "/product-eostudio",
+          desc: "EoStudio's Simulate button launches EoSim with the current project.",
+        },
+        {
+          name: "EoS Kernel",
+          route: "/product-eos",
+          desc: "EoSim simulates the full EoS kernel including scheduler, HAL, and IPC primitives.",
+        },
       ]}
     />
   );

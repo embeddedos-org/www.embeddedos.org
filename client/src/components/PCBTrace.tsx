@@ -1,8 +1,10 @@
 import { useRef, useEffect } from "react";
 
 interface TraceSegment {
-  x1: number; y1: number;
-  x2: number; y2: number;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
   color: string;
   speed: number;
   offset: number;
@@ -10,18 +12,114 @@ interface TraceSegment {
 
 const TRACES: TraceSegment[] = [
   // Horizontal traces
-  { x1: 0.05, y1: 0.2, x2: 0.35, y2: 0.2, color: "#F97316", speed: 0.8, offset: 0 },
-  { x1: 0.35, y1: 0.2, x2: 0.35, y2: 0.5, color: "#F97316", speed: 0.8, offset: 0.3 },
-  { x1: 0.35, y1: 0.5, x2: 0.65, y2: 0.5, color: "#F97316", speed: 0.8, offset: 0.6 },
-  { x1: 0.65, y1: 0.5, x2: 0.65, y2: 0.3, color: "#22D3EE", speed: 1.0, offset: 0.1 },
-  { x1: 0.65, y1: 0.3, x2: 0.95, y2: 0.3, color: "#22D3EE", speed: 1.0, offset: 0.4 },
-  { x1: 0.05, y1: 0.6, x2: 0.25, y2: 0.6, color: "#A78BFA", speed: 0.6, offset: 0.2 },
-  { x1: 0.25, y1: 0.6, x2: 0.25, y2: 0.8, color: "#A78BFA", speed: 0.6, offset: 0.5 },
-  { x1: 0.25, y1: 0.8, x2: 0.75, y2: 0.8, color: "#A78BFA", speed: 0.6, offset: 0.8 },
-  { x1: 0.75, y1: 0.8, x2: 0.75, y2: 0.6, color: "#34D399", speed: 0.9, offset: 0.15 },
-  { x1: 0.75, y1: 0.6, x2: 0.95, y2: 0.6, color: "#34D399", speed: 0.9, offset: 0.45 },
-  { x1: 0.45, y1: 0.1, x2: 0.55, y2: 0.1, color: "#F59E0B", speed: 1.2, offset: 0.0 },
-  { x1: 0.55, y1: 0.1, x2: 0.55, y2: 0.4, color: "#F59E0B", speed: 1.2, offset: 0.25 },
+  {
+    x1: 0.05,
+    y1: 0.2,
+    x2: 0.35,
+    y2: 0.2,
+    color: "#F97316",
+    speed: 0.8,
+    offset: 0,
+  },
+  {
+    x1: 0.35,
+    y1: 0.2,
+    x2: 0.35,
+    y2: 0.5,
+    color: "#F97316",
+    speed: 0.8,
+    offset: 0.3,
+  },
+  {
+    x1: 0.35,
+    y1: 0.5,
+    x2: 0.65,
+    y2: 0.5,
+    color: "#F97316",
+    speed: 0.8,
+    offset: 0.6,
+  },
+  {
+    x1: 0.65,
+    y1: 0.5,
+    x2: 0.65,
+    y2: 0.3,
+    color: "#22D3EE",
+    speed: 1.0,
+    offset: 0.1,
+  },
+  {
+    x1: 0.65,
+    y1: 0.3,
+    x2: 0.95,
+    y2: 0.3,
+    color: "#22D3EE",
+    speed: 1.0,
+    offset: 0.4,
+  },
+  {
+    x1: 0.05,
+    y1: 0.6,
+    x2: 0.25,
+    y2: 0.6,
+    color: "#A78BFA",
+    speed: 0.6,
+    offset: 0.2,
+  },
+  {
+    x1: 0.25,
+    y1: 0.6,
+    x2: 0.25,
+    y2: 0.8,
+    color: "#A78BFA",
+    speed: 0.6,
+    offset: 0.5,
+  },
+  {
+    x1: 0.25,
+    y1: 0.8,
+    x2: 0.75,
+    y2: 0.8,
+    color: "#A78BFA",
+    speed: 0.6,
+    offset: 0.8,
+  },
+  {
+    x1: 0.75,
+    y1: 0.8,
+    x2: 0.75,
+    y2: 0.6,
+    color: "#34D399",
+    speed: 0.9,
+    offset: 0.15,
+  },
+  {
+    x1: 0.75,
+    y1: 0.6,
+    x2: 0.95,
+    y2: 0.6,
+    color: "#34D399",
+    speed: 0.9,
+    offset: 0.45,
+  },
+  {
+    x1: 0.45,
+    y1: 0.1,
+    x2: 0.55,
+    y2: 0.1,
+    color: "#F59E0B",
+    speed: 1.2,
+    offset: 0.0,
+  },
+  {
+    x1: 0.55,
+    y1: 0.1,
+    x2: 0.55,
+    y2: 0.4,
+    color: "#F59E0B",
+    speed: 1.2,
+    offset: 0.25,
+  },
 ];
 
 // Pads / vias
@@ -69,18 +167,26 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
       ctx.lineWidth = 0.5;
       const gridSize = 20;
       for (let x = 0; x < w; x += gridSize) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
       }
       for (let y = 0; y < h; y += gridSize) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
       }
 
       if (running) tRef.current += 0.016;
 
       // Draw static traces
       for (const trace of TRACES) {
-        const x1 = trace.x1 * w, y1 = trace.y1 * h;
-        const x2 = trace.x2 * w, y2 = trace.y2 * h;
+        const x1 = trace.x1 * w,
+          y1 = trace.y1 * h;
+        const x2 = trace.x2 * w,
+          y2 = trace.y2 * h;
         ctx.beginPath();
         ctx.strokeStyle = trace.color + "30";
         ctx.lineWidth = 2;
@@ -91,7 +197,7 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
         if (!running) continue;
 
         // Animated signal dot
-        const progress = ((tRef.current * trace.speed + trace.offset) % 1);
+        const progress = (tRef.current * trace.speed + trace.offset) % 1;
         const px = x1 + (x2 - x1) * progress;
         const py = y1 + (y2 - y1) * progress;
 
@@ -114,7 +220,9 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
 
       // Draw pads
       for (const pad of PADS) {
-        const px = pad.x * w, py = pad.y * h, r = pad.r * Math.min(w, h);
+        const px = pad.x * w,
+          py = pad.y * h,
+          r = pad.r * Math.min(w, h);
         ctx.beginPath();
         ctx.arc(px, py, r, 0, Math.PI * 2);
         ctx.fillStyle = pad.color + "30";
@@ -128,7 +236,11 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
           const pulse = (Math.sin(tRef.current * 3 + pad.x * 10) + 1) / 2;
           ctx.beginPath();
           ctx.arc(px, py, r + pulse * r * 1.5, 0, Math.PI * 2);
-          ctx.strokeStyle = pad.color + Math.round(pulse * 60).toString(16).padStart(2, "0");
+          ctx.strokeStyle =
+            pad.color +
+            Math.round(pulse * 60)
+              .toString(16)
+              .padStart(2, "0");
           ctx.lineWidth = 1;
           ctx.stroke();
         }

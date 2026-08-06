@@ -1,6 +1,11 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { RoundedBox, Torus, Cylinder, MeshTransmissionMaterial } from "@react-three/drei";
+import {
+  RoundedBox,
+  Torus,
+  Cylinder,
+  MeshTransmissionMaterial,
+} from "@react-three/drei";
 import * as THREE from "three";
 
 // ── HEALTH-KEY ULTRA — smart key fob ─────────────────────────────────────────
@@ -25,17 +30,40 @@ function KeyUltraModel({ hovered }: { hovered: boolean }) {
         <meshStandardMaterial color="#1a1f35" metalness={0.9} roughness={0.1} />
       </RoundedBox>
       {/* Screen */}
-      <RoundedBox args={[0.85, 1.0, 0.05]} radius={0.06} smoothness={4} position={[0, 0.35, 0.2]}>
-        <meshStandardMaterial color="#0a0f1e" emissive="#22D3EE" emissiveIntensity={0.4} />
+      <RoundedBox
+        args={[0.85, 1.0, 0.05]}
+        radius={0.06}
+        smoothness={4}
+        position={[0, 0.35, 0.2]}
+      >
+        <meshStandardMaterial
+          color="#0a0f1e"
+          emissive="#22D3EE"
+          emissiveIntensity={0.4}
+        />
       </RoundedBox>
       {/* Sensor ring */}
-      <Torus args={[0.28, 0.04, 16, 32]} position={[0, -0.65, 0.2]} rotation={[0, 0, 0]}>
-        <meshStandardMaterial color="#F97316" emissive="#F97316" emissiveIntensity={2} toneMapped={false} />
+      <Torus
+        args={[0.28, 0.04, 16, 32]}
+        position={[0, -0.65, 0.2]}
+        rotation={[0, 0, 0]}
+      >
+        <meshStandardMaterial
+          color="#F97316"
+          emissive="#F97316"
+          emissiveIntensity={2}
+          toneMapped={false}
+        />
       </Torus>
       {/* LED indicator */}
       <mesh ref={glowRef} position={[0, 0.95, 0.2]}>
         <sphereGeometry args={[0.06, 16, 16]} />
-        <meshStandardMaterial color="#34D399" emissive="#34D399" emissiveIntensity={2} toneMapped={false} />
+        <meshStandardMaterial
+          color="#34D399"
+          emissive="#34D399"
+          emissiveIntensity={2}
+          toneMapped={false}
+        />
       </mesh>
       {/* Key ring hole */}
       <Torus args={[0.12, 0.03, 8, 16]} position={[0, 1.2, 0]}>
@@ -59,28 +87,60 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
     <group ref={groupRef} scale={hovered ? 1.08 : 1}>
       {/* Watch body */}
       <RoundedBox args={[1.5, 1.5, 0.4]} radius={0.22} smoothness={4}>
-        <meshStandardMaterial color="#111827" metalness={0.8} roughness={0.15} />
+        <meshStandardMaterial
+          color="#111827"
+          metalness={0.8}
+          roughness={0.15}
+        />
       </RoundedBox>
       {/* Display */}
-      <RoundedBox args={[1.15, 1.15, 0.08]} radius={0.12} smoothness={4} position={[0, 0, 0.24]}>
-        <meshStandardMaterial color="#0a0f1e" emissive="#A78BFA" emissiveIntensity={0.5} />
+      <RoundedBox
+        args={[1.15, 1.15, 0.08]}
+        radius={0.12}
+        smoothness={4}
+        position={[0, 0, 0.24]}
+      >
+        <meshStandardMaterial
+          color="#0a0f1e"
+          emissive="#A78BFA"
+          emissiveIntensity={0.5}
+        />
       </RoundedBox>
       {/* Crown */}
-      <Cylinder args={[0.06, 0.06, 0.25, 12]} position={[0.83, 0.2, 0]} rotation={[0, 0, Math.PI / 2]}>
+      <Cylinder
+        args={[0.06, 0.06, 0.25, 12]}
+        position={[0.83, 0.2, 0]}
+        rotation={[0, 0, Math.PI / 2]}
+      >
         <meshStandardMaterial color="#555" metalness={1} roughness={0.2} />
       </Cylinder>
       {/* Neural sensor array (3 dots) */}
       {[-0.3, 0, 0.3].map((x, i) => (
         <mesh key={i} position={[x, -0.85, 0.1]}>
           <sphereGeometry args={[0.05, 12, 12]} />
-          <meshStandardMaterial color="#A78BFA" emissive="#A78BFA" emissiveIntensity={2.5} toneMapped={false} />
+          <meshStandardMaterial
+            color="#A78BFA"
+            emissive="#A78BFA"
+            emissiveIntensity={2.5}
+            toneMapped={false}
+          />
         </mesh>
       ))}
       {/* Band stubs */}
-      <RoundedBox args={[1.3, 0.55, 0.25]} radius={0.1} smoothness={4} position={[0, 1.1, 0]}>
+      <RoundedBox
+        args={[1.3, 0.55, 0.25]}
+        radius={0.1}
+        smoothness={4}
+        position={[0, 1.1, 0]}
+      >
         <meshStandardMaterial color="#1e2540" metalness={0.5} roughness={0.4} />
       </RoundedBox>
-      <RoundedBox args={[1.3, 0.55, 0.25]} radius={0.1} smoothness={4} position={[0, -1.1, 0]}>
+      <RoundedBox
+        args={[1.3, 0.55, 0.25]}
+        radius={0.1}
+        smoothness={4}
+        position={[0, -1.1, 0]}
+      >
         <meshStandardMaterial color="#1e2540" metalness={0.5} roughness={0.4} />
       </RoundedBox>
     </group>
@@ -101,16 +161,30 @@ function RingModel({ hovered }: { hovered: boolean }) {
     <group ref={groupRef} scale={hovered ? 1.08 : 1}>
       {/* Ring body */}
       <Torus args={[0.9, 0.22, 32, 64]}>
-        <meshStandardMaterial color="#1a1f35" metalness={0.95} roughness={0.05} />
+        <meshStandardMaterial
+          color="#1a1f35"
+          metalness={0.95}
+          roughness={0.05}
+        />
       </Torus>
       {/* Inner sensor ring */}
       <Torus args={[0.9, 0.08, 16, 64]}>
-        <meshStandardMaterial color="#34D399" emissive="#34D399" emissiveIntensity={1.5} toneMapped={false} />
+        <meshStandardMaterial
+          color="#34D399"
+          emissive="#34D399"
+          emissiveIntensity={1.5}
+          toneMapped={false}
+        />
       </Torus>
       {/* Sensor bump */}
       <mesh position={[0.9, 0, 0]}>
         <sphereGeometry args={[0.14, 16, 16]} />
-        <meshStandardMaterial color="#F97316" emissive="#F97316" emissiveIntensity={2} toneMapped={false} />
+        <meshStandardMaterial
+          color="#F97316"
+          emissive="#F97316"
+          emissiveIntensity={2}
+          toneMapped={false}
+        />
       </mesh>
     </group>
   );
@@ -133,12 +207,30 @@ function LabModel({ hovered }: { hovered: boolean }) {
         <meshStandardMaterial color="#0f172a" metalness={0.7} roughness={0.2} />
       </RoundedBox>
       {/* Screen */}
-      <RoundedBox args={[1.4, 0.9, 0.06]} radius={0.08} smoothness={4} position={[-0.3, 0.1, 0.28]}>
-        <meshStandardMaterial color="#0a0f1e" emissive="#60A5FA" emissiveIntensity={0.5} />
+      <RoundedBox
+        args={[1.4, 0.9, 0.06]}
+        radius={0.08}
+        smoothness={4}
+        position={[-0.3, 0.1, 0.28]}
+      >
+        <meshStandardMaterial
+          color="#0a0f1e"
+          emissive="#60A5FA"
+          emissiveIntensity={0.5}
+        />
       </RoundedBox>
       {/* Test port */}
-      <Cylinder args={[0.12, 0.12, 0.2, 16]} position={[0.85, 0, 0.35]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshStandardMaterial color="#F97316" emissive="#F97316" emissiveIntensity={1.5} toneMapped={false} />
+      <Cylinder
+        args={[0.12, 0.12, 0.2, 16]}
+        position={[0.85, 0, 0.35]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <meshStandardMaterial
+          color="#F97316"
+          emissive="#F97316"
+          emissiveIntensity={1.5}
+          toneMapped={false}
+        />
       </Cylinder>
       {/* LED strip */}
       {[-0.6, -0.2, 0.2, 0.6].map((x, i) => (
@@ -166,9 +258,19 @@ const DEVICE_CAMERAS: Record<DeviceType, [number, number, number]> = {
   lab: [0, 0, 5],
 };
 
-export function HealthDevice3DCanvas({ device, hovered = false }: { device: DeviceType; hovered?: boolean }) {
+export function HealthDevice3DCanvas({
+  device,
+  hovered = false,
+}: {
+  device: DeviceType;
+  hovered?: boolean;
+}) {
   return (
-    <Canvas camera={{ position: DEVICE_CAMERAS[device], fov: 45 }} gl={{ antialias: true, alpha: true }} style={{ background: "transparent" }}>
+    <Canvas
+      camera={{ position: DEVICE_CAMERAS[device], fov: 45 }}
+      gl={{ antialias: true, alpha: true }}
+      style={{ background: "transparent" }}
+    >
       <ambientLight intensity={0.4} />
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#F97316" />
       <pointLight position={[-3, -2, 2]} intensity={1} color="#22D3EE" />
@@ -183,7 +285,13 @@ export function HealthDevice3DCanvas({ device, hovered = false }: { device: Devi
 }
 
 // ── Biometric waveform simulation ─────────────────────────────────────────────
-export function BiometricWaveform({ type, color }: { type: "ecg" | "spo2" | "neural" | "temp"; color: string }) {
+export function BiometricWaveform({
+  type,
+  color,
+}: {
+  type: "ecg" | "spo2" | "neural" | "temp";
+  color: string;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
   const offsetRef = useRef(0);
@@ -194,16 +302,19 @@ export function BiometricWaveform({ type, color }: { type: "ecg" | "spo2" | "neu
         return (x: number) => {
           const t = x % (Math.PI * 2);
           if (t < 0.3) return Math.sin(t * 10) * 0.3;
-          if (t < 0.5) return Math.sin((t - 0.3) * Math.PI / 0.2) * 1.0;
-          if (t < 0.7) return -Math.sin((t - 0.5) * Math.PI / 0.2) * 0.4;
-          if (t < 1.0) return Math.sin((t - 0.7) * Math.PI / 0.3) * 0.6;
+          if (t < 0.5) return Math.sin(((t - 0.3) * Math.PI) / 0.2) * 1.0;
+          if (t < 0.7) return -Math.sin(((t - 0.5) * Math.PI) / 0.2) * 0.4;
+          if (t < 1.0) return Math.sin(((t - 0.7) * Math.PI) / 0.3) * 0.6;
           return Math.sin(t * 2) * 0.05;
         };
       case "spo2":
         return (x: number) => Math.sin(x * 1.2) * 0.6 + Math.sin(x * 2.4) * 0.2;
       case "neural":
         return (x: number) =>
-          Math.sin(x * 8) * 0.15 + Math.sin(x * 3.3) * 0.4 + Math.sin(x * 1.1) * 0.3 + (Math.random() - 0.5) * 0.08;
+          Math.sin(x * 8) * 0.15 +
+          Math.sin(x * 3.3) * 0.4 +
+          Math.sin(x * 1.1) * 0.3 +
+          (Math.random() - 0.5) * 0.08;
       case "temp":
         return (x: number) => Math.sin(x * 0.5) * 0.3 + Math.sin(x * 1.5) * 0.1;
     }
@@ -307,7 +418,12 @@ export function BiometricWaveform({ type, color }: { type: "ecg" | "spo2" | "neu
 
   return (
     <canvas
-      ref={el => { if (el) { canvasRef.current = el; startAnimation(el); } }}
+      ref={el => {
+        if (el) {
+          canvasRef.current = el;
+          startAnimation(el);
+        }
+      }}
       width={400}
       height={80}
       className="w-full h-full"

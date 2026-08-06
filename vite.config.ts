@@ -56,7 +56,7 @@ function writeToLogFile(source: LogSource, entries: unknown[]) {
   const logPath = path.join(LOG_DIR, `${source}.log`);
 
   // Format entries with timestamps
-  const lines = entries.map((entry) => {
+  const lines = entries.map(entry => {
     const ts = new Date().toISOString();
     return `[${ts}] ${JSON.stringify(entry)}`;
   });
@@ -132,7 +132,7 @@ function vitePluginManusDebugCollector(): Plugin {
         }
 
         let body = "";
-        req.on("data", (chunk) => {
+        req.on("data", chunk => {
           body += chunk.toString();
         });
 
@@ -150,10 +150,21 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+// Dev-only tooling (jsx source locations, the Manus preview runtime, the debug
+// log collector) must never reach the public build — the Manus runtime alone
+// inlines ~367 KB into index.html, which is 99.6% of the served document.
+const devOnlyPlugins = [
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+];
 
-export default defineConfig({
-  plugins,
+export default defineConfig(({ command }) => ({
+  plugins: [
+    react(),
+    tailwindcss(),
+    ...(command === "serve" ? devOnlyPlugins : []),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -167,6 +178,21 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Split only the vendors that are genuinely eager (react/router, and
+    // framer-motion which 85 modules import statically) out of the entry chunk.
+    //
+    // Do NOT add three/@react-three or recharts here: they are reached only
+    // through React.lazy boundaries, and naming them in manualChunks promotes
+    // them into the entry's static graph, which makes Vite emit a
+    // <link rel="modulepreload"> for the 1.1 MB three.js chunk on every page.
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom", "wouter"],
+          "vendor-motion": ["framer-motion", "gsap", "@gsap/react"],
+        },
+      },
+    },
   },
   server: {
     host: true,
@@ -184,4 +210,4 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
-});
+}));

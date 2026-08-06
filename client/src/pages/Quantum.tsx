@@ -86,7 +86,7 @@ function QuantumCanvas() {
       }
 
       // Draw qubits
-      qubits.forEach((q) => {
+      qubits.forEach(q => {
         q.phase += q.speed;
         const pulse = 0.7 + 0.3 * Math.sin(q.phase);
 
@@ -195,7 +195,7 @@ const vendors = [
     coherence: "Theoretically unlimited",
     fidelity: "Target: 99.99%",
     sdk: "Q# / Azure QDK",
-    sdkUrl: "https://azure.microsoft.com/quantum",
+    sdkUrl: "https://azure.microsoft.com/en-us/products/quantum",
     access: "Azure Quantum (IonQ, Rigetti, Quantinuum, Pasqal)",
     description:
       "Microsoft's Azure Quantum platform provides unified access to multiple quantum hardware providers and is pioneering topological qubits using Majorana fermions, which promise inherently fault-tolerant operation. EoS supports Q# programs and the full Azure Quantum provider ecosystem.",
@@ -220,7 +220,7 @@ const vendors = [
     coherence: "~10 s",
     fidelity: "99.9%+",
     sdk: "Cirq / Qiskit / Q#",
-    sdkUrl: "https://ionq.com/developers",
+    sdkUrl: "https://ionq.com/docs",
     access: "AWS Braket, Azure Quantum, Google Cloud, Direct API",
     description:
       "IonQ's trapped-ion architecture provides all-to-all qubit connectivity and the longest coherence times of any commercial system — up to 10 seconds. The Forte system's 35 algorithmic qubits (AQ) represent the highest-quality gate operations available. EoS provides a native IonQ HAL driver with direct REST API integration.",
@@ -371,20 +371,84 @@ const kernelFeatures = [
 
 // ── Hardware comparison table ────────────────────────────────────────────────
 const comparisonRows = [
-  { label: "Chip", ibm: "Heron r2", google: "Willow", microsoft: "Majorana†", ionq: "Forte", rigetti: "Ankaa-3", quantinuum: "H2-1" },
-  { label: "Qubits", ibm: "156", google: "105", microsoft: "Future", ionq: "35 AQ", rigetti: "84", quantinuum: "56" },
-  { label: "Technology", ibm: "Superconducting", google: "Superconducting", microsoft: "Topological", ionq: "Trapped-ion", rigetti: "Superconducting", quantinuum: "Trapped-ion QCCD" },
-  { label: "Gate Time", ibm: "~50 ns", google: "~25 ns", microsoft: "TBD", ionq: "~200 µs", rigetti: "~40 ns", quantinuum: "~1 ms" },
-  { label: "Coherence", ibm: "~300 µs", google: "~100 µs", microsoft: "Unlimited†", ionq: "~10 s", rigetti: "~50 µs", quantinuum: "~1 s" },
-  { label: "2Q Fidelity", ibm: "99.9%", google: "99.7%", microsoft: "99.99%†", ionq: "99.9%+", rigetti: "99.5%", quantinuum: "99.9%+" },
-  { label: "SDK", ibm: "Qiskit", google: "Cirq", microsoft: "Q#", ionq: "Multi", rigetti: "Pyquil", quantinuum: "TKET" },
-  { label: "EoS Status", ibm: "✅ Supported", google: "✅ Supported", microsoft: "🔵 Beta", ionq: "✅ Supported", rigetti: "✅ Supported", quantinuum: "✅ Supported" },
+  {
+    label: "Chip",
+    ibm: "Heron r2",
+    google: "Willow",
+    microsoft: "Majorana†",
+    ionq: "Forte",
+    rigetti: "Ankaa-3",
+    quantinuum: "H2-1",
+  },
+  {
+    label: "Qubits",
+    ibm: "156",
+    google: "105",
+    microsoft: "Future",
+    ionq: "35 AQ",
+    rigetti: "84",
+    quantinuum: "56",
+  },
+  {
+    label: "Technology",
+    ibm: "Superconducting",
+    google: "Superconducting",
+    microsoft: "Topological",
+    ionq: "Trapped-ion",
+    rigetti: "Superconducting",
+    quantinuum: "Trapped-ion QCCD",
+  },
+  {
+    label: "Gate Time",
+    ibm: "~50 ns",
+    google: "~25 ns",
+    microsoft: "TBD",
+    ionq: "~200 µs",
+    rigetti: "~40 ns",
+    quantinuum: "~1 ms",
+  },
+  {
+    label: "Coherence",
+    ibm: "~300 µs",
+    google: "~100 µs",
+    microsoft: "Unlimited†",
+    ionq: "~10 s",
+    rigetti: "~50 µs",
+    quantinuum: "~1 s",
+  },
+  {
+    label: "2Q Fidelity",
+    ibm: "99.9%",
+    google: "99.7%",
+    microsoft: "99.99%†",
+    ionq: "99.9%+",
+    rigetti: "99.5%",
+    quantinuum: "99.9%+",
+  },
+  {
+    label: "SDK",
+    ibm: "Qiskit",
+    google: "Cirq",
+    microsoft: "Q#",
+    ionq: "Multi",
+    rigetti: "Pyquil",
+    quantinuum: "TKET",
+  },
+  {
+    label: "EoS Status",
+    ibm: "✅ Supported",
+    google: "✅ Supported",
+    microsoft: "🔵 Beta",
+    ionq: "✅ Supported",
+    rigetti: "✅ Supported",
+    quantinuum: "✅ Supported",
+  },
 ];
 
 // ── Page component ───────────────────────────────────────────────────────────
 export default function Quantum() {
   const [activeVendor, setActiveVendor] = useState("ibm");
-  const vendor = vendors.find((v) => v.id === activeVendor) ?? vendors[0];
+  const vendor = vendors.find(v => v.id === activeVendor) ?? vendors[0];
 
   return (
     <div className="min-h-screen bg-[#050510] text-white">
@@ -424,9 +488,10 @@ export default function Quantum() {
             </h1>
 
             <p className="text-xl text-white/70 mb-8 max-w-2xl leading-relaxed">
-              The EmbeddedOS Quantum Computing module (eQC) extends the EoS kernel with
-              real-time QPU scheduling, hardware abstraction for all major quantum processors,
-              and a unified SDK interface for IBM, Google, Microsoft, IonQ, and Rigetti hardware.
+              The EmbeddedOS Quantum Computing module (eQC) extends the EoS
+              kernel with real-time QPU scheduling, hardware abstraction for all
+              major quantum processors, and a unified SDK interface for IBM,
+              Google, Microsoft, IonQ, and Rigetti hardware.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
@@ -455,15 +520,25 @@ export default function Quantum() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { label: "Supported QPUs", value: "5", sub: "Vendors" },
-                { label: "Min Gate Latency", value: "<25ns", sub: "Google Willow" },
+                {
+                  label: "Min Gate Latency",
+                  value: "<25ns",
+                  sub: "Google Willow",
+                },
                 { label: "Max Coherence", value: "10s", sub: "IonQ Forte" },
-                { label: "Gate Fidelity", value: "99.9%+", sub: "Best-in-class" },
-              ].map((s) => (
+                {
+                  label: "Gate Fidelity",
+                  value: "99.9%+",
+                  sub: "Best-in-class",
+                },
+              ].map(s => (
                 <div
                   key={s.label}
                   className="bg-white/5 border border-white/10 rounded-xl p-4 text-center"
                 >
-                  <div className="text-2xl font-bold text-purple-300">{s.value}</div>
+                  <div className="text-2xl font-bold text-purple-300">
+                    {s.value}
+                  </div>
                   <div className="text-xs text-white/50 mt-1">{s.label}</div>
                   <div className="text-xs text-white/30">{s.sub}</div>
                 </div>
@@ -484,14 +559,15 @@ export default function Quantum() {
               Supported Quantum Processors
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
-              EoS provides native kernel-level support for every major quantum computing
-              platform through the eQC Hardware Abstraction Layer (HAL).
+              EoS provides native kernel-level support for every major quantum
+              computing platform through the eQC Hardware Abstraction Layer
+              (HAL).
             </p>
           </div>
 
           {/* Vendor tabs */}
           <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {vendors.map((v) => (
+            {vendors.map(v => (
               <button
                 key={v.id}
                 onClick={() => setActiveVendor(v.id)}
@@ -517,7 +593,9 @@ export default function Quantum() {
                         {vendor.logo}
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-white">{vendor.name}</h3>
+                        <h3 className="text-2xl font-bold text-white">
+                          {vendor.name}
+                        </h3>
                         <p className="text-white/70">{vendor.chip}</p>
                       </div>
                     </div>
@@ -536,7 +614,9 @@ export default function Quantum() {
 
               <div className="p-8 grid md:grid-cols-2 gap-8">
                 <div>
-                  <p className="text-white/70 leading-relaxed mb-6">{vendor.description}</p>
+                  <p className="text-white/70 leading-relaxed mb-6">
+                    {vendor.description}
+                  </p>
 
                   {/* Specs */}
                   <div className="grid grid-cols-2 gap-3">
@@ -547,13 +627,17 @@ export default function Quantum() {
                       { label: "Coherence", value: vendor.coherence },
                       { label: "2Q Fidelity", value: vendor.fidelity },
                       { label: "SDK", value: vendor.sdk },
-                    ].map((spec) => (
+                    ].map(spec => (
                       <div
                         key={spec.label}
                         className="bg-white/5 rounded-lg p-3 border border-white/10"
                       >
-                        <div className="text-xs text-white/40 mb-1">{spec.label}</div>
-                        <div className="text-sm font-semibold text-white">{spec.value}</div>
+                        <div className="text-xs text-white/40 mb-1">
+                          {spec.label}
+                        </div>
+                        <div className="text-sm font-semibold text-white">
+                          {spec.value}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -565,8 +649,11 @@ export default function Quantum() {
                     EoS eQC Integration Features
                   </h4>
                   <ul className="space-y-3">
-                    {vendor.eosFeatures.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-sm text-white/70">
+                    {vendor.eosFeatures.map(f => (
+                      <li
+                        key={f}
+                        className="flex items-start gap-3 text-sm text-white/70"
+                      >
                         <ChevronRight className="w-4 h-4 text-purple-400 mt-0.5 shrink-0" />
                         {f}
                       </li>
@@ -580,8 +667,13 @@ export default function Quantum() {
                       variant="outline"
                       className="border-white/20 text-white hover:bg-white/10"
                     >
-                      <a href={vendor.sdkUrl} target="_blank" rel="noopener noreferrer">
-                        {vendor.sdk} Docs <ExternalLink className="ml-1.5 w-3.5 h-3.5" />
+                      <a
+                        href={vendor.sdkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {vendor.sdk} Docs{" "}
+                        <ExternalLink className="ml-1.5 w-3.5 h-3.5" />
                       </a>
                     </Button>
                     <Button
@@ -611,13 +703,13 @@ export default function Quantum() {
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
               Nine specialized subsystems extending the EoS microkernel with
-              full quantum computing support — from nanosecond pulse control
-              to post-quantum cryptographic isolation.
+              full quantum computing support — from nanosecond pulse control to
+              post-quantum cryptographic isolation.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-            {kernelFeatures.map((f) => {
+            {kernelFeatures.map(f => {
               const Icon = f.icon;
               return (
                 <Card
@@ -627,12 +719,18 @@ export default function Quantum() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center gap-3 mb-1">
                       <Icon className={`w-5 h-5 ${f.color}`} />
-                      <CardTitle className="text-white text-base">{f.title}</CardTitle>
+                      <CardTitle className="text-white text-base">
+                        {f.title}
+                      </CardTitle>
                     </div>
-                    <p className={`text-xs font-medium ${f.color}`}>{f.subtitle}</p>
+                    <p className={`text-xs font-medium ${f.color}`}>
+                      {f.subtitle}
+                    </p>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-white/60 text-sm leading-relaxed">{f.description}</p>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {f.description}
+                    </p>
                   </CardContent>
                 </Card>
               );
@@ -652,8 +750,8 @@ export default function Quantum() {
               Quantum Hardware Comparison
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
-              All six supported quantum computing platforms compared across
-              key technical specifications and EoS integration status.
+              All six supported quantum computing platforms compared across key
+              technical specifications and EoS integration status.
             </p>
           </div>
 
@@ -661,9 +759,14 @@ export default function Quantum() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10">
-                  <th className="text-left py-4 px-4 text-white/40 font-medium w-32">Spec</th>
-                  {vendors.map((v) => (
-                    <th key={v.id} className="text-center py-4 px-4 text-white font-semibold">
+                  <th className="text-left py-4 px-4 text-white/40 font-medium w-32">
+                    Spec
+                  </th>
+                  {vendors.map(v => (
+                    <th
+                      key={v.id}
+                      className="text-center py-4 px-4 text-white font-semibold"
+                    >
                       <div
                         className={`inline-block px-3 py-1 rounded-full text-xs bg-gradient-to-r ${v.color} text-white mb-1`}
                       >
@@ -680,19 +783,34 @@ export default function Quantum() {
                     key={row.label}
                     className={`border-b border-white/5 ${i % 2 === 0 ? "bg-white/2" : ""}`}
                   >
-                    <td className="py-3.5 px-4 text-white/50 font-medium">{row.label}</td>
-                    <td className="py-3.5 px-4 text-center text-white/80">{row.ibm}</td>
-                    <td className="py-3.5 px-4 text-center text-white/80">{row.google}</td>
-                    <td className="py-3.5 px-4 text-center text-white/80">{row.microsoft}</td>
-                    <td className="py-3.5 px-4 text-center text-white/80">{row.ionq}</td>
-                    <td className="py-3.5 px-4 text-center text-white/80">{row.rigetti}</td>
-                    <td className="py-3.5 px-4 text-center text-white/80">{row.quantinuum}</td>
+                    <td className="py-3.5 px-4 text-white/50 font-medium">
+                      {row.label}
+                    </td>
+                    <td className="py-3.5 px-4 text-center text-white/80">
+                      {row.ibm}
+                    </td>
+                    <td className="py-3.5 px-4 text-center text-white/80">
+                      {row.google}
+                    </td>
+                    <td className="py-3.5 px-4 text-center text-white/80">
+                      {row.microsoft}
+                    </td>
+                    <td className="py-3.5 px-4 text-center text-white/80">
+                      {row.ionq}
+                    </td>
+                    <td className="py-3.5 px-4 text-center text-white/80">
+                      {row.rigetti}
+                    </td>
+                    <td className="py-3.5 px-4 text-center text-white/80">
+                      {row.quantinuum}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <p className="text-white/30 text-xs mt-3 text-center">
-              † Microsoft topological qubits are in research phase. Coherence and fidelity figures are theoretical targets.
+              † Microsoft topological qubits are in research phase. Coherence
+              and fidelity figures are theoretical targets.
             </p>
           </div>
         </div>
@@ -744,21 +862,20 @@ export default function Quantum() {
                 desc: "Optimization-focused quantum computing for combinatorial problems. D-Wave integration planned.",
                 vendors: ["D-Wave (planned)"],
               },
-            ].map((p) => {
+            ].map(p => {
               const Icon = p.icon;
               return (
-                <Card
-                  key={p.name}
-                  className={`${p.bg} border rounded-xl`}
-                >
+                <Card key={p.name} className={`${p.bg} border rounded-xl`}>
                   <CardHeader className="pb-2">
                     <Icon className={`w-6 h-6 ${p.color} mb-2`} />
-                    <CardTitle className="text-white text-base">{p.name}</CardTitle>
+                    <CardTitle className="text-white text-base">
+                      {p.name}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-white/60 text-sm mb-4">{p.desc}</p>
                     <div className="flex flex-wrap gap-1.5">
-                      {p.vendors.map((v) => (
+                      {p.vendors.map(v => (
                         <span
                           key={v}
                           className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/60"
@@ -786,7 +903,9 @@ export default function Quantum() {
               Quantum Simulation &amp; Hybrid Frameworks
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
-              EoS eQC integrates with all major quantum simulation frameworks — enabling development and testing without physical QPU access, and powering hybrid classical-quantum algorithms.
+              EoS eQC integrates with all major quantum simulation frameworks —
+              enabling development and testing without physical QPU access, and
+              powering hybrid classical-quantum algorithms.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -799,7 +918,8 @@ export default function Quantum() {
                 badge: "bg-blue-500/20 text-blue-300",
                 type: "State-vector / Noise Simulator",
                 desc: "High-performance quantum circuit simulator supporting state-vector, density matrix, and stabilizer simulation. Includes realistic noise models from IBM hardware calibration data.",
-                eosUse: "eQC development mode — run circuits locally before submitting to real IBM QPU",
+                eosUse:
+                  "eQC development mode — run circuits locally before submitting to real IBM QPU",
                 url: "https://qiskit.github.io/qiskit-aer/",
               },
               {
@@ -810,7 +930,8 @@ export default function Quantum() {
                 badge: "bg-green-500/20 text-green-300",
                 type: "State-vector / Clifford Simulator",
                 desc: "Google's circuit simulation engine with support for state-vector, density matrix, Clifford, and MPS (matrix product state) simulators. Optimized for Willow-style circuits.",
-                eosUse: "eQC surface code QEC testing and Willow circuit validation before cloud submission",
+                eosUse:
+                  "eQC surface code QEC testing and Willow circuit validation before cloud submission",
                 url: "https://quantumai.google/cirq/simulate",
               },
               {
@@ -821,7 +942,8 @@ export default function Quantum() {
                 badge: "bg-yellow-500/20 text-yellow-300",
                 type: "Hybrid Quantum-Classical ML",
                 desc: "The leading framework for quantum machine learning and variational quantum algorithms. Supports automatic differentiation of quantum circuits and integrates with PyTorch, TensorFlow, and JAX.",
-                eosUse: "eQC Hybrid Bridge — VQE, QAOA, and QML workloads with classical optimizer feedback loops",
+                eosUse:
+                  "eQC Hybrid Bridge — VQE, QAOA, and QML workloads with classical optimizer feedback loops",
                 url: "https://pennylane.ai",
               },
               {
@@ -832,7 +954,8 @@ export default function Quantum() {
                 badge: "bg-purple-500/20 text-purple-300",
                 type: "Open Quantum Systems Simulator",
                 desc: "Quantum Toolbox in Python — the standard tool for simulating open quantum systems, Lindblad master equations, and quantum optics. Used for qubit decoherence modeling and pulse-level simulation.",
-                eosUse: "eQC pulse engine calibration — T1/T2 decoherence modeling for cryogenic qubit drivers",
+                eosUse:
+                  "eQC pulse engine calibration — T1/T2 decoherence modeling for cryogenic qubit drivers",
                 url: "https://qutip.org",
               },
               {
@@ -843,7 +966,8 @@ export default function Quantum() {
                 badge: "bg-pink-500/20 text-pink-300",
                 type: "High-Performance State-Vector",
                 desc: "The fastest open-source quantum circuit simulator, optimized for multi-core CPU and GPU execution. Supports up to 30+ qubits in state-vector mode with SIMD and CUDA acceleration.",
-                eosUse: "eQC CI/CD pipeline — fast circuit regression testing without QPU queue wait times",
+                eosUse:
+                  "eQC CI/CD pipeline — fast circuit regression testing without QPU queue wait times",
                 url: "https://github.com/qulacs/qulacs",
               },
               {
@@ -854,26 +978,39 @@ export default function Quantum() {
                 badge: "bg-orange-500/20 text-orange-300",
                 type: "Multi-backend Cloud + Local",
                 desc: "Amazon Braket provides unified access to IonQ, Rigetti, OQC, and QuEra hardware alongside local state-vector and density matrix simulators. The Braket SDK enables multi-provider circuit submission from a single API.",
-                eosUse: "eQC multi-cloud routing — submit to IonQ or Rigetti via Braket as an alternative to direct APIs",
+                eosUse:
+                  "eQC multi-cloud routing — submit to IonQ or Rigetti via Braket as an alternative to direct APIs",
                 url: "https://aws.amazon.com/braket/",
               },
-            ].map((sim) => (
+            ].map(sim => (
               <Card key={sim.name} className={`${sim.bg} border rounded-xl`}>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <Badge className={`${sim.badge} border-0 text-xs`}>{sim.vendor}</Badge>
+                    <Badge className={`${sim.badge} border-0 text-xs`}>
+                      {sim.vendor}
+                    </Badge>
                     <span className="text-xs text-white/30">{sim.type}</span>
                   </div>
-                  <CardTitle className={`text-lg ${sim.color}`}>{sim.name}</CardTitle>
+                  <CardTitle className={`text-lg ${sim.color}`}>
+                    {sim.name}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <p className="text-white/60 text-sm leading-relaxed">{sim.desc}</p>
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    {sim.desc}
+                  </p>
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
-                    <p className="text-xs text-white/40 font-medium mb-1">EoS Integration</p>
+                    <p className="text-xs text-white/40 font-medium mb-1">
+                      EoS Integration
+                    </p>
                     <p className="text-xs text-white/70">{sim.eosUse}</p>
                   </div>
-                  <a href={sim.url} target="_blank" rel="noopener noreferrer"
-                    className={`flex items-center gap-1 text-xs ${sim.color} hover:opacity-80 transition-opacity`}>
+                  <a
+                    href={sim.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-1 text-xs ${sim.color} hover:opacity-80 transition-opacity`}
+                  >
                     <ExternalLink className="w-3 h-3" />
                     Documentation
                   </a>
@@ -885,9 +1022,13 @@ export default function Quantum() {
           {/* Hybrid quantum-classical deep-dive */}
           <div className="mt-16 max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <h3 className="text-2xl font-bold text-white mb-3">Hybrid Classical-Quantum Computing</h3>
+              <h3 className="text-2xl font-bold text-white mb-3">
+                Hybrid Classical-Quantum Computing
+              </h3>
               <p className="text-white/60 text-sm max-w-2xl mx-auto">
-                The NISQ era demands tight integration between classical CPUs and quantum processors. EoS eQC's Hybrid Bridge enables real-time feedback loops for variational algorithms.
+                The NISQ era demands tight integration between classical CPUs
+                and quantum processors. EoS eQC's Hybrid Bridge enables
+                real-time feedback loops for variational algorithms.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -916,14 +1057,23 @@ export default function Quantum() {
                   desc: "The expectation value is returned to the classical optimizer. The loop repeats until the energy/cost converges to the ground state or optimal solution.",
                   code: "energy = result.expectation_value(H)\nif abs(energy - prev) < 1e-6: break",
                 },
-              ].map((step) => (
-                <div key={step.step} className={`bg-white/5 border-l-4 ${step.color} border border-white/10 rounded-xl p-5`}>
+              ].map(step => (
+                <div
+                  key={step.step}
+                  className={`bg-white/5 border-l-4 ${step.color} border border-white/10 rounded-xl p-5`}
+                >
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-white/30 text-xs font-mono">Step {step.step}</span>
-                    <Badge className={`${step.badge} border-0 text-xs`}>{step.title}</Badge>
+                    <span className="text-white/30 text-xs font-mono">
+                      Step {step.step}
+                    </span>
+                    <Badge className={`${step.badge} border-0 text-xs`}>
+                      {step.title}
+                    </Badge>
                   </div>
                   <p className="text-white/60 text-sm mb-3">{step.desc}</p>
-                  <pre className="text-xs text-cyan-300 bg-black/30 rounded-lg p-3 font-mono overflow-x-auto">{step.code}</pre>
+                  <pre className="text-xs text-cyan-300 bg-black/30 rounded-lg p-3 font-mono overflow-x-auto">
+                    {step.code}
+                  </pre>
                 </div>
               ))}
             </div>
@@ -995,21 +1145,28 @@ export default function Quantum() {
                   "D-Wave annealing integration",
                 ],
               },
-            ].map((r) => (
+            ].map(r => (
               <div
                 key={r.phase}
                 className={`bg-white/5 border-l-4 ${r.color} border border-white/10 rounded-xl p-6`}
               >
                 <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
                   <div>
-                    <span className="text-white/40 text-xs font-mono mr-2">{r.phase}</span>
+                    <span className="text-white/40 text-xs font-mono mr-2">
+                      {r.phase}
+                    </span>
                     <span className="text-white font-semibold">{r.title}</span>
                   </div>
-                  <Badge className={`${r.badge} border-0 text-xs`}>{r.status}</Badge>
+                  <Badge className={`${r.badge} border-0 text-xs`}>
+                    {r.status}
+                  </Badge>
                 </div>
                 <ul className="grid sm:grid-cols-2 gap-1.5">
-                  {r.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-white/60">
+                  {r.items.map(item => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-2 text-sm text-white/60"
+                    >
                       <ChevronRight className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                       {item}
                     </li>
@@ -1030,8 +1187,9 @@ export default function Quantum() {
               Build the Quantum Future with EmbeddedOS
             </h2>
             <p className="text-white/60 text-lg mb-8">
-              The eQC module brings real-time quantum hardware control to the EoS kernel.
-              Join the Foundation to help shape the operating system for the quantum era.
+              The eQC module brings real-time quantum hardware control to the
+              EoS kernel. Join the Foundation to help shape the operating system
+              for the quantum era.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button

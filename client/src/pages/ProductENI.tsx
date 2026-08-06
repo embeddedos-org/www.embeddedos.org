@@ -54,19 +54,22 @@ export default function ProductENI() {
       usageExamples={[
         {
           title: "Motor BCI Prosthetic",
-          scenario: "Decoding 64-channel ECoG signals to control a robotic arm with < 10 ms end-to-end latency.",
+          scenario:
+            "Decoding 64-channel ECoG signals to control a robotic arm with < 10 ms end-to-end latency.",
           code: '// Motor BCI pipeline: ECoG → eNI → EIPC → eAI → arm\n#include <eni/eni.h>\n#include <eai/model.h>\n#include <eipc/eipc.h>\n\nvoid bci_pipeline_init(void) {\n    // Configure eNI for 64-channel ECoG\n    eni_config_t cfg = {\n        .modality    = ENI_MOD_ECOG,\n        .eeg_channels = 64,\n        .eeg_fs       = 30000,\n    };\n    eni_t eni = eni_open(&cfg);\n    eni_filter_bandpass(eni, 70.0f, 200.0f); // High-gamma band\n\n    // Load motor decoder\n    eai_model_t decoder = eai_model_load("motor_decoder_v3.eai",\n                                         EAI_BACKEND_NPU);\n\n    // Stream: eNI → eAI → robotic arm\n    eni_stream_to_eai(eni, decoder, arm_actuator_port);\n}',
         },
         {
           title: "Seizure Detection",
-          scenario: "Continuous EEG monitoring on a wearable device, detecting seizure onset and triggering a neurostimulator within 2 seconds.",
+          scenario:
+            "Continuous EEG monitoring on a wearable device, detecting seizure onset and triggering a neurostimulator within 2 seconds.",
           code: '// Seizure detection pipeline\n#include <eni/eni.h>\n#include <eai/model.h>\n\nvoid seizure_monitor_task(void *arg) {\n    eni_t eni = eni_open(&eeg_256ch_cfg);\n    eai_model_t detector = eai_model_load("seizure_v2.eai",\n                                           EAI_BACKEND_NPU);\n\n    for (;;) {\n        eni_frame_t frame;\n        eni_read(eni, &frame, ENI_WAIT_FOREVER);\n\n        float prob = eai_infer_scalar(detector, frame.eeg);\n        if (prob > 0.92f) {\n            // Trigger closed-loop neurostimulator\n            eipc_send(stim_port, &STIM_SUPPRESS_CMD, 4);\n            log_seizure_event(frame.timestamp);\n        }\n    }\n}',
         },
       ]}
       ecosystemRole={{
         importance: "high",
         role: "Biosignal Acquisition Layer",
-        summary: "eNI is the sensory nervous system of the EoS ecosystem. It bridges the biological world — neurons, muscles, brains — with the digital world of EoS. Without eNI, EoS cannot acquire the high-density biosignals needed for BCI prosthetics, seizure detection, cognitive load monitoring, or neural-controlled interfaces. eNI is the only component in the EoS stack that operates at the boundary between biology and silicon, making it indispensable for the entire eHealth365 and BCI product line.",
+        summary:
+          "eNI is the sensory nervous system of the EoS ecosystem. It bridges the biological world — neurons, muscles, brains — with the digital world of EoS. Without eNI, EoS cannot acquire the high-density biosignals needed for BCI prosthetics, seizure detection, cognitive load monitoring, or neural-controlled interfaces. eNI is the only component in the EoS stack that operates at the boundary between biology and silicon, making it indispensable for the entire eHealth365 and BCI product line.",
         dependsOn: [
           "EoS Kernel — eNI acquisition runs as a high-priority ISR with DMA HAL access",
           "EIPC — transports neural data frames to eAI with integrity and encryption",
@@ -80,31 +83,80 @@ export default function ProductENI() {
         ],
       }}
       features={[
-        { name: "1,024 Simultaneous Channels", desc: "Acquire EEG, EMG, ECoG, LFP, and spike trains from up to 1,024 channels at once." },
-        { name: "Hardware Spike Sorter", desc: "FPGA-based spike detection, waveform extraction, and clustering — no CPU cycles consumed." },
-        { name: "Mixed-Modality Acquisition", desc: "EEG and EMG simultaneously on different channel groups with independent sample rates." },
-        { name: "Hardware Filter Chain", desc: "Notch (50/60 Hz), bandpass, and common-average referencing applied in hardware before CPU." },
-        { name: "< 1 ms End-to-End Latency", desc: "From electrode to EIPC message in under 1 millisecond — critical for closed-loop BCI." },
-        { name: "Medical-Grade Isolation", desc: "Patient isolation per IEC 60601-1. Galvanic isolation on all electrode inputs." },
-        { name: "Impedance Measurement", desc: "Built-in electrode impedance measurement for signal quality monitoring." },
-        { name: "Configurable Reference", desc: "Global common-average, local bipolar, or custom reference montage." },
+        {
+          name: "1,024 Simultaneous Channels",
+          desc: "Acquire EEG, EMG, ECoG, LFP, and spike trains from up to 1,024 channels at once.",
+        },
+        {
+          name: "Hardware Spike Sorter",
+          desc: "FPGA-based spike detection, waveform extraction, and clustering — no CPU cycles consumed.",
+        },
+        {
+          name: "Mixed-Modality Acquisition",
+          desc: "EEG and EMG simultaneously on different channel groups with independent sample rates.",
+        },
+        {
+          name: "Hardware Filter Chain",
+          desc: "Notch (50/60 Hz), bandpass, and common-average referencing applied in hardware before CPU.",
+        },
+        {
+          name: "< 1 ms End-to-End Latency",
+          desc: "From electrode to EIPC message in under 1 millisecond — critical for closed-loop BCI.",
+        },
+        {
+          name: "Medical-Grade Isolation",
+          desc: "Patient isolation per IEC 60601-1. Galvanic isolation on all electrode inputs.",
+        },
+        {
+          name: "Impedance Measurement",
+          desc: "Built-in electrode impedance measurement for signal quality monitoring.",
+        },
+        {
+          name: "Configurable Reference",
+          desc: "Global common-average, local bipolar, or custom reference montage.",
+        },
       ]}
       specs={[
-        { key: "Max Channels", value: "1,024 simultaneous (EEG + EMG + ECoG mixed)" },
+        {
+          key: "Max Channels",
+          value: "1,024 simultaneous (EEG + EMG + ECoG mixed)",
+        },
         { key: "EEG Sample Rate", value: "Up to 30 kHz per channel" },
         { key: "EMG Sample Rate", value: "Up to 100 kHz per channel" },
         { key: "ADC Resolution", value: "24-bit" },
         { key: "Input Noise", value: "< 1 µVrms (0.5–300 Hz bandwidth)" },
         { key: "CMRR", value: "> 120 dB" },
         { key: "Latency", value: "< 1 ms electrode to EIPC message" },
-        { key: "Safety", value: "IEC 60601-1 patient isolation; galvanic isolation on all inputs" },
-        { key: "Interface", value: "SPI / LVDS to host processor; EIPC to eAI" },
-        { key: "License", value: "MIT (software); hardware schematics under CERN-OHL-S" },
+        {
+          key: "Safety",
+          value:
+            "IEC 60601-1 patient isolation; galvanic isolation on all inputs",
+        },
+        {
+          key: "Interface",
+          value: "SPI / LVDS to host processor; EIPC to eAI",
+        },
+        {
+          key: "License",
+          value: "MIT (software); hardware schematics under CERN-OHL-S",
+        },
       ]}
       pairs={[
-        { name: "eAI", route: "/product-eai", desc: "eNI feeds biosignals directly into eAI for BCI decoding, seizure detection, and gesture recognition." },
-        { name: "EIPC", route: "/product-eipc", desc: "Transports neural data frames from eNI to eAI with HMAC integrity and AES-256 encryption." },
-        { name: "EoS Kernel", route: "/product-eos", desc: "eNI acquisition runs as a high-priority EoS ISR with direct DMA HAL access." },
+        {
+          name: "eAI",
+          route: "/product-eai",
+          desc: "eNI feeds biosignals directly into eAI for BCI decoding, seizure detection, and gesture recognition.",
+        },
+        {
+          name: "EIPC",
+          route: "/product-eipc",
+          desc: "Transports neural data frames from eNI to eAI with HMAC integrity and AES-256 encryption.",
+        },
+        {
+          name: "EoS Kernel",
+          route: "/product-eos",
+          desc: "eNI acquisition runs as a high-priority EoS ISR with direct DMA HAL access.",
+        },
       ]}
     />
   );

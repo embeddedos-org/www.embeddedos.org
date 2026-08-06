@@ -2,11 +2,37 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
-  Cpu, Brain, Shield, Code2, Rocket, Users, DollarSign,
-  Heart, BookOpen, Clock, Home, Gift, MapPin, Briefcase,
-  ChevronDown, ChevronUp, ExternalLink, Search, Filter,
-  Zap, Globe, Database, Radio, Layers, Terminal, Star,
-  GraduationCap, CheckCircle2, XCircle, Send, AlertCircle,
+  Cpu,
+  Brain,
+  Shield,
+  Code2,
+  Rocket,
+  Users,
+  DollarSign,
+  Heart,
+  BookOpen,
+  Clock,
+  Home,
+  Gift,
+  MapPin,
+  Briefcase,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  Search,
+  Filter,
+  Zap,
+  Globe,
+  Database,
+  Radio,
+  Layers,
+  Terminal,
+  Star,
+  GraduationCap,
+  CheckCircle2,
+  XCircle,
+  Send,
+  AlertCircle,
 } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -24,7 +50,11 @@ import {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
 };
 
 const stagger = {
@@ -34,7 +64,14 @@ const stagger = {
 
 // ─── Job Data ─────────────────────────────────────────────────────────────────
 
-const DEPARTMENTS = ["All", "Engineering", "Research", "Leadership", "Design", "Community"];
+const DEPARTMENTS = [
+  "All",
+  "Engineering",
+  "Research",
+  "Leadership",
+  "Design",
+  "Community",
+];
 
 const JOBS = [
   // ── Engineering ──────────────────────────────────────────────────────────────
@@ -48,7 +85,8 @@ const JOBS = [
     level: "Senior",
     icon: Terminal,
     color: "#F97316",
-    summary: "Design and maintain the EoS build system, Ninja backend integration, YAML configuration, and cross-compilation targets for ARM, x86, and RISC-V architectures.",
+    summary:
+      "Design and maintain the EoS build system, Ninja backend integration, YAML configuration, and cross-compilation targets for ARM, x86, and RISC-V architectures.",
     responsibilities: [
       "Design and maintain the ebuild build system with Ninja backend integration",
       "Develop and maintain YAML-based board configuration and cross-compilation toolchains",
@@ -81,7 +119,8 @@ const JOBS = [
     level: "Senior",
     icon: Shield,
     color: "#EF4444",
-    summary: "Develop and maintain the EIPC secure IPC framework including capability-based authorization, audit logging, replay protection, and transport security for embedded systems.",
+    summary:
+      "Develop and maintain the EIPC secure IPC framework including capability-based authorization, audit logging, replay protection, and transport security for embedded systems.",
     responsibilities: [
       "Design and implement capability-based authorization model for EIPC",
       "Develop HMAC-SHA256 message authentication and replay protection mechanisms",
@@ -114,7 +153,8 @@ const JOBS = [
     level: "Senior",
     icon: Cpu,
     color: "#8B5CF6",
-    summary: "Design staged boot architecture, A/B slot management, CRC/signature verification, and firmware upgrade APIs for the eBoot bootloader running on 52+ embedded platforms.",
+    summary:
+      "Design staged boot architecture, A/B slot management, CRC/signature verification, and firmware upgrade APIs for the eBoot bootloader running on 52+ embedded platforms.",
     responsibilities: [
       "Design and implement staged boot architecture (ROM → eBoot → EoS)",
       "Develop A/B slot management and rollback protection mechanisms",
@@ -147,7 +187,8 @@ const JOBS = [
     level: "Mid / Senior",
     icon: Layers,
     color: "#06B6D4",
-    summary: "Build and maintain the eOffice Suite — 11 productivity apps (eWriter, eSheet, ePresent, eNotes, eDraw, eCalc, eCalendar, eContacts, eMail, eChat, eFiles) running on embedded displays.",
+    summary:
+      "Build and maintain the eOffice Suite — 11 productivity apps (eWriter, eSheet, ePresent, eNotes, eDraw, eCalc, eCalendar, eContacts, eMail, eChat, eFiles) running on embedded displays.",
     responsibilities: [
       "Develop and maintain all 11 eOffice applications using C/LVGL and React (web preview)",
       "Implement document rendering, editing, and export (DOCX, XLSX, PPTX, PDF)",
@@ -179,7 +220,8 @@ const JOBS = [
     level: "Senior",
     icon: Heart,
     color: "#EC4899",
-    summary: "Develop firmware for the eHealth365 wearable platform — Smart Ring Pro and Smart Patch Pro — including biometric sensor fusion, BLE communication, and real-time health monitoring algorithms.",
+    summary:
+      "Develop firmware for the eHealth365 wearable platform — Smart Ring Pro and Smart Patch Pro — including biometric sensor fusion, BLE communication, and real-time health monitoring algorithms.",
     responsibilities: [
       "Develop firmware for MAX30102 (SpO₂/HR), MAX30205 (temperature), and glucose biosensors",
       "Implement real-time sensor fusion algorithms for multi-modal health monitoring",
@@ -212,7 +254,8 @@ const JOBS = [
     level: "Senior",
     icon: Radio,
     color: "#10B981",
-    summary: "Develop DSP algorithms and real-time signal processing pipelines for the eRadar360 / Aegis One 77 GHz FMCW radar system, including object detection, tracking, and classification.",
+    summary:
+      "Develop DSP algorithms and real-time signal processing pipelines for the eRadar360 / Aegis One 77 GHz FMCW radar system, including object detection, tracking, and classification.",
     responsibilities: [
       "Develop FMCW radar signal processing pipeline (range-Doppler, CFAR, MUSIC/ESPRIT)",
       "Implement real-time object detection, tracking, and multi-target classification",
@@ -245,7 +288,8 @@ const JOBS = [
     level: "Senior",
     icon: Database,
     color: "#F59E0B",
-    summary: "Build and maintain eDB — a multi-model embedded database supporting SQL, Document, Key-Value, and AI-native query modes optimized for resource-constrained embedded systems.",
+    summary:
+      "Build and maintain eDB — a multi-model embedded database supporting SQL, Document, Key-Value, and AI-native query modes optimized for resource-constrained embedded systems.",
     responsibilities: [
       "Design and implement the eDB query engine (SQL parser, query planner, executor)",
       "Develop document store and key-value store backends with unified API",
@@ -279,7 +323,8 @@ const JOBS = [
     level: "Research Scientist",
     icon: Brain,
     color: "#A78BFA",
-    summary: "Research and develop the EAI-Min edge runtime and EAI-Framework industrial AI platform, including llama.cpp/ONNX/TFLite optimization for resource-constrained embedded devices.",
+    summary:
+      "Research and develop the EAI-Min edge runtime and EAI-Framework industrial AI platform, including llama.cpp/ONNX/TFLite optimization for resource-constrained embedded devices.",
     responsibilities: [
       "Research and develop quantization techniques for LLM inference on MCUs (INT4/INT8/FP16)",
       "Optimize llama.cpp, ONNX Runtime, and TFLite for ARM Cortex-M55/M85 and RISC-V",
@@ -312,7 +357,8 @@ const JOBS = [
     level: "Research Scientist",
     icon: Zap,
     color: "#60A5FA",
-    summary: "Research vendor-neutral BCI interfaces, neural signal processing, and ENI-Framework multi-lane routing for brain-computer interface integration with EmbeddedOS.",
+    summary:
+      "Research vendor-neutral BCI interfaces, neural signal processing, and ENI-Framework multi-lane routing for brain-computer interface integration with EmbeddedOS.",
     responsibilities: [
       "Research and develop neural signal acquisition and preprocessing pipelines",
       "Design vendor-neutral BCI abstraction layer supporting OpenBCI, Emotiv, Muse, NeuroSky",
@@ -346,7 +392,8 @@ const JOBS = [
     level: "Manager",
     icon: DollarSign,
     color: "#34D399",
-    summary: "Lead fundraising initiatives, build relationships with donors and foundations, and develop grant proposals to support EmbeddedOS Foundation's research and education mission.",
+    summary:
+      "Lead fundraising initiatives, build relationships with donors and foundations, and develop grant proposals to support EmbeddedOS Foundation's research and education mission.",
     responsibilities: [
       "Develop and execute annual fundraising strategy aligned with Foundation mission",
       "Build and maintain relationships with individual donors, foundations, and corporate sponsors",
@@ -379,7 +426,8 @@ const JOBS = [
     level: "Director",
     icon: Briefcase,
     color: "#F97316",
-    summary: "Oversee membership, certification, and internship programs. Drive growth and ensure excellent participant experiences across all EmbeddedOS Foundation programs.",
+    summary:
+      "Oversee membership, certification, and internship programs. Drive growth and ensure excellent participant experiences across all EmbeddedOS Foundation programs.",
     responsibilities: [
       "Lead and scale the Foundation's membership, certification, and internship programs",
       "Develop program strategy, KPIs, and growth targets in collaboration with leadership",
@@ -412,7 +460,8 @@ const JOBS = [
     level: "Mid-level",
     icon: Users,
     color: "#EC4899",
-    summary: "Build and engage the global EmbeddedOS community of researchers, engineers, and enthusiasts. Manage forums, events, social media, and outreach programs.",
+    summary:
+      "Build and engage the global EmbeddedOS community of researchers, engineers, and enthusiasts. Manage forums, events, social media, and outreach programs.",
     responsibilities: [
       "Manage and grow EmbeddedOS community across GitHub, Discord, Reddit, and social media",
       "Organize virtual and in-person events: hackathons, office hours, conference presence",
@@ -445,7 +494,8 @@ const JOBS = [
     level: "Senior",
     icon: Globe,
     color: "#06B6D4",
-    summary: "Design intuitive user interfaces for embedded displays, developer tools, and the EmbeddedOS web platform. Bridge the gap between hardware constraints and great user experience.",
+    summary:
+      "Design intuitive user interfaces for embedded displays, developer tools, and the EmbeddedOS web platform. Bridge the gap between hardware constraints and great user experience.",
     responsibilities: [
       "Design UI/UX for eOffice Suite apps on embedded displays (240×320 to 1920×1080)",
       "Create design systems and component libraries for LVGL-based embedded UIs",
@@ -471,12 +521,42 @@ const JOBS = [
 ];
 
 const BENEFITS = [
-  { icon: BookOpen, title: "Real-World Open Source Work", desc: "Contribute to production-grade embedded OS code used by engineers worldwide.", color: "#F97316" },
-  { icon: Users, title: "Mentorship", desc: "Work alongside experienced embedded engineers, researchers, and open-source maintainers.", color: "#8B5CF6" },
-  { icon: Star, title: "Contribution Certificates", desc: "Receive formal certificates recognizing your contributions to the Foundation's projects.", color: "#10B981" },
-  { icon: BookOpen, title: "Recommendation Letters", desc: "Eligible contributors receive professional recommendation letters from Foundation leadership.", color: "#06B6D4" },
-  { icon: Rocket, title: "Publish Technical Work", desc: "Opportunities to co-author technical papers, blog posts, and participate in community initiatives.", color: "#EC4899" },
-  { icon: Home, title: "Flexible & Remote-First", desc: "Remote-first culture with flexible hours. Work from anywhere in the world.", color: "#F59E0B" },
+  {
+    icon: BookOpen,
+    title: "Real-World Open Source Work",
+    desc: "Contribute to production-grade embedded OS code used by engineers worldwide.",
+    color: "#F97316",
+  },
+  {
+    icon: Users,
+    title: "Mentorship",
+    desc: "Work alongside experienced embedded engineers, researchers, and open-source maintainers.",
+    color: "#8B5CF6",
+  },
+  {
+    icon: Star,
+    title: "Contribution Certificates",
+    desc: "Receive formal certificates recognizing your contributions to the Foundation's projects.",
+    color: "#10B981",
+  },
+  {
+    icon: BookOpen,
+    title: "Recommendation Letters",
+    desc: "Eligible contributors receive professional recommendation letters from Foundation leadership.",
+    color: "#06B6D4",
+  },
+  {
+    icon: Rocket,
+    title: "Publish Technical Work",
+    desc: "Opportunities to co-author technical papers, blog posts, and participate in community initiatives.",
+    color: "#EC4899",
+  },
+  {
+    icon: Home,
+    title: "Flexible & Remote-First",
+    desc: "Remote-first culture with flexible hours. Work from anywhere in the world.",
+    color: "#F59E0B",
+  },
 ];
 
 const DEPT_COLORS: Record<string, string> = {
@@ -638,28 +718,40 @@ const EMPTY_FORM: FormState = {
 function ApplicationForm() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<keyof FormState, string>>
+  >({});
 
   const apply = trpc.careers.submitApplication.useMutation({
     onSuccess: () => {
       setSubmitted(true);
       setForm(EMPTY_FORM);
-      toast.success("Application submitted! We'll be in touch at " + form.email);
+      toast.success(
+        "Application submitted! We'll be in touch at " + form.email
+      );
     },
-    onError: (err) => {
+    onError: err => {
       toast.error("Submission failed: " + err.message);
     },
   });
 
   const validate = (): boolean => {
     const errors: Partial<Record<keyof FormState, string>> = {};
-    if (!form.fullName.trim() || form.fullName.trim().length < 2) errors.fullName = "Full name is required (min 2 characters).";
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errors.email = "A valid email address is required.";
-    if (!form.roleCategory) errors.roleCategory = "Please select a role category.";
-    if (!form.employmentType) errors.employmentType = "Please select an employment type.";
-    if (!form.workAuthorization) errors.workAuthorization = "Please select your work authorization status.";
-    if (!form.statement.trim() || form.statement.trim().length < 50) errors.statement = "Statement must be at least 50 characters.";
-    if (form.statement.trim().length > 3000) errors.statement = "Statement must be 3000 characters or fewer.";
+    if (!form.fullName.trim() || form.fullName.trim().length < 2)
+      errors.fullName = "Full name is required (min 2 characters).";
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      errors.email = "A valid email address is required.";
+    if (!form.roleCategory)
+      errors.roleCategory = "Please select a role category.";
+    if (!form.employmentType)
+      errors.employmentType = "Please select an employment type.";
+    if (!form.workAuthorization)
+      errors.workAuthorization =
+        "Please select your work authorization status.";
+    if (!form.statement.trim() || form.statement.trim().length < 50)
+      errors.statement = "Statement must be at least 50 characters.";
+    if (form.statement.trim().length > 3000)
+      errors.statement = "Statement must be 3000 characters or fewer.";
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -674,19 +766,23 @@ function ApplicationForm() {
       linkedin: form.linkedin.trim() || undefined,
       github: form.github.trim() || undefined,
       portfolio: form.portfolio.trim() || undefined,
-      roleCategory: form.roleCategory as typeof ROLE_CATEGORIES[number],
-      employmentType: form.employmentType as typeof EMPLOYMENT_TYPES[number],
-      workAuthorization: form.workAuthorization as typeof WORK_AUTH_OPTIONS[number],
+      roleCategory: form.roleCategory as (typeof ROLE_CATEGORIES)[number],
+      employmentType: form.employmentType as (typeof EMPLOYMENT_TYPES)[number],
+      workAuthorization:
+        form.workAuthorization as (typeof WORK_AUTH_OPTIONS)[number],
       statement: form.statement.trim(),
       availability: form.availability.trim() || undefined,
       heardFrom: form.heardFrom.trim() || undefined,
     });
   };
 
-  const set = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm(prev => ({ ...prev, [field]: e.target.value }));
-    if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: undefined }));
-  };
+  const set =
+    (field: keyof FormState) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setForm(prev => ({ ...prev, [field]: e.target.value }));
+      if (fieldErrors[field])
+        setFieldErrors(prev => ({ ...prev, [field]: undefined }));
+    };
 
   if (submitted) {
     return (
@@ -696,13 +792,21 @@ function ApplicationForm() {
         className="rounded-2xl border border-[#34D399]/30 bg-[#34D399]/10 p-10 text-center"
       >
         <CheckCircle2 size={48} className="text-[#34D399] mx-auto mb-4" />
-        <h3 className="font-heading font-bold text-2xl text-white mb-2">Application Received!</h3>
+        <h3 className="font-heading font-bold text-2xl text-white mb-2">
+          Application Received!
+        </h3>
         <p className="text-white/60 mb-6">
-          Thank you for your interest in the EmbeddedOS Research Foundation. We review all applications and will reach out if there's a match.
+          Thank you for your interest in the EmbeddedOS Research Foundation. We
+          review all applications and will reach out if there's a match.
         </p>
         <p className="text-sm text-white/40 mb-6">
           You can also email us directly at{" "}
-          <a href="mailto:careers@embeddedos.org" className="text-[#F97316] hover:underline">careers@embeddedos.org</a>
+          <a
+            href="mailto:careers@embeddedos.org"
+            className="text-[#F97316] hover:underline"
+          >
+            careers@embeddedos.org
+          </a>
         </p>
         <Button
           variant="outline"
@@ -720,7 +824,9 @@ function ApplicationForm() {
       {/* Identity */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label htmlFor="fullName" className="text-white/80 text-sm">Full Name <span className="text-[#F97316]">*</span></Label>
+          <Label htmlFor="fullName" className="text-white/80 text-sm">
+            Full Name <span className="text-[#F97316]">*</span>
+          </Label>
           <Input
             id="fullName"
             value={form.fullName}
@@ -728,10 +834,17 @@ function ApplicationForm() {
             placeholder="Jane Smith"
             className="bg-white/5 border-white/10 text-white placeholder-white/30 focus:border-[#F97316]/50"
           />
-          {fieldErrors.fullName && <p className="text-xs text-red-400 flex items-center gap-1"><AlertCircle size={12} />{fieldErrors.fullName}</p>}
+          {fieldErrors.fullName && (
+            <p className="text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle size={12} />
+              {fieldErrors.fullName}
+            </p>
+          )}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="email" className="text-white/80 text-sm">Email Address <span className="text-[#F97316]">*</span></Label>
+          <Label htmlFor="email" className="text-white/80 text-sm">
+            Email Address <span className="text-[#F97316]">*</span>
+          </Label>
           <Input
             id="email"
             type="email"
@@ -740,12 +853,19 @@ function ApplicationForm() {
             placeholder="jane@example.com"
             className="bg-white/5 border-white/10 text-white placeholder-white/30 focus:border-[#F97316]/50"
           />
-          {fieldErrors.email && <p className="text-xs text-red-400 flex items-center gap-1"><AlertCircle size={12} />{fieldErrors.email}</p>}
+          {fieldErrors.email && (
+            <p className="text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle size={12} />
+              {fieldErrors.email}
+            </p>
+          )}
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="phone" className="text-white/80 text-sm">Phone (optional)</Label>
+        <Label htmlFor="phone" className="text-white/80 text-sm">
+          Phone (optional)
+        </Label>
         <Input
           id="phone"
           value={form.phone}
@@ -758,7 +878,9 @@ function ApplicationForm() {
       {/* Links */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label htmlFor="linkedin" className="text-white/80 text-sm">LinkedIn URL (optional)</Label>
+          <Label htmlFor="linkedin" className="text-white/80 text-sm">
+            LinkedIn URL (optional)
+          </Label>
           <Input
             id="linkedin"
             value={form.linkedin}
@@ -768,7 +890,9 @@ function ApplicationForm() {
           />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="github" className="text-white/80 text-sm">GitHub URL (optional)</Label>
+          <Label htmlFor="github" className="text-white/80 text-sm">
+            GitHub URL (optional)
+          </Label>
           <Input
             id="github"
             value={form.github}
@@ -780,7 +904,9 @@ function ApplicationForm() {
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="portfolio" className="text-white/80 text-sm">Portfolio / Personal Website (optional)</Label>
+        <Label htmlFor="portfolio" className="text-white/80 text-sm">
+          Portfolio / Personal Website (optional)
+        </Label>
         <Input
           id="portfolio"
           value={form.portfolio}
@@ -793,51 +919,109 @@ function ApplicationForm() {
       {/* Role & Employment */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label className="text-white/80 text-sm">Role Category <span className="text-[#F97316]">*</span></Label>
-          <Select value={form.roleCategory} onValueChange={(v) => { setForm(p => ({ ...p, roleCategory: v })); setFieldErrors(p => ({ ...p, roleCategory: undefined })); }}>
+          <Label className="text-white/80 text-sm">
+            Role Category <span className="text-[#F97316]">*</span>
+          </Label>
+          <Select
+            value={form.roleCategory}
+            onValueChange={v => {
+              setForm(p => ({ ...p, roleCategory: v }));
+              setFieldErrors(p => ({ ...p, roleCategory: undefined }));
+            }}
+          >
             <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50">
               <SelectValue placeholder="Select a role..." />
             </SelectTrigger>
             <SelectContent className="bg-[#0D1829] border-white/10">
               {ROLE_CATEGORIES.map(r => (
-                <SelectItem key={r} value={r} className="text-white/80 focus:bg-white/10 focus:text-white">{r}</SelectItem>
+                <SelectItem
+                  key={r}
+                  value={r}
+                  className="text-white/80 focus:bg-white/10 focus:text-white"
+                >
+                  {r}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {fieldErrors.roleCategory && <p className="text-xs text-red-400 flex items-center gap-1"><AlertCircle size={12} />{fieldErrors.roleCategory}</p>}
+          {fieldErrors.roleCategory && (
+            <p className="text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle size={12} />
+              {fieldErrors.roleCategory}
+            </p>
+          )}
         </div>
         <div className="space-y-1.5">
-          <Label className="text-white/80 text-sm">Employment Type <span className="text-[#F97316]">*</span></Label>
-          <Select value={form.employmentType} onValueChange={(v) => { setForm(p => ({ ...p, employmentType: v })); setFieldErrors(p => ({ ...p, employmentType: undefined })); }}>
+          <Label className="text-white/80 text-sm">
+            Employment Type <span className="text-[#F97316]">*</span>
+          </Label>
+          <Select
+            value={form.employmentType}
+            onValueChange={v => {
+              setForm(p => ({ ...p, employmentType: v }));
+              setFieldErrors(p => ({ ...p, employmentType: undefined }));
+            }}
+          >
             <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50">
               <SelectValue placeholder="Select type..." />
             </SelectTrigger>
             <SelectContent className="bg-[#0D1829] border-white/10">
               {EMPLOYMENT_TYPES.map(t => (
-                <SelectItem key={t} value={t} className="text-white/80 focus:bg-white/10 focus:text-white">{t}</SelectItem>
+                <SelectItem
+                  key={t}
+                  value={t}
+                  className="text-white/80 focus:bg-white/10 focus:text-white"
+                >
+                  {t}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {fieldErrors.employmentType && <p className="text-xs text-red-400 flex items-center gap-1"><AlertCircle size={12} />{fieldErrors.employmentType}</p>}
+          {fieldErrors.employmentType && (
+            <p className="text-xs text-red-400 flex items-center gap-1">
+              <AlertCircle size={12} />
+              {fieldErrors.employmentType}
+            </p>
+          )}
         </div>
       </div>
 
       {/* Work Authorization */}
       <div className="space-y-1.5">
-        <Label className="text-white/80 text-sm">Work Authorization <span className="text-[#F97316]">*</span></Label>
-        <Select value={form.workAuthorization} onValueChange={(v) => { setForm(p => ({ ...p, workAuthorization: v })); setFieldErrors(p => ({ ...p, workAuthorization: undefined })); }}>
+        <Label className="text-white/80 text-sm">
+          Work Authorization <span className="text-[#F97316]">*</span>
+        </Label>
+        <Select
+          value={form.workAuthorization}
+          onValueChange={v => {
+            setForm(p => ({ ...p, workAuthorization: v }));
+            setFieldErrors(p => ({ ...p, workAuthorization: undefined }));
+          }}
+        >
           <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50">
             <SelectValue placeholder="Select authorization status..." />
           </SelectTrigger>
           <SelectContent className="bg-[#0D1829] border-white/10">
             {WORK_AUTH_OPTIONS.map(a => (
-              <SelectItem key={a} value={a} className="text-white/80 focus:bg-white/10 focus:text-white">{a}</SelectItem>
+              <SelectItem
+                key={a}
+                value={a}
+                className="text-white/80 focus:bg-white/10 focus:text-white"
+              >
+                {a}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        {fieldErrors.workAuthorization && <p className="text-xs text-red-400 flex items-center gap-1"><AlertCircle size={12} />{fieldErrors.workAuthorization}</p>}
+        {fieldErrors.workAuthorization && (
+          <p className="text-xs text-red-400 flex items-center gap-1">
+            <AlertCircle size={12} />
+            {fieldErrors.workAuthorization}
+          </p>
+        )}
         <p className="text-xs text-white/30">
-          We do not sponsor H-1B, O-1, TN, E-3, L-1, or Green Card petitions. See Work Authorization section above.
+          We do not sponsor H-1B, O-1, TN, E-3, L-1, or Green Card petitions.
+          See Work Authorization section above.
         </p>
       </div>
 
@@ -845,7 +1029,9 @@ function ApplicationForm() {
       <div className="space-y-1.5">
         <Label htmlFor="statement" className="text-white/80 text-sm">
           Statement of Interest <span className="text-[#F97316]">*</span>
-          <span className="ml-2 text-white/30 font-normal">({form.statement.length}/3000 chars, min 50)</span>
+          <span className="ml-2 text-white/30 font-normal">
+            ({form.statement.length}/3000 chars, min 50)
+          </span>
         </Label>
         <Textarea
           id="statement"
@@ -855,13 +1041,20 @@ function ApplicationForm() {
           placeholder="Tell us about your background, what you'd like to work on, and why you're interested in EmbeddedOS..."
           className="bg-white/5 border-white/10 text-white placeholder-white/30 focus:border-[#F97316]/50 resize-y"
         />
-        {fieldErrors.statement && <p className="text-xs text-red-400 flex items-center gap-1"><AlertCircle size={12} />{fieldErrors.statement}</p>}
+        {fieldErrors.statement && (
+          <p className="text-xs text-red-400 flex items-center gap-1">
+            <AlertCircle size={12} />
+            {fieldErrors.statement}
+          </p>
+        )}
       </div>
 
       {/* Availability & How heard */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label htmlFor="availability" className="text-white/80 text-sm">Availability (optional)</Label>
+          <Label htmlFor="availability" className="text-white/80 text-sm">
+            Availability (optional)
+          </Label>
           <Input
             id="availability"
             value={form.availability}
@@ -871,7 +1064,9 @@ function ApplicationForm() {
           />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="heardFrom" className="text-white/80 text-sm">How did you hear about us? (optional)</Label>
+          <Label htmlFor="heardFrom" className="text-white/80 text-sm">
+            How did you hear about us? (optional)
+          </Label>
           <Input
             id="heardFrom"
             value={form.heardFrom}
@@ -903,7 +1098,12 @@ function ApplicationForm() {
         </Button>
         <p className="text-xs text-white/30">
           Or email directly:{" "}
-          <a href="mailto:careers@embeddedos.org" className="text-[#F97316] hover:underline">careers@embeddedos.org</a>
+          <a
+            href="mailto:careers@embeddedos.org"
+            className="text-[#F97316] hover:underline"
+          >
+            careers@embeddedos.org
+          </a>
         </p>
       </div>
     </form>
@@ -912,7 +1112,15 @@ function ApplicationForm() {
 
 // ─── Job Card ─────────────────────────────────────────────────────────────────
 
-function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boolean; onToggle: () => void }) {
+function JobCard({
+  job,
+  isOpen,
+  onToggle,
+}: {
+  job: (typeof JOBS)[0];
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   const Icon = job.icon;
   return (
     <motion.div
@@ -927,16 +1135,24 @@ function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boole
       >
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-          style={{ background: `${job.color}20`, border: `1px solid ${job.color}40` }}
+          style={{
+            background: `${job.color}20`,
+            border: `1px solid ${job.color}40`,
+          }}
         >
           <Icon size={22} style={{ color: job.color }} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1">
-            <h3 className="font-heading font-bold text-white text-lg leading-tight">{job.title}</h3>
+            <h3 className="font-heading font-bold text-white text-lg leading-tight">
+              {job.title}
+            </h3>
             <span
               className="text-xs font-semibold px-2 py-0.5 rounded-full"
-              style={{ background: `${DEPT_COLORS[job.department]}20`, color: DEPT_COLORS[job.department] }}
+              style={{
+                background: `${DEPT_COLORS[job.department]}20`,
+                color: DEPT_COLORS[job.department],
+              }}
             >
               {job.department}
             </span>
@@ -944,11 +1160,22 @@ function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boole
               {job.level}
             </span>
           </div>
-          <p className="text-white/50 text-sm mb-3 leading-relaxed">{job.summary}</p>
+          <p className="text-white/50 text-sm mb-3 leading-relaxed">
+            {job.summary}
+          </p>
           <div className="flex flex-wrap gap-3 text-xs text-white/40">
-            <span className="flex items-center gap-1.5"><Briefcase size={12} />{job.type}</span>
-            <span className="flex items-center gap-1.5"><MapPin size={12} />{job.location}</span>
-            <span className="flex items-center gap-1.5"><Users size={12} />{job.team}</span>
+            <span className="flex items-center gap-1.5">
+              <Briefcase size={12} />
+              {job.type}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <MapPin size={12} />
+              {job.location}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Users size={12} />
+              {job.team}
+            </span>
           </div>
         </div>
         <div className="flex-shrink-0 ml-2 mt-1 text-white/30 group-hover:text-white/60 transition-colors">
@@ -970,12 +1197,16 @@ function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boole
               {/* Responsibilities */}
               <div>
                 <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                  <Star size={14} style={{ color: job.color }} /> Responsibilities
+                  <Star size={14} style={{ color: job.color }} />{" "}
+                  Responsibilities
                 </h4>
                 <ul className="space-y-2">
                   {job.responsibilities.map((r, i) => (
                     <li key={i} className="text-sm text-white/60 flex gap-2">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: job.color }} />
+                      <span
+                        className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ background: job.color }}
+                      />
                       {r}
                     </li>
                   ))}
@@ -986,12 +1217,16 @@ function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boole
               <div className="space-y-5">
                 <div>
                   <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                    <Code2 size={14} style={{ color: job.color }} /> Requirements
+                    <Code2 size={14} style={{ color: job.color }} />{" "}
+                    Requirements
                   </h4>
                   <ul className="space-y-2">
                     {job.requirements.map((r, i) => (
                       <li key={i} className="text-sm text-white/60 flex gap-2">
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: job.color }} />
+                        <span
+                          className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={{ background: job.color }}
+                        />
                         {r}
                       </li>
                     ))}
@@ -999,10 +1234,15 @@ function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boole
                 </div>
                 {job.niceToHave && (
                   <div>
-                    <h4 className="text-sm font-bold text-white/60 mb-3">Nice to Have</h4>
+                    <h4 className="text-sm font-bold text-white/60 mb-3">
+                      Nice to Have
+                    </h4>
                     <ul className="space-y-2">
                       {job.niceToHave.map((r, i) => (
-                        <li key={i} className="text-sm text-white/40 flex gap-2">
+                        <li
+                          key={i}
+                          className="text-sm text-white/40 flex gap-2"
+                        >
                           <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-white/20" />
                           {r}
                         </li>
@@ -1019,15 +1259,19 @@ function JobCard({ job, isOpen, onToggle }: { job: typeof JOBS[0]; isOpen: boole
                 href="#apply"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white transition-all duration-150 active:scale-95"
                 style={{ background: job.color }}
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
-                  document.getElementById("apply")?.scrollIntoView({ behavior: "smooth" });
+                  document
+                    .getElementById("apply")
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
                 Apply Now
                 <ExternalLink size={14} />
               </a>
-              <span className="text-xs text-white/30">or email careers@embeddedos.org</span>
+              <span className="text-xs text-white/30">
+                or email careers@embeddedos.org
+              </span>
             </div>
           </motion.div>
         )}
@@ -1043,15 +1287,20 @@ export default function Careers() {
   const [dept, setDept] = useState("All");
   const [search, setSearch] = useState("");
 
-  const filtered = JOBS.filter((j) => {
+  const filtered = JOBS.filter(j => {
     const matchDept = dept === "All" || j.department === dept;
     const q = search.toLowerCase();
-    const matchSearch = !q || j.title.toLowerCase().includes(q) || j.team.toLowerCase().includes(q) || j.summary.toLowerCase().includes(q);
+    const matchSearch =
+      !q ||
+      j.title.toLowerCase().includes(q) ||
+      j.team.toLowerCase().includes(q) ||
+      j.summary.toLowerCase().includes(q);
     return matchDept && matchSearch;
   });
 
   const deptCounts = DEPARTMENTS.reduce<Record<string, number>>((acc, d) => {
-    acc[d] = d === "All" ? JOBS.length : JOBS.filter((j) => j.department === d).length;
+    acc[d] =
+      d === "All" ? JOBS.length : JOBS.filter(j => j.department === d).length;
     return acc;
   }, {});
 
@@ -1065,20 +1314,43 @@ export default function Careers() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div initial="hidden" animate="visible" variants={stagger}>
-            <motion.p variants={fadeUp} className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-4">
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-4"
+            >
               Join the Foundation
             </motion.p>
-            <motion.h1 variants={fadeUp} className="font-heading font-extrabold text-4xl sm:text-6xl text-white mb-6 leading-tight">
+            <motion.h1
+              variants={fadeUp}
+              className="font-heading font-extrabold text-4xl sm:text-6xl text-white mb-6 leading-tight"
+            >
               Build the OS for{" "}
               <span className="text-gradient">Every Device</span>
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-lg text-white/60 max-w-2xl mx-auto mb-8 leading-relaxed">
-              Join a team of embedded engineers, AI researchers, and open-source advocates building the operating system that powers billions of devices — from wearables to aerospace systems.
+            <motion.p
+              variants={fadeUp}
+              className="text-lg text-white/60 max-w-2xl mx-auto mb-8 leading-relaxed"
+            >
+              Join a team of embedded engineers, AI researchers, and open-source
+              advocates building the operating system that powers billions of
+              devices — from wearables to aerospace systems.
             </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/50">
-              <span className="flex items-center gap-1.5"><Briefcase size={14} className="text-[#F97316]" />{JOBS.length} open positions</span>
-              <span className="flex items-center gap-1.5"><MapPin size={14} className="text-[#F97316]" />Remote-first · SF Bay Area</span>
-              <span className="flex items-center gap-1.5"><Heart size={14} className="text-[#F97316]" />501(c)(3) · 509(a)(2) Public Charity</span>
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/50"
+            >
+              <span className="flex items-center gap-1.5">
+                <Briefcase size={14} className="text-[#F97316]" />
+                {JOBS.length} open positions
+              </span>
+              <span className="flex items-center gap-1.5">
+                <MapPin size={14} className="text-[#F97316]" />
+                Remote-first · SF Bay Area
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Heart size={14} className="text-[#F97316]" />
+                501(c)(3) · 509(a)(2) Public Charity
+              </span>
             </motion.div>
           </motion.div>
         </div>
@@ -1087,21 +1359,58 @@ export default function Careers() {
       {/* Values */}
       <section className="section-padding bg-[#080F1E]">
         <div className="max-w-6xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {[
-              { icon: Rocket, color: "#F97316", title: "Global Impact", desc: "Work on technology that affects millions of devices and users worldwide." },
-              { icon: Brain, color: "#8B5CF6", title: "Cutting-Edge Research", desc: "Collaborate with leading researchers in AI, neural interfaces, and embedded systems." },
-              { icon: BookOpen, color: "#34D399", title: "Growth & Learning", desc: "Continuous learning opportunities, mentorship, and skill development." },
-              { icon: Home, color: "#06B6D4", title: "Remote-First", desc: "Flexible schedules, remote opportunities, and a globally distributed team." },
-            ].map((v) => {
+              {
+                icon: Rocket,
+                color: "#F97316",
+                title: "Global Impact",
+                desc: "Work on technology that affects millions of devices and users worldwide.",
+              },
+              {
+                icon: Brain,
+                color: "#8B5CF6",
+                title: "Cutting-Edge Research",
+                desc: "Collaborate with leading researchers in AI, neural interfaces, and embedded systems.",
+              },
+              {
+                icon: BookOpen,
+                color: "#34D399",
+                title: "Growth & Learning",
+                desc: "Continuous learning opportunities, mentorship, and skill development.",
+              },
+              {
+                icon: Home,
+                color: "#06B6D4",
+                title: "Remote-First",
+                desc: "Flexible schedules, remote opportunities, and a globally distributed team.",
+              },
+            ].map(v => {
               const Icon = v.icon;
               return (
-                <motion.div key={v.title} variants={fadeUp} className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
-                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${v.color}20` }}>
+                <motion.div
+                  key={v.title}
+                  variants={fadeUp}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center"
+                >
+                  <div
+                    className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center"
+                    style={{ background: `${v.color}20` }}
+                  >
                     <Icon size={22} style={{ color: v.color }} />
                   </div>
-                  <h3 className="font-heading font-bold text-white mb-2">{v.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{v.desc}</p>
+                  <h3 className="font-heading font-bold text-white mb-2">
+                    {v.title}
+                  </h3>
+                  <p className="text-sm text-white/50 leading-relaxed">
+                    {v.desc}
+                  </p>
                 </motion.div>
               );
             })}
@@ -1112,31 +1421,44 @@ export default function Careers() {
       {/* Open Positions */}
       <section className="section-padding">
         <div className="max-w-5xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-10">
-            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">Open Positions</p>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-10"
+          >
+            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
+              Open Positions
+            </p>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
               {JOBS.length} Roles Across {DEPARTMENTS.length - 1} Departments
             </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              We are a remote-first, mission-driven team. Every role contributes directly to the EmbeddedOS Foundation's research and education mission.
+              We are a remote-first, mission-driven team. Every role contributes
+              directly to the EmbeddedOS Foundation's research and education
+              mission.
             </p>
           </motion.div>
 
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-3 mb-8">
             <div className="relative flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+              <Search
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
+              />
               <input
                 type="text"
                 placeholder="Search positions..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={e => setSearch(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#F97316]/50"
               />
             </div>
             <div className="flex items-center gap-1.5 flex-wrap">
               <Filter size={14} className="text-white/30 flex-shrink-0" />
-              {DEPARTMENTS.map((d) => (
+              {DEPARTMENTS.map(d => (
                 <button
                   key={d}
                   onClick={() => setDept(d)}
@@ -1146,26 +1468,37 @@ export default function Careers() {
                       : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  {d} {deptCounts[d] > 0 && <span className="opacity-60">({deptCounts[d]})</span>}
+                  {d}{" "}
+                  {deptCounts[d] > 0 && (
+                    <span className="opacity-60">({deptCounts[d]})</span>
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
           {/* Job list */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="space-y-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="space-y-4"
+          >
             {filtered.length === 0 ? (
               <div className="text-center py-16 text-white/30">
                 <Briefcase size={40} className="mx-auto mb-4 opacity-30" />
                 <p>No positions match your search. Try a different filter.</p>
               </div>
             ) : (
-              filtered.map((job) => (
+              filtered.map(job => (
                 <JobCard
                   key={job.id}
                   job={job}
                   isOpen={openJob === job.id}
-                  onToggle={() => setOpenJob(openJob === job.id ? null : job.id)}
+                  onToggle={() =>
+                    setOpenJob(openJob === job.id ? null : job.id)
+                  }
                 />
               ))
             )}
@@ -1176,28 +1509,62 @@ export default function Careers() {
       {/* Internship Types */}
       <section className="section-padding bg-[#080F1E]">
         <div className="max-w-6xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">Internships & Fellowships</p>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">Internship Program Types</h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
+              Internships & Fellowships
+            </p>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              Internship Program Types
+            </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              We offer a range of internship structures to accommodate different academic programs, visa statuses, and career stages.
+              We offer a range of internship structures to accommodate different
+              academic programs, visa statuses, and career stages.
             </p>
           </motion.div>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {INTERNSHIP_TYPES.map((it) => {
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
+            {INTERNSHIP_TYPES.map(it => {
               const Icon = it.icon;
               return (
-                <motion.div key={it.title} variants={fadeUp} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center" style={{ background: `${it.color}20` }}>
+                <motion.div
+                  key={it.title}
+                  variants={fadeUp}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-5"
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center"
+                    style={{ background: `${it.color}20` }}
+                  >
                     <Icon size={18} style={{ color: it.color }} />
                   </div>
-                  <h3 className="font-heading font-bold text-white text-sm mb-2">{it.title}</h3>
-                  <p className="text-xs text-white/50 leading-relaxed">{it.desc}</p>
+                  <h3 className="font-heading font-bold text-white text-sm mb-2">
+                    {it.title}
+                  </h3>
+                  <p className="text-xs text-white/50 leading-relaxed">
+                    {it.desc}
+                  </p>
                 </motion.div>
               );
             })}
           </motion.div>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mt-8 text-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="mt-8 text-center"
+          >
             <Link
               href="/internship"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-xl transition-all duration-150 active:scale-95 text-sm"
@@ -1212,26 +1579,55 @@ export default function Careers() {
       {/* Work Authorization */}
       <section className="section-padding">
         <div className="max-w-5xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">Eligibility</p>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">Work Authorization</h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
+              Eligibility
+            </p>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              Work Authorization
+            </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              EmbeddedOS Research Foundation is a California-based 501(c)(3) nonprofit. Please review our work authorization policy before applying.
+              EmbeddedOS Research Foundation is a California-based 501(c)(3)
+              nonprofit. Please review our work authorization policy before
+              applying.
             </p>
           </motion.div>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-2 gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="grid md:grid-cols-2 gap-8"
+          >
             {/* Accepted */}
-            <motion.div variants={fadeUp} className="rounded-2xl border border-[#34D399]/20 bg-[#34D399]/5 p-7">
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl border border-[#34D399]/20 bg-[#34D399]/5 p-7"
+            >
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl bg-[#34D399]/20 flex items-center justify-center">
                   <CheckCircle2 size={20} className="text-[#34D399]" />
                 </div>
-                <h3 className="font-heading font-bold text-white text-lg">We Accept</h3>
+                <h3 className="font-heading font-bold text-white text-lg">
+                  We Accept
+                </h3>
               </div>
               <ul className="space-y-3">
-                {ACCEPTED_AUTH.map((a) => (
-                  <li key={a} className="flex items-start gap-2.5 text-sm text-white/70">
-                    <CheckCircle2 size={14} className="text-[#34D399] mt-0.5 flex-shrink-0" />
+                {ACCEPTED_AUTH.map(a => (
+                  <li
+                    key={a}
+                    className="flex items-start gap-2.5 text-sm text-white/70"
+                  >
+                    <CheckCircle2
+                      size={14}
+                      className="text-[#34D399] mt-0.5 flex-shrink-0"
+                    />
                     {a}
                   </li>
                 ))}
@@ -1239,23 +1635,36 @@ export default function Careers() {
             </motion.div>
 
             {/* Not sponsored */}
-            <motion.div variants={fadeUp} className="rounded-2xl border border-red-500/20 bg-red-500/5 p-7">
+            <motion.div
+              variants={fadeUp}
+              className="rounded-2xl border border-red-500/20 bg-red-500/5 p-7"
+            >
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
                   <XCircle size={20} className="text-red-400" />
                 </div>
-                <h3 className="font-heading font-bold text-white text-lg">We Do Not Sponsor</h3>
+                <h3 className="font-heading font-bold text-white text-lg">
+                  We Do Not Sponsor
+                </h3>
               </div>
               <ul className="space-y-3">
-                {NOT_SPONSORED.map((a) => (
-                  <li key={a} className="flex items-start gap-2.5 text-sm text-white/70">
-                    <XCircle size={14} className="text-red-400 mt-0.5 flex-shrink-0" />
+                {NOT_SPONSORED.map(a => (
+                  <li
+                    key={a}
+                    className="flex items-start gap-2.5 text-sm text-white/70"
+                  >
+                    <XCircle
+                      size={14}
+                      className="text-red-400 mt-0.5 flex-shrink-0"
+                    />
                     {a}
                   </li>
                 ))}
               </ul>
               <p className="text-xs text-white/30 mt-5 leading-relaxed">
-                As a nonprofit foundation, we are unable to file visa petitions. Applicants must already hold or be eligible for independent work authorization.
+                As a nonprofit foundation, we are unable to file visa petitions.
+                Applicants must already hold or be eligible for independent work
+                authorization.
               </p>
             </motion.div>
           </motion.div>
@@ -1265,23 +1674,51 @@ export default function Careers() {
       {/* Benefits */}
       <section className="section-padding bg-[#080F1E]">
         <div className="max-w-6xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">Benefits</p>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">What We Offer</h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
+              Benefits
+            </p>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              What We Offer
+            </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              As a nonprofit foundation, our benefits focus on professional growth, open-source recognition, and community impact.
+              As a nonprofit foundation, our benefits focus on professional
+              growth, open-source recognition, and community impact.
             </p>
           </motion.div>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {BENEFITS.map((b) => {
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {BENEFITS.map(b => {
               const Icon = b.icon;
               return (
-                <motion.div key={b.title} variants={fadeUp} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <div className="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style={{ background: `${b.color}20` }}>
+                <motion.div
+                  key={b.title}
+                  variants={fadeUp}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6"
+                >
+                  <div
+                    className="w-11 h-11 rounded-xl mb-4 flex items-center justify-center"
+                    style={{ background: `${b.color}20` }}
+                  >
                     <Icon size={20} style={{ color: b.color }} />
                   </div>
-                  <h3 className="font-heading font-bold text-white mb-2">{b.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{b.desc}</p>
+                  <h3 className="font-heading font-bold text-white mb-2">
+                    {b.title}
+                  </h3>
+                  <p className="text-sm text-white/50 leading-relaxed">
+                    {b.desc}
+                  </p>
                 </motion.div>
               );
             })}
@@ -1292,12 +1729,29 @@ export default function Careers() {
       {/* Application Form */}
       <section id="apply" className="section-padding">
         <div className="max-w-3xl mx-auto px-4">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-10">
-            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">Apply</p>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">Submit Your Application</h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-10"
+          >
+            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
+              Apply
+            </p>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              Submit Your Application
+            </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              Fill out the form below or email your resume and statement of interest directly to{" "}
-              <a href="mailto:careers@embeddedos.org" className="text-[#F97316] hover:underline">careers@embeddedos.org</a>.
+              Fill out the form below or email your resume and statement of
+              interest directly to{" "}
+              <a
+                href="mailto:careers@embeddedos.org"
+                className="text-[#F97316] hover:underline"
+              >
+                careers@embeddedos.org
+              </a>
+              .
             </p>
           </motion.div>
 
@@ -1316,14 +1770,30 @@ export default function Careers() {
       {/* CTA */}
       <section className="section-padding bg-[#080F1E]">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.h2 variants={fadeUp} className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.h2
+              variants={fadeUp}
+              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4"
+            >
               Don't See Your Role?
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-white/50 mb-8 leading-relaxed">
-              We're always looking for exceptional people. Send us your resume and tell us what you'd like to build — we'll reach out when the right opportunity opens.
+            <motion.p
+              variants={fadeUp}
+              className="text-white/50 mb-8 leading-relaxed"
+            >
+              We're always looking for exceptional people. Send us your resume
+              and tell us what you'd like to build — we'll reach out when the
+              right opportunity opens.
             </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4">
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-wrap items-center justify-center gap-4"
+            >
               <a
                 href="mailto:careers@embeddedos.org?subject=General Application"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all duration-150 active:scale-95"

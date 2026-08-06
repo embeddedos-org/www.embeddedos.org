@@ -6,7 +6,11 @@ interface OscilloscopeProps {
   color?: string;
 }
 
-export default function Oscilloscope({ program, running, color = "#22D3EE" }: OscilloscopeProps) {
+export default function Oscilloscope({
+  program,
+  running,
+  color = "#22D3EE",
+}: OscilloscopeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
   const tRef = useRef(0);
@@ -30,7 +34,7 @@ export default function Oscilloscope({ program, running, color = "#22D3EE" }: Os
         case "blink": {
           // Square wave — LED blink
           const period = Math.PI * 2;
-          return (t % period) < period / 2 ? 0.8 : -0.8;
+          return t % period < period / 2 ? 0.8 : -0.8;
         }
         case "echo": {
           // Burst pattern — UART echo
@@ -62,19 +66,29 @@ export default function Oscilloscope({ program, running, color = "#22D3EE" }: Os
       // Grid
       ctx.strokeStyle = "rgba(34,211,238,0.06)";
       ctx.lineWidth = 0.5;
-      const cols = 10, rows = 8;
+      const cols = 10,
+        rows = 8;
       for (let i = 0; i <= cols; i++) {
-        ctx.beginPath(); ctx.moveTo((i / cols) * w, 0); ctx.lineTo((i / cols) * w, h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo((i / cols) * w, 0);
+        ctx.lineTo((i / cols) * w, h);
+        ctx.stroke();
       }
       for (let i = 0; i <= rows; i++) {
-        ctx.beginPath(); ctx.moveTo(0, (i / rows) * h); ctx.lineTo(w, (i / rows) * h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, (i / rows) * h);
+        ctx.lineTo(w, (i / rows) * h);
+        ctx.stroke();
       }
 
       // Center line
       ctx.strokeStyle = "rgba(34,211,238,0.12)";
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
-      ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2);
+      ctx.lineTo(w, h / 2);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       if (running) tRef.current += 0.025;
@@ -100,7 +114,7 @@ export default function Oscilloscope({ program, running, color = "#22D3EE" }: Os
 
       // Scan line (moving cursor)
       if (running) {
-        const scanX = ((tRef.current * 20) % w);
+        const scanX = (tRef.current * 20) % w;
         const scanGrad = ctx.createLinearGradient(scanX - 20, 0, scanX + 5, 0);
         scanGrad.addColorStop(0, "rgba(255,255,255,0)");
         scanGrad.addColorStop(1, "rgba(255,255,255,0.08)");
@@ -115,7 +129,11 @@ export default function Oscilloscope({ program, running, color = "#22D3EE" }: Os
       ctx.fillText(running ? "▶ RUNNING" : "■ STOPPED", 8, 14);
 
       ctx.textAlign = "right";
-      const labels: Record<string, string> = { blink: "GPIO / PWM", echo: "UART TX/RX", gpio: "ADC Scan" };
+      const labels: Record<string, string> = {
+        blink: "GPIO / PWM",
+        echo: "UART TX/RX",
+        gpio: "ADC Scan",
+      };
       ctx.fillText(labels[program] || "", w - 8, 14);
 
       frameRef.current = requestAnimationFrame(draw);

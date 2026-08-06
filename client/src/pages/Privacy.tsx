@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
-    opacity: 1, y: 0,
+    opacity: 1,
+    y: 0,
     transition: { duration: 0.4, delay: i * 0.05, ease: "easeOut" as const },
   }),
 };
@@ -86,9 +87,12 @@ export default function Privacy() {
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-teal mb-4 inline-flex">Legal</div>
-            <h1 className="font-heading font-extrabold text-4xl text-white mb-4">Privacy Policy</h1>
+            <h1 className="font-heading font-extrabold text-4xl text-white mb-4">
+              Privacy Policy
+            </h1>
             <p className="text-white/50 text-sm">
-              Effective date: January 1, 2026 · Embedded Operating Systems Research Foundation
+              Effective date: January 1, 2026 · Embedded Operating Systems
+              Research Foundation
             </p>
           </motion.div>
         </div>
@@ -104,10 +108,13 @@ export default function Privacy() {
             className="glass rounded-2xl border border-white/10 p-6 sm:p-8 mb-6"
           >
             <p className="text-white/60 text-sm leading-relaxed">
-              The Embedded Operating Systems Research Foundation ("Foundation", "we", "us", or "our") operates
-              the website at <strong className="text-white">www.embeddedos.org</strong>. This Privacy Policy explains
-              how we collect, use, and protect information when you use our website, documentation, and services.
-              As a 501(c)(3), we are committed to transparency and minimal data collection.
+              The Embedded Operating Systems Research Foundation ("Foundation",
+              "we", "us", or "our") operates the website at{" "}
+              <strong className="text-white">www.embeddedos.org</strong>. This
+              Privacy Policy explains how we collect, use, and protect
+              information when you use our website, documentation, and services.
+              As a 501(c)(3), we are committed to transparency and minimal data
+              collection.
             </p>
           </motion.div>
 
@@ -122,10 +129,18 @@ export default function Privacy() {
                 custom={i}
                 className="glass rounded-xl border border-white/5 p-6"
               >
-                <h2 className="font-heading font-bold text-white text-lg mb-3">{section.title}</h2>
+                <h2 className="font-heading font-bold text-white text-lg mb-3">
+                  {section.title}
+                </h2>
                 <div className="text-white/60 text-sm leading-relaxed whitespace-pre-line">
                   {section.content.split("**").map((part, j) =>
-                    j % 2 === 1 ? <strong key={j} className="text-white">{part}</strong> : part
+                    j % 2 === 1 ? (
+                      <strong key={j} className="text-white">
+                        {part}
+                      </strong>
+                    ) : (
+                      part
+                    )
                   )}
                 </div>
               </motion.div>

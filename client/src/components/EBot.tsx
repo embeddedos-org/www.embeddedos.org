@@ -1,6 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Loader2, Bot, User, Minimize2 } from "lucide-react";
+import {
+  MessageSquare,
+  X,
+  Send,
+  Loader2,
+  Bot,
+  User,
+  Minimize2,
+} from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
 interface Message {
@@ -10,7 +18,8 @@ interface Message {
 
 const WELCOME: Message = {
   role: "assistant",
-  content: "Hi! I'm **eBot**, your EmbeddedOS assistant. Ask me anything about the OS, hardware support, health devices, aerospace projects, or how to get started! 🚀",
+  content:
+    "Hi! I'm **eBot**, your EmbeddedOS assistant. Ask me anything about the OS, hardware support, health devices, aerospace projects, or how to get started! 🚀",
 };
 
 const SUGGESTIONS = [
@@ -31,7 +40,10 @@ function MarkdownText({ text }: { text: string }) {
         }
         if (part.startsWith("`") && part.endsWith("`")) {
           return (
-            <code key={i} className="bg-white/10 px-1 rounded text-[0.8em] font-mono">
+            <code
+              key={i}
+              className="bg-white/10 px-1 rounded text-[0.8em] font-mono"
+            >
               {part.slice(1, -1)}
             </code>
           );
@@ -52,11 +64,21 @@ export default function EBot() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const chatMutation = trpc.ebot.chat.useMutation({
-    onSuccess: (data) => {
-      setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+    onSuccess: data => {
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: data.reply },
+      ]);
     },
     onError: () => {
-      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting right now. Please try again in a moment." }]);
+      setMessages(prev => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "Sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        },
+      ]);
     },
   });
 
@@ -77,7 +99,9 @@ export default function EBot() {
     const newMessages: Message[] = [...messages, { role: "user", content }];
     setMessages(newMessages);
     chatMutation.mutate({
-      messages: newMessages.filter(m => m.role !== "assistant" || m !== WELCOME),
+      messages: newMessages.filter(
+        m => m.role !== "assistant" || m !== WELCOME
+      ),
     });
   };
 
@@ -92,7 +116,10 @@ export default function EBot() {
     <>
       {/* FAB Button */}
       <motion.button
-        onClick={() => { setOpen(true); setMinimized(false); }}
+        onClick={() => {
+          setOpen(true);
+          setMinimized(false);
+        }}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-[#F97316] to-[#EA580C] shadow-lg shadow-[#F97316]/30 flex items-center justify-center text-white hover:scale-110 transition-transform"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -108,7 +135,11 @@ export default function EBot() {
         {open && (
           <motion.div
             initial={{ opacity: 0, scale: 0.85, y: 20 }}
-            animate={minimized ? { opacity: 1, scale: 1, y: 0, height: 56 } : { opacity: 1, scale: 1, y: 0, height: "auto" }}
+            animate={
+              minimized
+                ? { opacity: 1, scale: 1, y: 0, height: 56 }
+                : { opacity: 1, scale: 1, y: 0, height: "auto" }
+            }
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
             className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 bg-[#0d1424]"
@@ -155,18 +186,26 @@ export default function EBot() {
                       animate={{ opacity: 1, y: 0 }}
                       className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
                     >
-                      <div className={`w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs ${
-                        msg.role === "assistant"
-                          ? "bg-gradient-to-br from-[#F97316] to-[#EA580C]"
-                          : "bg-[#22D3EE]/20 border border-[#22D3EE]/30"
-                      }`}>
-                        {msg.role === "assistant" ? <Bot className="w-3.5 h-3.5 text-white" /> : <User className="w-3.5 h-3.5 text-[#22D3EE]" />}
+                      <div
+                        className={`w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs ${
+                          msg.role === "assistant"
+                            ? "bg-gradient-to-br from-[#F97316] to-[#EA580C]"
+                            : "bg-[#22D3EE]/20 border border-[#22D3EE]/30"
+                        }`}
+                      >
+                        {msg.role === "assistant" ? (
+                          <Bot className="w-3.5 h-3.5 text-white" />
+                        ) : (
+                          <User className="w-3.5 h-3.5 text-[#22D3EE]" />
+                        )}
                       </div>
-                      <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                        msg.role === "assistant"
-                          ? "bg-white/5 text-white/90 rounded-tl-sm"
-                          : "bg-[#F97316]/20 text-white rounded-tr-sm border border-[#F97316]/20"
-                      }`}>
+                      <div
+                        className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                          msg.role === "assistant"
+                            ? "bg-white/5 text-white/90 rounded-tl-sm"
+                            : "bg-[#F97316]/20 text-white rounded-tr-sm border border-[#F97316]/20"
+                        }`}
+                      >
                         <MarkdownText text={msg.content} />
                       </div>
                     </motion.div>
@@ -184,7 +223,11 @@ export default function EBot() {
                               key={i}
                               className="w-1.5 h-1.5 bg-[#F97316] rounded-full"
                               animate={{ y: [0, -4, 0] }}
-                              transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                              transition={{
+                                duration: 0.6,
+                                repeat: Infinity,
+                                delay: i * 0.15,
+                              }}
                             />
                           ))}
                         </div>

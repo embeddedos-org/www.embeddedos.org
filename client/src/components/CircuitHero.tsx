@@ -41,19 +41,34 @@ function ParticleField() {
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.06} vertexColors transparent opacity={0.65} sizeAttenuation />
+      <pointsMaterial
+        size={0.06}
+        vertexColors
+        transparent
+        opacity={0.65}
+        sizeAttenuation
+      />
     </points>
   );
 }
 
 // ── Circuit node (glowing sphere) ────────────────────────────────────────────
-function CircuitNode({ position, color, speed = 1 }: { position: [number, number, number]; color: string; speed?: number }) {
+function CircuitNode({
+  position,
+  color,
+  speed = 1,
+}: {
+  position: [number, number, number];
+  color: string;
+  speed?: number;
+}) {
   const meshRef = useRef<THREE.Mesh>(null);
   const baseY = position[1];
 
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
-    meshRef.current.position.y = baseY + Math.sin(clock.getElapsedTime() * speed + position[0]) * 0.3;
+    meshRef.current.position.y =
+      baseY + Math.sin(clock.getElapsedTime() * speed + position[0]) * 0.3;
     const s = 0.85 + 0.15 * Math.sin(clock.getElapsedTime() * speed * 1.5);
     meshRef.current.scale.setScalar(s);
   });
@@ -61,15 +76,34 @@ function CircuitNode({ position, color, speed = 1 }: { position: [number, number
   return (
     <mesh ref={meshRef} position={position}>
       <sphereGeometry args={[0.12, 16, 16]} />
-      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.8} toneMapped={false} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={1.8}
+        toneMapped={false}
+      />
     </mesh>
   );
 }
 
 // ── Glowing connection line ───────────────────────────────────────────────────
-function ConnectionLine({ from, to, color }: { from: [number, number, number]; to: [number, number, number]; color: string }) {
-  const points = useMemo(() => [new THREE.Vector3(...from), new THREE.Vector3(...to)], [from, to]);
-  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(points), [points]);
+function ConnectionLine({
+  from,
+  to,
+  color,
+}: {
+  from: [number, number, number];
+  to: [number, number, number];
+  color: string;
+}) {
+  const points = useMemo(
+    () => [new THREE.Vector3(...from), new THREE.Vector3(...to)],
+    [from, to]
+  );
+  const geometry = useMemo(
+    () => new THREE.BufferGeometry().setFromPoints(points),
+    [points]
+  );
 
   return (
     <lineSegments geometry={geometry}>
@@ -117,7 +151,11 @@ function CircuitGrid() {
 }
 
 // ── Nodes + connections ───────────────────────────────────────────────────────
-const NODES: Array<{ pos: [number, number, number]; color: string; speed: number }> = [
+const NODES: Array<{
+  pos: [number, number, number];
+  color: string;
+  speed: number;
+}> = [
   { pos: [-4, 1.5, 0], color: "#F97316", speed: 0.8 },
   { pos: [-1.5, -1, 0.5], color: "#22D3EE", speed: 1.1 },
   { pos: [1.5, 1.8, 0.2], color: "#A78BFA", speed: 0.7 },
@@ -129,7 +167,11 @@ const NODES: Array<{ pos: [number, number, number]; color: string; speed: number
   { pos: [2.5, -1.8, 0.2], color: "#A78BFA", speed: 1.4 },
 ];
 
-const CONNECTIONS: Array<{ from: [number, number, number]; to: [number, number, number]; color: string }> = [
+const CONNECTIONS: Array<{
+  from: [number, number, number];
+  to: [number, number, number];
+  color: string;
+}> = [
   { from: [-4, 1.5, 0], to: [-1.5, -1, 0.5], color: "#F97316" },
   { from: [-1.5, -1, 0.5], to: [1.5, 1.8, 0.2], color: "#22D3EE" },
   { from: [1.5, 1.8, 0.2], to: [4, -0.5, 0.3], color: "#A78BFA" },
@@ -183,7 +225,12 @@ export default function CircuitHero() {
         <ParticleField />
 
         {NODES.map((n, i) => (
-          <CircuitNode key={i} position={n.pos} color={n.color} speed={n.speed} />
+          <CircuitNode
+            key={i}
+            position={n.pos}
+            color={n.color}
+            speed={n.speed}
+          />
         ))}
         {CONNECTIONS.map((c, i) => (
           <ConnectionLine key={i} from={c.from} to={c.to} color={c.color} />

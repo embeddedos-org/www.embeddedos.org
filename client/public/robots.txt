@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /__manus__/
+
+Sitemap: https://www.embeddedos.org/sitemap.xml

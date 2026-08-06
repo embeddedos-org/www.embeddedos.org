@@ -1,29 +1,81 @@
 <!doctype html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
+    <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EmbeddedOS — The Operating System for Every Device</title>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>EmbeddedOS — The Operating System for Every Device</title>    
-    <meta name="description" content="EmbeddedOS — The open-source operating system for every device. 14 components, 52+ platforms, 300+ APIs." />
+      name="description"
+      content="EmbeddedOS — The open-source operating system for every device. 14 components, 52+ platforms, 300+ APIs."
+    />
     <meta name="theme-color" content="#0B1D3A" />
-    <meta property="og:title" content="EmbeddedOS — The Operating System for Every Device" />
-    <meta property="og:description" content="Open-source embedded OS powering IoT, edge AI, automotive, and industrial systems." />
-    <meta property="og:image" content="/manus-storage/hero-main_225d6e18.jpg" />
+    <link rel="canonical" href="https://www.embeddedos.org/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.embeddedos.org/" />
+    <meta property="og:site_name" content="EmbeddedOS" />
+    <meta
+      property="og:title"
+      content="EmbeddedOS — The Operating System for Every Device"
+    />
+    <meta
+      property="og:description"
+      content="Open-source embedded OS powering IoT, edge AI, automotive, and industrial systems."
+    />
+    <meta
+      property="og:image"
+      content="https://www.embeddedos.org/manus-storage/hero-background_1bafea1c.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Load webfonts without blocking first render. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+    <!--
+      Analytics loads only when VITE_ANALYTICS_* are actually configured.
+      Vite leaves %PLACEHOLDERS% untouched when the env var is unset, and a bare
+      <script src="%VITE_ANALYTICS_ENDPOINT%/umami"> would then request a
+      literal-percent URL on every page load and try to execute the HTML
+      response as JavaScript.
+    -->
+    <script>
+      (function () {
+        var endpoint = "%VITE_ANALYTICS_ENDPOINT%";
+        var websiteId = "%VITE_ANALYTICS_WEBSITE_ID%";
+        if (
+          !endpoint ||
+          !websiteId ||
+          endpoint.charAt(0) === "%" ||
+          websiteId.charAt(0) === "%"
+        )
+          return;
+        var s = document.createElement("script");
+        s.defer = true;
+        s.src = endpoint + "/umami";
+        s.setAttribute("data-website-id", websiteId);
+        document.head.appendChild(s);
+      })();
+    </script>
   </body>
-
 </html>

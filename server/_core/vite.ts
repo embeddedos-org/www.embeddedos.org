@@ -13,8 +13,15 @@ export async function setupVite(app: Express, server: Server) {
     allowedHosts: true as const,
   };
 
+  // vite.config.ts exports a config *function* (it gates dev-only plugins on
+  // `command`), so it has to be invoked rather than spread.
+  const resolvedConfig = await viteConfig({
+    command: "serve",
+    mode: process.env.NODE_ENV ?? "development",
+  });
+
   const vite = await createViteServer({
-    ...viteConfig,
+    ...resolvedConfig,
     configFile: false,
     server: serverOptions,
     appType: "custom",
@@ -58,10 +65,41 @@ export function serveStatic(app: Express) {
     );
   }
 
-  app.use(express.static(distPath));
+  // `index: false` keeps express.static from 301-redirecting /about to /about/;
+  // the handler below resolves prerendered directory indexes itself.
+  app.use(express.static(distPath, { index: false, redirect: false }));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // Mounted without a path pattern on purpose: `app.use("*", ...)` rewrites
+  // req.url/req.path to "/" for the handler, which would serve the homepage
+  // snapshot for every route.
+  app.use((req, res) => {
+    // Serve the prerendered snapshot for this route when the build produced one.
+    const requested = path
+      .normalize(req.path)
+      .replace(/^(\.\.[/\\])+/, "")
+      .replace(/[/\\]+$/, "");
+    const candidate = path.resolve(
+      distPath,
+      `.${path.sep}${requested}`,
+      "index.html"
+    );
+
+    // Guard against traversal outside the build directory.
+    if (
+      candidate.startsWith(distPath + path.sep) ||
+      candidate === path.resolve(distPath, "index.html")
+    ) {
+      if (fs.existsSync(candidate)) {
+        return res.sendFile(candidate);
+      }
+    }
+
+    // Unknown path. Every real route is prerendered, so this is a genuine 404 —
+    // return it with a 404 status rather than a 200 soft-404.
+    const notFound = path.resolve(distPath, "404.html");
+    if (fs.existsSync(notFound)) {
+      return res.status(404).sendFile(notFound);
+    }
+    return res.status(404).sendFile(path.resolve(distPath, "index.html"));
   });
 }

@@ -1,7 +1,14 @@
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const DIMENSIONS = ["Vitals", "Advanced", "Biochemistry", "Software", "Hardware", "Connectivity"];
+const DIMENSIONS = [
+  "Vitals",
+  "Advanced",
+  "Biochemistry",
+  "Software",
+  "Hardware",
+  "Connectivity",
+];
 
 const DEVICES = [
   {
@@ -65,9 +72,14 @@ export default function DeviceRadarChart() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        className="overflow-visible"
+      >
         {/* Grid rings */}
-        {rings.map((r) => (
+        {rings.map(r => (
           <polygon
             key={r}
             points={DIMENSIONS.map((_, i) => {
@@ -86,8 +98,10 @@ export default function DeviceRadarChart() {
           return (
             <line
               key={i}
-              x1={cx} y1={cy}
-              x2={outer.x} y2={outer.y}
+              x1={cx}
+              y1={cy}
+              x2={outer.x}
+              y2={outer.y}
               stroke="rgba(255,255,255,0.08)"
               strokeWidth="1"
             />
@@ -95,7 +109,7 @@ export default function DeviceRadarChart() {
         })}
 
         {/* Device polygons */}
-        {DEVICES.map((device) => {
+        {DEVICES.map(device => {
           if (!visible[device.name]) return null;
           const isHovered = hovered === device.name;
           return (
@@ -116,7 +130,9 @@ export default function DeviceRadarChart() {
                 return (
                   <circle
                     key={i}
-                    cx={pt.x} cy={pt.y} r={isHovered ? 4 : 3}
+                    cx={pt.x}
+                    cy={pt.y}
+                    r={isHovered ? 4 : 3}
                     fill={device.color}
                     opacity={isHovered ? 1 : 0.8}
                     style={{ transition: "all 0.3s ease" }}
@@ -134,7 +150,8 @@ export default function DeviceRadarChart() {
           return (
             <text
               key={dim}
-              x={pt.x} y={pt.y}
+              x={pt.x}
+              y={pt.y}
               textAnchor="middle"
               dominantBaseline="middle"
               fill="rgba(255,255,255,0.5)"
@@ -150,22 +167,37 @@ export default function DeviceRadarChart() {
 
       {/* Legend / toggles */}
       <div className="flex flex-wrap justify-center gap-2">
-        {DEVICES.map((device) => (
+        {DEVICES.map(device => (
           <motion.button
             key={device.name}
-            onClick={() => setVisible(v => ({ ...v, [device.name]: !v[device.name] }))}
+            onClick={() =>
+              setVisible(v => ({ ...v, [device.name]: !v[device.name] }))
+            }
             onMouseEnter={() => setHovered(device.name)}
             onMouseLeave={() => setHovered(null)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold transition-all"
             style={{
-              borderColor: visible[device.name] ? device.color + "60" : "rgba(255,255,255,0.1)",
-              background: visible[device.name] ? device.color + "15" : "rgba(255,255,255,0.03)",
-              color: visible[device.name] ? device.color : "rgba(255,255,255,0.3)",
+              borderColor: visible[device.name]
+                ? device.color + "60"
+                : "rgba(255,255,255,0.1)",
+              background: visible[device.name]
+                ? device.color + "15"
+                : "rgba(255,255,255,0.03)",
+              color: visible[device.name]
+                ? device.color
+                : "rgba(255,255,255,0.3)",
             }}
           >
-            <div className="w-2 h-2 rounded-full" style={{ background: visible[device.name] ? device.color : "rgba(255,255,255,0.2)" }} />
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{
+                background: visible[device.name]
+                  ? device.color
+                  : "rgba(255,255,255,0.2)",
+              }}
+            />
             {device.name}
           </motion.button>
         ))}

@@ -2,40 +2,162 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import {
-  Terminal, Cpu, Zap, Package, PenTool, ArrowRight,
-  CheckCircle2, Copy, ChevronRight, Monitor, Wifi, Brain,
-  HardDrive, Code, Layers, Play, Shield, Wrench,
-  Info, AlertCircle, Star
+  Terminal,
+  Cpu,
+  Zap,
+  Package,
+  PenTool,
+  ArrowRight,
+  CheckCircle2,
+  Copy,
+  ChevronRight,
+  Monitor,
+  Wifi,
+  Brain,
+  HardDrive,
+  Code,
+  Layers,
+  Play,
+  Shield,
+  Wrench,
+  Info,
+  AlertCircle,
+  Star,
 } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.45, delay: i * 0.07, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] },
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      delay: i * 0.07,
+      ease: [0.23, 1, 0.32, 1] as [number, number, number, number],
+    },
   }),
 };
 
 const ECOSYSTEM = [
-  { id: "ebuild", name: "ebuild", role: "Build Tool", desc: "Compiles, links, analyzes CAD, and flashes firmware. The single CLI for the entire EoS lifecycle.", color: "#F97316", icon: Wrench },
-  { id: "eosim", name: "EoSim", role: "Simulator", desc: "Runs your firmware in-browser on 63+ virtual boards. No hardware required — ever.", color: "#22D3EE", icon: Monitor },
-  { id: "eos", name: "EoS Kernel", role: "RTOS Kernel", desc: "The real-time OS kernel. Provides HAL, scheduler, IPC, drivers, and POSIX subset.", color: "#F97316", icon: Cpu },
-  { id: "eboot", name: "eBoot", role: "Bootloader", desc: "Secure bootloader with verified boot, OTA A/B updates, and hardware root of trust.", color: "#F59E0B", icon: Shield },
-  { id: "eflow", name: "eFlow", role: "Visual Programming", desc: "Drag-and-drop block editor that generates production C code. No assembly needed for common patterns.", color: "#A78BFA", icon: Layers },
-  { id: "eai", name: "EAI / ENI", role: "Edge AI", desc: "On-device TFLite/ONNX inference and neural interface adapter for BCI devices.", color: "#34D399", icon: Brain },
-  { id: "eapps", name: "eApps", role: "App Ecosystem", desc: "60+ apps including eOffice Suite, eBrowser, eDB, and eBot AI assistant.", color: "#60A5FA", icon: Package },
-  { id: "eostudio", name: "EoStudio", role: "IDE", desc: "Universal IDE with AI tutor, 3D modeler, game editor, and UI designer.", color: "#F472B6", icon: Code },
+  {
+    id: "ebuild",
+    name: "ebuild",
+    role: "Build Tool",
+    desc: "Compiles, links, analyzes CAD, and flashes firmware. The single CLI for the entire EoS lifecycle.",
+    color: "#F97316",
+    icon: Wrench,
+  },
+  {
+    id: "eosim",
+    name: "EoSim",
+    role: "Simulator",
+    desc: "Runs your firmware in-browser on 63+ virtual boards. No hardware required — ever.",
+    color: "#22D3EE",
+    icon: Monitor,
+  },
+  {
+    id: "eos",
+    name: "EoS Kernel",
+    role: "RTOS Kernel",
+    desc: "The real-time OS kernel. Provides HAL, scheduler, IPC, drivers, and POSIX subset.",
+    color: "#F97316",
+    icon: Cpu,
+  },
+  {
+    id: "eboot",
+    name: "eBoot",
+    role: "Bootloader",
+    desc: "Secure bootloader with verified boot, OTA A/B updates, and hardware root of trust.",
+    color: "#F59E0B",
+    icon: Shield,
+  },
+  {
+    id: "eflow",
+    name: "eFlow",
+    role: "Visual Programming",
+    desc: "Drag-and-drop block editor that generates production C code. No assembly needed for common patterns.",
+    color: "#A78BFA",
+    icon: Layers,
+  },
+  {
+    id: "eai",
+    name: "EAI / ENI",
+    role: "Edge AI",
+    desc: "On-device TFLite/ONNX inference and neural interface adapter for BCI devices.",
+    color: "#34D399",
+    icon: Brain,
+  },
+  {
+    id: "eapps",
+    name: "eApps",
+    role: "App Ecosystem",
+    desc: "60+ apps including eOffice Suite, eBrowser, eDB, and eBot AI assistant.",
+    color: "#60A5FA",
+    icon: Package,
+  },
+  {
+    id: "eostudio",
+    name: "EoStudio",
+    role: "IDE",
+    desc: "Universal IDE with AI tutor, 3D modeler, game editor, and UI designer.",
+    color: "#F472B6",
+    icon: Code,
+  },
 ];
 
 type Path = "nosim" | "sim" | "stm32" | "esp32" | "apps" | "hardware-design";
 
-const PATHS: { id: Path; icon: typeof Terminal; label: string; sublabel: string; color: string; badge?: string }[] = [
-  { id: "nosim", icon: Play, label: "No Hardware, No Install", sublabel: "Run in browser — 60 seconds", color: "#34D399", badge: "Fastest" },
-  { id: "sim", icon: Monitor, label: "Simulator on My Computer", sublabel: "Full EoSim CLI + ebuild", color: "#22D3EE" },
-  { id: "esp32", icon: Wifi, label: "I Have an ESP32", sublabel: "Flash EoS to $5 board", color: "#F97316" },
-  { id: "stm32", icon: Cpu, label: "I Have an STM32", sublabel: "Nucleo / Discovery board", color: "#22D3EE" },
-  { id: "apps", icon: Package, label: "I Want to Build eApps", sublabel: "C + LVGL cross-platform apps", color: "#F59E0B" },
-  { id: "hardware-design", icon: PenTool, label: "I'm a Hardware Engineer", sublabel: "CAD → ebuild → simulate → flash", color: "#A78BFA" },
+const PATHS: {
+  id: Path;
+  icon: typeof Terminal;
+  label: string;
+  sublabel: string;
+  color: string;
+  badge?: string;
+}[] = [
+  {
+    id: "nosim",
+    icon: Play,
+    label: "No Hardware, No Install",
+    sublabel: "Run in browser — 60 seconds",
+    color: "#34D399",
+    badge: "Fastest",
+  },
+  {
+    id: "sim",
+    icon: Monitor,
+    label: "Simulator on My Computer",
+    sublabel: "Full EoSim CLI + ebuild",
+    color: "#22D3EE",
+  },
+  {
+    id: "esp32",
+    icon: Wifi,
+    label: "I Have an ESP32",
+    sublabel: "Flash EoS to $5 board",
+    color: "#F97316",
+  },
+  {
+    id: "stm32",
+    icon: Cpu,
+    label: "I Have an STM32",
+    sublabel: "Nucleo / Discovery board",
+    color: "#22D3EE",
+  },
+  {
+    id: "apps",
+    icon: Package,
+    label: "I Want to Build eApps",
+    sublabel: "C + LVGL cross-platform apps",
+    color: "#F59E0B",
+  },
+  {
+    id: "hardware-design",
+    icon: PenTool,
+    label: "I'm a Hardware Engineer",
+    sublabel: "CAD → ebuild → simulate → flash",
+    color: "#A78BFA",
+  },
 ];
 
 interface Step {
@@ -61,19 +183,28 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   nosim: {
     title: "Run EoS in Your Browser — No Install",
     color: "#34D399",
-    intro: "EoSim runs entirely in your browser using WebAssembly. You can write, compile, and simulate firmware on a virtual STM32, ESP32, or Raspberry Pi Pico without installing anything. This is the fastest way to understand what EmbeddedOS is.",
-    prereq: "A modern browser (Chrome 90+, Firefox 88+, Safari 15+). That is it.",
+    intro:
+      "EoSim runs entirely in your browser using WebAssembly. You can write, compile, and simulate firmware on a virtual STM32, ESP32, or Raspberry Pi Pico without installing anything. This is the fastest way to understand what EmbeddedOS is.",
+    prereq:
+      "A modern browser (Chrome 90+, Firefox 88+, Safari 15+). That is it.",
     time: "~5 minutes",
     steps: [
       {
         title: "Open the EoSim Demo",
         text: "Navigate to the EoSim demo page. You will see a virtual board with GPIO pins, a code editor, and a UART output console. No login required.",
-        substeps: ["Click 'Demo' in the top navigation, or go directly to /demo", "The simulator loads a virtual STM32F4 board by default"],
+        substeps: [
+          "Click 'Demo' in the top navigation, or go directly to /demo",
+          "The simulator loads a virtual STM32F4 board by default",
+        ],
       },
       {
         title: "Choose a Board",
         text: "EoSim supports 63+ virtual boards. For your first run, keep the default STM32F4 Discovery. You can switch to ESP32 or Raspberry Pi Pico using the board selector.",
-        substeps: ["STM32F4 — ARM Cortex-M4, 168MHz, 1MB flash", "ESP32 — Xtensa LX6, 240MHz, Wi-Fi + BT", "RPi Pico — RP2040, dual-core ARM Cortex-M0+"],
+        substeps: [
+          "STM32F4 — ARM Cortex-M4, 168MHz, 1MB flash",
+          "ESP32 — Xtensa LX6, 240MHz, Wi-Fi + BT",
+          "RPi Pico — RP2040, dual-core ARM Cortex-M0+",
+        ],
       },
       {
         title: "Select a Program",
@@ -118,8 +249,10 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   sim: {
     title: "Full Simulator on Your Computer",
     color: "#22D3EE",
-    intro: "EoSim + ebuild give you a complete EmbeddedOS development environment on your laptop. Write firmware, compile it, simulate it on a virtual board, and debug it — all without any physical hardware. This is how most EoS contributors develop.",
-    prereq: "Python 3.10+, Git, 2GB disk space. Windows 10+, macOS 12+, or Ubuntu 20.04+.",
+    intro:
+      "EoSim + ebuild give you a complete EmbeddedOS development environment on your laptop. Write firmware, compile it, simulate it on a virtual board, and debug it — all without any physical hardware. This is how most EoS contributors develop.",
+    prereq:
+      "Python 3.10+, Git, 2GB disk space. Windows 10+, macOS 12+, or Ubuntu 20.04+.",
     time: "~15 minutes",
     steps: [
       {
@@ -178,8 +311,10 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   esp32: {
     title: "Flash EoS to Your ESP32",
     color: "#F97316",
-    intro: "The ESP32 is the most popular EoS target. At $5-$10, it gives you Wi-Fi, Bluetooth, two cores, and 520KB of RAM. This guide takes you from an out-of-the-box ESP32 to a running EoS application in under 30 minutes.",
-    prereq: "ESP32 DevKit board ($5-$10), USB-A to Micro-USB cable, Python 3.10+.",
+    intro:
+      "The ESP32 is the most popular EoS target. At $5-$10, it gives you Wi-Fi, Bluetooth, two cores, and 520KB of RAM. This guide takes you from an out-of-the-box ESP32 to a running EoS application in under 30 minutes.",
+    prereq:
+      "ESP32 DevKit board ($5-$10), USB-A to Micro-USB cable, Python 3.10+.",
     time: "~25 minutes",
     steps: [
       {
@@ -229,7 +364,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   stm32: {
     title: "Flash EoS to Your STM32",
     color: "#22D3EE",
-    intro: "STM32 boards are the most common target for professional embedded development. The Nucleo-F446RE ($15) has an on-board ST-Link debugger, making flashing as simple as plugging in a USB cable.",
+    intro:
+      "STM32 boards are the most common target for professional embedded development. The Nucleo-F446RE ($15) has an on-board ST-Link debugger, making flashing as simple as plugging in a USB cable.",
     prereq: "STM32 Nucleo or Discovery board, USB cable, Python 3.10+.",
     time: "~30 minutes",
     steps: [
@@ -284,7 +420,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   apps: {
     title: "Build Cross-Platform eApps",
     color: "#F59E0B",
-    intro: "eApps are C applications built with LVGL (Light and Versatile Graphics Library). They run natively on embedded displays, on your desktop (via SDL2), in a browser (via WebAssembly), and on Android/iOS (via Flutter wrapper). The same source code runs everywhere.",
+    intro:
+      "eApps are C applications built with LVGL (Light and Versatile Graphics Library). They run natively on embedded displays, on your desktop (via SDL2), in a browser (via WebAssembly), and on Android/iOS (via Flutter wrapper). The same source code runs everywhere.",
     prereq: "Git, CMake 3.20+, GCC or Clang, SDL2 development libraries.",
     time: "~20 minutes",
     steps: [
@@ -331,7 +468,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   "hardware-design": {
     title: "Hardware Engineer Workflow",
     color: "#A78BFA",
-    intro: "If you are designing hardware for EmbeddedOS, ebuild has a dedicated CAD analysis pipeline. Import your KiCad or Altium schematic, ebuild extracts the component list and pin assignments, generates a board support package (BSP), and lets you simulate the entire firmware stack before your PCB arrives from the fab.",
+    intro:
+      "If you are designing hardware for EmbeddedOS, ebuild has a dedicated CAD analysis pipeline. Import your KiCad or Altium schematic, ebuild extracts the component list and pin assignments, generates a board support package (BSP), and lets you simulate the entire firmware stack before your PCB arrives from the fab.",
     prereq: "KiCad 7+ or Altium Designer, Python 3.10+, ebuild.",
     time: "~45 minutes",
     steps: [
@@ -403,25 +541,57 @@ export default function GettingStarted() {
           <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-[#22D3EE]/4 rounded-full blur-[80px]" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-              style={{ background: "rgba(249,115,22,0.12)", border: "1px solid rgba(249,115,22,0.3)", color: "#F97316" }}>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0}
+          >
+            <span
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
+              style={{
+                background: "rgba(249,115,22,0.12)",
+                border: "1px solid rgba(249,115,22,0.3)",
+                color: "#F97316",
+              }}
+            >
               <Play size={12} /> Getting Started
             </span>
           </motion.div>
-          <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
-            className="font-heading font-black text-5xl sm:text-6xl text-white mb-5 leading-[1.05]">
-            Start Building with<br />
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            className="font-heading font-black text-5xl sm:text-6xl text-white mb-5 leading-[1.05]"
+          >
+            Start Building with
+            <br />
             <span style={{ color: "#F97316" }}>EmbeddedOS</span>
           </motion.h1>
-          <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
-            className="text-white/60 text-xl max-w-2xl mx-auto mb-4 leading-relaxed">
-            No hardware required to get started. Choose your path below and go from zero to running firmware in minutes.
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            className="text-white/60 text-xl max-w-2xl mx-auto mb-4 leading-relaxed"
+          >
+            No hardware required to get started. Choose your path below and go
+            from zero to running firmware in minutes.
           </motion.p>
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={3}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[#34D399]"
-            style={{ background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)" }}>
-            <CheckCircle2 size={14} /> You can simulate 63+ boards in your browser — no install, no hardware needed
+            style={{
+              background: "rgba(52,211,153,0.08)",
+              border: "1px solid rgba(52,211,153,0.2)",
+            }}
+          >
+            <CheckCircle2 size={14} /> You can simulate 63+ boards in your
+            browser — no install, no hardware needed
           </motion.div>
         </div>
       </section>
@@ -429,28 +599,60 @@ export default function GettingStarted() {
       {/* Ecosystem Map */}
       <section className="pb-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-8">
-            <h2 className="font-heading font-black text-2xl text-white mb-2">The EmbeddedOS Ecosystem</h2>
-            <p className="text-white/40 text-sm">8 tools that work together — understand what each one does before you start</p>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="font-heading font-black text-2xl text-white mb-2">
+              The EmbeddedOS Ecosystem
+            </h2>
+            <p className="text-white/40 text-sm">
+              8 tools that work together — understand what each one does before
+              you start
+            </p>
           </motion.div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {ECOSYSTEM.map((tool, i) => {
               const TIcon = tool.icon;
               return (
-                <motion.div key={tool.id} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i}
+                <motion.div
+                  key={tool.id}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={i}
                   className="rounded-2xl border p-4"
-                  style={{ background: `${tool.color}06`, borderColor: `${tool.color}20` }}>
+                  style={{
+                    background: `${tool.color}06`,
+                    borderColor: `${tool.color}20`,
+                  }}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ background: `${tool.color}18` }}>
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: `${tool.color}18` }}
+                    >
                       <TIcon size={14} style={{ color: tool.color }} />
                     </div>
                     <div>
-                      <div className="font-heading font-bold text-white text-sm">{tool.name}</div>
-                      <div className="text-[10px]" style={{ color: tool.color }}>{tool.role}</div>
+                      <div className="font-heading font-bold text-white text-sm">
+                        {tool.name}
+                      </div>
+                      <div
+                        className="text-[10px]"
+                        style={{ color: tool.color }}
+                      >
+                        {tool.role}
+                      </div>
                     </div>
                   </div>
-                  <p className="text-white/45 text-xs leading-relaxed">{tool.desc}</p>
+                  <p className="text-white/45 text-xs leading-relaxed">
+                    {tool.desc}
+                  </p>
                 </motion.div>
               );
             })}
@@ -461,29 +663,61 @@ export default function GettingStarted() {
       {/* Path Selector */}
       <section className="pb-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-6">
-            <h2 className="font-heading font-black text-2xl text-white mb-1">Choose Your Path</h2>
-            <p className="text-white/40 text-sm">Pick the option that matches where you are right now</p>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-6"
+          >
+            <h2 className="font-heading font-black text-2xl text-white mb-1">
+              Choose Your Path
+            </h2>
+            <p className="text-white/40 text-sm">
+              Pick the option that matches where you are right now
+            </p>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {PATHS.map(p => {
               const PIcon = p.icon;
               return (
-                <button key={p.id} onClick={() => setActivePath(p.id)}
+                <button
+                  key={p.id}
+                  onClick={() => setActivePath(p.id)}
                   className="relative flex items-center gap-3 p-4 rounded-2xl text-left transition-all"
-                  style={activePath === p.id
-                    ? { background: `${p.color}15`, border: `1.5px solid ${p.color}50` }
-                    : { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  style={
+                    activePath === p.id
+                      ? {
+                          background: `${p.color}15`,
+                          border: `1.5px solid ${p.color}50`,
+                        }
+                      : {
+                          background: "rgba(255,255,255,0.03)",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                        }
+                  }
+                >
                   {p.badge && (
-                    <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold"
-                      style={{ background: p.color, color: "#000" }}>{p.badge}</span>
+                    <span
+                      className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold"
+                      style={{ background: p.color, color: "#000" }}
+                    >
+                      {p.badge}
+                    </span>
                   )}
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: activePath === p.id ? `${p.color}25` : `${p.color}12` }}>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    style={{
+                      background:
+                        activePath === p.id ? `${p.color}25` : `${p.color}12`,
+                    }}
+                  >
                     <PIcon size={18} style={{ color: p.color }} />
                   </div>
                   <div>
-                    <div className="font-heading font-bold text-white text-sm">{p.label}</div>
+                    <div className="font-heading font-bold text-white text-sm">
+                      {p.label}
+                    </div>
                     <div className="text-xs text-white/45">{p.sublabel}</div>
                   </div>
                 </button>
@@ -497,86 +731,170 @@ export default function GettingStarted() {
       <section className="pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <AnimatePresence mode="wait">
-            <motion.div key={activePath}
+            <motion.div
+              key={activePath}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}>
-
-              <div className="rounded-2xl border p-6 mb-6"
-                style={{ background: `${content.color}08`, borderColor: `${content.color}25` }}>
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+            >
+              <div
+                className="rounded-2xl border p-6 mb-6"
+                style={{
+                  background: `${content.color}08`,
+                  borderColor: `${content.color}25`,
+                }}
+              >
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h2 className="font-heading font-black text-2xl sm:text-3xl text-white">{content.title}</h2>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold"
-                    style={{ background: `${content.color}20`, color: content.color }}>{content.time}</span>
+                  <h2 className="font-heading font-black text-2xl sm:text-3xl text-white">
+                    {content.title}
+                  </h2>
+                  <span
+                    className="px-3 py-1 rounded-full text-xs font-bold"
+                    style={{
+                      background: `${content.color}20`,
+                      color: content.color,
+                    }}
+                  >
+                    {content.time}
+                  </span>
                 </div>
-                <p className="text-white/60 text-base mb-4 leading-relaxed">{content.intro}</p>
-                <div className="flex items-start gap-2 p-3 rounded-xl"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <p className="text-white/60 text-base mb-4 leading-relaxed">
+                  {content.intro}
+                </p>
+                <div
+                  className="flex items-start gap-2 p-3 rounded-xl"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
                   <Info size={14} className="text-white/40 mt-0.5 shrink-0" />
                   <div>
-                    <span className="text-xs font-bold text-white/40 uppercase tracking-wider">Prerequisites: </span>
-                    <span className="text-xs text-white/60">{content.prereq}</span>
+                    <span className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                      Prerequisites:{" "}
+                    </span>
+                    <span className="text-xs text-white/60">
+                      {content.prereq}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {content.steps.map((step, i) => (
-                  <motion.div key={step.title} variants={fadeUp} initial="hidden" animate="visible" custom={i}
+                  <motion.div
+                    key={step.title}
+                    variants={fadeUp}
+                    initial="hidden"
+                    animate="visible"
+                    custom={i}
                     className="rounded-2xl border border-white/8 overflow-hidden"
-                    style={{ background: "rgba(255,255,255,0.02)" }}>
+                    style={{ background: "rgba(255,255,255,0.02)" }}
+                  >
                     <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-                      <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
-                        style={{ background: `${content.color}25`, border: `1px solid ${content.color}40` }}>
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
+                        style={{
+                          background: `${content.color}25`,
+                          border: `1px solid ${content.color}40`,
+                        }}
+                      >
                         {i + 1}
                       </div>
-                      <h3 className="font-heading font-bold text-white">{step.title}</h3>
+                      <h3 className="font-heading font-bold text-white">
+                        {step.title}
+                      </h3>
                     </div>
                     <div className="px-5 py-4 space-y-3">
-                      {step.text && <p className="text-sm text-white/60 leading-relaxed">{step.text}</p>}
+                      {step.text && (
+                        <p className="text-sm text-white/60 leading-relaxed">
+                          {step.text}
+                        </p>
+                      )}
                       {step.substeps && (
                         <ul className="space-y-1.5">
                           {step.substeps.map(s => (
-                            <li key={s} className="flex items-start gap-2 text-sm text-white/55">
-                              <ChevronRight size={13} className="mt-0.5 shrink-0" style={{ color: content.color }} />
+                            <li
+                              key={s}
+                              className="flex items-start gap-2 text-sm text-white/55"
+                            >
+                              <ChevronRight
+                                size={13}
+                                className="mt-0.5 shrink-0"
+                                style={{ color: content.color }}
+                              />
                               {s}
                             </li>
                           ))}
                         </ul>
                       )}
                       {step.code && (
-                        <div className="relative rounded-xl overflow-hidden border border-white/8"
-                          style={{ background: "rgba(5,10,20,0.9)" }}>
+                        <div
+                          className="relative rounded-xl overflow-hidden border border-white/8"
+                          style={{ background: "rgba(5,10,20,0.9)" }}
+                        >
                           <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
                             <div className="flex gap-1.5">
                               <div className="w-2.5 h-2.5 rounded-full bg-[#F85149]/50" />
                               <div className="w-2.5 h-2.5 rounded-full bg-[#F0883E]/50" />
                               <div className="w-2.5 h-2.5 rounded-full bg-[#3FB950]/50" />
                             </div>
-                            <button onClick={() => copyCode(step.code!, i)}
-                              className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors">
-                              {copiedIdx === i ? <CheckCircle2 size={12} className="text-[#34D399]" /> : <Copy size={12} />}
+                            <button
+                              onClick={() => copyCode(step.code!, i)}
+                              className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
+                            >
+                              {copiedIdx === i ? (
+                                <CheckCircle2
+                                  size={12}
+                                  className="text-[#34D399]"
+                                />
+                              ) : (
+                                <Copy size={12} />
+                              )}
                               {copiedIdx === i ? "Copied!" : "Copy"}
                             </button>
                           </div>
                           <pre className="p-4 text-xs overflow-x-auto font-mono leading-relaxed">
-                            <code style={{ color: "#E6EDF3" }}>{step.code}</code>
+                            <code style={{ color: "#E6EDF3" }}>
+                              {step.code}
+                            </code>
                           </pre>
                         </div>
                       )}
                       {step.tip && (
-                        <div className="flex items-start gap-2 p-3 rounded-xl text-xs"
-                          style={{ background: `${content.color}08`, border: `1px solid ${content.color}20` }}>
-                          <Star size={12} style={{ color: content.color }} className="mt-0.5 shrink-0" />
-                          <span style={{ color: content.color }}><strong>Tip:</strong> {step.tip}</span>
+                        <div
+                          className="flex items-start gap-2 p-3 rounded-xl text-xs"
+                          style={{
+                            background: `${content.color}08`,
+                            border: `1px solid ${content.color}20`,
+                          }}
+                        >
+                          <Star
+                            size={12}
+                            style={{ color: content.color }}
+                            className="mt-0.5 shrink-0"
+                          />
+                          <span style={{ color: content.color }}>
+                            <strong>Tip:</strong> {step.tip}
+                          </span>
                         </div>
                       )}
                       {step.warn && (
-                        <div className="flex items-start gap-2 p-3 rounded-xl text-xs"
-                          style={{ background: "rgba(248,81,73,0.08)", border: "1px solid rgba(248,81,73,0.2)" }}>
-                          <AlertCircle size={12} className="text-[#F85149] mt-0.5 shrink-0" />
-                          <span className="text-[#F85149]"><strong>Note:</strong> {step.warn}</span>
+                        <div
+                          className="flex items-start gap-2 p-3 rounded-xl text-xs"
+                          style={{
+                            background: "rgba(248,81,73,0.08)",
+                            border: "1px solid rgba(248,81,73,0.2)",
+                          }}
+                        >
+                          <AlertCircle
+                            size={12}
+                            className="text-[#F85149] mt-0.5 shrink-0"
+                          />
+                          <span className="text-[#F85149]">
+                            <strong>Note:</strong> {step.warn}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -584,14 +902,24 @@ export default function GettingStarted() {
                 ))}
               </div>
 
-              <div className="mt-8 rounded-2xl border border-white/8 p-5"
-                style={{ background: "rgba(255,255,255,0.02)" }}>
-                <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">What's Next</div>
+              <div
+                className="mt-8 rounded-2xl border border-white/8 p-5"
+                style={{ background: "rgba(255,255,255,0.02)" }}
+              >
+                <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
+                  What's Next
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {content.nextSteps.map(ns => (
-                    <Link key={ns.label} href={ns.href}
+                    <Link
+                      key={ns.label}
+                      href={ns.href}
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white/70 hover:text-white transition-all"
-                      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                      style={{
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                      }}
+                    >
                       {ns.label} <ArrowRight size={13} />
                     </Link>
                   ))}
@@ -607,23 +935,58 @@ export default function GettingStarted() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { label: "EoS Kernel", href: "/eos", color: "#F97316", icon: Cpu },
-              { label: "eBoot", href: "/eboot", color: "#F59E0B", icon: Shield },
+              {
+                label: "EoS Kernel",
+                href: "/eos",
+                color: "#F97316",
+                icon: Cpu,
+              },
+              {
+                label: "eBoot",
+                href: "/eboot",
+                color: "#F59E0B",
+                icon: Shield,
+              },
               { label: "eFlow", href: "/flow", color: "#A78BFA", icon: Layers },
-              { label: "EAI / ENI", href: "/eai", color: "#34D399", icon: Brain },
-              { label: "eOffice", href: "/eoffice", color: "#22D3EE", icon: Package },
-              { label: "Hardware Lab", href: "/hardware-lab", color: "#60A5FA", icon: HardDrive },
+              {
+                label: "EAI / ENI",
+                href: "/eai",
+                color: "#34D399",
+                icon: Brain,
+              },
+              {
+                label: "eOffice",
+                href: "/eoffice",
+                color: "#22D3EE",
+                icon: Package,
+              },
+              {
+                label: "Hardware Lab",
+                href: "/hardware-lab",
+                color: "#60A5FA",
+                icon: HardDrive,
+              },
             ].map(l => {
               const LIcon = l.icon;
               return (
-                <Link key={l.label} href={l.href}
+                <Link
+                  key={l.label}
+                  href={l.href}
                   className="flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all hover:scale-[1.02]"
-                  style={{ background: `${l.color}08`, borderColor: `${l.color}20` }}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: `${l.color}18` }}>
+                  style={{
+                    background: `${l.color}08`,
+                    borderColor: `${l.color}20`,
+                  }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: `${l.color}18` }}
+                  >
                     <LIcon size={16} style={{ color: l.color }} />
                   </div>
-                  <span className="text-xs font-bold text-white/60">{l.label}</span>
+                  <span className="text-xs font-bold text-white/60">
+                    {l.label}
+                  </span>
                 </Link>
               );
             })}

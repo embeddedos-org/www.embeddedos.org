@@ -48,19 +48,22 @@ export default function ProductEOffice() {
       usageExamples={[
         {
           title: "Automotive Infotainment",
-          scenario: "An automotive head unit running eOffice for navigation notes, calendar integration, and hands-free voice commands.",
-          code: '// Automotive eOffice integration\n// eCalendar shows upcoming appointments on the dashboard\n// eNotes stores voice-dictated driving notes\n// eFiles accesses documents from the vehicle cloud\n\n// Voice command integration via eAI\nvoid voice_cmd_task(void *arg) {\n    for (;;) {\n        // Wake word detected by eAI KWS\n        eos_event_wait(WAKE_EVENT, EOS_WAIT_FOREVER);\n\n        // Transcribe command\n        char cmd[256];\n        eai_transcribe(mic, cmd, sizeof(cmd));\n\n        // Route to eOffice\n        eipc_send(eoffice_port, cmd, strlen(cmd));\n    }\n}',
+          scenario:
+            "An automotive head unit running eOffice for navigation notes, calendar integration, and hands-free voice commands.",
+          code: "// Automotive eOffice integration\n// eCalendar shows upcoming appointments on the dashboard\n// eNotes stores voice-dictated driving notes\n// eFiles accesses documents from the vehicle cloud\n\n// Voice command integration via eAI\nvoid voice_cmd_task(void *arg) {\n    for (;;) {\n        // Wake word detected by eAI KWS\n        eos_event_wait(WAKE_EVENT, EOS_WAIT_FOREVER);\n\n        // Transcribe command\n        char cmd[256];\n        eai_transcribe(mic, cmd, sizeof(cmd));\n\n        // Route to eOffice\n        eipc_send(eoffice_port, cmd, strlen(cmd));\n    }\n}",
         },
         {
           title: "Medical Device Documentation",
-          scenario: "A clinical device using eWrite and eVault to create encrypted patient notes stored in eDB.",
+          scenario:
+            "A clinical device using eWrite and eVault to create encrypted patient notes stored in eDB.",
           code: '// HIPAA-compliant patient notes\n// eVault encrypts all eWrite documents with AES-256\n// Keys derived from eBoot chain of trust\n\n// Create encrypted patient note\neipc_msg_t msg = {\n    .service = "eoffice.ewrite",\n    .action  = "create_encrypted",\n    .payload = {\n        "title":   "Patient 4821 — Visit Notes",\n        "content": note_content,\n        "vault":   true,   // eVault encryption\n        "patient_id": "4821"\n    }\n};\neipc_send(eoffice_port, &msg, sizeof(msg));',
         },
       ]}
       ecosystemRole={{
         importance: "medium",
         role: "User-Facing Application Layer",
-        summary: "eOffice Suite is the user-facing application layer of the EoS ecosystem. It demonstrates that EoS is not just a kernel for sensor nodes — it is a complete platform capable of running a full productivity suite on embedded hardware. eOffice is the primary reason end users interact with EoS devices directly: automotive infotainment, medical device documentation, industrial HMI panels, and educational tablets all use eOffice. It also serves as the reference implementation for how EoS applications should be structured: EIPC for inter-app communication, eDB for storage, and eAI for intelligence.",
+        summary:
+          "eOffice Suite is the user-facing application layer of the EoS ecosystem. It demonstrates that EoS is not just a kernel for sensor nodes — it is a complete platform capable of running a full productivity suite on embedded hardware. eOffice is the primary reason end users interact with EoS devices directly: automotive infotainment, medical device documentation, industrial HMI panels, and educational tablets all use eOffice. It also serves as the reference implementation for how EoS applications should be structured: EIPC for inter-app communication, eDB for storage, and eAI for intelligence.",
         dependsOn: [
           "EoS Kernel — all 11 apps run as EoS processes with HAL display access",
           "eDB — unified document, spreadsheet, and calendar storage",
@@ -77,29 +80,86 @@ export default function ProductEOffice() {
         ],
       }}
       features={[
-        { name: "eWrite", desc: "Rich text editor with markdown support, tables, and AI-assisted writing. Exports to PDF and HTML." },
-        { name: "eCalc", desc: "Spreadsheet with 200+ functions, charts, and AI formula suggestions. Compatible with CSV and XLSX." },
-        { name: "ePresent", desc: "Slide presentation editor with AI slide generation from text prompts." },
-        { name: "eNotes", desc: "Quick notes with voice dictation, handwriting recognition, and eDB sync." },
-        { name: "eMail", desc: "Email client with IMAP/SMTP support, S/MIME encryption, and offline mode." },
-        { name: "eCalendar", desc: "Calendar with CalDAV sync, reminders, and integration with eNotes and eMail." },
-        { name: "eCam", desc: "Camera app with AI scene recognition, QR/barcode scanning, and eDB photo storage." },
-        { name: "eVault", desc: "Encrypted file vault with AES-256 encryption rooted in the eBoot chain of trust." },
+        {
+          name: "eWrite",
+          desc: "Rich text editor with markdown support, tables, and AI-assisted writing. Exports to PDF and HTML.",
+        },
+        {
+          name: "eCalc",
+          desc: "Spreadsheet with 200+ functions, charts, and AI formula suggestions. Compatible with CSV and XLSX.",
+        },
+        {
+          name: "ePresent",
+          desc: "Slide presentation editor with AI slide generation from text prompts.",
+        },
+        {
+          name: "eNotes",
+          desc: "Quick notes with voice dictation, handwriting recognition, and eDB sync.",
+        },
+        {
+          name: "eMail",
+          desc: "Email client with IMAP/SMTP support, S/MIME encryption, and offline mode.",
+        },
+        {
+          name: "eCalendar",
+          desc: "Calendar with CalDAV sync, reminders, and integration with eNotes and eMail.",
+        },
+        {
+          name: "eCam",
+          desc: "Camera app with AI scene recognition, QR/barcode scanning, and eDB photo storage.",
+        },
+        {
+          name: "eVault",
+          desc: "Encrypted file vault with AES-256 encryption rooted in the eBoot chain of trust.",
+        },
       ]}
       specs={[
-        { key: "Applications", value: "11 (eWrite, eCalc, ePresent, eNotes, eMail, eCalendar, eCam, eFiles, eContacts, eChat, eVault)" },
+        {
+          key: "Applications",
+          value:
+            "11 (eWrite, eCalc, ePresent, eNotes, eMail, eCalendar, eCam, eFiles, eContacts, eChat, eVault)",
+        },
         { key: "Storage Backend", value: "eDB (SQL + document + KV)" },
-        { key: "Inter-App Communication", value: "EIPC with capability-based access control" },
-        { key: "UI Framework", value: "eUI — embedded UI toolkit with hardware-accelerated compositing" },
-        { key: "RAM Requirement", value: "< 32 MB for full suite (< 8 MB per app)" },
-        { key: "Supported Displays", value: "LVDS, MIPI-DSI, HDMI, SPI TFT (320×240 to 4K)" },
-        { key: "AI Features", value: "Summarization, voice commands, formula suggestions, slide generation via eAI" },
+        {
+          key: "Inter-App Communication",
+          value: "EIPC with capability-based access control",
+        },
+        {
+          key: "UI Framework",
+          value:
+            "eUI — embedded UI toolkit with hardware-accelerated compositing",
+        },
+        {
+          key: "RAM Requirement",
+          value: "< 32 MB for full suite (< 8 MB per app)",
+        },
+        {
+          key: "Supported Displays",
+          value: "LVDS, MIPI-DSI, HDMI, SPI TFT (320×240 to 4K)",
+        },
+        {
+          key: "AI Features",
+          value:
+            "Summarization, voice commands, formula suggestions, slide generation via eAI",
+        },
         { key: "License", value: "MIT" },
       ]}
       pairs={[
-        { name: "eDB", route: "/product-edb", desc: "All eOffice documents, spreadsheets, and calendar events are stored in eDB." },
-        { name: "eAI", route: "/product-eai", desc: "AI-assisted features: summarization, voice commands, formula suggestions." },
-        { name: "EIPC", route: "/product-eipc", desc: "Inter-app communication and platform service access via EIPC." },
+        {
+          name: "eDB",
+          route: "/product-edb",
+          desc: "All eOffice documents, spreadsheets, and calendar events are stored in eDB.",
+        },
+        {
+          name: "eAI",
+          route: "/product-eai",
+          desc: "AI-assisted features: summarization, voice commands, formula suggestions.",
+        },
+        {
+          name: "EIPC",
+          route: "/product-eipc",
+          desc: "Inter-app communication and platform service access via EIPC.",
+        },
       ]}
     />
   );

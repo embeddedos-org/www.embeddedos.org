@@ -748,3 +748,113 @@ button:active:not(:disabled) {
     transform: none;
   }
 }
+
+/* ============================================================
+   MOBILE LEGIBILITY FLOOR
+
+   Google's Mobile-Friendly test (an Ad Grants requirement) flags copy under
+   roughly 12px as "text too small to read". The desktop design intentionally
+   uses 9-11px for badges, eyebrow labels and metadata, so rather than rewriting
+   ~100 utility usages this raises the floor on small screens only.
+
+   These rules are deliberately unlayered: unlayered CSS outranks Tailwind's
+   @layer utilities regardless of source order, so the floor wins without
+   !important.
+   ============================================================ */
+@media (max-width: 640px) {
+  .text-\[8px\],
+  .text-\[9px\],
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .badge-amber,
+  .badge-teal,
+  .badge-green,
+  .badge-purple {
+    font-size: 12px;
+  }
+
+  /* Touch-target floor. Scoped to links/buttons that are already flex containers
+     — i.e. deliberate action affordances with `items-center` — so inline prose
+     links inside paragraphs keep their natural line box and nothing reflows. */
+  a.inline-flex,
+  a:is(.flex),
+  button.inline-flex,
+  button:is(.flex) {
+    min-height: 32px;
+  }
+
+  /* Navigation and footer links are labels, not prose, so they can safely become
+     flex boxes to reach the 24px tap floor. Prose links inside <p> are excluded
+     by the selectors below and keep their natural inline line box. */
+  footer a[href],
+  nav a[href] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+
+  button {
+    min-height: 24px;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY FLOORS
+
+   Unlayered for the same reason as the block above: unlayered CSS outranks
+   Tailwind's @layer utilities regardless of source order.
+   ============================================================ */
+
+/* --- Reduced motion must not leave content invisible ------------------------
+   219 `whileInView` reveals across 84 components start at
+   `style="opacity: 0; transform: translateY(30px)"` and only animate in when the
+   IntersectionObserver fires. A visitor who asked for reduced motion should not
+   have to scroll to make text exist at all — measured 71 of 526 text nodes on
+   "/" left at opacity 0. The blocks further up only stop keyframe animations;
+   they cannot reach a framer-motion inline style, so this needs !important.
+
+   `:not([style*="opacity: 0."])` keeps deliberate partial opacities (0.5, 0.05)
+   untouched — the substring match would otherwise catch them too. */
+@media (prefers-reduced-motion: reduce) {
+  main [style*="opacity: 0"]:not([style*="opacity: 0."]) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --- Contrast floor: orange action surfaces --------------------------------
+   #F97316 carries white label text at 2.84:1, below the 4.5:1 WCAG 2.1 AA
+   threshold for body-size text, and axe flags it as `serious` on every page via
+   the navbar CTA. #C2410C (Tailwind orange-700) is the same hue at 5.09:1. */
+.bg-\[\#F97316\],
+.bg-orange-500 {
+  background-color: #c2410c;
+}
+
+.hover\:bg-\[\#EA580C\]:hover,
+.hover\:bg-orange-600:hover {
+  background-color: #9a3412;
+}
+
+/* --- Contrast floor: faded text --------------------------------------------
+   Over the site's near-black surfaces, white below roughly 50% alpha drops
+   under 4.5:1. text-white/20 and /30 sit at 51 and 76 of 255. */
+.text-white\/20,
+.text-white\/30 {
+  color: rgb(255 255 255 / 0.6);
+}
+
+.text-white\/40 {
+  color: rgb(255 255 255 / 0.65);
+}
+
+/* Tailwind's gray-500 (#6B7280) reaches only 3.66:1 on the site's near-black
+   surfaces. gray-400 is the same neutral at 6.94:1. Every surface here is dark,
+   so raising it globally cannot reduce contrast anywhere. */
+.text-gray-500 {
+  color: #9ca3af;
+}

@@ -1,29 +1,62 @@
 import { Link } from "wouter";
-import { Github, Twitter, Youtube, Mail, Heart, Linkedin, Facebook, ExternalLink } from "lucide-react";
+import {
+  Github,
+  Twitter,
+  Youtube,
+  Mail,
+  Heart,
+  Linkedin,
+  Facebook,
+  ExternalLink,
+} from "lucide-react";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
+// Every internal route should be reachable from the footer. Pages that exist but
+// are not linked anywhere read as poor navigation to reviewers and are invisible
+// to crawlers, so new routes belong in one of these columns.
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
+    { name: "Our Vision", href: "/vision" },
+    { name: "Organization", href: "/organization" },
     { name: "Careers", href: "/careers" },
     { name: "Internships", href: "/internship" },
-    { name: "Contact", href: "mailto:hello@embeddedos.org", external: true },
+    { name: "Contact", href: "/contact" },
     { name: "Donate", href: "/donate" },
+    { name: "Fundraising", href: "/fundraising" },
     { name: "Membership", href: "/membership" },
-    { name: "Ecosystem", href: "/projects" },
-    { name: "Research", href: "/docs" },
+    { name: "Partners", href: "/partners" },
+    { name: "Sponsors", href: "/sponsors" },
+    { name: "Code of Conduct", href: "/code-of-conduct" },
     { name: "News", href: "/news" },
   ],
   Projects: [
     { name: "All Projects", href: "/projects" },
-    { name: "EoS Kernel", href: "https://github.com/embeddedos-org/EoS", external: true },
-    { name: "eBoot", href: "https://github.com/embeddedos-org/eBoot", external: true },
-    { name: "eAI", href: "https://github.com/embeddedos-org/eAI", external: true },
+    {
+      name: "EoS Kernel",
+      href: "https://github.com/embeddedos-org/EoS",
+      external: true,
+    },
+    {
+      name: "eBoot",
+      href: "https://github.com/embeddedos-org/eBoot",
+      external: true,
+    },
+    {
+      name: "eAI",
+      href: "https://github.com/embeddedos-org/eAI",
+      external: true,
+    },
     { name: "AeroSwift", href: "/aerospace" },
-    { name: "GitHub Org", href: "https://github.com/embeddedos-org", external: true },
+    {
+      name: "GitHub Org",
+      href: "https://github.com/embeddedos-org",
+      external: true,
+    },
   ],
   Applications: [
+    { name: "EoSuite", href: "/eosuite" },
     { name: "EoStudio IDE", href: "/eostudio" },
     { name: "EoSim Simulator", href: "/eosim" },
     { name: "eOffice Suite", href: "/eoffice" },
@@ -36,29 +69,75 @@ const FOOTER_LINKS = {
     { name: "Getting Started", href: "/getting-started" },
     { name: "API Reference", href: "/api-docs" },
     { name: "Books (14)", href: "/books" },
+    { name: "All Resources", href: "/resources" },
+    { name: "Downloads", href: "/downloads" },
+    { name: "FAQ", href: "/faq" },
     { name: "Hardware Lab", href: "/hardware-lab" },
-    { name: "Stacks", href: "/stacks" },
     { name: "Kids Edition", href: "/kids" },
     { name: "Get Involved", href: "/get-involved" },
+    { name: "Community", href: "/community" },
+    { name: "Events", href: "/events" },
+    { name: "Changelog", href: "/changelog" },
+    { name: "Ecosystem", href: "/ecosystem" },
   ],
 };
 
 const SOCIAL_LINKS = [
-  { icon: Github,   href: "https://github.com/embeddedos-org", label: "GitHub", color: "#FFFFFF" },
-  { icon: Twitter,  href: "https://x.com/EmbeddedOS_ORG", label: "X / Twitter", color: "#1DA1F2" },
-  { icon: Linkedin, href: "https://www.linkedin.com/company/embedded-operating-systems-research-foundation", label: "LinkedIn", color: "#0A66C2" },
-  { icon: Youtube,  href: "https://www.youtube.com/@EmbeddedOS_ORG", label: "YouTube", color: "#FF0000" },
-  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61588978691494", label: "Facebook", color: "#1877F2" },
-  { icon: Mail,     href: "mailto:hello@embeddedos.org", label: "Email", color: "#F97316" },
+  {
+    icon: Github,
+    href: "https://github.com/embeddedos-org",
+    label: "GitHub",
+    color: "#FFFFFF",
+  },
+  {
+    icon: Twitter,
+    href: "https://x.com/EmbeddedOS_ORG",
+    label: "X / Twitter",
+    color: "#1DA1F2",
+  },
+  {
+    icon: Linkedin,
+    href: "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
+    label: "LinkedIn",
+    color: "#0A66C2",
+  },
+  {
+    icon: Youtube,
+    href: "https://www.youtube.com/@EmbeddedOS_ORG",
+    label: "YouTube",
+    color: "#FF0000",
+  },
+  {
+    icon: Facebook,
+    href: "https://www.facebook.com/profile.php?id=61588978691494",
+    label: "Facebook",
+    color: "#1877F2",
+  },
+  {
+    icon: Mail,
+    href: "mailto:hello@embeddedos.org",
+    label: "Email",
+    color: "#F97316",
+  },
 ];
 
-function FooterLink({ link }: { link: { name: string; href: string; external?: boolean } }) {
-  const cls = "group relative inline-flex items-center gap-1 text-sm text-white/50 hover:text-white transition-colors duration-200";
+function FooterLink({
+  link,
+}: {
+  link: { name: string; href: string; external?: boolean };
+}) {
+  // py-1.5 on small screens lifts each link from a 20px to a ~32px touch target
+  // without changing the desktop footer's density.
+  const cls =
+    "group relative inline-flex items-center gap-1 py-1.5 sm:py-0 text-sm text-white/50 hover:text-white transition-colors duration-200";
   const inner = (
     <>
       {link.name}
       {(link as { external?: boolean }).external && (
-        <ExternalLink size={10} className="opacity-0 group-hover:opacity-60 transition-opacity" />
+        <ExternalLink
+          size={10}
+          className="opacity-0 group-hover:opacity-60 transition-opacity"
+        />
       )}
       {/* Underline slide */}
       <span className="absolute -bottom-0.5 left-0 h-px w-0 group-hover:w-full bg-[#F97316]/60 transition-all duration-200" />
@@ -77,14 +156,20 @@ function FooterLink({ link }: { link: { name: string; href: string; external?: b
       </a>
     );
   }
-  return <Link href={link.href} className={cls}>{inner}</Link>;
+  return (
+    <Link href={link.href} className={cls}>
+      {inner}
+    </Link>
+  );
 }
 
 export default function Footer() {
   return (
     <footer
       className="relative border-t border-white/[0.06] overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #080F1E 0%, #020617 100%)" }}
+      style={{
+        background: "linear-gradient(180deg, #080F1E 0%, #020617 100%)",
+      }}
       role="contentinfo"
     >
       {/* Subtle top glow */}
@@ -93,28 +178,48 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
-
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-5 group w-fit">
               <div className="relative">
-                <img src={LOGO_MARK} alt="EmbeddedOS" className="w-10 h-10 rounded-xl" />
-                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: "0 0 16px #F9731640" }} />
+                <img
+                  loading="lazy"
+                  decoding="async"
+                  src={LOGO_MARK}
+                  alt="EmbeddedOS"
+                  className="w-10 h-10 rounded-xl"
+                />
+                <div
+                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ boxShadow: "0 0 16px #F9731640" }}
+                />
               </div>
               <div>
-                <div className="font-heading font-bold text-white text-base">EmbeddedOS</div>
-                <div className="text-[10px] text-[#F97316] font-bold tracking-[0.15em] uppercase">Foundation · 501(c)(3)</div>
+                <div className="font-heading font-bold text-white text-base">
+                  EmbeddedOS
+                </div>
+                <div className="text-[10px] text-[#F97316] font-bold tracking-[0.15em] uppercase">
+                  Foundation · 501(c)(3)
+                </div>
               </div>
             </Link>
 
             <p className="text-sm text-white/45 leading-relaxed mb-4 max-w-xs">
-              Built by embedded engineers, for any embedded hardware. Every design decision prioritizes reliability, security, and developer experience.
+              Built by embedded engineers, for any embedded hardware. Every
+              design decision prioritizes reliability, security, and developer
+              experience.
             </p>
 
             <p className="text-xs text-white/25 mb-6 max-w-xs leading-relaxed">
-              Embedded Operating Systems Research Foundation<br />
+              Embedded Operating Systems Research Foundation
+              <br />
               501(c)(3) · MIT License ·{" "}
-              <a href="https://www.embeddedos.org/" target="_blank" rel="noopener noreferrer" className="text-[#F97316]/70 hover:text-[#F97316] transition-colors">
+              <a
+                href="https://www.embeddedos.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#F97316]/70 hover:text-[#F97316] transition-colors"
+              >
                 www.embeddedos.org
               </a>
             </p>
@@ -126,12 +231,19 @@ export default function Footer() {
                   key={label}
                   href={href}
                   target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                  rel={
+                    href.startsWith("mailto")
+                      ? undefined
+                      : "noopener noreferrer"
+                  }
                   aria-label={label}
                   className="group w-9 h-9 flex items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white transition-all duration-200"
                   style={{ "--hover-color": color } as React.CSSProperties}
                 >
-                  <Icon size={15} className="transition-transform duration-200 group-hover:scale-110" />
+                  <Icon
+                    size={15}
+                    className="transition-transform duration-200 group-hover:scale-110"
+                  />
                 </a>
               ))}
             </div>
@@ -140,11 +252,15 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([section, links]) => (
             <div key={section}>
-              <h3 className="text-[10px] font-extrabold text-white/30 uppercase tracking-[0.18em] mb-5">
+              {/* h2, not h3: the footer is a top-level landmark, and pages
+                  whose body has no h2 (e.g. /faq, whose questions are buttons)
+                  would otherwise jump h1 -> h3, which is a WCAG heading-order
+                  violation. h2 is correct on every page and skips nothing. */}
+              <h2 className="text-[10px] font-extrabold text-white/30 uppercase tracking-[0.18em] mb-5">
                 {section}
-              </h3>
+              </h2>
               <ul className="space-y-3">
-                {links.map((link) => (
+                {links.map(link => (
                   <li key={link.name}>
                     <FooterLink link={link} />
                   </li>
@@ -176,15 +292,39 @@ export default function Footer() {
 
           <div className="flex items-center gap-1.5 text-white/30">
             Made with{" "}
-            <Heart size={11} className="text-[#F97316] mx-0.5 animate-pulse" />
-            {" "}for the embedded community
+            <Heart size={11} className="text-[#F97316] mx-0.5 animate-pulse" />{" "}
+            for the embedded community
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-white/50 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-white/50 transition-colors">Terms</Link>
-            <a href="https://github.com/embeddedos-org" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors">GitHub</a>
-            <a href="https://www.interserver.net" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors">Powered by InterServer</a>
+            <Link
+              href="/privacy"
+              className="hover:text-white/50 transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="hover:text-white/50 transition-colors"
+            >
+              Terms
+            </Link>
+            <a
+              href="https://github.com/embeddedos-org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white/50 transition-colors"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.interserver.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white/50 transition-colors"
+            >
+              Powered by InterServer
+            </a>
           </div>
         </div>
       </div>

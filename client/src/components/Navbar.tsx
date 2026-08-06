@@ -3,14 +3,51 @@ import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import {
-  Cpu, Zap, MessageSquare, Shield, Network, BookOpen,
-  Code, Layers, Users, Github, Search, ChevronDown,
-  Menu, X, Star, Package, Wrench, Heart, Gamepad2,
-  Database, Globe, FileText, FlaskConical, ArrowRight,
-  Plane, Activity, Stethoscope, Microscope, Watch, Fingerprint,
-  Terminal, Braces, Box, Blocks, Bot, Rocket, LayoutGrid,
-  Wifi, Lock, HardDrive, Brain, Cpu as CpuIcon, Atom,
-  Briefcase, GraduationCap
+  Cpu,
+  Zap,
+  MessageSquare,
+  Shield,
+  Network,
+  BookOpen,
+  Code,
+  Layers,
+  Users,
+  Github,
+  Search,
+  ChevronDown,
+  Menu,
+  X,
+  Star,
+  Package,
+  Wrench,
+  Heart,
+  Gamepad2,
+  Database,
+  Globe,
+  FileText,
+  FlaskConical,
+  ArrowRight,
+  Plane,
+  Activity,
+  Stethoscope,
+  Microscope,
+  Watch,
+  Fingerprint,
+  Terminal,
+  Braces,
+  Box,
+  Blocks,
+  Bot,
+  Rocket,
+  LayoutGrid,
+  Wifi,
+  Lock,
+  HardDrive,
+  Brain,
+  Cpu as CpuIcon,
+  Atom,
+  Briefcase,
+  GraduationCap,
 } from "lucide-react";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
@@ -24,40 +61,140 @@ const NAV_ITEMS = {
       {
         title: "Core OS",
         items: [
-          { name: "EoS Kernel", desc: "Real-time embedded OS", icon: Cpu, href: "https://github.com/embeddedos-org/eos", color: "#F97316", external: true },
-          { name: "eBoot", desc: "Secure bootloader & OTA", icon: Zap, href: "https://github.com/embeddedos-org/eBoot", color: "#22D3EE", external: true },
-          { name: "eIPC", desc: "Ultra-low latency IPC", icon: MessageSquare, href: "https://github.com/embeddedos-org/eIPC", color: "#A78BFA", external: true },
-          { name: "ebuild", desc: "Next-gen build tool", icon: Wrench, href: "/ebuild", color: "#34D399", external: false },
-          { name: "eosllm", desc: "On-device LLM inference", icon: Bot, href: "https://github.com/embeddedos-org/eosllm", color: "#F59E0B", external: true },
-          { name: "EoS Language", desc: "Fastest embedded APIs", icon: Braces, href: "https://github.com/embeddedos-org/eos-programming-language", color: "#60A5FA", external: true },
+          {
+            name: "EoS Kernel",
+            desc: "Real-time embedded OS",
+            icon: Cpu,
+            href: "https://github.com/embeddedos-org/eos",
+            color: "#F97316",
+            external: true,
+          },
+          {
+            name: "eBoot",
+            desc: "Secure bootloader & OTA",
+            icon: Zap,
+            href: "https://github.com/embeddedos-org/eBoot",
+            color: "#22D3EE",
+            external: true,
+          },
+          {
+            name: "eIPC",
+            desc: "Ultra-low latency IPC",
+            icon: MessageSquare,
+            href: "https://github.com/embeddedos-org/eIPC",
+            color: "#A78BFA",
+            external: true,
+          },
+          {
+            name: "ebuild",
+            desc: "Next-gen build tool",
+            icon: Wrench,
+            href: "/ebuild",
+            color: "#34D399",
+            external: false,
+          },
+          {
+            name: "eosllm",
+            desc: "On-device LLM inference",
+            icon: Bot,
+            href: "https://github.com/embeddedos-org/eosllm",
+            color: "#F59E0B",
+            external: true,
+          },
+          // eos-programming-language is a private repo — link the org profile until it is published.
+          {
+            name: "EoS Language",
+            desc: "Fastest embedded APIs",
+            icon: Braces,
+            href: "https://github.com/embeddedos-org",
+            color: "#60A5FA",
+            external: true,
+          },
         ],
       },
       {
         title: "AI & Neural",
         items: [
-          { name: "eAI", desc: "AI layer & eBot agent", icon: FlaskConical, href: "https://github.com/embeddedos-org/eAI", color: "#34D399", external: true },
-          { name: "eNI", desc: "Neural interface adapter", icon: Wifi, href: "https://github.com/embeddedos-org/eNI", color: "#A78BFA", external: true },
+          {
+            name: "eAI",
+            desc: "AI layer & eBot agent",
+            icon: FlaskConical,
+            href: "https://github.com/embeddedos-org/eAI",
+            color: "#34D399",
+            external: true,
+          },
+          {
+            name: "eNI",
+            desc: "Neural interface adapter",
+            icon: Wifi,
+            href: "https://github.com/embeddedos-org/eNI",
+            color: "#A78BFA",
+            external: true,
+          },
         ],
       },
       {
         title: "Dev Tools",
         items: [
-          { name: "EoSim", desc: "63+ board simulator", icon: Terminal, href: "https://github.com/embeddedos-org/EoSim", color: "#F97316", external: true },
-          { name: "EoStudio", desc: "Universal IDE v3.1", icon: LayoutGrid, href: "https://github.com/embeddedos-org/EoStudio", color: "#22D3EE", external: true },
-          { name: "eos-stack-manifest", desc: "Unified build manifest", icon: Blocks, href: "https://github.com/embeddedos-org/eos-stack-manifest", color: "#F59E0B", external: true },
+          {
+            name: "EoSim",
+            desc: "63+ board simulator",
+            icon: Terminal,
+            href: "https://github.com/embeddedos-org/EoSim",
+            color: "#F97316",
+            external: true,
+          },
+          {
+            name: "EoStudio",
+            desc: "Universal IDE v3.1",
+            icon: LayoutGrid,
+            href: "https://github.com/embeddedos-org/EoStudio",
+            color: "#22D3EE",
+            external: true,
+          },
+          {
+            name: "eos-stack-manifest",
+            desc: "Unified build manifest",
+            icon: Blocks,
+            href: "https://github.com/embeddedos-org/eos-stack-manifest",
+            color: "#F59E0B",
+            external: true,
+          },
         ],
       },
       {
         title: "Quantum Computing",
         items: [
-          { name: "eQC Module", desc: "EoS quantum kernel support", icon: Atom, href: "/quantum", color: "#A855F7", external: false },
+          {
+            name: "eQC Module",
+            desc: "EoS quantum kernel support",
+            icon: Atom,
+            href: "/quantum",
+            color: "#A855F7",
+            external: false,
+          },
         ],
       },
       {
         title: "Aerospace",
         items: [
-          { name: "AeroSwift Personal", desc: "1-2 seat VTOL aircraft", icon: Plane, href: "https://github.com/embeddedos-org/eos-aero", color: "#60A5FA", external: true },
-          { name: "AeroSwift Transit", desc: "10-seat urban air taxi", icon: Rocket, href: "https://github.com/embeddedos-org/eos-aero", color: "#F472B6", external: true },
+          // eos-aero is a private repo — point at the on-site Aerospace page instead of a 404.
+          {
+            name: "AeroSwift Personal",
+            desc: "1-2 seat VTOL aircraft",
+            icon: Plane,
+            href: "/aerospace",
+            color: "#60A5FA",
+            external: false,
+          },
+          {
+            name: "AeroSwift Transit",
+            desc: "10-seat urban air taxi",
+            icon: Rocket,
+            href: "/aerospace",
+            color: "#F472B6",
+            external: false,
+          },
         ],
       },
     ],
@@ -68,44 +205,170 @@ const NAV_ITEMS = {
       {
         title: "Core Platform",
         items: [
-          { name: "All Products", desc: "What We Build — full ecosystem", icon: Layers, href: "/products", color: "#F97316", external: false },
-          { name: "EoS Kernel", desc: "RTOS kernel for 52+ boards", icon: CpuIcon, href: "/product-eos", color: "#22D3EE", external: false },
-          { name: "eos-platform", desc: "Desktop, Laptop, Tablet, TV, Kiosk", icon: Layers, href: "/product-eos-platform", color: "#6366F1", external: false },
-          { name: "eBootloader", desc: "Secure bootloader + OTA updates", icon: Zap, href: "/product-eboot", color: "#F97316", external: false },
+          {
+            name: "All Products",
+            desc: "What We Build — full ecosystem",
+            icon: Layers,
+            href: "/products",
+            color: "#F97316",
+            external: false,
+          },
+          {
+            name: "EoS Kernel",
+            desc: "RTOS kernel for 52+ boards",
+            icon: CpuIcon,
+            href: "/product-eos",
+            color: "#22D3EE",
+            external: false,
+          },
+          {
+            name: "eos-platform",
+            desc: "Desktop, Laptop, Tablet, TV, Kiosk",
+            icon: Layers,
+            href: "/product-eos-platform",
+            color: "#6366F1",
+            external: false,
+          },
+          {
+            name: "eBootloader",
+            desc: "Secure bootloader + OTA updates",
+            icon: Zap,
+            href: "/product-eboot",
+            color: "#F97316",
+            external: false,
+          },
         ],
       },
       {
         title: "AI & Connectivity",
         items: [
-          { name: "EAI", desc: "On-device LLM inference & agents", icon: Brain, href: "/product-eai", color: "#A855F7", external: false },
-          { name: "ENI", desc: "1,024-channel neural interface", icon: Activity, href: "/product-eni", color: "#10B981", external: false },
-          { name: "EIPC", desc: "Capability-secured IPC fabric", icon: Network, href: "/product-eipc", color: "#F59E0B", external: false },
-          { name: "eDB", desc: "SQL + Document + KV database", icon: Database, href: "/product-edb", color: "#3B82F6", external: false },
+          {
+            name: "EAI",
+            desc: "On-device LLM inference & agents",
+            icon: Brain,
+            href: "/product-eai",
+            color: "#A855F7",
+            external: false,
+          },
+          {
+            name: "ENI",
+            desc: "1,024-channel neural interface",
+            icon: Activity,
+            href: "/product-eni",
+            color: "#10B981",
+            external: false,
+          },
+          {
+            name: "EIPC",
+            desc: "Capability-secured IPC fabric",
+            icon: Network,
+            href: "/product-eipc",
+            color: "#F59E0B",
+            external: false,
+          },
+          {
+            name: "eDB",
+            desc: "SQL + Document + KV database",
+            icon: Database,
+            href: "/product-edb",
+            color: "#3B82F6",
+            external: false,
+          },
         ],
       },
       {
         title: "Applications",
         items: [
-          { name: "eApps", desc: "60+ first-party embedded apps", icon: Package, href: "/product-eapps", color: "#F97316", external: false },
-          { name: "eOffice Suite", desc: "11-app embedded office suite", icon: FileText, href: "/product-eoffice", color: "#059669", external: false },
-          { name: "eServiceApps", desc: "eSocial, eRide, eTravel, eWallet", icon: Globe, href: "/product-eserviceapps", color: "#EC4899", external: false },
+          {
+            name: "eApps",
+            desc: "60+ first-party embedded apps",
+            icon: Package,
+            href: "/product-eapps",
+            color: "#F97316",
+            external: false,
+          },
+          {
+            name: "eOffice Suite",
+            desc: "11-app embedded office suite",
+            icon: FileText,
+            href: "/product-eoffice",
+            color: "#059669",
+            external: false,
+          },
+          {
+            name: "eServiceApps",
+            desc: "eSocial, eRide, eTravel, eWallet",
+            icon: Globe,
+            href: "/product-eserviceapps",
+            color: "#EC4899",
+            external: false,
+          },
         ],
       },
       {
         title: "Toolchain",
         items: [
-          { name: "eBuild", desc: "Build system & SDK generator", icon: Wrench, href: "/product-ebuild", color: "#EF4444", external: false },
-          { name: "EoSim", desc: "52+ virtual platforms simulator", icon: Zap, href: "/product-eosim", color: "#06B6D4", external: false },
-          { name: "EoStudio", desc: "Embedded IDE with board picker", icon: Code, href: "/product-eostudio", color: "#8B5CF6", external: false },
+          {
+            name: "eBuild",
+            desc: "Build system & SDK generator",
+            icon: Wrench,
+            href: "/product-ebuild",
+            color: "#EF4444",
+            external: false,
+          },
+          {
+            name: "EoSim",
+            desc: "52+ virtual platforms simulator",
+            icon: Zap,
+            href: "/product-eosim",
+            color: "#06B6D4",
+            external: false,
+          },
+          {
+            name: "EoStudio",
+            desc: "Embedded IDE with board picker",
+            icon: Code,
+            href: "/product-eostudio",
+            color: "#8B5CF6",
+            external: false,
+          },
         ],
       },
       {
         title: "Health Devices",
         items: [
-          { name: "HEALTH-KEY ULTRA", desc: "USB-C ECG + SpO₂ key", icon: Activity, href: "/health", color: "#F85149", external: false },
-          { name: "HEALTH-BAND Neuro", desc: "sEMG + TENS wristband", icon: Watch, href: "/health", color: "#F59E0B", external: false },
-          { name: "HEALTH-RING", desc: "Titanium smart ring", icon: Fingerprint, href: "/health", color: "#A78BFA", external: false },
-          { name: "HEALTH-LAB", desc: "14-day biosensor patch", icon: Microscope, href: "/health", color: "#34D399", external: false },
+          {
+            name: "HEALTH-KEY ULTRA",
+            desc: "USB-C ECG + SpO₂ key",
+            icon: Activity,
+            href: "/health",
+            color: "#F85149",
+            external: false,
+          },
+          {
+            name: "HEALTH-BAND Neuro",
+            desc: "sEMG + TENS wristband",
+            icon: Watch,
+            href: "/health",
+            color: "#F59E0B",
+            external: false,
+          },
+          {
+            name: "HEALTH-RING",
+            desc: "Titanium smart ring",
+            icon: Fingerprint,
+            href: "/health",
+            color: "#A78BFA",
+            external: false,
+          },
+          {
+            name: "HEALTH-LAB",
+            desc: "14-day biosensor patch",
+            icon: Microscope,
+            href: "/health",
+            color: "#34D399",
+            external: false,
+          },
         ],
       },
     ],
@@ -116,20 +379,83 @@ const NAV_ITEMS = {
       {
         title: "Learn",
         items: [
-          { name: "Getting Started", desc: "Up in 10 minutes", icon: BookOpen, href: "/getting-started", color: "#F97316", external: false },
-          { name: "API Reference", desc: "300+ APIs documented", icon: Code, href: "/api-docs", color: "#22D3EE", external: false },
-          { name: "Architecture", desc: "3D block diagrams & system design", icon: Layers, href: "/architecture", color: "#A78BFA", external: false },
-          { name: "Books", desc: "14 technical books", icon: FileText, href: "/books", color: "#34D399", external: false },
+          {
+            name: "Getting Started",
+            desc: "Up in 10 minutes",
+            icon: BookOpen,
+            href: "/getting-started",
+            color: "#F97316",
+            external: false,
+          },
+          {
+            name: "API Reference",
+            desc: "300+ APIs documented",
+            icon: Code,
+            href: "/api-docs",
+            color: "#22D3EE",
+            external: false,
+          },
+          {
+            name: "Architecture",
+            desc: "3D block diagrams & system design",
+            icon: Layers,
+            href: "/architecture",
+            color: "#A78BFA",
+            external: false,
+          },
+          {
+            name: "Books",
+            desc: "14 technical books",
+            icon: FileText,
+            href: "/books",
+            color: "#34D399",
+            external: false,
+          },
         ],
       },
       {
         title: "Build",
         items: [
-          { name: "Hardware Lab", desc: "Board bring-up guides", icon: Wrench, href: "/hardware-lab", color: "#F59E0B", external: false },
-          { name: "Stacks", desc: "Technology stacks", icon: Layers, href: "/stacks", color: "#60A5FA", external: false },
-          { name: "eFlow", desc: "Visual block programming", icon: Zap, href: "/eflow", color: "#F472B6", external: false },
-          { name: "eBuild", desc: "Build, sim & flash tool", icon: Wrench, href: "/ebuild", color: "#34D399", external: false },
-          { name: "Kids Edition", desc: "Educational platform", icon: Gamepad2, href: "/kids", color: "#F97316", external: false },
+          {
+            name: "Hardware Lab",
+            desc: "Board bring-up guides",
+            icon: Wrench,
+            href: "/hardware-lab",
+            color: "#F59E0B",
+            external: false,
+          },
+          {
+            name: "Stacks",
+            desc: "Technology stacks",
+            icon: Layers,
+            href: "/stacks",
+            color: "#60A5FA",
+            external: false,
+          },
+          {
+            name: "eFlow",
+            desc: "Visual block programming",
+            icon: Zap,
+            href: "/eflow",
+            color: "#F472B6",
+            external: false,
+          },
+          {
+            name: "eBuild",
+            desc: "Build, sim & flash tool",
+            icon: Wrench,
+            href: "/ebuild",
+            color: "#34D399",
+            external: false,
+          },
+          {
+            name: "Kids Edition",
+            desc: "Educational platform",
+            icon: Gamepad2,
+            href: "/kids",
+            color: "#F97316",
+            external: false,
+          },
         ],
       },
     ],
@@ -140,17 +466,94 @@ const NAV_ITEMS = {
       {
         title: "Participate",
         items: [
-          { name: "Careers", desc: "Open positions & apply now", icon: Briefcase, href: "/careers", color: "#F97316", external: false },
-          { name: "Internships", desc: "F-1 CPT/OPT, research & open source", icon: GraduationCap, href: "/internship", color: "#A78BFA", external: false },
-          { name: "Get Involved", desc: "Contribute to EmbeddedOS", icon: Heart, href: "/get-involved", color: "#34D399", external: false },
-          { name: "Membership", desc: "Join the Foundation", icon: Star, href: "/membership", color: "#F59E0B", external: false },
-          { name: "GitHub Org", desc: "22 open-source repos", icon: Github, href: "https://github.com/embeddedos-org", color: "#22D3EE", external: true },
-          { name: "Discussions", desc: "Community forum", icon: MessageSquare, href: "https://github.com/orgs/embeddedos-org/discussions", color: "#A78BFA", external: true },
-          { name: "About", desc: "Foundation & mission", icon: Users, href: "/about", color: "#34D399", external: false },
-          { name: "What We Do", desc: "Company overview & stack", icon: Layers, href: "/what-we-do", color: "#22D3EE", external: false },
-          { name: "eCAD Hardware", desc: "Hardware design catalog", icon: CpuIcon, href: "/ecad-hardware", color: "#F97316", external: false },
-          { name: "Patents", desc: "IP & provisional patents", icon: Shield, href: "/patents", color: "#A78BFA", external: false },
-          { name: "News", desc: "Latest updates", icon: FileText, href: "/news", color: "#60A5FA", external: false },
+          {
+            name: "Careers",
+            desc: "Open positions & apply now",
+            icon: Briefcase,
+            href: "/careers",
+            color: "#F97316",
+            external: false,
+          },
+          {
+            name: "Internships",
+            desc: "F-1 CPT/OPT, research & open source",
+            icon: GraduationCap,
+            href: "/internship",
+            color: "#A78BFA",
+            external: false,
+          },
+          {
+            name: "Get Involved",
+            desc: "Contribute to EmbeddedOS",
+            icon: Heart,
+            href: "/get-involved",
+            color: "#34D399",
+            external: false,
+          },
+          {
+            name: "Membership",
+            desc: "Join the Foundation",
+            icon: Star,
+            href: "/membership",
+            color: "#F59E0B",
+            external: false,
+          },
+          {
+            name: "GitHub Org",
+            desc: "22 open-source repos",
+            icon: Github,
+            href: "https://github.com/embeddedos-org",
+            color: "#22D3EE",
+            external: true,
+          },
+          {
+            name: "Discussions",
+            desc: "Community forum",
+            icon: MessageSquare,
+            href: "https://github.com/orgs/embeddedos-org/discussions",
+            color: "#A78BFA",
+            external: true,
+          },
+          {
+            name: "About",
+            desc: "Foundation & mission",
+            icon: Users,
+            href: "/about",
+            color: "#34D399",
+            external: false,
+          },
+          {
+            name: "What We Do",
+            desc: "Company overview & stack",
+            icon: Layers,
+            href: "/what-we-do",
+            color: "#22D3EE",
+            external: false,
+          },
+          {
+            name: "eCAD Hardware",
+            desc: "Hardware design catalog",
+            icon: CpuIcon,
+            href: "/ecad-hardware",
+            color: "#F97316",
+            external: false,
+          },
+          {
+            name: "Patents",
+            desc: "IP & provisional patents",
+            icon: Shield,
+            href: "/patents",
+            color: "#A78BFA",
+            external: false,
+          },
+          {
+            name: "News",
+            desc: "Latest updates",
+            icon: FileText,
+            href: "/news",
+            color: "#60A5FA",
+            external: false,
+          },
         ],
       },
     ],
@@ -178,7 +581,9 @@ export default function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -193,7 +598,9 @@ export default function Navbar() {
 
   return (
     <>
-      <a href="#main-content" className="skip-to-content">Skip to content</a>
+      <a href="#main-content" className="skip-to-content">
+        Skip to content
+      </a>
 
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -205,31 +612,40 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 shrink-0 group" aria-label="EmbeddedOS Home">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 shrink-0 group"
+              aria-label="EmbeddedOS Home"
+            >
               <img
+                loading="eager"
+                fetchPriority="high"
                 src={LOGO_MARK}
                 alt="EmbeddedOS"
                 className="w-8 h-8 rounded-lg object-cover transition-transform duration-200 group-hover:scale-105"
               />
               <div className="flex flex-col leading-none">
-                <span className="font-heading font-bold text-white text-sm tracking-tight">EmbeddedOS</span>
-                <span className="text-[10px] text-[#F97316] font-semibold tracking-widest uppercase">Foundation · 501(c)(3)</span>
+                <span className="font-heading font-bold text-white text-sm tracking-tight">
+                  EmbeddedOS
+                </span>
+                <span className="text-[10px] text-[#F97316] font-semibold tracking-widest uppercase">
+                  Foundation · 501(c)(3)
+                </span>
               </div>
-
             </Link>
 
             {/* Desktop Nav */}
-            <NavigationMenu.Root className="hidden lg:flex items-center" delayDuration={100}>
+            <NavigationMenu.Root
+              className="hidden lg:flex items-center"
+              delayDuration={100}
+            >
               <NavigationMenu.List className="flex items-center gap-1">
-                {(Object.keys(NAV_ITEMS) as NavKey[]).map((label) => {
+                {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
                   const section = NAV_ITEMS[label];
                   return (
                     <NavigationMenu.Item key={label}>
-                      <NavigationMenu.Trigger
-                        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/[0.07] transition-all duration-200 data-[state=open]:text-white data-[state=open]:bg-white/[0.07] group select-none"
-                      >
+                      <NavigationMenu.Trigger className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/[0.07] transition-all duration-200 data-[state=open]:text-white data-[state=open]:bg-white/[0.07] group select-none">
                         {label}
                         <ChevronDown
                           size={14}
@@ -242,23 +658,34 @@ export default function Navbar() {
                           initial={{ opacity: 0, y: -8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.18, ease: "easeOut" as const }}
+                          transition={{
+                            duration: 0.18,
+                            ease: "easeOut" as const,
+                          }}
                           className="bg-[oklch(13%_0.045_248/0.95)] backdrop-blur-[32px] rounded-2xl shadow-[0_24px_64px_oklch(0%_0_0/0.65),inset_0_1px_0_oklch(100%_0_0/0.09)] border border-white/[0.08] p-6 mx-4"
                         >
                           <div className="max-w-5xl mx-auto">
                             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-5">
                               {section.description}
                             </p>
-                            <div className={`grid gap-6 ${section.sections.length > 2 ? "grid-cols-2 lg:grid-cols-4" : section.sections.length === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
-                              {section.sections.map((sec) => (
+                            <div
+                              className={`grid gap-6 ${section.sections.length > 2 ? "grid-cols-2 lg:grid-cols-4" : section.sections.length === 2 ? "grid-cols-2" : "grid-cols-1"}`}
+                            >
+                              {section.sections.map(sec => (
                                 <div key={sec.title}>
-                                  <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-2">{sec.title}</div>
+                                  <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-2">
+                                    {sec.title}
+                                  </div>
                                   <div className="space-y-1">
-                                    {sec.items.map((item) => {
+                                    {sec.items.map(item => {
                                       const Icon = item.icon;
                                       const Comp = item.external ? "a" : Link;
                                       const extraProps = item.external
-                                        ? { href: item.href, target: "_blank", rel: "noopener noreferrer" }
+                                        ? {
+                                            href: item.href,
+                                            target: "_blank",
+                                            rel: "noopener noreferrer",
+                                          }
                                         : { href: item.href };
                                       return (
                                         <Comp
@@ -268,15 +695,23 @@ export default function Navbar() {
                                         >
                                           <div
                                             className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                                            style={{ background: `${item.color}20`, border: `1px solid ${item.color}40` }}
+                                            style={{
+                                              background: `${item.color}20`,
+                                              border: `1px solid ${item.color}40`,
+                                            }}
                                           >
-                                            <Icon size={14} style={{ color: item.color }} />
+                                            <Icon
+                                              size={14}
+                                              style={{ color: item.color }}
+                                            />
                                           </div>
                                           <div>
                                             <div className="text-xs font-semibold text-white group-hover/item:text-[#F97316] transition-colors leading-tight">
                                               {item.name}
                                             </div>
-                                            <div className="text-[11px] text-white/40 mt-0.5 leading-tight">{item.desc}</div>
+                                            <div className="text-[11px] text-white/40 mt-0.5 leading-tight">
+                                              {item.desc}
+                                            </div>
                                           </div>
                                         </Comp>
                                       );
@@ -325,7 +760,9 @@ export default function Navbar() {
               </button>
 
               <button
-                onClick={() => window.dispatchEvent(new CustomEvent("open-donate"))}
+                onClick={() =>
+                  window.dispatchEvent(new CustomEvent("open-donate"))
+                }
                 className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 bg-[#34D399]/15 hover:bg-[#34D399]/25 text-[#34D399] border border-[#34D399]/40 text-sm font-semibold rounded-lg btn-press"
               >
                 <Heart size={13} />
@@ -403,8 +840,16 @@ export default function Navbar() {
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-white/10">
                 <Link href="/" className="flex items-center gap-2">
-                  <img src={LOGO_MARK} alt="EmbeddedOS" className="w-7 h-7 rounded-lg" />
-                  <span className="font-heading font-bold text-white text-sm">EmbeddedOS</span>
+                  <img
+                    loading="eager"
+                    fetchPriority="high"
+                    src={LOGO_MARK}
+                    alt="EmbeddedOS"
+                    className="w-7 h-7 rounded-lg"
+                  />
+                  <span className="font-heading font-bold text-white text-sm">
+                    EmbeddedOS
+                  </span>
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
@@ -416,13 +861,15 @@ export default function Navbar() {
               </div>
 
               <div className="p-4 space-y-1">
-                {(Object.keys(NAV_ITEMS) as NavKey[]).map((label) => {
+                {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
                   const section = NAV_ITEMS[label];
                   const isExpanded = mobileExpanded === label;
                   return (
                     <div key={label}>
                       <button
-                        onClick={() => setMobileExpanded(e => e === label ? null : label)}
+                        onClick={() =>
+                          setMobileExpanded(e => (e === label ? null : label))
+                        }
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
                       >
                         {label}
@@ -441,14 +888,20 @@ export default function Navbar() {
                             className="overflow-hidden"
                           >
                             <div className="pl-3 pb-2 space-y-3">
-                              {section.sections.map((sec) => (
+                              {section.sections.map(sec => (
                                 <div key={sec.title}>
-                                  <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest px-2 py-1">{sec.title}</div>
-                                  {sec.items.map((item) => {
+                                  <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest px-2 py-1">
+                                    {sec.title}
+                                  </div>
+                                  {sec.items.map(item => {
                                     const Icon = item.icon;
                                     const Comp = item.external ? "a" : Link;
                                     const extraProps = item.external
-                                      ? { href: item.href, target: "_blank", rel: "noopener noreferrer" }
+                                      ? {
+                                          href: item.href,
+                                          target: "_blank",
+                                          rel: "noopener noreferrer",
+                                        }
                                       : { href: item.href };
                                     return (
                                       <Comp
@@ -458,13 +911,23 @@ export default function Navbar() {
                                       >
                                         <div
                                           className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
-                                          style={{ background: `${item.color}20`, border: `1px solid ${item.color}40` }}
+                                          style={{
+                                            background: `${item.color}20`,
+                                            border: `1px solid ${item.color}40`,
+                                          }}
                                         >
-                                          <Icon size={12} style={{ color: item.color }} />
+                                          <Icon
+                                            size={12}
+                                            style={{ color: item.color }}
+                                          />
                                         </div>
                                         <div>
-                                          <div className="text-xs font-semibold text-white">{item.name}</div>
-                                          <div className="text-[10px] text-white/40">{item.desc}</div>
+                                          <div className="text-xs font-semibold text-white">
+                                            {item.name}
+                                          </div>
+                                          <div className="text-[10px] text-white/40">
+                                            {item.desc}
+                                          </div>
                                         </div>
                                       </Comp>
                                     );
@@ -494,7 +957,10 @@ export default function Navbar() {
               {/* CTA */}
               <div className="p-4 border-t border-white/10 space-y-2">
                 <button
-                  onClick={() => { setMobileOpen(false); window.dispatchEvent(new CustomEvent("open-donate")); }}
+                  onClick={() => {
+                    setMobileOpen(false);
+                    window.dispatchEvent(new CustomEvent("open-donate"));
+                  }}
                   className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#34D399]/15 hover:bg-[#34D399]/25 text-[#34D399] border border-[#34D399]/40 font-bold rounded-xl transition-all active:scale-95"
                 >
                   <Heart size={16} />

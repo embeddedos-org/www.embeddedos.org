@@ -26,22 +26,31 @@ export interface DiagramLayer {
 // ─────────────────────────────────────────────────────────────────────────────
 // LAYERED MODE — horizontal stacked slabs (default, used for kernel / boot)
 // ─────────────────────────────────────────────────────────────────────────────
-function LayeredBlock({ layer, index }: { layer: DiagramLayer; index: number }) {
+function LayeredBlock({
+  layer,
+  index,
+}: {
+  layer: DiagramLayer;
+  index: number;
+}) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const w = layer.width ?? 3.6;
   const d = layer.depth ?? 1.1;
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!meshRef.current) return;
     const t = state.clock.elapsedTime;
-    meshRef.current.position.y = layer.y + Math.sin(t * 0.55 + index * 0.85) * 0.035;
+    meshRef.current.position.y =
+      layer.y + Math.sin(t * 0.55 + index * 0.85) * 0.035;
     const target = hovered ? 1.05 : 1.0;
     meshRef.current.scale.lerp(new THREE.Vector3(target, target, target), 0.1);
   });
 
   const color = new THREE.Color(layer.color);
-  const emissive = hovered ? color.clone().multiplyScalar(0.4) : color.clone().multiplyScalar(0.15);
+  const emissive = hovered
+    ? color.clone().multiplyScalar(0.4)
+    : color.clone().multiplyScalar(0.15);
 
   return (
     <group>
@@ -67,7 +76,11 @@ function LayeredBlock({ layer, index }: { layer: DiagramLayer; index: number }) 
       {/* Glowing edge strip on top */}
       <mesh position={[0, layer.y + 0.185, 0]}>
         <boxGeometry args={[w * 0.96, 0.018, d * 0.96]} />
-        <meshBasicMaterial color={layer.color} transparent opacity={hovered ? 0.9 : 0.5} />
+        <meshBasicMaterial
+          color={layer.color}
+          transparent
+          opacity={hovered ? 0.9 : 0.5}
+        />
       </mesh>
     </group>
   );
@@ -75,16 +88,18 @@ function LayeredBlock({ layer, index }: { layer: DiagramLayer; index: number }) 
 
 function LayeredConnectors({ layers }: { layers: DiagramLayer[] }) {
   const ref = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  useFrame(state => {
     if (!ref.current) return;
     ref.current.children.forEach((c, i) => {
       const mat = (c as THREE.Mesh).material as THREE.MeshBasicMaterial;
-      if (mat) mat.opacity = 0.25 + 0.15 * Math.sin(state.clock.elapsedTime * 0.9 + i);
+      if (mat)
+        mat.opacity = 0.25 + 0.15 * Math.sin(state.clock.elapsedTime * 0.9 + i);
     });
   });
   const els: React.ReactElement[] = [];
   for (let i = 0; i < layers.length - 1; i++) {
-    const a = layers[i], b = layers[i + 1];
+    const a = layers[i],
+      b = layers[i + 1];
     const midY = (a.y + b.y) / 2;
     const h = Math.abs(b.y - a.y) - 0.36;
     if (h <= 0) continue;
@@ -100,9 +115,10 @@ function LayeredConnectors({ layers }: { layers: DiagramLayer[] }) {
 
 function LayeredScene({ layers }: { layers: DiagramLayer[] }) {
   const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  useFrame(state => {
     if (!groupRef.current) return;
-    groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.14) * 0.2;
+    groupRef.current.rotation.y =
+      Math.sin(state.clock.elapsedTime * 0.14) * 0.2;
   });
   return (
     <group ref={groupRef}>
@@ -119,7 +135,7 @@ function LayeredScene({ layers }: { layers: DiagramLayer[] }) {
 // ─────────────────────────────────────────────────────────────────────────────
 function RadialHub({ color }: { color: string }) {
   const ref = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
+  useFrame(state => {
     if (!ref.current) return;
     ref.current.rotation.y = state.clock.elapsedTime * 0.4;
     ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.25) * 0.15;
@@ -142,13 +158,21 @@ function RadialHub({ color }: { color: string }) {
 }
 
 function RadialNode({
-  layer, angle, radius, index,
-}: { layer: DiagramLayer; angle: number; radius: number; index: number }) {
+  layer,
+  angle,
+  radius,
+  index,
+}: {
+  layer: DiagramLayer;
+  angle: number;
+  radius: number;
+  index: number;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   const lineRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
     const a = angle + t * (0.12 + index * 0.02);
@@ -188,7 +212,15 @@ function RadialScene({ layers }: { layers: DiagramLayer[] }) {
       <RadialHub color={hubColor} />
       {layers.map((layer, i) => {
         const angle = (i / layers.length) * Math.PI * 2;
-        return <RadialNode key={layer.label} layer={layer} angle={angle} radius={radius} index={i} />;
+        return (
+          <RadialNode
+            key={layer.label}
+            layer={layer}
+            angle={angle}
+            radius={radius}
+            index={i}
+          />
+        );
       })}
     </group>
   );
@@ -197,11 +229,19 @@ function RadialScene({ layers }: { layers: DiagramLayer[] }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // PIPELINE MODE — left-to-right flowing boxes with arrows (eDB, eIPC)
 // ─────────────────────────────────────────────────────────────────────────────
-function PipelineBox({ layer, xPos, index }: { layer: DiagramLayer; xPos: number; index: number }) {
+function PipelineBox({
+  layer,
+  xPos,
+  index,
+}: {
+  layer: DiagramLayer;
+  xPos: number;
+  index: number;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
     ref.current.position.y = Math.sin(t * 0.5 + index * 1.1) * 0.06;
@@ -242,10 +282,12 @@ function PipelineBox({ layer, xPos, index }: { layer: DiagramLayer; xPos: number
 
 function PipelineScene({ layers }: { layers: DiagramLayer[] }) {
   const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  useFrame(state => {
     if (!groupRef.current) return;
-    groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.18) * 0.12;
-    groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.12) * 0.15;
+    groupRef.current.rotation.x =
+      Math.sin(state.clock.elapsedTime * 0.18) * 0.12;
+    groupRef.current.rotation.y =
+      Math.sin(state.clock.elapsedTime * 0.12) * 0.15;
   });
   const n = layers.length;
   const spacing = 1.25;
@@ -253,7 +295,12 @@ function PipelineScene({ layers }: { layers: DiagramLayer[] }) {
   return (
     <group ref={groupRef}>
       {layers.map((layer, i) => (
-        <PipelineBox key={layer.label} layer={layer} xPos={startX + i * spacing} index={i} />
+        <PipelineBox
+          key={layer.label}
+          layer={layer}
+          xPos={startX + i * spacing}
+          index={i}
+        />
       ))}
     </group>
   );
@@ -263,14 +310,24 @@ function PipelineScene({ layers }: { layers: DiagramLayer[] }) {
 // TREE MODE — top-down hierarchy (eOffice suite)
 // ─────────────────────────────────────────────────────────────────────────────
 function TreeNode({
-  color, position, size = 0.38, index,
-}: { color: string; position: [number, number, number]; size?: number; index: number }) {
+  color,
+  position,
+  size = 0.38,
+  index,
+}: {
+  color: string;
+  position: [number, number, number];
+  size?: number;
+  index: number;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!ref.current) return;
-    ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.5 + index * 0.7) * 0.05;
+    ref.current.position.y =
+      position[1] +
+      Math.sin(state.clock.elapsedTime * 0.5 + index * 0.7) * 0.05;
     ref.current.scale.setScalar(hovered ? 1.2 : 1.0);
   });
 
@@ -295,7 +352,15 @@ function TreeNode({
   );
 }
 
-function TreeEdge({ from, to, color }: { from: [number, number, number]; to: [number, number, number]; color: string }) {
+function TreeEdge({
+  from,
+  to,
+  color,
+}: {
+  from: [number, number, number];
+  to: [number, number, number];
+  color: string;
+}) {
   const midX = (from[0] + to[0]) / 2;
   const midY = (from[1] + to[1]) / 2;
   const midZ = (from[2] + to[2]) / 2;
@@ -313,21 +378,27 @@ function TreeEdge({ from, to, color }: { from: [number, number, number]; to: [nu
 
 function TreeScene({ layers }: { layers: DiagramLayer[] }) {
   const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  useFrame(state => {
     if (!groupRef.current) return;
-    groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.13) * 0.22;
+    groupRef.current.rotation.y =
+      Math.sin(state.clock.elapsedTime * 0.13) * 0.22;
   });
 
   // Build a 3-level tree: root → 2 branches → leaves
   const root: [number, number, number] = [0, 1.6, 0];
-  const branches: [number, number, number][] = [[-1.4, 0.3, 0], [1.4, 0.3, 0]];
+  const branches: [number, number, number][] = [
+    [-1.4, 0.3, 0],
+    [1.4, 0.3, 0],
+  ];
   const leaves: [number, number, number][] = [
-    [-2.2, -1.1, 0], [-1.0, -1.1, 0],
-    [0.6, -1.1, 0], [2.0, -1.1, 0],
+    [-2.2, -1.1, 0],
+    [-1.0, -1.1, 0],
+    [0.6, -1.1, 0],
+    [2.0, -1.1, 0],
     [0, -1.1, 0.8],
   ];
 
-  const colors = layers.map((l) => l.color);
+  const colors = layers.map(l => l.color);
   const rootColor = colors[0] ?? "#F97316";
   const branchColors = [colors[1] ?? "#22D3EE", colors[2] ?? "#A78BFA"];
   const leafColors = colors.slice(2);
@@ -339,15 +410,32 @@ function TreeScene({ layers }: { layers: DiagramLayer[] }) {
         <TreeEdge key={`rb${i}`} from={root} to={b} color={branchColors[i]} />
       ))}
       {leaves.map((l, i) => (
-        <TreeEdge key={`bl${i}`} from={branches[i < 2 ? 0 : 1]} to={l} color={leafColors[i] ?? "#6B7280"} />
+        <TreeEdge
+          key={`bl${i}`}
+          from={branches[i < 2 ? 0 : 1]}
+          to={l}
+          color={leafColors[i] ?? "#6B7280"}
+        />
       ))}
       {/* Nodes */}
       <TreeNode color={rootColor} position={root} size={0.48} index={0} />
       {branches.map((b, i) => (
-        <TreeNode key={i} color={branchColors[i]} position={b} size={0.38} index={i + 1} />
+        <TreeNode
+          key={i}
+          color={branchColors[i]}
+          position={b}
+          size={0.38}
+          index={i + 1}
+        />
       ))}
       {leaves.map((l, i) => (
-        <TreeNode key={i} color={leafColors[i] ?? "#6B7280"} position={l} size={0.28} index={i + 3} />
+        <TreeNode
+          key={i}
+          color={leafColors[i] ?? "#6B7280"}
+          position={l}
+          size={0.28}
+          index={i + 3}
+        />
       ))}
     </group>
   );
@@ -356,20 +444,31 @@ function TreeScene({ layers }: { layers: DiagramLayer[] }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // MATRIX MODE — 3D grid of glowing nodes (full stack overview)
 // ─────────────────────────────────────────────────────────────────────────────
-function MatrixNode({ color, position, index }: { color: string; position: [number, number, number]; index: number }) {
+function MatrixNode({
+  color,
+  position,
+  index,
+}: {
+  color: string;
+  position: [number, number, number];
+  index: number;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  useFrame((state) => {
+  useFrame(state => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
-    ref.current.position.y = position[1] + Math.sin(t * 0.4 + index * 0.5) * 0.07;
+    ref.current.position.y =
+      position[1] + Math.sin(t * 0.4 + index * 0.5) * 0.07;
     const pulse = 0.9 + 0.1 * Math.sin(t * 1.2 + index * 0.8);
     ref.current.scale.setScalar(hovered ? 1.3 : pulse);
   });
 
   return (
-    <mesh ref={ref} position={position}
+    <mesh
+      ref={ref}
+      position={position}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
@@ -389,16 +488,19 @@ function MatrixNode({ color, position, index }: { color: string; position: [numb
 
 function MatrixScene({ layers }: { layers: DiagramLayer[] }) {
   const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
+  useFrame(state => {
     if (!groupRef.current) return;
     groupRef.current.rotation.y = state.clock.elapsedTime * 0.12;
-    groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.09) * 0.15;
+    groupRef.current.rotation.x =
+      Math.sin(state.clock.elapsedTime * 0.09) * 0.15;
   });
 
   // Build a 4×4 grid of nodes, cycling through layer colors
   const nodes = useMemo(() => {
-    const pts: { pos: [number, number, number]; color: string; idx: number }[] = [];
-    const cols = 4, rows = 4;
+    const pts: { pos: [number, number, number]; color: string; idx: number }[] =
+      [];
+    const cols = 4,
+      rows = 4;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const idx = r * cols + c;
@@ -414,8 +516,13 @@ function MatrixScene({ layers }: { layers: DiagramLayer[] }) {
 
   return (
     <group ref={groupRef}>
-      {nodes.map((n) => (
-        <MatrixNode key={n.idx} color={n.color} position={n.pos} index={n.idx} />
+      {nodes.map(n => (
+        <MatrixNode
+          key={n.idx}
+          color={n.color}
+          position={n.pos}
+          index={n.idx}
+        />
       ))}
     </group>
   );
@@ -443,21 +550,30 @@ export default function ArchitectureDiagram3D({
 
   function SceneSwitch() {
     switch (mode) {
-      case "radial":    return <RadialScene layers={layers} />;
-      case "pipeline":  return <PipelineScene layers={layers} />;
-      case "tree":      return <TreeScene layers={layers} />;
-      case "matrix":    return <MatrixScene layers={layers} />;
-      default:          return <LayeredScene layers={layers} />;
+      case "radial":
+        return <RadialScene layers={layers} />;
+      case "pipeline":
+        return <PipelineScene layers={layers} />;
+      case "tree":
+        return <TreeScene layers={layers} />;
+      case "matrix":
+        return <MatrixScene layers={layers} />;
+      default:
+        return <LayeredScene layers={layers} />;
     }
   }
 
   // Camera presets per mode
   const camPos: [number, number, number] =
-    mode === "pipeline" ? [0, 1.5, 6.5] :
-    mode === "tree"     ? [0, 0.5, 6.5] :
-    mode === "matrix"   ? [0, 0, 7.0]   :
-    mode === "radial"   ? [0, 1.0, 6.0] :
-                          [0, 0, 5.5];
+    mode === "pipeline"
+      ? [0, 1.5, 6.5]
+      : mode === "tree"
+        ? [0, 0.5, 6.5]
+        : mode === "matrix"
+          ? [0, 0, 7.0]
+          : mode === "radial"
+            ? [0, 1.0, 6.0]
+            : [0, 0, 5.5];
 
   return (
     <div
@@ -467,11 +583,16 @@ export default function ArchitectureDiagram3D({
       {/* Layer legend overlay */}
       <div
         className="absolute bottom-0 left-0 right-0 pointer-events-none z-10 flex flex-wrap gap-x-3 gap-y-1 px-3 py-2"
-        style={{ background: "linear-gradient(to top, #050A18ee, transparent)" }}
+        style={{
+          background: "linear-gradient(to top, #050A18ee, transparent)",
+        }}
       >
-        {layers.map((layer) => (
+        {layers.map(layer => (
           <div key={layer.label} className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: layer.color }} />
+            <div
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{ background: layer.color }}
+            />
             <span className="text-[9px] font-mono font-semibold tracking-wider text-white/55 uppercase">
               {layer.label}
             </span>
@@ -483,7 +604,11 @@ export default function ArchitectureDiagram3D({
       <div className="absolute top-2 right-3 z-10 pointer-events-none">
         <span
           className="text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border"
-          style={{ color: accent, borderColor: accent + "40", background: accent + "15" }}
+          style={{
+            color: accent,
+            borderColor: accent + "40",
+            background: accent + "15",
+          }}
         >
           {mode}
         </span>
@@ -495,7 +620,11 @@ export default function ArchitectureDiagram3D({
         style={{ background: "transparent" }}
       >
         <ambientLight intensity={0.35} />
-        <directionalLight position={[3, 5, 3]} intensity={0.9} color="#ffffff" />
+        <directionalLight
+          position={[3, 5, 3]}
+          intensity={0.9}
+          color="#ffffff"
+        />
         <pointLight position={[-3, 2, 2]} intensity={0.6} color={accent} />
         <pointLight position={[3, -2, 2]} intensity={0.35} color="#22D3EE" />
         <React.Suspense fallback={null}>

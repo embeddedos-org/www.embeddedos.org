@@ -12,7 +12,14 @@ interface Particle {
   pulseSpeed: number;
 }
 
-const COLORS = ["#F97316", "#22D3EE", "#A78BFA", "#34D399", "#F59E0B", "#60A5FA"];
+const COLORS = [
+  "#F97316",
+  "#22D3EE",
+  "#A78BFA",
+  "#34D399",
+  "#F59E0B",
+  "#60A5FA",
+];
 
 export default function ParticleField({ count = 55 }: { count?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -86,7 +93,7 @@ export default function ParticleField({ count = 55 }: { count?: number }) {
         const mdy = p.y - mouseRef.current.y;
         const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
         if (mdist < 80) {
-          const force = (80 - mdist) / 80 * 0.5;
+          const force = ((80 - mdist) / 80) * 0.5;
           p.vx += (mdx / mdist) * force;
           p.vy += (mdy / mdist) * force;
         }
@@ -97,7 +104,10 @@ export default function ParticleField({ count = 55 }: { count?: number }) {
 
         // Clamp speed
         const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (speed > 1.5) { p.vx = (p.vx / speed) * 1.5; p.vy = (p.vy / speed) * 1.5; }
+        if (speed > 1.5) {
+          p.vx = (p.vx / speed) * 1.5;
+          p.vy = (p.vy / speed) * 1.5;
+        }
 
         p.x += p.vx;
         p.y += p.vy;
@@ -111,7 +121,11 @@ export default function ParticleField({ count = 55 }: { count?: number }) {
         // Draw
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + Math.round(pulsedOpacity * 255).toString(16).padStart(2, "0");
+        ctx.fillStyle =
+          p.color +
+          Math.round(pulsedOpacity * 255)
+            .toString(16)
+            .padStart(2, "0");
         ctx.fill();
 
         // Glow

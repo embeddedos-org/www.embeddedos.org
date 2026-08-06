@@ -142,17 +142,20 @@ const perks = [
   {
     icon: BookOpen,
     title: "14 Technical Books",
-    description: "Free access to all EmbeddedOS technical books — kernel, AI, hardware, and more.",
+    description:
+      "Free access to all EmbeddedOS technical books — kernel, AI, hardware, and more.",
   },
   {
     icon: Code2,
     title: "Foundation First",
-    description: "Every line of code is MIT-licensed and publicly available on GitHub.",
+    description:
+      "Every line of code is MIT-licensed and publicly available on GitHub.",
   },
   {
     icon: Globe,
     title: "Global Community",
-    description: "Join engineers from 50+ countries building the future of embedded systems.",
+    description:
+      "Join engineers from 50+ countries building the future of embedded systems.",
   },
   {
     icon: Shield,
@@ -162,7 +165,8 @@ const perks = [
   {
     icon: Award,
     title: "Research Impact",
-    description: "Your support funds patent-pending health devices and aerospace avionics research.",
+    description:
+      "Your support funds patent-pending health devices and aerospace avionics research.",
   },
   {
     icon: Users,
@@ -195,12 +199,16 @@ export default function Membership() {
               Foundation
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Support Foundation embedded systems research. Every contribution funds
-              hardware testing, technical books, security audits, and community events.
+              Support Foundation embedded systems research. Every contribution
+              funds hardware testing, technical books, security audits, and
+              community events.
             </p>
             <div className="flex items-center justify-center gap-3 text-sm text-muted-foreground">
               <Shield className="w-4 h-4 text-green-400" />
-              <span>501(c)(3) · Tax-deductible donations · MIT License · No vendor lock-in</span>
+              <span>
+                501(c)(3) · Tax-deductible donations · MIT License · No vendor
+                lock-in
+              </span>
             </div>
           </motion.div>
         </div>
@@ -212,8 +220,8 @@ export default function Membership() {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Membership Tiers</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Choose the level of involvement that works for you. All tiers include full access
-              to the open-source ecosystem.
+              Choose the level of involvement that works for you. All tiers
+              include full access to the open-source ecosystem.
             </p>
           </div>
 
@@ -228,7 +236,9 @@ export default function Membership() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
                   className={`relative rounded-2xl border ${tier.border} bg-gradient-to-b ${tier.color} p-6 flex flex-col ${
-                    tier.highlight ? "ring-2 ring-purple-500/50 shadow-lg shadow-purple-500/10" : ""
+                    tier.highlight
+                      ? "ring-2 ring-purple-500/50 shadow-lg shadow-purple-500/10"
+                      : ""
                   }`}
                 >
                   {tier.highlight && (
@@ -243,7 +253,9 @@ export default function Membership() {
                     <div className={`p-2.5 rounded-xl ${tier.badge}`}>
                       <Icon className="w-5 h-5" />
                     </div>
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${tier.badge}`}>
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-xs font-medium ${tier.badge}`}
+                    >
                       {tier.name}
                     </span>
                   </div>
@@ -252,16 +264,23 @@ export default function Membership() {
                     <div className="flex items-baseline gap-1">
                       <span className="text-3xl font-bold">{tier.price}</span>
                       {tier.period && (
-                        <span className="text-muted-foreground text-sm">{tier.period}</span>
+                        <span className="text-muted-foreground text-sm">
+                          {tier.period}
+                        </span>
                       )}
                     </div>
                   </div>
 
-                  <p className="text-sm text-muted-foreground mb-6 flex-1">{tier.description}</p>
+                  <p className="text-sm text-muted-foreground mb-6 flex-1">
+                    {tier.description}
+                  </p>
 
                   <ul className="space-y-2 mb-6">
-                    {tier.benefits.map((benefit) => (
-                      <li key={benefit} className="flex items-start gap-2 text-sm">
+                    {tier.benefits.map(benefit => (
+                      <li
+                        key={benefit}
+                        className="flex items-start gap-2 text-sm"
+                      >
                         <Check className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                         <span className="text-muted-foreground">{benefit}</span>
                       </li>
@@ -271,8 +290,14 @@ export default function Membership() {
                   {tier.external ? (
                     <a
                       href={tier.ctaHref}
-                      target={tier.ctaHref.startsWith("http") ? "_blank" : undefined}
-                      rel={tier.ctaHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                      target={
+                        tier.ctaHref.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel={
+                        tier.ctaHref.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                       className={`w-full py-2.5 rounded-xl text-sm font-semibold text-center transition-all ${
                         tier.highlight
                           ? "bg-purple-500 hover:bg-purple-600 text-white"
@@ -305,9 +330,12 @@ export default function Membership() {
       <section className="py-20 bg-white/[0.02]">
         <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Why Join the Foundation?</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Why Join the Foundation?
+            </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Your membership directly funds open-source embedded systems research for the benefit of humanity.
+              Your membership directly funds open-source embedded systems
+              research for the benefit of humanity.
             </p>
           </div>
 
@@ -327,7 +355,9 @@ export default function Membership() {
                     <Icon className="w-5 h-5 text-amber-400" />
                   </div>
                   <h3 className="font-semibold mb-2">{perk.title}</h3>
-                  <p className="text-sm text-muted-foreground">{perk.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {perk.description}
+                  </p>
                 </motion.div>
               );
             })}
@@ -351,8 +381,8 @@ export default function Membership() {
               </span>
             </h2>
             <p className="text-muted-foreground mb-8">
-              Every contribution — big or small — helps advance embedded systems research,
-              education, and technology for the benefit of humanity.
+              Every contribution — big or small — helps advance embedded systems
+              research, education, and technology for the benefit of humanity.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/donate">

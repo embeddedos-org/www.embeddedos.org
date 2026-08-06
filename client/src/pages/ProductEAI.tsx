@@ -30,13 +30,13 @@ export default function ProductEAI() {
           step: 2,
           title: "Deploy the Model Bundle",
           desc: "Copy the .eai bundle to the device (flash, SD card, or eDB). The eAI runtime loads it lazily — only the layers needed for the current inference are paged into RAM.",
-          code: "// Load model from flash\neai_model_t model = eai_model_load(\"model.eai\", EAI_BACKEND_NPU);\nif (!model) {\n    model = eai_model_load(\"model.eai\", EAI_BACKEND_CPU); // fallback\n}",
+          code: '// Load model from flash\neai_model_t model = eai_model_load("model.eai", EAI_BACKEND_NPU);\nif (!model) {\n    model = eai_model_load("model.eai", EAI_BACKEND_CPU); // fallback\n}',
         },
         {
           step: 3,
           title: "Run Inference",
           desc: "Prepare input tensors, call eai_infer(), and read output tensors. The runtime automatically selects the best backend (NPU > GPU > CPU) based on availability and power budget.",
-          code: "// Image classification example\neai_tensor_t input  = eai_tensor_from_image(frame, 224, 224);\neai_tensor_t output = eai_tensor_alloc(1000); // 1000-class\n\neai_infer(model, &input, &output);\n\nint class_id = eai_argmax(output);\nfloat conf   = eai_softmax_max(output);\nprintf(\"Class: %d  Conf: %.2f\\n\", class_id, conf);",
+          code: '// Image classification example\neai_tensor_t input  = eai_tensor_from_image(frame, 224, 224);\neai_tensor_t output = eai_tensor_alloc(1000); // 1000-class\n\neai_infer(model, &input, &output);\n\nint class_id = eai_argmax(output);\nfloat conf   = eai_softmax_max(output);\nprintf("Class: %d  Conf: %.2f\\n", class_id, conf);',
         },
         {
           step: 4,
@@ -48,30 +48,34 @@ export default function ProductEAI() {
           step: 5,
           title: "Fine-Tune On-Device with LoRA",
           desc: "eAI supports LoRA (Low-Rank Adaptation) fine-tuning directly on the device. Collect labeled examples, run a few gradient steps, and the model adapts to your specific use case without sending data to the cloud.",
-          code: "// On-device LoRA fine-tuning\neai_lora_config_t cfg = {\n    .rank = 8, .alpha = 16,\n    .layers = EAI_LORA_ATTN_LAYERS,\n    .lr = 1e-4f, .epochs = 3,\n};\neai_lora_train(model, labeled_dataset, &cfg);\neai_model_save(model, \"model_finetuned.eai\");",
+          code: '// On-device LoRA fine-tuning\neai_lora_config_t cfg = {\n    .rank = 8, .alpha = 16,\n    .layers = EAI_LORA_ATTN_LAYERS,\n    .lr = 1e-4f, .epochs = 3,\n};\neai_lora_train(model, labeled_dataset, &cfg);\neai_model_save(model, "model_finetuned.eai");',
         },
       ]}
       usageExamples={[
         {
           title: "Keyword Spotting",
-          scenario: "Always-on wake-word detection on a Cortex-M4 at < 1 mW, triggering a larger LLM on a more powerful core.",
+          scenario:
+            "Always-on wake-word detection on a Cortex-M4 at < 1 mW, triggering a larger LLM on a more powerful core.",
           code: '// Keyword spotting pipeline\n#include <eai/audio.h>\n#include <eai/model.h>\n\nvoid audio_task(void *arg) {\n    eai_model_t kws = eai_model_load("kws_hey_eos.eai", EAI_BACKEND_CPU);\n    eai_audio_stream_t mic = eai_audio_open(MIC0, 16000, 1);\n\n    for (;;) {\n        // Collect 1-second audio window\n        float mfcc[40 * 98];  // 40 MFCC × 98 frames\n        eai_audio_mfcc(mic, mfcc, 1000);\n\n        eai_tensor_t out = eai_infer_sync(kws, mfcc);\n        if (eai_argmax(out) == KWS_HEY_EOS) {\n            eos_event_set(WAKE_EVENT);  // Wake the LLM task\n        }\n    }\n}',
         },
         {
           title: "Visual Inspection (Defect Detection)",
-          scenario: "A factory camera running MobileNetV3 on an NPU to detect PCB defects at 30 fps.",
+          scenario:
+            "A factory camera running MobileNetV3 on an NPU to detect PCB defects at 30 fps.",
           code: '// PCB defect detection at 30 fps\n#include <eai/vision.h>\n\nvoid inspection_task(void *arg) {\n    eai_model_t det = eai_model_load("pcb_defect_v2.eai", EAI_BACKEND_NPU);\n    camera_t cam = camera_open(CAM0, 640, 480, FMT_RGB888);\n\n    for (;;) {\n        uint8_t *frame = camera_capture(cam);\n        eai_tensor_t img = eai_tensor_from_image(frame, 224, 224);\n        eai_tensor_t out = eai_infer_sync(det, img);\n\n        if (eai_sigmoid(out) > 0.85f) {\n            trigger_reject_actuator();\n            log_defect_to_edb(frame);\n        }\n    }\n}',
         },
         {
           title: "On-Device LLM Chat",
-          scenario: "A Llama-3.2-1B model running on a Raspberry Pi 5 with eAI, answering user queries about device status.",
+          scenario:
+            "A Llama-3.2-1B model running on a Raspberry Pi 5 with eAI, answering user queries about device status.",
           code: '// On-device LLM with eAI\n#include <eai/llm.h>\n\nvoid llm_task(void *arg) {\n    // Load 4-bit quantized Llama 3.2 1B\n    eai_model_t llm = eai_model_load("llama3.2-1b-q4.eai", EAI_BACKEND_GPU);\n\n    eai_chat_t chat = eai_chat_create(llm);\n    eai_chat_system(chat, "You are an embedded system assistant. "\n                          "Answer questions about device status.");\n\n    char response[512];\n    eai_chat_complete(chat, "What is the current CPU temperature?",\n                      response, sizeof(response));\n    printf("LLM: %s\\n", response);\n}',
         },
       ]}
       ecosystemRole={{
         importance: "high",
         role: "AI Intelligence Layer",
-        summary: "eAI is the intelligence layer of the EoS ecosystem. It transforms raw sensor data from eNI and the HAL into actionable decisions, natural language responses, and autonomous agent behaviors — all without a cloud connection. eAI is what makes EoS devices 'smart': a health device that detects arrhythmias, a factory robot that recognizes defects, a BCI prosthetic that decodes motor intent, or an edge server that answers questions about its own state. Without eAI, EoS devices are capable but reactive; with eAI, they become proactive and intelligent.",
+        summary:
+          "eAI is the intelligence layer of the EoS ecosystem. It transforms raw sensor data from eNI and the HAL into actionable decisions, natural language responses, and autonomous agent behaviors — all without a cloud connection. eAI is what makes EoS devices 'smart': a health device that detects arrhythmias, a factory robot that recognizes defects, a BCI prosthetic that decodes motor intent, or an edge server that answers questions about its own state. Without eAI, EoS devices are capable but reactive; with eAI, they become proactive and intelligent.",
         dependsOn: [
           "EoS Kernel — eAI inference tasks run as EoS threads with NPU HAL access",
           "eNI — neural interface data feeds directly into eAI inference pipelines",
@@ -87,31 +91,95 @@ export default function ProductEAI() {
         ],
       }}
       features={[
-        { name: "3 Model Formats", desc: "TFLite, ONNX, and GGUF (LLMs). One eai-convert CLI handles all three with INT8 and 4-bit quantization." },
-        { name: "NPU / GPU / CPU Backends", desc: "Automatic backend selection. Falls back gracefully from NPU to GPU to CPU based on availability and power budget." },
-        { name: "ReAct Agent Loop", desc: "On-device LLM agent with tool use. Define tools as C callbacks; the agent reasons and acts autonomously." },
-        { name: "LoRA Fine-Tuning", desc: "Adapt models on-device with labeled examples. No cloud required. Rank-8 LoRA on 1B models in < 10 minutes." },
-        { name: "Federated Learning", desc: "Aggregate model updates from a fleet of devices without centralizing raw data. Privacy-preserving by design." },
-        { name: "< 5 mW Inference", desc: "Keyword spotting and anomaly detection at milliwatt power levels on dedicated NPU hardware." },
-        { name: "Streaming Inference", desc: "Process audio, video, and sensor streams frame-by-frame without buffering entire inputs." },
-        { name: "Model Versioning", desc: "Pin model versions in the firmware manifest. eBuild ensures the correct model ships with each firmware release." },
+        {
+          name: "3 Model Formats",
+          desc: "TFLite, ONNX, and GGUF (LLMs). One eai-convert CLI handles all three with INT8 and 4-bit quantization.",
+        },
+        {
+          name: "NPU / GPU / CPU Backends",
+          desc: "Automatic backend selection. Falls back gracefully from NPU to GPU to CPU based on availability and power budget.",
+        },
+        {
+          name: "ReAct Agent Loop",
+          desc: "On-device LLM agent with tool use. Define tools as C callbacks; the agent reasons and acts autonomously.",
+        },
+        {
+          name: "LoRA Fine-Tuning",
+          desc: "Adapt models on-device with labeled examples. No cloud required. Rank-8 LoRA on 1B models in < 10 minutes.",
+        },
+        {
+          name: "Federated Learning",
+          desc: "Aggregate model updates from a fleet of devices without centralizing raw data. Privacy-preserving by design.",
+        },
+        {
+          name: "< 5 mW Inference",
+          desc: "Keyword spotting and anomaly detection at milliwatt power levels on dedicated NPU hardware.",
+        },
+        {
+          name: "Streaming Inference",
+          desc: "Process audio, video, and sensor streams frame-by-frame without buffering entire inputs.",
+        },
+        {
+          name: "Model Versioning",
+          desc: "Pin model versions in the firmware manifest. eBuild ensures the correct model ships with each firmware release.",
+        },
       ]}
       specs={[
-        { key: "Supported Formats", value: "TFLite (.tflite), ONNX (.onnx), GGUF (.gguf — LLMs)" },
+        {
+          key: "Supported Formats",
+          value: "TFLite (.tflite), ONNX (.onnx), GGUF (.gguf — LLMs)",
+        },
         { key: "Quantization", value: "FP32, FP16, INT8, INT4 (4-bit)" },
-        { key: "Backends", value: "NPU (vendor-specific), OpenCL GPU, XNNPACK CPU, CMSIS-NN (Cortex-M)" },
-        { key: "LLM Support", value: "Llama 3.2 1B/3B, Phi-3 Mini, Gemma 2B, Mistral 7B (4-bit, high-RAM devices)" },
-        { key: "Vision Models", value: "MobileNetV3, EfficientDet, YOLO-Nano, ResNet-50 (quantized)" },
-        { key: "Audio Models", value: "Whisper Tiny/Base, wav2vec2, keyword spotting CNNs" },
-        { key: "Agent Framework", value: "ReAct loop with C-callback tools; JSON-schema structured output" },
-        { key: "LoRA Rank", value: "Configurable (4, 8, 16, 32); targets attention layers by default" },
-        { key: "Minimum RAM", value: "128 KB (keyword spotting); 512 MB (1B LLM at 4-bit)" },
+        {
+          key: "Backends",
+          value:
+            "NPU (vendor-specific), OpenCL GPU, XNNPACK CPU, CMSIS-NN (Cortex-M)",
+        },
+        {
+          key: "LLM Support",
+          value:
+            "Llama 3.2 1B/3B, Phi-3 Mini, Gemma 2B, Mistral 7B (4-bit, high-RAM devices)",
+        },
+        {
+          key: "Vision Models",
+          value: "MobileNetV3, EfficientDet, YOLO-Nano, ResNet-50 (quantized)",
+        },
+        {
+          key: "Audio Models",
+          value: "Whisper Tiny/Base, wav2vec2, keyword spotting CNNs",
+        },
+        {
+          key: "Agent Framework",
+          value:
+            "ReAct loop with C-callback tools; JSON-schema structured output",
+        },
+        {
+          key: "LoRA Rank",
+          value:
+            "Configurable (4, 8, 16, 32); targets attention layers by default",
+        },
+        {
+          key: "Minimum RAM",
+          value: "128 KB (keyword spotting); 512 MB (1B LLM at 4-bit)",
+        },
         { key: "License", value: "MIT" },
       ]}
       pairs={[
-        { name: "eNI", route: "/product-eni", desc: "1,024-channel neural interface feeds raw biosignals directly into eAI inference pipelines." },
-        { name: "EIPC", route: "/product-eipc", desc: "Routes eAI outputs to actuators, displays, and other services with sub-1ms latency." },
-        { name: "EoS Kernel", route: "/product-eos", desc: "eAI inference tasks run as high-priority EoS threads with direct NPU HAL access." },
+        {
+          name: "eNI",
+          route: "/product-eni",
+          desc: "1,024-channel neural interface feeds raw biosignals directly into eAI inference pipelines.",
+        },
+        {
+          name: "EIPC",
+          route: "/product-eipc",
+          desc: "Routes eAI outputs to actuators, displays, and other services with sub-1ms latency.",
+        },
+        {
+          name: "EoS Kernel",
+          route: "/product-eos",
+          desc: "eAI inference tasks run as high-priority EoS threads with direct NPU HAL access.",
+        },
       ]}
     />
   );

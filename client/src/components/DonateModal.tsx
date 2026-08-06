@@ -1,6 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, Shield, Users, Cpu, Plane, CreditCard, ArrowRight } from "lucide-react";
+import {
+  X,
+  Heart,
+  Shield,
+  Users,
+  Cpu,
+  Plane,
+  CreditCard,
+  ArrowRight,
+} from "lucide-react";
 
 const IMPACT_ITEMS = [
   { icon: Cpu, label: "Fund hardware research", color: "#F97316" },
@@ -79,13 +88,22 @@ export default function DonateModal() {
           >
             <div
               className="relative w-full max-w-md pointer-events-auto rounded-2xl overflow-hidden shadow-2xl"
-              style={{ background: "linear-gradient(145deg, #0d1526 0%, #0a0f1e 100%)", border: "1px solid rgba(255,255,255,0.08)" }}
+              style={{
+                background: "linear-gradient(145deg, #0d1526 0%, #0a0f1e 100%)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
               role="dialog"
               aria-modal="true"
               aria-labelledby="donate-title"
             >
               {/* Header gradient bar */}
-              <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, #F97316, #F59E0B, #34D399, #60A5FA)" }} />
+              <div
+                className="h-1 w-full"
+                style={{
+                  background:
+                    "linear-gradient(90deg, #F97316, #F59E0B, #34D399, #60A5FA)",
+                }}
+              />
 
               {/* Close button */}
               <button
@@ -103,21 +121,37 @@ export default function DonateModal() {
                     <Heart size={24} className="text-[#34D399]" />
                   </div>
                   <div>
-                    <h2 id="donate-title" className="font-heading font-extrabold text-white text-xl">Support EmbeddedOS</h2>
-                    <p className="text-xs text-white/40">501(c)(3) · Tax-deductible</p>
+                    <h2
+                      id="donate-title"
+                      className="font-heading font-extrabold text-white text-xl"
+                    >
+                      Support EmbeddedOS
+                    </h2>
+                    <p className="text-xs text-white/40">
+                      501(c)(3) · Tax-deductible
+                    </p>
                   </div>
                 </div>
 
                 <p className="text-sm text-white/60 leading-relaxed mb-5">
-                  EmbeddedOS is a free, open-source project maintained by volunteers and funded entirely by donations.
-                  Your support keeps the OS free for everyone — from students to aerospace engineers.
+                  EmbeddedOS is a free, open-source project maintained by
+                  volunteers and funded entirely by donations. Your support
+                  keeps the OS free for everyone — from students to aerospace
+                  engineers.
                 </p>
 
                 {/* Impact grid */}
                 <div className="grid grid-cols-2 gap-2 mb-5">
                   {IMPACT_ITEMS.map(({ icon: Icon, label, color }) => (
-                    <div key={label} className="flex items-center gap-2 glass rounded-lg p-2.5 border border-white/5">
-                      <Icon size={14} style={{ color }} className="flex-shrink-0" />
+                    <div
+                      key={label}
+                      className="flex items-center gap-2 glass rounded-lg p-2.5 border border-white/5"
+                    >
+                      <Icon
+                        size={14}
+                        style={{ color }}
+                        className="flex-shrink-0"
+                      />
                       <span className="text-xs text-white/60">{label}</span>
                     </div>
                   ))}
@@ -134,11 +168,18 @@ export default function DonateModal() {
                       <CreditCard size={16} className="text-orange-400" />
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-white">Donate Now</div>
-                      <div className="text-xs text-white/50">Secure · 0% platform fees · Tax-deductible</div>
+                      <div className="text-sm font-bold text-white">
+                        Donate Now
+                      </div>
+                      <div className="text-xs text-white/50">
+                        Secure · 0% platform fees · Tax-deductible
+                      </div>
                     </div>
                   </div>
-                  <ArrowRight size={14} className="text-orange-400/60 group-hover:text-orange-400 transition-colors" />
+                  <ArrowRight
+                    size={14}
+                    className="text-orange-400/60 group-hover:text-orange-400 transition-colors"
+                  />
                 </a>
 
                 {/* Trust signals */}
