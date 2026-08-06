@@ -140,6 +140,7 @@ export default function LicensesPage() {
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${l.name} licence, opens in a new tab`}
                   className="text-gray-500 hover:text-white transition-colors flex-shrink-0"
                 >
                   <ExternalLink className="w-4 h-4" />

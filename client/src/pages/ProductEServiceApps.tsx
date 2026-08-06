@@ -1,5 +1,8 @@
 import ProductDetailPage from "@/components/ProductDetailPage";
 
+// The service apps ship inside the eApps repository. There is no separate
+// `eserviceapps` repo — linking to one returned 404 from every "View on
+// GitHub" control on this page.
 export default function ProductEServiceApps() {
   return (
     <ProductDetailPage
@@ -10,7 +13,7 @@ export default function ProductEServiceApps() {
       accent="#EC4899"
       gradient="from-pink-500/20 to-rose-600/20"
       lang="C++ / eUI"
-      github="embeddedos-org/eserviceapps"
+      github="embeddedos-org/eApps"
       heroImage="/manus-storage/product-eserviceapps_6c6d4f1a.jpg"
       stackHighlight="app layer"
       stats={[

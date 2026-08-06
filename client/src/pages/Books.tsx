@@ -611,6 +611,7 @@ export default function Books() {
                         rel="noopener noreferrer"
                         className="p-1.5 rounded-lg transition-colors hover:bg-white/10"
                         title="View Source"
+                        aria-label={`View the source of ${book.title} on GitHub`}
                       >
                         <Github
                           size={13}

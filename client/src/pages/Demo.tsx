@@ -885,6 +885,8 @@ export default function Demo() {
                 </button>
                 <button
                   onClick={reset}
+                  aria-label="Reset simulation"
+                  title="Reset simulation"
                   className="px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95"
                   style={{
                     background: "rgba(255,255,255,0.06)",

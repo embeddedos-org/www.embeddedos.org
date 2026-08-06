@@ -190,6 +190,7 @@ export default function Research() {
                 {p.internal ? (
                   <Link
                     href={p.href}
+                    aria-label={`Read ${p.title}`}
                     className="text-gray-400 hover:text-white transition-colors flex-shrink-0"
                   >
                     <ArrowRight className="w-4 h-4" />
@@ -199,6 +200,7 @@ export default function Research() {
                     href={p.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Read ${p.title}, opens in a new tab`}
                     className="text-gray-400 hover:text-white transition-colors flex-shrink-0"
                   >
                     <ExternalLink className="w-4 h-4" />
