@@ -155,6 +155,13 @@ test.describe("keyboard operability", () => {
 
   test("focused elements are visibly indicated", async ({ page }) => {
     await page.goto("/");
+    // Under parallel load the first Tab can land before the document takes
+    // focus, leaving activeElement on <body> and failing for a reason that has
+    // nothing to do with focus styling. Wait for a real target first.
+    await page
+      .locator("header a, nav a")
+      .first()
+      .waitFor({ state: "visible", timeout: 15000 });
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
     const visible = await page.evaluate(() => {
