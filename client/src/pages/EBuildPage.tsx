@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
+import { copyText } from "@/lib/clipboard";
 import {
   Wrench,
   ArrowRight,
@@ -332,8 +333,8 @@ export default function EBuildPage() {
   const [activePhase, setActivePhase] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
-  const copyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
+  const copyCode = async (code: string) => {
+    if (!(await copyText(code))) return;
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
   };

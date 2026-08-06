@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
+import { copyText } from "@/lib/clipboard";
 import {
   Search,
   ChevronRight,
@@ -2430,8 +2431,8 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
-      onClick={() => {
-        navigator.clipboard.writeText(text);
+      onClick={async () => {
+        if (!(await copyText(text))) return;
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}

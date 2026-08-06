@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
+import { copyText } from "@/lib/clipboard";
 import {
   Terminal,
   Cpu,
@@ -525,8 +526,8 @@ export default function GettingStarted() {
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const content = PATH_CONTENT[activePath];
 
-  const copyCode = (code: string, idx: number) => {
-    navigator.clipboard.writeText(code);
+  const copyCode = async (code: string, idx: number) => {
+    if (!(await copyText(code))) return;
     setCopiedIdx(idx);
     setTimeout(() => setCopiedIdx(null), 2000);
   };
