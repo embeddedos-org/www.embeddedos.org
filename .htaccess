@@ -1,13 +1,18 @@
+# Apache configuration for the prerendered static build.
+#
+# Lives in client/public/ so vite copies it into dist/public on every build.
+# It was previously added by hand to the deploy branch only, which meant any
+# rebuild of that branch silently dropped it.
+#
+# No SPA rewrite here on purpose. scripts/prerender.mjs writes every one of the
+# application's routes to <route>/index.html, so Apache's ordinary file and
+# directory resolution already serves them. Rewriting unmatched paths to
+# /index.html — which this file used to do — answers every unknown URL with
+# HTTP 200 and the homepage, a soft 404 that search engines index as a real
+# page. ErrorDocument returns the prerendered 404 page with a genuine 404
+# status instead, matching the express handler in server/_core/vite.ts that the
+# e2e suite exercises.
+
 Options -Indexes
 
-# Enable rewrite engine
-RewriteEngine On
-
-# Serve manus-storage images directly (no rewrite needed, they're static files)
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^ - [L]
-
-# SPA fallback: serve index.html for all non-file routes
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ /index.html [L]
+ErrorDocument 404 /404.html
