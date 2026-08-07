@@ -12,6 +12,7 @@ import {
   Globe,
 } from "lucide-react";
 import { Link } from "wouter";
+import { BOARD_COUNT } from "@/data/stack";
 
 const ways = [
   {
@@ -66,7 +67,7 @@ const ways = [
 
 const stats = [
   { value: "22+", label: "Open Repositories" },
-  { value: "52+", label: "Supported Platforms" },
+  { value: String(BOARD_COUNT), label: "Supported Boards" },
   { value: "300+", label: "Public APIs" },
   { value: "14", label: "Books Published" },
 ];

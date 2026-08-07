@@ -16,7 +16,7 @@ const pipeline = [
     name: "eIPC",
     subtitle: "Secure Transport",
     color: "#22D3EE",
-    desc: "Routes neural data between eNI and eAI with HMAC-SHA256 integrity, AES-256 encryption, and sub-1ms latency. Supports shared memory, UART, SPI, and TCP transports.",
+    desc: "Routes neural data between eNI and eAI with HMAC-SHA256 integrity, AES-256 encryption. Supports shared memory, UART, SPI, and TCP transports.",
     icon: Shield,
   },
   {

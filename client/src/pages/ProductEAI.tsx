@@ -173,7 +173,7 @@ export default function ProductEAI() {
         {
           name: "EIPC",
           route: "/product-eipc",
-          desc: "Routes eAI outputs to actuators, displays, and other services with sub-1ms latency.",
+          desc: "Routes eAI outputs to actuators, displays, and other services over the eIPC bus.",
         },
         {
           name: "EoS Kernel",

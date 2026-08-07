@@ -22,6 +22,7 @@ import {
   FlaskConical,
 } from "lucide-react";
 import { Link } from "wouter";
+import { BOARD_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -112,7 +113,7 @@ const BOARD_FAMILIES = [
 const FEATURES = [
   {
     icon: Cpu,
-    title: "52+ Boards",
+    title: `${BOARD_COUNT} Boards`,
     desc: "Comprehensive BSP support across ARM, RISC-V, Xtensa, AVR, and automotive SoCs.",
   },
   {
@@ -438,7 +439,7 @@ export default function HardwareLab() {
               Hardware Lab
             </div>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-              52+ Supported{" "}
+              {BOARD_COUNT} Supported{" "}
               <span className="text-gradient">Hardware Platforms</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">

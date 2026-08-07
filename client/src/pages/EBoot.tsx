@@ -12,6 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Suspense, lazy } from "react";
+import { BOARD_COUNT } from "@/data/stack";
 const EBootCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EBootCanvas }))
 );
@@ -94,7 +95,7 @@ const FEATURES = [
   {
     icon: Check,
     color: "#60A5FA",
-    title: "52+ Board Support",
+    title: `${BOARD_COUNT} Board Support`,
     desc: "Same eBoot codebase across all EoS-supported MCU families. One tool, every device.",
   },
 ];

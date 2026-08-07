@@ -12,6 +12,7 @@ import {
   Terminal,
   BookOpen,
 } from "lucide-react";
+import { BOARD_COUNT, ARCH_COUNT, boardsLabel } from "@/data/stack";
 import { Suspense, lazy } from "react";
 const EoSKernelCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EoSKernelCanvas }))
@@ -72,7 +73,7 @@ const LAYERS = [
       "RISC-V",
       "i.MX RT",
       "RPi Pico",
-      "46+ more",
+      `${BOARD_COUNT - 6} more`,
     ],
   },
 ];
@@ -81,8 +82,8 @@ const FEATURES = [
   {
     icon: Zap,
     color: "#F97316",
-    title: "Sub-1ms Interrupt Latency",
-    desc: "Deterministic real-time scheduling with configurable tick rates down to 1 µs.",
+    title: "Deterministic Scheduling",
+    desc: "Fixed-priority preemptive scheduling with configurable tick rates, so worst-case response is bounded rather than average.",
   },
   {
     icon: Shield,
@@ -111,8 +112,8 @@ const FEATURES = [
   {
     icon: Cpu,
     color: "#60A5FA",
-    title: "52+ Board Support",
-    desc: "STM32, ESP32, nRF52, RISC-V, i.MX RT, Raspberry Pi Pico, and 46 more MCU families.",
+    title: `${BOARD_COUNT} Board Definitions`,
+    desc: `STM32, ESP32, nRF52, RISC-V, i.MX RT, Raspberry Pi Pico and ${BOARD_COUNT - 6} more, spanning ${ARCH_COUNT} instruction-set architectures.`,
   },
 ];
 
@@ -178,9 +179,9 @@ export default function EoS() {
                 className="text-white/60 text-lg mb-6 leading-relaxed"
               >
                 A deterministic, real-time operating system kernel built for
-                resource-constrained devices. Sub-1ms interrupt latency, modular
-                driver model, POSIX-compatible API, and support for 52+ MCU
-                families.
+                resource-constrained devices. Fixed-priority preemptive
+                scheduling, a modular driver model, a POSIX-compatible API, and{" "}
+                {boardsLabel(true)}.
               </motion.p>
               <motion.div
                 variants={fadeUp}
@@ -351,7 +352,7 @@ export default function EoS() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="font-heading font-bold text-white text-xl mb-1">
-                  52+ Supported Platforms
+                  {BOARD_COUNT} Supported Boards
                 </h2>
                 <p className="text-white/40 text-sm">
                   From hobbyist boards to industrial MCUs
@@ -410,8 +411,8 @@ export default function EoS() {
               Try EoS on your board
             </h2>
             <p className="text-white/55 text-lg mb-6 max-w-xl mx-auto">
-              Flash EoS to any of 52+ supported boards in under 10 minutes. Or
-              try EoSim to simulate without hardware.
+              Flash EoS to any of {BOARD_COUNT} supported boards, or try EoSim
+              to simulate without hardware.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link

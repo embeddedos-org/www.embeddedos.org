@@ -49,6 +49,7 @@ import {
   Briefcase,
   GraduationCap,
 } from "lucide-react";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "../data/stack";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
@@ -215,7 +216,7 @@ const NAV_ITEMS = {
           },
           {
             name: "EoS Kernel",
-            desc: "RTOS kernel for 52+ boards",
+            desc: `RTOS kernel for ${BOARD_COUNT} boards`,
             icon: CpuIcon,
             href: "/product-eos",
             color: "#22D3EE",
@@ -318,7 +319,7 @@ const NAV_ITEMS = {
           },
           {
             name: "EoSim",
-            desc: "52+ virtual platforms simulator",
+            desc: `${SIM_PLATFORM_COUNT} virtual platforms simulator`,
             icon: Zap,
             href: "/product-eosim",
             color: "#06B6D4",

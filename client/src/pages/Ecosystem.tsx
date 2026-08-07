@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link } from "wouter";
+import { BOARD_COUNT } from "@/data/stack";
 
 const layers = [
   {
@@ -50,7 +51,7 @@ const layers = [
     items: [
       {
         name: "EIPC",
-        desc: "Zero-copy IPC, capability tokens, <1μs latency",
+        desc: "Zero-copy IPC with capability-based access control",
         href: "/eai",
       },
       {
@@ -72,7 +73,7 @@ const layers = [
     items: [
       {
         name: "EAI",
-        desc: "On-device AI inference, INT4/INT8, <1ms latency",
+        desc: "On-device AI inference with INT4/INT8 quantisation",
         href: "/eai",
       },
       {
@@ -144,7 +145,7 @@ const products = [
     color: "#F97316",
     name: "EoS",
     tagline: "Core RTOS Kernel",
-    metrics: ["≤10μs context switch", "ARM · RISC-V · x86", "C11 standard"],
+    metrics: [`${BOARD_COUNT} boards`, "ARM · RISC-V · x86", "C11 standard"],
     href: "/eos",
   },
   {
@@ -160,7 +161,7 @@ const products = [
     color: "#A855F7",
     name: "EAI",
     tagline: "AI Inference Engine",
-    metrics: ["<1ms inference", "INT8/INT4 quant", "256KB min RAM"],
+    metrics: ["INT8/INT4 quant", "CMSIS-NN accelerated", "256KB min RAM"],
     href: "/eai",
   },
   {
@@ -176,7 +177,7 @@ const products = [
     color: "#FBBF24",
     name: "EIPC",
     tagline: "IPC Bus",
-    metrics: ["<1μs latency", "Zero-copy", "Capability tokens"],
+    metrics: ["Zero-copy transport", "Capability tokens", "Shared memory"],
     href: "/products",
   },
   {

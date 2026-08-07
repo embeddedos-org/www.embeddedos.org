@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ExternalLink,
 } from "lucide-react";
+import { BOARD_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -31,7 +32,7 @@ const DOWNLOADS = [
         name: "EmbeddedOS Kernel",
         version: "v1.0.0",
         description:
-          "The core EoS real-time kernel — HAL, scheduler, memory manager, IPC, and device drivers for 52+ boards.",
+          `The core EoS real-time kernel — HAL, scheduler, memory manager, IPC, and device drivers for ${BOARD_COUNT} boards.`,
         size: "2.4 MB",
         license: "MIT",
         github: "https://github.com/embeddedos-org/eos",

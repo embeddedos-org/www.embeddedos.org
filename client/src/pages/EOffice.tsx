@@ -23,6 +23,7 @@ import {
   Check,
   ChevronRight,
 } from "lucide-react";
+import { BOARD_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -64,7 +65,7 @@ const APPS = [
           type: "p",
           text: "The embedded systems team shipped 3 major releases, including EoS v2.4 with improved...",
         },
-        { type: "bullet", text: "EoS v2.4 — 52+ board support" },
+        { type: "bullet", text: `EoS v2.4 — ${BOARD_COUNT} board support` },
         { type: "bullet", text: "eBoot v1.2 — OTA A/B rollback" },
         { type: "bullet", text: "EAI Engine — 4-bit quantization" },
       ],
@@ -118,7 +119,7 @@ const APPS = [
           text: "Slide 1/8 — Title: EmbeddedOS Platform Overview",
         },
         { type: "slide", text: "Slide 2/8 — The EoS Stack" },
-        { type: "slide", text: "Slide 3/8 — 52+ Supported Boards" },
+        { type: "slide", text: `Slide 3/8 — ${BOARD_COUNT} Supported Boards` },
         {
           type: "note",
           text: "Speaker note: Mention STM32H7 performance numbers",

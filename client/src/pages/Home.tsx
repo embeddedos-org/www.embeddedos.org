@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import {
   ArrowRight,
   Github,
@@ -55,8 +56,8 @@ const COMMUNITY_IMG = "/manus-storage/community-illustration-eos_6f39c9db.jpg";
 const OPEN_SOURCE_IMG = "/manus-storage/what-we-do-illustration_4c2ad2f7.jpg";
 
 const STATS = [
-  { value: 22, label: "Repositories", suffix: "", color: "#F97316" },
-  { value: 52, label: "Platforms", suffix: "+", color: "#22D3EE" },
+  { value: REPO_COUNT, label: "Repositories", suffix: "", color: "#F97316" },
+  { value: BOARD_COUNT, label: "Boards", suffix: "", color: "#22D3EE" },
   { value: 300, label: "APIs", suffix: "+", color: "#A78BFA" },
   { value: 60, label: "Apps", suffix: "+", color: "#34D399" },
   { value: 4, label: "Health Devices", suffix: "", color: "#F59E0B" },
@@ -227,7 +228,7 @@ const FEATURES = [
   {
     icon: BarChart3,
     title: "Production Ready",
-    desc: "Deployed across 52+ hardware platforms in automotive, industrial, and IoT environments.",
+    desc: `Board definitions for ${BOARD_COUNT} targets spanning automotive, industrial, and IoT hardware.`,
   },
 ];
 
@@ -428,10 +429,10 @@ export default function Home() {
               {/* Floating badge */}
               <div className="absolute -bottom-4 -left-4 glass rounded-xl px-4 py-3 border border-white/10 animate-float">
                 <div className="text-xs text-white/50 mb-0.5">
-                  Supported Platforms
+                  Supported Boards
                 </div>
                 <div className="font-heading font-bold text-[#22D3EE] text-lg">
-                  52+
+                  {BOARD_COUNT}
                 </div>
               </div>
               <div className="absolute -top-4 -right-4 glass rounded-xl px-4 py-3 border border-white/10 animate-float-delayed">

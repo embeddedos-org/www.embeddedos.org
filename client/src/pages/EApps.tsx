@@ -12,6 +12,7 @@ import {
   Monitor,
   Puzzle,
 } from "lucide-react";
+import { BOARD_COUNT } from "@/data/stack";
 const EAppsCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EAppsCanvas }))
 );
@@ -238,7 +239,7 @@ export default function EApps() {
                   "RTOS task visualizer",
                   "JTAG/SWD debugger",
                   "One-click board flash",
-                  "52+ board profiles",
+                  `${BOARD_COUNT} board profiles`,
                   "eFlow visual editor",
                 ],
                 platforms: ["Windows", "macOS", "Linux", "EmbeddedOS"],

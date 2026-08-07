@@ -28,6 +28,7 @@ import {
   Code2,
   Smartphone,
 } from "lucide-react";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const MODULES = [
   {
@@ -1898,7 +1899,7 @@ const MODULES = [
     color: "#06B6D4",
     title: "EoSim — Embedded Systems Simulator",
     description:
-      "52+ virtual platforms, QEMU + Renode, HIL bridge, and scriptable Python scenarios",
+      `${SIM_PLATFORM_COUNT} virtual platforms, QEMU + Renode, HIL bridge, and scriptable Python scenarios`,
     subsections: [
       {
         name: "CLI Commands",

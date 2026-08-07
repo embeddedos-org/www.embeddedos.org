@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Zap, ArrowRight, Cpu, Code, CheckCircle, Layers } from "lucide-react";
+import { BOARD_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -170,7 +171,7 @@ export default function Flow() {
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
               eFlow is EmbeddedOS's visual programming environment — drag,
-              connect, and deploy firmware to 52+ hardware targets without
+              connect, and deploy firmware to {BOARD_COUNT} hardware targets without
               writing a single line of boilerplate.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -344,7 +345,7 @@ export default function Flow() {
             className="mb-8"
           >
             <h2 className="font-heading font-bold text-white text-3xl mb-2 text-center">
-              52+ Hardware Targets
+              {BOARD_COUNT} Hardware Targets
             </h2>
             <p className="text-white/50 text-center">
               14 CPU architectures supported across 5 hardware categories.

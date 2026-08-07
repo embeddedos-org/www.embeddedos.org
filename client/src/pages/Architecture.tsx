@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import type { DiagramMode } from "../components/ArchitectureDiagram3D";
+import { BOARD_COUNT } from "@/data/stack";
 
 const ArchitectureDiagram3D = lazy(
   () => import("../components/ArchitectureDiagram3D")
@@ -391,7 +392,7 @@ const DIAGRAMS: DiagramDef[] = [
     whyMatters:
       "This unified stack means a single team can build a complete embedded product — from PCB design to shipping apps — without switching vendors or ecosystems. Every layer is MIT-licensed and open-source.",
     stats: [
-      { label: "Supported Platforms", value: "52+" },
+      { label: "Supported Boards", value: String(BOARD_COUNT) },
       { label: "HAL Peripherals", value: "33" },
       { label: "App Ecosystem", value: "60+" },
       { label: "Open Repos", value: "22+" },
@@ -407,12 +408,12 @@ const DIAGRAMS: DiagramDef[] = [
     mode: "layered",
     title: "EoS Kernel Architecture",
     subtitle: "HAL → Kernel → Services → Applications",
-    desc: "The EoS kernel sits above the Hardware Abstraction Layer (HAL), providing deterministic scheduling with <1µs latency, memory management, virtual filesystem, and IPC. Services like EAI, ENI, EIPC, and eDB run as isolated processes above the kernel.",
+    desc: "The EoS kernel sits above the Hardware Abstraction Layer (HAL), providing deterministic fixed-priority preemptive scheduling, memory management, virtual filesystem, and IPC. Services like EAI, ENI, EIPC, and eDB run as isolated processes above the kernel.",
     image: "/manus-storage/arch-eos-kernel_d7d1b4a5.jpg",
     whyMatters:
       "A real-time kernel with hard deadline guarantees is critical for medical devices, industrial controllers, and aerospace systems where a missed deadline can mean patient harm or equipment failure.",
     stats: [
-      { label: "Scheduling Latency", value: "<1µs" },
+      { label: "Board Definitions", value: String(BOARD_COUNT) },
       { label: "HAL Drivers", value: "33" },
       { label: "Form Factors", value: "41" },
       { label: "Min RAM", value: "64KB" },

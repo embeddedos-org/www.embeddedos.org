@@ -9,6 +9,7 @@ import {
   Filter,
   ExternalLink,
 } from "lucide-react";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const BOOKS = [
   {
@@ -138,7 +139,7 @@ const BOOKS = [
   {
     id: "eosim",
     title: "EoSim: Hardware Simulation",
-    subtitle: "Simulate 52+ Platforms Without Hardware",
+    subtitle: `Simulate ${SIM_PLATFORM_COUNT} Platforms Without Hardware`,
     desc: "Use EoSim to develop and test firmware without physical hardware. Covers all 52 supported platforms, GPIO/UART/SPI/I2C simulation, and HIL bridge testing.",
     pages: 280,
     chapters: 20,
@@ -232,7 +233,7 @@ const BOOKS = [
   {
     id: "hardware-guide",
     title: "EmbeddedOS Hardware Guide",
-    subtitle: "52+ Platforms: Setup, Drivers & Optimization",
+    subtitle: `${BOARD_COUNT} Boards: Setup, Drivers & Optimization`,
     desc: "Comprehensive hardware reference covering all 52 supported platforms, board bring-up procedures, driver development, and platform-specific optimizations.",
     pages: 510,
     chapters: 40,

@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link } from "wouter";
+import { BOARD_COUNT } from "@/data/stack";
 
 const sections = [
   {
@@ -85,7 +86,7 @@ const sections = [
     items: [
       {
         name: "EoS Firmware Images",
-        desc: "Pre-built firmware for 52+ supported boards.",
+        desc: `Pre-built firmware for ${BOARD_COUNT} supported boards.`,
         link: "https://github.com/embeddedos-org/eos/releases",
         external: true,
       },

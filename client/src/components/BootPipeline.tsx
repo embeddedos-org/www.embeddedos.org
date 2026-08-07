@@ -1,12 +1,13 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Cpu, Shield, Layers, Zap, Package, Wifi } from "lucide-react";
+import { BOARD_COUNT } from "../data/stack";
 
 const LAYERS = [
   {
     id: "hw",
     label: "Hardware",
-    sublabel: "52+ Platforms",
+    sublabel: `${BOARD_COUNT} Boards`,
     icon: Cpu,
     color: "#22D3EE",
     delay: 0,

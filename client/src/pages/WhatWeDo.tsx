@@ -29,6 +29,7 @@ import {
   Leaf,
   Microscope,
 } from "lucide-react";
+import { BOARD_COUNT, REPO_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const STACK_LAYERS = [
   {
@@ -185,7 +186,7 @@ const STACK_LAYERS = [
       {
         icon: HardDrive,
         label: "EoSim",
-        sub: "52+ virtual platforms · QEMU · HIL",
+        sub: `${SIM_PLATFORM_COUNT} virtual platforms · QEMU · HIL`,
         href: "/eosim",
       },
       {
@@ -243,7 +244,7 @@ const USE_CASES = [
     icon: Building2,
     color: "#60A5FA",
     title: "Smart City & Infrastructure",
-    desc: "EoS runs on smart meters, traffic controllers, and 5G gateways. eDB stores utility telemetry. EIPC routes data between city subsystems. eFlow visualises sensor pipelines. EoSim validates firmware for 52+ embedded platforms before deployment.",
+    desc: `EoS runs on smart meters, traffic controllers, and 5G gateways. eDB stores utility telemetry. EIPC routes data between city subsystems. eFlow visualises sensor pipelines. EoSim validates firmware for ${SIM_PLATFORM_COUNT} virtual platforms before deployment.`,
     products: ["EoS", "eDB", "EIPC", "eFlow", "EoSim"],
     href: "/ecad-hardware",
   },
@@ -266,8 +267,8 @@ const USE_CASES = [
 ];
 
 const PRODUCT_NUMBERS = [
-  { value: "22", label: "GitHub Repos" },
-  { value: "52+", label: "Supported Platforms" },
+  { value: String(REPO_COUNT), label: "GitHub Repos" },
+  { value: String(BOARD_COUNT), label: "Supported Boards" },
   { value: "300+", label: "Public APIs" },
   { value: "43", label: "eApps" },
   { value: "13", label: "Product Lines" },
@@ -633,7 +634,7 @@ export default function WhatWeDo() {
                 color: "#FBBF24",
                 title: "EoStudio + EoSim",
                 sub: "Developer Tools",
-                desc: "Full IDE with board picker, HAL configurator, and AI tutor. Simulate firmware on 52+ virtual platforms with QEMU, Renode, and HIL bridge.",
+                desc: `Full IDE with board picker, HAL configurator, and AI tutor. Simulate firmware on ${SIM_PLATFORM_COUNT} virtual platforms with QEMU, Renode, and HIL bridge.`,
                 href: "/eostudio",
                 cta: "Explore EoStudio",
               },

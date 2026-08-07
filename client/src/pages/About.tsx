@@ -14,6 +14,7 @@ import {
   Twitter,
   Facebook,
 } from "lucide-react";
+import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -188,10 +189,14 @@ export default function About() {
               className="grid grid-cols-2 gap-4"
             >
               {[
-                { value: "22", label: "Open-Source Repos", color: "#F97316" },
                 {
-                  value: "52+",
-                  label: "Supported Platforms",
+                  value: String(REPO_COUNT),
+                  label: "Open-Source Repos",
+                  color: "#F97316",
+                },
+                {
+                  value: String(BOARD_COUNT),
+                  label: "Supported Boards",
                   color: "#22D3EE",
                 },
                 { value: "300+", label: "APIs Documented", color: "#34D399" },

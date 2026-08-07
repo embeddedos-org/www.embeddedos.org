@@ -29,6 +29,7 @@ import {
   Star,
   Check,
 } from "lucide-react";
+import { BOARD_COUNT, FAMILY_COUNT } from "@/data/stack";
 
 // ─── Animation helpers ────────────────────────────────────────────────────────
 
@@ -88,7 +89,7 @@ const FAMILIES = [
         color: "#F59E0B",
       },
     ],
-    stats: ["52+ boards", "Sub-1ms latency", "MIT License", "POSIX-compatible"],
+    stats: [`${BOARD_COUNT} boards`, "Deterministic scheduling", "MIT License", "POSIX-compatible"],
   },
   {
     id: "ai",
@@ -378,7 +379,7 @@ export default function Products() {
             {[
               { value: "22", label: "Repositories" },
               { value: "60+", label: "Applications" },
-              { value: "52+", label: "Supported Boards" },
+              { value: String(BOARD_COUNT), label: "Supported Boards" },
               { value: "4", label: "Health Devices" },
               { value: "2", label: "Aircraft Models" },
               { value: "300+", label: "APIs" },
@@ -493,7 +494,7 @@ export default function Products() {
                 {
                   layer: "Hardware (HAL)",
                   items: [
-                    "52+ MCU Families",
+                    `${FAMILY_COUNT} MCU Families`,
                     "STM32 / ESP32 / nRF52 / RISC-V / i.MX RT / RPi Pico",
                   ],
                   color: "#60A5FA",

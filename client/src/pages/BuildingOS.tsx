@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Layers, Shield, Cpu, Code, ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "wouter";
+import { BOARD_COUNT } from "@/data/stack";
 
 const sections = [
   {
@@ -12,7 +13,7 @@ const sections = [
     points: [
       "Memory isolation between tasks using MPU/MMU",
       "Capability-based security model (no ambient authority)",
-      "Standard HAL — same driver code on 52+ boards",
+      `Standard HAL — same driver code on ${BOARD_COUNT} boards`,
       "Secure OTA with cryptographic verification",
     ],
   },
@@ -65,7 +66,7 @@ const sections = [
       "KiCad schematic → HAL config in one command",
       "Automatic linker script generation from board spec",
       "Reproducible builds with content-addressed artifact cache",
-      "Cross-compilation for 52+ targets from any host OS",
+      `Cross-compilation for ${BOARD_COUNT} targets from any host OS`,
     ],
   },
 ];

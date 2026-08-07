@@ -23,6 +23,7 @@ import {
   CheckCircle2,
   Github,
 } from "lucide-react";
+import { BOARD_COUNT } from "@/data/stack";
 const PCBTrace = lazy(() => import("../components/PCBTrace"));
 const Oscilloscope = lazy(() => import("../components/Oscilloscope"));
 
@@ -236,7 +237,7 @@ const PROGRAMS = [
     id: "blink",
     name: "LED Blink",
     desc: "Toggles an output pin at 1 Hz",
-    code: `// EoS LED Blink — runs on all 52+ platforms
+    code: `// EoS LED Blink — runs on every supported board
 #include <eos/gpio.h>
 #include <eos/time.h>
 
@@ -505,7 +506,7 @@ export default function Demo() {
             custom={1}
             className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
           >
-            Simulate <span style={{ color: "#22D3EE" }}>52+ Boards</span>
+            Simulate <span style={{ color: "#22D3EE" }}>{BOARD_COUNT} Boards</span>
             <br />
             Without Hardware
           </motion.h1>
@@ -1034,7 +1035,7 @@ export default function Demo() {
               {
                 icon: <Cpu size={20} />,
                 color: "#22D3EE",
-                title: "52+ Supported Platforms",
+                title: `${BOARD_COUNT} Supported Boards`,
                 desc: "STM32, ESP32, Raspberry Pi Pico, RISC-V, nRF52, i.MX RT, and more — all simulated in-browser.",
               },
               {
