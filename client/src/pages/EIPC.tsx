@@ -8,7 +8,7 @@ const transports = [
     id: "shared",
     label: "Shared Memory",
     color: "#F97316",
-    latency: "< 1 μs",
+    latency: "Lowest",
     throughput: "10 GB/s",
     desc: "Zero-copy shared memory ring buffer. Fastest transport for same-core or same-chip communication.",
   },
@@ -16,7 +16,7 @@ const transports = [
     id: "uart",
     label: "UART",
     color: "#22D3EE",
-    latency: "< 100 μs",
+    latency: "Higher",
     throughput: "3 Mbps",
     desc: "Framed UART transport with hardware flow control. Ideal for cross-board communication.",
   },
@@ -24,7 +24,7 @@ const transports = [
     id: "spi",
     label: "SPI",
     color: "#A855F7",
-    latency: "< 10 μs",
+    latency: "Low",
     throughput: "50 Mbps",
     desc: "Full-duplex SPI transport with DMA. Used for high-speed sensor data pipelines.",
   },
@@ -32,7 +32,7 @@ const transports = [
     id: "tcp",
     label: "TCP/IP",
     color: "#34D399",
-    latency: "< 1 ms",
+    latency: "Highest",
     throughput: "1 Gbps",
     desc: "TCP transport for networked embedded systems. Supports TLS 1.3 via mbedTLS integration.",
   },
@@ -95,7 +95,7 @@ const features = [
     icon: Zap,
     color: "#F97316",
     title: "Sub-microsecond Latency",
-    desc: "Shared memory transport achieves <1μs latency on same-core communication. Zero serialization overhead for binary payloads.",
+    desc: "Shared memory transport for same-core communication, with zero serialisation overhead for binary payloads.",
   },
   {
     icon: Shield,
@@ -140,7 +140,7 @@ export default function EIPCPage() {
               Embedded Inter-Process Communication
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Ultra-low latency, HMAC-authenticated IPC protocol for EoS
+              Zero-copy, HMAC-authenticated IPC protocol for EoS
               services. Sub-microsecond shared memory transport, 4 transport
               backends, capability-based security.
             </p>
@@ -196,7 +196,9 @@ export default function EIPCPage() {
                 >
                   {t.latency}
                 </div>
-                <div className="text-gray-500 text-sm">Latency</div>
+                <div className="text-gray-500 text-sm">
+                  Relative latency
+                </div>
               </div>
               <div>
                 <div

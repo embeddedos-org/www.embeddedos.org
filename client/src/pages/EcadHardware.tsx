@@ -204,7 +204,7 @@ const CATEGORIES = [
     status: "Production",
     standard: "ISO 26262 ASIL-D",
     products: ["Front Radar", "Rear Radar", "Side Radars ×4", "Fusion ECU"],
-    desc: "360° automotive safety system fusing 4× 77 GHz FMCW radar, 8× cameras, LiDAR, and V2X. AI threat detection at <10 ms latency on EoS.",
+    desc: "360° automotive safety system fusing 4× 77 GHz FMCW radar, 8× cameras, LiDAR, and V2X. AI threat detection running on EoS.",
     specs: [
       { label: "Radar", value: "TI AWR2944 77 GHz" },
       { label: "Range", value: "0–250 m, 0.75 m res" },

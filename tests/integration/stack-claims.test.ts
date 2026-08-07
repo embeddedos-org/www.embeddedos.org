@@ -34,15 +34,29 @@ const pageText = (route: string) => {
     .replace(/\s+/g, " ");
 };
 
+/**
+ * Decoding matters: "<1us" is written to the HTML as "&lt;1μs", so a check that
+ * only looks for "<" silently passes. That hole let six pages keep an unsourced
+ * latency figure through the first run of these tests.
+ */
+const decode = (s: string) =>
+  s
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#(\d+);/g, (_, d) => String.fromCharCode(Number(d)));
+
 const allPages = () =>
   fs.globSync("**/index.html", { cwd: DIST }).map(f => ({
     route: "/" + f.replace(/index\.html$/, "").replace(/\/$/, ""),
-    text: fs
-      .readFileSync(path.join(DIST, f), "utf8")
-      .replace(/<script[\s\S]*?<\/script>/g, "")
-      .replace(/<style[\s\S]*?<\/style>/g, "")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/\s+/g, " "),
+    text: decode(
+      fs
+        .readFileSync(path.join(DIST, f), "utf8")
+        .replace(/<script[\s\S]*?<\/script>/g, "")
+        .replace(/<style[\s\S]*?<\/style>/g, "")
+        .replace(/<[^>]+>/g, " ")
+    ).replace(/\s+/g, " "),
   }));
 
 describe("generated stack data", () => {
@@ -84,14 +98,27 @@ describe("retired claims do not reappear", () => {
     ).toEqual([]);
   });
 
-  it("asserts no kernel latency figure the repository does not measure", () => {
-    // eos has no context-switch or interrupt-latency benchmark: its only
-    // performance test times a host loop. Any such figure here would be
-    // unsourced, and the three that existed contradicted each other.
+  it("states no kernel timing figure the eos repository does not measure", () => {
+    // Scoped deliberately to the kernel's own timing. That claim is provably
+    // unsourced: embeddedos-org/eos has no context-switch or interrupt-latency
+    // benchmark at all — tests/test_performance_benchmarks.c times a host loop
+    // — and the site stated it three incompatible ways at once ("Sub-1ms
+    // interrupt latency", "<1us" scheduling, "<=10us context switch").
+    //
+    // Product-level figures (eRadar360 alert latency, eNI end-to-end, eDB
+    // query) are NOT covered here. They may be design targets or measured on
+    // hardware this repository cannot see; failing them would assert they are
+    // false, which the evidence does not support either way. They are listed in
+    // docs/unverified-claims.md for the owner to confirm or retire.
     const pattern =
-      /(sub-?1\s*ms|≤\s*10\s*[μµ]s|<\s*1\s*[μµ]s)[^.]{0,30}(latency|context switch)/i;
+      /(sub-?\s*\d+\s*(ms|[μµ]s)|[<≤]\s*\d+\s*(ms|[μµ]s))[^.]{0,40}(context switch|interrupt latency|scheduling latency)/i;
+
+    // /roadmap and /research state these as dated targets and a report title
+    // respectively, which is where an unmeasured number can honestly live.
+    const EXEMPT = new Set(["/roadmap", "/research"]);
 
     const offenders = allPages()
+      .filter(p => !EXEMPT.has(p.route))
       .filter(p => pattern.test(p.text))
       .map(p => p.route);
 

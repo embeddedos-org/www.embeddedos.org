@@ -56,8 +56,8 @@ const capabilities = [
   {
     icon: Zap,
     color: "#22D3EE",
-    title: "Sub-10ms Inference",
-    desc: "Optimized inference pipeline: INT8/INT4 quantization, layer fusion, and memory-mapped model loading. <10ms for 1M parameter models.",
+    title: "Optimised Inference Pipeline",
+    desc: "INT8/INT4 quantization, layer fusion, and memory-mapped model loading, tuned for models small enough to run on an MCU.",
   },
   {
     icon: Shield,

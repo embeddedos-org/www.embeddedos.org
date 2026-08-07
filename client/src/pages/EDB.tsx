@@ -73,7 +73,7 @@ const features = [
     icon: Zap,
     color: "#FBBF24",
     title: "Sub-millisecond Latency",
-    desc: "Optimized for embedded storage: B-tree indexes, write-ahead logging, and memory-mapped I/O for <1ms query latency.",
+    desc: "Optimized for embedded storage: B-tree indexes, write-ahead logging, and memory-mapped I/O.",
   },
   {
     icon: Shield,

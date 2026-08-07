@@ -48,7 +48,7 @@ const sections = [
     title: "Inter-Process Communication",
     color: "#34D399",
     content:
-      "EIPC is the backbone of EoS. Every service call — reading a sensor, writing to flash, sending a network packet — goes through EIPC. This gives us a single point for authentication, capability checking, and audit logging. The shared-memory transport achieves <1μs latency for same-chip communication.",
+      "EIPC is the backbone of EoS. Every service call — reading a sensor, writing to flash, sending a network packet — goes through EIPC. This gives us a single point for authentication, capability checking, and audit logging. The shared-memory transport avoids copying payloads between address spaces.",
     points: [
       "4 transports: shared memory, UART, SPI, TCP/IP",
       "HMAC-SHA256 authentication on every frame",

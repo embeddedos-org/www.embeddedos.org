@@ -32,7 +32,7 @@ const pipeline = [
 const useCases = [
   {
     title: "Motor BCI Prosthetics",
-    desc: "Decode motor intent from 64-channel ECoG → eIPC → eAI decoder → robotic arm control. <10ms end-to-end latency.",
+    desc: "Decode motor intent from 64-channel ECoG → eIPC → eAI decoder → robotic arm control.",
     color: "#A855F7",
   },
   {
@@ -83,9 +83,9 @@ export default function EAIEdgePage() {
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-orange-400">
-                  &lt;10ms
+                  v0.1
                 </div>
-                <div className="text-gray-500 text-sm">End-to-End Latency</div>
+                <div className="text-gray-500 text-sm">Profile</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-cyan-400">1024ch</div>
