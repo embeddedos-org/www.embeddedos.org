@@ -149,7 +149,12 @@ test.describe("metadata", () => {
   }) => {
     const seen = new Map<string, string>();
     for (const route of ["/", "/about", "/donate", "/faq", "/organization"]) {
-      await page.goto(route);
+      // domcontentloaded, not load: title, description and canonical are all in
+      // <head> and final as soon as the document parses. /donate's third-party
+      // payment iframe keeps the load event pending for ~7.5s against ~150ms
+      // elsewhere, which put this five-route loop at the edge of its 30s budget
+      // and made it fail intermittently. The assertions below are unchanged.
+      await page.goto(route, { waitUntil: "domcontentloaded" });
       const meta = await page.evaluate(() => ({
         title: document.title,
         description:
