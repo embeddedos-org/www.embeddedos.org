@@ -594,6 +594,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  // Radix NavigationMenu has to be controlled here. Left uncontrolled it closes
+  // on outside-click, blur or Escape — and a wouter <Link> is none of those, so
+  // clicking an item navigated the page while leaving the dropdown open on top
+  // of it, covering the new route and swallowing every click that landed on the
+  // panel. Holding the open item in state lets the route effect below clear it.
+  const [openMenu, setOpenMenu] = useState("");
   const [location] = useLocation();
 
   useEffect(() => {
@@ -605,6 +611,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false);
     setMobileExpanded(null);
+    setOpenMenu("");
   }, [location]);
 
   useEffect(() => {
@@ -667,6 +674,8 @@ export default function Navbar() {
             <NavigationMenu.Root
               className="hidden lg:flex items-center"
               delayDuration={100}
+              value={openMenu}
+              onValueChange={setOpenMenu}
             >
               <NavigationMenu.List className="flex items-center gap-1">
                 {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
@@ -719,6 +728,12 @@ export default function Navbar() {
                                         <Comp
                                           key={item.name}
                                           {...extraProps}
+                                          // The route effect closes the menu on
+                                          // navigation, but clicking through to
+                                          // the page you are already on does not
+                                          // change the location and would leave
+                                          // the panel open. Close it here too.
+                                          onClick={() => setOpenMenu("")}
                                           className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-white/[0.07] transition-all duration-200 group/item"
                                         >
                                           <div

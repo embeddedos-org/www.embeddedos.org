@@ -188,6 +188,13 @@ export default function SearchModal() {
               transition={{ type: "spring", stiffness: 350, damping: 30 }}
               className="w-full max-w-xl bg-[#0d1424] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
               onClick={e => e.stopPropagation()}
+              // Without these a screen reader gets no signal that a modal
+              // opened — focus simply lands on an unlabelled text field in the
+              // middle of the page. DonateModal already carries the same three
+              // attributes; this one was missing them.
+              role="dialog"
+              aria-modal="true"
+              aria-label="Search this site"
             >
               {/* Search input */}
               <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/10">
@@ -197,6 +204,7 @@ export default function SearchModal() {
                   value={query}
                   onChange={e => setQuery(e.target.value)}
                   placeholder="Search pages, projects, hardware…"
+                  aria-label="Search pages, projects and hardware"
                   className="flex-1 bg-transparent text-white placeholder-white/30 outline-none text-sm"
                 />
                 {query && (
