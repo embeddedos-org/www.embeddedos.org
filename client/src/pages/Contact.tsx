@@ -11,7 +11,12 @@ import {
   Landmark,
   Clock,
 } from "lucide-react";
-import { FOUNDATION, CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
+import {
+  FOUNDATION,
+  CONTACT_EMAILS,
+  SOCIAL_URLS,
+  MAILING_ADDRESS,
+} from "@/data/foundation";
 
 const contacts = [
   {
@@ -246,22 +251,38 @@ export default function Contact() {
               ))}
             </dl>
 
-            <div className="flex items-start gap-3 mt-5">
+            <div className="flex items-start gap-3 mt-5 pt-5 border-t border-white/5">
               <MapPin className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
-              <p className="text-gray-500 text-xs leading-relaxed">
-                For postal correspondence, wire transfers or gifts by check,
-                email{" "}
-                {/* Inline links inside a paragraph carry a persistent underline:
-                    colour alone is a WCAG 1.4.1 failure (axe link-in-text-block),
-                    which the accessibility suite enforces on this page. */}
-                <a
-                  href={`mailto:${CONTACT_EMAILS.finance}`}
-                  className="text-orange-400 underline underline-offset-2"
-                >
-                  {CONTACT_EMAILS.finance}
-                </a>{" "}
-                and the Foundation will send its mailing details and a receipt.
-              </p>
+              <div>
+                <div className="text-gray-500 text-xs uppercase tracking-widest mb-1.5">
+                  Mailing address
+                </div>
+                {/* itemProp/address markup mirrors the PostalAddress in the
+                    JSON-LD in client/index.html; both read MAILING_ADDRESS. */}
+                <address className="text-gray-300 text-sm not-italic leading-relaxed">
+                  {FOUNDATION.legalName}
+                  <br />
+                  {MAILING_ADDRESS.street}
+                  <br />
+                  {MAILING_ADDRESS.city}, {MAILING_ADDRESS.region}{" "}
+                  {MAILING_ADDRESS.postalCode}
+                  <br />
+                  {MAILING_ADDRESS.country}
+                </address>
+                <p className="text-gray-500 text-xs leading-relaxed mt-2">
+                  {/* Inline links inside a paragraph carry a persistent
+                      underline: colour alone is a WCAG 1.4.1 failure (axe
+                      link-in-text-block), enforced on this page. */}
+                  For wire transfers, gifts by check or a donation receipt, email{" "}
+                  <a
+                    href={`mailto:${CONTACT_EMAILS.finance}`}
+                    className="text-orange-400 underline underline-offset-2"
+                  >
+                    {CONTACT_EMAILS.finance}
+                  </a>
+                  .
+                </p>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-3 mt-6">

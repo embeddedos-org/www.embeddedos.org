@@ -83,6 +83,7 @@ const Projects = lazyPage("/projects", () => import("./pages/Projects"));
 const About = lazyPage("/about", () => import("./pages/About"));
 const Mission = lazyPage("/mission", () => import("./pages/Mission"));
 const Transparency = lazyPage("/transparency", () => import("./pages/Transparency"));
+const Industries = lazyPage("/industries", () => import("./pages/Industries"));
 const Donate = lazyPage("/donate", () => import("./pages/Donate"));
 const News = lazyPage("/news", () => import("./pages/News"));
 const Privacy = lazyPage("/privacy", () => import("./pages/Privacy"));
@@ -246,6 +247,11 @@ function Router() {
       <Route path="/transparency">
         <Suspense fallback={<PageLoader />}>
           <Transparency />
+        </Suspense>
+      </Route>
+      <Route path="/industries">
+        <Suspense fallback={<PageLoader />}>
+          <Industries />
         </Suspense>
       </Route>
       <Route path="/donate">

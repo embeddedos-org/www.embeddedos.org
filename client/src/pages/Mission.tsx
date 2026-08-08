@@ -371,6 +371,13 @@ export default function Mission() {
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
+                href="/industries"
+                className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press border border-white/10 transition-colors"
+              >
+                Industries We Serve
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link
                 href="/transparency"
                 className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press border border-white/10 transition-colors"
               >

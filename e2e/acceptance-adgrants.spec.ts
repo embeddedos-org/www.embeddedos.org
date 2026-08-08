@@ -70,6 +70,106 @@ test.describe("clear mission", () => {
   });
 });
 
+test.describe("industries and activities", () => {
+  test("the industries page explains the work and covers every sector", async ({
+    page,
+  }) => {
+    await page.goto("/industries");
+    const text = await page.locator("main").innerText();
+
+    // The CAD -> board -> OS -> certification pipeline is the explanation of
+    // what the Foundation actually does across sectors.
+    expect(text).toMatch(/Schematic & CAD/i);
+    expect(text).toMatch(/Operating system & drivers/i);
+
+    // A representative sector from each end of the list.
+    for (const sector of [
+      "Aerospace",
+      "Rail & Transit",
+      "Water & Wastewater",
+      "Sustainable & Circular Electronics",
+    ]) {
+      expect(text, `missing sector: ${sector}`).toContain(sector);
+    }
+  });
+
+  test("every industry card carries a standard, a maturity and a funding theme", async ({
+    page,
+  }) => {
+    await page.goto("/industries");
+    const counts = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll("main article")];
+      return {
+        cards: cards.length,
+        withStandards: cards.filter(c =>
+          /Target standards/i.test(c.textContent ?? "")
+        ).length,
+        withMaturity: cards.filter(c => /Maturity/i.test(c.textContent ?? ""))
+          .length,
+        withDesignField: cards.filter(c =>
+          /Reference design/i.test(c.textContent ?? "")
+        ).length,
+      };
+    });
+    expect(counts.cards).toBeGreaterThanOrEqual(38);
+    expect(counts.withStandards).toBe(counts.cards);
+    expect(counts.withMaturity).toBe(counts.cards);
+    expect(counts.withDesignField).toBe(counts.cards);
+  });
+
+  test("standards are stated as targets, never as certifications held", async ({
+    page,
+  }) => {
+    await page.goto("/industries");
+    const text = await page.locator("main").innerText();
+
+    // The repositories hold no certification from any authority. Two source
+    // datasheets overstate this ("DO-178C Level A certified software",
+    // "ISO 13485 QMS certified"); neither wording may reach the site.
+    expect(text).toMatch(/Target standards are targets, not certifications held/i);
+    expect(text, "no page copy may claim a held certification").not.toMatch(
+      /\b(?:is|are)\s+certified\b|certified\s+(?:software|hardware)/i
+    );
+  });
+
+  test("TRL is disclosed as self-assessed and never claims qualification", async ({
+    page,
+  }) => {
+    await page.goto("/industries");
+    const text = await page.locator("main").innerText();
+
+    expect(text).toMatch(/self-assessed/i);
+    expect(text).toMatch(/TRL 1-2|TRL 2-3|TRL 3-4/);
+
+    // Assert on the badges rather than the prose: the legend deliberately
+    // contains the sentence "nothing here claims TRL 5 or above", which is a
+    // disclaimer, not a claim. What must not exceed TRL 4 is what each card
+    // asserts about a design, so read the cards.
+    const badges = await page
+      .locator("main article")
+      .evaluateAll(cards =>
+        cards
+          .map(c => (c.textContent ?? "").match(/TRL\s*[\d-]+/)?.[0] ?? "")
+          .filter(Boolean)
+      );
+    expect(badges.length).toBeGreaterThanOrEqual(30);
+    const overstated = badges.filter(b => /TRL\s*[5-9]/.test(b));
+    expect(
+      overstated,
+      "no card may assert TRL 5+ without a qualification campaign"
+    ).toEqual([]);
+  });
+
+  test("a sector with no design says so instead of borrowing one", async ({
+    page,
+  }) => {
+    await page.goto("/industries");
+    const text = await page.locator("main").innerText();
+    expect(text).toMatch(/No reference design yet/i);
+    expect(text).toMatch(/Not yet assessed/i);
+  });
+});
+
 test.describe("nonprofit transparency", () => {
   test("registration details are published, not withheld", async ({ page }) => {
     await page.goto("/transparency");
@@ -96,6 +196,15 @@ test.describe("nonprofit transparency", () => {
     const text = await page.locator("main").innerText();
     expect(text).toContain("41-4821627");
     expect(text).not.toMatch(/EIN available upon request/i);
+  });
+
+  test("a verifiable postal address is published", async ({ page }) => {
+    await page.goto("/contact");
+    const address = page.locator("main address");
+    await expect(address).toBeVisible();
+    const text = await address.innerText();
+    expect(text).toMatch(/2601 Cortez Dr/);
+    expect(text).toMatch(/Santa Clara, CA 95051/);
   });
 
   test("use-of-funds is stated and no financial figure is invented", async ({
@@ -134,6 +243,7 @@ test.describe("substantial, original content", () => {
     "/about",
     "/mission",
     "/transparency",
+    "/industries",
     "/what-we-do",
     "/organization",
     "/getting-started",
