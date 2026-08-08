@@ -158,3 +158,156 @@ test.describe("server regressions", () => {
     expect(res.headers()["x-powered-by"]).toBeUndefined();
   });
 });
+
+test.describe("navigation regressions", () => {
+  /**
+   * The desktop dropdown was left uncontrolled, so Radix only closed it on an
+   * outside click, a blur or Escape. A wouter <Link> is none of those: clicking
+   * an item navigated the page and left the panel open on top of the new route,
+   * covering it and swallowing every click that landed on the panel.
+   */
+  test("the desktop dropdown closes after navigating through it", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+
+    const trigger = page.getByRole("button", { name: /Community/i }).first();
+    await trigger.click();
+
+    const item = page.locator('a[href="/mission"]').first();
+    await expect(item).toBeVisible();
+    await item.click();
+
+    await expect(page).toHaveURL(/\/mission$/);
+    await expect(
+      page.locator('[data-state="open"]'),
+      "dropdown must not stay open over the page it navigated to"
+    ).toHaveCount(0);
+  });
+
+  test("the page navigated to is actually clickable afterwards", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /Community/i }).first().click();
+    await page.locator('a[href="/mission"]').first().click();
+    await expect(page).toHaveURL(/\/mission$/);
+
+    // If the panel were still covering the route, this heading would be
+    // obscured and a click at its position would hit the overlay instead.
+    const heading = page.locator("main h1").first();
+    await expect(heading).toBeVisible();
+    const covered = await heading.evaluate(el => {
+      const r = el.getBoundingClientRect();
+      const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+      return !!top && !el.contains(top) && top !== el;
+    });
+    expect(covered, "an overlay is intercepting clicks on the page").toBe(false);
+  });
+
+  test("clicking through to the route already open still closes the menu", async ({
+    page,
+  }) => {
+    // Same-route navigation does not change location, so the route effect never
+    // fires; the item's own click handler has to close the panel.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/mission");
+
+    await page.getByRole("button", { name: /Community/i }).first().click();
+    await page.locator('a[href="/mission"]').first().click();
+    await expect(page.locator('[data-state="open"]')).toHaveCount(0);
+  });
+
+  test("the mobile menu closes after navigating through it", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/");
+
+    await page.getByRole("button", { name: /open menu/i }).first().click();
+
+    // The mobile panel is an accordion: a section has to be expanded before its
+    // items exist, so scope the item lookup to the panel rather than the page —
+    // /about also appears in the homepage body and the footer.
+    const panel = page.locator("#mobile-menu");
+    await expect(panel).toBeVisible();
+    await panel.getByRole("button", { name: "Community" }).click();
+
+    const item = panel.locator('a[href="/about"]').first();
+    await expect(item).toBeVisible();
+    await item.click();
+
+    await expect(page).toHaveURL(/\/about$/);
+    await expect(panel, "the mobile panel must close on navigation").toHaveCount(
+      0
+    );
+  });
+});
+
+test.describe("modal regressions", () => {
+  /**
+   * The search overlay rendered as a bare motion.div: no role, no aria-modal,
+   * no accessible name. Focus moved into an unlabelled text field with nothing
+   * announcing that a dialog had opened. DonateModal already carried all three
+   * attributes, so the two modals disagreed.
+   */
+  test("the search modal is announced as a dialog", async ({ page }) => {
+    await page.goto("/");
+    await page.locator('button[aria-label*="Search" i]').first().click();
+
+    const dialog = page.getByRole("dialog", { name: /search/i });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveAttribute("aria-modal", "true");
+
+    const field = dialog.getByRole("textbox");
+    await expect(field).toBeFocused();
+  });
+
+  test("the search modal closes on Escape and on a backdrop click", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const open = page.locator('button[aria-label*="Search" i]').first();
+    const dialog = page.getByRole("dialog", { name: /search/i });
+
+    await open.click();
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+
+    await open.click();
+    await expect(dialog).toBeVisible();
+    await page.mouse.click(15, 15);
+    await expect(dialog).toHaveCount(0);
+  });
+
+  /**
+   * /mission, /industries and /transparency were added to the router and the
+   * sitemap but not to the search index in server/routers.ts, so searching
+   * "mission" returned /vision and /about and never the mission page itself.
+   * Results render as buttons, not links, so assert on the button label.
+   */
+  test("newly added pages are reachable from search", async ({ page }) => {
+    for (const [query, label] of [
+      ["mission", /Mission & Scope/i],
+      ["industries", /Industries We Serve/i],
+      ["transparency", /Transparency & Accountability/i],
+    ] as const) {
+      await page.goto("/");
+      await page.locator('button[aria-label*="Search" i]').first().click();
+      const dialog = page.getByRole("dialog", { name: /search/i });
+      await expect(dialog).toBeVisible();
+      // fill(), not keyboard.type(): the modal focuses its input on a 100ms
+      // timeout, and typing before that lands drops the keystrokes on the floor.
+      await dialog.getByRole("textbox").fill(query);
+      await expect(
+        dialog.getByRole("button", { name: label }),
+        `search "${query}" must surface ${label}`
+      ).toBeVisible();
+      await page.keyboard.press("Escape");
+    }
+  });
+});

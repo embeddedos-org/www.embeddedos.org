@@ -60,7 +60,13 @@ test.describe("document structure", () => {
     page,
   }) => {
     for (const route of PAGES) {
-      await page.goto(route);
+      // domcontentloaded, not load: heading structure is final as soon as the
+      // document parses, while /donate's third-party payment iframe keeps the
+      // load event pending for ~7.5s against ~150ms for every other page. That
+      // one route was consuming the whole 30s budget for this loop and making
+      // the test hostage to a payment provider's uptime. The assertions below
+      // are unchanged.
+      await page.goto(route, { waitUntil: "domcontentloaded" });
       const levels = await page.evaluate(() =>
         [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")].map(h =>
           Number(h.tagName[1])
