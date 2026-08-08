@@ -50,6 +50,7 @@ import {
   GraduationCap,
   Target,
   Scale,
+  Factory,
 } from "lucide-react";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "../data/stack";
 
@@ -531,6 +532,14 @@ const NAV_ITEMS = {
             icon: Target,
             href: "/mission",
             color: "#F97316",
+            external: false,
+          },
+          {
+            name: "Industries",
+            desc: "38 sectors, standards & maturity",
+            icon: Factory,
+            href: "/industries",
+            color: "#FBBF24",
             external: false,
           },
           {

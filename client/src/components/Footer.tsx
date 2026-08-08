@@ -19,6 +19,7 @@ const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
     { name: "Mission & Scope", href: "/mission" },
+    { name: "Industries", href: "/industries" },
     { name: "Our Vision", href: "/vision" },
     { name: "Organization", href: "/organization" },
     { name: "Transparency", href: "/transparency" },

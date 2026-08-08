@@ -75,6 +75,16 @@ describe("structured data agrees with the source of truth", () => {
     expect(structuredData().url).toBe(foundationValue("website"));
   });
 
+  it("publishes the same postal address the contact page publishes", () => {
+    const address = structuredData().address as Record<string, string>;
+    expect(address["@type"]).toBe("PostalAddress");
+    expect(address.streetAddress).toBe(foundationValue("street"));
+    expect(address.addressLocality).toBe(foundationValue("city"));
+    expect(address.addressRegion).toBe(foundationValue("region"));
+    expect(address.postalCode).toBe(foundationValue("postalCode"));
+    expect(address.addressCountry).toBe(foundationValue("countryCode"));
+  });
+
   it("declares 501(c)(3) status", () => {
     const data = structuredData();
     expect(data["@type"]).toBe("NGO");

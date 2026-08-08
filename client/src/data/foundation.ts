@@ -31,6 +31,21 @@ export const FOUNDATION = {
 } as const;
 
 /**
+ * The Foundation's address of record, split so the same values feed the
+ * `/contact` page and the PostalAddress in the JSON-LD without being retyped.
+ * A verifiable address is one of the things an Ad Grants reviewer looks for, and
+ * it was previously absent from every page.
+ */
+export const MAILING_ADDRESS = {
+  street: "2601 Cortez Dr",
+  city: "Santa Clara",
+  region: "CA",
+  postalCode: "95051",
+  country: "United States",
+  countryCode: "US",
+} as const;
+
+/**
  * The IRS's public lookup for exempt organisations. Linked rather than deep
  * linked by EIN: the Tax Exempt Organization Search takes its query through a
  * POST-backed form, so an EIN-bearing URL is not stable enough to publish.

@@ -26,6 +26,7 @@ const ROUTES = process.env.AUDIT_ROUTES?.split(",") ?? [
   "/about",
   "/mission",
   "/transparency",
+  "/industries",
   "/organization",
   "/what-we-do",
   "/donate",

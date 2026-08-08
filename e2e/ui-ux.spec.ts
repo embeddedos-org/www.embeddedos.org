@@ -13,6 +13,7 @@ const PAGES = [
   "/about",
   "/mission",
   "/transparency",
+  "/industries",
   "/organization",
   "/donate",
   "/contact",
