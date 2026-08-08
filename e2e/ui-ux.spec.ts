@@ -8,7 +8,16 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const PAGES = ["/", "/about", "/donate", "/contact", "/faq"];
+const PAGES = [
+  "/",
+  "/about",
+  "/mission",
+  "/transparency",
+  "/organization",
+  "/donate",
+  "/contact",
+  "/faq",
+];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
   for (const route of PAGES) {

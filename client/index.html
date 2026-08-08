@@ -27,6 +27,40 @@
       content="https://www.embeddedos.org/manus-storage/hero-background_1bafea1c.jpg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <!--
+      Nonprofit identity as structured data. Google reads the mission, the legal
+      name and the tax ID from the page text either way, but only a reviewer
+      does; this states the same facts in a form the crawler parses directly.
+      Every value here is duplicated from client/src/data/foundation.ts — change
+      both, or neither. tests/unit/foundation-schema.test.ts fails if they drift.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "NGO",
+        "name": "Embedded Operating Systems Research Foundation",
+        "alternateName": "EmbeddedOS Foundation",
+        "url": "https://www.embeddedos.org",
+        "logo": "https://www.embeddedos.org/manus-storage/embeddedos-logo-mark_bc053888.jpg",
+        "description": "A 501(c)(3) public charity advancing open-source embedded systems research, education and technology for the public benefit.",
+        "taxID": "41-4821627",
+        "nonprofitStatus": "Nonprofit501c3",
+        "foundingDate": "2018",
+        "areaServed": "Worldwide",
+        "email": "hello@embeddedos.org",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "US"
+        },
+        "sameAs": [
+          "https://github.com/embeddedos-org",
+          "https://x.com/EmbeddedOS_ORG",
+          "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
+          "https://www.youtube.com/@EmbeddedOS_ORG",
+          "https://www.facebook.com/profile.php?id=61588978691494"
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Load webfonts without blocking first render. -->

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import {
   Mail,
   Github,
@@ -7,50 +8,60 @@ import {
   MapPin,
   ArrowRight,
   Globe,
+  Landmark,
+  Clock,
 } from "lucide-react";
+import { FOUNDATION, CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
 
 const contacts = [
   {
     icon: Mail,
     color: "#F97316",
     title: "General Inquiries",
-    email: "hello@embeddedos.org",
+    email: CONTACT_EMAILS.general,
     desc: "Questions about EmbeddedOS products, partnerships, or the Foundation.",
   },
   {
     icon: Mail,
     color: "#EF4444",
     title: "Security Vulnerabilities",
-    email: "security@embeddedos.org",
+    email: CONTACT_EMAILS.security,
     desc: "Report security vulnerabilities via responsible disclosure. Do not use GitHub issues.",
   },
   {
     icon: Mail,
     color: "#22D3EE",
     title: "Press & Media",
-    email: "press@embeddedos.org",
+    email: CONTACT_EMAILS.press,
     desc: "Press inquiries, interview requests, and media kit downloads.",
   },
   {
     icon: Mail,
     color: "#A855F7",
     title: "Partnerships & Sponsors",
-    email: "partners@embeddedos.org",
+    email: CONTACT_EMAILS.partners,
     desc: "Corporate sponsorships, hardware partnerships, and research collaborations.",
   },
   {
     icon: Mail,
     color: "#34D399",
     title: "Careers & Internships",
-    email: "careers@embeddedos.org",
+    email: CONTACT_EMAILS.careers,
     desc: "Job applications, internship inquiries, and fellowship applications.",
   },
   {
     icon: Mail,
     color: "#FBBF24",
     title: "Donations & Fundraising",
-    email: "donate@embeddedos.org",
+    email: CONTACT_EMAILS.donations,
     desc: "Tax-deductible donations, grant applications, and fundraising questions.",
+  },
+  {
+    icon: Mail,
+    color: "#60A5FA",
+    title: "Finance & Governance",
+    email: CONTACT_EMAILS.finance,
+    desc: "Registration documents, donation receipts, wire and check gifts, grant paperwork.",
   },
 ];
 
@@ -60,29 +71,43 @@ const social = [
     color: "#E5E7EB",
     name: "GitHub",
     handle: "@embeddedos-org",
-    href: "https://github.com/embeddedos-org",
+    href: SOCIAL_URLS.github,
   },
   {
     icon: Twitter,
     color: "#1D9BF0",
     name: "X / Twitter",
-    handle: "@embeddedos",
-    href: "https://twitter.com/embeddedos",
+    handle: "@EmbeddedOS_ORG",
+    href: SOCIAL_URLS.x,
   },
   {
     icon: MessageSquare,
     color: "#5865F2",
     name: "GitHub Discussions",
     handle: "EmbeddedOS Community",
-    href: "https://github.com/orgs/embeddedos-org/discussions",
+    href: SOCIAL_URLS.discussions,
   },
   {
     icon: Globe,
     color: "#F97316",
     name: "Website",
     handle: "www.embeddedos.org",
-    href: "https://www.embeddedos.org",
+    href: FOUNDATION.website,
   },
+];
+
+/**
+ * The legal identity of the organisation behind every address above. Published
+ * in full rather than "available on request": the EIN is what lets a donor or a
+ * reviewer confirm the Foundation independently, and withholding it while
+ * `/donate` and `/organization` print it was a contradiction on the one number
+ * that proves charitable status.
+ */
+const REGISTRATION = [
+  { label: "Legal name", value: FOUNDATION.legalName },
+  { label: "Status", value: FOUNDATION.taxStatus },
+  { label: "EIN", value: FOUNDATION.ein },
+  { label: "Jurisdiction", value: FOUNDATION.jurisdiction },
 ];
 
 export default function Contact() {
@@ -103,6 +128,17 @@ export default function Contact() {
             </h1>
             <p className="text-xl text-gray-300">
               Get in touch with the EmbeddedOS Foundation team.
+            </p>
+            <p className="text-sm text-gray-500 mt-4 max-w-xl mx-auto leading-relaxed">
+              Every address below reaches a person, not a queue. Security
+              reports are answered within 48 hours under the{" "}
+              <Link
+                href="/security"
+                className="text-orange-400 underline underline-offset-2"
+              >
+                security policy
+              </Link>
+              ; other enquiries are answered in the order they arrive.
             </p>
           </motion.div>
         </div>
@@ -183,22 +219,76 @@ export default function Contact() {
 
       <section className="py-12 px-4">
         <div className="max-w-3xl mx-auto">
+          <h2 className="text-xl font-bold text-white mb-6">
+            The Organization You Are Contacting
+          </h2>
           <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-            <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <div className="text-white font-medium mb-1">
-                  EmbeddedOS Research Foundation
-                </div>
-                <div className="text-gray-400 text-sm">
-                  501(c)(3) Nonprofit Organization
-                </div>
-                <div className="text-gray-400 text-sm mt-1">United States</div>
-                <div className="text-gray-500 text-xs mt-2">
-                  EIN available upon request for donation tax receipts.
-                </div>
-              </div>
+            <div className="flex items-start gap-3 mb-5">
+              <Landmark className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
+              <p className="text-gray-400 text-sm leading-relaxed">
+                All of the addresses above belong to one registered nonprofit.
+                Its details are published in full so you can confirm who you are
+                writing to before you write.
+              </p>
             </div>
+
+            <dl className="space-y-3">
+              {REGISTRATION.map(row => (
+                <div
+                  key={row.label}
+                  className="flex items-start justify-between gap-4 py-2 border-b border-white/5"
+                >
+                  <dt className="text-gray-500 text-sm">{row.label}</dt>
+                  <dd className="text-gray-300 text-sm text-right">
+                    {row.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <div className="flex items-start gap-3 mt-5">
+              <MapPin className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+              <p className="text-gray-500 text-xs leading-relaxed">
+                For postal correspondence, wire transfers or gifts by check,
+                email{" "}
+                {/* Inline links inside a paragraph carry a persistent underline:
+                    colour alone is a WCAG 1.4.1 failure (axe link-in-text-block),
+                    which the accessibility suite enforces on this page. */}
+                <a
+                  href={`mailto:${CONTACT_EMAILS.finance}`}
+                  className="text-orange-400 underline underline-offset-2"
+                >
+                  {CONTACT_EMAILS.finance}
+                </a>{" "}
+                and the Foundation will send its mailing details and a receipt.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3 mt-6">
+              <Link
+                href="/transparency"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-lg border border-white/15 transition-colors"
+              >
+                Registration &amp; finances
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                href="/mission"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-lg border border-white/15 transition-colors"
+              >
+                Mission &amp; scope
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-start gap-3 text-gray-500 text-xs">
+            <Clock className="w-4 h-4 text-gray-600 flex-shrink-0 mt-0.5" />
+            <p className="leading-relaxed">
+              The Foundation is a volunteer-supported {FOUNDATION.taxStatus}.
+              Replies come from maintainers and staff rather than a support
+              desk, so please allow time for a considered answer.
+            </p>
           </div>
         </div>
       </section>

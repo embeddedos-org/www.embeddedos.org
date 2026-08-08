@@ -35,12 +35,105 @@ test.describe("clear mission", () => {
     expect(text.length).toBeGreaterThan(1500);
     expect(text).toMatch(/501\(c\)\(3\)/);
   });
+
+  test("the mission page states the mission, the scope and the programmes", async ({
+    page,
+  }) => {
+    await page.goto("/mission");
+    const text = await page.locator("main").innerText();
+
+    // The statement itself, not merely the word "mission".
+    expect(text).toMatch(/advance open-source embedded systems research/i);
+    expect(text).toContain("41-4821627");
+
+    // Scope has to have an edge: both halves must be present.
+    expect(text).toMatch(/what the Foundation does not do/i);
+    expect(text).toMatch(/do not sell software/i);
+
+    // Every programme is named on the page.
+    for (const programme of [
+      "Open-Source Platform Engineering",
+      "Education and Free Curriculum",
+      "Research and Publication",
+      "Workforce Development",
+      "Community and Ecosystem Stewardship",
+    ]) {
+      expect(text, `missing programme: ${programme}`).toContain(programme);
+    }
+  });
+
+  test("the mission is reachable from the homepage in one click", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator('a[href="/mission"]').first()).toBeVisible();
+  });
+});
+
+test.describe("nonprofit transparency", () => {
+  test("registration details are published, not withheld", async ({ page }) => {
+    await page.goto("/transparency");
+    const text = await page.locator("main").innerText();
+
+    expect(text).toContain("41-4821627");
+    expect(text).toMatch(/501\(c\)\(3\)/);
+    expect(text).toMatch(/509\(a\)\(2\)/);
+    expect(text).toMatch(/Embedded Operating Systems Research Foundation/);
+  });
+
+  test("the page links the IRS record so status can be verified independently", async ({
+    page,
+  }) => {
+    await page.goto("/transparency");
+    const irs = page.locator('a[href^="https://apps.irs.gov"]');
+    await expect(irs.first()).toBeVisible();
+  });
+
+  test("the contact page publishes the EIN rather than offering it on request", async ({
+    page,
+  }) => {
+    await page.goto("/contact");
+    const text = await page.locator("main").innerText();
+    expect(text).toContain("41-4821627");
+    expect(text).not.toMatch(/EIN available upon request/i);
+  });
+
+  test("use-of-funds is stated and no financial figure is invented", async ({
+    page,
+  }) => {
+    await page.goto("/transparency");
+    const text = await page.locator("main").innerText();
+
+    expect(text).toMatch(/what happens to money given to the Foundation/i);
+
+    // The first tax year is still open, so the page must say when real numbers
+    // arrive rather than print a dollar amount it cannot support.
+    expect(text).toMatch(/no annual return exists yet|first tax year/i);
+    expect(
+      text,
+      "no currency figure may appear before a return is filed"
+    ).not.toMatch(/\$\s?[\d,]{4,}/);
+  });
+
+  test("the shell carries nonprofit structured data", async ({ page }) => {
+    await page.goto("/");
+    const raw = await page
+      .locator('script[type="application/ld+json"]')
+      .first()
+      .textContent();
+    const data = JSON.parse(raw ?? "{}");
+    expect(data["@type"]).toBe("NGO");
+    expect(data.taxID).toBe("41-4821627");
+    expect(data.nonprofitStatus).toBe("Nonprofit501c3");
+  });
 });
 
 test.describe("substantial, original content", () => {
   const SAMPLE = [
     "/",
     "/about",
+    "/mission",
+    "/transparency",
     "/what-we-do",
     "/organization",
     "/getting-started",

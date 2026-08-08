@@ -595,6 +595,13 @@ export default function Home() {
               <ArrowRight size={16} />
             </Link>
             <Link
+              href="/mission"
+              className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press"
+            >
+              Our Mission &amp; Scope
+              <ArrowRight size={16} />
+            </Link>
+            <Link
               href="/about"
               className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press"
             >

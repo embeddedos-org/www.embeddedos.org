@@ -18,8 +18,10 @@ const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
+    { name: "Mission & Scope", href: "/mission" },
     { name: "Our Vision", href: "/vision" },
     { name: "Organization", href: "/organization" },
+    { name: "Transparency", href: "/transparency" },
     { name: "Careers", href: "/careers" },
     { name: "Internships", href: "/internship" },
     { name: "Contact", href: "/contact" },
