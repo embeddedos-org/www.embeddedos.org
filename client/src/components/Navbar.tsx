@@ -48,6 +48,8 @@ import {
   Atom,
   Briefcase,
   GraduationCap,
+  Target,
+  Scale,
 } from "lucide-react";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "../data/stack";
 
@@ -521,6 +523,22 @@ const NAV_ITEMS = {
             icon: Users,
             href: "/about",
             color: "#34D399",
+            external: false,
+          },
+          {
+            name: "Mission & Scope",
+            desc: "Charitable purpose & programmes",
+            icon: Target,
+            href: "/mission",
+            color: "#F97316",
+            external: false,
+          },
+          {
+            name: "Transparency",
+            desc: "Registration, finances & policies",
+            icon: Scale,
+            href: "/transparency",
+            color: "#22D3EE",
             external: false,
           },
           {

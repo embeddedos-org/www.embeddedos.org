@@ -9,43 +9,94 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { Link } from "wouter";
+import { FOUNDATION, IRS_LOOKUP_URL } from "@/data/foundation";
 
+/**
+ * The four bodies that govern the Foundation. Each entry says what the body
+ * decides, how someone joins it, and how often it meets — the questions a
+ * reader actually has when deciding whether a project's direction is captured
+ * by one company. Individual directors and maintainers are not listed here;
+ * current maintainership is visible on each repository, which stays accurate
+ * without this page having to be edited.
+ */
 const governance = [
   {
     role: "Board of Directors",
-    desc: "Sets Foundation strategy, approves budgets, and ensures 501(c)(3) compliance. Meets quarterly.",
     members: "5 directors",
+    desc: "Sets Foundation strategy, approves budgets, and ensures 501(c)(3) compliance. Meets quarterly.",
+    decides: [
+      "Annual budget and the allocation of donated funds across programmes",
+      "Legal and tax compliance, including the annual return",
+      "Appointment and removal of officers",
+      "Acceptance of restricted gifts, sponsorships and grants",
+    ],
+    appointment:
+      "Directors are elected by the sitting board and serve fixed terms. " +
+      "Directors with a financial interest in a matter recuse themselves from " +
+      "the decision.",
+    cadence: "Meets quarterly",
   },
   {
     role: "Technical Steering Committee (TSC)",
-    desc: "Governs technical direction, approves major architectural changes, and manages the release process.",
     members: "7 members",
+    desc: "Governs technical direction, approves major architectural changes, and manages the release process.",
+    decides: [
+      "Architecture changes that cross component boundaries",
+      "Which components are part of the supported platform",
+      "Release scope, timing and the deprecation of public interfaces",
+      "Appointment of core maintainers",
+    ],
+    appointment:
+      "Seats are earned through sustained technical contribution, not " +
+      "purchased. Sponsorship and membership confer no seat and no vote.",
+    cadence: "Meets on a published cycle; decisions are recorded in public",
   },
   {
     role: "Working Groups",
-    desc: "Focused groups for specific areas: Security, Documentation, Education, Hardware Certification, and Community.",
     members: "Open membership",
+    desc: "Focused groups for specific areas: Security, Documentation, Education, Hardware Certification, and Community.",
+    decides: [
+      "Day-to-day direction within their own area",
+      "Standards and review criteria the wider project then follows",
+      "Proposals escalated to the TSC when they cross into other areas",
+    ],
+    appointment:
+      "Open to anyone who turns up and does the work. No membership, " +
+      "employer or donation is required to join or to be heard.",
+    cadence: "Each group sets its own cadence and publishes its notes",
   },
   {
     role: "Core Maintainers",
-    desc: "Engineers with merge rights to core EoS repositories. Appointed by the TSC based on contribution history.",
     members: "12 maintainers",
+    desc: "Engineers with merge rights to core EoS repositories. Appointed by the TSC based on contribution history.",
+    decides: [
+      "Whether a change is merged into the repository they maintain",
+      "Code review standards and the test bar for their component",
+      "Security fixes under coordinated disclosure",
+    ],
+    appointment:
+      "Appointed by the TSC on the strength of a public contribution record. " +
+      "Merge rights follow demonstrated review judgement, not employment.",
+    cadence: "Continuous; all review happens in public pull requests",
   },
 ];
 
 const legal = [
+  { label: "Legal Name", value: FOUNDATION.legalName },
+  { label: "Organization Type", value: FOUNDATION.taxStatus },
   {
-    label: "Legal Name",
-    value: "Embedded Operating Systems Research Foundation",
+    label: "Public Charity Classification",
+    value: FOUNDATION.publicCharityClassification,
   },
-  { label: "Organization Type", value: "501(c)(3) Public Charity" },
-  { label: "Public Charity Classification", value: "509(a)(2)" },
-  { label: "Jurisdiction", value: "United States" },
-  { label: "EIN", value: "41-4821627" },
-  { label: "Effective Date of Exemption", value: "March 11, 2026" },
-  { label: "Accounting Period Ending", value: "December 31" },
+  { label: "Jurisdiction", value: FOUNDATION.jurisdiction },
+  { label: "EIN", value: FOUNDATION.ein },
+  {
+    label: "Effective Date of Exemption",
+    value: FOUNDATION.exemptionEffective,
+  },
+  { label: "Accounting Period Ending", value: FOUNDATION.accountingPeriodEnds },
   { label: "Contribution Deductibility", value: "Yes — IRC Section 170" },
-  { label: "Primary License", value: "MIT License" },
+  { label: "Primary License", value: FOUNDATION.softwareLicense },
   { label: "Trademark", value: "EmbeddedOS™, EoS™, eFlow™, EoStudio™" },
 ];
 
@@ -85,9 +136,15 @@ export default function Organization() {
 
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">
+          <h2 className="text-xl font-bold text-white mb-3">
             Governance Structure
           </h2>
+          <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-3xl">
+            Four bodies govern the Foundation. Each one below states what it
+            decides, how a person joins it, and how often it meets — because
+            "open governance" only means something if you can see where a
+            decision is made and who is allowed to make it.
+          </p>
           <div className="space-y-4">
             {governance.map((g, i) => (
               <motion.div
@@ -98,7 +155,7 @@ export default function Organization() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white/5 border border-white/10 rounded-xl p-5"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start justify-between gap-4 mb-4">
                   <div>
                     <h3 className="text-white font-semibold mb-1">{g.role}</h3>
                     <p className="text-gray-400 text-sm">{g.desc}</p>
@@ -106,6 +163,45 @@ export default function Organization() {
                   <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium flex-shrink-0">
                     {g.members}
                   </span>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-5 pt-4 border-t border-white/5">
+                  <div>
+                    <h4 className="text-gray-500 text-[10px] uppercase tracking-[0.18em] font-bold mb-2.5">
+                      What it decides
+                    </h4>
+                    <ul className="space-y-1.5">
+                      {g.decides.map(d => (
+                        <li
+                          key={d}
+                          className="flex items-start gap-2 text-sm text-gray-400 leading-relaxed"
+                        >
+                          <CheckCircle2
+                            className="w-3.5 h-3.5 text-blue-400 flex-shrink-0 mt-1"
+                            aria-hidden="true"
+                          />
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-gray-500 text-[10px] uppercase tracking-[0.18em] font-bold mb-2">
+                        How people join
+                      </h4>
+                      <p className="text-sm text-gray-400 leading-relaxed">
+                        {g.appointment}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Users
+                        className="w-3.5 h-3.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span>{g.cadence}</span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -147,16 +243,60 @@ export default function Organization() {
             </div>
           </div>
         </div>
+
+        <div className="max-w-4xl mx-auto mt-6">
+          <div className="bg-white/5 border border-blue-500/20 rounded-xl p-5">
+            <p className="text-gray-400 text-sm leading-relaxed">
+              The Internal Revenue Service publishes its own record of every
+              exempt organization. Confirm the details above independently by
+              searching the{" "}
+              {/* Underlined, not merely coloured: an in-paragraph link
+                  distinguished by colour alone is a WCAG 1.4.1 failure that the
+                  accessibility suite enforces on this page. */}
+              <a
+                href={IRS_LOOKUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 underline underline-offset-2 inline-flex items-center gap-1"
+              >
+                Tax Exempt Organization Search
+                <ExternalLink className="w-3 h-3" />
+              </a>{" "}
+              for EIN{" "}
+              <span className="text-gray-200 font-medium">
+                {FOUNDATION.ein}
+              </span>
+              . Full registration details, the use-of-funds policy and the
+              financial reporting timetable are on the{" "}
+              <Link
+                href="/transparency"
+                className="text-blue-400 underline underline-offset-2"
+              >
+                transparency page
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="py-12 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex flex-wrap gap-4 justify-center">
+            {/* blue-600, not blue-500: white on blue-500 measures 3.68:1, under
+                the 4.5:1 WCAG AA floor for this text size. blue-600 reaches
+                5.17:1 and keeps the page's blue palette. */}
             <Link
               href="/donate"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
             >
               Support the Foundation <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/mission"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
+            >
+              Mission &amp; Scope
             </Link>
             <Link
               href="/get-involved"

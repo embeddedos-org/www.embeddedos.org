@@ -17,7 +17,7 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 | ID | Task | Owner | Verified by | Evidence |
 |----|------|-------|-------------|----------|
-| —  | None yet. | — | — | — |
+| T-001 | Mission & scope and nonprofit transparency for the Google Ad Grants website policy | frontend | acceptance + a11y + audits | `pnpm check` PASS · `pnpm test` 321/321 PASS · `pnpm test:e2e` 118/118 PASS (incl. 28 Ad Grants acceptance criteria) · `pnpm audit:site` 0 failures · `pnpm audit:mobile` 25 routes, no overflow. Open items in [docs/unverified-claims.md](./docs/unverified-claims.md); mailing address still unpublished. |
 
 ---
 

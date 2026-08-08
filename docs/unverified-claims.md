@@ -49,6 +49,13 @@ EoSim's simulated platforms (quoted as the same `52+` → 150, counted from
 Not performance figures, so not covered by the tests above, but stated as fact
 and not derived from any repository:
 
+- `5 directors`, `7 members` (TSC), `12 maintainers` (`/organization`) — governance
+  headcounts. Nothing in the repositories or on the site establishes them. The
+  surrounding text was expanded on 2026-08-08 to describe each body's mandate and
+  joining process, which is verifiable; the counts themselves were left alone
+  because removing them was not the option chosen. Either confirm them against
+  the board minutes and the TSC roster, or drop the badges and let the mandate
+  text stand on its own.
 - `300+ APIs`, `14 books`, `60+ apps`, `4 health devices` (`/`, `/about`)
 - `33 HAL drivers`, `41 form factors`, `64KB min RAM` (`/architecture`)
 - Patent application numbers on `/about` and `/patents` — these are of the form

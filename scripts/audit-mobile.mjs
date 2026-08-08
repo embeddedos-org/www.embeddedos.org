@@ -24,6 +24,8 @@ const MOBILE = { width: 375, height: 667 };
 const ROUTES = process.env.AUDIT_ROUTES?.split(",") ?? [
   "/",
   "/about",
+  "/mission",
+  "/transparency",
   "/organization",
   "/what-we-do",
   "/donate",
