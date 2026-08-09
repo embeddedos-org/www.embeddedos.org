@@ -1,0 +1,32 @@
+---
+# cPanel Git Version Control deployment for the prerendered static build.
+#
+# Lives in client/public/ for the same reason .htaccess does: vite copies this
+# directory into dist/public on every build, so the file survives a rebuild of
+# the deploy branch. Added to that branch by hand it would be deleted by the
+# next rsync, which is exactly how .htaccess went missing once before.
+#
+# cPanel runs these tasks as the cPanel user after "Deploy HEAD Commit". A push
+# to GitHub does not trigger them: in cPanel you still press "Update from
+# Remote", then "Deploy HEAD Commit".
+#
+# DEPLOYPATH uses $HOME rather than a hardcoded /home/<user>/ so that this file
+# carries no account name. Change it if the document root for this domain is not
+# public_html — an addon domain or subdomain has its own directory.
+#
+# Deliberately no delete step. Overwriting is safe; emptying a directory is not,
+# and if DEPLOYPATH is ever wrong a delete would take unrelated files with it.
+# The cost is that superseded content-hashed bundles in assets/ accumulate. They
+# are never referenced — each build's HTML names only its own hashes — so they
+# waste disk and nothing else, and can be cleared out by hand when it matters.
+#
+# Only .htaccess is copied by name. The `*` glob covers every directory and
+# regular file but skips dotfiles, which is why .htaccess needs its own line and
+# why this file and the .app-shell.html build cache never reach the document
+# root at all.
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/public_html
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH/
+    - /bin/cp .htaccess $DEPLOYPATH/
