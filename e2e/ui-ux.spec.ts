@@ -5,8 +5,24 @@
  * axe, responsive layout integrity, keyboard operability, focus visibility,
  * heading structure, and reduced-motion support.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+
+/**
+ * Stop the page fetching the third-party Zeffy donation iframe.
+ *
+ * /donate holds the load event for ~8.4s on that iframe, against ~0.3s for the
+ * same page without it, and when Zeffy's chunks fail and retry the network never
+ * goes idle at all. Both uses below wait for a settled page, so that turned a
+ * ~2s check into one that ran to the 30s ceiling on a loaded machine.
+ *
+ * Nothing here audits Zeffy's own markup: the axe run excludes the iframe
+ * explicitly, and a cross-origin iframe cannot overflow its parent regardless of
+ * what it contains. So blocking it removes a payment provider's response time
+ * from the suite without reducing what is checked.
+ */
+const blockPaymentIframe = (page: Page) =>
+  page.route(/zeffy\.com/, r => r.abort());
 
 const PAGES = [
   "/",
@@ -30,13 +46,7 @@ test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
       // contrast is sampled against backgrounds that have not finished
       // compositing. That produced contrast violations that disappear on a
       // settled page and did not reproduce twice in a row.
-      // The Zeffy iframe is excluded from the audit below, but it was still
-      // being fetched, and on /donate its chunks keep the network busy — at
-      // times failing and retrying — so networkidle could not be reached inside
-      // the per-test budget. Blocking it leaves this test dependent only on
-      // markup we own, which is all it ever asserted on, and lets networkidle
-      // mean "our page has settled".
-      await page.route(/zeffy\.com/, r => r.abort());
+      await blockPaymentIframe(page);
       await page.goto(route, { waitUntil: "networkidle" });
       await page.waitForTimeout(500);
 
@@ -116,6 +126,7 @@ test.describe("responsive layout", () => {
     test(`no horizontal overflow at ${vp.name} (${vp.width}px)`, async ({
       page,
     }) => {
+      await blockPaymentIframe(page);
       await page.setViewportSize({ width: vp.width, height: vp.height });
       for (const route of ["/", "/about", "/donate"]) {
         await page.goto(route);

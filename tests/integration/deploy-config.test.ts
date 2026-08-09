@@ -23,6 +23,8 @@ import { discoverRoutes } from "../../scripts/prerender.mjs";
 const DIST = path.resolve(import.meta.dirname, "../../dist/public");
 const HTACCESS = path.join(DIST, ".htaccess");
 
+const CPANEL_YML = path.join(DIST, ".cpanel.yml");
+
 const readHtaccess = () => fs.readFileSync(HTACCESS, "utf8");
 
 describe("the build ships the hosting config", () => {
@@ -33,6 +35,25 @@ describe("the build ships the hosting config", () => {
       fs.existsSync(HTACCESS),
       ".htaccess missing from dist/public — the deploy branch would ship without hosting rules"
     ).toBe(true);
+  });
+
+  it("emits .cpanel.yml into the build output", () => {
+    // Same reasoning, and the same trap: this is the file cPanel reads to copy
+    // the build into the document root, so if a rebuild drops it the deploy
+    // branch updates and the live site silently does not.
+    expect(
+      fs.existsSync(CPANEL_YML),
+      ".cpanel.yml missing from dist/public — cPanel would have nothing to deploy with"
+    ).toBe(true);
+  });
+
+  it("copies .htaccess by name, since the glob skips dotfiles", () => {
+    // `cp -R *` does not match dotfiles. .htaccess is the one dotfile the
+    // document root actually needs, so it must be copied explicitly or the
+    // ErrorDocument rule never reaches the server — which is the whole defect
+    // this file guards against.
+    const yml = fs.readFileSync(CPANEL_YML, "utf8");
+    expect(yml).toMatch(/^\s*-\s*\S*cp\s+\.htaccess\s+\$DEPLOYPATH/m);
   });
 });
 
