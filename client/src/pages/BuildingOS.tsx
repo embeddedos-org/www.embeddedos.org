@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Layers, Shield, Cpu, Code, ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "wouter";
 import { BOARD_COUNT } from "@/data/stack";
 
@@ -98,7 +98,7 @@ export default function BuildingOS() {
 
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto space-y-12">
-          {sections.map((s, i) => (
+          {sections.map(s => (
             <motion.div
               key={s.num}
               initial={{ opacity: 0, y: 30 }}

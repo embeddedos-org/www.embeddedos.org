@@ -177,7 +177,6 @@ export default function ComponentsShowcase() {
   const { theme, toggleTheme } = useTheme();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [datePickerDate, setDatePickerDate] = useState<Date>();
-  const [selectedFruits, setSelectedFruits] = useState<string[]>([]);
   const [progress, setProgress] = useState(33);
   const [currentPage, setCurrentPage] = useState(2);
   const [openCombobox, setOpenCombobox] = useState(false);

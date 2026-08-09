@@ -112,7 +112,7 @@ export default function FutureResearchPage() {
 
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto space-y-8">
-          {directions.map((d, i) => (
+          {directions.map(d => (
             <motion.div
               key={d.title}
               initial={{ opacity: 0, y: 30 }}

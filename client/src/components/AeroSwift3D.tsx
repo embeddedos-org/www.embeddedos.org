@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { RoundedBox, Cylinder, Torus, Cone } from "@react-three/drei";
+import { RoundedBox, Cylinder, Cone } from "@react-three/drei";
 import * as THREE from "three";
 
 // ── Rotor blade ───────────────────────────────────────────────────────────────

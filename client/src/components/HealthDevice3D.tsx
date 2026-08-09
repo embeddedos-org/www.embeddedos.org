@@ -1,11 +1,6 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  RoundedBox,
-  Torus,
-  Cylinder,
-  MeshTransmissionMaterial,
-} from "@react-three/drei";
+import { RoundedBox, Torus, Cylinder } from "@react-three/drei";
 import * as THREE from "three";
 
 // ── HEALTH-KEY ULTRA — smart key fob ─────────────────────────────────────────

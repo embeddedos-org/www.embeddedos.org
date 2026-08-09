@@ -1,14 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Brain,
-  Zap,
-  Activity,
-  Shield,
-  Cpu,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
+import { Brain, Activity, Shield, Cpu, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 const channels = [

@@ -1,15 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Cpu,
-  Terminal,
-  Play,
-  BarChart3,
-  Search,
-  List,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
+import { Cpu, Play, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
 
 const commands = [

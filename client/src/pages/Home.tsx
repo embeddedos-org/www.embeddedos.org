@@ -172,33 +172,6 @@ const PRODUCTS = [
   },
 ];
 
-const HEALTH_PRODUCTS = [
-  {
-    name: "HEALTH-KEY ULTRA",
-    desc: "USB-C pendrive with ECG, SpO₂, BAC breath, temperature, UV index and IMU. Patent Pending #64/073,334.",
-    icon: Lock,
-    color: "#F85149",
-  },
-  {
-    name: "HEALTH-BAND Neuro",
-    desc: "sEMG gesture control + TENS therapy wristband with full biometric monitoring. Patent Pending #64/076,078.",
-    icon: BarChart3,
-    color: "#F59E0B",
-  },
-  {
-    name: "HEALTH-RING",
-    desc: "Titanium smart ring with ECG, HbA1c estimation, cuffless blood pressure, and 14-day sleep staging.",
-    icon: Heart,
-    color: "#A78BFA",
-  },
-  {
-    name: "HEALTH-LAB",
-    desc: "14-day biosensor patch monitoring glucose, lactate, cortisol, electrolytes, uric acid, and pH.",
-    icon: Heart,
-    color: "#34D399",
-  },
-];
-
 const FEATURES = [
   {
     icon: Terminal,

@@ -1,20 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import {
-  Heart,
-  Activity,
-  Droplets,
-  Thermometer,
-  Moon,
-  Zap,
   ChevronRight,
   ExternalLink,
   ArrowRight,
-  Shield,
-  Cpu,
-  Wifi,
-  Battery,
   Watch,
   FlaskConical,
 } from "lucide-react";

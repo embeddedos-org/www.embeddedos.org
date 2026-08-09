@@ -30,7 +30,7 @@ export default function ProductEOffice() {
           step: 2,
           title: "Launch an App via EIPC",
           desc: "eOffice apps communicate with each other and with the EoS platform via EIPC. Launch eWrite from another app by sending an EIPC message to the eOffice launcher service.",
-          code: '// Launch eWrite with a document\neipc_msg_t msg = {\n    .service = "eoffice.launch",\n    .action  = "open",\n    .payload = {\"app\": \"ewrite\", \"file\": \"/docs/report.edoc\"}\n};\neipc_send(eoffice_port, &msg, sizeof(msg));',
+          code: '// Launch eWrite with a document\neipc_msg_t msg = {\n    .service = "eoffice.launch",\n    .action  = "open",\n    .payload = {"app": "ewrite", "file": "/docs/report.edoc"}\n};\neipc_send(eoffice_port, &msg, sizeof(msg));',
         },
         {
           step: 3,
@@ -42,7 +42,7 @@ export default function ProductEOffice() {
           step: 4,
           title: "Integrate AI Features",
           desc: "eOffice integrates with eAI for AI-assisted features: document summarization in eWrite, formula suggestions in eCalc, slide generation in ePresent, and voice commands in all apps.",
-          code: '// eWrite AI summarization\neipc_msg_t req = {\n    .service = "eai.summarize",\n    .payload = {\"text\": document_content, \"max_words\": 100}\n};\neipc_send(eai_port, &req, sizeof(req));\n\n// Receive summary\neipc_msg_t resp;\neipc_recv(eai_port, &resp, sizeof(resp), EIPC_WAIT_FOREVER);\nprintf("Summary: %s\\n", resp.payload.summary);',
+          code: '// eWrite AI summarization\neipc_msg_t req = {\n    .service = "eai.summarize",\n    .payload = {"text": document_content, "max_words": 100}\n};\neipc_send(eai_port, &req, sizeof(req));\n\n// Receive summary\neipc_msg_t resp;\neipc_recv(eai_port, &resp, sizeof(resp), EIPC_WAIT_FOREVER);\nprintf("Summary: %s\\n", resp.payload.summary);',
         },
       ]}
       usageExamples={[

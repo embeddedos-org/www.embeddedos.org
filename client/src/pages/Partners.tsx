@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Handshake, Star, Zap, Globe, ArrowRight, Mail } from "lucide-react";
+import { Handshake, Star, ArrowRight, Mail } from "lucide-react";
 
 const tiers = [
   {
@@ -47,24 +47,6 @@ const tiers = [
       "Mention in quarterly newsletter",
       "Community recognition badge",
     ],
-  },
-];
-
-const partners_list = [
-  {
-    name: "Open Positions",
-    type: "Platinum Sponsor",
-    note: "Become our first Platinum Sponsor",
-  },
-  {
-    name: "Open Positions",
-    type: "Gold Sponsor",
-    note: "Become our first Gold Sponsor",
-  },
-  {
-    name: "Open Positions",
-    type: "Silver Sponsor",
-    note: "Become our first Silver Sponsor",
   },
 ];
 

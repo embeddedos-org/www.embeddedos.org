@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Award,
-  CheckCircle2,
-  BookOpen,
-  ArrowRight,
-  Shield,
-} from "lucide-react";
+import { Award, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 const tracks = [

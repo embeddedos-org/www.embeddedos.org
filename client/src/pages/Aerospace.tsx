@@ -12,7 +12,7 @@ import {
   Navigation,
   Gauge,
 } from "lucide-react";
-import { Suspense, lazy, useState, useRef, useEffect } from "react";
+import { Suspense, lazy, useRef, useEffect } from "react";
 
 const AeroSwiftPersonalCanvas = lazy(() =>
   import("../components/AeroSwift3D").then(m => ({
@@ -251,7 +251,6 @@ function VehicleCard({
   vehicle: (typeof VEHICLES)[0];
   index: number;
 }) {
-  const [hovered, setHovered] = useState(false);
   const Icon = vehicle.icon;
 
   return (
@@ -263,8 +262,6 @@ function VehicleCard({
       custom={index}
       className="glass rounded-2xl overflow-hidden border border-white/5 card-hover"
       style={{ borderTopColor: vehicle.color, borderTopWidth: 2 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       {/* 3D Aircraft Render */}
       <div className="h-52 w-full relative bg-gradient-to-b from-[#060d1e] to-[#040810]">

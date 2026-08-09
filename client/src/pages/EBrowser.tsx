@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Globe,
-  Code,
-  Layers,
-  Zap,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
+import { Globe, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 const engines = [

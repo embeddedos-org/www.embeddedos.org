@@ -44,7 +44,11 @@ export function useAuth(options?: UseAuthOptions) {
       // backend cookie is cleared by the logout mutation.
       try {
         sessionStorage.removeItem("manus-cookie");
-      } catch {}
+      } catch {
+        // sessionStorage throws in private-mode Safari and when storage is
+        // disabled. Logging out must not fail because the mirror could not be
+        // cleared — the backend cookie is what actually ends the session.
+      }
       utils.auth.me.setData(undefined, null);
       await utils.auth.me.invalidate();
     }

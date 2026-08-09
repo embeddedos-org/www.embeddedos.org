@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Smartphone, Code, Globe, ArrowRight, Search } from "lucide-react";
+import { Smartphone, ArrowRight, Search } from "lucide-react";
 import { Link } from "wouter";
 
 const categories = [

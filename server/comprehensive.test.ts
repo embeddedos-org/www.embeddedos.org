@@ -15,7 +15,7 @@
  * UI/UX tests are in server/ui-ux.test.ts (DOM-level checks via jsdom).
  */
 
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import { COOKIE_NAME } from "../shared/const";
 import type { TrpcContext } from "./_core/context";
@@ -24,7 +24,9 @@ import type { TrpcContext } from "./_core/context";
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
 
-function makeUser(overrides: Partial<AuthenticatedUser> = {}): AuthenticatedUser {
+function makeUser(
+  overrides: Partial<AuthenticatedUser> = {}
+): AuthenticatedUser {
   return {
     id: 1,
     openId: "test-user-001",
@@ -43,7 +45,10 @@ function makeCtx(user: AuthenticatedUser | null = null): {
   ctx: TrpcContext;
   clearedCookies: Array<{ name: string; options: Record<string, unknown> }>;
 } {
-  const clearedCookies: Array<{ name: string; options: Record<string, unknown> }> = [];
+  const clearedCookies: Array<{
+    name: string;
+    options: Record<string, unknown>;
+  }> = [];
   const ctx: TrpcContext = {
     user: user ?? undefined,
     req: {
@@ -82,7 +87,9 @@ describe("1. Unit Tests", () => {
     it("returns empty results for nonsense query", async () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
-      const result = await caller.search.query({ q: "xyzzy_nonexistent_abc123" });
+      const result = await caller.search.query({
+        q: "xyzzy_nonexistent_abc123",
+      });
       expect(result.pages).toHaveLength(0);
       expect(result.repos).toHaveLength(0);
     });
@@ -182,7 +189,9 @@ describe("2. Integration Tests", () => {
       const caller = appRouter.createCaller(ctx);
       const result = await caller.search.query({ q: "aerospace" });
       // Should find ecad-hardware page and eos-aero repo
-      const hasPage = result.pages.some(p => p.path.includes("ecad-hardware") || p.path.includes("what-we-do"));
+      const hasPage = result.pages.some(
+        p => p.path.includes("ecad-hardware") || p.path.includes("what-we-do")
+      );
       const hasRepo = result.repos.some(r => r.path.includes("eos-aero"));
       expect(hasPage || hasRepo).toBe(true);
     });
@@ -212,7 +221,8 @@ describe("3. Functional Tests", () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
       const result = await caller.search.query({ q: "health" });
-      const hasHealth = result.pages.some(p => p.path.includes("health")) ||
+      const hasHealth =
+        result.pages.some(p => p.path.includes("health")) ||
         result.repos.some(r => r.path.includes("health"));
       expect(hasHealth).toBe(true);
     });
@@ -295,7 +305,9 @@ describe("4. Security Tests", () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
       // Should not throw, just return empty results
-      const result = await caller.search.query({ q: "'; DROP TABLE users; --" });
+      const result = await caller.search.query({
+        q: "'; DROP TABLE users; --",
+      });
       expect(Array.isArray(result.pages)).toBe(true);
       expect(Array.isArray(result.repos)).toBe(true);
     });
@@ -303,7 +315,9 @@ describe("4. Security Tests", () => {
     it("handles XSS attempt safely", async () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
-      const result = await caller.search.query({ q: "<script>alert(1)</script>" });
+      const result = await caller.search.query({
+        q: "<script>alert(1)</script>",
+      });
       // Should return results without executing script
       expect(Array.isArray(result.pages)).toBe(true);
       // Result titles should not contain raw script tags
@@ -380,7 +394,9 @@ describe("5. End-to-End (API Layer) Tests", () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
       const result = await caller.search.query({ q: "EoS" });
-      const eosPage = result.pages.find(p => p.path === "/product-eos" || p.path === "/eos");
+      const eosPage = result.pages.find(
+        p => p.path === "/product-eos" || p.path === "/eos"
+      );
       expect(eosPage).toBeDefined();
     });
 
@@ -388,7 +404,8 @@ describe("5. End-to-End (API Layer) Tests", () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
       const result = await caller.search.query({ q: "bootloader" });
-      const hasEboot = result.pages.some(p => p.path.includes("eboot")) ||
+      const hasEboot =
+        result.pages.some(p => p.path.includes("eboot")) ||
         result.repos.some(r => r.title === "eBoot");
       expect(hasEboot).toBe(true);
     });
@@ -400,7 +417,9 @@ describe("5. End-to-End (API Layer) Tests", () => {
 
       // Step 1: Search
       const searchResult = await caller.search.query({ q: "kernel" });
-      expect(searchResult.pages.length + searchResult.repos.length).toBeGreaterThan(0);
+      expect(
+        searchResult.pages.length + searchResult.repos.length
+      ).toBeGreaterThan(0);
 
       // Step 2: Logout
       const logoutResult = await caller.auth.logout();
@@ -432,7 +451,17 @@ describe("6. Acceptance Tests", () => {
     it("AC-1: Search returns results for all major product names", async () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
-      const products = ["EoS", "eBoot", "EAI", "ENI", "eOffice", "eApps", "eDB", "EoSim", "EoStudio"];
+      const products = [
+        "EoS",
+        "eBoot",
+        "EAI",
+        "ENI",
+        "eOffice",
+        "eApps",
+        "eDB",
+        "EoSim",
+        "EoStudio",
+      ];
       for (const product of products) {
         const result = await caller.search.query({ q: product });
         expect(result.pages.length + result.repos.length).toBeGreaterThan(0);
@@ -442,7 +471,14 @@ describe("6. Acceptance Tests", () => {
     it("AC-2: Search returns results for all major page categories", async () => {
       const { ctx } = makeCtx();
       const caller = appRouter.createCaller(ctx);
-      const categories = ["health", "careers", "community", "research", "downloads", "stacks"];
+      const categories = [
+        "health",
+        "careers",
+        "community",
+        "research",
+        "downloads",
+        "stacks",
+      ];
       for (const cat of categories) {
         const result = await caller.search.query({ q: cat });
         expect(result.pages.length + result.repos.length).toBeGreaterThan(0);
@@ -528,7 +564,20 @@ describe("7. Performance Tests", () => {
     const { ctx } = makeCtx();
     const caller = appRouter.createCaller(ctx);
     const queries = Array.from({ length: 10 }, (_, i) =>
-      caller.search.query({ q: ["eos", "eboot", "health", "ai", "kernel", "apps", "docs", "careers", "research", "stacks"][i] })
+      caller.search.query({
+        q: [
+          "eos",
+          "eboot",
+          "health",
+          "ai",
+          "kernel",
+          "apps",
+          "docs",
+          "careers",
+          "research",
+          "stacks",
+        ][i],
+      })
     );
     const results = await Promise.all(queries);
     expect(results).toHaveLength(10);
@@ -541,7 +590,11 @@ describe("7. Performance Tests", () => {
   it("search with max-length query (200 chars) completes in under 200ms", async () => {
     const { ctx } = makeCtx();
     const caller = appRouter.createCaller(ctx);
-    const longQuery = "embedded os kernel real-time rtos hal gpio uart spi i2c can usb ethernet wifi bluetooth".slice(0, 200);
+    const longQuery =
+      "embedded os kernel real-time rtos hal gpio uart spi i2c can usb ethernet wifi bluetooth".slice(
+        0,
+        200
+      );
     const start = performance.now();
     await caller.search.query({ q: longQuery });
     const elapsed = performance.now() - start;
@@ -608,7 +661,9 @@ describe("9. Regression Tests", () => {
       const caller = appRouter.createCaller(ctx);
       const result = await caller.search.query({ q: "rtos" });
       // The EoS kernel page has 'rtos' as an exact tag
-      const eosPage = result.pages.find(p => p.path.includes("eos") || p.title.includes("EoS"));
+      const eosPage = result.pages.find(
+        p => p.path.includes("eos") || p.title.includes("EoS")
+      );
       expect(eosPage).toBeDefined();
     });
   });
@@ -663,7 +718,7 @@ describe("9. Regression Tests", () => {
       "IoT & Edge AI",
       "v0.2-beta",
     ];
-    specialCases.forEach((q) => {
+    specialCases.forEach(q => {
       it(`handles query: "${q}"`, async () => {
         const { ctx } = makeCtx();
         const caller = appRouter.createCaller(ctx);

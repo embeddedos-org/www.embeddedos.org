@@ -6,7 +6,6 @@ import {
   Eye,
   CheckCircle2,
   Mail,
-  ArrowRight,
 } from "lucide-react";
 
 const policies = [

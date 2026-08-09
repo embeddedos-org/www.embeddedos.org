@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Activity,
   Watch,

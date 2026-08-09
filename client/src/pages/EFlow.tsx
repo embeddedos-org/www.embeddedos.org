@@ -10,17 +10,11 @@ import {
   Cpu,
   Zap,
   GitBranch,
-  Timer,
-  Wifi,
-  Brain,
-  Package,
   CheckCircle2,
-  ChevronRight,
   Monitor,
   Shield,
   Wrench,
   Copy,
-  Star,
   Info,
 } from "lucide-react";
 

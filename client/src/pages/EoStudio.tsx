@@ -1,16 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Code2,
-  Terminal,
-  Cpu,
-  Zap,
-  Brain,
-  BookOpen,
-  ArrowRight,
-  CheckCircle2,
-  Play,
-} from "lucide-react";
+import { Code2, Terminal, Cpu, Zap, Brain, BookOpen, Play } from "lucide-react";
 import { Link } from "wouter";
 
 const editors = [

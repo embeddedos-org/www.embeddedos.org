@@ -9,15 +9,10 @@ import {
   Wifi,
   Cpu,
   MapPin,
-  AlertTriangle,
   Eye,
-  Activity,
   ArrowRight,
   ExternalLink,
-  Car,
-  Navigation,
   Lock,
-  Layers,
 } from "lucide-react";
 
 // ─── Animated Radar Sweep ────────────────────────────────────────────────────
@@ -128,21 +123,24 @@ function SensorCard({
 }
 
 // ─── Alert Simulation ────────────────────────────────────────────────────────
+// Module scope, not component scope: declared inside AlertDemo this array was a
+// new object every render, so naming it as an effect dependency would have
+// restarted the interval on each one.
+const ALERT_MSGS = [
+  { msg: "Vehicle approaching at 85 km/h — 120 m", type: "warn" },
+  { msg: "Laser detection: object at 45° — 28 m", type: "info" },
+  { msg: "V2X: Traffic signal ahead — SPaT received", type: "info" },
+  { msg: "COLLISION RISK — hard brake recommended", type: "danger" },
+  { msg: "Blind spot: vehicle detected right rear", type: "warn" },
+  { msg: "V2X: Emergency vehicle approaching — 400 m", type: "danger" },
+  { msg: "Radar clear — all zones nominal", type: "ok" },
+];
+
 function AlertDemo() {
   const [alerts, setAlerts] = useState<
     { id: number; msg: string; type: string }[]
   >([]);
   const [running, setRunning] = useState(false);
-
-  const ALERT_MSGS = [
-    { msg: "Vehicle approaching at 85 km/h — 120 m", type: "warn" },
-    { msg: "Laser detection: object at 45° — 28 m", type: "info" },
-    { msg: "V2X: Traffic signal ahead — SPaT received", type: "info" },
-    { msg: "COLLISION RISK — hard brake recommended", type: "danger" },
-    { msg: "Blind spot: vehicle detected right rear", type: "warn" },
-    { msg: "V2X: Emergency vehicle approaching — 400 m", type: "danger" },
-    { msg: "Radar clear — all zones nominal", type: "ok" },
-  ];
 
   useEffect(() => {
     if (!running) return;

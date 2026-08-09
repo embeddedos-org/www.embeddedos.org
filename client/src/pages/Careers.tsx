@@ -11,9 +11,7 @@ import {
   DollarSign,
   Heart,
   BookOpen,
-  Clock,
   Home,
-  Gift,
   MapPin,
   Briefcase,
   ChevronDown,
@@ -154,8 +152,7 @@ const JOBS = [
     level: "Senior",
     icon: Cpu,
     color: "#8B5CF6",
-    summary:
-      `Design staged boot architecture, A/B slot management, CRC/signature verification, and firmware upgrade APIs for the eBoot bootloader running on ${BOARD_COUNT} embedded boards.`,
+    summary: `Design staged boot architecture, A/B slot management, CRC/signature verification, and firmware upgrade APIs for the eBoot bootloader running on ${BOARD_COUNT} embedded boards.`,
     responsibilities: [
       "Design and implement staged boot architecture (ROM → eBoot → EoS)",
       "Develop A/B slot management and rollback protection mechanisms",

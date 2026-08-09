@@ -30,7 +30,7 @@ export default function ProductEApps() {
           step: 2,
           title: "Launch Apps via EIPC",
           desc: "Apps are launched by sending EIPC messages to the EoS platform launcher. This enables one app to open another — for example, eMail opening an attachment in eWrite.",
-          code: '// Launch eWeather from your app\neipc_msg_t msg = {\n    .service = "eos.launcher",\n    .action  = "launch",\n    .payload = {\"app\": \"eweather\", \"args\": {\"city\": \"San Francisco\"}}\n};\neipc_send(launcher_port, &msg, sizeof(msg));',
+          code: '// Launch eWeather from your app\neipc_msg_t msg = {\n    .service = "eos.launcher",\n    .action  = "launch",\n    .payload = {"app": "eweather", "args": {"city": "San Francisco"}}\n};\neipc_send(launcher_port, &msg, sizeof(msg));',
         },
         {
           step: 3,
@@ -44,7 +44,7 @@ export default function ProductEApps() {
           title: "Smart Home Hub",
           scenario:
             "A Raspberry Pi 4 running EoS as a smart home hub with eWeather, eHome, and eEnergy apps.",
-          code: '// Smart home hub app bundle\n// manifest.yml\npackages:\n  - eweather: 1.2.0    // Weather display\n  - ehome: 2.0.0       // Smart home control\n  - eenergy: 1.0.0     // Energy monitoring\n  - eoffice-suite: 1.0.0  // Productivity\n\n// eHome controls lights via EIPC → eIPC → Zigbee bridge\neipc_msg_t cmd = {\n    .service = "ehome.lights",\n    .action  = "set",\n    .payload = {\"room\": \"living_room\", \"brightness\": 80}\n};\neipc_send(ehome_port, &cmd, sizeof(cmd));',
+          code: '// Smart home hub app bundle\n// manifest.yml\npackages:\n  - eweather: 1.2.0    // Weather display\n  - ehome: 2.0.0       // Smart home control\n  - eenergy: 1.0.0     // Energy monitoring\n  - eoffice-suite: 1.0.0  // Productivity\n\n// eHome controls lights via EIPC → eIPC → Zigbee bridge\neipc_msg_t cmd = {\n    .service = "ehome.lights",\n    .action  = "set",\n    .payload = {"room": "living_room", "brightness": 80}\n};\neipc_send(ehome_port, &cmd, sizeof(cmd));',
         },
       ]}
       ecosystemRole={{

@@ -169,7 +169,6 @@ function RadialNode({
   index: number;
 }) {
   const ref = useRef<THREE.Mesh>(null);
-  const lineRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
   useFrame(state => {

@@ -5,7 +5,6 @@ import { copyText } from "@/lib/clipboard";
 import {
   Terminal,
   Cpu,
-  Zap,
   Package,
   PenTool,
   ArrowRight,

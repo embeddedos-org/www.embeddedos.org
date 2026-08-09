@@ -8,7 +8,6 @@ import {
   Code,
   ChevronRight,
   ArrowRight,
-  Check,
   Terminal,
   BookOpen,
 } from "lucide-react";

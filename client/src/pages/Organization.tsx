@@ -2,8 +2,6 @@ import { motion } from "framer-motion";
 import {
   Building2,
   Users,
-  Scale,
-  Globe,
   ArrowRight,
   CheckCircle2,
   ExternalLink,
@@ -216,7 +214,7 @@ export default function Organization() {
               Legal Information
             </h2>
             <div className="space-y-3">
-              {legal.map((l, i) => (
+              {legal.map(l => (
                 <div
                   key={l.label}
                   className="flex items-start justify-between gap-4 py-2 border-b border-white/5"
@@ -234,7 +232,7 @@ export default function Organization() {
               Core Principles
             </h2>
             <div className="space-y-3">
-              {principles.map((p, i) => (
+              {principles.map(p => (
                 <div key={p} className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-300 text-sm">{p}</span>

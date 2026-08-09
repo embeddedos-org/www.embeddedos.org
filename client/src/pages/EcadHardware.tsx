@@ -16,7 +16,6 @@ import {
   Zap,
   Brain,
   Globe,
-  HardDrive,
   ChevronRight,
   ArrowRight,
   ExternalLink,

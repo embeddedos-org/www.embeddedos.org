@@ -4,7 +4,6 @@ import {
   Tag,
   ArrowRight,
   CheckCircle2,
-  AlertCircle,
   Zap,
   Shield,
   Bug,

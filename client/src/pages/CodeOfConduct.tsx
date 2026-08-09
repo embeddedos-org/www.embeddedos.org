@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, CheckCircle2, XCircle, Mail } from "lucide-react";
+import { Heart, CheckCircle2, XCircle } from "lucide-react";
 
 const expected = [
   "Use welcoming and inclusive language in all community spaces.",
@@ -114,7 +114,7 @@ export default function CodeOfConduct() {
               This Code of Conduct applies in all community spaces, including:
             </p>
             <div className="space-y-2">
-              {spaces.map((s, i) => (
+              {spaces.map(s => (
                 <div key={s} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0 mt-1.5" />
                   <span className="text-gray-400 text-sm">{s}</span>

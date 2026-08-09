@@ -24,7 +24,6 @@ import {
   Server,
   FileText,
   Terminal,
-  BookOpen,
   Code2,
   Smartphone,
 } from "lucide-react";
@@ -1898,8 +1897,7 @@ const MODULES = [
     icon: Terminal,
     color: "#06B6D4",
     title: "EoSim — Embedded Systems Simulator",
-    description:
-      `${SIM_PLATFORM_COUNT} virtual platforms, QEMU + Renode, HIL bridge, and scriptable Python scenarios`,
+    description: `${SIM_PLATFORM_COUNT} virtual platforms, QEMU + Renode, HIL bridge, and scriptable Python scenarios`,
     subsections: [
       {
         name: "CLI Commands",
@@ -2522,7 +2520,6 @@ function ApiCard({
 export default function ApiDocs() {
   const [activeModule, setActiveModule] = useState("hal");
   const [search, setSearch] = useState("");
-  const [copiedAll, setCopiedAll] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const module = MODULES.find(m => m.id === activeModule)!;

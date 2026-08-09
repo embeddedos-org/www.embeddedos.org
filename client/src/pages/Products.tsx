@@ -15,7 +15,6 @@ import {
   Globe,
   Database,
   Monitor,
-  Smartphone,
   Layers,
   Shield,
   Wifi,
@@ -89,7 +88,12 @@ const FAMILIES = [
         color: "#F59E0B",
       },
     ],
-    stats: [`${BOARD_COUNT} boards`, "Deterministic scheduling", "MIT License", "POSIX-compatible"],
+    stats: [
+      `${BOARD_COUNT} boards`,
+      "Deterministic scheduling",
+      "MIT License",
+      "POSIX-compatible",
+    ],
   },
   {
     id: "ai",
@@ -661,7 +665,7 @@ export default function Products() {
 
                   {/* Product grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
-                    {family.products.map((p, pi) => {
+                    {family.products.map(p => {
                       const PIcon = p.icon;
                       return (
                         <Link

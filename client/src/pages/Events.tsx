@@ -1,13 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Calendar,
-  MapPin,
-  Clock,
-  ArrowRight,
-  Globe,
-  Users,
-  Video,
-} from "lucide-react";
+import { Calendar, MapPin, ArrowRight, Users } from "lucide-react";
 
 const upcoming = [
   {

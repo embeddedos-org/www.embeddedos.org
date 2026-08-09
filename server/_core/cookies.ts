@@ -1,8 +1,12 @@
 import type { CookieOptions, Request } from "express";
 
-const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+// Both of these support the deliberately disabled domain-scoping branch in
+// getSessionCookieOptions below. They are kept, and underscore-prefixed to mark
+// them as intentionally unused, because deleting them would leave that
+// commented-out decision unreadable to whoever revisits it.
+const _LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
 
-function isIpAddress(host: string) {
+function _isIpAddress(host: string) {
   // Basic IPv4 check and IPv6 presence detection.
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host)) return true;
   return host.includes(":");
@@ -27,8 +31,8 @@ export function getSessionCookieOptions(
   // const hostname = req.hostname;
   // const shouldSetDomain =
   //   hostname &&
-  //   !LOCAL_HOSTS.has(hostname) &&
-  //   !isIpAddress(hostname) &&
+  //   !_LOCAL_HOSTS.has(hostname) &&
+  //   !_isIpAddress(hostname) &&
   //   hostname !== "127.0.0.1" &&
   //   hostname !== "::1";
 

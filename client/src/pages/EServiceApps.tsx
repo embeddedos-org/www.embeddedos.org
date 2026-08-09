@@ -1,12 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Smartphone,
-  Code,
-  Layers,
-  ArrowRight,
-  CheckCircle2,
-  Globe,
-} from "lucide-react";
+import { Smartphone, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
 
 const apps = [

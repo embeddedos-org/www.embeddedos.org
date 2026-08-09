@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Network, Shield, Zap, Code, ArrowRight, Lock } from "lucide-react";
+import { Network, Shield, Zap, ArrowRight, Lock } from "lucide-react";
 import { Link } from "wouter";
 
 const transports = [
@@ -140,9 +140,9 @@ export default function EIPCPage() {
               Embedded Inter-Process Communication
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Zero-copy, HMAC-authenticated IPC protocol for EoS
-              services. Sub-microsecond shared memory transport, 4 transport
-              backends, capability-based security.
+              Zero-copy, HMAC-authenticated IPC protocol for EoS services.
+              Sub-microsecond shared memory transport, 4 transport backends,
+              capability-based security.
             </p>
           </motion.div>
         </div>
@@ -196,9 +196,7 @@ export default function EIPCPage() {
                 >
                   {t.latency}
                 </div>
-                <div className="text-gray-500 text-sm">
-                  Relative latency
-                </div>
+                <div className="text-gray-500 text-sm">Relative latency</div>
               </div>
               <div>
                 <div

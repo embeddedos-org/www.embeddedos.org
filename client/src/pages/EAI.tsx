@@ -5,7 +5,6 @@ import {
   Brain,
   Wifi,
   Terminal,
-  Zap,
   ArrowRight,
   BookOpen,
   ChevronRight,

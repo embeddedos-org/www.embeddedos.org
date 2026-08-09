@@ -397,13 +397,24 @@ export default function Demo() {
   const [running, setRunning] = useState(false);
   const [pins, setPins] = useState<Pin[]>(BOARDS[0].pins);
   const [log, setLog] = useState<LogEntry[]>([]);
-  const [tick, setTick] = useState(0);
+  // The tick count lives only in a ref: it is passed to program.run() but never
+  // rendered, so holding it in state re-rendered the page every 100ms for
+  // nothing.
   const tickRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const logEndRef = useRef<HTMLDivElement>(null);
 
   const board = BOARDS[boardIdx];
   const program = PROGRAMS[programIdx];
+
+  // Declared before the effect that calls it. It previously sat below, which
+  // worked only because effect bodies run after the whole render has evaluated
+  // — a dependency on statement order that reads like a bug.
+  const stop = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = null;
+    setRunning(false);
+  }, []);
 
   // Reset when board or program changes
   useEffect(() => {
@@ -412,20 +423,13 @@ export default function Demo() {
       BOARDS[boardIdx].pins.map(p => ({ ...p, state: "LOW" as PinState }))
     );
     setLog([]);
-    setTick(0);
     tickRef.current = 0;
-  }, [boardIdx, programIdx]);
+  }, [boardIdx, programIdx, stop]);
 
   // Auto-scroll log
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [log]);
-
-  const stop = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = null;
-    setRunning(false);
-  }, []);
 
   const start = useCallback(() => {
     if (running) return;
@@ -442,7 +446,6 @@ export default function Demo() {
     intervalRef.current = setInterval(() => {
       tickRef.current += 1;
       const t = tickRef.current;
-      setTick(t);
       setPins(prev => program.run(prev, setLog, t));
     }, 100);
   }, [running, program, board]);
@@ -453,7 +456,6 @@ export default function Demo() {
       BOARDS[boardIdx].pins.map(p => ({ ...p, state: "LOW" as PinState }))
     );
     setLog([]);
-    setTick(0);
     tickRef.current = 0;
   }, [boardIdx, stop]);
 
@@ -506,7 +508,8 @@ export default function Demo() {
             custom={1}
             className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
           >
-            Simulate <span style={{ color: "#22D3EE" }}>{BOARD_COUNT} Boards</span>
+            Simulate{" "}
+            <span style={{ color: "#22D3EE" }}>{BOARD_COUNT} Boards</span>
             <br />
             Without Hardware
           </motion.h1>

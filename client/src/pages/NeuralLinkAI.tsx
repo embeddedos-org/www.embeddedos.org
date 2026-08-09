@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Shield, Activity, ArrowRight, Cpu } from "lucide-react";
+import { Brain, Zap, Shield, Activity, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 const specs = [

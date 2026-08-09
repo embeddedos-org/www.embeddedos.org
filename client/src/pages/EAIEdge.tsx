@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Brain, Zap, Shield, ArrowRight, Code, Cpu } from "lucide-react";
+import { Brain, Shield, ArrowRight, Cpu } from "lucide-react";
 import { Link } from "wouter";
 
 const pipeline = [
@@ -82,9 +82,7 @@ export default function EAIEdgePage() {
                 <div className="text-gray-500 text-sm">Current Version</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-orange-400">
-                  v0.1
-                </div>
+                <div className="text-3xl font-bold text-orange-400">v0.1</div>
                 <div className="text-gray-500 text-sm">Profile</div>
               </div>
               <div className="text-center">

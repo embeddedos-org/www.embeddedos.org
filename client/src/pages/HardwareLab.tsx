@@ -19,7 +19,6 @@ import {
   Car,
   ExternalLink,
   Layers,
-  FlaskConical,
 } from "lucide-react";
 import { Link } from "wouter";
 import { BOARD_COUNT } from "@/data/stack";
