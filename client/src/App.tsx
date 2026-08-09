@@ -33,7 +33,10 @@ const pageLoaders: Record<string, () => Promise<unknown>> = {};
 const preloaded = new Map<string, ComponentType>();
 
 // Route components are rendered without props, so the wrapper forwards none.
-function lazyPage(path: string, loader: () => Promise<{ default: ComponentType }>) {
+function lazyPage(
+  path: string,
+  loader: () => Promise<{ default: ComponentType }>
+) {
   pageLoaders[path] = loader;
   const Lazy = lazy(loader);
 
@@ -68,21 +71,33 @@ export async function preloadRoute(pathname: string): Promise<void> {
 /** Every code-split route path. Exported for the sync test. */
 export const codeSplitRoutes = (): string[] => Object.keys(pageLoaders);
 
-const GettingStarted = lazyPage("/getting-started", () => import("./pages/GettingStarted"));
+const GettingStarted = lazyPage(
+  "/getting-started",
+  () => import("./pages/GettingStarted")
+);
 const Docs = lazyPage("/docs", () => import("./pages/Docs"));
 const Books = lazyPage("/books", () => import("./pages/Books"));
 const Flow = lazyPage("/flow", () => import("./pages/Flow"));
-const HardwareLab = lazyPage("/hardware-lab", () => import("./pages/HardwareLab"));
+const HardwareLab = lazyPage(
+  "/hardware-lab",
+  () => import("./pages/HardwareLab")
+);
 const Stacks = lazyPage("/stacks", () => import("./pages/Stacks"));
 const EApps = lazyPage("/eapps", () => import("./pages/EApps"));
 const Kids = lazyPage("/kids", () => import("./pages/Kids"));
-const GetInvolved = lazyPage("/get-involved", () => import("./pages/GetInvolved"));
+const GetInvolved = lazyPage(
+  "/get-involved",
+  () => import("./pages/GetInvolved")
+);
 const Health = lazyPage("/health", () => import("./pages/Health"));
 const Aerospace = lazyPage("/aerospace", () => import("./pages/Aerospace"));
 const Projects = lazyPage("/projects", () => import("./pages/Projects"));
 const About = lazyPage("/about", () => import("./pages/About"));
 const Mission = lazyPage("/mission", () => import("./pages/Mission"));
-const Transparency = lazyPage("/transparency", () => import("./pages/Transparency"));
+const Transparency = lazyPage(
+  "/transparency",
+  () => import("./pages/Transparency")
+);
 const Industries = lazyPage("/industries", () => import("./pages/Industries"));
 const Donate = lazyPage("/donate", () => import("./pages/Donate"));
 const News = lazyPage("/news", () => import("./pages/News"));
@@ -90,7 +105,10 @@ const Privacy = lazyPage("/privacy", () => import("./pages/Privacy"));
 const Terms = lazyPage("/terms", () => import("./pages/Terms"));
 const Membership = lazyPage("/membership", () => import("./pages/Membership"));
 const Demo = lazyPage("/demo", () => import("./pages/Demo"));
-const HealthCompare = lazyPage("/health-compare", () => import("./pages/HealthCompare"));
+const HealthCompare = lazyPage(
+  "/health-compare",
+  () => import("./pages/HealthCompare")
+);
 const Products = lazyPage("/products", () => import("./pages/Products"));
 const EoS = lazyPage("/eos", () => import("./pages/EoS"));
 const EBoot = lazyPage("/eboot", () => import("./pages/EBoot"));
@@ -114,52 +132,136 @@ const Vision = lazyPage("/vision", () => import("./pages/Vision"));
 const ContactPage = lazyPage("/contact", () => import("./pages/Contact"));
 const Events = lazyPage("/events", () => import("./pages/Events"));
 const LicensesPage = lazyPage("/licenses", () => import("./pages/Licenses"));
-const CodeOfConduct = lazyPage("/code-of-conduct", () => import("./pages/CodeOfConduct"));
+const CodeOfConduct = lazyPage(
+  "/code-of-conduct",
+  () => import("./pages/CodeOfConduct")
+);
 const EDB = lazyPage("/edb", () => import("./pages/EDB"));
 const ENIPage = lazyPage("/eni", () => import("./pages/ENI"));
 const EoStudioPage = lazyPage("/eostudio", () => import("./pages/EoStudio"));
-const Organization = lazyPage("/organization", () => import("./pages/Organization"));
+const Organization = lazyPage(
+  "/organization",
+  () => import("./pages/Organization")
+);
 const CommunityPage = lazyPage("/community", () => import("./pages/Community"));
 const EIPCPage = lazyPage("/eipc", () => import("./pages/EIPC"));
-const EoSimProductPage = lazyPage("/eosim", () => import("./pages/EoSimProduct"));
-const BuildingOSPage = lazyPage("/building-os", () => import("./pages/BuildingOS"));
+const EoSimProductPage = lazyPage(
+  "/eosim",
+  () => import("./pages/EoSimProduct")
+);
+const BuildingOSPage = lazyPage(
+  "/building-os",
+  () => import("./pages/BuildingOS")
+);
 const AIOSPage = lazyPage("/ai-os", () => import("./pages/AIOS"));
 const SponsorsPage = lazyPage("/sponsors", () => import("./pages/Sponsors"));
-const CertificationPage = lazyPage("/certification", () => import("./pages/Certification"));
-const FutureResearchPage = lazyPage("/future-research", () => import("./pages/FutureResearch"));
-const NeuralLinkAIPage = lazyPage("/neural-link-ai", () => import("./pages/NeuralLinkAI"));
-const FundraisingPage = lazyPage("/fundraising", () => import("./pages/Fundraising"));
+const CertificationPage = lazyPage(
+  "/certification",
+  () => import("./pages/Certification")
+);
+const FutureResearchPage = lazyPage(
+  "/future-research",
+  () => import("./pages/FutureResearch")
+);
+const NeuralLinkAIPage = lazyPage(
+  "/neural-link-ai",
+  () => import("./pages/NeuralLinkAI")
+);
+const FundraisingPage = lazyPage(
+  "/fundraising",
+  () => import("./pages/Fundraising")
+);
 const EBrowserPage = lazyPage("/ebrowser", () => import("./pages/EBrowser"));
-const EServiceAppsPage = lazyPage("/eserviceapps", () => import("./pages/EServiceApps"));
+const EServiceAppsPage = lazyPage(
+  "/eserviceapps",
+  () => import("./pages/EServiceApps")
+);
 const EAIEdgePage = lazyPage("/eai-edge", () => import("./pages/EAIEdge"));
 const EOSuitePage = lazyPage("/eosuite", () => import("./pages/EOSuite"));
 const ResourcesPage = lazyPage("/resources", () => import("./pages/Resources"));
-const ArticleEosPlatformLaunch = lazyPage("/article-eos-platform-launch", () => import("./pages/ArticleEosPlatformLaunch"));
-const ArticleEaiLlmBench = lazyPage("/article-eai-llm-bench", () => import("./pages/ArticleEaiLlmBench"));
-const ArticleEbootSecureBoot = lazyPage("/article-eboot-secure-boot-deepdive", () => import("./pages/ArticleEbootSecureBoot"));
-const ArticleEdbEncryption = lazyPage("/article-edb-encryption-at-rest", () => import("./pages/ArticleEdbEncryption"));
-const ArticleEni1024Channel = lazyPage("/article-eni-1024-channel-pipeline", () => import("./pages/ArticleEni1024Channel"));
-const ArticleEosRoadmap2026 = lazyPage("/article-eos-roadmap-2026", () => import("./pages/ArticleEosRoadmap2026"));
-const ArticleEosimHilBridge = lazyPage("/article-eosim-hil-bridge", () => import("./pages/ArticleEosimHilBridge"));
-const ArticleFoundationMembership2026 = lazyPage("/article-foundation-membership-2026", () => import("./pages/ArticleFoundationMembership2026"));
+const ArticleEosPlatformLaunch = lazyPage(
+  "/article-eos-platform-launch",
+  () => import("./pages/ArticleEosPlatformLaunch")
+);
+const ArticleEaiLlmBench = lazyPage(
+  "/article-eai-llm-bench",
+  () => import("./pages/ArticleEaiLlmBench")
+);
+const ArticleEbootSecureBoot = lazyPage(
+  "/article-eboot-secure-boot-deepdive",
+  () => import("./pages/ArticleEbootSecureBoot")
+);
+const ArticleEdbEncryption = lazyPage(
+  "/article-edb-encryption-at-rest",
+  () => import("./pages/ArticleEdbEncryption")
+);
+const ArticleEni1024Channel = lazyPage(
+  "/article-eni-1024-channel-pipeline",
+  () => import("./pages/ArticleEni1024Channel")
+);
+const ArticleEosRoadmap2026 = lazyPage(
+  "/article-eos-roadmap-2026",
+  () => import("./pages/ArticleEosRoadmap2026")
+);
+const ArticleEosimHilBridge = lazyPage(
+  "/article-eosim-hil-bridge",
+  () => import("./pages/ArticleEosimHilBridge")
+);
+const ArticleFoundationMembership2026 = lazyPage(
+  "/article-foundation-membership-2026",
+  () => import("./pages/ArticleFoundationMembership2026")
+);
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
 const Patents = lazyPage("/patents", () => import("./pages/Patents"));
 const ProductEoS = lazyPage("/product-eos", () => import("./pages/ProductEoS"));
-const ProductEoSPlatform = lazyPage("/product-eos-platform", () => import("./pages/ProductEoSPlatform"));
-const ProductEBoot = lazyPage("/product-eboot", () => import("./pages/ProductEBoot"));
+const ProductEoSPlatform = lazyPage(
+  "/product-eos-platform",
+  () => import("./pages/ProductEoSPlatform")
+);
+const ProductEBoot = lazyPage(
+  "/product-eboot",
+  () => import("./pages/ProductEBoot")
+);
 const ProductEAI = lazyPage("/product-eai", () => import("./pages/ProductEAI"));
 const ProductENI = lazyPage("/product-eni", () => import("./pages/ProductENI"));
-const ProductEIPC = lazyPage("/product-eipc", () => import("./pages/ProductEIPC"));
+const ProductEIPC = lazyPage(
+  "/product-eipc",
+  () => import("./pages/ProductEIPC")
+);
 const ProductEDB = lazyPage("/product-edb", () => import("./pages/ProductEDB"));
-const ProductEBuild = lazyPage("/product-ebuild", () => import("./pages/ProductEBuild"));
-const ProductEoSim = lazyPage("/product-eosim", () => import("./pages/ProductEoSim"));
-const ProductEoStudio = lazyPage("/product-eostudio", () => import("./pages/ProductEoStudio"));
-const ProductEOffice = lazyPage("/product-eoffice", () => import("./pages/ProductEOffice"));
-const ProductEApps = lazyPage("/product-eapps", () => import("./pages/ProductEApps"));
-const ProductEServiceApps = lazyPage("/product-eserviceapps", () => import("./pages/ProductEServiceApps"));
+const ProductEBuild = lazyPage(
+  "/product-ebuild",
+  () => import("./pages/ProductEBuild")
+);
+const ProductEoSim = lazyPage(
+  "/product-eosim",
+  () => import("./pages/ProductEoSim")
+);
+const ProductEoStudio = lazyPage(
+  "/product-eostudio",
+  () => import("./pages/ProductEoStudio")
+);
+const ProductEOffice = lazyPage(
+  "/product-eoffice",
+  () => import("./pages/ProductEOffice")
+);
+const ProductEApps = lazyPage(
+  "/product-eapps",
+  () => import("./pages/ProductEApps")
+);
+const ProductEServiceApps = lazyPage(
+  "/product-eserviceapps",
+  () => import("./pages/ProductEServiceApps")
+);
 const WhatWeDo = lazyPage("/what-we-do", () => import("./pages/WhatWeDo"));
-const EcadHardware = lazyPage("/ecad-hardware", () => import("./pages/EcadHardware"));
-const Architecture = lazyPage("/architecture", () => import("./pages/Architecture"));
+const EcadHardware = lazyPage(
+  "/ecad-hardware",
+  () => import("./pages/EcadHardware")
+);
+const Architecture = lazyPage(
+  "/architecture",
+  () => import("./pages/Architecture")
+);
 const Quantum = lazyPage("/quantum", () => import("./pages/Quantum"));
 
 function PageLoader() {

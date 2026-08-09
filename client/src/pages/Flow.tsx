@@ -171,8 +171,8 @@ export default function Flow() {
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
               eFlow is EmbeddedOS's visual programming environment — drag,
-              connect, and deploy firmware to {BOARD_COUNT} hardware targets without
-              writing a single line of boilerplate.
+              connect, and deploy firmware to {BOARD_COUNT} hardware targets
+              without writing a single line of boilerplate.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link

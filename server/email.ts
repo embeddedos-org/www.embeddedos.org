@@ -41,7 +41,9 @@ export interface ApplicationEmailData {
  * Send application notification to careers@embeddedos.org
  * and a confirmation email to the applicant.
  */
-export async function sendApplicationEmails(data: ApplicationEmailData): Promise<void> {
+export async function sendApplicationEmails(
+  data: ApplicationEmailData
+): Promise<void> {
   if (!SMTP_PASS) {
     console.warn("[Email] SMTP_PASS not configured — skipping email send");
     return;
@@ -183,5 +185,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0B1D3A;color:#E2E8F0;ma
     }),
   ]);
 
-  console.log(`[Email] ✓ Application emails sent for ${data.fullName} <${data.email}>`);
+  console.log(
+    `[Email] ✓ Application emails sent for ${data.fullName} <${data.email}>`
+  );
 }

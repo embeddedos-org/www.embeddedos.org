@@ -1,11 +1,13 @@
 # EmbeddedOS Website TODO
 
 ## Phase 1 — Setup & Assets
+
 - [x] Upload all brand images and icons to webdev storage
 - [x] Install GSAP + Three.js
 - [x] Configure global theme, CSS variables, Sora + Inter fonts
 
 ## Phase 2 — Core Layout
+
 - [x] Navbar with full Projects + Products mega-menu (real GitHub repos)
   - [x] Projects: Core OS, AI & Neural, Dev Tools, Aerospace
   - [x] Products: Applications, Health Devices, Hardware
@@ -15,6 +17,7 @@
 - [x] Footer: Projects + Products + Resources + Community columns
 
 ## Phase 3 — Homepage
+
 - [x] GSAP hero section with staggered text reveal
 - [x] Animated stats counter bar (22 repos, 52+ platforms, 300+ APIs, 60+ apps, 4 health devices, 14 books)
 - [x] Framer Motion product grid (12 products)
@@ -24,6 +27,7 @@
 - [x] Open-source mission banner
 
 ## Phase 4 — Inner Pages (all content preserved)
+
 - [x] /getting-started — Getting Started page (5 learning paths)
 - [x] /docs — Documentation index
 - [x] /books — Books page (14 books)
@@ -39,6 +43,7 @@
 - [x] /404 — Custom 404 page
 
 ## Phase 5 — Features
+
 - [x] eBot AI chat assistant (LLM-powered, bottom-right FAB)
 - [x] Cmd/Ctrl+K search overlay filtering all pages and products
 - [x] tRPC backend routes for eBot and search
@@ -47,6 +52,7 @@
 - [x] Aerospace page: 3D aircraft models + live flight telemetry simulation
 
 ## Phase 6 — Quality
+
 - [x] Full mobile responsiveness across all breakpoints
 - [x] Zero TypeScript errors
 - [x] Vitest unit tests (9 tests passing: 8 search + 1 auth)
@@ -128,6 +134,7 @@
 - [x] Push all changes to www-embeddedos static HTML site (careers.html rebuilt, membership.html rebuilt, Zeffy links fixed)
 
 ## Phase 14 — Careers & Branch Cleanup (Jul 14 2026)
+
 - [x] Audit careers content across all three repos (found 8 shallow positions in careers.html)
 - [x] Build enriched Careers page with 13 detailed positions in React app (/careers) + search index
 - [x] Sync careers.html to www.embeddedos.org static site (13 positions, pushed commit 41495ef)
@@ -136,6 +143,7 @@
 ## Phase 15 — Full Gap Fill (Jul 15 2026)
 
 ### Group A — Organization / Foundation
+
 - [x] /vision — Foundation vision & long-term mission
 - [x] /organization — Foundation governance, legal, 501(c)(3) details
 - [x] /community — Community hub (forums, Discord, events, contributors)
@@ -153,6 +161,7 @@
 - [x] /events — Events page
 
 ### Group B — Product Pages
+
 - [x] /edb — eDB multi-model database product page
 - [x] /eipc — EIPC secure IPC protocol page
 - [x] /eni — ENI neural interface framework page
@@ -165,6 +174,7 @@
 - [x] /neural-link-ai — Neural Link AI / ENI BCI product page
 
 ### Group C — Content Pages
+
 - [x] /roadmap — Public roadmap
 - [x] /research — Research page
 - [x] /future-research — Long-term research directions
@@ -176,6 +186,7 @@
 - [x] /downloads — Downloads page (6 categories, 16 packages, MIT license notice, quick-install guide)
 
 ### Group D — Article Pages
+
 - [x] /article-eos-platform-launch
 - [x] /article-eai-llm-bench
 - [x] /article-eboot-secure-boot-deepdive
@@ -186,6 +197,7 @@
 - [x] /article-foundation-membership-2026
 
 ### Infrastructure
+
 - [x] Update Navbar with all new pages
 - [x] Add all new pages to search index (83 total entries)
 - [x] Run all tests and verify 0 TypeScript errors (15 tests passing)
@@ -210,6 +222,7 @@
 - [x] Run all tests and save checkpoint
 
 ## Phase 17 — Product Detail Pages, API Docs Expansion & GitHub Push (Jul 15 2026)
+
 - [x] Build /patents — Patents & IP page (Health-Key Ultra, Health-Band Neuro provisional patents)
 - [x] Build /product-eos — EoS kernel product detail page
 - [x] Build /product-eos-platform — eos-platform form-factor profiles detail page
@@ -231,7 +244,9 @@
 - [x] Save checkpoint and push to GitHub www.embeddedos.org
 
 ## Phase 18 — Comprehensive Enrichment (Jul 15 2026)
+
 ### Animated Product Showcases (Three.js / React Three Fiber)
+
 - [x] Build /what-we-do — "What We Do" company overview page (EoS+eBoot+ENI/EAI+eOffice+eApps stack, use cases per industry)
 - [x] Build /ecad-hardware — eCAD Hardware Products showcase (9 design categories with animated cards)
 - [x] Animate EoS page (/eos) — 3D kernel architecture rotating diagram
@@ -240,16 +255,22 @@
 - [x] Animate eOffice page (/eoffice) — 3D app suite showcase
 - [x] Animate eApps page (/eapps) — 3D canvas animation added to hero section
 - [x] Add eCAD product categories to Home page (15 categories grid with links, between Health and Features sections)
+
 ### API Documentation Enrichment
+
 - [x] Add eOffice full API (createDocsEditor, CollabSession, eBot AI endpoints) to /api-docs
 - [x] Add eBrowser full API (eb_create, eb_navigate, DOM query API) to /api-docs
 - [x] Add eOSuite full API (43 app CLI commands, platform matrix) to /api-docs
 - [x] Add eServiceApps full API (SocialService, MapView, AuthGuard, AppTheme) to /api-docs
+
 ### Missing Pages
+
 - [x] Build /stacks — Technology stacks page (6 stacks from org repo) — already existed
 - [x] Build /downloads — Downloads page with all packages — already existed
 - [x] Sync all new React pages to www.embeddedos.org static HTML (what-we-do.html, ecad-hardware.html pushed commit 87230de)
+
 ### Infrastructure
+
 - [x] Update Navbar with new pages (/what-we-do, /ecad-hardware)
 - [x] Add all new pages to search index
 - [x] Run all tests (15 passing, 0 TypeScript errors)
@@ -258,18 +279,21 @@
 ## Phase 19 — Architecture Diagrams, Button Fixes & Comprehensive Testing (Jul 15 2026)
 
 ### Stub Button Audit & Fixes
+
 - [x] Audit all pages for stub/placeholder buttons (toast "coming soon" or href="#")
 - [x] Fix Research.tsx: 6 paper links now point to real GitHub/arXiv URLs
 - [x] Fix Events.tsx: 4 event Register buttons now point to GitHub Discussions
 - [x] All remaining href="#" are in ComponentShowcase (intentional demo stubs)
 
 ### 3D Architecture & Block Diagrams
+
 - [x] Build ArchitectureDiagram3D.tsx — reusable animated 3D layered block diagram component
 - [x] Build /architecture page — 7 interactive diagrams: EoS Kernel, eBoot Boot Sequence, ENI/EAI Neural Pipeline, eOffice Suite, eDB Multi-Model, eRadar360 Sensor Fusion, Full EmbeddedOS Stack
 - [x] Add eCAD hardware block diagrams: eHealth365 sensor pipeline, eRadar360 sensor fusion, eAerospace flight control
 - [x] Add /architecture to Navbar (Docs section) and search index
 
 ### Comprehensive Test Suite (116 tests, 5 test files)
+
 - [x] Unit tests — search scoring, auth.me, auth.logout (15 tests in comprehensive.test.ts)
 - [x] Integration tests — auth+search, logout+me, multi-category search (6 tests)
 - [x] Functional tests — all major page routes discoverable, auth flows correct (15 tests)
@@ -282,11 +306,13 @@
 - [x] UI/UX tests — navigation discoverability (18 pages), content quality, search relevance, data integrity, accessibility (30 tests in ui-ux.test.ts)
 
 ### Infrastructure
+
 - [x] All 116 tests passing (5 test files: auth.logout, membership, ebot.search, ui-ux, comprehensive)
 - [x] 0 TypeScript errors
 - [x] Save checkpoint and push to GitHub (Phase 19 final)
 
 ### Playwright E2E Tests (75 tests)
+
 - [x] Smoke tests (5) — homepage, nav, footer, API health
 - [x] Functional route tests (29) — all major routes render without errors
 - [x] E2E user flows (6) — search, navigation, careers, API docs, architecture, 404
@@ -300,10 +326,12 @@
 ## Phase 20 — Image Generation, Logo Creation & Button Fixes (Jul 15 2026)
 
 ### Image Audit
+
 - [x] Audit live site for all broken/missing images (22 image refs found across 19 files)
 - [x] Identify all placeholder/missing logos (logo mark was using wrong hash)
 
 ### Image Generation (15 images generated and uploaded)
+
 - [x] EmbeddedOS main logo (dark bg, circuit-board motif, orange accent) → embeddedos-logo-mark_bc053888.png
 - [x] Hero background image (dark PCB/circuit board with glowing traces) → hero-background_1bafea1c.png
 - [x] EoS kernel product image (3D chip/processor render) → product-eos-kernel_0ca24d8d.png
@@ -321,12 +349,14 @@
 - [x] Architecture diagram hero → architecture-diagram-hero_72436b3f.png
 
 ### Button / Navigation Fixes
+
 - [x] Fix 72 nested Link+anchor patterns causing wrong button navigation (Python script fix_nested_links.py, 19 files fixed)
 - [x] Fix Research.tsx: 6 paper links → real GitHub/arXiv URLs
 - [x] Fix Events.tsx: 4 Register buttons → GitHub Discussions
 - [x] Footer product links verified and corrected
 
 ### Infrastructure
+
 - [x] Upload all 15 images to webdev storage (manus-upload-file --webdev)
 - [x] Wire all images into React components (22 replacements across 19 files)
 - [x] Run all tests (116 Vitest + 75 Playwright = 191 total passing)
@@ -335,6 +365,7 @@
 ## Phase 21 — Donate Page Fix & Architecture Visual Enhancement (Jul 15 2026)
 
 ### Donate Page Fix
+
 - [x] Audit current /donate page — found wrong Zeffy slug (embeddedos vs donate-to-change-lives-17596)
 - [x] Validate Zeffy URL: https://www.zeffy.com/en-US/donation-form/donate-to-change-lives-17596 — VALID (confirmed in browser, shows "Donate to Change Technology" by Embedded Operating Systems Research Foundation)
 - [x] Fix Zeffy iframe embed — correct embed URL: https://www.zeffy.com/en-US/embed/donation-form/donate-to-change-lives-17596, 700px height, loading spinner, fallback link
@@ -343,6 +374,7 @@
 - [x] Test donate page renders correctly — confirmed in devserver HMR
 
 ### Architecture Page Enhancement
+
 - [x] Add product images to each architecture diagram section (4 images: EoS, eBoot, EAI, eOffice)
 - [x] Add richer text explanations for each layer/component (per-diagram desc + layer sublabels)
 - [x] Add "Why this matters" callout boxes for donors (7 diagrams × 1 callout each)
@@ -350,6 +382,7 @@
 - [x] Add visual stats (latency <1µs, 1024 channels, 52+ platforms, 33 HAL drivers, etc.)
 
 ### Image Generation
+
 - [x] Generate EoS kernel architecture illustration → arch-eos-kernel_d7d1b4a5.png
 - [x] Generate eBoot secure boot chain illustration → arch-eboot-chain_b9f999b5.png
 - [x] Generate ENI/EAI neural pipeline illustration → arch-eai-neural_4d7964d2.png
@@ -357,10 +390,12 @@
 - [x] Generate "impact for donors" hero illustration → donate-impact-hero_generated.png
 
 ### Infrastructure
+
 - [x] Run all tests — 116 Vitest passing, 0 TypeScript errors
 - [x] Save checkpoint (6e79e983) and push deploy branch to GitHub (commit e3f3d6d)
 
 ## Phase 22 — Donate Page Fix (Jul 15 2026)
+
 - [x] Research Zeffy embed URL parameters — confirmed no URL param can suppress the optional tip (must be disabled from Zeffy org admin dashboard)
 - [x] Add info note below iframe explaining donors can set the optional tip to 0% using the dropdown
 - [x] Fix iframe loading: add 4s auto-timeout useEffect so spinner auto-hides even if onLoad doesn't fire
@@ -370,6 +405,7 @@
 - [x] Save checkpoint and push deploy branch to GitHub
 
 ## Phase 23 — Architecture Diagrams Redesign (Jul 15 2026)
+
 - [x] Audit Architecture.tsx — found duplicate images (3 diagrams shared same 2 images) and all 7 used identical layered-stack visual mode
 - [x] Redesign ArchitectureDiagram3D component with 5 distinct visual modes: layered, radial, pipeline, tree, matrix
 - [x] Assign each diagram a unique mode: Full Stack=matrix, EoS Kernel=layered, eBoot=pipeline, ENI/EAI=radial, eOffice=tree, eDB=pipeline, eRadar360=radial
@@ -382,12 +418,14 @@
 - [x] Save checkpoint and push to GitHub
 
 ## Phase 24 — Fix /manus-storage/ Proxy on Live Server (Jul 15 2026)
+
 - [ ] Add .htaccess RewriteRule to www-embeddedos master branch to proxy /manus-storage/* to Manus CDN
 - [ ] Verify the proxy rule syntax for LiteSpeed compatibility
 - [ ] Push master branch to GitHub
 - [ ] Verify images load correctly on www.embeddedos.org
 
 ## Phase 25 — Quantum Computing (eQC) Section (Jul 15 2026)
+
 - [ ] Research IBM, Google, Microsoft, IonQ, Rigetti quantum hardware specs and APIs
 - [ ] Create /quantum page (eQC product) with vendor ecosystem, kernel features, hardware support table
 - [ ] Add eQC to navbar Projects dropdown
@@ -396,6 +434,7 @@
 - [ ] Run tests, save checkpoint, push to GitHub
 
 ## Phase 26 — Quarterly Donation + Full UI/UX Overhaul (Jul 15 2026)
+
 - [ ] Add "quarterly" frequency option to Donate.tsx (4 buttons: one-time, monthly, quarterly, annual)
 - [ ] Update donationRouter.ts to handle quarterly Stripe interval (every 3 months)
 - [ ] Deep-read ui-ux-pro-max-skill and 21st.dev for advanced patterns
@@ -406,6 +445,7 @@
 - [ ] Run full test suite, save checkpoint, push to GitHub
 
 ## Phase 28 — Careers Navbar & Footer Fix (Jul 22 2026)
+
 - [x] Add Careers link to Navbar Community → Participate section (top position, orange)
 - [x] Add Internships link to Navbar Community → Participate section
 - [x] Add Careers link to Footer Foundation column (position 2, after About)
@@ -414,6 +454,7 @@
 - [x] 0 TypeScript errors, HMR confirmed
 
 ## Phase 27 — Product Page Enhancement: How It Works + Usage Examples + Ecosystem Role (Jul 15 2026)
+
 - [x] Audit all routes — confirmed no 404s from missing route definitions; root cause was thin/empty content
 - [x] Upgraded ProductDetailPage component with 3 new sections: How It Works (numbered workflow), Usage Examples (tabbed code panel), Role in the EoS Ecosystem (importance badge + summary + depends-on/enables-by)
 - [x] ProductEoS — 5-step workflow, 3 usage examples (IoT sensor, motor controller, CAN gateway), ecosystem role: Critical/Foundation

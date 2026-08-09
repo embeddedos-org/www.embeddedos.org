@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Project Rules
 
 Applies to every task in `www.embeddedos.org`.
@@ -61,8 +62,8 @@ Label any load-bearing statement:
 Never present an assumption as a fact. Where an assumption is unavoidable, name
 it and continue on the safest path rather than stopping.
 
-Do not write *production ready*, *complete*, *bug free*, *fully tested*,
-*secure*, *optimised* or *verified* without the evidence to support it. Where
+Do not write _production ready_, _complete_, _bug free_, _fully tested_,
+_secure_, _optimised_ or _verified_ without the evidence to support it. Where
 there is none:
 
 > I cannot verify this claim from the available information.
@@ -105,17 +106,17 @@ www.embeddedos.org
 Read this file every time. Read the rest when the row applies — loading all of
 them on every task is the behaviour this standard exists to prevent.
 
-| Before you... | Read |
-|---------------|------|
-| Break a request into work | [MODES.md](./MODES.md), [TASKS.md](./TASKS.md) |
-| Decide structure or add a dependency | [.ai/architect.md](./.ai/architect.md), [MEMORY.md](./MEMORY.md) |
-| Write code | [QUALITY.md](./QUALITY.md), your role in [.ai/](./.ai/) |
-| Write or change tests | [TESTING.md](./TESTING.md) |
-| Touch input, auth, secrets or dependencies | [SECURITY-STANDARDS.md](./SECURITY-STANDARDS.md) |
-| Claim anything is done | [VERIFY.md](./VERIFY.md) |
-| Change role, or run low on context | [HANDOFF.md](./HANDOFF.md) |
-| Record a decision worth keeping | [MEMORY.md](./MEMORY.md) |
-| Prepare a deployment | [.ai/release.md](./.ai/release.md) |
+| Before you...                              | Read                                                             |
+| ------------------------------------------ | ---------------------------------------------------------------- |
+| Break a request into work                  | [MODES.md](./MODES.md), [TASKS.md](./TASKS.md)                   |
+| Decide structure or add a dependency       | [.ai/architect.md](./.ai/architect.md), [MEMORY.md](./MEMORY.md) |
+| Write code                                 | [QUALITY.md](./QUALITY.md), your role in [.ai/](./.ai/)          |
+| Write or change tests                      | [TESTING.md](./TESTING.md)                                       |
+| Touch input, auth, secrets or dependencies | [SECURITY-STANDARDS.md](./SECURITY-STANDARDS.md)                 |
+| Claim anything is done                     | [VERIFY.md](./VERIFY.md)                                         |
+| Change role, or run low on context         | [HANDOFF.md](./HANDOFF.md)                                       |
+| Record a decision worth keeping            | [MEMORY.md](./MEMORY.md)                                         |
+| Prepare a deployment                       | [.ai/release.md](./.ai/release.md)                               |
 
 Roles: [AGENTS.md](./AGENTS.md). Flow between them:
 [ORCHESTRATION.md](./ORCHESTRATION.md).
@@ -131,7 +132,6 @@ When two of these documents conflict, the earlier wins:
 
 Say that a conflict exists rather than resolving it silently. A rule two people
 read differently is a defect in the rule, and it will recur until it is fixed.
-
 
 ## Node
 

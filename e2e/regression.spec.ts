@@ -192,7 +192,10 @@ test.describe("navigation regressions", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
 
-    await page.getByRole("button", { name: /Community/i }).first().click();
+    await page
+      .getByRole("button", { name: /Community/i })
+      .first()
+      .click();
     await page.locator('a[href="/mission"]').first().click();
     await expect(page).toHaveURL(/\/mission$/);
 
@@ -202,10 +205,15 @@ test.describe("navigation regressions", () => {
     await expect(heading).toBeVisible();
     const covered = await heading.evaluate(el => {
       const r = el.getBoundingClientRect();
-      const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+      const top = document.elementFromPoint(
+        r.x + r.width / 2,
+        r.y + r.height / 2
+      );
       return !!top && !el.contains(top) && top !== el;
     });
-    expect(covered, "an overlay is intercepting clicks on the page").toBe(false);
+    expect(covered, "an overlay is intercepting clicks on the page").toBe(
+      false
+    );
   });
 
   test("clicking through to the route already open still closes the menu", async ({
@@ -216,7 +224,10 @@ test.describe("navigation regressions", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/mission");
 
-    await page.getByRole("button", { name: /Community/i }).first().click();
+    await page
+      .getByRole("button", { name: /Community/i })
+      .first()
+      .click();
     await page.locator('a[href="/mission"]').first().click();
     await expect(page.locator('[data-state="open"]')).toHaveCount(0);
   });
@@ -227,7 +238,10 @@ test.describe("navigation regressions", () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto("/");
 
-    await page.getByRole("button", { name: /open menu/i }).first().click();
+    await page
+      .getByRole("button", { name: /open menu/i })
+      .first()
+      .click();
 
     // The mobile panel is an accordion: a section has to be expanded before its
     // items exist, so scope the item lookup to the panel rather than the page —
@@ -241,9 +255,10 @@ test.describe("navigation regressions", () => {
     await item.click();
 
     await expect(page).toHaveURL(/\/about$/);
-    await expect(panel, "the mobile panel must close on navigation").toHaveCount(
-      0
-    );
+    await expect(
+      panel,
+      "the mobile panel must close on navigation"
+    ).toHaveCount(0);
   });
 });
 

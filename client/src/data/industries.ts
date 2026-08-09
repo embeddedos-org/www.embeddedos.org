@@ -109,8 +109,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "space-satellite",
     name: "Space & Satellite",
-    blurb:
-      "Onboard computers, CubeSat payloads, and ground-segment hardware.",
+    blurb: "Onboard computers, CubeSat payloads, and ground-segment hardware.",
     group: "core",
     targetStandards: ["ECSS-E-ST-10", "ECSS-E-ST-50", "MIL-STD-883"],
     maturity: design(),
@@ -196,8 +195,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "rail-transit",
     name: "Rail & Transit",
-    blurb:
-      "Signalling, trackside monitoring, and rolling-stock electronics.",
+    blurb: "Signalling, trackside monitoring, and rolling-stock electronics.",
     group: "core",
     targetStandards: [
       "EN 50128 SIL 4",
@@ -230,8 +228,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "medical-devices",
     name: "Medical Devices",
-    blurb:
-      "Patient monitoring, diagnostics, and therapy device controllers.",
+    blurb: "Patient monitoring, diagnostics, and therapy device controllers.",
     group: "core",
     targetStandards: [
       "IEC 60601-1",
@@ -280,8 +277,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "smart-grid",
     name: "Smart Grid & Utilities",
-    blurb:
-      "Substation automation, protection relays, and smart metering.",
+    blurb: "Substation automation, protection relays, and smart metering.",
     group: "core",
     targetStandards: ["IEC 62056", "IEC 62052-11", "IEEE 1547"],
     maturity: design(),
@@ -295,15 +291,9 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "renewables-storage",
     name: "Renewables & Storage",
-    blurb:
-      "Solar, wind, hydrogen, and battery storage controllers.",
+    blurb: "Solar, wind, hydrogen, and battery storage controllers.",
     group: "core",
-    targetStandards: [
-      "IEC 61727",
-      "IEEE 1547",
-      "IEC 61400-1",
-      "IEEE 2030.7",
-    ],
+    targetStandards: ["IEC 61727", "IEEE 1547", "IEC 61400-1", "IEEE 2030.7"],
     maturity: design(),
     referenceDesign: {
       name: "eSolarInv-10kW",
@@ -329,15 +319,9 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "mining",
     name: "Mining & Heavy Industry",
-    blurb:
-      "Underground sensing, autonomous haulage, and plant control.",
+    blurb: "Underground sensing, autonomous haulage, and plant control.",
     group: "core",
-    targetStandards: [
-      "ISO 17757",
-      "ISO 15998",
-      "IECEx",
-      "IEC 62061 SIL 3",
-    ],
+    targetStandards: ["ISO 17757", "ISO 15998", "IECEx", "IEC 62061 SIL 3"],
     maturity: design(),
     referenceDesign: {
       name: "eHaul-Auto",
@@ -383,8 +367,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "manufacturing",
     name: "Manufacturing & Industry 4.0",
-    blurb:
-      "IIoT gateways, predictive maintenance, and digital twins.",
+    blurb: "IIoT gateways, predictive maintenance, and digital twins.",
     group: "core",
     targetStandards: ["IEC 62443", "IEC 61131-3"],
     maturity: design(),
@@ -426,8 +409,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "telecommunications",
     name: "Telecommunications",
-    blurb:
-      "Open RAN, private 5G, IoT gateways, and timing distribution.",
+    blurb: "Open RAN, private 5G, IoT gateways, and timing distribution.",
     group: "core",
     targetStandards: ["ETSI EN 303 645", "IEC 62443-4-2", "IEEE 1588"],
     maturity: design(),
@@ -441,8 +423,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "agriculture",
     name: "Agriculture & AgriTech",
-    blurb:
-      "Precision agriculture, irrigation, and crop and livestock sensing.",
+    blurb: "Precision agriculture, irrigation, and crop and livestock sensing.",
     group: "core",
     targetStandards: ["ISO 3691-4", "ETSI EN 303 645"],
     maturity: concept("Concept — sensor stack and LoRa mesh topology TBD"),
@@ -456,8 +437,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "food-cold-chain",
     name: "Food & Cold Chain",
-    blurb:
-      "Traceability, storage monitoring, and food-safety instrumentation.",
+    blurb: "Traceability, storage monitoring, and food-safety instrumentation.",
     group: "core",
     targetStandards: ["IEC 61010-1", "EN 12830"],
     maturity: sought(),
@@ -467,8 +447,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "water-wastewater",
     name: "Water & Wastewater",
-    blurb:
-      "Quality monitoring, leak detection, and treatment control.",
+    blurb: "Quality monitoring, leak detection, and treatment control.",
     group: "core",
     targetStandards: ["ISO 4064", "IEC 62056"],
     maturity: design(),
@@ -482,8 +461,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "environment-climate",
     name: "Environment & Climate",
-    blurb:
-      "Air quality, emissions, weather, and ecological sensor networks.",
+    blurb: "Air quality, emissions, weather, and ecological sensor networks.",
     group: "core",
     targetStandards: ["EN 15267", "IEC 61010-1"],
     maturity: design(),
@@ -497,8 +475,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "disaster-resilience",
     name: "Disaster Resilience & Public Safety",
-    blurb:
-      "Flood, seismic, wildfire, and emergency-response systems.",
+    blurb: "Flood, seismic, wildfire, and emergency-response systems.",
     group: "core",
     targetStandards: ["IEC 62676", "EN 50131-1"],
     maturity: concept("Concept — sensor calibration and public dashboard TBD"),
@@ -512,8 +489,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "smart-cities",
     name: "Smart Cities",
-    blurb:
-      "Street lighting, traffic, waste management, and civic sensing.",
+    blurb: "Street lighting, traffic, waste management, and civic sensing.",
     group: "core",
     targetStandards: ["NTCIP 1202", "IEC 62264", "ISO 14906"],
     maturity: design(),
@@ -527,8 +503,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "construction-infrastructure",
     name: "Construction & Infrastructure",
-    blurb:
-      "Structural health monitoring for bridges, tunnels, and dams.",
+    blurb: "Structural health monitoring for bridges, tunnels, and dams.",
     group: "core",
     targetStandards: ["ISO 17757", "IEC 61010-1"],
     maturity: design(),
@@ -598,8 +573,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "research-education",
     name: "Research & Education",
-    blurb:
-      "Teaching platforms, lab instrumentation, and open hardware.",
+    blurb: "Teaching platforms, lab instrumentation, and open hardware.",
     group: "core",
     targetStandards: ["IEC 61010-1", "CERN OHL"],
     maturity: concept("Concept — curriculum draft and enclosure design TBD"),
@@ -643,8 +617,7 @@ export const INDUSTRIES: Industry[] = [
   {
     id: "autonomous-drones",
     name: "Autonomous Systems & Drones",
-    blurb:
-      "Fixed-wing, multirotor, VTOL, and ground autonomy platforms.",
+    blurb: "Fixed-wing, multirotor, VTOL, and ground autonomy platforms.",
     group: "frontier",
     targetStandards: ["DO-178C", "ISO 3691-4", "IEC 62061 SIL 2"],
     maturity: design(),

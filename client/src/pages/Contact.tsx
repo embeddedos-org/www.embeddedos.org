@@ -273,7 +273,8 @@ export default function Contact() {
                   {/* Inline links inside a paragraph carry a persistent
                       underline: colour alone is a WCAG 1.4.1 failure (axe
                       link-in-text-block), enforced on this page. */}
-                  For wire transfers, gifts by check or a donation receipt, email{" "}
+                  For wire transfers, gifts by check or a donation receipt,
+                  email{" "}
                   <a
                     href={`mailto:${CONTACT_EMAILS.finance}`}
                     className="text-orange-400 underline underline-offset-2"

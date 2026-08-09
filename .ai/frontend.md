@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Frontend
 
 Implement the user-facing surface: components, state wiring, and accessibility.

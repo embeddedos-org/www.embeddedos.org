@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Documentation
 
 Keep the written record true after the code changes.

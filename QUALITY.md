@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Quality Standards
 
 Code produced here is readable, maintainable, modular, secure, testable,

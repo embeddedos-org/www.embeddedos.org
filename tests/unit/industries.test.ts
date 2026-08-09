@@ -18,7 +18,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { INDUSTRIES, industriesInGroup } from "../../client/src/data/industries";
+import {
+  INDUSTRIES,
+  industriesInGroup,
+} from "../../client/src/data/industries";
 
 /** Where the sibling design repositories are checked out, if they are. */
 const SIBLINGS = path.resolve(__dirname, "../../..");
@@ -123,8 +126,13 @@ describe("reference designs are real", () => {
         expect(i.maturity.kind, `${i.name} without a design`).toBe("sought");
         continue;
       }
-      expect(i.referenceDesign.name.length, `${i.name} design name`).toBeGreaterThan(2);
-      expect(i.referenceDesign.repoPath, `${i.name} repo path`).toMatch(/\w+\/\w+/);
+      expect(
+        i.referenceDesign.name.length,
+        `${i.name} design name`
+      ).toBeGreaterThan(2);
+      expect(i.referenceDesign.repoPath, `${i.name} repo path`).toMatch(
+        /\w+\/\w+/
+      );
     }
   });
 });

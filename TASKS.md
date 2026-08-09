@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Tasks
 
 Working ledger for `www.embeddedos.org`. The planner writes entries; each owning role
@@ -9,14 +10,14 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID | Task | Owner | Mode | Status | Depends on |
-|----|------|-------|------|--------|------------|
-| —  | No active tasks. | — | — | — | — |
+| ID  | Task             | Owner | Mode | Status | Depends on |
+| --- | ---------------- | ----- | ---- | ------ | ---------- |
+| —   | No active tasks. | —     | —    | —      | —          |
 
 ## Completed
 
-| ID | Task | Owner | Verified by | Evidence |
-|----|------|-------|-------------|----------|
+| ID    | Task                                                                               | Owner    | Verified by                | Evidence                                                                                                                                                                                                                                                                                                     |
+| ----- | ---------------------------------------------------------------------------------- | -------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | T-001 | Mission & scope and nonprofit transparency for the Google Ad Grants website policy | frontend | acceptance + a11y + audits | `pnpm check` PASS · `pnpm test` 321/321 PASS · `pnpm test:e2e` 118/118 PASS (incl. 28 Ad Grants acceptance criteria) · `pnpm audit:site` 0 failures · `pnpm audit:mobile` 25 routes, no overflow. Open items in [docs/unverified-claims.md](./docs/unverified-claims.md); mailing address still unpublished. |
 
 ---
@@ -36,7 +37,8 @@ Goal
 
 Acceptance criteria
 : - <observable, checkable statement>
-  - <observable, checkable statement>
+
+- <observable, checkable statement>
 
 Files in scope
 : <paths the owner is expected to touch>
@@ -49,25 +51,25 @@ Risks
 
 Verification
 : | Check | Command | Result |
-  |-------|---------|--------|
-  | <name> | `<command>` | `NOT RUN` |
+|-------|---------|--------|
+| <name> | `<command>` | `NOT RUN` |
 ```
 
 ## Verification commands for this repository
 
 These commands were derived from the manifests at the repository root. Confirm one works before relying on it; a listed script may still be a stub.
 
-| Check | Command | Default state |
-|-------|---------|---------------|
-| Type check | `pnpm check` | `NOT RUN` |
-| Format | `pnpm format` | `NOT RUN` |
-| Unit tests | `pnpm test:unit` | `NOT RUN` |
-| Integration tests | `pnpm test:integration` | `NOT RUN` |
-| End-to-end tests | `pnpm test:e2e` | `NOT RUN` |
-| Build | `pnpm build` | `NOT RUN` |
-| Accessibility | `pnpm test:a11y` | `NOT RUN` |
-| Performance | `pnpm test:perf` | `NOT RUN` |
-| Security | `pnpm test:security` | `NOT RUN` |
+| Check             | Command                 | Default state |
+| ----------------- | ----------------------- | ------------- |
+| Type check        | `pnpm check`            | `NOT RUN`     |
+| Format            | `pnpm format`           | `NOT RUN`     |
+| Unit tests        | `pnpm test:unit`        | `NOT RUN`     |
+| Integration tests | `pnpm test:integration` | `NOT RUN`     |
+| End-to-end tests  | `pnpm test:e2e`         | `NOT RUN`     |
+| Build             | `pnpm build`            | `NOT RUN`     |
+| Accessibility     | `pnpm test:a11y`        | `NOT RUN`     |
+| Performance       | `pnpm test:perf`        | `NOT RUN`     |
+| Security          | `pnpm test:security`    | `NOT RUN`     |
 
 ## Rules
 

@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Backend
 
 Implement server-side behaviour: APIs, persistence, and business logic.

@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Testing
 
 Prove the change behaves as specified, and that it fails loudly when it should.

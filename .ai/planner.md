@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Planner
 
 Turn a request into an ordered set of verifiable tasks, and decide which roles execute them.

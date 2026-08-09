@@ -21,7 +21,7 @@ describe("Membership page — search index", () => {
     const result = await caller.search.query({ q: "membership" });
     expect(result).toHaveProperty("pages");
     expect(result.pages.length).toBeGreaterThan(0);
-    const paths = result.pages.map((p) => p.path);
+    const paths = result.pages.map(p => p.path);
     expect(paths).toContain("/membership");
   });
 
@@ -29,7 +29,7 @@ describe("Membership page — search index", () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.search.query({ q: "supporter" });
     expect(result.pages.length).toBeGreaterThan(0);
-    const paths = result.pages.map((p) => p.path);
+    const paths = result.pages.map(p => p.path);
     expect(paths).toContain("/membership");
   });
 
@@ -37,7 +37,7 @@ describe("Membership page — search index", () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.search.query({ q: "sponsor" });
     expect(result.pages.length).toBeGreaterThan(0);
-    const paths = result.pages.map((p) => p.path);
+    const paths = result.pages.map(p => p.path);
     expect(paths).toContain("/membership");
   });
 
@@ -45,7 +45,7 @@ describe("Membership page — search index", () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.search.query({ q: "contributor" });
     expect(result.pages.length).toBeGreaterThan(0);
-    const paths = result.pages.map((p) => p.path);
+    const paths = result.pages.map(p => p.path);
     expect(paths).toContain("/membership");
   });
 
@@ -53,14 +53,14 @@ describe("Membership page — search index", () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.search.query({ q: "join foundation" });
     expect(result.pages.length).toBeGreaterThan(0);
-    const paths = result.pages.map((p) => p.path);
+    const paths = result.pages.map(p => p.path);
     expect(paths).toContain("/membership");
   });
 
   it("membership page title is 'Membership'", async () => {
     const caller = appRouter.createCaller(createPublicContext());
     const result = await caller.search.query({ q: "membership" });
-    const membershipPage = result.pages.find((p) => p.path === "/membership");
+    const membershipPage = result.pages.find(p => p.path === "/membership");
     expect(membershipPage).toBeDefined();
     expect(membershipPage?.title).toBe("Membership");
   });

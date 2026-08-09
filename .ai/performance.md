@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Performance
 
 Establish what the change costs, and improve it only where measurement justifies the change.

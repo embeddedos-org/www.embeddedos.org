@@ -61,7 +61,8 @@ export async function generateImage(
 
   const model = options.model ?? DEFAULT_IMAGE_MODEL;
   const quality =
-    options.quality ?? (model === DEFAULT_IMAGE_MODEL ? DEFAULT_IMAGE_QUALITY : undefined);
+    options.quality ??
+    (model === DEFAULT_IMAGE_MODEL ? DEFAULT_IMAGE_QUALITY : undefined);
 
   const response = await fetch(fullUrl, {
     method: "POST",

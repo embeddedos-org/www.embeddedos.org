@@ -16,7 +16,13 @@ import path from "node:path";
 
 const DIST = path.resolve("dist/public");
 
-type Anchor = { route: string; href?: string; text: string; aria?: string; inner: string };
+type Anchor = {
+  route: string;
+  href?: string;
+  text: string;
+  aria?: string;
+  inner: string;
+};
 
 function readBuild() {
   const anchors: Anchor[] = [];
@@ -24,21 +30,32 @@ function readBuild() {
   const files = fs.globSync("**/*.html", { cwd: DIST });
 
   for (const file of files) {
-    const route = "/" + file.replace(/(^|\/)index\.html$/, "").replace(/\/$/, "");
+    const route =
+      "/" + file.replace(/(^|\/)index\.html$/, "").replace(/\/$/, "");
     const html = fs.readFileSync(path.join(DIST, file), "utf8");
 
-    for (const [, attrs, inner] of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+    for (const [, attrs, inner] of html.matchAll(
+      /<a\b([^>]*)>([\s\S]*?)<\/a>/gi
+    )) {
       anchors.push({
         route,
         href: attrs.match(/\bhref="([^"]*)"/)?.[1],
         aria: attrs.match(/aria-label="([^"]*)"/)?.[1],
-        text: inner.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim(),
+        text: inner
+          .replace(/<[^>]*>/g, "")
+          .replace(/\s+/g, " ")
+          .trim(),
         inner,
       });
     }
 
-    for (const [, attrs, inner] of html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
-      const text = inner.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    for (const [, attrs, inner] of html.matchAll(
+      /<button\b([^>]*)>([\s\S]*?)<\/button>/gi
+    )) {
+      const text = inner
+        .replace(/<[^>]*>/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
       const aria = attrs.match(/aria-label="([^"]*)"/)?.[1];
       const title = attrs.match(/\btitle="([^"]*)"/)?.[1];
       if (!text && !aria && !title) {
@@ -75,19 +92,27 @@ test.describe("links", () => {
   test("no anchor is a placeholder", () => {
     const placeholders = build.anchors
       .filter(a => a.href === undefined || a.href === "" || a.href === "#")
-      .map(a => `${a.route}: "${a.text.slice(0, 40)}" href=${JSON.stringify(a.href)}`);
+      .map(
+        a =>
+          `${a.route}: "${a.text.slice(0, 40)}" href=${JSON.stringify(a.href)}`
+      );
     expect(placeholders, "anchors with no destination").toEqual([]);
   });
 
   test("an unknown URL returns a real 404", async ({ request }) => {
-    const res = await request.get("/this-route-does-not-exist", { maxRedirects: 0 });
+    const res = await request.get("/this-route-does-not-exist", {
+      maxRedirects: 0,
+    });
     expect(res.status()).toBe(404);
   });
 });
 
 test.describe("controls", () => {
   test("every button has an accessible name", () => {
-    expect(build.namelessButtons, "buttons a screen reader cannot announce").toEqual([]);
+    expect(
+      build.namelessButtons,
+      "buttons a screen reader cannot announce"
+    ).toEqual([]);
   });
 
   test("every link has an accessible name", () => {

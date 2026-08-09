@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Architect
 
 Decide structure — where code lives, how modules relate, which patterns apply — before implementation starts.

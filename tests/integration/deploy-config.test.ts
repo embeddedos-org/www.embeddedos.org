@@ -38,7 +38,9 @@ describe("the build ships the hosting config", () => {
 
 describe("unknown URLs return a real 404", () => {
   it("declares an ErrorDocument pointing at the prerendered 404 page", () => {
-    expect(readHtaccess()).toMatch(/^\s*ErrorDocument\s+404\s+\/404\.html\s*$/m);
+    expect(readHtaccess()).toMatch(
+      /^\s*ErrorDocument\s+404\s+\/404\.html\s*$/m
+    );
   });
 
   it("serves the page that ErrorDocument names", () => {

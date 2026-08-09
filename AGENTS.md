@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Agent Responsibilities
 
 Each role owns a slice of the work and does only that slice. Full briefs are in
@@ -85,13 +86,13 @@ one agent can hold accurately. Every switch runs the protocol in
 
 You will. The rule is: **record it, do not absorb it, do not drop it.**
 
-| What you found | Do |
-|----------------|-----|
-| A defect unrelated to your task | Note it in [TASKS.md](./TASKS.md) and keep going. |
-| A defect your change would sit on top of | Stop; say it blocks you; propose fixing it as its own task. |
-| A security issue | Report immediately, whatever role you hold. This one never waits for a handoff. |
-| A design decision missing from the plan | Return to the architect rather than deciding it inside an implementation. |
-| Work that belongs to a role nobody assigned | Say so. An unowned task is how requirements go missing. |
+| What you found                              | Do                                                                              |
+| ------------------------------------------- | ------------------------------------------------------------------------------- |
+| A defect unrelated to your task             | Note it in [TASKS.md](./TASKS.md) and keep going.                               |
+| A defect your change would sit on top of    | Stop; say it blocks you; propose fixing it as its own task.                     |
+| A security issue                            | Report immediately, whatever role you hold. This one never waits for a handoff. |
+| A design decision missing from the plan     | Return to the architect rather than deciding it inside an implementation.       |
+| Work that belongs to a role nobody assigned | Say so. An unowned task is how requirements go missing.                         |
 
 Silently fixing something outside your task makes the diff unreviewable.
 Silently ignoring it means nobody ever looks again. Neither is acceptable; the

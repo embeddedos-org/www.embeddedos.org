@@ -31,18 +31,18 @@ EoSim's simulated platforms (quoted as the same `52+` → 150, counted from
 
 ## Open
 
-| Page | Claim | Note |
-|---|---|---|
-| `/product-eos` | `< 1 µs` IRQ latency | Same unmeasured kernel figure, on a product page |
-| `/product-eni`, `/eni` | `< 1 ms` and `< 10 ms` end-to-end latency | Two different figures for the same path |
-| `/product-eipc` | `< 1 ms` latency, `< 1 ms` cross-board | `/eipc` now states relative ordering instead |
-| `/product-edb` | `< 1 ms` query latency | Depends on workload and medium; needs conditions |
-| `/product-eai` | `< 50 ms` inference latency | Needs model, quantisation and target MCU |
-| `/neural-link-ai` | `< 5 ms` decode, `< 10 ms` latency | |
-| `/eradar360` | `< 50 ms` alert latency | Plausibly a design requirement — say so if it is |
-| `/what-we-do` | `< 10 ms` latency | |
-| `/future-research` | `< 5 ms` round-trip | Research targets; likely fine to keep as targets |
-| `/research` | "Sub-10μs Context Switch" | Listed as a published performance report. Either publish the measurement or retitle |
+| Page                   | Claim                                     | Note                                                                                |
+| ---------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------- |
+| `/product-eos`         | `< 1 µs` IRQ latency                      | Same unmeasured kernel figure, on a product page                                    |
+| `/product-eni`, `/eni` | `< 1 ms` and `< 10 ms` end-to-end latency | Two different figures for the same path                                             |
+| `/product-eipc`        | `< 1 ms` latency, `< 1 ms` cross-board    | `/eipc` now states relative ordering instead                                        |
+| `/product-edb`         | `< 1 ms` query latency                    | Depends on workload and medium; needs conditions                                    |
+| `/product-eai`         | `< 50 ms` inference latency               | Needs model, quantisation and target MCU                                            |
+| `/neural-link-ai`      | `< 5 ms` decode, `< 10 ms` latency        |                                                                                     |
+| `/eradar360`           | `< 50 ms` alert latency                   | Plausibly a design requirement — say so if it is                                    |
+| `/what-we-do`          | `< 10 ms` latency                         |                                                                                     |
+| `/future-research`     | `< 5 ms` round-trip                       | Research targets; likely fine to keep as targets                                    |
+| `/research`            | "Sub-10μs Context Switch"                 | Listed as a published performance report. Either publish the measurement or retitle |
 
 ## Other numbers worth confirming
 

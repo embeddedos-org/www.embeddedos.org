@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Testing Standards
 
 A test exists to fail when the code is wrong. A test that passes regardless of

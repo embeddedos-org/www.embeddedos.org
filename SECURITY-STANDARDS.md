@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Security Standards
 
 Secure engineering requirements for changes in this repository.

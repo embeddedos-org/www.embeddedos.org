@@ -35,7 +35,9 @@ describe("search.query", () => {
 
     expect(result.pages.length).toBeGreaterThan(0);
     const titles = result.pages.map(p => p.title.toLowerCase());
-    const hasAero = titles.some(t => t.includes("aero") || t.includes("aerospace"));
+    const hasAero = titles.some(
+      t => t.includes("aero") || t.includes("aerospace")
+    );
     expect(hasAero).toBe(true);
   });
 

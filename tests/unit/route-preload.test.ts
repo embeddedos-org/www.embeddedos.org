@@ -27,7 +27,9 @@ function registeredRoutes(): string[] {
 /** Route paths whose JSX body renders a component inside a Suspense boundary. */
 function codeSplitRouteBlocks(): string[] {
   return [
-    ...source.matchAll(/<Route\s+path="([^"]+)">\s*<Suspense\b[\s\S]*?>\s*<\w+\s*\/>/g),
+    ...source.matchAll(
+      /<Route\s+path="([^"]+)">\s*<Suspense\b[\s\S]*?>\s*<\w+\s*\/>/g
+    ),
   ].map(m => m[1]);
 }
 
@@ -36,15 +38,18 @@ describe("route preload registry", () => {
     const missing = codeSplitRouteBlocks().filter(
       r => !registeredRoutes().includes(r)
     );
-    expect(missing, `routes rendered under Suspense with no lazyPage() entry`).toEqual(
-      []
-    );
+    expect(
+      missing,
+      `routes rendered under Suspense with no lazyPage() entry`
+    ).toEqual([]);
   });
 
   it("registers no path that is not a real route", () => {
     const declared = declaredRoutes();
     const stray = registeredRoutes().filter(r => !declared.includes(r));
-    expect(stray, `lazyPage() paths with no matching Route literal`).toEqual([]);
+    expect(stray, `lazyPage() paths with no matching Route literal`).toEqual(
+      []
+    );
   });
 
   it("registers each path exactly once", () => {

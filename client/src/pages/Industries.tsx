@@ -95,7 +95,13 @@ function MaturityBadge({ maturity }: { maturity: Industry["maturity"] }) {
   );
 }
 
-function IndustryCard({ industry, index }: { industry: Industry; index: number }) {
+function IndustryCard({
+  industry,
+  index,
+}: {
+  industry: Industry;
+  index: number;
+}) {
   const themeColor = THEME_COLOR[industry.fundingTheme] ?? "#FFFFFF";
   return (
     <motion.article
@@ -155,8 +161,8 @@ function IndustryCard({ industry, index }: { industry: Industry; index: number }
               </>
             ) : (
               <span className="text-white/40 text-[13px] leading-relaxed">
-                None yet. Listed here because the Foundation intends to serve this
-                sector — the work is on the{" "}
+                None yet. Listed here because the Foundation intends to serve
+                this sector — the work is on the{" "}
                 {/* inline-block + py lifts this from a ~20px line-height target
                     to ~28px on mobile, the same technique the footer uses. The
                     mobile audit flags anything under 24px. */}
@@ -221,15 +227,15 @@ export default function Industries() {
               <span className="text-gradient">from CAD to certification</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed mb-4">
-              A schematic becomes a board, and a board is inert until an operating
-              system, a bootloader and a driver layer bring it to life. That gap
-              is the same in an aircraft, an insulin pump and a substation relay —
-              and it is the gap the Foundation exists to close, openly, for every
-              sector below.
+              A schematic becomes a board, and a board is inert until an
+              operating system, a bootloader and a driver layer bring it to
+              life. That gap is the same in an aircraft, an insulin pump and a
+              substation relay — and it is the gap the Foundation exists to
+              close, openly, for every sector below.
             </p>
             <p className="text-white/40 text-sm">
-              {INDUSTRIES.length} sectors · {backed} with a reference design in a
-              public repository today
+              {INDUSTRIES.length} sectors · {backed} with a reference design in
+              a public repository today
             </p>
           </motion.div>
         </div>
@@ -253,9 +259,9 @@ export default function Industries() {
               The same four steps, in every industry
             </h2>
             <p className="text-white/60 leading-relaxed">
-              The Foundation works across all four, which is why one organisation
-              can serve sectors as different as avionics and agriculture: the
-              hardware differs, the path does not.
+              The Foundation works across all four, which is why one
+              organisation can serve sectors as different as avionics and
+              agriculture: the hardware differs, the path does not.
             </p>
           </motion.div>
 
@@ -284,7 +290,9 @@ export default function Industries() {
                   <div className="text-white/30 text-[10px] font-bold tracking-[0.18em] mb-1">
                     STEP {i + 1}
                   </div>
-                  <h3 className="font-semibold text-white mb-2">{stage.step}</h3>
+                  <h3 className="font-semibold text-white mb-2">
+                    {stage.step}
+                  </h3>
                   <p className="text-[13px] text-white/50 leading-relaxed">
                     {stage.detail}
                   </p>
@@ -316,8 +324,8 @@ export default function Industries() {
                 </dt>
                 <dd className="text-white/55 leading-relaxed">
                   The Foundation holds no certification from any authority. Each
-                  design is engineered toward the standard named on its card, and
-                  the standards tables in the design repositories are titled
+                  design is engineered toward the standard named on its card,
+                  and the standards tables in the design repositories are titled
                   "Compliance Targets" for the same reason. Certification is the
                   responsibility of whoever brings a device to market.
                 </dd>
@@ -329,8 +337,9 @@ export default function Industries() {
                 <dd className="text-white/55 leading-relaxed">
                   The bands are derived from each design's own recorded status:
                   a concept maps to TRL 1–2, a research-phase design to TRL 2–3,
-                  and a design-phase design to TRL 3–4. No physical qualification
-                  campaign has been run, so nothing here claims TRL 5 or above.
+                  and a design-phase design to TRL 3–4. No physical
+                  qualification campaign has been run, so nothing here claims
+                  TRL 5 or above.
                 </dd>
               </div>
               <div>
@@ -340,8 +349,8 @@ export default function Industries() {
                 <dd className="text-white/55 leading-relaxed">
                   Each card names a real design and the repository path holding
                   it. Where the Foundation has no design for a sector yet, the
-                  card says so and points at the roadmap rather than borrowing an
-                  unrelated board.
+                  card says so and points at the roadmap rather than borrowing
+                  an unrelated board.
                 </dd>
               </div>
             </dl>
@@ -426,9 +435,9 @@ export default function Industries() {
             </h2>
             <p className="text-white/60 leading-relaxed">
               These are earlier than the core sectors and are labelled that way
-              deliberately. They are the innovation-track work: promising, funded
-              by research grants rather than product revenue, and honest about how
-              far along they are.
+              deliberately. They are the innovation-track work: promising,
+              funded by research grants rather than product revenue, and honest
+              about how far along they are.
             </p>
           </motion.div>
 

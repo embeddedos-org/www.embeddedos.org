@@ -1,4 +1,5 @@
 <!-- generated: eos-ai-scaffold -->
+
 # Handoff Protocol
 
 Run this whenever work changes hands — between roles, between agents, or across
@@ -34,8 +35,8 @@ Acceptance criteria
 
 Verification status
 : | Check | Command | Result |
-  |-------|---------|--------|
-  | <name> | `<command>` | `PASS` / `FAIL` / `NOT RUN` / `UNKNOWN` |
+|-------|---------|--------|
+| <name> | `<command>` | `PASS` / `FAIL` / `NOT RUN` / `UNKNOWN` |
 
 Next recommended agent
 : <role, and why that role>
@@ -49,7 +50,7 @@ Next recommended agent
 - **State what was not verified.** An omitted check reads as a passed check to
   whoever picks the work up.
 - **Do not hand off mid-edit.** Leave the tree in a state that builds, or say
-  clearly in *Open issues* that it does not and what is broken.
+  clearly in _Open issues_ that it does not and what is broken.
 - **Do not restart.** The receiving side continues from the summary; it does not
   redo completed work to satisfy itself. If the summary is not enough to
   continue, that is a defect in the handoff — say so and ask for the gap.
@@ -63,9 +64,9 @@ Before doing any work, check:
    that is how the requirement drifts.
 2. Does the stated verification match reality? Re-run one cheap check. If the
    handoff says `PASS` and it fails, the rest of the report is now suspect.
-3. Is anything in *Completed work* unverifiable from the repository? Treat it as
+3. Is anything in _Completed work_ unverifiable from the repository? Treat it as
    `Inferred`, not `Verified`.
-4. Does the tree build? If not, and *Open issues* did not say so, say so now.
+4. Does the tree build? If not, and _Open issues_ did not say so, say so now.
 
 Then continue. Do not redo completed work to satisfy yourself — if the summary
 is not sufficient to continue, that is a defect in the handoff. Name the gap

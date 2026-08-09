@@ -34,7 +34,11 @@ describe("UI/UX Tests", () => {
       { label: "EoS Kernel", q: "eos kernel", path: "/eos" },
       { label: "Health Devices", q: "health devices", path: "/health" },
       { label: "API Docs", q: "api reference", path: "/api-docs" },
-      { label: "Getting Started", q: "getting started", path: "/getting-started" },
+      {
+        label: "Getting Started",
+        q: "getting started",
+        path: "/getting-started",
+      },
       { label: "Careers", q: "careers", path: "/careers" },
       { label: "About", q: "about", path: "/about" },
       { label: "Patents", q: "patents", path: "/patents" },
@@ -99,7 +103,8 @@ describe("UI/UX Tests", () => {
       if (result.pages.length > 0) {
         // Top result should be health-related
         const topPage = result.pages[0];
-        const isHealthRelated = topPage.path.includes("health") ||
+        const isHealthRelated =
+          topPage.path.includes("health") ||
           topPage.title.toLowerCase().includes("health");
         expect(isHealthRelated).toBe(true);
       }
