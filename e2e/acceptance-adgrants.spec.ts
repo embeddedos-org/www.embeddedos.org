@@ -9,7 +9,7 @@
  * Not covered here (require the public URL): PageSpeed Insights score, Google's
  * Mobile-Friendly Test, and domain-ownership verification in Google Ads.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 test.describe("clear mission", () => {
   test("the homepage states the nonprofit mission above the footer", async ({
@@ -126,7 +126,9 @@ test.describe("industries and activities", () => {
     // The repositories hold no certification from any authority. Two source
     // datasheets overstate this ("DO-178C Level A certified software",
     // "ISO 13485 QMS certified"); neither wording may reach the site.
-    expect(text).toMatch(/Target standards are targets, not certifications held/i);
+    expect(text).toMatch(
+      /Target standards are targets, not certifications held/i
+    );
     expect(text, "no page copy may claim a held certification").not.toMatch(
       /\b(?:is|are)\s+certified\b|certified\s+(?:software|hardware)/i
     );
@@ -261,8 +263,11 @@ test.describe("substantial, original content", () => {
     });
   }
 
-  test("key pages are not merely lists of links", async ({ page }) => {
-    for (const route of ["/", "/about", "/what-we-do"]) {
+  // One test per route: a single test that walked all three shared one 30s
+  // budget across three navigations, so a loaded machine timed it out rather
+  // than failing an assertion.
+  for (const route of ["/", "/about", "/what-we-do"]) {
+    test(`${route} is not merely a list of links`, async ({ page }) => {
       await page.goto(route);
       const ratio = await page.evaluate(() => {
         const main = document.querySelector("main")!;
@@ -273,49 +278,78 @@ test.describe("substantial, original content", () => {
         return linkText / Math.max(all, 1);
       });
       expect(ratio, `${route} link-text ratio`).toBeLessThan(0.5);
-    }
-  });
+    });
+  }
 });
 
 test.describe("navigation and working links", () => {
-  test("a persistent navigation menu is present on every sampled page", async ({
-    page,
-  }) => {
-    for (const route of ["/", "/about", "/donate", "/faq"]) {
-      await page.goto(route);
+  const LINK_SAMPLE = ["/", "/about", "/get-involved", "/resources", "/donate"];
+
+  /** Unique internal hrefs on a page, with fragments and queries stripped. */
+  async function internalHrefs(page: Page, route: string): Promise<string[]> {
+    // domcontentloaded, not load: /donate embeds a third-party Zeffy payment
+    // iframe that holds the load event open for ~8.4s against ~0.3s for the
+    // same page at domcontentloaded. Measured link counts are identical at both
+    // wait states — 50 unique internal links across this sample either way — so
+    // this drops a payment provider's response time out of the test without
+    // changing what is checked.
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    const hrefs = await page
+      .locator("a[href^='/']")
+      .evaluateAll(els => els.map(e => e.getAttribute("href")!));
+    return [
+      ...new Set(hrefs.map(h => h.split("#")[0].split("?")[0]).filter(Boolean)),
+    ];
+  }
+
+  for (const route of ["/", "/about", "/donate", "/faq"]) {
+    test(`${route} carries a persistent navigation menu and footer`, async ({
+      page,
+    }) => {
+      // Same reason as internalHrefs above — /donate's payment iframe is not
+      // what "has a nav and a footer" is asking about. toBeVisible() retries,
+      // so it still waits for the elements to actually render.
+      await page.goto(route, { waitUntil: "domcontentloaded" });
       await expect(page.locator("nav, header").first()).toBeVisible();
       await expect(page.locator("footer")).toBeVisible();
-    }
-  });
+    });
+  }
 
-  test("no internal link anywhere in the sampled pages is broken", async ({
-    page,
-    request,
-  }) => {
-    const checked = new Set<string>();
-    const broken: string[] = [];
+  // Split per route. As one test this made ~30 HTTP requests after five
+  // navigations, all against a single 30s budget, which is what made it the
+  // first thing to time out on a contended machine.
+  for (const route of LINK_SAMPLE) {
+    test(`no internal link on ${route} is broken`, async ({
+      page,
+      request,
+    }) => {
+      const links = await internalHrefs(page, route);
+      // Without this the test would pass vacuously if the selector stopped
+      // matching, which is exactly how a broken-link check rots unnoticed.
+      expect(links.length, `${route} internal links found`).toBeGreaterThan(0);
 
-    for (const route of [
-      "/",
-      "/about",
-      "/get-involved",
-      "/resources",
-      "/donate",
-    ]) {
-      await page.goto(route);
-      const hrefs = await page
-        .locator("a[href^='/']")
-        .evaluateAll(els => els.map(e => e.getAttribute("href")!));
-      for (const href of hrefs) {
-        const clean = href.split("#")[0].split("?")[0];
-        if (!clean || checked.has(clean)) continue;
-        checked.add(clean);
-        const res = await request.get(clean);
-        if (res.status() >= 400) broken.push(`${clean} -> ${res.status()}`);
+      const broken: string[] = [];
+      for (const href of links) {
+        const res = await request.get(href);
+        if (res.status() >= 400) broken.push(`${href} -> ${res.status()}`);
       }
+      expect(broken).toEqual([]);
+    });
+  }
+
+  test("the sampled pages expose a substantial internal link graph", async ({
+    page,
+  }) => {
+    // Visits every sampled route, so it needs more than one page's budget. It
+    // only reads hrefs — the fetching lives in the per-route tests above.
+    test.slow();
+    const all = new Set<string>();
+    for (const route of LINK_SAMPLE) {
+      for (const href of await internalHrefs(page, route)) all.add(href);
     }
-    expect(checked.size).toBeGreaterThan(25);
-    expect(broken).toEqual([]);
+    expect(all.size, "unique internal links across the sample").toBeGreaterThan(
+      25
+    );
   });
 });
 
@@ -332,6 +366,9 @@ test.describe("functioning donation process", () => {
     page,
     request,
   }) => {
+    // Reaches the live donation provider, because "working path to give" is a
+    // claim about the provider being up, not about our markup.
+    test.slow();
     await page.goto("/donate");
     const frame = page.locator("iframe[src]");
     await expect(frame).toHaveCount(1);
@@ -398,13 +435,22 @@ test.describe("secure and crawlable", () => {
     }
   });
 
-  test("no page requests an insecure http:// subresource", async ({ page }) => {
-    const insecure: string[] = [];
-    page.on("request", r => {
-      if (r.url().startsWith("http://") && !r.url().includes("127.0.0.1"))
-        insecure.push(r.url());
+  for (const route of ["/", "/about", "/donate"]) {
+    test(`${route} requests no insecure http:// subresource`, async ({
+      page,
+    }) => {
+      // This one must wait for the full load: an insecure subresource can only
+      // be observed if the request is actually made, so unlike the checks above
+      // it cannot cut the payment iframe short. /donate therefore spends ~8.4s
+      // here by design, and needs the wider budget rather than a shorter wait.
+      test.slow();
+      const insecure: string[] = [];
+      page.on("request", r => {
+        if (r.url().startsWith("http://") && !r.url().includes("127.0.0.1"))
+          insecure.push(r.url());
+      });
+      await page.goto(route);
+      expect(insecure).toEqual([]);
     });
-    for (const route of ["/", "/about", "/donate"]) await page.goto(route);
-    expect(insecure).toEqual([]);
-  });
+  }
 });

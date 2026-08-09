@@ -37,6 +37,11 @@ test.describe("prospective contributor journey", () => {
     page,
     request,
   }) => {
+    // Deliberately reaches github.com: the point is that advertised repos are
+    // publicly reachable, which cannot be established against a mock. That
+    // makes it network-dependent by design, so give it room for the round
+    // trips rather than the single-page default.
+    test.slow();
     await page.goto("/");
     await page.goto("/get-involved");
     await expect(page.locator("h1").first()).toBeVisible();
@@ -60,6 +65,9 @@ test.describe("researcher journey", () => {
   test("finds the organisation's governance and financial identity", async ({
     page,
   }) => {
+    // A journey is sequential by definition, so this one keeps its three
+    // navigations rather than being split into independent tests.
+    test.slow();
     await page.goto("/");
     await page.goto("/organization");
     await expect(page.locator("body")).toContainText("501(c)(3)");
@@ -73,6 +81,8 @@ test.describe("researcher journey", () => {
     page,
     request,
   }) => {
+    // Also reaches github.com, once per patent link. Same reasoning as above.
+    test.slow();
     await page.goto("/patents");
     const links = await page
       .locator('a[href*="github.com"]')

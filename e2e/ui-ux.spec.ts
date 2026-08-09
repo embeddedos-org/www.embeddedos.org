@@ -30,6 +30,13 @@ test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
       // contrast is sampled against backgrounds that have not finished
       // compositing. That produced contrast violations that disappear on a
       // settled page and did not reproduce twice in a row.
+      // The Zeffy iframe is excluded from the audit below, but it was still
+      // being fetched, and on /donate its chunks keep the network busy — at
+      // times failing and retrying — so networkidle could not be reached inside
+      // the per-test budget. Blocking it leaves this test dependent only on
+      // markup we own, which is all it ever asserted on, and lets networkidle
+      // mean "our page has settled".
+      await page.route(/zeffy\.com/, r => r.abort());
       await page.goto(route, { waitUntil: "networkidle" });
       await page.waitForTimeout(500);
 

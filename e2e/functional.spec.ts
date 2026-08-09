@@ -62,6 +62,10 @@ test.describe("navigation", () => {
     page,
     request,
   }) => {
+    // Asserts 20+ hrefs below and fetches each one sequentially, so this test
+    // does an order of magnitude more work than a single page load. It needs
+    // more than the default per-test budget on a loaded machine.
+    test.slow();
     await page.goto("/");
     const hrefs = await page
       .locator("footer a[href^='/']")
