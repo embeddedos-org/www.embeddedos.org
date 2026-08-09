@@ -11,6 +11,11 @@ build/
 *.tsbuildinfo
 coverage/
 
+# drizzle-kit owns these: it rewrites the snapshot and journal on every
+# `generate`, so formatting them only produces a diff that comes straight back.
+# drizzle/schema.ts is hand-written and is deliberately not excluded.
+drizzle/meta/
+
 # Package files
 package-lock.json
 pnpm-lock.yaml
