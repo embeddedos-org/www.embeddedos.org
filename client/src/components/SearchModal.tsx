@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -17,7 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
+import { searchSite } from "@shared/site-index";
 
 const PAGE_ICONS: Record<string, React.ReactNode> = {
   "/": <Cpu className="w-4 h-4" />,
@@ -76,15 +76,15 @@ export default function SearchModal() {
     }
   }, [open]);
 
-  const searchQuery = trpc.search.query.useQuery(
-    { q: query },
-    { enabled: query.length >= 2 }
-  );
-
-  const allResults: SearchResult[] =
-    query.length >= 2
-      ? [...(searchQuery.data?.pages ?? []), ...(searchQuery.data?.repos ?? [])]
-      : [];
+  // Ranked in the browser against the shared index. This was a tRPC query, which
+  // meant the site's own search failed in production: the deployment is static,
+  // so /api/trpc/search.query answered 404 with an HTML page and every keystroke
+  // produced "Unexpected token '<'". Searching a fixed list needs no server.
+  const allResults: SearchResult[] = useMemo(() => {
+    if (query.length < 2) return [];
+    const { pages, repos } = searchSite(query);
+    return [...pages, ...repos];
+  }, [query]);
 
   // Default items when no query
   const DEFAULT_ITEMS = [
@@ -228,24 +228,18 @@ export default function SearchModal() {
                   </p>
                 )}
 
-                {query.length >= 2 && searchQuery.isLoading && (
-                  <div className="px-4 py-6 text-center text-white/40 text-sm">
-                    Searching…
+                {/* No pending state: searchSite is synchronous, so results are
+                    already present on the render that follows a keystroke. */}
+                {query.length >= 2 && items.length === 0 && (
+                  <div className="px-4 py-6 text-center">
+                    <p className="text-white/40 text-sm">
+                      No results for "{query}"
+                    </p>
+                    <p className="text-white/20 text-xs mt-1">
+                      Try "health", "boards", "aerospace", or "ai"
+                    </p>
                   </div>
                 )}
-
-                {query.length >= 2 &&
-                  !searchQuery.isLoading &&
-                  items.length === 0 && (
-                    <div className="px-4 py-6 text-center">
-                      <p className="text-white/40 text-sm">
-                        No results for "{query}"
-                      </p>
-                      <p className="text-white/20 text-xs mt-1">
-                        Try "health", "boards", "aerospace", or "ai"
-                      </p>
-                    </div>
-                  )}
 
                 {items.length > 0 && (
                   <>
@@ -255,8 +249,7 @@ export default function SearchModal() {
                       </p>
                     )}
                     {query.length >= 2 &&
-                      searchQuery.data?.pages &&
-                      searchQuery.data.pages.length > 0 && (
+                      items.some(i => i.type === "page") && (
                         <p className="px-4 py-1.5 text-xs text-white/30 uppercase tracking-wider font-medium">
                           Pages
                         </p>
@@ -291,8 +284,7 @@ export default function SearchModal() {
                       ))}
 
                     {query.length >= 2 &&
-                      searchQuery.data?.repos &&
-                      searchQuery.data.repos.length > 0 && (
+                      items.some(i => i.type === "repo") && (
                         <>
                           <p className="px-4 pt-3 pb-1.5 text-xs text-white/30 uppercase tracking-wider font-medium border-t border-white/5 mt-1">
                             GitHub Repos

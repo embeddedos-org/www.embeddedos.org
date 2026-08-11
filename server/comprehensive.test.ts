@@ -438,8 +438,12 @@ describe("5. End-to-End (API Layer) Tests", () => {
       expect(appRouter._def.procedures).toHaveProperty("search.query");
     });
 
-    it("appRouter has ebot sub-router", () => {
-      expect(appRouter._def.procedures).toHaveProperty("ebot.chat");
+    it("appRouter has no ebot sub-router", () => {
+      // eBot answers in the browser from shared/ebot-knowledge.ts. A server
+      // procedure here would be dead on arrival: production is a static
+      // deployment with no /api/trpc, which is how the chat came to answer
+      // every visitor with a connection error.
+      expect(appRouter._def.procedures).not.toHaveProperty("ebot.chat");
     });
   });
 });
@@ -622,8 +626,8 @@ describe("8. Smoke Tests", () => {
     expect(appRouter._def.procedures["search.query"]).toBeDefined();
   });
 
-  it("ebot.chat procedure exists", () => {
-    expect(appRouter._def.procedures["ebot.chat"]).toBeDefined();
+  it("ebot.chat procedure is absent — eBot runs client-side", () => {
+    expect(appRouter._def.procedures["ebot.chat"]).toBeUndefined();
   });
 
   it("search returns a valid response shape", async () => {

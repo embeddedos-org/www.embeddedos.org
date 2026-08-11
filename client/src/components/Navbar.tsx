@@ -6,7 +6,6 @@ import {
   Cpu,
   Zap,
   MessageSquare,
-  Shield,
   Network,
   BookOpen,
   Code,
@@ -42,13 +41,8 @@ import {
   Brain,
   Cpu as CpuIcon,
   Atom,
-  Briefcase,
-  GraduationCap,
-  Target,
-  Scale,
-  Factory,
 } from "lucide-react";
-import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "../data/stack";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT, REPO_COUNT } from "../data/stack";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
@@ -138,7 +132,7 @@ const NAV_ITEMS = {
         items: [
           {
             name: "EoSim",
-            desc: "63+ board simulator",
+            desc: `${SIM_PLATFORM_COUNT} platform simulator`,
             icon: Terminal,
             href: "https://github.com/embeddedos-org/EoSim",
             color: "#F97316",
@@ -369,6 +363,16 @@ const NAV_ITEMS = {
             color: "#34D399",
             external: false,
           },
+          {
+            // Moved here from the Community menu, where a hardware catalogue
+            // had nothing to do with participating in the project.
+            name: "eCAD Hardware",
+            desc: "Hardware design catalog",
+            icon: CpuIcon,
+            href: "/ecad-hardware",
+            color: "#F97316",
+            external: false,
+          },
         ],
       },
     ],
@@ -385,6 +389,16 @@ const NAV_ITEMS = {
             icon: BookOpen,
             href: "/getting-started",
             color: "#F97316",
+            external: false,
+          },
+          {
+            // /docs is the documentation landing page and was reachable only
+            // from body copy on other pages — never from either menu.
+            name: "Documentation",
+            desc: "Guides & reference",
+            icon: FileText,
+            href: "/docs",
+            color: "#60A5FA",
             external: false,
           },
           {
@@ -460,47 +474,30 @@ const NAV_ITEMS = {
       },
     ],
   },
+  // Community is about taking part, not about the organisation. This menu was a
+  // single 14-item "Participate" list that mixed contributing (Get Involved,
+  // Discussions) with the Foundation's institutional pages (About, Mission,
+  // Transparency, Careers, Patents) and even a hardware catalogue — so the top
+  // nav and the footer were largely the same menu twice. The institutional
+  // pages now live only in the footer, which is the site's organisational map;
+  // see the note above FOOTER_LINKS in Footer.tsx.
   Community: {
-    description: "Join the open-source movement",
+    description: "Build EmbeddedOS with us",
     sections: [
       {
-        title: "Participate",
+        title: "Contribute",
         items: [
           {
-            name: "Careers",
-            desc: "Open positions & apply now",
-            icon: Briefcase,
-            href: "/careers",
-            color: "#F97316",
-            external: false,
-          },
-          {
-            name: "Internships",
-            desc: "F-1 CPT/OPT, research & open source",
-            icon: GraduationCap,
-            href: "/internship",
-            color: "#A78BFA",
-            external: false,
-          },
-          {
             name: "Get Involved",
-            desc: "Contribute to EmbeddedOS",
+            desc: "Where to start contributing",
             icon: Heart,
             href: "/get-involved",
             color: "#34D399",
             external: false,
           },
           {
-            name: "Membership",
-            desc: "Join the Foundation",
-            icon: Star,
-            href: "/membership",
-            color: "#F59E0B",
-            external: false,
-          },
-          {
             name: "GitHub Org",
-            desc: "22 open-source repos",
+            desc: `${REPO_COUNT} open-source repos`,
             icon: Github,
             href: "https://github.com/embeddedos-org",
             color: "#22D3EE",
@@ -508,71 +505,36 @@ const NAV_ITEMS = {
           },
           {
             name: "Discussions",
-            desc: "Community forum",
+            desc: "Ask and answer in public",
             icon: MessageSquare,
             href: "https://github.com/orgs/embeddedos-org/discussions",
             color: "#A78BFA",
             external: true,
           },
+        ],
+      },
+      {
+        title: "Connect",
+        items: [
           {
-            name: "About",
-            desc: "Foundation & mission",
+            name: "Community",
+            desc: "Governance & working groups",
             icon: Users,
-            href: "/about",
-            color: "#34D399",
-            external: false,
-          },
-          {
-            name: "Mission & Scope",
-            desc: "Charitable purpose & programmes",
-            icon: Target,
-            href: "/mission",
+            href: "/community",
             color: "#F97316",
             external: false,
           },
           {
-            name: "Industries",
-            desc: "38 sectors, standards & maturity",
-            icon: Factory,
-            href: "/industries",
+            name: "Events",
+            desc: "Meetups & conferences",
+            icon: Rocket,
+            href: "/events",
             color: "#FBBF24",
             external: false,
           },
           {
-            name: "Transparency",
-            desc: "Registration, finances & policies",
-            icon: Scale,
-            href: "/transparency",
-            color: "#22D3EE",
-            external: false,
-          },
-          {
-            name: "What We Do",
-            desc: "Company overview & stack",
-            icon: Layers,
-            href: "/what-we-do",
-            color: "#22D3EE",
-            external: false,
-          },
-          {
-            name: "eCAD Hardware",
-            desc: "Hardware design catalog",
-            icon: CpuIcon,
-            href: "/ecad-hardware",
-            color: "#F97316",
-            external: false,
-          },
-          {
-            name: "Patents",
-            desc: "IP & provisional patents",
-            icon: Shield,
-            href: "/patents",
-            color: "#A78BFA",
-            external: false,
-          },
-          {
             name: "News",
-            desc: "Latest updates",
+            desc: "Releases & announcements",
             icon: FileText,
             href: "/news",
             color: "#60A5FA",

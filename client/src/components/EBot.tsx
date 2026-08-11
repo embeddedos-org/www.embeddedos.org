@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Loader2, Bot, User, Minimize2 } from "lucide-react";
-import { trpc } from "@/lib/trpc";
+import { X, Send, Bot, User, Minimize2, ArrowUpRight } from "lucide-react";
+import { Link } from "wouter";
+import { answerQuestion, type KnowledgeLink } from "@shared/ebot-knowledge";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  /** Pages the answer points at, rendered as buttons under the bubble. */
+  links?: KnowledgeLink[];
 }
 
 const WELCOME: Message = {
@@ -47,36 +50,57 @@ function MarkdownText({ text }: { text: string }) {
   );
 }
 
+/**
+ * A link under an answer. Internal routes go through wouter so the SPA does not
+ * reload; anything with a scheme (mailto:, https:) is a plain anchor.
+ */
+function AnswerLink({ link }: { link: KnowledgeLink }) {
+  const className =
+    "inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-[#F97316]/10 border border-[#F97316]/25 text-[#FDBA74] hover:bg-[#F97316]/20 hover:text-white transition-colors";
+  const external = /^[a-z]+:/i.test(link.href);
+
+  if (external) {
+    return (
+      <a
+        href={link.href}
+        target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {link.label}
+        <ArrowUpRight className="w-3 h-3" />
+      </a>
+    );
+  }
+  return (
+    <Link href={link.href} className={className}>
+      {link.label}
+    </Link>
+  );
+}
+
 export default function EBot() {
   const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [input, setInput] = useState("");
+  const [thinking, setThinking] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const chatMutation = trpc.ebot.chat.useMutation({
-    onSuccess: data => {
-      setMessages(prev => [
-        ...prev,
-        { role: "assistant", content: data.reply },
-      ]);
+  // Answering is synchronous and local, so the only thing that can leak here is
+  // the deliberate typing pause below.
+  useEffect(
+    () => () => {
+      if (replyTimer.current) clearTimeout(replyTimer.current);
     },
-    onError: () => {
-      setMessages(prev => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "Sorry, I'm having trouble connecting right now. Please try again in a moment.",
-        },
-      ]);
-    },
-  });
+    []
+  );
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, chatMutation.isPending]);
+  }, [messages, thinking]);
 
   useEffect(() => {
     if (open && !minimized) {
@@ -84,17 +108,36 @@ export default function EBot() {
     }
   }, [open, minimized]);
 
+  // Escape closes the panel, as it already does for the search and donate
+  // dialogs. Leaving it out made eBot the one overlay a keyboard user had to
+  // reach for the mouse to dismiss.
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open]);
+
   const send = (text?: string) => {
     const content = (text ?? input).trim();
-    if (!content || chatMutation.isPending) return;
+    if (!content || thinking) return;
     setInput("");
-    const newMessages: Message[] = [...messages, { role: "user", content }];
-    setMessages(newMessages);
-    chatMutation.mutate({
-      messages: newMessages.filter(
-        m => m.role !== "assistant" || m !== WELCOME
-      ),
-    });
+    setMessages(prev => [...prev, { role: "user", content }]);
+
+    // The answer is ready immediately. A short pause before it appears keeps the
+    // exchange readable — an instantaneous wall of text reads as a page glitch
+    // rather than a reply — and gives the typing indicator something to cover.
+    setThinking(true);
+    const answer = answerQuestion(content);
+    replyTimer.current = setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: answer.reply, links: answer.links },
+      ]);
+      setThinking(false);
+    }, 400);
   };
 
   const handleKey = (e: React.KeyboardEvent) => {
@@ -136,6 +179,8 @@ export default function EBot() {
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
             className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 bg-[#0d1424]"
             style={{ maxHeight: minimized ? 56 : 520 }}
+            role="dialog"
+            aria-label="eBot, the EmbeddedOS assistant"
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#F97316]/20 to-[#A78BFA]/10 border-b border-white/10">
@@ -169,8 +214,15 @@ export default function EBot() {
 
             {!minimized && (
               <>
-                {/* Messages */}
-                <div className="h-[320px] overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-white/10">
+                {/* Messages. aria-live so a screen reader hears the reply —
+                    the answer arrives without any focus change, so without it
+                    the exchange was silent. */}
+                <div
+                  className="h-[320px] overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-white/10"
+                  role="log"
+                  aria-live="polite"
+                  aria-atomic="false"
+                >
                   {messages.map((msg, i) => (
                     <motion.div
                       key={i}
@@ -191,19 +243,28 @@ export default function EBot() {
                           <User className="w-3.5 h-3.5 text-[#22D3EE]" />
                         )}
                       </div>
-                      <div
-                        className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                          msg.role === "assistant"
-                            ? "bg-white/5 text-white/90 rounded-tl-sm"
-                            : "bg-[#F97316]/20 text-white rounded-tr-sm border border-[#F97316]/20"
-                        }`}
-                      >
-                        <MarkdownText text={msg.content} />
+                      <div className="max-w-[80%] min-w-0">
+                        <div
+                          className={`rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                            msg.role === "assistant"
+                              ? "bg-white/5 text-white/90 rounded-tl-sm"
+                              : "bg-[#F97316]/20 text-white rounded-tr-sm border border-[#F97316]/20"
+                          }`}
+                        >
+                          <MarkdownText text={msg.content} />
+                        </div>
+                        {msg.links && msg.links.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mt-2">
+                            {msg.links.map(link => (
+                              <AnswerLink key={link.href} link={link} />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   ))}
 
-                  {chatMutation.isPending && (
+                  {thinking && (
                     <div className="flex gap-2.5">
                       <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center flex-shrink-0">
                         <Bot className="w-3.5 h-3.5 text-white" />
@@ -254,19 +315,15 @@ export default function EBot() {
                       onKeyDown={handleKey}
                       placeholder="Ask eBot anything…"
                       className="flex-1 bg-transparent text-sm text-white placeholder-white/30 outline-none min-w-0"
-                      disabled={chatMutation.isPending}
+                      disabled={thinking}
                     />
                     <button
                       onClick={() => send()}
-                      disabled={!input.trim() || chatMutation.isPending}
+                      disabled={!input.trim() || thinking}
                       className="w-8 h-8 rounded-lg bg-[#F97316] disabled:opacity-40 flex items-center justify-center text-white hover:bg-[#EA580C] transition-colors flex-shrink-0"
                       aria-label="Send"
                     >
-                      {chatMutation.isPending ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                      ) : (
-                        <Send className="w-3.5 h-3.5" />
-                      )}
+                      <Send className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
