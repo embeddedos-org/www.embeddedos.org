@@ -33,7 +33,12 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Link } from "wouter";
-import { trpc } from "@/lib/trpc";
+import {
+  composeApplication,
+  shortMailto,
+  CAREERS_ADDRESS,
+} from "@/lib/application-email";
+import { copyText } from "@/lib/clipboard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -713,25 +718,22 @@ const EMPTY_FORM: FormState = {
   heardFrom: "",
 };
 
+/** What the confirmation panel needs to tell the applicant what to do next. */
+type PreparedApplication = {
+  subject: string;
+  body: string;
+  /** True when the body had to go to the clipboard instead of the mail draft. */
+  viaClipboard: boolean;
+  /** False when the clipboard was unavailable and the copy did not happen. */
+  copied: boolean;
+};
+
 function ApplicationForm() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
-  const [submitted, setSubmitted] = useState(false);
+  const [prepared, setPrepared] = useState<PreparedApplication | null>(null);
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof FormState, string>>
   >({});
-
-  const apply = trpc.careers.submitApplication.useMutation({
-    onSuccess: () => {
-      setSubmitted(true);
-      setForm(EMPTY_FORM);
-      toast.success(
-        "Application submitted! We'll be in touch at " + form.email
-      );
-    },
-    onError: err => {
-      toast.error("Submission failed: " + err.message);
-    },
-  });
 
   const validate = (): boolean => {
     const errors: Partial<Record<keyof FormState, string>> = {};
@@ -754,24 +756,52 @@ function ApplicationForm() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /**
+   * Compose the application and hand it to the visitor's mail client.
+   *
+   * Nothing is transmitted from here — the site is static and has no endpoint to
+   * transmit to. The confirmation panel is worded accordingly: it says the draft
+   * was prepared, never that the application was received, because the send has
+   * not happened yet and this page cannot observe whether it does.
+   */
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    apply.mutate({
+
+    const { subject, body, mailtoUrl } = composeApplication({
       fullName: form.fullName.trim(),
       email: form.email.trim(),
       phone: form.phone.trim() || undefined,
       linkedin: form.linkedin.trim() || undefined,
       github: form.github.trim() || undefined,
       portfolio: form.portfolio.trim() || undefined,
-      roleCategory: form.roleCategory as (typeof ROLE_CATEGORIES)[number],
-      employmentType: form.employmentType as (typeof EMPLOYMENT_TYPES)[number],
-      workAuthorization:
-        form.workAuthorization as (typeof WORK_AUTH_OPTIONS)[number],
+      roleCategory: form.roleCategory,
+      employmentType: form.employmentType,
+      workAuthorization: form.workAuthorization,
       statement: form.statement.trim(),
       availability: form.availability.trim() || undefined,
       heardFrom: form.heardFrom.trim() || undefined,
     });
+
+    // A long statement cannot ride in the URL, so it goes to the clipboard and
+    // the draft opens empty for the applicant to paste into.
+    const viaClipboard = mailtoUrl === null;
+    const copied = await copyText(body);
+
+    window.location.href = mailtoUrl ?? shortMailto(subject);
+    setPrepared({ subject, body, viaClipboard, copied });
+
+    if (viaClipboard && !copied) {
+      toast.error(
+        "Your statement is too long for an email link and the clipboard was blocked. Copy the text below by hand."
+      );
+    } else if (viaClipboard) {
+      toast.success("Application copied — paste it into the email that opens.");
+    } else {
+      toast.success(
+        "Draft email prepared. Send it to complete your application."
+      );
+    }
   };
 
   const set =
@@ -782,37 +812,82 @@ function ApplicationForm() {
         setFieldErrors(prev => ({ ...prev, [field]: undefined }));
     };
 
-  if (submitted) {
+  if (prepared) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="rounded-2xl border border-[#34D399]/30 bg-[#34D399]/10 p-10 text-center"
+        className="rounded-2xl border border-[#34D399]/30 bg-[#34D399]/10 p-8"
       >
-        <CheckCircle2 size={48} className="text-[#34D399] mx-auto mb-4" />
-        <h3 className="font-heading font-bold text-2xl text-white mb-2">
-          Application Received!
-        </h3>
-        <p className="text-white/60 mb-6">
-          Thank you for your interest in the EmbeddedOS Research Foundation. We
-          review all applications and will reach out if there's a match.
-        </p>
-        <p className="text-sm text-white/40 mb-6">
-          You can also email us directly at{" "}
+        <div className="text-center">
+          <Send size={44} className="text-[#34D399] mx-auto mb-4" />
+          <h3 className="font-heading font-bold text-2xl text-white mb-2">
+            One step left — send the email
+          </h3>
+          <p className="text-white/60 mb-6 max-w-lg mx-auto">
+            Your application is prepared as an email to{" "}
+            <span className="text-white/80">{CAREERS_ADDRESS}</span>. Your mail
+            app should have opened with it.{" "}
+            <span className="text-[#FDBA74]">
+              It is not sent until you send it
+            </span>{" "}
+            — and you can attach your CV before you do.
+          </p>
+        </div>
+
+        {prepared.viaClipboard && (
+          <p className="text-sm text-white/60 bg-white/5 border border-white/10 rounded-lg p-4 mb-5">
+            {prepared.copied
+              ? "Your statement was too long to fit in the email link, so the full application has been copied to your clipboard. Paste it into the message body before sending."
+              : "Your statement was too long to fit in the email link, and the clipboard was unavailable. Copy the text below into the message body before sending."}
+          </p>
+        )}
+
+        <details className="mb-6 group">
+          <summary className="cursor-pointer text-sm text-white/50 hover:text-white/80 transition-colors">
+            Show the application text
+          </summary>
+          <pre className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap break-words rounded-lg bg-black/30 border border-white/10 p-4 text-xs text-white/70 font-mono">
+            {prepared.body}
+          </pre>
+        </details>
+
+        <div className="flex flex-wrap gap-3 justify-center">
           <a
-            href="mailto:careers@embeddedos.org"
-            className="text-[#F97316] hover:underline"
+            href={
+              prepared.viaClipboard
+                ? shortMailto(prepared.subject)
+                : composeApplication({
+                    ...form,
+                    phone: form.phone || undefined,
+                  }).mailtoUrl || shortMailto(prepared.subject)
+            }
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#F97316] hover:bg-[#EA580C] text-white text-sm font-semibold transition-colors"
           >
-            careers@embeddedos.org
+            <Send size={15} /> Reopen the email
           </a>
-        </p>
-        <Button
-          variant="outline"
-          className="border-white/20 text-white/70 hover:bg-white/10"
-          onClick={() => setSubmitted(false)}
-        >
-          Submit Another Application
-        </Button>
+          <Button
+            variant="outline"
+            className="border-white/20 text-white/70 hover:bg-white/10"
+            onClick={async () => {
+              const ok = await copyText(prepared.body);
+              if (ok) toast.success("Application copied to clipboard.");
+              else toast.error("The clipboard is unavailable in this browser.");
+            }}
+          >
+            Copy application text
+          </Button>
+          <Button
+            variant="outline"
+            className="border-white/20 text-white/70 hover:bg-white/10"
+            onClick={() => {
+              setPrepared(null);
+              setForm(EMPTY_FORM);
+            }}
+          >
+            Start another application
+          </Button>
+        </div>
       </motion.div>
     );
   }
@@ -1077,22 +1152,15 @@ function ApplicationForm() {
 
       {/* Submit */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
+        {/* Composing the email is synchronous, so there is no pending state to
+            show — and no "Submitting…" label, which would claim a transmission
+            this page does not perform. */}
         <Button
           type="submit"
-          disabled={apply.isPending}
-          className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold px-8 py-3 rounded-xl transition-all duration-150 active:scale-95 disabled:opacity-60 flex items-center gap-2"
+          className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold px-8 py-3 rounded-xl transition-all duration-150 active:scale-95 flex items-center gap-2"
         >
-          {apply.isPending ? (
-            <>
-              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Submitting…
-            </>
-          ) : (
-            <>
-              <Send size={16} />
-              Submit Application
-            </>
-          )}
+          <Send size={16} />
+          Prepare Application Email
         </Button>
         <p className="text-xs text-white/30">
           Or email directly:{" "}
