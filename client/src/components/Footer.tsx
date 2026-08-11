@@ -12,46 +12,70 @@ import {
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
-// Every internal route should be reachable from the footer. Pages that exist but
-// are not linked anywhere read as poor navigation to reviewers and are invisible
-// to crawlers, so new routes belong in one of these columns.
+/**
+ * The footer is the site's organisational map; the header is its product menu.
+ *
+ * The two used to be near-duplicates — 16 routes appeared in both, and the
+ * header's "Community" menu carried About, Mission, Transparency, Careers and
+ * Patents, none of which a visitor browsing the software is looking for. The
+ * institutional pages now live here only, and the header keeps the builder's
+ * journey: Projects, Products, Docs, Community.
+ *
+ * Every internal route should still be reachable from this footer. Pages linked
+ * only from body copy on another page are one edit away from being orphaned,
+ * and `/docs`, `/security`, `/licenses`, `/roadmap`, `/research` and `/demo`
+ * had already reached that state — present in the router, absent from both
+ * menus. tests/unit/navigation.test.ts fails when a new route is added without
+ * a home in one of these columns.
+ */
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
     { name: "Mission & Scope", href: "/mission" },
-    { name: "Industries", href: "/industries" },
     { name: "Our Vision", href: "/vision" },
+    { name: "What We Do", href: "/what-we-do" },
     { name: "Organization", href: "/organization" },
+    { name: "Industries", href: "/industries" },
     { name: "Transparency", href: "/transparency" },
-    { name: "Careers", href: "/careers" },
-    { name: "Internships", href: "/internship" },
-    { name: "Contact", href: "/contact" },
-    { name: "Donate", href: "/donate" },
-    { name: "Fundraising", href: "/fundraising" },
-    { name: "Membership", href: "/membership" },
-    { name: "Partners", href: "/partners" },
-    { name: "Sponsors", href: "/sponsors" },
-    { name: "Code of Conduct", href: "/code-of-conduct" },
+    { name: "Research", href: "/research" },
+    { name: "Future Research", href: "/future-research" },
+    { name: "Patents", href: "/patents" },
     { name: "News", href: "/news" },
   ],
-  Projects: [
+  "Join & Support": [
+    { name: "Careers", href: "/careers" },
+    { name: "Internships", href: "/internship" },
+    { name: "Get Involved", href: "/get-involved" },
+    { name: "Membership", href: "/membership" },
+    { name: "Community", href: "/community" },
+    { name: "Events", href: "/events" },
+    { name: "Partners", href: "/partners" },
+    { name: "Sponsors", href: "/sponsors" },
+    { name: "Donate", href: "/donate" },
+    { name: "Fundraising", href: "/fundraising" },
+    { name: "Contact", href: "/contact" },
+  ],
+  Platform: [
+    // "All Products" is the hub for the 13 /product-* detail pages, which are
+    // linked from it rather than listed here; see tests/unit/navigation.test.ts.
+    { name: "All Products", href: "/products" },
     { name: "All Projects", href: "/projects" },
-    {
-      name: "EoS Kernel",
-      href: "https://github.com/embeddedos-org/EoS",
-      external: true,
-    },
-    {
-      name: "eBoot",
-      href: "https://github.com/embeddedos-org/eBoot",
-      external: true,
-    },
-    {
-      name: "eAI",
-      href: "https://github.com/embeddedos-org/eAI",
-      external: true,
-    },
+    { name: "EoS Kernel", href: "/eos" },
+    { name: "eBoot", href: "/eboot" },
+    { name: "eIPC", href: "/eipc" },
+    { name: "eAI", href: "/eai" },
+    { name: "eAI Edge", href: "/eai-edge" },
+    { name: "eNI", href: "/eni" },
+    { name: "Neural Link AI", href: "/neural-link-ai" },
+    { name: "eBuild", href: "/ebuild" },
+    { name: "Architecture", href: "/architecture" },
+    { name: "Ecosystem", href: "/ecosystem" },
+    { name: "Stacks", href: "/stacks" },
+    { name: "Quantum (eQC)", href: "/quantum" },
+    { name: "eCAD Hardware", href: "/ecad-hardware" },
     { name: "AeroSwift", href: "/aerospace" },
+    { name: "Health Devices", href: "/health" },
+    { name: "Compare Health", href: "/health-compare" },
     {
       name: "GitHub Org",
       href: "https://github.com/embeddedos-org",
@@ -66,24 +90,47 @@ const FOOTER_LINKS = {
     { name: "eBrowser", href: "/ebrowser" },
     { name: "eDB", href: "/edb" },
     { name: "eFlow", href: "/eflow" },
+    // /flow is the older visual-programming page; /eflow is the product page.
+    // Both are routed, so both are listed rather than leaving one orphaned.
+    { name: "Flow Editor", href: "/flow" },
+    { name: "eServiceApps", href: "/eserviceapps" },
+    { name: "eRadar360", href: "/eradar360" },
+    { name: "eHealth365", href: "/ehealth365" },
     { name: "All Apps", href: "/eapps" },
   ],
   Resources: [
+    { name: "Documentation", href: "/docs" },
     { name: "Getting Started", href: "/getting-started" },
     { name: "API Reference", href: "/api-docs" },
-    { name: "Books (14)", href: "/books" },
-    { name: "All Resources", href: "/resources" },
+    { name: "Books", href: "/books" },
     { name: "Downloads", href: "/downloads" },
-    { name: "FAQ", href: "/faq" },
+    { name: "Live Demo", href: "/demo" },
     { name: "Hardware Lab", href: "/hardware-lab" },
     { name: "Kids Edition", href: "/kids" },
-    { name: "Get Involved", href: "/get-involved" },
-    { name: "Community", href: "/community" },
-    { name: "Events", href: "/events" },
+    { name: "Building an OS", href: "/building-os" },
+    { name: "AI OS", href: "/ai-os" },
+    { name: "Certification", href: "/certification" },
+    { name: "Roadmap", href: "/roadmap" },
     { name: "Changelog", href: "/changelog" },
-    { name: "Ecosystem", href: "/ecosystem" },
+    { name: "FAQ", href: "/faq" },
+    { name: "All Resources", href: "/resources" },
   ],
 };
+
+/**
+ * Policy pages, kept out of the columns above and shown in the bottom bar.
+ *
+ * `/licenses`, `/security` and `/code-of-conduct` were reachable from body copy
+ * only. Legal and policy links are conventionally in the bottom bar, which is
+ * where a reader looks for them.
+ */
+const LEGAL_LINKS = [
+  { name: "Privacy", href: "/privacy" },
+  { name: "Terms", href: "/terms" },
+  { name: "Licenses", href: "/licenses" },
+  { name: "Security", href: "/security" },
+  { name: "Code of Conduct", href: "/code-of-conduct" },
+];
 
 const SOCIAL_LINKS = [
   {
@@ -180,9 +227,12 @@ export default function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-16 bg-[#F97316]/4 blur-[40px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
+        {/* Seven tracks: two for the brand block, one for each of the five link
+            columns. The brand needs the extra width for its description; the
+            link columns hold short labels and wrap acceptably when narrow. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-x-8 gap-y-10">
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-5 group w-fit">
               <div className="relative">
                 <img
@@ -276,55 +326,51 @@ export default function Footer() {
         {/* Gradient divider */}
         <div className="my-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/25">
-          <div className="text-center sm:text-left">
-            © 2018–2026 Embedded Operating Systems Research Foundation.
-            <span className="mx-1.5 text-white/15">·</span>
-            <a
-              href="https://opensource.org/licenses/MIT"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white/50 transition-colors"
-            >
-              MIT License
-            </a>
-            <span className="mx-1.5 text-white/15">·</span>
-            501(c)(3)
+        {/* Bottom bar. Two rows rather than three columns: the policy links
+            outgrew a single row when Licenses, Security and Code of Conduct
+            joined Privacy and Terms, and squeezed the tagline into a three-line
+            wrap between them. */}
+        <div className="flex flex-col gap-4 text-xs text-white/25">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-center sm:text-left">
+              © 2018–2026 Embedded Operating Systems Research Foundation.
+              <span className="mx-1.5 text-white/15">·</span>
+              <a
+                href="https://opensource.org/licenses/MIT"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white/50 transition-colors"
+              >
+                MIT License
+              </a>
+              <span className="mx-1.5 text-white/15">·</span>
+              501(c)(3)
+            </div>
+
+            <div className="flex items-center flex-wrap justify-center gap-x-4 gap-y-1">
+              {LEGAL_LINKS.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="py-1 whitespace-nowrap hover:text-white/50 transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5 text-white/30">
-            Made with{" "}
-            <Heart size={11} className="text-[#F97316] mx-0.5 animate-pulse" />{" "}
-            for the embedded community
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Link
-              href="/privacy"
-              className="hover:text-white/50 transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="hover:text-white/50 transition-colors"
-            >
-              Terms
-            </Link>
-            <a
-              href="https://github.com/embeddedos-org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white/50 transition-colors"
-            >
-              GitHub
-            </a>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-white/20">
+            <div className="flex items-center gap-1.5 whitespace-nowrap">
+              Made with
+              <Heart size={11} className="text-[#F97316] animate-pulse" />
+              for the embedded community
+            </div>
             <a
               href="https://www.interserver.net"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white/50 transition-colors"
+              className="whitespace-nowrap hover:text-white/50 transition-colors"
             >
               Powered by InterServer
             </a>

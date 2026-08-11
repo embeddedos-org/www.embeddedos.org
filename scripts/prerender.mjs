@@ -92,26 +92,29 @@ async function settle(page) {
   // and never reaches the statistics band — which then snapshots as "0
   // Repositories". Re-read the height every iteration too, since lazy-loaded
   // sections grow the page as they mount.
-  await page.evaluate(async () => {
-    const pause = ms => new Promise(r => setTimeout(r, ms));
-    const docHeight = () =>
-      Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight,
-        document.documentElement.offsetHeight
-      );
+  const scrollPass = () =>
+    page.evaluate(async () => {
+      const pause = ms => new Promise(r => setTimeout(r, ms));
+      const docHeight = () =>
+        Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight,
+          document.documentElement.offsetHeight
+        );
 
-    let y = 0;
-    for (let guard = 0; y < docHeight() && guard < 300; guard++) {
-      window.scrollTo(0, y);
-      await pause(110);
-      y += Math.max(320, Math.floor(window.innerHeight * 0.75));
-    }
-    window.scrollTo(0, docHeight());
-    await pause(300);
-    window.scrollTo(0, 0);
-    await pause(300);
-  });
+      let y = 0;
+      for (let guard = 0; y < docHeight() && guard < 300; guard++) {
+        window.scrollTo(0, y);
+        await pause(110);
+        y += Math.max(320, Math.floor(window.innerHeight * 0.75));
+      }
+      window.scrollTo(0, docHeight());
+      await pause(300);
+      window.scrollTo(0, 0);
+      await pause(300);
+    });
+
+  await scrollPass();
 
   // Count-up statistics animate over ~1.5s, and only start once an
   // IntersectionObserver reports the element in view. Text-stability alone is not
@@ -135,22 +138,31 @@ async function settle(page) {
     }
   });
 
-  // Any residual inline opacity:0 / translate would make real text invisible in
-  // the static snapshot. Strip those two properties only.
-  await page.evaluate(() => {
-    for (const el of document.querySelectorAll("[style]")) {
-      const style = el.getAttribute("style");
-      if (!style || !/opacity|transform/i.test(style)) continue;
-      const cleaned = style
-        .replace(/(^|;)\s*opacity\s*:\s*0(\.\d+)?\s*(?=;|$)/gi, "$1")
-        .replace(/(^|;)\s*transform\s*:\s*[^;]*(?=;|$)/gi, "$1")
-        .replace(/;{2,}/g, ";")
-        .replace(/^;|;$/g, "")
-        .trim();
-      if (cleaned) el.setAttribute("style", cleaned);
-      else el.removeAttribute("style");
+  // A counter renders a literal "0" until its IntersectionObserver fires. If any
+  // survived the pass above, the observer never reported them in view and the
+  // snapshot is about to bake "0 Books" into the homepage — which happened once
+  // in testing and is invisible until someone reads the served HTML.
+  //
+  // Scroll again rather than wait longer: waiting cannot help an observer that
+  // never fired. A counter that already ran keeps its value (`once: true`), so
+  // the second pass is wasted motion at worst, and it only runs on the pages
+  // where a bare "0" is still present.
+  const zeroCounters = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll("span")].some(
+        el => el.children.length === 0 && el.textContent?.trim() === "0"
+      )
+    );
+
+  if (await zeroCounters()) {
+    await scrollPass();
+    await page.evaluate(() => new Promise(r => setTimeout(r, 2000)));
+    if (await zeroCounters()) {
+      console.warn(
+        "[prerender] counters still read 0 after a second scroll pass"
+      );
     }
-  });
+  }
 
   // Vite's runtime chunk loader appends <link rel="modulepreload" as="script">
   // for every async chunk it pulls in. Snapshotting after the lazy 3D sections
@@ -164,6 +176,39 @@ async function settle(page) {
       if (href && !buildPreloads.includes(href)) link.remove();
     }
   }, buildEmittedPreloads);
+}
+
+/**
+ * Strip residual inline opacity:0 / transform, then serialise the document —
+ * both inside one page.evaluate.
+ *
+ * The strip used to live in settle(), two async round-trips before the HTML was
+ * read. That window was enough for React to re-render and for framer-motion to
+ * re-apply `opacity: 0` to anything still sitting at its `initial` state, which
+ * is exactly what happens to the `md:hidden` mobile variants: they are
+ * display:none at the prerender viewport, so their whileInView trigger never
+ * fires and motion never advances them past `initial`. Five such elements
+ * shipped invisible on the homepage. Doing both in one evaluate closes the
+ * window by construction — nothing can run between the strip and the read.
+ */
+async function captureHtml(page) {
+  return page.evaluate(() => {
+    for (const el of document.querySelectorAll("[style]")) {
+      const style = el.getAttribute("style");
+      if (!style || !/opacity|transform/i.test(style)) continue;
+      const cleaned = style
+        .replace(/(^|;)\s*opacity\s*:\s*0(\.\d+)?\s*(?=;|$)/gi, "$1")
+        .replace(/(^|;)\s*transform\s*:\s*[^;]*(?=;|$)/gi, "$1")
+        .replace(/;{2,}/g, ";")
+        .replace(/^;|;$/g, "")
+        .trim();
+      if (cleaned) el.setAttribute("style", cleaned);
+      else el.removeAttribute("style");
+    }
+    // page.content() would be a second round-trip; serialise here instead.
+    // outerHTML omits the doctype, so put it back.
+    return `<!DOCTYPE html>${document.documentElement.outerHTML}`;
+  });
 }
 
 /** Derive per-page metadata from the rendered content. */
@@ -328,7 +373,7 @@ async function main() {
         });
         await settle(page);
         const meta = await extractMeta(page);
-        const html = applyMeta(await page.content(), { route, ...meta });
+        const html = applyMeta(await captureHtml(page), { route, ...meta });
         const target = writeSnapshot(route, html);
         const textLength = await page.evaluate(
           () => document.getElementById("root").innerText.trim().length

@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const patents = [
   {
@@ -45,8 +43,6 @@ const patents = [
 export default function Patents() {
   return (
     <div className="min-h-screen bg-[#0A0F1E] text-white">
-      <Navbar />
-
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F1E] via-[#0D1B2A] to-[#0A0F1E]" />
@@ -198,8 +194,6 @@ export default function Patents() {
           </div>
         </motion.div>
       </section>
-
-      <Footer />
     </div>
   );
 }

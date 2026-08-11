@@ -112,18 +112,22 @@ export default function ENIPage() {
             viewBox="0 0 1200 200"
             className="w-full absolute top-1/2 -translate-y-1/2"
           >
+            {/*
+              The wave undulates by flipping vertically. It is animated with
+              scaleY rather than by tweening the `d` attribute: framer-motion
+              cannot interpolate a path string, and emitted d="undefined"
+              mid-tween, which Chrome rejected with "Expected moveto path
+              command". The two shapes are exact mirrors about y=100 — the T
+              commands reflect each control point, so flipping the whole path
+              about the viewBox centre line is the same animation.
+            */}
             <motion.path
               d="M0,100 Q150,20 300,100 T600,100 T900,100 T1200,100"
               fill="none"
               stroke="#A855F7"
               strokeWidth="2"
-              animate={{
-                d: [
-                  "M0,100 Q150,20 300,100 T600,100 T900,100 T1200,100",
-                  "M0,100 Q150,180 300,100 T600,100 T900,100 T1200,100",
-                  "M0,100 Q150,20 300,100 T600,100 T900,100 T1200,100",
-                ],
-              }}
+              style={{ transformOrigin: "center", transformBox: "view-box" }}
+              animate={{ scaleY: [1, -1, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
           </svg>

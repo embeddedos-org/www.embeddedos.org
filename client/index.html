@@ -5,12 +5,31 @@
     <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EmbeddedOS — The Operating System for Every Device</title>
+    <!--
+      "83 supported boards" is STACK.totals.boards from shared/stack-data.ts.
+      This read "52+ platforms" — the figure retired everywhere else in the site
+      because eos/boards holds 83 board definitions. The guard in
+      tests/integration/stack-claims.test.ts scans visible page text, which a
+      meta tag is not, so the stale claim survived here and went on being read by
+      crawlers and link previews. That test now checks meta descriptions too.
+    -->
     <meta
       name="description"
-      content="EmbeddedOS — The open-source operating system for every device. 14 components, 52+ platforms, 300+ APIs."
+      content="EmbeddedOS — The open-source operating system for every device. 14 components, 83 supported boards, 300+ APIs."
     />
     <meta name="theme-color" content="#0B1D3A" />
     <link rel="canonical" href="https://www.embeddedos.org/" />
+    <!--
+      Icons. The site previously declared none and shipped none, so /favicon.ico
+      answered 404 and tabs, bookmarks and home-screen shortcuts had no mark.
+      Generated from the navbar's own logo by scripts/generate-favicons.mjs, so
+      the tab icon cannot drift from the header.
+    -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.embeddedos.org/" />
     <meta property="og:site_name" content="EmbeddedOS" />

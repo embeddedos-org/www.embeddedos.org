@@ -226,7 +226,15 @@ export const OUT_OF_SCOPE = [
   },
 ] as const;
 
-/** Where to reach the Foundation, by subject. */
+/**
+ * Where to reach the Foundation, by subject.
+ *
+ * This is also the list to check mailboxes against: the site has no server and
+ * therefore sends no mail itself, so every address here has to exist as a real
+ * cPanel mailbox or the message bounces with nothing on the site to show for it.
+ * `sponsors` and `conduct` were previously typed straight into Sponsors.tsx and
+ * CodeOfConduct.tsx, which kept them out of exactly that check.
+ */
 export const CONTACT_EMAILS = {
   general: "hello@embeddedos.org",
   security: "security@embeddedos.org",
@@ -235,6 +243,8 @@ export const CONTACT_EMAILS = {
   careers: "careers@embeddedos.org",
   donations: "donate@embeddedos.org",
   finance: "foundation@embeddedos.org",
+  sponsors: "sponsors@embeddedos.org",
+  conduct: "conduct@embeddedos.org",
 } as const;
 
 /**

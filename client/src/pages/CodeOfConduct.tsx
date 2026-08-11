@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, CheckCircle2, XCircle } from "lucide-react";
+import { CONTACT_EMAILS } from "@/data/foundation";
 
 const expected = [
   "Use welcoming and inclusive language in all community spaces.",
@@ -129,10 +130,10 @@ export default function CodeOfConduct() {
               Instances of abusive, harassing, or otherwise unacceptable
               behavior may be reported by contacting the Foundation at{" "}
               <a
-                href="mailto:conduct@embeddedos.org"
+                href={`mailto:${CONTACT_EMAILS.conduct}`}
                 className="text-orange-400 underline underline-offset-2"
               >
-                conduct@embeddedos.org
+                {CONTACT_EMAILS.conduct}
               </a>
               . All complaints will be reviewed and investigated promptly and
               fairly.
