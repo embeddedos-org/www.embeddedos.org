@@ -480,7 +480,9 @@ export default function ERadar360() {
       </section>
 
       {/* Alert Demo */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117]">
+      {/* overflow-hidden: the cards below slide in from x:±20, which puts the
+          right-hand one 4px past the viewport on a phone until it settles. */}
+      <section className="py-20 border-t border-white/5 bg-[#0D1117] overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <motion.div

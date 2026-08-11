@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -19,11 +19,24 @@ const IMPACT_ITEMS = [
 ];
 
 const STORAGE_KEY = "eos-donate-dismissed";
-const DISMISS_HOURS = 168; // 7 days
+const DISMISS_HOURS = 168;
+/** Derived so the button's promise cannot drift from the code that keeps it —
+ *  it read "remind me in 3 days" while the timer waited a week. */
+const DISMISS_DAYS = Math.round(DISMISS_HOURS / 24);
 const AUTO_SHOW_DELAY_MS = 20000; // 20 seconds — give visitors time to explore the page first
+
+/** Focusable descendants, in tab order, skipping anything disabled or hidden. */
+const focusableWithin = (root: HTMLElement) =>
+  Array.from(
+    root.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+  ).filter(el => el.offsetParent !== null || el === document.activeElement);
 
 export default function DonateModal() {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const returnFocusTo = useRef<HTMLElement | null>(null);
 
   const dismiss = useCallback(() => {
     setOpen(false);
@@ -61,6 +74,55 @@ export default function DonateModal() {
     return () => window.removeEventListener("keydown", handler);
   }, [dismiss]);
 
+  /**
+   * Move focus into the dialog and keep it there.
+   *
+   * Without this the dialog announced itself as `aria-modal` while focus stayed
+   * on <body>: one Tab landed on the navigation behind the overlay, so a
+   * keyboard user was walking a page they could not see.
+   */
+  useEffect(() => {
+    if (!open) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    returnFocusTo.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    (focusableWithin(panel)[0] ?? panel).focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const focusable = focusableWithin(panel);
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (!panel.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown, true);
+      returnFocusTo.current?.focus();
+    };
+  }, [open]);
+
   return (
     <AnimatePresence>
       {open && (
@@ -87,7 +149,9 @@ export default function DonateModal() {
             className="fixed inset-0 z-[201] flex items-center justify-center p-4 pointer-events-none"
           >
             <div
-              className="relative w-full max-w-md pointer-events-auto rounded-2xl overflow-hidden shadow-2xl"
+              ref={panelRef}
+              tabIndex={-1}
+              className="relative w-full max-w-md pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none"
               style={{
                 background: "linear-gradient(145deg, #0d1526 0%, #0a0f1e 100%)",
                 border: "1px solid rgba(255,255,255,0.08)",
@@ -203,7 +267,7 @@ export default function DonateModal() {
                   onClick={dismiss}
                   className="w-full text-xs text-white/30 hover:text-white/50 transition-colors py-1"
                 >
-                  Maybe later — remind me in 3 days
+                  Maybe later — remind me in {DISMISS_DAYS} days
                 </button>
               </div>
             </div>

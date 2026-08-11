@@ -8,8 +8,6 @@ import {
   Layers,
   CheckCircle2,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export interface ProductSpec {
   key: string;
@@ -128,8 +126,6 @@ export default function ProductDetailPage({
 
   return (
     <div className="min-h-screen bg-[#0A0F1E] text-white">
-      <Navbar />
-
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         {heroImage && (
@@ -273,7 +269,10 @@ export default function ProductDetailPage({
                     >
                       {step.step}
                     </div>
-                    <div className="flex-1 rounded-xl border border-white/10 bg-white/5 p-5">
+                    {/* min-w-0: a flex item defaults to min-width:auto, so the
+                        code block below would size this card to its longest
+                        line and push the page wider than a phone screen. */}
+                    <div className="flex-1 min-w-0 rounded-xl border border-white/10 bg-white/5 p-5">
                       <h3 className="font-bold text-base mb-1">{step.title}</h3>
                       <p className="text-white/60 text-sm leading-relaxed mb-3">
                         {step.desc}
@@ -593,28 +592,35 @@ export default function ProductDetailPage({
             <h2 className="text-2xl font-heading font-black mb-6">
               Technical Specifications
             </h2>
+            {/* The outer div keeps the rounded corners clipped; the inner one
+                lets a spec table wider than the viewport scroll on its own
+                rather than widening the document. */}
             <div className="rounded-2xl border border-white/10 overflow-hidden">
-              <table className="w-full text-sm">
-                <tbody>
-                  {specs.map((spec, i) => (
-                    <tr
-                      key={i}
-                      className={i % 2 === 0 ? "bg-white/5" : "bg-white/[0.02]"}
-                    >
-                      <td className="px-6 py-3 font-semibold text-white/70 w-1/3 border-r border-white/5">
-                        {spec.key}
-                      </td>
-                      <td className="px-6 py-3 text-white/60">{spec.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <tbody>
+                    {specs.map((spec, i) => (
+                      <tr
+                        key={i}
+                        className={
+                          i % 2 === 0 ? "bg-white/5" : "bg-white/[0.02]"
+                        }
+                      >
+                        <td className="px-6 py-3 font-semibold text-white/70 w-1/3 border-r border-white/5">
+                          {spec.key}
+                        </td>
+                        <td className="px-6 py-3 text-white/60">
+                          {spec.value}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </motion.div>
         </section>
       )}
-
-      <Footer />
     </div>
   );
 }

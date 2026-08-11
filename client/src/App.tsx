@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Navbar from "./components/Navbar";
@@ -10,7 +10,8 @@ import EBot from "./components/EBot";
 import SearchModal from "./components/SearchModal";
 import DonateModal from "./components/DonateModal";
 import Home from "./pages/Home";
-import { lazy, Suspense, type ComponentType } from "react";
+import { lazy, Suspense, useEffect, useRef, type ComponentType } from "react";
+import { applyRouteMeta, readHeading } from "./lib/page-meta";
 
 // Lazy-load all pages for code splitting
 // --- Route preloading -------------------------------------------------------
@@ -748,11 +749,62 @@ function Router() {
   );
 }
 
+/**
+ * Keeps <head> describing the page actually on screen.
+ *
+ * The landing route is skipped: its prerendered snapshot is already correct,
+ * and rewriting it from the hydrated DOM would only risk disagreeing with what
+ * the crawler was served.
+ */
+function RouteMeta() {
+  const [location] = useLocation();
+  const isLanding = useRef(true);
+  const stampedHeading = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (isLanding.current) {
+      isLanding.current = false;
+      stampedHeading.current = readHeading();
+      return;
+    }
+
+    // React still has the outgoing page on screen when this effect runs, and a
+    // lazy route renders a Suspense fallback before its own <h1> exists.
+    // Waiting for the heading to *change* is what distinguishes "the new page
+    // is up" from "the old page has not gone yet" — testing only that some
+    // heading exists stamps the route we just left.
+    //
+    // Two routes may legitimately share a heading. Those fall through to the
+    // frame cap and stamp the identical title a beat later, which is correct,
+    // just not immediate.
+    let cancelled = false;
+    let frames = 0;
+    const stamp = () => {
+      if (cancelled) return;
+      const heading = readHeading();
+      if ((heading && heading !== stampedHeading.current) || frames++ > 90) {
+        applyRouteMeta(location);
+        stampedHeading.current = heading;
+        return;
+      }
+      requestAnimationFrame(stamp);
+    };
+    stamp();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
+          <RouteMeta />
           <Toaster />
           <SearchModal />
           <DonateModal />
