@@ -142,3 +142,45 @@ describe("verified figures reach the rendered pages", () => {
     );
   });
 });
+
+describe("retired simulator figures stay retired", () => {
+  /**
+   * "63+ boards" outlived the "52+" purge on nineteen pages — the roadmap, the
+   * getting-started walkthrough, both EoSim product pages, downloads, docs and
+   * the ecosystem grid — while EoSim's registry held 150 platforms. It also
+   * described them as *boards*, conflating the simulator's coverage with the
+   * kernel's 83 board definitions, which is the exact confusion
+   * SIM_PLATFORM_COUNT exists to prevent.
+   *
+   * A site applying for grants cannot publish three different numbers for the
+   * same thing, so this scans every built page rather than a sample.
+   */
+  const RETIRED = [/\b63\+/, /\b63 (boards|platforms|virtual)/i, /\b52\+/];
+
+  const routes = fs
+    .globSync("**/index.html", { cwd: DIST })
+    .map(f => "/" + f.replace(/(^|\/)index\.html$/, "").replace(/\/$/, ""))
+    .map(r => (r === "" ? "/" : r));
+
+  it("covers every prerendered page", () => {
+    expect(routes.length).toBeGreaterThan(90);
+  });
+
+  it.each(RETIRED)("no page still claims %s", pattern => {
+    const offenders = routes.filter(r => pattern.test(decode(pageText(r))));
+
+    // /news carries dated release announcements. Rewriting a past headline
+    // would be revising the record, not correcting a claim, so it is exempt
+    // and reviewed by hand instead.
+    expect(offenders.filter(r => r !== "/news")).toEqual([]);
+  });
+
+  it("states the simulator count the stack data actually holds", () => {
+    expect(pageText("/product-eosim")).toContain(
+      String(STACK.totals.simulatedPlatforms)
+    );
+    expect(pageText("/roadmap")).toContain(
+      String(STACK.totals.simulatedPlatforms)
+    );
+  });
+});

@@ -11,7 +11,7 @@ import {
   ArrowRight,
   ExternalLink,
 } from "lucide-react";
-import { BOARD_COUNT } from "@/data/stack";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -67,12 +67,11 @@ const DOWNLOADS = [
       {
         name: "EoSim Simulator",
         version: "v2.0.0",
-        description:
-          "In-browser and CLI board simulator for 63+ embedded targets. Full GPIO, UART, SPI, I²C peripheral emulation and GDB integration.",
+        description: `In-browser and CLI platform simulator for ${SIM_PLATFORM_COUNT} embedded targets. Full GPIO, UART, SPI, I²C peripheral emulation and GDB integration.`,
         size: "8.1 MB",
         license: "MIT",
         github: "https://github.com/embeddedos-org/EoSim",
-        tags: ["Simulator", "GDB", "63+ Boards"],
+        tags: ["Simulator", "GDB", `${SIM_PLATFORM_COUNT} Platforms`],
       },
       {
         name: "EoStudio IDE",

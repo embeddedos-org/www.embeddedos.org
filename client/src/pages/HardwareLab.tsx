@@ -21,7 +21,7 @@ import {
   Layers,
 } from "lucide-react";
 import { Link } from "wouter";
-import { BOARD_COUNT } from "@/data/stack";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -118,7 +118,7 @@ const FEATURES = [
   {
     icon: Zap,
     title: "EoSim Simulator",
-    desc: "Test firmware on 63+ virtual boards without physical hardware.",
+    desc: `Test firmware on ${SIM_PLATFORM_COUNT} virtual platforms without physical hardware.`,
   },
   {
     icon: Shield,
@@ -612,8 +612,8 @@ export default function HardwareLab() {
               No Hardware? No Problem.
             </h2>
             <p className="text-white/60 mb-6 max-w-xl mx-auto">
-              EoSim simulates 63+ boards in software. Develop, test, and debug
-              firmware without any physical hardware.
+              EoSim simulates {SIM_PLATFORM_COUNT} platforms in software.
+              Develop, test, and debug firmware without any physical hardware.
             </p>
             <Link
               href="/flow"

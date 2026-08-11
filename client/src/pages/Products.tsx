@@ -28,7 +28,7 @@ import {
   Star,
   Check,
 } from "lucide-react";
-import { BOARD_COUNT, FAMILY_COUNT } from "@/data/stack";
+import { BOARD_COUNT, FAMILY_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 // ─── Animation helpers ────────────────────────────────────────────────────────
 
@@ -238,13 +238,12 @@ const FAMILIES = [
     icon: Wrench,
     title: "Developer Tools",
     tagline: "Build, simulate, and ship embedded firmware faster.",
-    description:
-      "EoStudio is the universal IDE for EmbeddedOS development. EoSim simulates 63+ boards in-browser without hardware. ebuild is the next-gen build tool for the entire EoS ecosystem.",
+    description: `EoStudio is the universal IDE for EmbeddedOS development. EoSim simulates ${SIM_PLATFORM_COUNT} platforms in-browser without hardware. ebuild is the next-gen build tool for the entire EoS ecosystem.`,
     href: "/demo",
     products: [
       {
         name: "EoSim",
-        desc: "63+ board simulator — run firmware in-browser",
+        desc: `${SIM_PLATFORM_COUNT}-platform simulator — run firmware in-browser`,
         icon: Terminal,
         href: "/demo",
         color: "#22D3EE",
@@ -271,7 +270,12 @@ const FAMILIES = [
         color: "#0EA5E9",
       },
     ],
-    stats: ["63+ boards", "In-browser sim", "Visual IDE", "No-code eFlow"],
+    stats: [
+      `${SIM_PLATFORM_COUNT} platforms`,
+      "In-browser sim",
+      "Visual IDE",
+      "No-code eFlow",
+    ],
   },
   {
     id: "aerospace",

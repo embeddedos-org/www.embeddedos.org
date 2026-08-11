@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import {
   ArrowRight,
   Github,
@@ -112,7 +113,7 @@ const REPO_GROUPS = [
     repos: [
       {
         name: "EoSim",
-        desc: "63+ board simulator for hardware-free development",
+        desc: `${SIM_PLATFORM_COUNT}-platform simulator for hardware-free development`,
         icon: Terminal,
         href: "https://github.com/embeddedos-org/eosim",
         stars: "⭐ Tools",

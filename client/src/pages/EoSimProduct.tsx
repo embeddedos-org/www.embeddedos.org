@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import { motion } from "framer-motion";
 import { Cpu, Play, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
@@ -6,7 +7,7 @@ import { Link } from "wouter";
 const commands = [
   {
     cmd: "eosim list",
-    desc: "List all 63+ simulation platforms from the registry. Supports --filter and --group flags.",
+    desc: `List all ${SIM_PLATFORM_COUNT} simulation platforms from the registry. Supports --filter and --group flags.`,
     example: "eosim list --filter cortex-m4",
   },
   {
@@ -107,9 +108,9 @@ export default function EoSimProductPage() {
               The EmbeddedOS Hardware Simulator
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              63+ virtual boards, full peripheral simulation,
-              hardware-in-the-loop bridge, and a CLI + GUI interface. Test your
-              firmware without hardware.
+              {SIM_PLATFORM_COUNT} virtual platforms, full peripheral
+              simulation, hardware-in-the-loop bridge, and a CLI + GUI
+              interface. Test your firmware without hardware.
             </p>
             <div className="flex flex-wrap gap-4 justify-center mt-8">
               <Link
@@ -183,7 +184,7 @@ export default function EoSimProductPage() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            63+ Supported Platforms
+            {SIM_PLATFORM_COUNT} Supported Platforms
           </h2>
           <p className="text-gray-400 text-center mb-8">
             Full peripheral simulation including GPIO, UART, SPI, I²C, ADC, PWM,

@@ -12,7 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link } from "wouter";
-import { BOARD_COUNT } from "@/data/stack";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const layers = [
   {
@@ -100,7 +100,7 @@ const layers = [
       },
       {
         name: "EoSim",
-        desc: "63-platform in-browser simulator",
+        desc: `${SIM_PLATFORM_COUNT}-platform in-browser simulator`,
         href: "/demo",
       },
       {

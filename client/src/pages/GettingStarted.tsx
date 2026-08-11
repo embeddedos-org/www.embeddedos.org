@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import {
   Terminal,
   Cpu,
@@ -51,7 +52,7 @@ const ECOSYSTEM = [
     id: "eosim",
     name: "EoSim",
     role: "Simulator",
-    desc: "Runs your firmware in-browser on 63+ virtual boards. No hardware required — ever.",
+    desc: `Runs your firmware in-browser on ${SIM_PLATFORM_COUNT} virtual platforms. No hardware required — ever.`,
     color: "#22D3EE",
     icon: Monitor,
   },
@@ -199,7 +200,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
       {
         title: "Choose a Board",
-        text: "EoSim supports 63+ virtual boards. For your first run, keep the default STM32F4 Discovery. You can switch to ESP32 or Raspberry Pi Pico using the board selector.",
+        text: `EoSim supports ${SIM_PLATFORM_COUNT} virtual platforms. For your first run, keep the default STM32F4 Discovery. You can switch to ESP32 or Raspberry Pi Pico using the board selector.`,
         substeps: [
           "STM32F4 — ARM Cortex-M4, 168MHz, 1MB flash",
           "ESP32 — Xtensa LX6, 240MHz, Wi-Fi + BT",
@@ -258,7 +259,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       {
         title: "Install ebuild and EoSim",
         text: "ebuild is the EmbeddedOS build tool. It handles project creation, compilation, simulation, flashing, and monitoring. EoSim is the hardware simulator that ebuild uses internally.",
-        code: `pip install embeddedos-ebuild embeddedos-eosim\n\nebuild --version\n# ebuild v2.1.0 (EmbeddedOS Build Tool)\n\neosim --version\n# EoSim v1.4.0 — 63 platforms available`,
+        code: `pip install embeddedos-ebuild embeddedos-eosim\n\nebuild --version\n# ebuild v2.1.0 (EmbeddedOS Build Tool)\n\neosim --version\n# EoSim v1.4.0 — ${SIM_PLATFORM_COUNT} platforms available`,
         tip: "On Windows, run these commands in PowerShell as Administrator. On macOS/Linux, you may need pip3.",
       },
       {
@@ -294,7 +295,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
       {
         title: "Switch to a Different Board",
-        text: "EoSim supports 63+ boards. Switch targets without changing your source code.",
+        text: `EoSim supports ${SIM_PLATFORM_COUNT} platforms. Switch targets without changing your source code.`,
         code: `ebuild sim --platform esp32\nebuild sim --platform raspi-pico\n\n# List all available platforms\nebuild platforms list\n# stm32f4, stm32h7, esp32, esp32s3, raspi4,\n# raspi-pico, nrf52840, imxrt1062, ...`,
       },
       {
@@ -590,8 +591,8 @@ export default function GettingStarted() {
               border: "1px solid rgba(52,211,153,0.2)",
             }}
           >
-            <CheckCircle2 size={14} /> You can simulate 63+ boards in your
-            browser — no install, no hardware needed
+            <CheckCircle2 size={14} /> You can simulate {SIM_PLATFORM_COUNT}{" "}
+            platforms in your browser — no install, no hardware needed
           </motion.div>
         </div>
       </section>

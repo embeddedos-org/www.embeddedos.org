@@ -11,6 +11,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link } from "wouter";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const phases = [
   {
@@ -51,7 +52,10 @@ const phases = [
         done: true,
         text: "EoStudio IDE — 12-editor unified development environment",
       },
-      { done: true, text: "EoSim — 63-platform in-browser simulator" },
+      {
+        done: true,
+        text: `EoSim — ${SIM_PLATFORM_COUNT}-platform in-browser simulator`,
+      },
       {
         done: false,
         text: "eDB v0.1 — multi-model embedded database (SQL + Document + KV)",

@@ -10,7 +10,7 @@ import {
   Monitor,
   Puzzle,
 } from "lucide-react";
-import { BOARD_COUNT } from "@/data/stack";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 const EAppsCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EAppsCanvas }))
 );
@@ -248,10 +248,10 @@ export default function EApps() {
                 version: "v2.0",
                 color: "#F97316",
                 icon: "🖥️",
-                tagline: "63+ Board Simulator & Hardware Emulator",
-                desc: "Simulate any of 63+ embedded boards in software — GPIO toggles, UART output, SPI/I2C buses, ADC readings, and full memory maps. Run your firmware before hardware arrives. Integrates with EoStudio and CI/CD pipelines.",
+                tagline: `${SIM_PLATFORM_COUNT}-Platform Simulator & Hardware Emulator`,
+                desc: `Simulate any of ${SIM_PLATFORM_COUNT} embedded platforms in software — GPIO toggles, UART output, SPI/I2C buses, ADC readings, and full memory maps. Run your firmware before hardware arrives. Integrates with EoStudio and CI/CD pipelines.`,
                 features: [
-                  "63+ board profiles",
+                  `${SIM_PLATFORM_COUNT} platform profiles`,
                   "GPIO/UART/SPI/I2C emulation",
                   "Memory map viewer",
                   "CI/CD integration",

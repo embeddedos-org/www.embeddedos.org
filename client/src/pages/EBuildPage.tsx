@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import {
   Wrench,
   ArrowRight,
@@ -444,7 +445,7 @@ export default function EBuildPage() {
           <div className="grid grid-cols-3 gap-3 mt-4">
             {[
               {
-                label: "63+ boards",
+                label: `${SIM_PLATFORM_COUNT} platforms`,
                 sub: "supported targets",
                 color: "#F97316",
               },

@@ -8,7 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link } from "wouter";
-import { BOARD_COUNT } from "@/data/stack";
+import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const sections = [
   {
@@ -104,7 +104,7 @@ const sections = [
       },
       {
         name: "EoSim CLI",
-        desc: "Hardware simulator for 63 boards.",
+        desc: `Hardware simulator for ${SIM_PLATFORM_COUNT} platforms.`,
         link: "https://github.com/embeddedos-org/eosim/releases",
         external: true,
       },

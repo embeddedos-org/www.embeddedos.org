@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import { Link } from "wouter";
 import {
   Cpu,
@@ -128,7 +129,7 @@ const DOC_SECTIONS = [
     items: [
       {
         name: "EoSim",
-        desc: "Hardware simulator, 52 platforms, GPIO/UART/SPI/I2C simulation",
+        desc: `Hardware simulator, ${SIM_PLATFORM_COUNT} platforms, GPIO/UART/SPI/I2C simulation`,
         icon: Cpu,
         href: "https://github.com/embeddedos-org/EoSim",
         external: true,

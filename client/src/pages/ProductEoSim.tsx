@@ -1,12 +1,13 @@
 import ProductDetailPage from "@/components/ProductDetailPage";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 
 export default function ProductEoSim() {
   return (
     <ProductDetailPage
       badge="Simulator"
       title="EoSim — Virtual Platform Simulator"
-      subtitle="63+ Platforms · GPIO Visualizer · HIL Bridge · GDB Support"
-      description="A full-system virtual platform simulator for EoS firmware. Run unmodified EoS binaries on 63+ simulated boards — with a graphical GPIO pin visualizer, UART terminal, hardware-in-the-loop (HIL) bridge, and GDB debugging support."
+      subtitle={`${SIM_PLATFORM_COUNT} Platforms · GPIO Visualizer · HIL Bridge · GDB Support`}
+      description={`A full-system virtual platform simulator for EoS firmware. Run unmodified EoS binaries on ${SIM_PLATFORM_COUNT} simulated platforms — with a graphical GPIO pin visualizer, UART terminal, hardware-in-the-loop (HIL) bridge, and GDB debugging support.`}
       accent="#06B6D4"
       gradient="from-cyan-500/20 to-sky-600/20"
       lang="C++ / Python"
@@ -14,7 +15,7 @@ export default function ProductEoSim() {
       heroImage="/manus-storage/product-eosim-sim_78145da3.jpg"
       stackHighlight="build / ide / sim"
       stats={[
-        { value: "63+", label: "Simulated Platforms" },
+        { value: `${SIM_PLATFORM_COUNT}`, label: "Simulated Platforms" },
         { value: "100%", label: "Binary Compatible" },
         { value: "< 5 ms", label: "Boot-to-Prompt" },
         { value: "HIL", label: "Hardware-in-the-Loop" },
@@ -23,7 +24,7 @@ export default function ProductEoSim() {
         {
           step: 1,
           title: "List Available Platforms",
-          desc: "EoSim ships with 63+ pre-configured virtual platforms covering all major EoS reference boards. Use eosim list to browse them by architecture, MCU family, or peripheral set.",
+          desc: `EoSim ships with ${SIM_PLATFORM_COUNT} pre-configured virtual platforms covering all major EoS reference boards. Use eosim list to browse them by architecture, MCU family, or peripheral set.`,
           code: "# List all platforms\neosim list\n\n# Filter by architecture\neosim list --filter cortex-m4\n\n# Search by board name\neosim search stm32f4",
         },
         {
@@ -84,7 +85,7 @@ export default function ProductEoSim() {
       }}
       features={[
         {
-          name: "63+ Virtual Platforms",
+          name: `${SIM_PLATFORM_COUNT} Virtual Platforms`,
           desc: "Pre-configured simulations of STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V SiFive, NVIDIA Jetson, and more.",
         },
         {
@@ -119,8 +120,7 @@ export default function ProductEoSim() {
       specs={[
         {
           key: "Simulated Platforms",
-          value:
-            "63+ (STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V, NVIDIA Jetson, …)",
+          value: `${SIM_PLATFORM_COUNT} (STM32, NXP i.MX, Raspberry Pi, ESP32, RISC-V, NVIDIA Jetson, …)`,
         },
         {
           key: "Simulation Engine",

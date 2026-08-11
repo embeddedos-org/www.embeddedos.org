@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import { motion, AnimatePresence } from "framer-motion";
 import { Code2, Terminal, Cpu, Zap, Brain, BookOpen, Play } from "lucide-react";
 import { Link } from "wouter";
@@ -30,7 +31,7 @@ const editors = [
     icon: Cpu,
     color: "#34D399",
     name: "EoSim Integration",
-    desc: "One-click simulation of your firmware on 63+ virtual boards. No hardware required to test your application.",
+    desc: `One-click simulation of your firmware on ${SIM_PLATFORM_COUNT} virtual platforms. No hardware required to test your application.`,
   },
   {
     id: "ai",

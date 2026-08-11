@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Smartphone, ArrowRight, Search } from "lucide-react";
 import { Link } from "wouter";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const categories = [
   {
@@ -196,7 +197,7 @@ const categories = [
       },
       {
         name: "EoSim",
-        desc: "Hardware simulator: 63 boards, GPIO, UART, SPI, I2C.",
+        desc: `Hardware simulator: ${SIM_PLATFORM_COUNT} platforms, GPIO, UART, SPI, I2C.`,
         type: "Native C",
       },
       {
