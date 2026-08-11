@@ -4,9 +4,18 @@ The public website of the Embedded Operating Systems Research Foundation.
 
 A React single-page application that is **prerendered to static HTML at build
 time** — every route ships as a real document with its own `<title>`, meta
-description and canonical URL, readable without JavaScript. An Express + tRPC
-server backs the parts that need one (donations, contact, search, the eBot
-assistant); the marketing site itself is served as static files.
+description and canonical URL, readable without JavaScript.
+
+**Production has no server process.** The site deploys to cPanel as the static
+contents of `dist/public`, served by Apache. There is no `/api/trpc` in
+production, and anything that assumes one is broken there even when it works
+locally — that is how the careers form silently lost every application it
+received, and why eBot and site search now answer entirely in the browser from
+`shared/ebot-knowledge.ts` and `shared/site-index.ts`.
+
+The Express + tRPC server in `server/` runs the **development** server and
+backs the test suite. Treat any new tRPC procedure as dev-and-test-only unless
+the hosting model changes.
 
 ---
 
@@ -110,8 +119,21 @@ Governance documents (`CLAUDE.md`, `VERIFY.md`, `TESTING.md`, `SECURITY-STANDARD
 | `pnpm test:regression`  | `e2e/regression.spec.ts` — one guard per fixed defect        |
 | `pnpm test:a11y`        | `e2e/ui-ux.spec.ts` — axe accessibility checks               |
 | `pnpm test:journeys`    | Navigation journeys, link and control sweeps                 |
+| `pnpm test:controls`    | Clicks every in-page control on every route                  |
+| `pnpm test:functional`  | `e2e/functional.spec.ts`                                     |
 | `pnpm test:acceptance`  | Google Ad Grants policy criteria                             |
+| `pnpm test:server`      | `server/**` tRPC router tests                                |
 | `pnpm test:all`         | check → lint → build → test → audits → e2e                   |
+
+Two suites cover controls, and the difference matters:
+
+- `test:journeys` reads the **built HTML** and proves each of the ~9,000
+  anchors resolves and each of the ~1,100 buttons carries an accessible name.
+  It presses nothing.
+- `test:controls` **clicks** every one of the ~340 in-page controls across all
+  95 routes, plus the header and footer controls on a sample, and fails on any
+  uncaught exception or console error. A control can pass the first suite and
+  still throw on click; that gap is what this closes.
 
 The Playwright suites run against the **production build**, and
 `playwright.config.ts` starts `dist/index.js` for them. Run `pnpm build` first,
@@ -240,7 +262,7 @@ them, but the API features that use them are inert when unset.
 | `OAUTH_SERVER_URL`, `OWNER_OPEN_ID`, `VITE_APP_ID` | OAuth integration                                                               |
 | `STRIPE_SECRET_KEY`                                | Donations                                                                       |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | Outbound email                                                                  |
-| `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY` | LLM backend for eBot                                                            |
+| `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY` | Legacy LLM backend — **unused**, eBot answers in the browser                    |
 | `SITE_ORIGIN`                                      | Canonical origin used by the prerenderer (default `https://www.embeddedos.org`) |
 | `PRERENDER_PORT`, `PRERENDER_CONCURRENCY`          | Prerender tuning                                                                |
 | `E2E_PORT`                                         | Port Playwright's server uses (default 42200)                                   |
@@ -262,8 +284,36 @@ migrate).
   literal `<Route path="...">` strings in `App.tsx`; anything dynamic is skipped
   and will 404 on the static host. `tests/integration/deploy-config.test.ts`
   checks each discovered route has a file.
+- **Never hand-write a stack figure.** Board counts, platform counts, repo
+  counts and architecture counts come from `shared/stack-data.ts` via
+  `client/src/data/stack.ts` — import the constant, do not type the number.
+  Hand-written figures have drifted twice: "52+" survived on seventeen pages,
+  and after that purge "63+" survived on nineteen more, describing EoSim's
+  150 simulated _platforms_ as 63 _boards_ and colliding with the kernel's 83
+  board definitions. `tests/integration/stack-claims.test.ts` scans every built
+  page and fails if a retired figure reappears. `/news` is exempt: its posts
+  are dated announcements, and rewriting one revises the record rather than
+  correcting a claim.
+- **`<head>` is stamped twice, by two implementations that must agree.**
+  `scripts/prerender.mjs` writes it at build time; `client/src/lib/page-meta.ts`
+  rewrites it after a client-side navigation, because wouter swaps the page
+  without touching `<head>` and the canonical URL would otherwise keep naming
+  the first page visited. The build script cannot be imported into the bundle
+  (it pulls in playwright and express), so the logic is deliberately duplicated
+  and `tests/unit/page-meta.test.ts` asserts the two agree.
+- **A modal must take focus.** The donate dialog shipped with
+  `aria-modal="true"` and focus left on `<body>`, so one Tab reached the
+  navigation behind the overlay. If you add an overlay, move focus into it,
+  trap Tab, restore focus on close, and close on Escape.
+- **`flex-1` without `min-w-0` overflows on a phone.** A flex item defaults to
+  `min-width: auto`, so a code block or long string inside sizes the item to its
+  content and pushes the document wider than the viewport. Six pages shipped
+  this way. Wide tables need their own `overflow-x-auto` wrapper for the same
+  reason.
 - **framer-motion cannot tween an SVG `d` attribute.** It emits
-  `d="undefined"` mid-tween. Animate a transform instead.
+  `d="undefined"` mid-tween. Animate a transform instead. An entry animation
+  that starts at `x: ±20` also overflows a 375px viewport until it settles —
+  clip the section.
 - Payload budgets are enforced in `tests/performance/budgets.test.ts`; adding a
   large eager import will fail the suite rather than quietly regress the site.
 
