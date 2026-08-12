@@ -120,12 +120,14 @@ Governance documents (`CLAUDE.md`, `VERIFY.md`, `TESTING.md`, `SECURITY-STANDARD
 | `pnpm test:a11y`        | `e2e/ui-ux.spec.ts` — axe accessibility checks               |
 | `pnpm test:journeys`    | Navigation journeys, link and control sweeps                 |
 | `pnpm test:controls`    | Clicks every in-page control on every route                  |
+| `pnpm test:links`       | On-demand: clicks every internal link, checks where it lands |
 | `pnpm test:functional`  | `e2e/functional.spec.ts`                                     |
 | `pnpm test:acceptance`  | Google Ad Grants policy criteria                             |
 | `pnpm test:server`      | `server/**` tRPC router tests                                |
 | `pnpm test:all`         | check → lint → build → test → audits → e2e                   |
 
-Two suites cover controls, and the difference matters:
+Three suites cover controls, and the differences matter — each catches what the
+one before it cannot:
 
 - `test:journeys` reads the **built HTML** and proves each of the ~9,000
   anchors resolves and each of the ~1,100 buttons carries an accessible name.
@@ -133,7 +135,23 @@ Two suites cover controls, and the difference matters:
 - `test:controls` **clicks** every one of the ~340 in-page controls across all
   95 routes, plus the header and footer controls on a sample, and fails on any
   uncaught exception or console error. A control can pass the first suite and
-  still throw on click; that gap is what this closes.
+  still throw on click.
+- `test:links` clicks each of the ~320 unique internal links **from the bottom
+  of its page** and asserts two things the others never check: that it lands on
+  the route its href names, and that the page opens at the top.
+
+`test:links` is **opt-in and skipped by `pnpm test:e2e`**, which is why it
+needs its own command. It performs ~320 real navigations and proved sensitive
+to machine load in a way the rest of the suite is not: under parallel workers a
+different page each run reported resting a few hundred pixels down, and none of
+it reproduced — twelve controlled navigations from the worst offender measured
+y=0 every time, and none of the implicated pages contains scrolling, focus or
+iframe code that could explain it. A check that fails one test in eighty for
+reasons outside the code teaches people to ignore red, so it is a diagnostic
+rather than a gate. The defects it originally found are guarded deterministically
+by the scroll tests in `regression.spec.ts`, which fail when the fix is removed.
+
+Run it before a release, and read a failure as "look at this", not "this is broken".
 
 The Playwright suites run against the **production build**, and
 `playwright.config.ts` starts `dist/index.js` for them. Run `pnpm build` first,
@@ -301,6 +319,20 @@ migrate).
   the first page visited. The build script cannot be imported into the bundle
   (it pulls in playwright and express), so the logic is deliberately duplicated
   and `tests/unit/page-meta.test.ts` asserts the two agree.
+- **A route change must reset the scroll position.** wouter swaps the page
+  component and leaves the viewport alone, so a link followed from the footer
+  opened the next page already scrolled down — the browser clamps the old
+  offset to the new document's height. `ScrollToTop` in `App.tsx` handles it,
+  and three cases are easy to get wrong: the jump must be `behavior: "instant"`
+  because `index.css` sets `scroll-behavior: smooth` for in-page anchors; a
+  link to the route **already open** produces no location change at all, so it
+  needs a capture-phase click listener (wouter's `Link` calls `preventDefault`,
+  which makes a bubble-phase listener useless); and a `#hash` target must win
+  over the jump to the top.
+- **Never call `scrollIntoView` to follow a list.** It scrolls _every_ ancestor
+  scroll container, including the document. `/demo` auto-scrolled its simulator
+  log that way and the effect ran on mount, so opening the page dropped the
+  visitor below the heading. Set the container's own `scrollTop` instead.
 - **A modal must take focus.** The donate dialog shipped with
   `aria-modal="true"` and focus left on `<body>`, so one Tab reached the
   navigation behind the overlay. If you add an overlay, move focus into it,

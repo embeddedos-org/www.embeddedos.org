@@ -35,6 +35,7 @@
     "test:functional": "playwright test e2e/functional.spec.ts",
     "test:journeys": "playwright test e2e/journeys.spec.ts e2e/links-and-controls.spec.ts",
     "test:controls": "playwright test e2e/controls-interaction.spec.ts",
+    "test:links": "LINK_SWEEP=1 playwright test e2e/link-destinations.spec.ts",
     "test:all": "pnpm check && pnpm lint && pnpm build && pnpm test && pnpm audit:site && pnpm audit:mobile && pnpm test:e2e"
   },
   "dependencies": {
