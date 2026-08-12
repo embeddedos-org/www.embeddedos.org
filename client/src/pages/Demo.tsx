@@ -403,6 +403,7 @@ export default function Demo() {
   const tickRef = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const logEndRef = useRef<HTMLDivElement>(null);
+  const logBoxRef = useRef<HTMLDivElement>(null);
 
   const board = BOARDS[boardIdx];
   const program = PROGRAMS[programIdx];
@@ -426,9 +427,17 @@ export default function Demo() {
     tickRef.current = 0;
   }, [boardIdx, programIdx, stop]);
 
-  // Auto-scroll log
+  // Keep the newest line in view, by scrolling the log box itself.
+  //
+  // This used to call logEndRef.scrollIntoView(), which scrolls *every*
+  // ancestor scroll container — including the document. The effect also runs
+  // on mount, when the board reset clears the log, so merely opening /demo
+  // dragged the page down to y≈1086 and the visitor arrived below the heading.
+  // Setting scrollTop moves only the box.
   useEffect(() => {
-    logEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const box = logBoxRef.current;
+    if (!box || log.length === 0) return;
+    box.scrollTop = box.scrollHeight;
   }, [log]);
 
   const start = useCallback(() => {
@@ -965,6 +974,7 @@ export default function Demo() {
                   </div>
                 </div>
                 <div
+                  ref={logBoxRef}
                   className="p-4 font-mono text-xs space-y-1 overflow-y-auto"
                   style={{ height: "240px" }}
                 >

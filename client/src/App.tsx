@@ -756,6 +756,102 @@ function Router() {
  * and rewriting it from the hydrated DOM would only risk disagreeing with what
  * the crawler was served.
  */
+/**
+ * Puts a newly opened route at the top.
+ *
+ * wouter swaps the page component without touching the scroll position, and
+ * nothing else did either, so following a link from the footer opened the next
+ * page already scrolled down — the browser simply clamps the old offset to the
+ * new document's height. Reading the footer of /architecture and clicking FAQ
+ * landed the visitor at y=1950 of a page they had never seen the top of.
+ *
+ * The landing route is left alone so a reload, or a link straight to an
+ * anchor, keeps whatever position the browser chose.
+ */
+function ScrollToTop() {
+  const [location] = useLocation();
+  const isLanding = useRef(true);
+
+  /**
+   * A link to the route already open.
+   *
+   * wouter reports no location change, so the effect below never runs and the
+   * viewport stays where it was — from the footer, that means clicking
+   * "Architecture" while on /architecture does visibly nothing, which reads as
+   * a broken link rather than a no-op. Every other site answers that click by
+   * returning to the top, so do that.
+   */
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      // Capture phase, deliberately: wouter's Link calls preventDefault, so by
+      // the time this event bubbles to the document it always looks cancelled
+      // and a bubble-phase listener can never tell a handled link from a
+      // suppressed one.
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+
+      const anchor = (e.target as Element | null)?.closest?.("a[href]");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href") ?? "";
+      // Only same-document links; a hash is the browser's job.
+      if (!href.startsWith("/") || href.includes("#")) return;
+      if (new URL(href, window.location.origin).pathname !== location) return;
+
+      // Let wouter finish first, then land at the top.
+      requestAnimationFrame(() =>
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+      );
+    };
+
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [location]);
+
+  useEffect(() => {
+    if (isLanding.current) {
+      isLanding.current = false;
+      return;
+    }
+
+    // index.css sets `scroll-behavior: smooth` for in-page anchor links, which
+    // is right there and wrong here: on a route change it animates the visitor
+    // back through a page they have already left, and on a long one that runs
+    // for most of a second. Arriving somewhere new should be instant.
+    const jump = (top: number) =>
+      window.scrollTo({ top, left: 0, behavior: "instant" });
+
+    // wouter's location carries no hash, so read the real one. An in-page
+    // target (/donate#donate-now) must win over the jump to the top, and on a
+    // lazy route it may not have rendered yet — hence the retry.
+    const hash = window.location.hash;
+    if (hash.length > 1) {
+      let cancelled = false;
+      let frames = 0;
+      const findTarget = () => {
+        if (cancelled) return;
+        const target = document.querySelector(hash);
+        if (target) {
+          jump(window.scrollY + target.getBoundingClientRect().top);
+          return;
+        }
+        if (frames++ > 90) {
+          jump(0);
+          return;
+        }
+        requestAnimationFrame(findTarget);
+      };
+      findTarget();
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    jump(0);
+  }, [location]);
+
+  return null;
+}
+
 function RouteMeta() {
   const [location] = useLocation();
   const isLanding = useRef(true);
@@ -804,6 +900,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
+          <ScrollToTop />
           <RouteMeta />
           <Toaster />
           <SearchModal />

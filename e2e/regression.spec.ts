@@ -542,3 +542,186 @@ test.describe("chat regressions", () => {
     await expect(panel).toBeHidden();
   });
 });
+
+test.describe("scroll regressions", () => {
+  /**
+   * Nothing reset the scroll position on a route change. wouter swaps the page
+   * component and leaves the viewport where it was, so following a link from
+   * the footer opened the next page part-way down — the browser clamps the old
+   * offset to the new document's height. Reading the bottom of /architecture
+   * and clicking FAQ landed on /faq at y=1950, below a heading the visitor had
+   * never seen.
+   */
+  const FROM_FOOTER: [string, string][] = [
+    ["/architecture", "/faq"],
+    ["/products", "/contact"],
+    ["/docs", "/privacy"],
+  ];
+
+  for (const [from, to] of FROM_FOOTER) {
+    test(`${from} -> ${to} from the footer opens at the top`, async ({
+      page,
+    }) => {
+      await page.goto(from, { waitUntil: "domcontentloaded" });
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(150);
+      expect(
+        await page.evaluate(() => window.scrollY),
+        "test needs a scrollable source page"
+      ).toBeGreaterThan(200);
+
+      await page.locator(`footer a[href="${to}"]`).first().click();
+      await expect(page).toHaveURL(new RegExp(`${to}$`));
+
+      await expect
+        .poll(() => page.evaluate(() => Math.round(window.scrollY)), {
+          timeout: 3000,
+        })
+        .toBe(0);
+    });
+  }
+
+  test("the jump to the top is instant, not an animation", async ({ page }) => {
+    // index.css sets scroll-behavior: smooth for in-page anchors. Applied to a
+    // route change it scrolled the visitor back through the page they had just
+    // left, taking most of a second on a long one.
+    await page.goto("/architecture", { waitUntil: "domcontentloaded" });
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(150);
+
+    await page.locator('footer a[href="/faq"]').first().click();
+    await page.waitForTimeout(120);
+
+    expect(
+      await page.evaluate(() => Math.round(window.scrollY)),
+      "still mid-animation 120ms after navigating"
+    ).toBe(0);
+  });
+
+  test("an in-page anchor still wins over the jump to the top", async ({
+    page,
+  }) => {
+    // networkidle, not domcontentloaded: the popstate below is only observed
+    // once React has hydrated and wouter is listening. Firing it earlier makes
+    // this test race the bundle rather than test the behaviour.
+    await page.goto("/faq", { waitUntil: "networkidle" });
+    await page.evaluate(() => {
+      window.history.pushState({}, "", "/donate#donate-now");
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+
+    const target = page.locator("#donate-now");
+    await expect(target).toHaveCount(1);
+
+    // Land on the anchor, not at the top — and at the anchor's real offset.
+    const expected = await target.evaluate(el =>
+      Math.round(window.scrollY + el.getBoundingClientRect().top)
+    );
+    expect(expected).toBeGreaterThan(0);
+
+    await expect
+      .poll(() => page.evaluate(() => Math.round(window.scrollY)), {
+        timeout: 5000,
+      })
+      .toBe(expected);
+  });
+});
+
+test.describe("same-route and mount-scroll regressions", () => {
+  /**
+   * A footer link pointing at the route already open. wouter reports no
+   * location change, so the scroll effect never ran and the viewport stayed at
+   * the bottom — the link appeared to do nothing at all, which is what a
+   * visitor reports as "the menu is broken".
+   *
+   * The listener that fixes this must be in the capture phase: wouter's Link
+   * calls preventDefault, so a bubble-phase listener sees every internal click
+   * as already cancelled.
+   */
+  for (const route of ["/architecture", "/getting-started"]) {
+    test(`clicking the footer link to ${route} while on it returns to the top`, async ({
+      page,
+    }) => {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(150);
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(200);
+
+      const self = page.locator(`footer a[href="${route}"]`).first();
+      if ((await self.count()) === 0) test.skip();
+      await self.click();
+
+      await expect
+        .poll(() => page.evaluate(() => Math.round(window.scrollY)), {
+          timeout: 3000,
+        })
+        .toBe(0);
+      await expect(page).toHaveURL(new RegExp(`${route}$`));
+    });
+  }
+
+  /**
+   * /demo auto-scrolled its simulator log into view on mount. scrollIntoView
+   * scrolls every ancestor scroll container including the document, and the
+   * effect fires when the board reset clears the log, so simply opening the
+   * page landed the visitor at y≈1086, below the heading.
+   */
+  test("/demo opens at the top instead of at its console", async ({ page }) => {
+    await page.goto("/demo", { waitUntil: "networkidle" });
+    await page.waitForTimeout(800);
+    expect(await page.evaluate(() => Math.round(window.scrollY))).toBe(0);
+  });
+
+  test("/demo still follows its log once the simulation runs", async ({
+    page,
+  }) => {
+    // The simulation needs ~10s of real time to overflow its log box, and the
+    // poll below allows 20. That does not fit the default 30s once workers run
+    // in parallel — which is how this failed once before being given room.
+    test.setTimeout(90_000);
+
+    await page.goto("/demo", { waitUntil: "networkidle" });
+
+    // The control renders as an icon plus the word "Run", so its text node is
+    // " Run" — an anchored /^Run$/ silently matches nothing and skips the test.
+    const run = page
+      .locator("main button")
+      .filter({ hasText: /\bRun\b/ })
+      .first();
+    await expect(run).toBeVisible();
+
+    const logBox = page.locator("main div.overflow-y-auto").first();
+    await expect(logBox).toBeVisible();
+
+    await run.click();
+
+    // Not `scrollY === 0`: clicking scrolls the button into view, exactly as a
+    // real visitor would have. What matters is that the page does not move
+    // *again* as the log fills, which is what scrollIntoView used to do.
+    const settled = await page.evaluate(() => Math.round(window.scrollY));
+
+    // The simulation emits roughly one line a second and the box shows ~240px,
+    // so it needs about ten seconds to overflow. Without an overflow this
+    // proves nothing, so wait for one.
+    await expect
+      .poll(() => logBox.evaluate(el => el.scrollHeight - el.clientHeight), {
+        timeout: 20_000,
+        message: "log never overflowed its box",
+      })
+      .toBeGreaterThan(0);
+
+    const state = await logBox.evaluate(el => ({
+      scrollTop: Math.round(el.scrollTop),
+      maxScroll: Math.round(el.scrollHeight - el.clientHeight),
+    }));
+    expect(
+      Math.abs(state.scrollTop - state.maxScroll),
+      "log box did not follow its newest line"
+    ).toBeLessThanOrEqual(2);
+
+    expect(
+      await page.evaluate(() => Math.round(window.scrollY)),
+      "the log dragged the document with it"
+    ).toBe(settled);
+  });
+});
