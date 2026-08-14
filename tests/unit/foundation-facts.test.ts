@@ -192,35 +192,60 @@ describe("structured data agrees with the source of truth", () => {
  * `github.com/embeddedos-org/<repo>` is a repository rather than the org, so
  * the GitHub pattern stops at the org path.
  */
+/**
+ * Every pattern ends `\/?(?![\w.\-/$])` and carries the `i` flag, which is what
+ * makes it catch the near-misses rather than only the obvious ones. A review
+ * defeated the first version with three spellings it read as canonical:
+ * a trailing slash (`…/embeddedos.org/`), a capitalised org
+ * (`github.com/EmbeddedOS-org`), and `http://`.
+ *
+ * The lookahead has to admit `/` while the optional slash is consumed and
+ * reject it otherwise, so that `github.com/embeddedos-org/eAI` — a repository,
+ * not the org — still matches nothing at all. It rejects `$` for the same
+ * reason: /books builds its release links as
+ * `` `https://github.com/embeddedos-org/${book.repo}/releases/latest` ``, and
+ * without that the org prefix of a correct interpolated repo URL reads as an
+ * org link with a stray trailing slash. Four false positives, caught only
+ * because this pattern was re-run rather than assumed.
+ *
+ * Known and accepted gap: a protocol-relative `//instagram.com/…` is not
+ * matched. Making the scheme optional would start flagging `//` line comments
+ * that happen to name a host.
+ */
 const SOCIAL_ACCOUNTS: { key: string; anySpelling: RegExp }[] = [
   {
     key: "github",
-    anySpelling: /https:\/\/(?:www\.)?github\.com\/embeddedos-org(?![\w./-])/g,
+    anySpelling:
+      /https?:\/\/(?:www\.)?github\.com\/embeddedos-org\/?(?![\w.\-/$])/gi,
   },
   {
     key: "x",
-    anySpelling: /https:\/\/(?:www\.)?(?:x|twitter)\.com\/EmbeddedOS_ORG\b/gi,
+    anySpelling:
+      /https?:\/\/(?:www\.)?(?:x|twitter)\.com\/EmbeddedOS_ORG\/?(?![\w.\-/$])/gi,
   },
   {
     key: "linkedin",
-    anySpelling: /https:\/\/(?:www\.)?linkedin\.com\/company\/[\w-]+/g,
+    anySpelling:
+      /https?:\/\/(?:www\.)?linkedin\.com\/company\/[\w-]+\/?(?![\w.\-/$])/gi,
   },
   {
     key: "youtube",
-    anySpelling: /https:\/\/(?:www\.)?youtube\.com\/@EmbeddedOS_ORG\b/gi,
+    anySpelling:
+      /https?:\/\/(?:www\.)?youtube\.com\/@EmbeddedOS_ORG\/?(?![\w.\-/$])/gi,
   },
   {
     key: "instagram",
-    anySpelling: /https:\/\/(?:www\.)?instagram\.com\/[\w.]+/g,
+    anySpelling:
+      /https?:\/\/(?:www\.)?instagram\.com\/[\w.]+\/?(?![\w.\-/$])/gi,
   },
   {
     key: "facebook",
-    anySpelling: /https:\/\/(?:www\.)?facebook\.com\/[^"'\s<>,)]+/g,
+    anySpelling: /https?:\/\/(?:www\.)?facebook\.com\/[^"'\s<>,)${]+/gi,
   },
   {
     key: "discussions",
     anySpelling:
-      /https:\/\/(?:www\.)?github\.com\/orgs\/embeddedos-org\/discussions\b/g,
+      /https?:\/\/(?:www\.)?github\.com\/orgs\/embeddedos-org\/discussions\/?(?![\w.\-/$])/gi,
   },
 ];
 
@@ -286,6 +311,52 @@ describe("the Foundation's accounts are spelled one way", () => {
       .map(({ file }) => file);
 
     expect(survivors, "files still using the retired hello@").toEqual([]);
+  });
+
+  it("writes no @embeddedos.org address the Foundation does not own", () => {
+    // The mailto: check above only sees links. A typo in prose — eBot telling
+    // someone to write to suport@ — is just as dead a letter, and eBot alone
+    // prints seven addresses as plain text.
+    const declared = new Set(Object.values(contactEmails()));
+
+    // Sample rows in the /eoffice mail-client mockup. Display text, never
+    // links, and deliberately fictional.
+    const FICTIONAL = new Set([
+      "alice@embeddedos.org",
+      "bob@embeddedos.org",
+      "carol@embeddedos.org",
+    ]);
+
+    const stray: string[] = [];
+    for (const { file, text } of sources) {
+      for (const [, address] of text.matchAll(
+        /([A-Za-z0-9._%+-]+@embeddedos\.org)/g
+      )) {
+        if (!declared.has(address) && !FICTIONAL.has(address)) {
+          stray.push(`${file} → ${address}`);
+        }
+      }
+    }
+
+    expect(stray, "addresses that reach no declared mailbox").toEqual([]);
+  });
+
+  it("links every account from the footer, which is on every page", () => {
+    // Spelling checks say nothing about whether a link is *there*. Deleting
+    // the Instagram entry from the footer outright left all of these green,
+    // while the user's actual criterion was that the account is on the site.
+    //
+    // The footer renders on every route, so a reference here means the account
+    // is reachable from anywhere. This asserts the reference, not the rendered
+    // anchor — e2e covers the render.
+    const footer = sources.find(s => s.file.endsWith("components/Footer.tsx"));
+    expect(footer, "Footer.tsx must be readable").toBeTruthy();
+
+    const missing = Object.keys(socialUrls())
+      .filter(key => key !== "discussions")
+      .filter(key => !footer!.text.includes(`SOCIAL_URLS.${key}`));
+
+    expect(missing, "accounts with no link in the footer").toEqual([]);
   });
 
   it("covers every account SOCIAL_URLS declares", () => {

@@ -728,17 +728,21 @@ test.describe("same-route and mount-scroll regressions", () => {
 
 test.describe("donation prompt regressions", () => {
   /**
-   * The prompt auto-opened 20s after mount on every route, /donate included.
+   * The prompt auto-opened 20s after mount on every route, /donate included:
+   * a visitor part-way through the Zeffy form — which nests Stripe and two
+   * captchas and takes 14-18s to settle — got a dialog thrown over the thing
+   * they were already doing.
    *
-   * Two costs. A visitor part-way through the Zeffy form — which nests Stripe
-   * and two captchas and takes 14-18s to settle — got a dialog thrown over the
-   * thing they were already doing. And e2e/functional.spec.ts's donation test
-   * timed out under a loaded parallel run while passing in isolation, because
-   * the page was slow enough for the modal to cover the h1 it waited on.
+   * An earlier version of this comment also blamed the modal for a timeout in
+   * functional.spec.ts's donation test. That was wrong and is recorded here so
+   * nobody re-derives it: the assertion there is `toBeVisible()`, which reads
+   * computed style and box size and performs no occlusion test, so an overlay
+   * cannot fail it. That timeout was the default `waitUntil: "load"` against
+   * /donate's third-party embeds — the same cause smoke.spec.ts addresses.
    *
-   * Both halves matter. Asserting only that /donate stays clear would pass
-   * just as well if the prompt stopped working entirely, so /about proves the
-   * timer still fires.
+   * Both halves of the assertion matter. Asserting only that /donate stays
+   * clear would pass just as well if the prompt stopped working entirely, so
+   * /about proves the timer still fires.
    */
   test("does not auto-open on /donate, but still does elsewhere", async ({
     page,
@@ -767,5 +771,36 @@ test.describe("donation prompt regressions", () => {
     await expect(prompt(donatePage)).toHaveCount(0);
 
     await controlPage.close();
+  });
+
+  /**
+   * The exclusion above was written as an exact string comparison against
+   * wouter's location, and the live host 301s `/donate` to `/donate/`. The
+   * fix therefore did nothing where it mattered while this suite went green,
+   * because the local static server is configured with `redirect: false` and
+   * never produces the trailing-slash form.
+   *
+   * So this drives the trailing-slash URL directly. It is the shape a real
+   * visitor gets after the redirect, and the shape the first fix missed.
+   */
+  test("stays closed on the trailing-slash form the host redirects to", async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+
+    const response = await page.goto("/donate/", {
+      waitUntil: "domcontentloaded",
+    });
+
+    // If this ever 404s, the test is no longer exercising the donate page and
+    // its silence would mean nothing.
+    expect(response?.status(), "/donate/ must serve the donate page").toBe(200);
+    await expect(page.locator("h1").first()).toBeVisible();
+
+    await page.waitForTimeout(30_000);
+
+    await expect(
+      page.getByRole("button", { name: /close donate dialog/i })
+    ).toHaveCount(0);
   });
 });

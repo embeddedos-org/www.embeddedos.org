@@ -35,13 +35,26 @@ const AUTO_SHOW_DELAY_MS = 20000; // 20 seconds — give visitors time to explor
  * because its Zeffy embed nests Stripe and two captchas and takes 14-18s to
  * settle. A reader part-way through that form got a dialog thrown over it.
  *
- * This is also why e2e/functional.spec.ts's donation test timed out under a
- * loaded parallel run and passed in isolation: the page was slow enough for
- * the modal to open and cover the h1 the test was waiting on.
- *
  * The manual trigger is unaffected — clicking Donate still opens the dialog.
  */
 const NO_AUTO_SHOW_ROUTES = new Set(["/donate"]);
+
+/**
+ * Compare paths without their trailing slash.
+ *
+ * The host 301s every prerendered route to a trailing slash — `/donate` to
+ * `/donate/`, verified against production — and wouter hands back
+ * `location.pathname` verbatim, so `location` is `"/donate/"` for a real
+ * visitor. `<Route path="/donate">` still matches, because regexparam appends
+ * an optional slash, so the page renders and nothing looks broken; an exact
+ * `Set.has` against it silently does not.
+ *
+ * This is the trap that makes the bug invisible in test: the local harness
+ * serves the build through `express.static(..., { redirect: false })`, so it
+ * never issues that redirect, and an exclusion keyed on the exact string
+ * passes locally while doing nothing on the live site.
+ */
+const samePath = (path: string) => path.replace(/\/+$/, "") || "/";
 
 /** Focusable descendants, in tab order, skipping anything disabled or hidden. */
 const focusableWithin = (root: HTMLElement) =>
@@ -54,6 +67,8 @@ const focusableWithin = (root: HTMLElement) =>
 export default function DonateModal() {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
+  const [elapsed, setElapsed] = useState(false);
+  const autoShown = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const returnFocusTo = useRef<HTMLElement | null>(null);
 
@@ -62,27 +77,37 @@ export default function DonateModal() {
     localStorage.setItem(STORAGE_KEY, String(Date.now()));
   }, []);
 
-  // Auto-open on first visit (or after dismiss period).
+  // The delay is armed once per session, not once per page.
   //
-  // Keyed on location so navigating away from an excluded route re-arms the
-  // timer, and navigating *onto* one clears whatever was already pending —
-  // otherwise a timer started on / would still fire once the visitor reached
-  // /donate, which is the case this exclusion exists to prevent.
+  // Keying the timer itself on location would restart it on every navigation,
+  // so a visitor who changes page more often than every 20s would never see
+  // the prompt at all — a silent change to how often the Foundation gets to
+  // ask. This effect keeps the original single-shot timing and only records
+  // that the delay has elapsed; where it is allowed to *show* is the next
+  // effect's decision.
   useEffect(() => {
-    if (NO_AUTO_SHOW_ROUTES.has(location)) return;
-
     const dismissed = localStorage.getItem(STORAGE_KEY);
-    if (!dismissed) {
-      const timer = setTimeout(() => setOpen(true), AUTO_SHOW_DELAY_MS);
-      return () => clearTimeout(timer);
+    if (dismissed) {
+      const hoursSince =
+        (Date.now() - parseInt(dismissed, 10)) / (1000 * 60 * 60);
+      if (hoursSince <= DISMISS_HOURS) return;
     }
-    const dismissedAt = parseInt(dismissed, 10);
-    const hoursSince = (Date.now() - dismissedAt) / (1000 * 60 * 60);
-    if (hoursSince > DISMISS_HOURS) {
-      const timer = setTimeout(() => setOpen(true), AUTO_SHOW_DELAY_MS);
-      return () => clearTimeout(timer);
-    }
-  }, [location]);
+    const timer = setTimeout(() => setElapsed(true), AUTO_SHOW_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show it once, on the first route that allows it.
+  //
+  // Split from the timer so that a visitor sitting on /donate when the delay
+  // elapses is not skipped permanently — they are asked when they move on.
+  // `autoShown` makes it once per session: without it, every subsequent
+  // navigation would re-open a dialog the visitor had already dismissed.
+  useEffect(() => {
+    if (!elapsed || autoShown.current) return;
+    if (NO_AUTO_SHOW_ROUTES.has(samePath(location))) return;
+    autoShown.current = true;
+    setOpen(true);
+  }, [elapsed, location]);
 
   // Listen for manual trigger from Donate button
   useEffect(() => {

@@ -673,11 +673,11 @@ export function answerQuestion(question: string): Answer {
     reply:
       "I don't know that one — I only know what's published on this site, and I'd rather say so than guess.\n" +
       "\n" +
-      "Try rephrasing, or email **support@embeddedos.org** and a person will answer.",
+      "Try rephrasing, or email **contact@embeddedos.org** and a person will answer.",
     links: [
       { label: "FAQ", href: "/faq" },
       { label: "Documentation", href: "/docs" },
-      { label: "Email support@", href: "mailto:support@embeddedos.org" },
+      { label: "Email contact@", href: "mailto:contact@embeddedos.org" },
     ],
     kind: "unknown",
   };

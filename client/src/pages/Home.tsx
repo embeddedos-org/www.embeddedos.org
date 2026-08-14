@@ -388,7 +388,7 @@ export default function Home() {
                           color={s.color}
                         />
                       </div>
-                      <div className="eyebrow text-white/40 mt-2.5">
+                      <div className="eyebrow text-white/60 mt-2.5">
                         {s.label}
                       </div>
                     </div>

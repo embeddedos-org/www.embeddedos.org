@@ -105,9 +105,6 @@
   /* Reading measure. Long lines are the fastest way to make a page
      feel like documentation rather than a statement. */
   --measure: 56ch;
-
-  /* A deeper ground than --background, for full-bleed stages. */
-  --color-stage: oklch(12.5% 0.03 248);
 }
 
 /* ============================================================
@@ -307,10 +304,6 @@
 
   .measure {
     max-width: var(--measure);
-  }
-
-  .stage {
-    background-color: var(--color-stage);
   }
 
   /* Small caps label above a headline. Tracking is what makes it read as
