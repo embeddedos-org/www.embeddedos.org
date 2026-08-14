@@ -13,8 +13,10 @@ import {
   Youtube,
   Twitter,
   Facebook,
+  Instagram,
 } from "lucide-react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
+import { SOCIAL_URLS } from "@/data/foundation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -414,31 +416,37 @@ export default function About() {
               {[
                 {
                   icon: Github,
-                  href: "https://github.com/embeddedos-org",
+                  href: SOCIAL_URLS.github,
                   label: "GitHub",
                   color: "#F97316",
                 },
                 {
                   icon: Twitter,
-                  href: "https://x.com/EmbeddedOS_ORG",
+                  href: SOCIAL_URLS.x,
                   label: "X / Twitter",
                   color: "#22D3EE",
                 },
                 {
                   icon: Linkedin,
-                  href: "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
+                  href: SOCIAL_URLS.linkedin,
                   label: "LinkedIn",
                   color: "#60A5FA",
                 },
                 {
                   icon: Youtube,
-                  href: "https://www.youtube.com/@EmbeddedOS_ORG",
+                  href: SOCIAL_URLS.youtube,
                   label: "YouTube",
                   color: "#F85149",
                 },
                 {
+                  icon: Instagram,
+                  href: SOCIAL_URLS.instagram,
+                  label: "Instagram",
+                  color: "#E4405F",
+                },
+                {
                   icon: Facebook,
-                  href: "https://www.facebook.com/profile.php?id=61588978691494",
+                  href: SOCIAL_URLS.facebook,
                   label: "Facebook",
                   color: "#A78BFA",
                 },

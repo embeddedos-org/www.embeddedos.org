@@ -10,8 +10,10 @@ import {
   Heart,
   ArrowRight,
   Globe,
+  Instagram,
 } from "lucide-react";
 import { Link } from "wouter";
+import { SOCIAL_URLS } from "@/data/foundation";
 import { BOARD_COUNT } from "@/data/stack";
 
 const ways = [
@@ -169,33 +171,47 @@ export default function Community() {
             Community Channels
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/*
+              Every href here reads SOCIAL_URLS. This list is where the drift
+              that constant exists to prevent kept reappearing: X was written
+              as twitter.com while the footer and /about used x.com, and
+              YouTube as youtube.com while everywhere else used www.youtube.com
+              — the same account under two names, twice on one screen.
+            */}
             {[
               {
                 icon: Github,
                 label: "GitHub",
                 desc: "Issues, PRs, and Discussions",
-                href: "https://github.com/embeddedos-org",
+                href: SOCIAL_URLS.github,
                 color: "#fff",
               },
               {
                 icon: Twitter,
                 label: "X / Twitter",
                 desc: "@EmbeddedOS_ORG — announcements & updates",
-                href: "https://twitter.com/EmbeddedOS_ORG",
+                href: SOCIAL_URLS.x,
                 color: "#1DA1F2",
+              },
+              {
+                icon: Instagram,
+                label: "Instagram",
+                desc: "@embeddedos_org — hardware, builds and events",
+                href: SOCIAL_URLS.instagram,
+                color: "#E4405F",
               },
               {
                 icon: Youtube,
                 label: "YouTube",
                 desc: "Tutorials, demos, and conference talks",
-                href: "https://youtube.com/@EmbeddedOS_ORG",
+                href: SOCIAL_URLS.youtube,
                 color: "#FF0000",
               },
               {
                 icon: MessageSquare,
                 label: "GitHub Discussions",
                 desc: "Q&A, show & tell, and RFC discussions",
-                href: "https://github.com/orgs/embeddedos-org/discussions",
+                href: SOCIAL_URLS.discussions,
                 color: "#A855F7",
               },
             ].map(c => (

@@ -46,6 +46,40 @@ function foundationValue(key: string): string {
   return match![1];
 }
 
+/** The SOCIAL_URLS block in foundation.ts, parsed to key → URL. */
+function socialUrls(): Record<string, string> {
+  const block = foundationTs.match(
+    /export const SOCIAL_URLS = \{([\s\S]*?)\n\} as const;/
+  );
+  expect(block, "foundation.ts must define SOCIAL_URLS").not.toBeNull();
+
+  const urls: Record<string, string> = {};
+  for (const m of block![1].matchAll(/(\w+):\s*"([^"]*)"/g)) urls[m[1]] = m[2];
+  return urls;
+}
+
+/** Every .ts/.tsx under client/src, plus the static shell. */
+function clientSources(): { file: string; text: string }[] {
+  const found: { file: string; text: string }[] = [];
+
+  const walk = (dir: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.tsx?$/.test(entry.name)) {
+        found.push({
+          file: path.relative(ROOT, full),
+          text: fs.readFileSync(full, "utf8"),
+        });
+      }
+    }
+  };
+
+  walk(path.join(ROOT, "client/src"));
+  found.push({ file: "client/index.html", text: indexHtml });
+  return found;
+}
+
 /** Static route paths declared in App.tsx, excluding the 404 fallback. */
 function declaredRoutes(): string[] {
   return [...appTsx.matchAll(/<Route\s+path="([^"]+)"/g)]
@@ -102,6 +136,105 @@ describe("structured data agrees with the source of truth", () => {
         `${url} must be declared in foundation.ts`
       ).toContain(url);
     }
+  });
+
+  it("lists every social profile the site publishes", () => {
+    // The reverse of the check above, and the direction the Instagram launch
+    // needed: an account added to SOCIAL_URLS but not here leaves the knowledge
+    // panel describing a Foundation that is on one fewer network than it is.
+    //
+    // `discussions` is exempt — it is a section of the GitHub org that sameAs
+    // already lists, not a profile of its own.
+    const sameAs = structuredData().sameAs as string[];
+    const missing = Object.entries(socialUrls())
+      .filter(([key]) => key !== "discussions")
+      .filter(([, url]) => !sameAs.includes(url))
+      .map(([key]) => key);
+
+    expect(missing, "SOCIAL_URLS entries absent from sameAs").toEqual([]);
+  });
+});
+
+/**
+ * One entry per Foundation account: its key in SOCIAL_URLS, and a pattern that
+ * matches the account however it is written — the wrong spellings included.
+ *
+ * The patterns deliberately do not match anything else. `linkedin.com/in/...`
+ * is a form placeholder for an applicant's own profile on /careers, and
+ * `github.com/embeddedos-org/<repo>` is a repository rather than the org, so
+ * the GitHub pattern stops at the org path.
+ */
+const SOCIAL_ACCOUNTS: { key: string; anySpelling: RegExp }[] = [
+  {
+    key: "github",
+    anySpelling: /https:\/\/(?:www\.)?github\.com\/embeddedos-org(?![\w./-])/g,
+  },
+  {
+    key: "x",
+    anySpelling: /https:\/\/(?:www\.)?(?:x|twitter)\.com\/EmbeddedOS_ORG\b/gi,
+  },
+  {
+    key: "linkedin",
+    anySpelling: /https:\/\/(?:www\.)?linkedin\.com\/company\/[\w-]+/g,
+  },
+  {
+    key: "youtube",
+    anySpelling: /https:\/\/(?:www\.)?youtube\.com\/@EmbeddedOS_ORG\b/gi,
+  },
+  {
+    key: "instagram",
+    anySpelling: /https:\/\/(?:www\.)?instagram\.com\/[\w.]+/g,
+  },
+  {
+    key: "facebook",
+    anySpelling: /https:\/\/(?:www\.)?facebook\.com\/[^"'\s<>,)]+/g,
+  },
+  {
+    key: "discussions",
+    anySpelling:
+      /https:\/\/(?:www\.)?github\.com\/orgs\/embeddedos-org\/discussions\b/g,
+  },
+];
+
+describe("the Foundation's accounts are spelled one way", () => {
+  // SOCIAL_URLS was introduced to stop the same account being published under
+  // two names, but nothing checked that pages actually agreed with it, so the
+  // drift kept coming back: /community linked twitter.com while the footer and
+  // /about linked x.com, and — one entry below the fix for that — linked
+  // youtube.com against www.youtube.com everywhere else. Neither 404s, which
+  // is why review missed both: the bare YouTube host just redirects. What they
+  // cost is the identity a crawler builds from sameAs, one account split into
+  // two, on the site of a foundation whose grant applications rest on it.
+  //
+  // This asserts spelling, not that a constant was used. A canonical URL typed
+  // out in full is not a defect; the same URL typed two ways is.
+  const sources = clientSources();
+
+  for (const { key, anySpelling } of SOCIAL_ACCOUNTS) {
+    it(`writes every ${key} link the way SOCIAL_URLS does`, () => {
+      const canonical = socialUrls()[key];
+      expect(canonical, `SOCIAL_URLS.${key} must exist`).toBeTruthy();
+
+      const wrong: string[] = [];
+      for (const { file, text } of sources) {
+        for (const [url] of text.matchAll(anySpelling)) {
+          if (url !== canonical) wrong.push(`${file} → ${url}`);
+        }
+      }
+
+      expect(wrong, `every link must read "${canonical}"`).toEqual([]);
+    });
+  }
+
+  it("covers every account SOCIAL_URLS declares", () => {
+    // Without this, adding a key to SOCIAL_URLS silently opts it out of the
+    // check above — the failure mode is a test file that looks thorough and
+    // guards less each time the Foundation joins a network.
+    const unchecked = Object.keys(socialUrls()).filter(
+      key => !SOCIAL_ACCOUNTS.some(a => a.key === key)
+    );
+
+    expect(unchecked, "SOCIAL_URLS keys with no spelling check").toEqual([]);
   });
 });
 

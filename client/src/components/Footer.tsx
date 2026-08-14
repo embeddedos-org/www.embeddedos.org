@@ -7,8 +7,10 @@ import {
   Heart,
   Linkedin,
   Facebook,
+  Instagram,
   ExternalLink,
 } from "lucide-react";
+import { SOCIAL_URLS } from "@/data/foundation";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
@@ -135,31 +137,37 @@ const LEGAL_LINKS = [
 const SOCIAL_LINKS = [
   {
     icon: Github,
-    href: "https://github.com/embeddedos-org",
+    href: SOCIAL_URLS.github,
     label: "GitHub",
     color: "#FFFFFF",
   },
   {
     icon: Twitter,
-    href: "https://x.com/EmbeddedOS_ORG",
+    href: SOCIAL_URLS.x,
     label: "X / Twitter",
     color: "#1DA1F2",
   },
   {
     icon: Linkedin,
-    href: "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
+    href: SOCIAL_URLS.linkedin,
     label: "LinkedIn",
     color: "#0A66C2",
   },
   {
     icon: Youtube,
-    href: "https://www.youtube.com/@EmbeddedOS_ORG",
+    href: SOCIAL_URLS.youtube,
     label: "YouTube",
     color: "#FF0000",
   },
   {
+    icon: Instagram,
+    href: SOCIAL_URLS.instagram,
+    label: "Instagram",
+    color: "#E4405F",
+  },
+  {
     icon: Facebook,
-    href: "https://www.facebook.com/profile.php?id=61588978691494",
+    href: SOCIAL_URLS.facebook,
     label: "Facebook",
     color: "#1877F2",
   },
