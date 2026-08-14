@@ -8,12 +8,30 @@ import { test, expect } from "@playwright/test";
 
 const CRITICAL_ROUTES = ["/", "/about", "/donate", "/contact", "/get-involved"];
 
+/**
+ * Routes whose `load` event is gated on third-party iframes.
+ *
+ * `/donate` embeds Zeffy, which nests Stripe, hCaptcha and reCAPTCHA. Measured
+ * on the mobile project with one worker, its navigation takes 14.0–17.9s — under
+ * 2x margin against the 30s default, which the full parallel suite exceeded.
+ * The assertions below need none of those frames, but dropping to
+ * `domcontentloaded` would also shorten the window in which a first-party error
+ * is caught, so the wait is kept and the budget raised instead. Every other
+ * route stays on the strict default: a slow `/` should still fail fast.
+ */
+const THIRD_PARTY_EMBED_ROUTES = new Set(["/donate"]);
+const THIRD_PARTY_TIMEOUT_MS = 90_000;
+
 test.describe("smoke", () => {
   for (const route of CRITICAL_ROUTES) {
     test(`${route} loads, renders a heading, and logs no console errors`, async ({
       page,
       baseURL,
     }) => {
+      if (THIRD_PARTY_EMBED_ROUTES.has(route)) {
+        test.setTimeout(THIRD_PARTY_TIMEOUT_MS);
+      }
+
       const errors: string[] = [];
 
       // Only first-party errors count. /donate embeds Zeffy's donation form,
