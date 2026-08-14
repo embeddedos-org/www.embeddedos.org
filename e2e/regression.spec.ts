@@ -725,3 +725,47 @@ test.describe("same-route and mount-scroll regressions", () => {
     ).toBe(settled);
   });
 });
+
+test.describe("donation prompt regressions", () => {
+  /**
+   * The prompt auto-opened 20s after mount on every route, /donate included.
+   *
+   * Two costs. A visitor part-way through the Zeffy form — which nests Stripe
+   * and two captchas and takes 14-18s to settle — got a dialog thrown over the
+   * thing they were already doing. And e2e/functional.spec.ts's donation test
+   * timed out under a loaded parallel run while passing in isolation, because
+   * the page was slow enough for the modal to cover the h1 it waited on.
+   *
+   * Both halves matter. Asserting only that /donate stays clear would pass
+   * just as well if the prompt stopped working entirely, so /about proves the
+   * timer still fires.
+   */
+  test("does not auto-open on /donate, but still does elsewhere", async ({
+    page,
+    context,
+  }) => {
+    // 20s timer, plus margin, plus two page loads — one of them /donate's.
+    test.setTimeout(120_000);
+
+    const donatePage = page;
+    const controlPage = await context.newPage();
+
+    await Promise.all([
+      donatePage.goto("/donate", { waitUntil: "domcontentloaded" }),
+      controlPage.goto("/about", { waitUntil: "domcontentloaded" }),
+    ]);
+
+    const prompt = (p: typeof page) =>
+      p.getByRole("button", { name: /close donate dialog/i });
+
+    // Both pages wait out the same timer concurrently.
+    await Promise.all([
+      expect(prompt(controlPage)).toBeVisible({ timeout: 45_000 }),
+      donatePage.waitForTimeout(30_000),
+    ]);
+
+    await expect(prompt(donatePage)).toHaveCount(0);
+
+    await controlPage.close();
+  });
+});

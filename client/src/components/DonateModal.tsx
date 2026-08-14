@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -25,6 +26,23 @@ const DISMISS_HOURS = 168;
 const DISMISS_DAYS = Math.round(DISMISS_HOURS / 24);
 const AUTO_SHOW_DELAY_MS = 20000; // 20 seconds — give visitors time to explore the page first
 
+/**
+ * Routes where the prompt is never auto-shown.
+ *
+ * Interrupting someone who is already on the donation page to ask them to
+ * donate works against the conversion the prompt exists to cause — and /donate
+ * is the page a visitor is most likely to still be on when the timer fires,
+ * because its Zeffy embed nests Stripe and two captchas and takes 14-18s to
+ * settle. A reader part-way through that form got a dialog thrown over it.
+ *
+ * This is also why e2e/functional.spec.ts's donation test timed out under a
+ * loaded parallel run and passed in isolation: the page was slow enough for
+ * the modal to open and cover the h1 the test was waiting on.
+ *
+ * The manual trigger is unaffected — clicking Donate still opens the dialog.
+ */
+const NO_AUTO_SHOW_ROUTES = new Set(["/donate"]);
+
 /** Focusable descendants, in tab order, skipping anything disabled or hidden. */
 const focusableWithin = (root: HTMLElement) =>
   Array.from(
@@ -34,6 +52,7 @@ const focusableWithin = (root: HTMLElement) =>
   ).filter(el => el.offsetParent !== null || el === document.activeElement);
 
 export default function DonateModal() {
+  const [location] = useLocation();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const returnFocusTo = useRef<HTMLElement | null>(null);
@@ -43,8 +62,15 @@ export default function DonateModal() {
     localStorage.setItem(STORAGE_KEY, String(Date.now()));
   }, []);
 
-  // Auto-open on first visit (or after dismiss period)
+  // Auto-open on first visit (or after dismiss period).
+  //
+  // Keyed on location so navigating away from an excluded route re-arms the
+  // timer, and navigating *onto* one clears whatever was already pending —
+  // otherwise a timer started on / would still fire once the visitor reached
+  // /donate, which is the case this exclusion exists to prevent.
   useEffect(() => {
+    if (NO_AUTO_SHOW_ROUTES.has(location)) return;
+
     const dismissed = localStorage.getItem(STORAGE_KEY);
     if (!dismissed) {
       const timer = setTimeout(() => setOpen(true), AUTO_SHOW_DELAY_MS);
@@ -56,7 +82,7 @@ export default function DonateModal() {
       const timer = setTimeout(() => setOpen(true), AUTO_SHOW_DELAY_MS);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [location]);
 
   // Listen for manual trigger from Donate button
   useEffect(() => {
