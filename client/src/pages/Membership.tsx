@@ -12,6 +12,7 @@ import {
   Globe,
   Award,
 } from "lucide-react";
+import { CONTACT_EMAILS } from "@/data/foundation";
 
 const tiers = [
   {
@@ -132,7 +133,7 @@ const tiers = [
       "Joint press release opportunity",
     ],
     cta: "Contact Us",
-    ctaHref: "mailto:hello@embeddedos.org",
+    ctaHref: `mailto:${CONTACT_EMAILS.contact}`,
     external: true,
     highlight: false,
   },

@@ -10,6 +10,7 @@ import {
   Cpu,
   Brain,
 } from "lucide-react";
+import { CONTACT_EMAILS } from "@/data/foundation";
 
 const positions = [
   {
@@ -145,7 +146,7 @@ export default function Internship() {
                   </span>
                 </div>
                 <a
-                  href="mailto:hello@embeddedos.org?subject=Internship Application"
+                  href={`mailto:${CONTACT_EMAILS.contact}?subject=Internship Application`}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   style={{ background: p.color + "20", color: p.color }}
                 >
@@ -182,7 +183,7 @@ export default function Internship() {
                 </div>
                 <p className="text-gray-400 text-sm">{f.desc}</p>
                 <a
-                  href="mailto:hello@embeddedos.org?subject=Fellowship Application"
+                  href={`mailto:${CONTACT_EMAILS.contact}?subject=Fellowship Application`}
                   className="mt-4 inline-flex items-center gap-2 text-orange-400 text-sm font-medium hover:underline"
                 >
                   Apply <ArrowRight className="w-3 h-3" />

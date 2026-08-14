@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { CONTACT_EMAILS } from "@/data/foundation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -15,7 +16,7 @@ const SECTIONS = [
     content: `We collect minimal information necessary to operate this website. This includes:
     
 • **Usage Data:** Anonymous page view counts and referrer information collected via our self-hosted analytics (no third-party tracking).
-• **Contact Information:** If you contact us via email (hello@embeddedos.org), we retain your email address and message content solely to respond to your inquiry.
+• **Contact Information:** If you contact us via email (${CONTACT_EMAILS.contact}), we retain your email address and message content solely to respond to your inquiry.
 • **Donation Data:** If you donate via our website, your payment is processed securely by Stripe. We receive only a notification of the donation amount and your name/email (if provided). Card details are never stored on our servers.
 • **GitHub:** If you interact with our GitHub repositories, GitHub's privacy policy applies to that data.`,
   },
@@ -59,11 +60,11 @@ We have no control over the data practices of these third parties.`,
 • Withdraw consent for any data processing based on consent.
 • Lodge a complaint with your local data protection authority.
 
-To exercise these rights, contact us at hello@embeddedos.org.`,
+To exercise these rights, contact us at ${CONTACT_EMAILS.contact}.`,
   },
   {
     title: "7. Children's Privacy",
-    content: `This website is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such information, please contact us immediately at hello@embeddedos.org.`,
+    content: `This website is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such information, please contact us immediately at ${CONTACT_EMAILS.contact}.`,
   },
   {
     title: "8. Changes to This Policy",
@@ -73,7 +74,7 @@ To exercise these rights, contact us at hello@embeddedos.org.`,
     title: "9. Contact",
     content: `For privacy-related questions or requests, contact the Embedded Operating Systems Research Foundation at:
 
-**Email:** hello@embeddedos.org
+**Email:** ${CONTACT_EMAILS.contact}
 **Website:** www.embeddedos.org
 **GitHub:** github.com/embeddedos-org`,
   },

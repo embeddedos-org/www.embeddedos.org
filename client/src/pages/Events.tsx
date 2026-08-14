@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Calendar, MapPin, ArrowRight, Users } from "lucide-react";
+import { CONTACT_EMAILS } from "@/data/foundation";
 
 const upcoming = [
   {
@@ -193,7 +194,7 @@ export default function Events() {
             promotion.
           </p>
           <a
-            href="mailto:hello@embeddedos.org?subject=Host an Event"
+            href={`mailto:${CONTACT_EMAILS.contact}?subject=Host an Event`}
             className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors"
           >
             Contact Us <ArrowRight className="w-4 h-4" />

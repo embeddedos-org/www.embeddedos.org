@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
+import { SOCIAL_URLS } from "@/data/foundation";
 import {
   ArrowRight,
   Github,
@@ -48,7 +49,6 @@ const CircuitHero = React.lazy(() => import("../components/CircuitHero"));
 const ProductMarquee = React.lazy(() => import("../components/ProductMarquee"));
 const BootPipeline = React.lazy(() => import("../components/BootPipeline"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
-const ParticleField = React.lazy(() => import("../components/ParticleField"));
 
 const HERO_IMG = "/manus-storage/hero-background_1bafea1c.jpg";
 const ARCH_IMG = "/manus-storage/architecture-diagram-hero_72436b3f.jpg";
@@ -285,6 +285,12 @@ export default function Home() {
           "-=0.3"
         )
         .fromTo(
+          ".hero-stats",
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          "-=0.25"
+        )
+        .fromTo(
           ".hero-image",
           { opacity: 0, scale: 0.95 },
           { opacity: 1, scale: 1, duration: 0.8 },
@@ -306,10 +312,6 @@ export default function Home() {
         <Suspense fallback={null}>
           <CircuitHero />
         </Suspense>
-        {/* Particle field */}
-        <Suspense fallback={null}>
-          <ParticleField count={45} />
-        </Suspense>
 
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
@@ -317,24 +319,28 @@ export default function Home() {
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#A78BFA]/10 rounded-full blur-[100px]" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div
+          className="hero-scrim absolute inset-0 pointer-events-none"
+          aria-hidden="true"
+        />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 w-full">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Text */}
-            <div ref={heroTextRef}>
-              <div className="hero-badge badge-amber mb-6 inline-flex opacity-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
+            <div ref={heroTextRef} className="lg:col-span-7">
+              <div className="hero-badge eyebrow text-[#F97316] mb-8 inline-flex items-center gap-2.5 opacity-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
                 Foundation · 501(c)(3) · MIT License
               </div>
 
               <h1
                 id="hero-heading"
-                className="hero-title font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white mb-6 opacity-0"
+                className="hero-title display-1 text-white mb-8 opacity-0"
               >
-                The Operating System{" "}
-                <span className="text-gradient">for Every Device</span>
+                The Operating System for Every Device
               </h1>
 
-              <p className="hero-subtitle text-lg text-white/60 leading-relaxed mb-8 max-w-lg opacity-0">
+              <p className="hero-subtitle measure text-lg sm:text-xl text-white/70 leading-relaxed mb-10 opacity-0">
                 The Embedded Operating Systems Research Foundation is a
                 501(c)(3) nonprofit. We build a free, open-source operating
                 system for embedded devices — and give away the tools,
@@ -342,72 +348,68 @@ export default function Home() {
                 researchers need to use it.
               </p>
 
-              <div className="hero-actions flex flex-wrap gap-3 opacity-0">
+              <div className="hero-actions flex flex-wrap items-center gap-4 opacity-0">
                 <Link
                   href="/getting-started"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl btn-press glow-amber"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl btn-press"
                 >
                   Get Started Free
                   <ArrowRight size={18} />
                 </Link>
                 <Link
                   href="/donate"
-                  className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-semibold rounded-xl btn-press"
                 >
-                  <Heart size={18} className="text-[#F472B6]" />
+                  <Heart size={17} className="text-[#F472B6]" />
                   Support Our Mission
                 </Link>
                 <a
-                  href="https://github.com/embeddedos-org"
+                  href={SOCIAL_URLS.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press"
+                  className="inline-flex items-center gap-2 px-2 py-3.5 text-white/60 hover:text-white font-medium link-underline"
                 >
-                  <Github size={18} />
+                  <Github size={17} />
                   View on GitHub
-                  <Star size={14} className="text-[#F97316]" />
+                  <Star size={13} className="text-[#F97316]" />
                 </a>
               </div>
 
               {/* Mini stats */}
-              <div className="flex flex-wrap gap-6 mt-10">
-                {STATS.slice(0, 3).map(s => (
-                  <div key={s.label}>
-                    <div className="font-heading font-extrabold text-2xl">
-                      <StatCounter
-                        value={s.value}
-                        suffix={s.suffix}
-                        color={s.color}
-                      />
+              <div className="hero-stats mt-10 opacity-0">
+                <hr className="rule mb-7" />
+                <div className="flex flex-wrap gap-x-14 gap-y-6">
+                  {STATS.slice(0, 3).map(s => (
+                    <div key={s.label}>
+                      <div className="font-heading font-extrabold text-4xl tracking-tight">
+                        <StatCounter
+                          value={s.value}
+                          suffix={s.suffix}
+                          color={s.color}
+                        />
+                      </div>
+                      <div className="eyebrow text-white/40 mt-2.5">
+                        {s.label}
+                      </div>
                     </div>
-                    <div className="text-xs text-white/40 mt-0.5">
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Hero image */}
-            <div className="hero-image opacity-0 relative">
-              <div className="relative rounded-2xl overflow-hidden glow-amber">
+            <div className="hero-image opacity-0 relative lg:col-span-5">
+              <div className="relative rounded-2xl overflow-hidden">
                 <img
                   src={HERO_IMG}
                   alt="EmbeddedOS running across multiple devices"
                   className="w-full h-auto object-cover rounded-2xl"
                   loading="eager"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1D3A]/60 to-transparent rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1D3A]/70 to-transparent rounded-2xl" />
               </div>
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 -left-4 glass rounded-xl px-4 py-3 border border-white/10 animate-float">
-                <div className="text-xs text-white/50 mb-0.5">
-                  Supported Boards
-                </div>
-                <div className="font-heading font-bold text-[#22D3EE] text-lg">
-                  {BOARD_COUNT}
-                </div>
-              </div>
+              {/* One floating badge, not two: the board count it used to sit
+                  beside is already in the stat row a few inches below. */}
               <div className="absolute -top-4 -right-4 glass rounded-xl px-4 py-3 border border-white/10 animate-float-delayed">
                 <div className="text-xs text-white/50 mb-0.5">Foundation</div>
                 <div className="font-heading font-bold text-[#F97316] text-lg">
@@ -481,7 +483,7 @@ export default function Home() {
       </section>
 
       {/* ── MISSION ── */}
-      <section className="section-padding" aria-labelledby="mission-heading">
+      <section className="section-cinematic" aria-labelledby="mission-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
@@ -494,14 +496,8 @@ export default function Home() {
               <Heart size={12} />
               Our Mission
             </div>
-            <h2
-              id="mission-heading"
-              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-5"
-            >
-              Embedded computing should be{" "}
-              <span className="text-gradient">
-                free to learn and free to build on
-              </span>
+            <h2 id="mission-heading" className="display-2 text-white mb-5">
+              Embedded computing should be free to learn and free to build on
             </h2>
             <p className="text-white/60 text-lg leading-relaxed">
               The Embedded Operating Systems Research Foundation is a 501(c)(3)
@@ -585,7 +581,7 @@ export default function Home() {
       </section>
 
       {/* ── ARCHITECTURE ── */}
-      <section className="section-padding" aria-labelledby="arch-heading">
+      <section className="section-cinematic" aria-labelledby="arch-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
@@ -597,10 +593,7 @@ export default function Home() {
             <div className="badge-teal mb-4 inline-flex">
               System Architecture
             </div>
-            <h2
-              id="arch-heading"
-              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4"
-            >
+            <h2 id="arch-heading" className="display-2 text-white mb-4">
               Built Layer by Layer
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
@@ -649,7 +642,7 @@ export default function Home() {
 
       {/* ── PRODUCTS GRID ── */}
       <section
-        className="section-padding bg-[#080F1E]"
+        className="section-cinematic bg-[#080F1E]"
         aria-labelledby="products-heading"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -663,10 +656,7 @@ export default function Home() {
             <div className="badge-amber mb-4 inline-flex">
               22 Repos · 60+ Apps
             </div>
-            <h2
-              id="products-heading"
-              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4"
-            >
+            <h2 id="products-heading" className="display-2 text-white mb-4">
               The Complete Embedded Ecosystem
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
@@ -755,7 +745,7 @@ export default function Home() {
       </section>
 
       {/* ── HEALTH PRODUCTS ── */}
-      <section className="section-padding" aria-labelledby="health-heading">
+      <section className="section-cinematic" aria-labelledby="health-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
@@ -768,10 +758,7 @@ export default function Home() {
               <Heart size={12} />
               Health Technology
             </div>
-            <h2
-              id="health-heading"
-              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4"
-            >
+            <h2 id="health-heading" className="display-2 text-white mb-4">
               4 Health Devices · 2 Patents Pending
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
@@ -803,7 +790,7 @@ export default function Home() {
 
       {/* ── eCAD HARDWARE CATEGORIES ── */}
       <section
-        className="section-padding bg-[#080F1E]"
+        className="section-cinematic bg-[#080F1E]"
         aria-labelledby="hardware-heading"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -818,12 +805,8 @@ export default function Home() {
               <Cpu size={12} />
               Open Hardware
             </div>
-            <h2
-              id="hardware-heading"
-              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4"
-            >
-              eCAD Hardware ·{" "}
-              <span className="text-gradient">15 Product Categories</span>
+            <h2 id="hardware-heading" className="display-2 text-white mb-4">
+              eCAD Hardware · 15 Product Categories
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
               Open-source KiCad hardware designs for every industry — all
@@ -978,7 +961,7 @@ export default function Home() {
 
       {/* ── FEATURES ── */}
       <section
-        className="section-padding bg-[#080F1E]"
+        className="section-cinematic bg-[#080F1E]"
         aria-labelledby="features-heading"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -992,12 +975,8 @@ export default function Home() {
             <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
               Why EmbeddedOS?
             </p>
-            <h2
-              id="features-heading"
-              className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4"
-            >
-              The Operating System{" "}
-              <span className="text-gradient">for Every Device</span>
+            <h2 id="features-heading" className="display-2 text-white mb-4">
+              The Operating System for Every Device
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
               Built by embedded engineers, for any embedded hardware. Every
@@ -1042,7 +1021,10 @@ export default function Home() {
       </section>
 
       {/* ── COMMUNITY ── */}
-      <section className="section-padding" aria-labelledby="community-heading">
+      <section
+        className="section-cinematic"
+        aria-labelledby="community-heading"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -1054,12 +1036,8 @@ export default function Home() {
               <div className="badge-teal mb-4 inline-flex">
                 Foundation Community
               </div>
-              <h2
-                id="community-heading"
-                className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-6"
-              >
-                Built by the Community,{" "}
-                <span className="text-gradient">for the Community</span>
+              <h2 id="community-heading" className="display-2 text-white mb-6">
+                Built by the Community, for the Community
               </h2>
               <p className="text-white/60 leading-relaxed mb-8">
                 EmbeddedOS is a 501(c)(3), community-driven project — built by
@@ -1108,7 +1086,7 @@ export default function Home() {
 
       {/* ── OPEN SOURCE BANNER ── */}
       <section
-        className="section-padding bg-[#080F1E]"
+        className="section-cinematic bg-[#080F1E]"
         aria-label="Open source mission"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1130,7 +1108,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="section-padding" aria-labelledby="cta-heading">
+      <section className="section-cinematic" aria-labelledby="cta-heading">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}
@@ -1151,12 +1129,8 @@ export default function Home() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
                   Open Source · 501(c)(3) · MIT License
                 </div>
-                <h2
-                  id="cta-heading"
-                  className="font-heading font-extrabold text-3xl sm:text-5xl text-white mb-6"
-                >
-                  Ready to build on{" "}
-                  <span className="text-gradient">EmbeddedOS?</span>
+                <h2 id="cta-heading" className="display-2 text-white mb-6">
+                  Ready to build on EmbeddedOS?
                 </h2>
                 <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto">
                   Join engineers building the next generation of embedded

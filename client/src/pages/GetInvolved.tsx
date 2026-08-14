@@ -109,16 +109,14 @@ export default function GetInvolved() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
-      <section className="section-padding bg-grid">
+      <section className="section-cinematic bg-grid">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-amber mb-4 inline-flex">
               <Heart size={12} />
               Foundation · 501(c)(3)
             </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-              Get <span className="text-gradient">Involved</span>
-            </h1>
+            <h1 className="display-2 text-white mb-4">Get Involved</h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
               EmbeddedOS is built by the community, for the community. Whether
               you write code, improve docs, or just star the repos — every
@@ -139,7 +137,7 @@ export default function GetInvolved() {
       </section>
 
       {/* Ways to contribute */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-cinematic bg-[#080F1E]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -148,9 +146,7 @@ export default function GetInvolved() {
             viewport={{ once: true }}
             className="mb-10 text-center"
           >
-            <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              6 Ways to Contribute
-            </h2>
+            <h2 className="display-3 text-white mb-2">6 Ways to Contribute</h2>
             <p className="text-white/50">
               No contribution is too small. Find the path that fits you.
             </p>
@@ -205,7 +201,7 @@ export default function GetInvolved() {
       </section>
 
       {/* Key Repos */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -214,9 +210,7 @@ export default function GetInvolved() {
             viewport={{ once: true }}
             className="mb-8 text-center"
           >
-            <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              Key Repositories
-            </h2>
+            <h2 className="display-3 text-white mb-2">Key Repositories</h2>
             <p className="text-white/50">
               Start with one of these to make your first contribution.
             </p>

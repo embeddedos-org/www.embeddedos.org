@@ -392,12 +392,12 @@ export const TOPICS: Topic[] = [
       "support",
     ],
     answer:
-      `Each subject has its own address, and every one reaches a person rather than a queue: **hello@** for general questions, **security@** for vulnerabilities, **press@**, **partners@**, **careers@**, **donate@** and **foundation@** for finance.\n` +
+      `Each subject has its own address, and every one reaches a person rather than a queue: **contact@** for general questions, **support@** when you are stuck on the software, **security@** for vulnerabilities, **press@**, **partners@**, **careers@**, **donate@** and **foundation@** for finance.\n` +
       `\n` +
       `The contact page lists all of them along with the Foundation's registered address.`,
     links: [
       { label: "Contact page", href: "/contact" },
-      { label: "Email hello@", href: "mailto:hello@embeddedos.org" },
+      { label: "Email contact@", href: "mailto:contact@embeddedos.org" },
     ],
   },
   {
@@ -673,11 +673,11 @@ export function answerQuestion(question: string): Answer {
     reply:
       "I don't know that one — I only know what's published on this site, and I'd rather say so than guess.\n" +
       "\n" +
-      "Try rephrasing, or email **hello@embeddedos.org** and a person will answer.",
+      "Try rephrasing, or email **support@embeddedos.org** and a person will answer.",
     links: [
       { label: "FAQ", href: "/faq" },
       { label: "Documentation", href: "/docs" },
-      { label: "Email hello@", href: "mailto:hello@embeddedos.org" },
+      { label: "Email support@", href: "mailto:support@embeddedos.org" },
     ],
     kind: "unknown",
   };

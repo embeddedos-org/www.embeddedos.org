@@ -68,7 +68,7 @@ export default function Mission() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero — the mission statement itself, first thing on the page */}
-      <section className="section-padding bg-grid relative overflow-hidden">
+      <section className="section-cinematic bg-grid relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
@@ -76,9 +76,7 @@ export default function Mission() {
               <Target size={12} />
               Mission &amp; Scope
             </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-6">
-              Our <span className="text-gradient">Mission and Scope</span>
-            </h1>
+            <h1 className="display-2 text-white mb-6">Our Mission and Scope</h1>
             {/* The statement is wrapped in a <p> inside the <blockquote> so that
                 scripts/prerender.mjs, which derives each page's meta description
                 from the first substantial `main p`, uses the mission itself
@@ -97,7 +95,7 @@ export default function Mission() {
       </section>
 
       {/* Charitable purpose */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -110,7 +108,7 @@ export default function Mission() {
               <Scale size={12} />
               Charitable Purpose
             </div>
-            <h2 className="font-heading font-bold text-white text-3xl mb-4">
+            <h2 className="display-3 text-white mb-4">
               What we are exempt to do
             </h2>
             <p className="text-white/60 leading-relaxed">
@@ -147,7 +145,7 @@ export default function Mission() {
       </section>
 
       {/* Programmes — the scope of the work */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-cinematic bg-[#080F1E]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -160,7 +158,7 @@ export default function Mission() {
               <Compass size={12} />
               In Scope
             </div>
-            <h2 className="font-heading font-bold text-white text-3xl mb-4">
+            <h2 className="display-3 text-white mb-4">
               The five programmes we run
             </h2>
             <p className="text-white/60 leading-relaxed">
@@ -238,7 +236,7 @@ export default function Mission() {
       </section>
 
       {/* Out of scope */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -251,7 +249,7 @@ export default function Mission() {
               <XCircle size={12} />
               Out of Scope
             </div>
-            <h2 className="font-heading font-bold text-white text-3xl mb-4">
+            <h2 className="display-3 text-white mb-4">
               What the Foundation does not do
             </h2>
             <p className="text-white/60 leading-relaxed">
@@ -294,7 +292,7 @@ export default function Mission() {
       </section>
 
       {/* How we measure */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-cinematic bg-[#080F1E]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -307,7 +305,7 @@ export default function Mission() {
               <Users size={12} />
               Accountability
             </div>
-            <h2 className="font-heading font-bold text-white text-3xl mb-4">
+            <h2 className="display-3 text-white mb-4">
               How we judge whether it is working
             </h2>
             <p className="text-white/60 leading-relaxed">
@@ -339,7 +337,7 @@ export default function Mission() {
       </section>
 
       {/* Close */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}

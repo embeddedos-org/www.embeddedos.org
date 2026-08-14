@@ -234,9 +234,16 @@ export const OUT_OF_SCOPE = [
  * cPanel mailbox or the message bounces with nothing on the site to show for it.
  * `sponsors` and `conduct` were previously typed straight into Sponsors.tsx and
  * CodeOfConduct.tsx, which kept them out of exactly that check.
+ *
+ * `contact` and `support` replaced a single `hello@`, which carried everything
+ * from legal notices to build failures. They are split by what the sender
+ * wants: `contact` for the Foundation as an organisation — enquiries, press,
+ * events, membership, and the addresses printed in the privacy and terms
+ * pages — and `support` for people who are stuck on the software.
  */
 export const CONTACT_EMAILS = {
-  general: "hello@embeddedos.org",
+  contact: "contact@embeddedos.org",
+  support: "support@embeddedos.org",
   security: "security@embeddedos.org",
   press: "press@embeddedos.org",
   partners: "partners@embeddedos.org",
@@ -258,7 +265,7 @@ export const SOCIAL_URLS = {
   linkedin:
     "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
   youtube: "https://www.youtube.com/@EmbeddedOS_ORG",
-  instagram: "https://www.instagram.com/embeddedos_org",
+  instagram: "https://www.instagram.com/embeddedos.org",
   facebook: "https://www.facebook.com/profile.php?id=61588978691494",
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
 } as const;

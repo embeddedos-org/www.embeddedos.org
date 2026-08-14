@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { CONTACT_EMAILS } from "@/data/foundation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -70,7 +71,7 @@ const SECTIONS = [
     title: "11. Contact",
     content: `For questions about these Terms of Use, contact us at:
 
-**Email:** hello@embeddedos.org
+**Email:** ${CONTACT_EMAILS.contact}
 **Website:** www.embeddedos.org
 **GitHub:** github.com/embeddedos-org`,
   },

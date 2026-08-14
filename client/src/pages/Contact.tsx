@@ -23,8 +23,15 @@ const contacts = [
     icon: Mail,
     color: "#F97316",
     title: "General Inquiries",
-    email: CONTACT_EMAILS.general,
+    email: CONTACT_EMAILS.contact,
     desc: "Questions about EmbeddedOS products, partnerships, or the Foundation.",
+  },
+  {
+    icon: Mail,
+    color: "#F59E0B",
+    title: "Technical Support",
+    email: CONTACT_EMAILS.support,
+    desc: "Build failures, board bring-up, toolchain setup, and questions the documentation does not answer.",
   },
   {
     icon: Mail,
@@ -128,9 +135,7 @@ export default function Contact() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
               <Mail className="w-4 h-4" /> CONTACT
             </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-orange-300 bg-clip-text text-transparent">
-              Contact Us
-            </h1>
+            <h1 className="display-2 text-white mb-4">Contact Us</h1>
             <p className="text-xl text-gray-300">
               Get in touch with the EmbeddedOS Foundation team.
             </p>

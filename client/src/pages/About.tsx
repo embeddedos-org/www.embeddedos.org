@@ -16,7 +16,7 @@ import {
   Instagram,
 } from "lucide-react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
-import { SOCIAL_URLS } from "@/data/foundation";
+import { CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -113,16 +113,15 @@ export default function About() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
-      <section className="section-padding bg-grid relative overflow-hidden">
+      <section className="section-cinematic bg-grid relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-amber mb-4 inline-flex">
               About the Foundation
             </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-6">
-              Embedded Operating Systems{" "}
-              <span className="text-gradient">Research Foundation</span>
+            <h1 className="display-2 text-white mb-6">
+              Embedded Operating Systems Research Foundation
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
               A 501(c)(3) organization dedicated to advancing open-source
@@ -150,7 +149,7 @@ export default function About() {
       </section>
 
       {/* Mission */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -160,7 +159,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <div className="badge-teal mb-4 inline-flex">Our Mission</div>
-              <h2 className="font-heading font-bold text-white text-3xl mb-4">
+              <h2 className="display-3 text-white mb-4">
                 The Operating System for Every Device
               </h2>
               <p className="text-white/60 leading-relaxed mb-4">
@@ -225,7 +224,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-cinematic bg-[#080F1E]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -235,9 +234,7 @@ export default function About() {
             className="text-center mb-10"
           >
             <div className="badge-purple mb-4 inline-flex">Our Values</div>
-            <h2 className="font-heading font-bold text-white text-3xl">
-              What We Stand For
-            </h2>
+            <h2 className="display-3 text-white">What We Stand For</h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {TEAM_VALUES.map((v, i) => {
@@ -273,7 +270,7 @@ export default function About() {
       </section>
 
       {/* Timeline */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -283,9 +280,7 @@ export default function About() {
             className="text-center mb-10"
           >
             <div className="badge-amber mb-4 inline-flex">History</div>
-            <h2 className="font-heading font-bold text-white text-3xl">
-              Our Journey
-            </h2>
+            <h2 className="display-3 text-white">Our Journey</h2>
           </motion.div>
           <div className="relative">
             <div className="absolute left-6 top-0 bottom-0 w-px bg-white/10" />
@@ -321,7 +316,7 @@ export default function About() {
       </section>
 
       {/* Legal */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-cinematic bg-[#080F1E]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -384,10 +379,10 @@ export default function About() {
                 </div>
                 <div className="text-white">
                   <a
-                    href="mailto:hello@embeddedos.org"
+                    href={`mailto:${CONTACT_EMAILS.contact}`}
                     className="text-[#F97316] hover:underline"
                   >
-                    hello@embeddedos.org
+                    {CONTACT_EMAILS.contact}
                   </a>
                 </div>
               </div>
@@ -397,7 +392,7 @@ export default function About() {
       </section>
 
       {/* Social / Connect */}
-      <section className="section-padding">
+      <section className="section-cinematic">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}
@@ -452,7 +447,7 @@ export default function About() {
                 },
                 {
                   icon: Mail,
-                  href: "mailto:hello@embeddedos.org",
+                  href: `mailto:${CONTACT_EMAILS.contact}`,
                   label: "Email",
                   color: "#34D399",
                 },

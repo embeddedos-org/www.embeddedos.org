@@ -10,7 +10,7 @@ import {
   Instagram,
   ExternalLink,
 } from "lucide-react";
-import { SOCIAL_URLS } from "@/data/foundation";
+import { CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
 
 const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
 
@@ -173,7 +173,7 @@ const SOCIAL_LINKS = [
   },
   {
     icon: Mail,
-    href: "mailto:hello@embeddedos.org",
+    href: `mailto:${CONTACT_EMAILS.contact}`,
     label: "Email",
     color: "#F97316",
   },

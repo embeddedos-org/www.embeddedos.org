@@ -196,7 +196,7 @@ export default function Community() {
               {
                 icon: Instagram,
                 label: "Instagram",
-                desc: "@embeddedos_org — hardware, builds and events",
+                desc: "@embeddedos.org — hardware, builds and events",
                 href: SOCIAL_URLS.instagram,
                 color: "#E4405F",
               },

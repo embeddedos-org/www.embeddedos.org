@@ -58,7 +58,28 @@ function socialUrls(): Record<string, string> {
   return urls;
 }
 
-/** Every .ts/.tsx under client/src, plus the static shell. */
+/** The CONTACT_EMAILS block in foundation.ts, parsed to key → address. */
+function contactEmails(): Record<string, string> {
+  const block = foundationTs.match(
+    /export const CONTACT_EMAILS = \{([\s\S]*?)\n\} as const;/
+  );
+  expect(block, "foundation.ts must define CONTACT_EMAILS").not.toBeNull();
+
+  const emails: Record<string, string> = {};
+  for (const m of block![1].matchAll(/(\w+):\s*"([^"]*)"/g))
+    emails[m[1]] = m[2];
+  return emails;
+}
+
+/**
+ * Every .ts/.tsx the site ships, plus the static shell.
+ *
+ * `shared/` is included because eBot answers out of shared/ebot-knowledge.ts
+ * and hands the visitor a mailto link. It cannot import CONTACT_EMAILS — the
+ * client alias does not resolve from shared/ — so its addresses are literals,
+ * and a check that skipped the directory would skip the one file most likely
+ * to drift.
+ */
 function clientSources(): { file: string; text: string }[] {
   const found: { file: string; text: string }[] = [];
 
@@ -76,6 +97,7 @@ function clientSources(): { file: string; text: string }[] {
   };
 
   walk(path.join(ROOT, "client/src"));
+  walk(path.join(ROOT, "shared"));
   found.push({ file: "client/index.html", text: indexHtml });
   return found;
 }
@@ -107,6 +129,12 @@ describe("structured data agrees with the source of truth", () => {
 
   it("publishes the same canonical URL", () => {
     expect(structuredData().url).toBe(foundationValue("website"));
+  });
+
+  it("publishes the same contact address the pages publish", () => {
+    // index.html cannot import CONTACT_EMAILS, so this is the only thing
+    // stopping the crawler-visible address outliving the one on the pages.
+    expect(structuredData().email).toBe(contactEmails().contact);
   });
 
   it("publishes the same postal address the contact page publishes", () => {
@@ -225,6 +253,40 @@ describe("the Foundation's accounts are spelled one way", () => {
       expect(wrong, `every link must read "${canonical}"`).toEqual([]);
     });
   }
+
+  it("sends mail only to an address the Foundation declares", () => {
+    // The site has no server and sends no mail itself, so a mailto: is a
+    // promise that a cPanel mailbox exists on the other side. hello@ was
+    // retired in favour of contact@ and support@; a link still pointing at it,
+    // or at a plausible typo, bounces with nothing on the site to show for it.
+    //
+    // Only literal addresses are checked. `mailto:${CONTACT_EMAILS.contact}`
+    // does not match the pattern and needs no check — it is correct by
+    // construction, which is the point of writing it that way.
+    const declared = new Set(Object.values(contactEmails()));
+    const undeclared: string[] = [];
+
+    for (const { file, text } of sources) {
+      for (const [, address] of text.matchAll(
+        /mailto:([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+)/g
+      )) {
+        if (!declared.has(address)) undeclared.push(`${file} → ${address}`);
+      }
+    }
+
+    expect(undeclared, "mailto: links to undeclared addresses").toEqual([]);
+  });
+
+  it("has retired hello@ everywhere, not just where it was noticed", () => {
+    // It appeared 18 times across 10 files, including the eBot knowledge base
+    // and the privacy and terms pages, where a stale address is a published
+    // legal contact that does not answer.
+    const survivors = sources
+      .filter(({ text }) => text.includes("hello@embeddedos.org"))
+      .map(({ file }) => file);
+
+    expect(survivors, "files still using the retired hello@").toEqual([]);
+  });
 
   it("covers every account SOCIAL_URLS declares", () => {
     // Without this, adding a key to SOCIAL_URLS silently opts it out of the

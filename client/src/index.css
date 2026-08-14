@@ -79,6 +79,35 @@
   --glass-bg: oklch(22% 0.05 248 / 0.75);
   --glass-border: oklch(100% 0 0 / 0.08);
   --glass-blur: blur(20px);
+
+  /* ----------------------------------------------------------
+     Cinematic scale
+     ----------------------------------------------------------
+     A display type scale, a vertical rhythm and a reading measure,
+     defined once so pages stop hand-picking text-4xl/5xl/6xl triples
+     and landing on a different answer each time.
+
+     The sizes are fluid rather than breakpoint-stepped: a headline
+     that reads as a statement at 1440px should not collapse to body
+     weight at 900px, and clamp() moves it continuously instead of
+     jumping at an arbitrary width. The upper bounds are set so the
+     hero headline fills its column at 1440 — which is what separates
+     this look from a large-ish heading. */
+  --text-display-1: clamp(2.75rem, 7vw, 6.25rem);
+  --text-display-2: clamp(2.25rem, 4.6vw, 3.75rem);
+  --text-display-3: clamp(1.75rem, 3vw, 2.5rem);
+
+  /* Vertical rhythm. The whitespace is the design; sections that
+     breathe are most of what separates the reference sites from a
+     dense template. */
+  --space-section: clamp(5rem, 9vw, 8.5rem);
+
+  /* Reading measure. Long lines are the fastest way to make a page
+     feel like documentation rather than a statement. */
+  --measure: 56ch;
+
+  /* A deeper ground than --background, for full-bleed stages. */
+  --color-stage: oklch(12.5% 0.03 248);
 }
 
 /* ============================================================
@@ -231,6 +260,120 @@
     .section-padding {
       padding-top: 7rem;
       padding-bottom: 7rem;
+    }
+  }
+
+  /* ----------------------------------------------------------
+     Cinematic primitives
+     ----------------------------------------------------------
+     Built on the tokens above. These exist so a page can say what a
+     thing *is* — a display headline, a stage, a measure — instead of
+     restating the same six utilities and drifting from the last page
+     that did it. */
+
+  .display-1,
+  .display-2,
+  .display-3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  /* Leading tightens as size grows: 0.98 is right for a 100px headline
+     and unreadable at 28px, which is why these are not one class with a
+     size modifier. */
+  .display-1 {
+    font-size: var(--text-display-1);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .display-2 {
+    font-size: var(--text-display-2);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  .display-3 {
+    font-size: var(--text-display-3);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .section-cinematic {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  .measure {
+    max-width: var(--measure);
+  }
+
+  .stage {
+    background-color: var(--color-stage);
+  }
+
+  /* Small caps label above a headline. Tracking is what makes it read as
+     a label rather than shouting. */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Hairline that fades out, for separating a stat row from what is
+     above it without drawing a full box. */
+  .rule {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      oklch(100% 0 0 / 0.14),
+      oklch(100% 0 0 / 0)
+    );
+  }
+
+  /* Sits between the hero's full-bleed 3D layer and its copy.
+
+     The scene is `absolute inset-0`, so its particles and connection lines
+     otherwise cross the headline — dots landing on letterforms, which is the
+     single thing most separating this hero from the ones it is modelled on.
+     Two stacked gradients: a vignette to hold the eye centre-frame, then a
+     left-weighted wash so the text column reads against near-solid ground
+     while the scene stays visible on the side the hero image is on.
+
+     Must be a real element rather than a ::before — a pseudo-element paints
+     as the section's first child, which would put it *under* the canvas. */
+  .hero-scrim {
+    background:
+      radial-gradient(
+        125% 85% at 50% 45%,
+        transparent 42%,
+        oklch(8% 0.02 248 / 0.5) 100%
+      ),
+      linear-gradient(
+        100deg,
+        var(--color-background) 0%,
+        var(--color-background) 34%,
+        oklch(17.8% 0.055 248 / 0.9) 52%,
+        oklch(17.8% 0.055 248 / 0.4) 72%,
+        transparent 92%
+      );
+  }
+
+  /* Below lg the grid stacks and the copy spans the full width, so a
+     left-weighted wash would leave particles sitting on the right half of
+     every line. Fade top-to-bottom instead. */
+  @media (max-width: 1023px) {
+    .hero-scrim {
+      background: linear-gradient(
+        180deg,
+        var(--color-background) 0%,
+        oklch(17.8% 0.055 248 / 0.88) 60%,
+        oklch(17.8% 0.055 248 / 0.45) 100%
+      );
     }
   }
 
