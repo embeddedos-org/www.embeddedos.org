@@ -744,6 +744,26 @@ test.describe("donation prompt regressions", () => {
    * clear would pass just as well if the prompt stopped working entirely, so
    * /about proves the timer still fires.
    */
+  test("stays closed over the careers form, where it costs abandoned work", async ({
+    page,
+  }) => {
+    // The application form asks for a statement of at least 50 characters, so
+    // nobody finishes it inside the 20s timer. This was found by watching the
+    // prompt land on a half-written application.
+    test.setTimeout(90_000);
+
+    await page.goto("/careers", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("#fullName")).toBeVisible();
+
+    await page.waitForTimeout(30_000);
+
+    await expect(
+      page.getByRole("button", { name: /close donate dialog/i })
+    ).toHaveCount(0);
+    // The form must still be there to be filled in.
+    await expect(page.locator("#fullName")).toBeVisible();
+  });
+
   test("does not auto-open on /donate, but still does elsewhere", async ({
     page,
     context,

@@ -27,17 +27,24 @@ const DISMISS_DAYS = Math.round(DISMISS_HOURS / 24);
 const AUTO_SHOW_DELAY_MS = 20000; // 20 seconds — give visitors time to explore the page first
 
 /**
- * Routes where the prompt is never auto-shown.
+ * Routes where the prompt is never auto-shown: the pages with a form on them.
  *
- * Interrupting someone who is already on the donation page to ask them to
- * donate works against the conversion the prompt exists to cause — and /donate
- * is the page a visitor is most likely to still be on when the timer fires,
- * because its Zeffy embed nests Stripe and two captchas and takes 14-18s to
- * settle. A reader part-way through that form got a dialog thrown over it.
+ * A modal that covers the page after 20s is at its most expensive over a form
+ * someone is part-way through, because the cost is not an interruption but
+ * abandoned work.
+ *
+ * /donate is the obvious one — interrupting someone already donating works
+ * against the conversion the prompt exists to cause, and its Zeffy embed nests
+ * Stripe and two captchas and takes 14-18s to settle, so a visitor is very
+ * likely still there when the timer fires.
+ *
+ * /careers was found the same way, by watching it happen: the application form
+ * asks for a statement of at least 50 characters, so nobody completes it in
+ * under 20 seconds, and the prompt landed on top of a half-written application.
  *
  * The manual trigger is unaffected — clicking Donate still opens the dialog.
  */
-const NO_AUTO_SHOW_ROUTES = new Set(["/donate"]);
+const NO_AUTO_SHOW_ROUTES = new Set(["/donate", "/careers"]);
 
 /**
  * Compare paths without their trailing slash.

@@ -35,6 +35,7 @@ import {
 import { Link } from "wouter";
 import {
   composeApplication,
+  postApplication,
   shortMailto,
   CAREERS_ADDRESS,
 } from "@/lib/application-email";
@@ -731,6 +732,10 @@ type PreparedApplication = {
 function ApplicationForm() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [prepared, setPrepared] = useState<PreparedApplication | null>(null);
+  const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  /** Honeypot. Anything but "" here means the submitter was not a person. */
+  const [honeypot, setHoneypot] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof FormState, string>>
   >({});
@@ -757,18 +762,29 @@ function ApplicationForm() {
   };
 
   /**
-   * Compose the application and hand it to the visitor's mail client.
+   * Submit to the site's own endpoint, and fall back to a mail draft.
    *
-   * Nothing is transmitted from here — the site is static and has no endpoint to
-   * transmit to. The confirmation panel is worded accordingly: it says the draft
-   * was prepared, never that the application was received, because the send has
-   * not happened yet and this page cannot observe whether it does.
+   * /api/apply.php ships inside the static build and is the only first-party
+   * way to accept a post here: no Node process runs in production. When it
+   * answers `{ ok: true }` the application really has been delivered, and the
+   * panel says so.
+   *
+   * Everything else falls back to composing a draft in the visitor's own mail
+   * client — a host without PHP, an error, a timeout. That path says only that
+   * a draft was prepared, never that the application was received, because the
+   * send has not happened and this page cannot observe whether it does.
+   *
+   * The fallback is the point. The form previously posted to a tRPC route that
+   * did not exist in production, and every application submitted through it was
+   * lost while the applicant was shown a failure they could do nothing about.
+   * An uncertain result has to end with the application in the applicant's own
+   * hands rather than in nobody's.
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate() || submitting) return;
 
-    const { subject, body, mailtoUrl } = composeApplication({
+    const fields = {
       fullName: form.fullName.trim(),
       email: form.email.trim(),
       phone: form.phone.trim() || undefined,
@@ -781,7 +797,19 @@ function ApplicationForm() {
       statement: form.statement.trim(),
       availability: form.availability.trim() || undefined,
       heardFrom: form.heardFrom.trim() || undefined,
-    });
+    };
+
+    setSubmitting(true);
+    const delivered = await postApplication(fields, { honeypot });
+    setSubmitting(false);
+
+    if (delivered) {
+      setSent(true);
+      toast.success("Application sent. A confirmation is on its way to you.");
+      return;
+    }
+
+    const { subject, body, mailtoUrl } = composeApplication(fields);
 
     // A long statement cannot ride in the URL, so it goes to the clipboard and
     // the draft opens empty for the applicant to paste into.
@@ -811,6 +839,42 @@ function ApplicationForm() {
       if (fieldErrors[field])
         setFieldErrors(prev => ({ ...prev, [field]: undefined }));
     };
+
+  // The endpoint confirmed delivery, so this panel may say so outright. The
+  // draft panel below deliberately may not.
+  if (sent) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="rounded-2xl border border-[#34D399]/30 bg-[#34D399]/10 p-8 text-center"
+      >
+        <Send size={44} className="text-[#34D399] mx-auto mb-4" />
+        <h3 className="font-heading font-bold text-2xl text-white mb-2">
+          Application received
+        </h3>
+        <p className="text-white/60 mb-6 max-w-lg mx-auto">
+          Thank you — your application reached{" "}
+          <span className="text-white/80">{CAREERS_ADDRESS}</span> and a
+          confirmation is on its way to your inbox. A person reads every one; we
+          usually reply within 5–10 business days.
+        </p>
+        <p className="text-sm text-white/50 mb-6 max-w-lg mx-auto">
+          To add a CV, reply to that confirmation email with it attached.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setSent(false);
+            setForm(EMPTY_FORM);
+          }}
+          className="px-5 py-2.5 rounded-xl border border-white/20 hover:border-white/40 hover:bg-white/5 text-white text-sm font-semibold transition-all"
+        >
+          Submit another application
+        </button>
+      </motion.div>
+    );
+  }
 
   if (prepared) {
     return (
@@ -894,6 +958,25 @@ function ApplicationForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/*
+        Honeypot. Hidden from people and from assistive technology, so anyone
+        who fills it in is automated; the endpoint then answers 200 without
+        sending, which gives a bot nothing to learn from. Positioned off-screen
+        rather than `display:none`, which some bots skip.
+      */}
+      <div className="absolute left-[-9999px] top-auto w-px h-px overflow-hidden">
+        <label htmlFor="website">Leave this field empty</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={honeypot}
+          onChange={e => setHoneypot(e.target.value)}
+        />
+      </div>
       {/* Identity */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
@@ -1157,10 +1240,11 @@ function ApplicationForm() {
             this page does not perform. */}
         <Button
           type="submit"
-          className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold px-8 py-3 rounded-xl transition-all duration-150 active:scale-95 flex items-center gap-2"
+          disabled={submitting}
+          className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold px-8 py-3 rounded-xl transition-all duration-150 active:scale-95 flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <Send size={16} />
-          Prepare Application Email
+          {submitting ? "Sending…" : "Send Application"}
         </Button>
         <p className="text-xs text-white/30">
           Or email directly:{" "}

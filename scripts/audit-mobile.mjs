@@ -95,7 +95,24 @@ for (const route of ROUTES) {
   const failedRequests = [];
   const thirdPartyRequestFailures = [];
   page.on("console", m => {
-    if (m.type() === "error") consoleErrors.push(m.text().slice(0, 160));
+    if (m.type() !== "error") return;
+
+    // Same policy as the requestfailed handler below, which this was missing.
+    // A subresource that 404s arrives here as well as there, and the text
+    // ("Failed to load resource: the server responded with a status of 404")
+    // names no URL — so a Google Fonts woff2 answering 404 failed this audit on
+    // a different route each run, for a reason outside this repository. The
+    // location does carry the URL, which is what makes the split possible.
+    //
+    // An error with no location is kept: silently swallowing one would be the
+    // worse failure, and first-party 404s still fail the gate.
+    const url = m.location()?.url ?? "";
+    if (url && !url.startsWith(`http://127.0.0.1:${PORT}`)) {
+      thirdPartyRequestFailures.push(url.slice(0, 90));
+      return;
+    }
+
+    consoleErrors.push(m.text().slice(0, 160));
   });
   page.on("pageerror", e =>
     consoleErrors.push(`pageerror: ${String(e).slice(0, 160)}`)

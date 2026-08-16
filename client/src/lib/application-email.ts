@@ -49,6 +49,62 @@ export type ApplicationFields = {
   heardFrom?: string;
 };
 
+/** The site's own submission endpoint, shipped as a static PHP file. */
+export const APPLY_ENDPOINT = "/api/apply.php";
+
+/** How long to wait for the endpoint before falling back to the draft. */
+export const APPLY_TIMEOUT_MS = 10_000;
+
+/**
+ * Offer the application to the site's own endpoint.
+ *
+ * Resolves true only on an explicit `{ ok: true }`. Every other outcome
+ * resolves false and the caller opens the mail draft instead: a host without
+ * PHP answering 404 with the 404 page, a body that is not JSON, a network
+ * failure, a timeout, a validation rejection.
+ *
+ * Never throws, and never reports success it did not observe. The defect this
+ * module exists to fix was a form that appeared to submit while every
+ * application was lost, so an uncertain result has to degrade to the path that
+ * puts the application in the applicant's own hands.
+ *
+ * `fetchImpl` is injectable so the failure modes can be tested without a
+ * network.
+ */
+export async function postApplication(
+  fields: ApplicationFields,
+  options: { honeypot?: string; fetchImpl?: typeof fetch } = {}
+): Promise<boolean> {
+  const { honeypot = "", fetchImpl = fetch } = options;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), APPLY_TIMEOUT_MS);
+
+  try {
+    const response = await fetchImpl(APPLY_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // `website` is the honeypot: hidden from people, filled in by naive bots.
+      // Forwarded rather than hardcoded, so the field the page renders is the
+      // field the endpoint judges.
+      body: JSON.stringify({ ...fields, website: honeypot }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) return false;
+
+    const result: unknown = await response.json();
+    return (
+      typeof result === "object" &&
+      result !== null &&
+      (result as { ok?: unknown }).ok === true
+    );
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 /** A composed application, ready to send or copy. */
 export type ComposedApplication = {
   subject: string;

@@ -7,7 +7,9 @@
 import { describe, expect, it } from "vitest";
 import {
   composeApplication,
+  postApplication,
   shortMailto,
+  APPLY_ENDPOINT,
   CAREERS_ADDRESS,
   MAILTO_MAX_LENGTH,
   type ApplicationFields,
@@ -108,5 +110,93 @@ describe("shortMailto", () => {
       `mailto:${CAREERS_ADDRESS}?subject=Application%3A%20Jane%20Smith`
     );
     expect(url).not.toContain("body=");
+  });
+});
+
+describe("postApplication", () => {
+  /**
+   * Every branch here decides between "the application was delivered" and "put
+   * it in the applicant's own hands". Reporting success wrongly is the failure
+   * that already happened once on this form: it posted to a tRPC route absent
+   * from the static build, and every application was lost.
+   */
+  const ok = (body: unknown, status = 200): typeof fetch =>
+    (async () =>
+      new Response(JSON.stringify(body), {
+        status,
+        headers: { "Content-Type": "application/json" },
+      })) as unknown as typeof fetch;
+
+  it("reports success only on an explicit ok:true", async () => {
+    expect(await postApplication(base, { fetchImpl: ok({ ok: true }) })).toBe(
+      true
+    );
+  });
+
+  it("treats ok:false as undelivered", async () => {
+    expect(await postApplication(base, { fetchImpl: ok({ ok: false }) })).toBe(
+      false
+    );
+  });
+
+  it("treats a missing ok field as undelivered", async () => {
+    expect(await postApplication(base, { fetchImpl: ok({}) })).toBe(false);
+  });
+
+  it("treats a 404 as undelivered, which is what a host without PHP returns", async () => {
+    const html: typeof fetch = (async () =>
+      new Response("<!DOCTYPE html><html>404</html>", {
+        status: 404,
+        headers: { "Content-Type": "text/html" },
+      })) as unknown as typeof fetch;
+    expect(await postApplication(base, { fetchImpl: html })).toBe(false);
+  });
+
+  it("treats a 200 that is not JSON as undelivered", async () => {
+    const notJson: typeof fetch = (async () =>
+      new Response("<!DOCTYPE html>not json", {
+        status: 200,
+        headers: { "Content-Type": "text/html" },
+      })) as unknown as typeof fetch;
+    expect(await postApplication(base, { fetchImpl: notJson })).toBe(false);
+  });
+
+  it("treats a network failure as undelivered rather than throwing", async () => {
+    const boom: typeof fetch = (async () => {
+      throw new TypeError("Failed to fetch");
+    }) as unknown as typeof fetch;
+    await expect(postApplication(base, { fetchImpl: boom })).resolves.toBe(
+      false
+    );
+  });
+
+  it("posts JSON to the endpoint that ships in the build", async () => {
+    let url: string | undefined;
+    let init: RequestInit | undefined;
+    const spy: typeof fetch = (async (u: string, i: RequestInit) => {
+      url = u;
+      init = i;
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as unknown as typeof fetch;
+
+    await postApplication(base, { fetchImpl: spy });
+
+    expect(url).toBe(APPLY_ENDPOINT);
+    expect(init?.method).toBe("POST");
+    expect(JSON.parse(String(init?.body)).fullName).toBe(base.fullName);
+  });
+
+  it("forwards the honeypot so the endpoint judges the field the page renders", async () => {
+    let body = "";
+    const spy: typeof fetch = (async (_u: string, i: RequestInit) => {
+      body = String(i.body);
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }) as unknown as typeof fetch;
+
+    await postApplication(base, { fetchImpl: spy, honeypot: "bot-filled" });
+    expect(JSON.parse(body).website).toBe("bot-filled");
+
+    await postApplication(base, { fetchImpl: spy });
+    expect(JSON.parse(body).website).toBe("");
   });
 });
