@@ -1075,7 +1075,7 @@ function ApplicationForm() {
       {/* Role & Employment */}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label className="text-white/80 text-sm">
+          <Label id="role-category-label" className="text-white/80 text-sm">
             Role Category <span className="text-[#F97316]">*</span>
           </Label>
           <Select
@@ -1085,7 +1085,10 @@ function ApplicationForm() {
               setFieldErrors(p => ({ ...p, roleCategory: undefined }));
             }}
           >
-            <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50">
+            <SelectTrigger
+              aria-labelledby="role-category-label"
+              className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50"
+            >
               <SelectValue placeholder="Select a role..." />
             </SelectTrigger>
             <SelectContent className="bg-[#0D1829] border-white/10">
@@ -1108,7 +1111,7 @@ function ApplicationForm() {
           )}
         </div>
         <div className="space-y-1.5">
-          <Label className="text-white/80 text-sm">
+          <Label id="employment-type-label" className="text-white/80 text-sm">
             Employment Type <span className="text-[#F97316]">*</span>
           </Label>
           <Select
@@ -1118,7 +1121,10 @@ function ApplicationForm() {
               setFieldErrors(p => ({ ...p, employmentType: undefined }));
             }}
           >
-            <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50">
+            <SelectTrigger
+              aria-labelledby="employment-type-label"
+              className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50"
+            >
               <SelectValue placeholder="Select type..." />
             </SelectTrigger>
             <SelectContent className="bg-[#0D1829] border-white/10">
@@ -1144,7 +1150,7 @@ function ApplicationForm() {
 
       {/* Work Authorization */}
       <div className="space-y-1.5">
-        <Label className="text-white/80 text-sm">
+        <Label id="work-authorization-label" className="text-white/80 text-sm">
           Work Authorization <span className="text-[#F97316]">*</span>
         </Label>
         <Select
@@ -1154,7 +1160,10 @@ function ApplicationForm() {
             setFieldErrors(p => ({ ...p, workAuthorization: undefined }));
           }}
         >
-          <SelectTrigger className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50">
+          <SelectTrigger
+            aria-labelledby="work-authorization-label"
+            className="bg-white/5 border-white/10 text-white focus:border-[#F97316]/50"
+          >
             <SelectValue placeholder="Select authorization status..." />
           </SelectTrigger>
           <SelectContent className="bg-[#0D1829] border-white/10">
@@ -1509,6 +1518,25 @@ export default function Careers() {
       {/* Values */}
       <section className="section-padding bg-[#080F1E]">
         <div className="max-w-6xl mx-auto px-4">
+          {/*
+            This section had no heading of any kind, so its four cards were h3s
+            sitting directly under the page h1 — a jump anyone navigating by
+            heading falls through, and an entire section with no name in the
+            document outline.
+          */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <p className="text-xs font-bold tracking-widest uppercase text-[#F97316] mb-3">
+              Why This Work
+            </p>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
+              What you get building here
+            </h2>
+          </motion.div>
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -1618,10 +1646,7 @@ export default function Careers() {
                       : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  {d}{" "}
-                  {deptCounts[d] > 0 && (
-                    <span className="opacity-60">({deptCounts[d]})</span>
-                  )}
+                  {d} {deptCounts[d] > 0 && <span>({deptCounts[d]})</span>}
                 </button>
               ))}
             </div>

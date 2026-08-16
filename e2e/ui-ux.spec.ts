@@ -34,6 +34,8 @@ const PAGES = [
   "/donate",
   "/contact",
   "/faq",
+  "/careers",
+  "/get-involved",
 ];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
@@ -128,7 +130,10 @@ test.describe("responsive layout", () => {
     }) => {
       await blockPaymentIframe(page);
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      for (const route of ["/", "/about", "/donate"]) {
+      // /careers carries the only real form on the site — a two-column grid of
+      // inputs and three comboboxes, which is the layout most likely to burst
+      // its container on a narrow screen, and it was not in this sample.
+      for (const route of ["/", "/about", "/donate", "/careers"]) {
         await page.goto(route);
         await page.waitForTimeout(400);
         const overflow = await page.evaluate(
@@ -187,6 +192,14 @@ test.describe("keyboard operability", () => {
     );
   });
 
+  /**
+   * Every control reached by Tab, not just the second one.
+   *
+   * This previously pressed Tab twice and asserted that the one element it
+   * landed on had an indicator, so every other control on the page could have
+   * lost its focus ring with the test still green. A keyboard user meets all of
+   * them.
+   */
   test("focused elements are visibly indicated", async ({ page }) => {
     await page.goto("/");
     // Under parallel load the first Tab can land before the document takes
@@ -196,40 +209,75 @@ test.describe("keyboard operability", () => {
       .locator("header a, nav a")
       .first()
       .waitFor({ state: "visible", timeout: 15000 });
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
-    const visible = await page.evaluate(() => {
-      const el = document.activeElement as HTMLElement | null;
-      if (!el || el === document.body) return false;
-      const s = getComputedStyle(el);
-      return (
-        (s.outlineStyle !== "none" && parseFloat(s.outlineWidth) > 0) ||
-        s.boxShadow !== "none" ||
-        s.textDecorationLine !== "none"
-      );
-    });
-    expect(visible, "no visible focus indicator").toBe(true);
+
+    const unmarked: string[] = [];
+    const seen = new Set<string>();
+
+    for (let i = 0; i < 25; i++) {
+      await page.keyboard.press("Tab");
+      const result = await page.evaluate(() => {
+        const el = document.activeElement as HTMLElement | null;
+        if (!el || el === document.body) return null;
+
+        const s = getComputedStyle(el);
+        const indicated =
+          (s.outlineStyle !== "none" && parseFloat(s.outlineWidth) > 0) ||
+          s.boxShadow !== "none" ||
+          s.textDecorationLine !== "none";
+
+        return {
+          indicated,
+          id: `${el.tagName}#${el.id || ""}.${(el.className || "").toString().slice(0, 40)}`,
+          label: (el.textContent ?? "").trim().slice(0, 30),
+        };
+      });
+
+      if (!result) continue;
+      // Tab wraps into browser chrome and back; only judge each control once.
+      if (seen.has(result.id + result.label)) continue;
+      seen.add(result.id + result.label);
+
+      if (!result.indicated) {
+        unmarked.push(`${result.id} "${result.label}"`);
+      }
+    }
+
+    expect(
+      seen.size,
+      "Tab reached too few controls to be a real sweep"
+    ).toBeGreaterThan(8);
+    expect(unmarked, "controls with no visible focus indicator").toEqual([]);
   });
 
   test("interactive controls are large enough to tap on mobile", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto("/");
-    await page.waitForTimeout(500);
-    const tiny = await page.evaluate(() =>
-      [...document.querySelectorAll("footer a[href], nav a[href], button")]
-        .map(el => {
-          const r = el.getBoundingClientRect();
-          return {
-            w: Math.round(r.width),
-            h: Math.round(r.height),
-            t: (el.textContent ?? "").trim().slice(0, 20),
-          };
-        })
-        .filter(b => b.w > 0 && b.h > 0 && b.h < 24)
-    );
-    expect(tiny).toEqual([]);
+
+    // /careers as well as /: a form is where a cramped target actually costs
+    // something, and its inputs and comboboxes were never measured.
+    for (const route of ["/", "/careers"]) {
+      await page.goto(route);
+      await page.waitForTimeout(500);
+      const tiny = await page.evaluate(() =>
+        [
+          ...document.querySelectorAll(
+            "footer a[href], nav a[href], button, main input, main textarea, main select"
+          ),
+        ]
+          .map(el => {
+            const r = el.getBoundingClientRect();
+            return {
+              w: Math.round(r.width),
+              h: Math.round(r.height),
+              t: (el.textContent ?? "").trim().slice(0, 20) || el.id,
+            };
+          })
+          // Zero-sized elements are hidden — the honeypot is deliberately 1px.
+          .filter(b => b.w > 1 && b.h > 1 && b.h < 24)
+      );
+      expect(tiny, `undersized tap targets on ${route}`).toEqual([]);
+    }
   });
 });
 
@@ -267,5 +315,159 @@ test.describe("motion preferences", () => {
         }).length
     );
     expect(hidden, "text left invisible under reduced motion").toBe(0);
+  });
+});
+
+/**
+ * The design system, which nothing here covered.
+ *
+ * The type scale, the vertical rhythm and the hero scrim were added without a
+ * single test that fails if they are removed — the suite's other checks are
+ * generic enough to pass on any competently-built page, so deleting
+ * `.display-1` or the scrim left all of them green.
+ *
+ * These assert the properties the design actually depends on, not the exact
+ * numbers a designer may want to tune: a headline that dominates its viewport,
+ * a scale that moves with the viewport rather than stepping, a scrim that
+ * covers the 3D layer, and a bounded reading measure.
+ */
+test.describe("design system", () => {
+  test("the hero headline uses the display scale, and it is fluid", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(400);
+
+    const wide = await page.evaluate(() => {
+      const h1 = document.querySelector("h1");
+      if (!h1) return null;
+      const s = getComputedStyle(h1);
+      return {
+        size: parseFloat(s.fontSize),
+        leading: parseFloat(s.lineHeight) / parseFloat(s.fontSize),
+      };
+    });
+
+    expect(wide, "the homepage must have an h1").not.toBeNull();
+    // Default h1 sizing is ~32px; the old hand-picked triple topped out at 60.
+    expect(
+      wide!.size,
+      "hero headline is not on the display scale"
+    ).toBeGreaterThan(72);
+    // Tight leading is what makes a headline read as one block rather than
+    // three stacked sentences; body leading is ~1.6.
+    expect(
+      wide!.leading,
+      "hero headline leading is not tightened"
+    ).toBeLessThan(1.15);
+
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.waitForTimeout(400);
+
+    const narrow = await page.evaluate(() =>
+      parseFloat(getComputedStyle(document.querySelector("h1")!).fontSize)
+    );
+
+    // Fluid, not breakpoint-stepped: it must shrink, and must stay legible.
+    expect(narrow, "headline did not scale down on a phone").toBeLessThan(
+      wide!.size
+    );
+    expect(
+      narrow,
+      "headline collapsed to body size on a phone"
+    ).toBeGreaterThan(32);
+  });
+
+  test("the hero scrim covers the 3D layer rather than sitting under it", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(600);
+
+    const layering = await page.evaluate(() => {
+      const scrim = document.querySelector(".hero-scrim");
+      if (!scrim) return { present: false };
+
+      const section = scrim.parentElement!;
+      const kids = [...section.children];
+      const canvasHost = kids.find(k => k.querySelector("canvas"));
+
+      const s = getComputedStyle(scrim);
+      return {
+        present: true,
+        // Paints after the canvas: both are positioned, so DOM order decides.
+        afterCanvas: canvasHost
+          ? kids.indexOf(scrim) > kids.indexOf(canvasHost)
+          : null,
+        covers: s.position === "absolute" && s.inset === "0px",
+        // A scrim that intercepted clicks would break every hero control.
+        clickThrough: s.pointerEvents === "none",
+        painted: s.backgroundImage !== "none",
+      };
+    });
+
+    expect(layering.present, ".hero-scrim is missing").toBe(true);
+    expect(layering.covers, "scrim does not cover the hero").toBe(true);
+    expect(layering.clickThrough, "scrim would swallow hero clicks").toBe(true);
+    expect(layering.painted, "scrim paints nothing").toBe(true);
+    expect(layering.afterCanvas, "scrim paints under the 3D canvas").not.toBe(
+      false
+    );
+  });
+
+  test("the scrim switches to its stacked-layout variant below lg", async ({
+    page,
+  }) => {
+    // The @media (max-width: 1023px) branch exists because the hero grid
+    // stacks there: a left-weighted wash would leave particles sitting on the
+    // right half of every line. Nothing exercised that branch.
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const read = async (width: number) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.waitForTimeout(300);
+      return page.evaluate(
+        () =>
+          getComputedStyle(document.querySelector(".hero-scrim")!)
+            .backgroundImage
+      );
+    };
+
+    const stacked = await read(1023);
+    const side = await read(1024);
+
+    expect(stacked, "no scrim painted in the stacked layout").not.toBe("none");
+    expect(side, "no scrim painted in the side-by-side layout").not.toBe(
+      "none"
+    );
+    expect(stacked, "the stacked-layout scrim variant never applies").not.toBe(
+      side
+    );
+  });
+
+  test("hero body copy is held to a reading measure", async ({ page }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(400);
+
+    const measured = await page.evaluate(() => {
+      const p = document.querySelector("section .measure");
+      if (!p) return null;
+      const fontSize = parseFloat(getComputedStyle(p).fontSize);
+      return {
+        width: p.getBoundingClientRect().width,
+        // Rough characters-per-line: average glyph ≈ 0.5em.
+        approxChars: p.getBoundingClientRect().width / (fontSize * 0.5),
+      };
+    });
+
+    expect(measured, "no .measure element in the hero").not.toBeNull();
+    // Unbounded, this column would run to ~800px at 1920. The cap is 56ch.
+    expect(
+      measured!.approxChars,
+      "reading measure is not bounded"
+    ).toBeLessThan(85);
   });
 });
