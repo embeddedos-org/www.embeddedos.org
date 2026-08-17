@@ -16,3 +16,18 @@
 Options -Indexes
 
 ErrorDocument 404 /404.html
+
+# The careers endpoint accepts POST and nothing else.
+#
+# Where PHP runs, this only removes a method the script already refuses. Where
+# it does not, it matters: Apache serves an unhandled .php as plain text, and a
+# GET would return the endpoint's source. Verified locally — the static server
+# answers GET /api/apply.php with 200 and Content-Type application/x-httpd-php.
+#
+# The file holds no credential, because sending goes through the local MTA
+# rather than authenticated SMTP, so this protects logic rather than a secret.
+<Files "apply.php">
+    <LimitExcept POST>
+        Require all denied
+    </LimitExcept>
+</Files>
