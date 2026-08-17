@@ -52,7 +52,17 @@ const SWEEP_TIMEOUT_MS = 150_000;
  * moving, and the click misses rather than failing honestly, so settle first.
  */
 async function settle(page: import("@playwright/test").Page) {
-  await page.waitForLoadState("networkidle").catch(() => {});
+  // Bounded, because networkidle is unreachable on the heavy routes: they
+  // animate and stream continuously, so the wait ran to the 30s navigation
+  // default and was then swallowed by the catch — 30s of nothing, per
+  // navigation, on exactly the pages with the most controls to click. That is
+  // the same trap link-destinations.spec.ts documents and avoids.
+  //
+  // Two seconds is past the point where a page that does idle has idled, and
+  // the fixed pause below is what actually covers the entry animation.
+  await page
+    .waitForLoadState("networkidle", { timeout: 2_000 })
+    .catch(() => {});
   await page.waitForTimeout(600);
 }
 

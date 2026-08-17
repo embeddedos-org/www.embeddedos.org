@@ -147,6 +147,38 @@ check("the text part keeps an apostrophe as typed", str_contains(staff_text($cle
 [$clean] = validate_application(valid_payload());
 check('a blank phone line is omitted from the text part', !str_contains(staff_text($clean, 'now'), 'Phone:'));
 
+// ── single_line / multi_line: body forgery ───────────────────────────────────
+
+equals('single_line flattens a CRLF', 'Ada Bcc: x@y.org', single_line("Ada\r\nBcc: x@y.org"));
+equals('single_line flattens a bare LF', 'a b', single_line("a\nb"));
+equals('single_line strips a NUL', 'a b', single_line("a\0b"));
+equals('single_line strips backspace and escape', 'a b', single_line("a\x08\x1bb"));
+equals('single_line trims the result', 'ada', single_line("  ada\n "));
+equals('single_line leaves ordinary text alone', "Ada O'Brien", single_line("Ada O'Brien"));
+
+equals('multi_line keeps real newlines', "one\ntwo", multi_line("one\ntwo"));
+equals('multi_line keeps tabs', "a\tb", multi_line("a\tb"));
+equals('multi_line still strips NUL', 'ab', multi_line("a\0b"));
+equals('multi_line still strips escape', 'ab', multi_line("a\x1bb"));
+
+// The forgery this closes, end to end through the validator and renderer.
+[$clean] = validate_application(valid_payload([
+    'fullName' => "Ada\r\nBcc: victim@elsewhere.test\r\nX-Injected: yes",
+]));
+$text = staff_text($clean, 'now');
+check(
+    'a name cannot open a new line in the plain-text body',
+    !preg_match('/^Bcc:/m', $text),
+    'forged line survived into the body'
+);
+check('the name still appears, flattened', str_contains($text, 'Ada Bcc: victim@elsewhere.test'));
+
+// A statement may span lines; that must not have been broken by the above.
+[$clean] = validate_application(valid_payload([
+    'statement' => "First paragraph.\n\nSecond paragraph, still well over the fifty character minimum.",
+]));
+check('the statement keeps its paragraphs', str_contains($clean['statement'], "\n\n"));
+
 // ── rate_limit_ok ────────────────────────────────────────────────────────────
 
 $dir = sys_get_temp_dir() . '/eos-apply-test-' . bin2hex(random_bytes(4));

@@ -182,3 +182,87 @@ test.describe("metadata", () => {
     }
   });
 });
+
+test.describe("careers application submission", () => {
+  /**
+   * Both outcomes of the form, driven in a browser.
+   *
+   * These were previously only unit-tested. The success panel had been checked
+   * by hand once; the fallback never had, because an attempt to observe it hit
+   * `Cannot redefine property: href` while trying to block the mailto
+   * navigation. Routing the endpoint is the way to do it — the page decides
+   * which panel to show purely from what /api/apply.php answers.
+   *
+   * The fallback is the branch that matters most. This form once posted to a
+   * tRPC route absent from the static build and lost every application, so the
+   * behaviour when the endpoint is not there has to be observed, not assumed.
+   */
+  const fill = async (page: import("@playwright/test").Page) => {
+    await page.locator("#fullName").fill("Ada Lovelace");
+    await page.locator("#email").fill("ada@example.org");
+    await page
+      .locator("#statement")
+      .fill(
+        "I have spent six years on ARM Cortex-M firmware and would like to " +
+          "work on an open-source RTOS where results are published."
+      );
+
+    // Radix comboboxes, reached by the accessible names added when axe found
+    // all three unnamed. The native selects beside them are aria-hidden shims.
+    for (const name of [
+      /Role Category/i,
+      /Employment Type/i,
+      /Work Authorization/i,
+    ]) {
+      await page.getByRole("combobox", { name }).click();
+      await page.getByRole("option").first().click();
+    }
+  };
+
+  test("a working endpoint reports the application as received", async ({
+    page,
+  }) => {
+    await page.route("**/api/apply.php", r =>
+      r.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true }),
+      })
+    );
+
+    await page.goto("/careers");
+    await fill(page);
+    await page.getByRole("button", { name: /Send Application/i }).click();
+
+    await expect(page.getByText("Application received")).toBeVisible();
+    // The form is replaced, so nobody submits twice by accident.
+    await expect(page.locator("#fullName")).toHaveCount(0);
+  });
+
+  test("a host without PHP falls back to a mail draft, and says so honestly", async ({
+    page,
+  }) => {
+    // Exactly what a static host answers for a .php it cannot execute: the
+    // 404 page, as HTML.
+    await page.route("**/api/apply.php", r =>
+      r.fulfill({
+        status: 404,
+        contentType: "text/html",
+        body: "<!DOCTYPE html><html><body>404</body></html>",
+      })
+    );
+
+    await page.goto("/careers");
+    await fill(page);
+    await page.getByRole("button", { name: /Send Application/i }).click();
+
+    await expect(
+      page.getByRole("heading", { name: /One step left/i })
+    ).toBeVisible();
+
+    // The wording must not claim delivery it cannot observe.
+    const panel = await page.locator("main").innerText();
+    expect(panel).toMatch(/not sent until you send it/i);
+    expect(panel).not.toMatch(/Application received/i);
+  });
+});

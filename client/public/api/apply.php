@@ -96,6 +96,40 @@ function h(string $value): string
 }
 
 /**
+ * Flatten a value that is meant to occupy one line.
+ *
+ * header_safe() protects the headers, and validation rejects a CRLF inside an
+ * email address, so neither of those is the gap this closes. The gap is the
+ * body: staff_text() prints `Name: <fullName>`, and a name carrying newlines
+ * let an applicant forge whole lines in the message staff read —
+ *
+ *     Name: Ada
+ *     Bcc: victim@elsewhere.test
+ *     X-Injected: yes
+ *
+ * — which is not header injection, because it lands after the header
+ * terminator, but does let a submitter put words in the Foundation's email.
+ * Found by sending exactly that through a real Apache and reading what the MTA
+ * was handed.
+ *
+ * Every control character goes, not just CR and LF: a bare backspace or escape
+ * can rewrite what a terminal or mail client shows.
+ */
+function single_line(string $value): string
+{
+    return trim((string) preg_replace('/[\x00-\x1F\x7F]+/u', ' ', $value));
+}
+
+/**
+ * The statement is the one field that may legitimately span lines, so it keeps
+ * \n and \t and loses everything else.
+ */
+function multi_line(string $value): string
+{
+    return trim((string) preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/u', '', $value));
+}
+
+/**
  * Length in characters, without mbstring.
  *
  * mb_strlen would be the obvious call and is not safe to assume: mbstring is a
@@ -147,7 +181,11 @@ function validate_application(array $in): array
     $errors = [];
     $out    = [];
 
-    $str = static fn(string $k): string => isset($in[$k]) && is_string($in[$k]) ? trim($in[$k]) : '';
+    // Single-line by default: every field below is one line except the
+    // statement, which uses multi_line() where it is read.
+    $str = static fn(string $k): string => isset($in[$k]) && is_string($in[$k])
+        ? single_line($in[$k])
+        : '';
 
     // Required, free text.
     $out['fullName'] = $str('fullName');
@@ -163,7 +201,11 @@ function validate_application(array $in): array
         $errors[] = 'email';
     }
 
-    $out['statement'] = $str('statement');
+    $out['statement'] = multi_line(
+        isset($in['statement']) && is_string($in['statement'])
+            ? $in['statement']
+            : ''
+    );
     if (char_len($out['statement']) < 50 || char_len($out['statement']) > MAX_LENGTHS['statement']) {
         $errors[] = 'statement';
     }
