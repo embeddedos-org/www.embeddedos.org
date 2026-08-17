@@ -7,7 +7,26 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  /**
+   * Four under CI, not one.
+   *
+   * A single worker serialises ~1,000 CPU-seconds of real browser work into
+   * about 17 minutes, which no longer fits any sane gate: the verification gate
+   * skipped e2e entirely at its 257s per-check timeout and then ran out of its
+   * 780s total budget before the performance tests, so two categories reported
+   * nothing at all. Four workers put the same 370 tests at ~3m40s, measured.
+   *
+   * This changes concurrency, never coverage — the same tests run with the same
+   * assertions. Retries stay at 2, so genuine order-dependence still surfaces
+   * rather than being hidden. The one suite with a documented parallel-flake
+   * problem, link-destinations, is opt-in and skipped unless LINK_SWEEP is set;
+   * run that one with --workers=1, which is how its 83/83 pass was obtained.
+   *
+   * Bounded rather than unlimited: this machine has 8 cores, and leaving
+   * headroom keeps the timing-sensitive checks from competing with the
+   * webServer for CPU.
+   */
+  workers: process.env.CI ? 4 : undefined,
   reporter: [["list"]],
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,

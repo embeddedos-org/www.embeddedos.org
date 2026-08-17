@@ -4,7 +4,7 @@
  * Each test names the bug it prevents from coming back. If any of these fail,
  * a specific, previously-shipped defect has returned.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 test.describe("build output regressions", () => {
   test("the 367 KB Manus dev runtime is not inlined into the document", async ({
@@ -740,26 +740,59 @@ test.describe("donation prompt regressions", () => {
    * cannot fail it. That timeout was the default `waitUntil: "load"` against
    * /donate's third-party embeds — the same cause smoke.spec.ts addresses.
    *
-   * Both halves of the assertion matter. Asserting only that /donate stays
-   * clear would pass just as well if the prompt stopped working entirely, so
-   * /about proves the timer still fires.
+   * These drive a fake clock rather than sleeping through the real 20s delay.
+   * Waiting it out three times cost 90s of the e2e budget — enough to matter
+   * when the gate runs single-worker — and it tested the machine's patience
+   * rather than the code. Fast-forwarding is also stricter: the timer either
+   * fires deterministically or it does not.
    */
+
+  /** Past AUTO_SHOW_DELAY_MS with margin, without spending it. */
+  const PAST_THE_DELAY = "00:30";
+
+  const prompt = (p: Page) =>
+    p.getByRole("button", { name: /close donate dialog/i });
+
+  /**
+   * Wait until React has hydrated, before touching the clock.
+   *
+   * The modal arms its timer in an effect, so fast-forwarding before hydration
+   * advances past a timer that does not exist yet — and it never fires,
+   * because nothing advances the clock again. That made the control half flaky
+   * under parallel load, and it would have made every "the prompt stays away"
+   * assertion below pass for the wrong reason: an app that never mounted shows
+   * no prompt either.
+   *
+   * React attaches fiber keys to the DOM nodes it adopts, which is the cheapest
+   * honest signal that mounting has happened.
+   */
+  const waitForHydration = async (p: Page) => {
+    await expect
+      .poll(
+        () =>
+          p.evaluate(() => {
+            const el = document.querySelector("main");
+            return !!el && Object.keys(el).some(k => k.startsWith("__react"));
+          }),
+        { timeout: 15_000, message: "React never hydrated" }
+      )
+      .toBe(true);
+  };
+
   test("stays closed over the careers form, where it costs abandoned work", async ({
     page,
   }) => {
     // The application form asks for a statement of at least 50 characters, so
-    // nobody finishes it inside the 20s timer. This was found by watching the
-    // prompt land on a half-written application.
-    test.setTimeout(90_000);
-
+    // nobody finishes it inside the delay. Found by watching the prompt land
+    // on a half-written application.
+    await page.clock.install();
     await page.goto("/careers", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#fullName")).toBeVisible();
+    await waitForHydration(page);
 
-    await page.waitForTimeout(30_000);
+    await page.clock.fastForward(PAST_THE_DELAY);
 
-    await expect(
-      page.getByRole("button", { name: /close donate dialog/i })
-    ).toHaveCount(0);
+    await expect(prompt(page)).toHaveCount(0);
     // The form must still be there to be filled in.
     await expect(page.locator("#fullName")).toBeVisible();
   });
@@ -768,26 +801,31 @@ test.describe("donation prompt regressions", () => {
     page,
     context,
   }) => {
-    // 20s timer, plus margin, plus two page loads — one of them /donate's.
-    test.setTimeout(120_000);
-
+    // Both halves matter. Asserting only that /donate stays clear would pass
+    // just as well if the prompt stopped working entirely, so /about proves
+    // the timer still fires.
     const donatePage = page;
     const controlPage = await context.newPage();
+
+    await donatePage.clock.install();
+    await controlPage.clock.install();
 
     await Promise.all([
       donatePage.goto("/donate", { waitUntil: "domcontentloaded" }),
       controlPage.goto("/about", { waitUntil: "domcontentloaded" }),
     ]);
 
-    const prompt = (p: typeof page) =>
-      p.getByRole("button", { name: /close donate dialog/i });
-
-    // Both pages wait out the same timer concurrently.
     await Promise.all([
-      expect(prompt(controlPage)).toBeVisible({ timeout: 45_000 }),
-      donatePage.waitForTimeout(30_000),
+      waitForHydration(donatePage),
+      waitForHydration(controlPage),
     ]);
 
+    await Promise.all([
+      donatePage.clock.fastForward(PAST_THE_DELAY),
+      controlPage.clock.fastForward(PAST_THE_DELAY),
+    ]);
+
+    await expect(prompt(controlPage)).toBeVisible();
     await expect(prompt(donatePage)).toHaveCount(0);
 
     await controlPage.close();
@@ -806,8 +844,7 @@ test.describe("donation prompt regressions", () => {
   test("stays closed on the trailing-slash form the host redirects to", async ({
     page,
   }) => {
-    test.setTimeout(90_000);
-
+    await page.clock.install();
     const response = await page.goto("/donate/", {
       waitUntil: "domcontentloaded",
     });
@@ -816,11 +853,10 @@ test.describe("donation prompt regressions", () => {
     // its silence would mean nothing.
     expect(response?.status(), "/donate/ must serve the donate page").toBe(200);
     await expect(page.locator("h1").first()).toBeVisible();
+    await waitForHydration(page);
 
-    await page.waitForTimeout(30_000);
+    await page.clock.fastForward(PAST_THE_DELAY);
 
-    await expect(
-      page.getByRole("button", { name: /close donate dialog/i })
-    ).toHaveCount(0);
+    await expect(prompt(page)).toHaveCount(0);
   });
 });
