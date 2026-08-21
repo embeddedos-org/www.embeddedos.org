@@ -17,17 +17,29 @@ Options -Indexes
 
 ErrorDocument 404 /404.html
 
-# The careers endpoint accepts POST and nothing else.
+# Do not add <Limit> or <LimitExcept> here.
 #
-# Where PHP runs, this only removes a method the script already refuses. Where
-# it does not, it matters: Apache serves an unhandled .php as plain text, and a
-# GET would return the endpoint's source. Verified locally — the static server
-# answers GET /api/apply.php with 200 and Content-Type application/x-httpd-php.
+# This file previously carried:
 #
-# The file holds no credential, because sending goes through the local MTA
-# rather than authenticated SMTP, so this protects logic rather than a secret.
-<Files "apply.php">
-    <LimitExcept POST>
-        Require all denied
-    </LimitExcept>
-</Files>
+#     <Files "apply.php">
+#         <LimitExcept POST>
+#             Require all denied
+#         </LimitExcept>
+#     </Files>
+#
+# to stop a GET returning the endpoint's source on a host without PHP. On
+# Apache 2.4 that behaved exactly as intended — GET 403, POST executed — and it
+# was tested there. This host runs LiteSpeed, which denied *every* method
+# including POST, so /api/apply.php answered 403 to the form itself and every
+# application fell back to the mail draft.
+#
+# Measured against the live site, which is what settled it: GET and POST both
+# 403, while /api/nonexistent.php returned 404 and POST to a static file
+# returned 200 — so the denial was scoped to this rule rather than a
+# server-wide policy.
+#
+# The method restriction was never load-bearing. apply.php answers a non-POST
+# with 405 itself, and it holds no credential, because sending goes through the
+# local MTA rather than authenticated SMTP. Protecting the source of an
+# open-source file was not worth a directive whose meaning changes between the
+# server it was tested on and the server it runs on.
