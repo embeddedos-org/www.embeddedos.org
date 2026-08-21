@@ -16,6 +16,7 @@
  * `pnpm prerender` against an existing dist/public.
  */
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
@@ -27,7 +28,25 @@ const DIST = path.join(ROOT, "dist", "public");
 const APP_TSX = path.join(ROOT, "client", "src", "App.tsx");
 const ORIGIN = process.env.SITE_ORIGIN ?? "https://www.embeddedos.org";
 const PORT = Number(process.env.PRERENDER_PORT ?? 41234);
-const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? 4);
+/**
+ * Prerendering 95 routes is the largest single cost in the verification gate —
+ * 119s of a 149s `pnpm build` at the old fixed default of 4, which is most of
+ * the reason the gate ran out of its budget before reaching the e2e and
+ * performance categories and reported both as SKIP.
+ *
+ * Scaled to the machine instead. Measured here, on 8 cores: 4 workers 119s,
+ * 6 workers 97s, 8 workers 74s, with 95/95 rendered and 0 thin every time —
+ * each route is an independent page render, so concurrency changes how long it
+ * takes and not what comes out.
+ *
+ * Clamped at both ends: never fewer than 2, so a single-core runner still makes
+ * progress, and never more than 8, because past that the browser's own threads
+ * start competing and the wall clock stops improving.
+ */
+const CONCURRENCY = Number(
+  process.env.PRERENDER_CONCURRENCY ??
+    Math.min(8, Math.max(2, os.availableParallelism?.() ?? os.cpus().length))
+);
 
 // <link rel="modulepreload"> hrefs present in the built shell. Anything beyond
 // this set was appended at runtime by Vite's async chunk loader and must not be
