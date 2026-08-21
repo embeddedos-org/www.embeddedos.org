@@ -29,12 +29,23 @@ const REMOTE = "origin";
 
 const PUSH = process.argv.includes("--push");
 
-const git = (args, opts = {}) =>
-  execFileSync("git", args, {
+/**
+ * Run git and return its stdout, or "" when stdout was not captured.
+ *
+ * The push step passes `stdio: ["ignore", "inherit", "inherit"]` so git's
+ * progress reaches the terminal, and execFileSync then returns null rather
+ * than a string. Calling .trim() on that threw, so `--push` crashed every time
+ * — after the push had already succeeded, which made it look as though the
+ * deploy had failed when the branch was published.
+ */
+const git = (args, opts = {}) => {
+  const out = execFileSync("git", args, {
     cwd: opts.cwd ?? ROOT,
     encoding: "utf8",
     stdio: opts.stdio ?? ["ignore", "pipe", "pipe"],
-  }).trim();
+  });
+  return typeof out === "string" ? out.trim() : "";
+};
 
 const die = msg => {
   console.error(`\n[deploy] ${msg}\n`);
