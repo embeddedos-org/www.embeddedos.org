@@ -27,7 +27,7 @@
     "test:security": "vitest run tests/security",
     "test:perf": "vitest run tests/performance",
     "test:server": "vitest run server/",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test e2e/controls-interaction.spec.ts e2e/journeys.spec.ts e2e/links-and-controls.spec.ts e2e/link-destinations.spec.ts",
     "test:smoke": "playwright test e2e/smoke.spec.ts",
     "test:regression": "playwright test e2e/regression.spec.ts",
     "test:a11y": "playwright test e2e/ui-ux.spec.ts",
@@ -36,8 +36,9 @@
     "test:journeys": "playwright test e2e/journeys.spec.ts e2e/links-and-controls.spec.ts",
     "test:controls": "playwright test e2e/controls-interaction.spec.ts",
     "test:links": "LINK_SWEEP=1 playwright test e2e/link-destinations.spec.ts",
-    "test:all": "pnpm check && pnpm lint && pnpm build && pnpm test && pnpm test:php && pnpm audit:site && pnpm audit:mobile && pnpm test:e2e",
-    "test:php": "php tests/php/apply.test.php"
+    "test:all": "pnpm check && pnpm lint && pnpm build && pnpm test && pnpm test:php && pnpm audit:site && pnpm audit:mobile && pnpm test:e2e:all",
+    "test:php": "php tests/php/apply.test.php",
+    "test:e2e:all": "playwright test"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",

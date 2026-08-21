@@ -67,3 +67,33 @@ passed, failed and skipped. A skipped test is not a passing test.
 
 Any test that could not be run in this environment is named, with the reason,
 and marked `NOT RUN` or `UNKNOWN` per [VERIFY.md](./VERIFY.md).
+
+## Which script owns which matrix row
+
+The ten-row matrix in [VERIFY.md](./VERIFY.md) maps to these scripts. Every
+Playwright spec is owned by exactly one row, which is the point:
+
+| Row         | Script             | Spec                                                                          |
+| ----------- | ------------------ | ----------------------------------------------------------------------------- |
+| Unit        | `test:unit`        | `tests/unit/`                                                                 |
+| Integration | `test:integration` | `tests/integration/`                                                          |
+| Functional  | `test:functional`  | `functional.spec.ts`                                                          |
+| Acceptance  | `test:acceptance`  | `acceptance-adgrants.spec.ts`                                                 |
+| Security    | `test:security`    | `tests/security/`                                                             |
+| Performance | `test:perf`        | `tests/performance/`                                                          |
+| Smoke       | `test:smoke`       | `smoke.spec.ts`                                                               |
+| Regression  | `test:regression`  | `regression.spec.ts`                                                          |
+| UI / UX     | `test:a11y`        | `ui-ux.spec.ts`                                                               |
+| End-to-end  | `test:e2e`         | `controls-interaction`, `journeys`, `links-and-controls`, `link-destinations` |
+
+`test:e2e` deliberately does **not** run every spec. It used to, which meant the
+verification gate ran `smoke`, `regression`, `functional`, `acceptance` and
+`ui-ux` once as their own rows and then a second time inside the end-to-end row
+— about 151s of a 527s matrix spent repeating work already done. The gate ran
+out of its budget before reaching the last categories and reported them SKIP, so
+duplicating five rows cost the results of two others.
+
+Use **`test:e2e:all`** to run every spec in one command; `test:all` calls it.
+Both `test:controls` and `test:links` still target their specs directly, and
+`test:links` is the only way `link-destinations` actually runs — it skips
+itself unless `LINK_SWEEP` is set, and wants `--workers=1`.
