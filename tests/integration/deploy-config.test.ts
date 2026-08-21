@@ -57,6 +57,42 @@ describe("the build ships the hosting config", () => {
   });
 });
 
+describe("the hosting config uses only directives this host honours", () => {
+  /**
+   * <Limit> and <LimitExcept> are banned here, by measurement rather than
+   * taste.
+   *
+   * `<Files "apply.php"><LimitExcept POST>Require all denied` shipped to
+   * restrict the careers endpoint to POST. On Apache 2.4 it did exactly that —
+   * GET 403, POST executed — and it was tested there before shipping. The host
+   * runs LiteSpeed, which denied every method including POST, so the endpoint
+   * answered 403 to the form itself and every application silently fell back to
+   * the mail draft.
+   *
+   * The rule was scoped, not incidental: on the live site GET and POST both
+   * returned 403 for apply.php, while /api/nonexistent.php returned 404 and a
+   * POST to a static file returned 200.
+   *
+   * apply.php enforces the method itself with a 405, which is portable because
+   * it is code rather than a server directive.
+   */
+  it("contains no <Limit> or <LimitExcept> block", () => {
+    const htaccess = fs.readFileSync(HTACCESS, "utf8");
+
+    // Comments explain the ban and necessarily name the directive, so only
+    // uncommented lines are judged.
+    const active = htaccess
+      .split("\n")
+      .filter(l => !l.trim().startsWith("#"))
+      .join("\n");
+
+    expect(
+      active,
+      "<Limit>/<LimitExcept> denies every method on LiteSpeed — see the note in .htaccess"
+    ).not.toMatch(/<\s*Limit(Except)?[\s>]/i);
+  });
+});
+
 describe("unknown URLs return a real 404", () => {
   it("declares an ErrorDocument pointing at the prerendered 404 page", () => {
     expect(readHtaccess()).toMatch(
