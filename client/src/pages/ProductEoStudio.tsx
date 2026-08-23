@@ -11,7 +11,7 @@ export default function ProductEoStudio() {
       gradient="from-violet-500/20 to-purple-600/20"
       lang="TypeScript / Electron"
       github="embeddedos-org/eostudio"
-      heroImage="/manus-storage/product-eostudio-ide_2fc95a2d.jpg"
+      heroImage="/media/product-eostudio-ide_2fc95a2d.jpg"
       stackHighlight="build / ide / sim"
       stats={[
         { value: "197", label: "EoS API Completions" },

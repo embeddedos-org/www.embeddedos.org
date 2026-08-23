@@ -96,7 +96,7 @@ describe("javascript budgets", () => {
 });
 
 describe("image budgets", () => {
-  const IMG_DIR = path.join(DIST, "manus-storage");
+  const IMG_DIR = path.join(DIST, "media");
 
   it("no single image exceeds 260 KB", () => {
     const oversized = fs

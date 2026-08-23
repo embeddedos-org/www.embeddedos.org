@@ -44,7 +44,7 @@ import {
 } from "lucide-react";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT, REPO_COUNT } from "../data/stack";
 
-const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
+const LOGO_MARK = "/media/embeddedos-logo-mark_bc053888.jpg";
 
 // ─── NAVIGATION DATA (from real GitHub repos) ──────────────────────────────
 

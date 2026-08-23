@@ -11,7 +11,7 @@ export default function ProductEoS() {
       gradient="from-cyan-500/20 to-blue-600/20"
       lang="C11"
       github="embeddedos-org/EoS"
-      heroImage="/manus-storage/product-eos-kernel_0ca24d8d.jpg"
+      heroImage="/media/product-eos-kernel_0ca24d8d.jpg"
       stackHighlight="kernel"
       stats={[
         { value: "7", label: "Supported Architectures" },

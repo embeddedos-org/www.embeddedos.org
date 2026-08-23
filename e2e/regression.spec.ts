@@ -127,9 +127,7 @@ test.describe("server regressions", () => {
   test("images do not 500 without Manus Forge credentials", async ({
     request,
   }) => {
-    const res = await request.get(
-      "/manus-storage/embeddedos-logo-mark_bc053888.jpg"
-    );
+    const res = await request.get("/media/embeddedos-logo-mark_bc053888.jpg");
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"]).toMatch(/^image\//);
   });

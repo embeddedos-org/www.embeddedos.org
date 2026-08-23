@@ -652,7 +652,7 @@ export default function EcadHardware() {
         <img
           loading="lazy"
           decoding="async"
-          src="/manus-storage/product-ecad-hardware_f5806032.jpg"
+          src="/media/product-ecad-hardware_f5806032.jpg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"

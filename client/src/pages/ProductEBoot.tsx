@@ -11,7 +11,7 @@ export default function ProductEBoot() {
       gradient="from-orange-500/20 to-red-600/20"
       lang="C"
       github="embeddedos-org/eboot"
-      heroImage="/manus-storage/product-eboot_90e7936e.jpg"
+      heroImage="/media/product-eboot_90e7936e.jpg"
       stackHighlight="ebootloader"
       stats={[
         { value: "10", label: "Architectures" },

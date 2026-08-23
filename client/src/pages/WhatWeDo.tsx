@@ -427,7 +427,7 @@ export default function WhatWeDo() {
         <img
           loading="lazy"
           decoding="async"
-          src="/manus-storage/what-we-do-illustration_4c2ad2f7.jpg"
+          src="/media/what-we-do-illustration_4c2ad2f7.jpg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"

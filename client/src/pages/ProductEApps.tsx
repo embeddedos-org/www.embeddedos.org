@@ -11,7 +11,7 @@ export default function ProductEApps() {
       gradient="from-orange-500/20 to-amber-600/20"
       lang="C++ / eUI"
       github="embeddedos-org/eapps"
-      heroImage="/manus-storage/product-eapps_89b01d4a.jpg"
+      heroImage="/media/product-eapps_89b01d4a.jpg"
       stackHighlight="app layer"
       stats={[
         { value: "60+", label: "First-Party Apps" },

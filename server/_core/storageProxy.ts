@@ -4,31 +4,19 @@ import type { Express } from "express";
 import { ENV } from "./env";
 
 /**
- * Where a /manus-storage/<key> asset may live on disk. This route is registered
+ * Where a /media/<key> asset may live on disk. This route is registered
  * before the static handler, so without these checks every image on the site
  * depends on the Manus Forge storage API being configured — and 500s when it
- * is not. Assets committed under client/public/manus-storage are served
+ * is not. Assets committed under client/public/media are served
  * directly and the proxy is only used for keys that are not in the build.
  */
 export function localAssetDirs(): string[] {
   return [
     // Production: the server bundle sits at dist/index.js next to dist/public.
-    path.resolve(import.meta.dirname, "public", "manus-storage"),
+    path.resolve(import.meta.dirname, "public", "media"),
     // Development / running from source.
-    path.resolve(
-      import.meta.dirname,
-      "../..",
-      "client",
-      "public",
-      "manus-storage"
-    ),
-    path.resolve(
-      import.meta.dirname,
-      "../..",
-      "dist",
-      "public",
-      "manus-storage"
-    ),
+    path.resolve(import.meta.dirname, "../..", "client", "public", "media"),
+    path.resolve(import.meta.dirname, "../..", "dist", "public", "media"),
   ];
 }
 
@@ -44,7 +32,7 @@ export function resolveLocalAsset(key: string): string | null {
 }
 
 export function registerStorageProxy(app: Express) {
-  app.get("/manus-storage/*", async (req, res) => {
+  app.get("/media/*", async (req, res) => {
     const key = (req.params as Record<string, string>)[0];
     if (!key) {
       res.status(400).send("Missing storage key");

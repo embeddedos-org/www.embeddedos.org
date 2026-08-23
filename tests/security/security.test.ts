@@ -47,12 +47,12 @@ afterAll(() => server?.kill());
 
 describe("path traversal", () => {
   const payloads = [
-    "/manus-storage/../../package.json",
-    "/manus-storage/..%2f..%2fpackage.json",
-    "/manus-storage/....//....//package.json",
+    "/media/../../package.json",
+    "/media/..%2f..%2fpackage.json",
+    "/media/....//....//package.json",
     "/../package.json",
     "/assets/../../package.json",
-    "/manus-storage/%2e%2e%2f%2e%2e%2fpackage.json",
+    "/media/%2e%2e%2f%2e%2e%2fpackage.json",
   ];
 
   it.each(payloads)("never discloses source files via %s", async p => {
@@ -192,12 +192,9 @@ describe("server behaviour", () => {
   });
 
   it("rejects unsupported methods on static assets", async () => {
-    const res = await fetch(
-      BASE + "/manus-storage/embeddedos-logo-mark_bc053888.jpg",
-      {
-        method: "DELETE",
-      }
-    );
+    const res = await fetch(BASE + "/media/embeddedos-logo-mark_bc053888.jpg", {
+      method: "DELETE",
+    });
     expect(res.status).toBeGreaterThanOrEqual(400);
   });
 

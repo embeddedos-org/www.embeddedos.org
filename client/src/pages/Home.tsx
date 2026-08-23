@@ -50,10 +50,10 @@ const ProductMarquee = React.lazy(() => import("../components/ProductMarquee"));
 const BootPipeline = React.lazy(() => import("../components/BootPipeline"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
 
-const HERO_IMG = "/manus-storage/hero-background_1bafea1c.jpg";
-const ARCH_IMG = "/manus-storage/architecture-diagram-hero_72436b3f.jpg";
-const COMMUNITY_IMG = "/manus-storage/community-illustration-eos_6f39c9db.jpg";
-const OPEN_SOURCE_IMG = "/manus-storage/what-we-do-illustration_4c2ad2f7.jpg";
+const HERO_IMG = "/media/hero-background_1bafea1c.jpg";
+const ARCH_IMG = "/media/architecture-diagram-hero_72436b3f.jpg";
+const COMMUNITY_IMG = "/media/community-illustration-eos_6f39c9db.jpg";
+const OPEN_SOURCE_IMG = "/media/what-we-do-illustration_4c2ad2f7.jpg";
 
 const STATS = [
   { value: REPO_COUNT, label: "Repositories", suffix: "", color: "#F97316" },

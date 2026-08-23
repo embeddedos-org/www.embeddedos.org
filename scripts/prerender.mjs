@@ -493,16 +493,6 @@ async function main() {
     fs.copyFileSync(notFoundSnapshot, path.join(DIST, "404.html"));
   }
 
-  // Vite copies publicDir wholesale, which drags the Manus dev debug collector
-  // (~25 KB) into the public build even though only the dev-only plugin ever
-  // injects it. Drop it from the deployed output.
-  const devArtifacts = path.join(DIST, "__manus__");
-  if (fs.existsSync(devArtifacts)) {
-    fs.rmSync(devArtifacts, { recursive: true, force: true });
-    console.log(
-      "[prerender] removed dev-only __manus__/ from the build output"
-    );
-  }
   const staleShell = path.join(DIST, "app-shell.html");
   if (fs.existsSync(staleShell)) fs.rmSync(staleShell);
 

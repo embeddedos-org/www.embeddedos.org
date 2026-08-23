@@ -271,19 +271,19 @@ There is no `.env.example` in the repository. The following are the variables
 referenced in the source; the site builds and serves its static content without
 them, but the API features that use them are inert when unset.
 
-| Variable                                           | Used for                                                                        |
-| -------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `PORT`                                             | Server port (default 3000; the server scans forward for a free one)             |
-| `NODE_ENV`                                         | `development` / `production`                                                    |
-| `DATABASE_URL`                                     | MySQL connection for drizzle                                                    |
-| `JWT_SECRET`                                       | Cookie/session signing                                                          |
-| `OAUTH_SERVER_URL`, `OWNER_OPEN_ID`, `VITE_APP_ID` | OAuth integration                                                               |
-| `STRIPE_SECRET_KEY`                                | Donations                                                                       |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | Outbound email                                                                  |
-| `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY` | Legacy LLM backend — **unused**, eBot answers in the browser                    |
-| `SITE_ORIGIN`                                      | Canonical origin used by the prerenderer (default `https://www.embeddedos.org`) |
-| `PRERENDER_PORT`, `PRERENDER_CONCURRENCY`          | Prerender tuning                                                                |
-| `E2E_PORT`                                         | Port Playwright's server uses (default 42200)                                   |
+| Variable                                           | Used for                                                                                                                                                                                            |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`                                             | Server port (default 3000; the server scans forward for a free one)                                                                                                                                 |
+| `NODE_ENV`                                         | `development` / `production`                                                                                                                                                                        |
+| `DATABASE_URL`                                     | MySQL connection for drizzle                                                                                                                                                                        |
+| `JWT_SECRET`                                       | Cookie/session signing                                                                                                                                                                              |
+| `OAUTH_SERVER_URL`, `OWNER_OPEN_ID`, `VITE_APP_ID` | OAuth integration                                                                                                                                                                                   |
+| `STRIPE_SECRET_KEY`                                | Donations                                                                                                                                                                                           |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | Outbound email                                                                                                                                                                                      |
+| `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY` | Manus Forge API — backs the dev/test-only owner-notification and image-storage-proxy code paths in `server/_core/`. Not used in production; the live careers form posts to `/api/apply.php` instead |
+| `SITE_ORIGIN`                                      | Canonical origin used by the prerenderer (default `https://www.embeddedos.org`)                                                                                                                     |
+| `PRERENDER_PORT`, `PRERENDER_CONCURRENCY`          | Prerender tuning                                                                                                                                                                                    |
+| `E2E_PORT`                                         | Port Playwright's server uses (default 42200)                                                                                                                                                       |
 
 Database schema changes go through `pnpm db:push` (drizzle-kit generate +
 migrate).

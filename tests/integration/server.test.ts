@@ -125,32 +125,28 @@ describe("crawler files", () => {
 
 describe("storage proxy", () => {
   it("serves committed images from disk without Forge credentials", async () => {
-    const res = await fetch(
-      BASE + "/manus-storage/embeddedos-logo-mark_bc053888.jpg"
-    );
+    const res = await fetch(BASE + "/media/embeddedos-logo-mark_bc053888.jpg");
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toMatch(/^image\//);
   });
 
   it("sets a long cache lifetime on immutable assets", async () => {
-    const res = await fetch(
-      BASE + "/manus-storage/embeddedos-logo-mark_bc053888.jpg"
-    );
+    const res = await fetch(BASE + "/media/embeddedos-logo-mark_bc053888.jpg");
     expect(res.headers.get("cache-control")).toMatch(/max-age=\d{5,}/);
   });
 
   it("404s an unknown storage key rather than 500ing", async () => {
-    const res = await fetch(BASE + "/manus-storage/nope-not-real-1234.jpg");
+    const res = await fetch(BASE + "/media/nope-not-real-1234.jpg");
     expect(res.status).toBe(404);
   });
 
   it("every image referenced by the build is actually served", async () => {
-    const dist = path.join(ROOT, "dist", "public", "manus-storage");
+    const dist = path.join(ROOT, "dist", "public", "media");
     const files = fs.readdirSync(dist);
     expect(files.length).toBeGreaterThan(15);
     const bad: string[] = [];
     for (const f of files) {
-      const res = await fetch(`${BASE}/manus-storage/${f}`);
+      const res = await fetch(`${BASE}/media/${f}`);
       if (
         res.status !== 200 ||
         !/^image\//.test(res.headers.get("content-type") ?? "")

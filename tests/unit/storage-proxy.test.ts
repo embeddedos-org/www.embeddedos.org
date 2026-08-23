@@ -1,5 +1,5 @@
 /**
- * Unit tests for the /manus-storage asset resolver.
+ * Unit tests for the /media asset resolver.
  *
  * This resolver is what stops every image on the site from 500ing when the
  * Manus Forge storage credentials are absent, and it is the one place that
@@ -15,7 +15,7 @@ import {
 
 const ASSET_DIR = path.resolve(
   import.meta.dirname,
-  "../../client/public/manus-storage"
+  "../../client/public/media"
 );
 const anExistingAsset = fs.existsSync(ASSET_DIR)
   ? fs.readdirSync(ASSET_DIR).find(f => f.endsWith(".jpg"))
@@ -31,7 +31,7 @@ describe("localAssetDirs", () => {
   it("includes the committed client/public location", () => {
     expect(
       localAssetDirs().some(d =>
-        d.includes(path.join("client", "public", "manus-storage"))
+        d.includes(path.join("client", "public", "media"))
       )
     ).toBe(true);
   });
@@ -39,10 +39,7 @@ describe("localAssetDirs", () => {
 
 describe("resolveLocalAsset", () => {
   it("resolves an asset that is committed to the repo", () => {
-    expect(
-      anExistingAsset,
-      "no committed manus-storage assets found"
-    ).toBeDefined();
+    expect(anExistingAsset, "no committed media assets found").toBeDefined();
     const resolved = resolveLocalAsset(anExistingAsset!);
     expect(resolved).not.toBeNull();
     expect(fs.existsSync(resolved!)).toBe(true);

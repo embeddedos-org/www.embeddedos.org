@@ -6,7 +6,7 @@
  * tabs, bookmarks and phone home-screen shortcuts fell back to a blank glyph.
  * That is the "missing logo" — the header mark itself renders correctly.
  *
- * Sources client/public/manus-storage/embeddedos-logo-mark_bc053888.jpg, the
+ * Sources client/public/media/embeddedos-logo-mark_bc053888.jpg, the
  * same 256x256 mark the navbar uses, so the tab icon cannot drift from the
  * header. Outputs into client/public/ where vite copies it to the build root,
  * which is where browsers look for /favicon.ico by convention.
@@ -25,7 +25,7 @@ import sharp from "sharp";
 const ROOT = path.resolve(import.meta.dirname, "..");
 const SOURCE = path.join(
   ROOT,
-  "client/public/manus-storage/embeddedos-logo-mark_bc053888.jpg"
+  "client/public/media/embeddedos-logo-mark_bc053888.jpg"
 );
 const OUT = path.join(ROOT, "client/public");
 

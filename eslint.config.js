@@ -30,11 +30,6 @@ export default tseslint.config(
       "test-results/**",
       "patches/**",
       "drizzle/**",
-
-      // Vendored Manus platform dev tooling, not our source. scripts/prerender.mjs
-      // deletes it from the build output and e2e/regression.spec.ts asserts it
-      // never ships, so linting it would only churn third-party code.
-      "client/public/__manus__/**",
     ],
   },
 

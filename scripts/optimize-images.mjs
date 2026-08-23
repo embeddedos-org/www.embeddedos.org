@@ -1,5 +1,5 @@
 /**
- * One-off image optimizer for client/public/manus-storage.
+ * One-off image optimizer for client/public/media.
  *
  * The source assets are wildly oversized for how they are displayed — the site
  * logo was a 1920x1920 / 119 KB JPEG rendered into a 40px box, and the homepage
@@ -22,7 +22,7 @@ const DIR = path.resolve(
   "..",
   "client",
   "public",
-  "manus-storage"
+  "media"
 );
 
 // Max width by role. Anything not matched falls back to CONTENT_MAX.

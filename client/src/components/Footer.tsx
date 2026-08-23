@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
 
-const LOGO_MARK = "/manus-storage/embeddedos-logo-mark_bc053888.jpg";
+const LOGO_MARK = "/media/embeddedos-logo-mark_bc053888.jpg";
 
 /**
  * The footer is the site's organisational map; the header is its product menu.
