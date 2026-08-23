@@ -98,11 +98,6 @@ const REPOS = [
     desc: "Build tool & SDK",
     href: "https://github.com/embeddedos-org/ebuild",
   },
-  {
-    name: "www.embeddedos.org",
-    desc: "This website",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org",
-  },
 ];
 
 export default function GetInvolved() {

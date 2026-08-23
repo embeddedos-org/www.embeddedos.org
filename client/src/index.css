@@ -1371,3 +1371,19 @@ button:active:not(:disabled) {
 .text-gray-500 {
   color: #9ca3af;
 }
+
+/* --- Focus indicator must appear instantly, not fade in --------------------
+   `@layer base`'s `:focus-visible` rule above sets a 2px outline, but many
+   interactive elements (nav triggers, health-device tabs, footer links) also
+   carry Tailwind's `transition-all`/`transition-colors` utilities for their
+   hover states. Those utilities live in Tailwind's `utilities` layer, which
+   always outranks `base` regardless of selector specificity or source order —
+   so on those elements the outline-width Tailwind's own layer order lets win
+   is the *utility's*, and it interpolates from 0 to the full 2px over the
+   utility's own duration instead of snapping in. A keyboard user tabbing at a
+   normal pace — and this site's own "focused elements are visibly indicated"
+   e2e check — can land on the very frame where the ring hasn't appeared yet.
+   Unlayered, like the floors above, so it outranks those utilities too. */
+:focus-visible {
+  transition-duration: 0s;
+}

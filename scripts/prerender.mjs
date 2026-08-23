@@ -90,6 +90,60 @@ function startServer(shell) {
   });
 }
 
+/**
+ * Wait for every same-DOM iframe (third-party embeds — currently only the
+ * Zeffy donation form on /donate) to fire its `load` event, so a slow embed
+ * does not get snapshotted mid-request.
+ *
+ * Donate.tsx has its own 6-second client-side timeout that shows a "could not
+ * load" fallback if `onLoad` hasn't fired yet — reasonable for a real visitor,
+ * who keeps that timer running and self-corrects the moment the iframe does
+ * load. A prerender snapshot has no such second chance: whatever is in the DOM
+ * when we serialise it ships as static HTML to every visitor and crawler
+ * (including an Ad Grants reviewer) until the next deploy. This is why one
+ * build shipped "The embedded donation form could not load" as the permanent,
+ * un-fixable-by-refresh state of the live page — the Zeffy iframe simply
+ * hadn't loaded by the time that build's snapshot was taken.
+ *
+ * Bounded well past the component's own 6s timeout (so a late `load` still
+ * arrives while we're waiting, which flips `embedFailed` back to false and
+ * self-heals the DOM before we capture it) but not unbounded: if the embed is
+ * genuinely unreachable from the build network, snapshotting proceeds anyway
+ * with a warning rather than hanging the whole build.
+ */
+async function waitForIframes(page, timeoutMs = 20_000) {
+  const hasIframes = (await page.locator("iframe[src]").count()) > 0;
+  if (!hasIframes) return;
+
+  await page.evaluate(() => {
+    for (const frame of document.querySelectorAll("iframe[src]")) {
+      if (frame.dataset.prerenderWatched) continue;
+      frame.dataset.prerenderWatched = "1";
+      frame.addEventListener(
+        "load",
+        () => {
+          frame.dataset.prerenderLoaded = "1";
+        },
+        { once: true }
+      );
+    }
+  });
+
+  try {
+    await page.waitForFunction(
+      () =>
+        [...document.querySelectorAll("iframe[src]")].every(
+          f => f.dataset.prerenderLoaded === "1"
+        ),
+      { timeout: timeoutMs }
+    );
+  } catch {
+    console.warn(
+      `[prerender] an iframe did not report loaded within ${timeoutMs}ms — snapshotting as-is`
+    );
+  }
+}
+
 /** Wait for React to mount and for in-view animations to have played. */
 async function settle(page) {
   await page.waitForFunction(
@@ -101,6 +155,10 @@ async function settle(page) {
     },
     { timeout: 30_000 }
   );
+
+  // Give slow third-party embeds (the Zeffy donation iframe) a real chance to
+  // finish loading before anything below scrolls the page or reads its text.
+  await waitForIframes(page);
 
   // framer-motion's whileInView sections and the count-up statistics only start
   // once an IntersectionObserver reports them in view, so the whole page has to
@@ -397,6 +455,15 @@ async function main() {
         const textLength = await page.evaluate(
           () => document.getElementById("root").innerText.trim().length
         );
+        // A snapshot that baked in Donate.tsx's "embed failed to load"
+        // fallback is not a rendering failure — the route still produced
+        // valid, text-rich HTML — but it is a route that must not ship: it
+        // permanently tells every visitor and crawler the donation form is
+        // broken until the next deploy. waitForIframes() above exists to
+        // prevent this; this check exists so it fails loudly if it doesn't.
+        const degraded = html.includes(
+          "The embedded donation form could not load"
+        );
         results.push({
           route,
           ok: true,
@@ -405,6 +472,7 @@ async function main() {
           heading: meta.heading,
           target,
           errors,
+          degraded,
         });
       } catch (err) {
         results.push({ route, ok: false, error: err.message, errors });
@@ -441,6 +509,7 @@ async function main() {
   results.sort((a, b) => a.route.localeCompare(b.route));
   const failed = results.filter(r => !r.ok);
   const thin = results.filter(r => r.ok && r.textLength < 500);
+  const degraded = results.filter(r => r.ok && r.degraded);
 
   for (const r of results) {
     if (!r.ok) console.log(`  FAIL  ${r.route.padEnd(38)} ${r.error}`);
@@ -450,6 +519,11 @@ async function main() {
       `  THIN  ${r.route.padEnd(38)} only ${r.textLength} chars of text`
     );
   }
+  for (const r of degraded) {
+    console.log(
+      `  DEGRADED  ${r.route.padEnd(34)} shipped the "embed failed to load" fallback`
+    );
+  }
 
   const ok = results.filter(r => r.ok);
   const avgText = ok.length
@@ -457,11 +531,20 @@ async function main() {
     : 0;
   console.log(
     `[prerender] ${ok.length}/${results.length} rendered · avg ${avgText} chars of visible text · ` +
-      `${failed.length} failed · ${thin.length} thin`
+      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded`
   );
 
   if (failed.length) {
     console.error(`[prerender] ${failed.length} route(s) failed to render.`);
+    process.exitCode = 1;
+  }
+  if (degraded.length) {
+    console.error(
+      `[prerender] ${degraded.length} route(s) shipped a degraded snapshot ` +
+        `(a third-party embed hadn't loaded when the page was captured). ` +
+        `Re-run pnpm prerender — a transient network hiccup at build time, ` +
+        `not a code change, is the usual cause.`
+    );
     process.exitCode = 1;
   }
 }

@@ -76,9 +76,14 @@ for (const route of ROUTES) {
     test.setTimeout(SWEEP_TIMEOUT_MS);
 
     // The donate popup fires 20s in and would swallow clicks mid-sweep.
-    await context.addInitScript(() =>
-      localStorage.setItem("eos-donate-dismissed", String(Date.now()))
-    );
+    await context.addInitScript(() => {
+      try {
+        localStorage.setItem("eos-donate-dismissed", String(Date.now()));
+      } catch {
+        // Some frames (e.g. third-party donation iframes) block storage access;
+        // this init script only needs to succeed in the top-level document.
+      }
+    });
 
     const errors: string[] = [];
     page.on("pageerror", e => errors.push(`${route} :: ${String(e)}`));
@@ -134,9 +139,14 @@ test.describe("site chrome controls", () => {
     }) => {
       test.setTimeout(SWEEP_TIMEOUT_MS);
 
-      await context.addInitScript(() =>
-        localStorage.setItem("eos-donate-dismissed", String(Date.now()))
-      );
+      await context.addInitScript(() => {
+        try {
+          localStorage.setItem("eos-donate-dismissed", String(Date.now()));
+        } catch {
+          // Some frames (e.g. third-party donation iframes) block storage access;
+          // this init script only needs to succeed in the top-level document.
+        }
+      });
 
       const errors: string[] = [];
       page.on("pageerror", e => errors.push(`${route} :: ${String(e)}`));
