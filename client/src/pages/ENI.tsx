@@ -67,7 +67,7 @@ const pipeline = [
   {
     step: "06",
     title: "Output",
-    desc: "Decoded neural commands delivered via EIPC to EoS applications with <10ms end-to-end latency from spike to command.",
+    desc: "Decoded neural commands delivered via EIPC to EoS applications, ready for the actuator or downstream service to act on.",
   },
 ];
 

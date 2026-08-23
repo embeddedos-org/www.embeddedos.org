@@ -16,7 +16,7 @@ export default function ProductEAI() {
       stats={[
         { value: "3", label: "Model Formats (TFLite, ONNX, GGUF)" },
         { value: "< 5 mW", label: "Inference Power (NPU)" },
-        { value: "< 50 ms", label: "Inference Latency (vision)" },
+        { value: "4", label: "Inference Backends" },
         { value: "4-bit", label: "Quantization Support" },
       ]}
       workflow={[

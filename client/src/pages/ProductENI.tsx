@@ -17,7 +17,7 @@ export default function ProductENI() {
         { value: "1,024", label: "Simultaneous Channels" },
         { value: "30 kHz", label: "EEG Sample Rate" },
         { value: "100 kHz", label: "EMG Sample Rate" },
-        { value: "< 1 ms", label: "End-to-End Latency" },
+        { value: "24-bit", label: "ADC Resolution" },
       ]}
       workflow={[
         {
@@ -55,7 +55,7 @@ export default function ProductENI() {
         {
           title: "Motor BCI Prosthetic",
           scenario:
-            "Decoding 64-channel ECoG signals to control a robotic arm with < 10 ms end-to-end latency.",
+            "Decoding 64-channel ECoG signals in real time to control a robotic arm.",
           code: '// Motor BCI pipeline: ECoG → eNI → EIPC → eAI → arm\n#include <eni/eni.h>\n#include <eai/model.h>\n#include <eipc/eipc.h>\n\nvoid bci_pipeline_init(void) {\n    // Configure eNI for 64-channel ECoG\n    eni_config_t cfg = {\n        .modality    = ENI_MOD_ECOG,\n        .eeg_channels = 64,\n        .eeg_fs       = 30000,\n    };\n    eni_t eni = eni_open(&cfg);\n    eni_filter_bandpass(eni, 70.0f, 200.0f); // High-gamma band\n\n    // Load motor decoder\n    eai_model_t decoder = eai_model_load("motor_decoder_v3.eai",\n                                         EAI_BACKEND_NPU);\n\n    // Stream: eNI → eAI → robotic arm\n    eni_stream_to_eai(eni, decoder, arm_actuator_port);\n}',
         },
         {
@@ -100,8 +100,8 @@ export default function ProductENI() {
           desc: "Notch (50/60 Hz), bandpass, and common-average referencing applied in hardware before CPU.",
         },
         {
-          name: "< 1 ms End-to-End Latency",
-          desc: "From electrode to EIPC message in under 1 millisecond — critical for closed-loop BCI.",
+          name: "Hardware-Pipelined Signal Path",
+          desc: "Filtering and spike sorting run in the FPGA/DSP pipeline ahead of the CPU, so the electrode-to-EIPC path carries no software filtering overhead.",
         },
         {
           name: "Medical-Grade Isolation",
@@ -126,7 +126,11 @@ export default function ProductENI() {
         { key: "ADC Resolution", value: "24-bit" },
         { key: "Input Noise", value: "< 1 µVrms (0.5–300 Hz bandwidth)" },
         { key: "CMRR", value: "> 120 dB" },
-        { key: "Latency", value: "< 1 ms electrode to EIPC message" },
+        {
+          key: "Processing Path",
+          value:
+            "Hardware DSP/FPGA pipeline (filtering + spike sorting) ahead of the EIPC handoff",
+        },
         {
           key: "Safety",
           value:

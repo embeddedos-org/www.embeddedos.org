@@ -28,10 +28,10 @@ const directions = [
     color: "#A855F7",
     title: "Closed-Loop Neural Interfaces",
     horizon: "2026–2029",
-    desc: "Build the first closed-loop BCI system on EoS: real-time neural decoding → stimulation feedback loop with <5ms round-trip latency. Targeting motor cortex prosthetics and seizure detection/suppression.",
+    desc: "Build the first closed-loop BCI system on EoS: real-time neural decoding → stimulation feedback loop, targeting a round-trip latency under 5 ms. Targeting motor cortex prosthetics and seizure detection/suppression.",
     milestones: [
       "1024-channel spike sorting at 30 kHz on RK3588S NPU",
-      "Closed-loop stimulation with <5ms decode-to-stimulate latency",
+      "Closed-loop stimulation targeting <5ms decode-to-stimulate latency",
       "FDA Breakthrough Device designation pathway",
     ],
   },

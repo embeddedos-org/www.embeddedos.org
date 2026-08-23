@@ -5,7 +5,7 @@ export default function ProductEoS() {
     <ProductDetailPage
       badge="Kernel"
       title="EoS Kernel — Real-Time Embedded OS"
-      subtitle="7 Architectures · 33 HAL Drivers · < 1 µs IRQ Latency"
+      subtitle="7 Architectures · 33 HAL Drivers · Deterministic IRQ Handling"
       description="The deterministic, preemptive real-time kernel at the heart of every EoS device. Supports ARM Cortex-M/A/R, RISC-V, x86, MIPS, ARC, and Xtensa — with a unified HAL, capability-based security, and a < 4 KB minimum footprint."
       accent="#22D3EE"
       gradient="from-cyan-500/20 to-blue-600/20"
@@ -14,7 +14,7 @@ export default function ProductEoS() {
       heroImage="/manus-storage/product-eos-kernel_0ca24d8d.jpg"
       stackHighlight="kernel"
       stats={[
-        { value: "< 1 µs", label: "IRQ Latency (Cortex-M4)" },
+        { value: "7", label: "Supported Architectures" },
         { value: "33", label: "HAL Peripheral Classes" },
         { value: "41", label: "BSP Profiles" },
         { value: "< 4 KB", label: "Minimum Footprint" },
@@ -96,7 +96,7 @@ export default function ProductEoS() {
       features={[
         {
           name: "Preemptive RT Scheduler",
-          desc: "Priority-based preemptive scheduler with time-slicing. SMP and AMP multicore modes. Deterministic context switch < 200 ns.",
+          desc: "Priority-based preemptive scheduler with time-slicing. SMP and AMP multicore modes. Context-switch time is bounded and priority-driven, not left to chance.",
         },
         {
           name: "33 HAL Peripheral Classes",
@@ -148,7 +148,10 @@ export default function ProductEoS() {
           key: "Minimum Footprint",
           value: "< 4 KB flash, < 2 KB RAM (bare scheduler + HAL)",
         },
-        { key: "IRQ Latency", value: "< 1 µs on Cortex-M4 @ 168 MHz" },
+        {
+          key: "Interrupt Handling",
+          value: "Priority-based, deterministic ISR dispatch",
+        },
         {
           key: "Supported Architectures",
           value: "ARM Cortex-M/A/R, RISC-V RV32/RV64, x86, MIPS, ARC, Xtensa",

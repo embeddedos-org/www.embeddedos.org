@@ -220,7 +220,7 @@ const USE_CASES = [
     icon: Car,
     color: "#F97316",
     title: "Automotive & ADAS",
-    desc: "eRadar360 Aegis One fuses 4× 77 GHz FMCW radar, 8× cameras, and V2X on EoS. EAI runs the threat-detection neural network at <10 ms latency. EIPC safely routes CAN FD data between AUTOSAR partitions. eBuild cross-compiles the full stack for NXP S32K344.",
+    desc: "eRadar360 Aegis One fuses 4× 77 GHz FMCW radar, 8× cameras, and V2X on EoS. EAI runs the threat-detection neural network in real time. EIPC safely routes CAN FD data between AUTOSAR partitions. eBuild cross-compiles the full stack for NXP S32K344.",
     products: ["EoS", "EAI", "EIPC", "eBuild"],
     href: "/eradar360",
   },

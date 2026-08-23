@@ -5,8 +5,8 @@ export default function ProductEIPC() {
     <ProductDetailPage
       badge="IPC Fabric"
       title="EIPC — Embedded Inter-Process Communication"
-      subtitle="HMAC-SHA256 · AES-256 · < 1 ms Latency · Multi-Transport"
-      description="A capability-secured, authenticated IPC fabric for EoS. Routes messages between tasks, processes, and boards with HMAC-SHA256 integrity, optional AES-256 encryption, and sub-millisecond latency across shared memory, UART, SPI, and TCP transports."
+      subtitle="HMAC-SHA256 · AES-256 · Multi-Transport"
+      description="A capability-secured, authenticated IPC fabric for EoS. Routes messages between tasks, processes, and boards with HMAC-SHA256 integrity, optional AES-256 encryption, and latency that scales with the transport used — shared memory, UART, SPI, and TCP, in that relative order."
       accent="#F59E0B"
       gradient="from-amber-500/20 to-yellow-600/20"
       lang="C"
@@ -14,7 +14,7 @@ export default function ProductEIPC() {
       heroImage="/manus-storage/product-eipc-ipc_be829de0.jpg"
       stackHighlight="ipc fabric"
       stats={[
-        { value: "< 1 ms", label: "Cross-Board Latency" },
+        { value: "64 KB", label: "Default Max Message Size" },
         { value: "4", label: "Transports (SHM, UART, SPI, TCP)" },
         { value: "HMAC-SHA256", label: "Message Integrity" },
         { value: "AES-256", label: "Optional Encryption" },
@@ -95,8 +95,8 @@ export default function ProductEIPC() {
           desc: "Shared memory (same chip), UART, SPI, and TCP/IP (cross-board). Same API for all.",
         },
         {
-          name: "< 1 ms Cross-Board Latency",
-          desc: "UART at 921600 baud delivers < 1 ms latency for 64-byte messages.",
+          name: "Transport-Dependent Latency",
+          desc: "Shared memory is fastest for same-chip messages; SPI, UART, and TCP trade latency for reach as you cross boards, in that relative order.",
         },
         {
           name: "Sequence Numbers",
@@ -116,12 +116,9 @@ export default function ProductEIPC() {
         { key: "Encryption Algorithm", value: "AES-256-GCM (optional)" },
         { key: "Transports", value: "Shared memory, UART, SPI, TCP/IP" },
         {
-          key: "Cross-Board Latency (UART)",
-          value: "< 1 ms for 64-byte messages at 921600 baud",
-        },
-        {
-          key: "Cross-Board Latency (SPI)",
-          value: "< 100 µs for 64-byte messages at 10 MHz",
+          key: "Transport Latency Ordering",
+          value:
+            "Shared memory lowest, then SPI, then UART, then TCP highest (relative order; no absolute figures published)",
         },
         {
           key: "Max Message Size",

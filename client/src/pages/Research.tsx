@@ -93,9 +93,9 @@ const papers = [
     internal: false,
   },
   {
-    title: "EoS Kernel: Deterministic Scheduling with Sub-10μs Context Switch",
+    title: "EoS Kernel: Deterministic Scheduling Architecture",
     date: "2024",
-    type: "Performance Report",
+    type: "Architecture Overview",
     href: "/article-eos-roadmap-2026",
     internal: true,
   },

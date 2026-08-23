@@ -5,8 +5,8 @@ export default function ProductEDB() {
     <ProductDetailPage
       badge="Database"
       title="eDB — Embedded Multi-Model Database"
-      subtitle="SQL · Document · Key-Value · AES-256 · < 1 ms Query"
-      description="A multi-model embedded database for EoS devices. Supports SQL, document (JSON), and key-value stores in a single engine — with AES-256 at-rest encryption rooted in the eBoot chain of trust, < 1 ms query latency, and a < 64 KB footprint."
+      subtitle="SQL · Document · Key-Value · AES-256 Encrypted"
+      description="A multi-model embedded database for EoS devices. Supports SQL, document (JSON), and key-value stores in a single engine — with AES-256 at-rest encryption rooted in the eBoot chain of trust, indexed lookups across all three models, and a < 64 KB footprint."
       accent="#3B82F6"
       gradient="from-blue-500/20 to-indigo-600/20"
       lang="C"
@@ -15,7 +15,7 @@ export default function ProductEDB() {
       stackHighlight="data layer"
       stats={[
         { value: "3", label: "Query Models (SQL, Doc, KV)" },
-        { value: "< 1 ms", label: "Query Latency" },
+        { value: "32 GB", label: "Tested Database Size" },
         { value: "AES-256", label: "At-Rest Encryption" },
         { value: "< 64 KB", label: "Engine Footprint" },
       ]}
@@ -95,8 +95,8 @@ export default function ProductEDB() {
           desc: "At-rest encryption with keys derived from the eBoot chain of trust. Data is device-bound.",
         },
         {
-          name: "< 1 ms Query Latency",
-          desc: "B-tree index on flash delivers sub-millisecond queries for typical embedded workloads.",
+          name: "Indexed Queries",
+          desc: "B-tree index for SQL, hash index for KV, and inverted index for document full-text search — no full-table scans for typical embedded workloads.",
         },
         {
           name: "ACID Transactions",
@@ -130,8 +130,9 @@ export default function ProductEDB() {
           value: "ACID with write-ahead logging (WAL)",
         },
         {
-          key: "Query Latency",
-          value: "< 1 ms for indexed queries on NOR flash",
+          key: "Query Path",
+          value:
+            "Indexed (B-tree for SQL, hash for KV, inverted for document search); actual latency depends on storage medium and workload",
         },
         {
           key: "Engine Footprint",

@@ -6,7 +6,7 @@ import { Link } from "wouter";
 const specs = [
   { label: "Max Channels", value: "1024", unit: "channels", color: "#A855F7" },
   { label: "Sample Rate", value: "30,000", unit: "Hz", color: "#F97316" },
-  { label: "Decode Latency", value: "< 5", unit: "ms", color: "#22D3EE" },
+  { label: "Applications", value: "4", unit: "use cases", color: "#22D3EE" },
   { label: "Signal Types", value: "6", unit: "types", color: "#34D399" },
 ];
 
@@ -54,7 +54,7 @@ const applications = [
     icon: Activity,
     color: "#A855F7",
     title: "Motor Prosthetics",
-    desc: "Decode motor intent from M1 cortex to control robotic limbs with <10ms latency. Supports 6-DOF arm control from 64-channel ECoG.",
+    desc: "Decode motor intent from M1 cortex to control robotic limbs in real time. Supports 6-DOF arm control from 64-channel ECoG.",
   },
   {
     icon: Brain,
@@ -101,7 +101,7 @@ export default function NeuralLinkAIPage() {
             <p className="text-gray-400 max-w-2xl mx-auto">
               The EmbeddedOS neural interface platform for brain-computer
               interfaces and neural signal processing. 1024 channels, 6 signal
-              types, &lt;5ms decode latency, closed-loop stimulation.
+              types, closed-loop stimulation.
             </p>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">

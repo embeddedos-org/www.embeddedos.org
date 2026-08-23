@@ -29,20 +29,52 @@ definitions across 55 architectures, counted from `eos/boards/*.yaml`) and
 EoSim's simulated platforms (quoted as the same `52+` → 150, counted from
 `EoSim/platforms/`).
 
+Also resolved, 2026-08-23 — nine of the ten rows this section used to list
+below. No repository this project can see measures any of these, so "publish
+the measurement" was not available; each was retired to a capability
+description (no number), or, for the two rows with a specific alternative
+already established elsewhere, brought in line with it:
+
+- `/product-eos` — the `< 1 µs` IRQ latency and `< 200 ns` context-switch
+  figures (subtitle, stat, feature and spec) are gone, replaced with
+  "Deterministic IRQ Handling" / bounded, priority-driven dispatch — the same
+  treatment `/eos`, `/architecture` and `/ecosystem` already got.
+- `/product-eni` and `/eni` — both figures retired. `/product-eni` no longer
+  claims `< 1 ms`; `/eni`'s Output step and `/product-eni`'s own BCI usage
+  example no longer claim `< 10 ms`. The two pages had, between them, three
+  different numbers for essentially the same path — a stronger version of the
+  kernel-timing contradiction.
+- `/product-eipc` — brought in line with `/eipc`'s existing relative-ordering
+  model (shared memory lowest, then SPI, then UART, then TCP highest) instead
+  of the absolute `< 1 ms` / `< 100 µs` figures it had been stating on its own.
+- `/product-edb` — the `< 1 ms` query latency is retired; the page now
+  describes the index structure (B-tree/hash/inverted) and says plainly that
+  latency depends on storage medium and workload, per the original note.
+- `/product-eai` — the `< 50 ms` vision inference figure is retired; the stat
+  slot now shows the backend count (4), which the specs table already
+  supported.
+- `/neural-link-ai` — the `< 5 ms` decode figure and the `< 10 ms` motor-
+  prosthetic figure are both retired.
+- `/what-we-do` — the `< 10 ms` EAI threat-detection figure is retired.
+- `/research` — retitled from "EoS Kernel: Deterministic Scheduling with
+  Sub-10μs Context Switch" / "Performance Report" to "EoS Kernel:
+  Deterministic Scheduling Architecture" / "Architecture Overview", since no
+  such report exists to publish.
+- `/future-research` — kept as a target per the original note, but reworded
+  so the `< 5 ms` round-trip figure reads unambiguously as something the
+  2026–2029 closed-loop-BCI research direction is aiming for, not a claim
+  about what exists today.
+
+Verified: `pnpm check`, `pnpm build` (client + prerender, 95/95 routes, 0
+failed/thin) and `pnpm build:server` all pass; `pnpm test:unit` (124 passed,
+1 pre-existing skip) and `pnpm test:integration` (146 passed, including all
+16 `stack-claims.test.ts` cases) both pass against the rebuilt site.
+
 ## Open
 
-| Page                   | Claim                                     | Note                                                                                |
-| ---------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------- |
-| `/product-eos`         | `< 1 µs` IRQ latency                      | Same unmeasured kernel figure, on a product page                                    |
-| `/product-eni`, `/eni` | `< 1 ms` and `< 10 ms` end-to-end latency | Two different figures for the same path                                             |
-| `/product-eipc`        | `< 1 ms` latency, `< 1 ms` cross-board    | `/eipc` now states relative ordering instead                                        |
-| `/product-edb`         | `< 1 ms` query latency                    | Depends on workload and medium; needs conditions                                    |
-| `/product-eai`         | `< 50 ms` inference latency               | Needs model, quantisation and target MCU                                            |
-| `/neural-link-ai`      | `< 5 ms` decode, `< 10 ms` latency        |                                                                                     |
-| `/eradar360`           | `< 50 ms` alert latency                   | Plausibly a design requirement — say so if it is                                    |
-| `/what-we-do`          | `< 10 ms` latency                         |                                                                                     |
-| `/future-research`     | `< 5 ms` round-trip                       | Research targets; likely fine to keep as targets                                    |
-| `/research`            | "Sub-10μs Context Switch"                 | Listed as a published performance report. Either publish the measurement or retitle |
+| Page         | Claim                   | Note                                                                                                                                                                                            |
+| ------------ | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/eradar360` | `< 50 ms` alert latency | Reviewed 2026-08-23 — still unsourced, and not resolvable as "plausibly a design requirement" without the actual spec. Owner asked to leave it unchanged for now rather than guess; still open. |
 
 ## Other numbers worth confirming
 
