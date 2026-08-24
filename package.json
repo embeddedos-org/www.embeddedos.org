@@ -82,7 +82,7 @@
     "cmdk": "^1.1.1",
     "cookie": "^1.0.2",
     "dotenv": "^17.2.2",
-    "drizzle-orm": "^0.44.5",
+    "drizzle-orm": "^0.45.2",
     "embla-carousel-react": "^8.6.0",
     "express": "^4.21.2",
     "framer-motion": "^12.23.22",
@@ -135,7 +135,7 @@
     "typescript": "5.9.3",
     "typescript-eslint": "^8",
     "vite": "^7.1.7",
-    "vitest": "^2.1.4"
+    "vitest": "^3.2.7"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {
@@ -146,7 +146,8 @@
       "wouter@3.7.1": "patches/wouter@3.7.1.patch"
     },
     "overrides": {
-      "tailwindcss>nanoid": "3.3.7"
+      "postcss>nanoid": "^3.3.18",
+      "esbuild": "^0.25.0"
     }
   }
 }
