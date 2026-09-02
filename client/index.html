@@ -2,6 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Google Analytics 4 — G-VTNZKL95DQ
+      Placed directly after <meta charset> because Google asks for it as high in
+      <head> as possible, and a gtag before the charset declaration would be
+      parsed under the wrong encoding.
+
+      Hardcoded rather than env-driven, deliberately. The Umami block at the
+      bottom of <body> is env-driven and has never run: VITE_ANALYTICS_ENDPOINT
+      and VITE_ANALYTICS_WEBSITE_ID were never set, so its guard returns early
+      and the live page ships a literal "%VITE_ANALYTICS_ENDPOINT%" string. An
+      analytics tag that silently does nothing is the failure being avoided here.
+
+      A GA4 Measurement ID is not a secret — it is served to every visitor in
+      this file — so there is nothing to protect by moving it into the
+      environment.
+    -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VTNZKL95DQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-VTNZKL95DQ");
+    </script>
     <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EmbeddedOS — The Operating System for Every Device</title>
