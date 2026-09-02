@@ -2,6 +2,16 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Github, Calendar, Tag } from "lucide-react";
 
+import {
+  MARKETING_KINDS,
+  RESEARCH_KINDS,
+  badgeOf,
+  byKinds,
+  formatDate,
+  isInternal,
+  type ContentItem,
+} from "@/data/content";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
@@ -11,181 +21,34 @@ const fadeUp = {
   }),
 };
 
-const NEWS_ITEMS = [
-  {
-    date: "July 2026",
-    tag: "Release",
-    tagColor: "#F97316",
-    title:
-      "eAI and eNI Released — On-Device AI and Neural Interface for Embedded Systems",
-    summary:
-      "The eAI on-device inference engine and eNI neural interface adapter are now publicly available on GitHub. eAI supports TensorFlow Lite, ONNX Runtime, and custom quantized models on ARM Cortex-M and RISC-V. eNI provides a hardware abstraction layer for neural interface devices including EEG, EMG, and ECoG sensors.",
-    href: "https://github.com/embeddedos-org/eAI",
-    tags: ["eAI", "eNI", "AI", "Neural"],
-  },
-  {
-    date: "June 2026",
-    tag: "Patent",
-    tagColor: "#F472B6",
-    title:
-      "HEALTH-BAND Neuro Patent Application Filed — U.S. App. No. 64/076,078",
-    summary:
-      "The Embedded Operating Systems Research Foundation has filed a patent application for the HEALTH-BAND Neuro wristband (U.S. Provisional Application No. 64/076,078). The device combines surface electromyography (sEMG) with transcutaneous electrical nerve stimulation (TENS) in a wearable form factor running EmbeddedOS.",
-    href: "https://github.com/embeddedos-org/eos-health",
-    tags: ["Health", "Patent", "HEALTH-BAND"],
-  },
-  {
-    date: "May 2026",
-    tag: "Patent",
-    tagColor: "#F472B6",
-    title:
-      "HEALTH-KEY ULTRA Patent Application Filed — U.S. App. No. 64/073,334",
-    summary:
-      "Patent application filed for the HEALTH-KEY ULTRA USB-C health monitoring key (U.S. Provisional Application No. 64/073,334). The device measures ECG, SpO₂, heart rate, and skin conductance through a USB-C connector, powered by the EmbeddedOS health firmware stack.",
-    href: "https://github.com/embeddedos-org/eos-health",
-    tags: ["Health", "Patent", "HEALTH-KEY"],
-  },
-  {
-    date: "April 2026",
-    tag: "Announcement",
-    tagColor: "#22D3EE",
-    title: "AeroSwift Personal and Transit VTOL Aircraft Platforms Announced",
-    summary:
-      "EmbeddedOS announces the AeroSwift aerospace platform — a family of VTOL aircraft powered by the EmbeddedOS avionics stack. AeroSwift Personal is a 1-2 seat personal air vehicle; AeroSwift Transit is a 10-seat urban air taxi. Both run EmbeddedOS with DO-178C-compliant flight software.",
-    href: "/aerospace",
-    internal: true,
-    tags: ["Aerospace", "AeroSwift", "VTOL"],
-  },
-  {
-    date: "March 2026",
-    tag: "Release",
-    tagColor: "#F97316",
-    title: "EoSim v2.0 — 63+ Board Simulator with Full Peripheral Emulation",
-    summary:
-      "EoSim v2.0 ships with support for 63+ embedded boards including STM32, ESP32, nRF52, RP2040, and RISC-V targets. New features include GPIO/UART/SPI/I2C peripheral emulation, GDB integration, and a visual memory map inspector. Available at github.com/embeddedos-org/EoSim.",
-    href: "https://github.com/embeddedos-org/EoSim",
-    tags: ["EoSim", "Simulator", "Dev Tools"],
-  },
-  {
-    date: "February 2026",
-    tag: "Release",
-    tagColor: "#F97316",
-    title: "EoStudio v3.1 — Universal IDE with 3D Modeler and AI Tutor",
-    summary:
-      "EoStudio v3.1 is now available. New features include an integrated 3D hardware modeler, an AI-powered code tutor using eosllm, a game editor for EmbeddedOS game development, and improved cross-compilation support for ARM, RISC-V, and MIPS targets.",
-    href: "https://github.com/embeddedos-org/EoStudio",
-    tags: ["EoStudio", "IDE", "Dev Tools"],
-  },
-  {
-    date: "January 2026",
-    tag: "Ecosystem",
-    tagColor: "#34D399",
-    title: "EmbeddedOS Ecosystem Reaches 22 Open-Source Repositories",
-    summary:
-      "The EmbeddedOS ecosystem has grown to 22 public repositories covering the full embedded systems stack: kernel, bootloader, IPC, build tools, AI inference, neural interfaces, applications, health devices, aerospace avionics, and developer tools. All repositories are MIT-licensed and available at github.com/embeddedos-org.",
-    href: "https://github.com/embeddedos-org",
-    tags: ["Ecosystem", "Foundation", "GitHub"],
-  },
-  {
-    date: "December 2025",
-    tag: "Release",
-    tagColor: "#F97316",
-    title: "eosllm — On-Device LLM Inference for Embedded Systems",
-    summary:
-      "eosllm brings large language model inference to resource-constrained embedded devices. Supports quantized models (4-bit, 8-bit), streaming token generation, and runs on devices with as little as 256KB RAM. Designed for edge AI applications in industrial, medical, and consumer electronics.",
-    href: "https://github.com/embeddedos-org/eosllm",
-    tags: ["eosllm", "LLM", "AI", "Edge AI"],
-  },
-  {
-    date: "November 2025",
-    tag: "Foundation",
-    tagColor: "#F97316",
-    title: "Foundation 2026 Membership: Governance, Voting, Working Groups",
-    summary:
-      "The 2026 membership cycle opens with three new working groups (Safety-Certified, Embedded AI Ethics, and Neural Interface Standards) and a refreshed governance charter with public TSC voting records.",
-    href: "/article-foundation-membership-2026",
-    tags: ["Foundation", "Governance", "Membership"],
-    internal: true,
-  },
-  {
-    date: "October 2025",
-    tag: "Engineering",
-    tagColor: "#A78BFA",
-    title: "EoSim 2.4 HIL Bridge: Virtual Peripherals Talking to Real Silicon",
-    summary:
-      "EoSim 2.4 introduces a bidirectional hardware-in-the-loop bridge via the ezbus USB protocol. Drive simulated EoS images from a real PHY, or drive real boards from a simulated MMIO bus.",
-    href: "/article-eosim-hil-bridge",
-    tags: ["EoSim", "HIL", "Testing"],
-    internal: true,
-  },
-  {
-    date: "September 2025",
-    tag: "Roadmap",
-    tagColor: "#F97316",
-    title: "EoS RTOS Roadmap 2026: Tickless Idle, RT-IPC, Formal Verification",
-    summary:
-      "Three large RTOS bets for 2026: a tickless scheduler with sub-microsecond wake latency, RT-IPC primitives sharing memory across security domains, and a formally verified context-switch path using TLA+ and Coq.",
-    href: "/article-eos-roadmap-2026",
-    tags: ["Roadmap", "RTOS", "2026"],
-    internal: true,
-  },
-  {
-    date: "August 2025",
-    tag: "Research",
-    tagColor: "#EC4899",
-    title:
-      "ENI's 1,024-Channel Pipeline: Deterministic Spike Sorting in 800 µs",
-    summary:
-      "How the Embedded Neural Interface stack moves a thousand-electrode array through filtering, sorting, and decoding inside a single RTOS frame — and why determinism matters more than throughput.",
-    href: "/article-eni-1024-channel-pipeline",
-    tags: ["ENI", "BCI", "Research"],
-    internal: true,
-  },
-  {
-    date: "July 2025",
-    tag: "Security",
-    tagColor: "#22D3EE",
-    title: "eDB Ships AES-XTS At-Rest Encryption — Even on 64 KB Devices",
-    summary:
-      "eDB's new storage layer adds page-level AES-XTS encryption with hardware-key offload on supported MCUs. The cipher fits in 6 KB of code on the smallest target.",
-    href: "/article-edb-encryption-at-rest",
-    tags: ["eDB", "Encryption", "Security"],
-    internal: true,
-  },
-  {
-    date: "June 2025",
-    tag: "Security",
-    tagColor: "#22D3EE",
-    title: "eBoot Secure Boot: A Measured-Launch Walkthrough",
-    summary:
-      "An end-to-end tour of eBoot's chain of trust — root-of-trust keys, immutable stage 0, signed manifests, anti-rollback counters, and the runtime attestation hooks eAI consumes during model loading.",
-    href: "/article-eboot-secure-boot-deepdive",
-    tags: ["eBoot", "Security", "Secure Boot"],
-    internal: true,
-  },
-  {
-    date: "May 2025",
-    tag: "Engineering",
-    tagColor: "#A78BFA",
-    title: "EAI 0.9: INT4 LLM Runtime — 11 tok/s on Cortex-M85",
-    summary:
-      "EAI's new quantized inference path squeezes a 1.3B-parameter model into 312 MB of flash and runs at interactive speed on a 480 MHz microcontroller. Block-streamed weight loading reduces peak SRAM by 94%.",
-    href: "/article-eai-llm-bench",
-    tags: ["EAI", "LLM", "Benchmark"],
-    internal: true,
-  },
-  {
-    date: "April 2025",
-    tag: "Release",
-    tagColor: "#F97316",
-    title: "eos-platform 1.0: One Toolchain, Every EoS Profile",
-    summary:
-      "After eighteen months of incremental releases, the eos-platform meta-distribution reaches 1.0 with stable APIs, a unified package manifest, and reproducible builds across all 52 supported boards.",
-    href: "/article-eos-platform-launch",
-    tags: ["eos-platform", "Release", "1.0"],
-    internal: true,
-  },
-];
+/**
+ * Items come from the shared content registry rather than an array in this
+ * file. Before, /news owned sixteen entries inline, hand-ordered, with a
+ * `(item as any).internal` cast to read a field the untyped array did not
+ * declare. Anything the Foundation publishes now appears here by kind, and
+ * ordering is computed from ISO dates.
+ *
+ * The tag colour stays here because it is presentation, not content.
+ */
+const TAG_COLOR: Record<string, string> = {
+  Release: "#F97316",
+  Patent: "#F472B6",
+  Announcement: "#22D3EE",
+  Ecosystem: "#34D399",
+  Foundation: "#F97316",
+  Engineering: "#A78BFA",
+  Roadmap: "#F97316",
+  Research: "#EC4899",
+  Security: "#22D3EE",
+  Benchmark: "#A78BFA",
+};
+
+const DEFAULT_TAG_COLOR = "#F97316";
+
+const NEWS_ITEMS: ContentItem[] = byKinds([
+  ...MARKETING_KINDS,
+  ...RESEARCH_KINDS,
+]);
 
 export default function News() {
   return (
@@ -225,16 +88,19 @@ export default function News() {
                   <span
                     className="text-xs font-bold px-2.5 py-1 rounded-full"
                     style={{
-                      background: item.tagColor + "20",
-                      color: item.tagColor,
-                      border: `1px solid ${item.tagColor}40`,
+                      background:
+                        (TAG_COLOR[badgeOf(item)] ?? DEFAULT_TAG_COLOR) + "20",
+                      color: TAG_COLOR[badgeOf(item)] ?? DEFAULT_TAG_COLOR,
+                      border: `1px solid ${
+                        TAG_COLOR[badgeOf(item)] ?? DEFAULT_TAG_COLOR
+                      }40`,
                     }}
                   >
-                    {item.tag}
+                    {badgeOf(item)}
                   </span>
                   <div className="flex items-center gap-1.5 text-xs text-white/40">
                     <Calendar size={12} />
-                    {item.date}
+                    {formatDate(item.date)}
                   </div>
                 </div>
                 <h2 className="font-heading font-bold text-white text-lg mb-2 leading-snug">
@@ -255,7 +121,7 @@ export default function News() {
                       </span>
                     ))}
                   </div>
-                  {(item as any).internal ? (
+                  {isInternal(item) ? (
                     <Link
                       href={item.href}
                       className="flex items-center gap-1.5 text-xs text-[#F97316] hover:text-[#EA580C] font-semibold transition-colors"
