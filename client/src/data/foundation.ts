@@ -265,7 +265,7 @@ export const SOCIAL_URLS = {
   linkedin:
     "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
   youtube: "https://www.youtube.com/@EmbeddedOS_ORG",
-  instagram: "https://www.instagram.com/embeddedos.org",
+  instagram: "https://www.instagram.com/embeddedos_org",
   facebook: "https://www.facebook.com/profile.php?id=61588978691494",
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
 } as const;
