@@ -34,11 +34,22 @@ const pageLoaders: Record<string, () => Promise<unknown>> = {};
 const preloaded = new Map<string, ComponentType>();
 
 // Route components are rendered without props, so the wrapper forwards none.
-function lazyPage(
+function lazyPage<P extends object = Record<string, never>>(
   path: string,
-  loader: () => Promise<{ default: ComponentType }>
+  loader: () => Promise<{ default: ComponentType<P> }>,
+  /**
+   * Extra concrete paths served by this same component.
+   *
+   * preloadRoute() keys the registry by exact pathname, so a component mounted
+   * at several URLs needs a loader entry for each. Without them the eight
+   * /article-xxx pages would lose synchronous hydration and flash <PageLoader />
+   * over prerendered markup.
+   */
+  aliases: readonly string[] = []
 ) {
-  pageLoaders[path] = loader;
+  const erased = loader as () => Promise<{ default: ComponentType }>;
+  pageLoaders[path] = erased;
+  for (const alias of aliases) pageLoaders[alias] = erased;
   const Lazy = lazy(loader);
 
   // Awaiting the chunk is not enough on its own: React.lazy resolves through a
@@ -46,9 +57,18 @@ function lazyPage(
   // already in the registry — long enough for Suspense to swap the prerendered
   // markup for <PageLoader />. When the entry point has already resolved this
   // route, render the real component synchronously and skip Suspense entirely.
-  return function PreloadedPage() {
-    const Ready = preloaded.get(path);
-    return Ready ? <Ready /> : <Lazy />;
+  // Props are forwarded so one component can serve several routes — the
+  // article route passes a slug. Untyped before, which meant `<ArticlePage
+  // slug="..." />` failed to compile even though the component accepts it.
+  return function PreloadedPage(props: P) {
+    // preloaded is keyed by the pathname that was fetched, which for an alias
+    // is not this component's declared path. Check both.
+    const here =
+      typeof window !== "undefined" ? window.location.pathname : path;
+    const Ready = (preloaded.get(path) ?? preloaded.get(here)) as
+      | ComponentType<P>
+      | undefined;
+    return Ready ? <Ready {...props} /> : <Lazy {...props} />;
   };
 }
 
@@ -180,37 +200,23 @@ const EServiceAppsPage = lazyPage(
 const EAIEdgePage = lazyPage("/eai-edge", () => import("./pages/EAIEdge"));
 const EOSuitePage = lazyPage("/eosuite", () => import("./pages/EOSuite"));
 const ResourcesPage = lazyPage("/resources", () => import("./pages/Resources"));
-const ArticleEosPlatformLaunch = lazyPage(
+// One lazily-loaded component serves every article; the slug selects the
+// content. The eight legacy /article-xxx paths are kept as explicit routes
+// below so existing links and search-engine results keep working.
+const ARTICLE_PATHS = [
   "/article-eos-platform-launch",
-  () => import("./pages/ArticleEosPlatformLaunch")
-);
-const ArticleEaiLlmBench = lazyPage(
   "/article-eai-llm-bench",
-  () => import("./pages/ArticleEaiLlmBench")
-);
-const ArticleEbootSecureBoot = lazyPage(
   "/article-eboot-secure-boot-deepdive",
-  () => import("./pages/ArticleEbootSecureBoot")
-);
-const ArticleEdbEncryption = lazyPage(
   "/article-edb-encryption-at-rest",
-  () => import("./pages/ArticleEdbEncryption")
-);
-const ArticleEni1024Channel = lazyPage(
   "/article-eni-1024-channel-pipeline",
-  () => import("./pages/ArticleEni1024Channel")
-);
-const ArticleEosRoadmap2026 = lazyPage(
   "/article-eos-roadmap-2026",
-  () => import("./pages/ArticleEosRoadmap2026")
-);
-const ArticleEosimHilBridge = lazyPage(
   "/article-eosim-hil-bridge",
-  () => import("./pages/ArticleEosimHilBridge")
-);
-const ArticleFoundationMembership2026 = lazyPage(
   "/article-foundation-membership-2026",
-  () => import("./pages/ArticleFoundationMembership2026")
+] as const;
+const ArticlePage = lazyPage<{ slug?: string }>(
+  "/article/:slug",
+  () => import("./pages/Article"),
+  ARTICLE_PATHS
 );
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
 const Patents = lazyPage("/patents", () => import("./pages/Patents"));
@@ -607,44 +613,49 @@ function Router() {
           <ResourcesPage />
         </Suspense>
       </Route>
+      <Route path="/article/:slug">
+        <Suspense fallback={<PageLoader />}>
+          <ArticlePage />
+        </Suspense>
+      </Route>
       <Route path="/article-eos-platform-launch">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEosPlatformLaunch />
+          <ArticlePage slug="eos-platform-launch" />
         </Suspense>
       </Route>
       <Route path="/article-eai-llm-bench">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEaiLlmBench />
+          <ArticlePage slug="eai-llm-bench" />
         </Suspense>
       </Route>
       <Route path="/article-eboot-secure-boot-deepdive">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEbootSecureBoot />
+          <ArticlePage slug="eboot-secure-boot-deepdive" />
         </Suspense>
       </Route>
       <Route path="/article-edb-encryption-at-rest">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEdbEncryption />
+          <ArticlePage slug="edb-encryption-at-rest" />
         </Suspense>
       </Route>
       <Route path="/article-eni-1024-channel-pipeline">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEni1024Channel />
+          <ArticlePage slug="eni-1024-channel-pipeline" />
         </Suspense>
       </Route>
       <Route path="/article-eos-roadmap-2026">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEosRoadmap2026 />
+          <ArticlePage slug="eos-roadmap-2026" />
         </Suspense>
       </Route>
       <Route path="/article-eosim-hil-bridge">
         <Suspense fallback={<PageLoader />}>
-          <ArticleEosimHilBridge />
+          <ArticlePage slug="eosim-hil-bridge" />
         </Suspense>
       </Route>
       <Route path="/article-foundation-membership-2026">
         <Suspense fallback={<PageLoader />}>
-          <ArticleFoundationMembership2026 />
+          <ArticlePage slug="foundation-membership-2026" />
         </Suspense>
       </Route>
       <Route path="/downloads">
