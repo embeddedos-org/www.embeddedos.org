@@ -10,6 +10,7 @@ import EBot from "./components/EBot";
 import SearchModal from "./components/SearchModal";
 import DonateModal from "./components/DonateModal";
 import Home from "./pages/Home";
+import type { ContentKind } from "@/data/content";
 import { lazy, Suspense, useEffect, useRef, type ComponentType } from "react";
 import { applyRouteMeta, readHeading } from "./lib/page-meta";
 
@@ -203,7 +204,58 @@ const ResourcesPage = lazyPage("/resources", () => import("./pages/Resources"));
 // One lazily-loaded component serves every article; the slug selects the
 // content. The eight legacy /article-xxx paths are kept as explicit routes
 // below so existing links and search-engine results keep working.
-const ARTICLE_PATHS = [
+/**
+ * Index pages for the content kinds that have something to list.
+ *
+ * One component, filtered by kind. Kinds with no content are deliberately not
+ * routed: the repository standard forbids placeholders, and a /podcast page
+ * saying "no episodes yet" is a placeholder with a URL. The full taxonomy,
+ * including its empty categories, is published on /research instead.
+ */
+const CONTENT_INDEXES = [
+  {
+    path: "/blog",
+    kind: "blog" as const,
+    heading: "Engineering Blog",
+    intro:
+      "Deep dives from the people building EmbeddedOS — design decisions, trade-offs, and the things that did not work.",
+  },
+  {
+    path: "/publications",
+    kind: "publication" as const,
+    heading: "Publications",
+    intro:
+      "Peer-facing papers on the architecture, security model and toolchain of EmbeddedOS.",
+  },
+  {
+    path: "/technical-reports",
+    kind: "technical-report" as const,
+    heading: "Technical Reports",
+    intro:
+      "Engineering write-ups of individual subsystems, measured on real hardware where the measurement is the point.",
+  },
+  {
+    path: "/benchmarks",
+    kind: "benchmark" as const,
+    heading: "Benchmarks",
+    intro:
+      "Performance results with the configuration stated, so they can be reproduced or disputed.",
+  },
+];
+const ContentIndexPage = lazyPage<{
+  kind: ContentKind;
+  heading: string;
+  intro: string;
+}>(
+  "/blog",
+  () => import("./pages/ContentIndex"),
+  ["/publications", "/technical-reports", "/benchmarks"]
+);
+
+const ArticlePage = lazyPage<{ slug?: string }>(
+  "/article/:slug",
+  () => import("./pages/Article"),
+  [
   "/article-eos-platform-launch",
   "/article-eai-llm-bench",
   "/article-eboot-secure-boot-deepdive",
@@ -212,11 +264,7 @@ const ARTICLE_PATHS = [
   "/article-eos-roadmap-2026",
   "/article-eosim-hil-bridge",
   "/article-foundation-membership-2026",
-] as const;
-const ArticlePage = lazyPage<{ slug?: string }>(
-  "/article/:slug",
-  () => import("./pages/Article"),
-  ARTICLE_PATHS
+  ]
 );
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
 const Patents = lazyPage("/patents", () => import("./pages/Patents"));
@@ -611,6 +659,42 @@ function Router() {
       <Route path="/resources">
         <Suspense fallback={<PageLoader />}>
           <ResourcesPage />
+        </Suspense>
+      </Route>
+      <Route path="/blog">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage
+            kind={CONTENT_INDEXES[0].kind}
+            heading={CONTENT_INDEXES[0].heading}
+            intro={CONTENT_INDEXES[0].intro}
+          />
+        </Suspense>
+      </Route>
+      <Route path="/publications">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage
+            kind={CONTENT_INDEXES[1].kind}
+            heading={CONTENT_INDEXES[1].heading}
+            intro={CONTENT_INDEXES[1].intro}
+          />
+        </Suspense>
+      </Route>
+      <Route path="/technical-reports">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage
+            kind={CONTENT_INDEXES[2].kind}
+            heading={CONTENT_INDEXES[2].heading}
+            intro={CONTENT_INDEXES[2].intro}
+          />
+        </Suspense>
+      </Route>
+      <Route path="/benchmarks">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage
+            kind={CONTENT_INDEXES[3].kind}
+            heading={CONTENT_INDEXES[3].heading}
+            intro={CONTENT_INDEXES[3].intro}
+          />
         </Suspense>
       </Route>
       <Route path="/article/:slug">

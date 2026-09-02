@@ -43,6 +43,10 @@ const FOOTER_LINKS = {
     { name: "Future Research", href: "/future-research" },
     { name: "Patents", href: "/patents" },
     { name: "News", href: "/news" },
+    { name: "Blog", href: "/blog" },
+    { name: "Publications", href: "/publications" },
+    { name: "Technical Reports", href: "/technical-reports" },
+    { name: "Benchmarks", href: "/benchmarks" },
   ],
   "Join & Support": [
     { name: "Careers", href: "/careers" },
