@@ -19,16 +19,50 @@ function declaredRoutes(): string[] {
   return [...source.matchAll(/<Route\s+path="([^"]+)"/g)].map(m => m[1]);
 }
 
-/** Route paths registered for preloading via `lazyPage("...", ...)`. */
+/**
+ * Route paths registered for preloading.
+ *
+ * Two forms count. `lazyPage("/x", ...)` registers its own path; the optional
+ * third argument registers aliases, which is how one component can serve
+ * several concrete URLs — the article page serves eight. An alias needs a
+ * loader entry of its own because preloadRoute() keys the registry by exact
+ * pathname, so omitting one costs that URL its synchronous hydration.
+ *
+ * The generic parameter in `lazyPage<{ slug?: string }>(` is optional and must
+ * not defeat the match.
+ */
 function registeredRoutes(): string[] {
-  return [...source.matchAll(/=\s*lazyPage\(\s*"([^"]+)"/g)].map(m => m[1]);
+  const direct = [
+    ...source.matchAll(/=\s*lazyPage(?:<[^>]*>)?\(\s*"([^"]+)"/g),
+  ].map(m => m[1]);
+  const aliasBlocks = [
+    ...source.matchAll(/lazyPage(?:<[^>]*>)?\([\s\S]*?\)\s*;/g),
+  ].map(m => m[0]);
+  const aliases: string[] = [];
+  for (const block of aliasBlocks) {
+    const arrays = [...block.matchAll(/\[([\s\S]*?)\]/g)].map(m => m[1]);
+    for (const arr of arrays) {
+      aliases.push(...[...arr.matchAll(/"(\/[^"]*)"/g)].map(m => m[1]));
+    }
+  }
+  // An identifier passed as the alias list, e.g. `ARTICLE_PATHS`, is declared
+  // as a const array elsewhere in the file; collect those too.
+  for (const m of source.matchAll(
+    /const\s+([A-Z_]+)\s*=\s*\[([\s\S]*?)\]\s*as const;/g
+  )) {
+    if (!source.includes(`${m[1]}\n)`) && !source.includes(`${m[1]}
+)`)) continue;
+    aliases.push(...[...m[2].matchAll(/"(\/[^"]*)"/g)].map(x => x[1]));
+  }
+  return [...new Set([...direct, ...aliases])];
 }
 
 /** Route paths whose JSX body renders a component inside a Suspense boundary. */
 function codeSplitRouteBlocks(): string[] {
   return [
     ...source.matchAll(
-      /<Route\s+path="([^"]+)">\s*<Suspense\b[\s\S]*?>\s*<\w+\s*\/>/g
+      // The component may take props: <ArticlePage slug="..." />.
+      /<Route\s+path="([^"]+)">\s*<Suspense\b[\s\S]*?>\s*<\w+(?:\s[^>]*?)?\s*\/>/g
     ),
   ].map(m => m[1]);
 }

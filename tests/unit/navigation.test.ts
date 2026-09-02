@@ -67,10 +67,17 @@ const HUBS: Array<{ prefix: string; hub: string }> = [
   { prefix: "/article-", hub: "/news" },
 ];
 
+/**
+ * A parameterised route is a template, not a page. `/article/:slug` has no
+ * single URL to put in a footer; its concrete instances are the `/article-xxx`
+ * paths, which the /news hub covers above.
+ */
+const isParameterised = (route: string) => route.includes(":");
+
 describe("route coverage", () => {
   it("gives every route a home in the footer, directly or through its hub", () => {
     const missing = routes.filter(r => {
-      if (r === "/" || footerAll.includes(r)) return false;
+      if (r === "/" || isParameterised(r) || footerAll.includes(r)) return false;
       const hub = HUBS.find(h => r.startsWith(h.prefix));
       return !(hub && footerAll.includes(hub.hub));
     });
