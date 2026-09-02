@@ -11,6 +11,15 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 
+import {
+  RESEARCH_KINDS,
+  badgeOf,
+  byKinds,
+  formatDate,
+  isInternal,
+  type ContentItem,
+} from "@/data/content";
+
 const areas = [
   {
     icon: Brain,
@@ -56,50 +65,15 @@ const areas = [
   },
 ];
 
-const papers = [
-  {
-    title: "EAI 0.9: INT4 LLM Inference at 11 tok/s on Cortex-M85",
-    date: "2026",
-    type: "Benchmark Report",
-    href: "/article-eai-llm-bench",
-    internal: true,
-  },
-  {
-    title: "Capability-Based Security in Real-Time Operating Systems",
-    date: "2025",
-    type: "Technical Paper",
-    href: "https://github.com/embeddedos-org/embeddedos-org/blob/main/docs/eos.html",
-    internal: false,
-  },
-  {
-    title: "ENI: 1,024-Channel Neural Signal Acquisition at 30 kHz",
-    date: "2025",
-    type: "Hardware Specification",
-    href: "/article-eni-1024-channel-pipeline",
-    internal: true,
-  },
-  {
-    title: "eBootloader: Formal Security Analysis of 5-Stage Verified Boot",
-    date: "2025",
-    type: "Security Analysis",
-    href: "/article-eboot-secure-boot-deepdive",
-    internal: true,
-  },
-  {
-    title: "eBuild: Declarative Cross-Compilation for Embedded AI Systems",
-    date: "2024",
-    type: "Technical Paper",
-    href: "https://github.com/embeddedos-org/embeddedos-org/blob/main/docs/ebuild.html",
-    internal: false,
-  },
-  {
-    title: "EoS Kernel: Deterministic Scheduling Architecture",
-    date: "2024",
-    type: "Architecture Overview",
-    href: "/article-eos-roadmap-2026",
-    internal: true,
-  },
-];
+/**
+ * Publications come from the shared content registry, not from an array here.
+ *
+ * This page previously kept its own list, and it had drifted: four entries
+ * pointed at the same URLs as /news while giving them different titles. One
+ * article, two names, depending which page you landed on. A registry keyed by
+ * href makes that impossible to reintroduce.
+ */
+const papers: ContentItem[] = byKinds(RESEARCH_KINDS);
 
 export default function Research() {
   return (
@@ -183,11 +157,11 @@ export default function Research() {
                 <div>
                   <div className="text-white font-medium mb-1">{p.title}</div>
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="text-orange-400">{p.date}</span>
-                    <span className="text-gray-500">{p.type}</span>
+                    <span className="text-orange-400">{formatDate(p.date)}</span>
+                    <span className="text-gray-500">{badgeOf(p)}</span>
                   </div>
                 </div>
-                {p.internal ? (
+                {isInternal(p) ? (
                   <Link
                     href={p.href}
                     aria-label={`Read ${p.title}`}
