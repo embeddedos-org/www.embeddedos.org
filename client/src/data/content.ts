@@ -269,8 +269,11 @@ export const CONTENT: readonly ContentItem[] = [
     tags: ["EoSim", "HIL", "Testing"],
   },
   {
+    // Also listed on /research, as an "Architecture Overview". Kept research
+    // so both pages agree; a roadmap is the weakest of the four such cases and
+    // is the one to revisit first if the classification is wrong.
     slug: "eos-roadmap-2026",
-    kind: "blog",
+    kind: "technical-report",
     date: "2025-09-01",
     badge: "Roadmap",
     title: "EoS RTOS Roadmap 2026: Tickless Idle, RT-IPC, Formal Verification",
@@ -303,8 +306,11 @@ export const CONTENT: readonly ContentItem[] = [
     tags: ["eDB", "Encryption", "Security"],
   },
   {
+    // Classified as research rather than blog because /research already
+    // presented it as a "Security Analysis". Two pages disagreeing about what
+    // a piece is, is the same defect as two pages disagreeing about its title.
     slug: "eboot-secure-boot-deepdive",
-    kind: "blog",
+    kind: "technical-report",
     date: "2025-06-01",
     badge: "Security",
     title: "eBoot Secure Boot: A Measured-Launch Walkthrough",
@@ -323,6 +329,31 @@ export const CONTENT: readonly ContentItem[] = [
       "EAI's new quantized inference path squeezes a 1.3B-parameter model into 312 MB of flash and runs at interactive speed on a 480 MHz microcontroller. Block-streamed weight loading reduces peak SRAM by 94%.",
     href: "/article-eai-llm-bench",
     tags: ["EAI", "LLM", "Benchmark"],
+  },
+  {
+    // The two entries below were listed only on /research, in its own `papers`
+    // array, and existed nowhere else. They are published works hosted outside
+    // this site rather than posts on it, which is what `publication` is for.
+    slug: "capability-based-security-rtos",
+    kind: "publication",
+    date: "2025-01-01",
+    badge: "Technical Paper",
+    title: "Capability-Based Security in Real-Time Operating Systems",
+    summary:
+      "How EoS applies capability-based access control to a real-time kernel: unforgeable references, delegation without ambient authority, and what that costs in a deterministic scheduler.",
+    href: "https://github.com/embeddedos-org/embeddedos-org/blob/main/docs/eos.html",
+    tags: ["EoS", "Security", "Capabilities", "RTOS"],
+  },
+  {
+    slug: "ebuild-declarative-cross-compilation",
+    kind: "publication",
+    date: "2024-01-01",
+    badge: "Technical Paper",
+    title: "eBuild: Declarative Cross-Compilation for Embedded AI Systems",
+    summary:
+      "The design of eBuild's declarative build model: one manifest describing toolchain, board and dependencies, and reproducible cross-compilation across the supported target set.",
+    href: "https://github.com/embeddedos-org/embeddedos-org/blob/main/docs/ebuild.html",
+    tags: ["eBuild", "Toolchain", "Cross-Compilation"],
   },
   {
     slug: "eos-platform-launch",
