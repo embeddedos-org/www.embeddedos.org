@@ -28,6 +28,10 @@ function declaredRoutes(): string[] {
  * loader entry of its own because preloadRoute() keys the registry by exact
  * pathname, so omitting one costs that URL its synchronous hydration.
  *
+ * Alias lists must be written inline. Passing a named const instead would
+ * mean resolving an identifier by text, which is guesswork this test should
+ * not be doing — so the convention is the literal.
+ *
  * The generic parameter in `lazyPage<{ slug?: string }>(` is optional and must
  * not defeat the match.
  */
@@ -44,15 +48,6 @@ function registeredRoutes(): string[] {
     for (const arr of arrays) {
       aliases.push(...[...arr.matchAll(/"(\/[^"]*)"/g)].map(m => m[1]));
     }
-  }
-  // An identifier passed as the alias list, e.g. `ARTICLE_PATHS`, is declared
-  // as a const array elsewhere in the file; collect those too.
-  for (const m of source.matchAll(
-    /const\s+([A-Z_]+)\s*=\s*\[([\s\S]*?)\]\s*as const;/g
-  )) {
-    if (!source.includes(`${m[1]}\n)`) && !source.includes(`${m[1]}
-)`)) continue;
-    aliases.push(...[...m[2].matchAll(/"(\/[^"]*)"/g)].map(x => x[1]));
   }
   return [...new Set([...direct, ...aliases])];
 }

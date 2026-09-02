@@ -102,6 +102,42 @@ export const RESEARCH_KINDS: readonly ContentKind[] = [
   "dataset",
 ];
 
+/**
+ * What a piece of research is *about*, as opposed to what it *is*.
+ *
+ * Kind and area are separate axes and conflating them loses information: a
+ * benchmark of the AI runtime and a white paper on the AI runtime are the same
+ * subject in two formats, and a reader browsing "AI Research" wants both.
+ *
+ * A closed vocabulary rather than free tags. The existing `tags` field is
+ * open, and it shows why: eighteen items carry forty-six distinct tags, with
+ * `eAI` and `EAI`, `eNI` and `ENI` already diverging by case. Free tags are
+ * useful as keywords and useless as navigation, because nothing can enumerate
+ * them or guarantee a page exists behind one.
+ */
+export type ResearchArea =
+  | "architecture"
+  | "security"
+  | "ai"
+  | "embedded-systems"
+  | "rtos"
+  | "linux"
+  | "hardware"
+  | "networking";
+
+export const AREA_LABEL: Record<ResearchArea, string> = {
+  architecture: "Architecture Research",
+  security: "Security Research",
+  ai: "AI Research",
+  "embedded-systems": "Embedded Systems Research",
+  rtos: "RTOS Research",
+  linux: "Linux Research",
+  hardware: "Hardware Research",
+  networking: "Networking Research",
+};
+
+export const RESEARCH_AREAS = Object.keys(AREA_LABEL) as ResearchArea[];
+
 export interface ContentItem {
   /** Stable identifier, unique across all kinds. */
   slug: string;
@@ -120,8 +156,14 @@ export interface ContentItem {
    * anything else is external and should open in a new tab. See `isInternal`.
    */
   href: string;
-  /** Free-form topic tags, shown as chips. */
+  /** Free-form topic keywords, shown as chips. Not navigation — see area. */
   tags: readonly string[];
+  /**
+   * Subject area, for research content. Optional because most marketing
+   * content has no research subject, and inventing one for a press release
+   * would make the area filters meaningless.
+   */
+  area?: ResearchArea;
   /**
    * Short badge label. Falls back to the kind's label when absent — most items
    * do not need one, and the ones that do are saying something the kind cannot,
@@ -273,6 +315,7 @@ export const CONTENT: readonly ContentItem[] = [
     // so both pages agree; a roadmap is the weakest of the four such cases and
     // is the one to revisit first if the classification is wrong.
     slug: "eos-roadmap-2026",
+    area: "rtos",
     kind: "technical-report",
     date: "2025-09-01",
     badge: "Roadmap",
@@ -284,6 +327,7 @@ export const CONTENT: readonly ContentItem[] = [
   },
   {
     slug: "eni-1024-channel-pipeline",
+    area: "hardware",
     kind: "technical-report",
     date: "2025-08-01",
     badge: "Research",
@@ -310,6 +354,7 @@ export const CONTENT: readonly ContentItem[] = [
     // presented it as a "Security Analysis". Two pages disagreeing about what
     // a piece is, is the same defect as two pages disagreeing about its title.
     slug: "eboot-secure-boot-deepdive",
+    area: "security",
     kind: "technical-report",
     date: "2025-06-01",
     badge: "Security",
@@ -321,6 +366,7 @@ export const CONTENT: readonly ContentItem[] = [
   },
   {
     slug: "eai-llm-bench",
+    area: "ai",
     kind: "benchmark",
     date: "2025-05-01",
     badge: "Benchmark",
@@ -335,6 +381,7 @@ export const CONTENT: readonly ContentItem[] = [
     // array, and existed nowhere else. They are published works hosted outside
     // this site rather than posts on it, which is what `publication` is for.
     slug: "capability-based-security-rtos",
+    area: "security",
     kind: "publication",
     date: "2025-01-01",
     badge: "Technical Paper",
@@ -346,6 +393,7 @@ export const CONTENT: readonly ContentItem[] = [
   },
   {
     slug: "ebuild-declarative-cross-compilation",
+    area: "embedded-systems",
     kind: "publication",
     date: "2024-01-01",
     badge: "Technical Paper",
@@ -393,6 +441,46 @@ export function bySlug(slug: string): ContentItem | undefined {
 /** The n most recent items of any kind. */
 export function recent(n: number): ContentItem[] {
   return [...CONTENT].sort(byDateDesc).slice(0, n);
+}
+
+/** Every item in one research area, newest first. */
+export function byArea(area: ResearchArea): ContentItem[] {
+  return CONTENT.filter(item => item.area === area).sort(byDateDesc);
+}
+
+/** A category with its size, for rendering a taxonomy that shows what is empty. */
+export interface CategorySummary<T> {
+  key: T;
+  label: string;
+  count: number;
+}
+
+/**
+ * The full set of categories in a programme, including the empty ones.
+ *
+ * Empty categories are returned on purpose. The alternative — listing only
+ * what has content — hides the shape of the programme from anyone deciding
+ * what to write next, and quietly makes the published taxonomy depend on
+ * whoever published last. A category with nothing in it is a commissioning
+ * brief; a category that vanished is a mystery.
+ */
+export function kindSummary(
+  kinds: readonly ContentKind[],
+): CategorySummary<ContentKind>[] {
+  const counts = countsByKind();
+  return kinds.map(kind => ({
+    key: kind,
+    label: KIND_LABEL[kind],
+    count: counts[kind] ?? 0,
+  }));
+}
+
+export function areaSummary(): CategorySummary<ResearchArea>[] {
+  return RESEARCH_AREAS.map(area => ({
+    key: area,
+    label: AREA_LABEL[area],
+    count: byArea(area).length,
+  }));
 }
 
 /** How many items exist of each kind, for counts on an index page. */

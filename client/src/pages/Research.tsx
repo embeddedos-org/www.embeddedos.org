@@ -13,10 +13,12 @@ import { Link } from "wouter";
 
 import {
   RESEARCH_KINDS,
+  areaSummary,
   badgeOf,
   byKinds,
   formatDate,
   isInternal,
+  kindSummary,
   type ContentItem,
 } from "@/data/content";
 
@@ -134,6 +136,69 @@ export default function Research() {
                   </div>
                 </Link>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/*
+        The research programme's full shape, counts included — and the zeroes
+        are the point. Listing only categories that already have something in
+        them hides the programme from anyone deciding what to write next, and
+        lets the published taxonomy drift with whoever published last. A
+        category showing 0 is a commissioning brief; a category that quietly
+        disappeared is a mystery.
+      */}
+      <section className="py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Research Programme
+          </h2>
+          <p className="text-gray-400 text-sm mb-8">
+            What the Foundation publishes, and what it publishes about. Counts
+            are live; a zero is work not yet done, not a category that does not
+            exist.
+          </p>
+
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
+            By output
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-10">
+            {kindSummary(RESEARCH_KINDS).map(c => (
+              <div
+                key={c.key}
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3"
+              >
+                <div className="text-white text-sm font-medium">{c.label}</div>
+                <div
+                  className={`text-xs mt-1 ${
+                    c.count > 0 ? "text-orange-400" : "text-gray-600"
+                  }`}
+                >
+                  {c.count > 0 ? `${c.count} published` : "none yet"}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
+            By subject
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {areaSummary().map(c => (
+              <div
+                key={c.key}
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3"
+              >
+                <div className="text-white text-sm font-medium">{c.label}</div>
+                <div
+                  className={`text-xs mt-1 ${
+                    c.count > 0 ? "text-purple-400" : "text-gray-600"
+                  }`}
+                >
+                  {c.count > 0 ? `${c.count} published` : "none yet"}
+                </div>
+              </div>
             ))}
           </div>
         </div>
