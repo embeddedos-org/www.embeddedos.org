@@ -60,6 +60,12 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      # Added once the repository was actually clean. Nine files had never been
+      # formatted; without a gate the set only grows, and a formatting diff
+      # mixed into a feature commit is what makes review miss the feature.
+      - name: Format
+        run: pnpm exec prettier --check .
+
       # Before the build, not after it: `pnpm build` runs scripts/prerender.mjs,
       # which drives a real Chromium to render all 99 routes to static HTML. CI
       # failed here on its second run with "Executable doesn't exist" because
