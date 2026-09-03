@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import ProgrammeList from "@/components/ProgrammeList";
 import {
   ArrowRight,
   Github,
@@ -268,6 +269,12 @@ export default function GetInvolved() {
           </a>
         </div>
       </section>
+
+      <ProgrammeList
+        track="community"
+        heading="Community Programmes"
+        intro="Ways to take part beyond contributing code."
+      />
     </div>
   );
 }

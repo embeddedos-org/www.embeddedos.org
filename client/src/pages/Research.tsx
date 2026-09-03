@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 
+import ProgrammeList from "@/components/ProgrammeList";
 import {
   RESEARCH_KINDS,
   areaSummary,
@@ -203,6 +204,12 @@ export default function Research() {
           </div>
         </div>
       </section>
+
+      <ProgrammeList
+        track="research"
+        heading="Research Programmes"
+        intro="Collaboration and funding, as distinct from what the Foundation publishes."
+      />
 
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
