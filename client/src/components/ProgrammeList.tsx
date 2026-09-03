@@ -78,7 +78,17 @@ export default function ProgrammeList({
           <p className="text-gray-500 text-xs mt-6 leading-relaxed">
             These programmes are proposed and not yet running. Nothing here is
             open for applications today. If you would like to help start one,{" "}
-            <Link href="/contact" className="text-[#F97316] hover:underline">
+            {/*
+              Underlined always, not just on hover. axe flags a link inside a
+              text block that is distinguished only by colour
+              (link-in-text-block, WCAG 1.4.1): a reader who cannot separate
+              orange from grey has nothing to tell them this is a link, and
+              hover does not exist on touch.
+            */}
+            <Link
+              href="/contact"
+              className="text-[#F97316] underline hover:no-underline"
+            >
               get in touch
             </Link>
             .
