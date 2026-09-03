@@ -60,6 +60,13 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      # Before the build, not after it: `pnpm build` runs scripts/prerender.mjs,
+      # which drives a real Chromium to render all 99 routes to static HTML. CI
+      # failed here on its second run with "Executable doesn't exist" because
+      # this step sat further down, next to the tests that also need a browser.
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
       # Client, prerender and server. Everything below depends on the output.
       - name: Build
         run: pnpm build
@@ -71,9 +78,6 @@ jobs:
       # These are the tests most likely to be quietly lost again.
       - name: Security tests
         run: pnpm test:security
-
-      - name: Install Playwright browser
-        run: pnpm exec playwright install --with-deps chromium
 
       - name: Smoke tests
         run: pnpm test:smoke
