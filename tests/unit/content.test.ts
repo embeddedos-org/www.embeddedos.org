@@ -55,7 +55,9 @@ describe("registry integrity", () => {
     for (const item of CONTENT) {
       expect(item.date, `${item.slug} date`).toMatch(ISO_DATE);
       // A regex accepts 2026-13-45. Round-tripping through Date catches it.
-      const round = new Date(item.date + "T00:00:00Z").toISOString().slice(0, 10);
+      const round = new Date(item.date + "T00:00:00Z")
+        .toISOString()
+        .slice(0, 10);
       expect(round, `${item.slug} is not a real calendar date`).toBe(item.date);
     }
   });
@@ -70,7 +72,7 @@ describe("registry integrity", () => {
     const all = [...MARKETING_KINDS, ...RESEARCH_KINDS];
     const declared = Object.keys(KIND_LABEL).sort();
     expect(all.length, "a kind is in both programmes or neither").toBe(
-      new Set(all).size,
+      new Set(all).size
     );
     expect([...all].sort()).toEqual(declared);
   });
@@ -102,19 +104,20 @@ describe("link classification", () => {
     // and looks like a working page with nothing on it.
     const app = readFileSync(
       join(__dirname, "../../client/src/App.tsx"),
-      "utf-8",
+      "utf-8"
     );
     const routes = new Set(
-      [...app.matchAll(/<Route\s+path="([^"]+)"/g)].map(m => m[1]),
+      [...app.matchAll(/<Route\s+path="([^"]+)"/g)].map(m => m[1])
     );
     expect(routes.size, "no routes parsed from App.tsx").toBeGreaterThan(20);
 
     const missing = CONTENT.filter(isInternal)
       .map(i => i.href)
       .filter(href => !routes.has(href));
-    expect(missing, `internal hrefs with no route: ${missing.join(", ")}`).toEqual(
-      [],
-    );
+    expect(
+      missing,
+      `internal hrefs with no route: ${missing.join(", ")}`
+    ).toEqual([]);
   });
 });
 
@@ -131,7 +134,13 @@ describe("ordering", () => {
     const first = recent(5).map(i => i.slug);
     const shuffled = [...CONTENT].reverse();
     const again = [...shuffled]
-      .sort((a, b) => (a.date === b.date ? a.title.localeCompare(b.title) : a.date < b.date ? 1 : -1))
+      .sort((a, b) =>
+        a.date === b.date
+          ? a.title.localeCompare(b.title)
+          : a.date < b.date
+            ? 1
+            : -1
+      )
       .slice(0, 5)
       .map(i => i.slug);
     expect(again).toEqual(first);
@@ -155,8 +164,12 @@ describe("accessors", () => {
   });
 
   it("byKinds is the union of its parts", () => {
-    const union = byKinds(["news", "blog"]).map(i => i.slug).sort();
-    const parts = [...byKind("news"), ...byKind("blog")].map(i => i.slug).sort();
+    const union = byKinds(["news", "blog"])
+      .map(i => i.slug)
+      .sort();
+    const parts = [...byKind("news"), ...byKind("blog")]
+      .map(i => i.slug)
+      .sort();
     expect(union).toEqual(parts);
   });
 

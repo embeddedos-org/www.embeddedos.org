@@ -37,13 +37,13 @@ describe("every article renders", () => {
     const body = bodyOf(slug)!;
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      item.title,
+      item.title
     );
     expect(screen.getByText(body.lede)).toBeInTheDocument();
 
     for (const section of body.sections) {
       expect(
-        screen.getByRole("heading", { level: 2, name: section.heading }),
+        screen.getByRole("heading", { level: 2, name: section.heading })
       ).toBeInTheDocument();
       expect(screen.getByText(section.text)).toBeInTheDocument();
     }
@@ -54,7 +54,9 @@ describe("every article renders", () => {
     // article components carried their own date, and seven disagreed with the
     // listing — one by eleven months.
     render(<Article slug={slug} />);
-    expect(screen.getByText(formatDate(bySlug(slug)!.date))).toBeInTheDocument();
+    expect(
+      screen.getByText(formatDate(bySlug(slug)!.date))
+    ).toBeInTheDocument();
   });
 });
 
@@ -72,17 +74,22 @@ describe("unknown and malformed slugs", () => {
     ["trailing slash", "eai-llm-bench/"],
   ] as const;
 
-  it.each(BAD)("%s slug shows not-found rather than an empty shell", (_, slug) => {
-    render(<Article slug={slug} />);
-    expect(
-      screen.getByRole("heading", { name: /article not found/i }),
-    ).toBeInTheDocument();
-  });
+  it.each(BAD)(
+    "%s slug shows not-found rather than an empty shell",
+    (_, slug) => {
+      render(<Article slug={slug} />);
+      expect(
+        screen.getByRole("heading", { name: /article not found/i })
+      ).toBeInTheDocument();
+    }
+  );
 
   it("never renders raw markup from a slug", () => {
     // The slug reaches the page only through a lookup, never the DOM. If that
     // ever changes, this fails rather than shipping an injection.
-    const { container } = render(<Article slug="<img src=x onerror=alert(1)>" />);
+    const { container } = render(
+      <Article slug="<img src=x onerror=alert(1)>" />
+    );
     expect(container.querySelector("img")).toBeNull();
     expect(container.innerHTML).not.toContain("onerror");
   });
@@ -97,12 +104,12 @@ describe("registry entries without a body", () => {
     // Most registry entries point at GitHub. Rendering /article/<their slug>
     // must say not-found rather than an article with a title and no words.
     const linkOut = CONTENT.find(
-      c => !c.href.startsWith("/") && !bodyOf(c.slug),
+      c => !c.href.startsWith("/") && !bodyOf(c.slug)
     );
     expect(linkOut, "expected at least one link-out entry").toBeDefined();
     render(<Article slug={linkOut!.slug} />);
     expect(
-      screen.getByRole("heading", { name: /article not found/i }),
+      screen.getByRole("heading", { name: /article not found/i })
     ).toBeInTheDocument();
   });
 
@@ -117,7 +124,7 @@ describe("registry entries without a body", () => {
     // A registry item linking to an article route that renders not-found is a
     // dead link the listing presents as live.
     const dead = CONTENT.filter(
-      c => c.href.startsWith("/article-") && !bodyOf(c.slug),
+      c => c.href.startsWith("/article-") && !bodyOf(c.slug)
     ).map(c => c.href);
     expect(dead, `listed but unrenderable: ${dead}`).toEqual([]);
   });
@@ -139,10 +146,17 @@ describe("content integrity after extraction", () => {
     // The prose came out of .tsx files by regex. A leftover tag or a raw
     // &amp; would render literally on the page.
     for (const [slug, body] of Object.entries(ARTICLE_BODIES)) {
-      const all = [body.lede, ...body.sections.flatMap(s => [s.heading, s.text])];
+      const all = [
+        body.lede,
+        ...body.sections.flatMap(s => [s.heading, s.text]),
+      ];
       for (const text of all) {
-        expect(text, `${slug}: leftover markup`).not.toMatch(/<\/?[a-z][^>]*>/i);
-        expect(text, `${slug}: leftover entity`).not.toMatch(/&(amp|lt|gt|quot|#\d+);/);
+        expect(text, `${slug}: leftover markup`).not.toMatch(
+          /<\/?[a-z][^>]*>/i
+        );
+        expect(text, `${slug}: leftover entity`).not.toMatch(
+          /&(amp|lt|gt|quot|#\d+);/
+        );
         expect(text, `${slug}: leftover JSX brace`).not.toMatch(/\{["'`]/);
       }
     }
@@ -153,7 +167,7 @@ describe("content integrity after extraction", () => {
     for (const [slug, body] of Object.entries(ARTICLE_BODIES)) {
       const headings = body.sections.map(s => s.heading);
       expect(new Set(headings).size, `${slug} has duplicate headings`).toBe(
-        headings.length,
+        headings.length
       );
     }
   });
@@ -165,11 +179,11 @@ describe("routing", () => {
     // would 404 silently through the SPA fallback.
     const app = readFileSync(
       join(__dirname, "../../client/src/App.tsx"),
-      "utf-8",
+      "utf-8"
     );
     for (const item of CONTENT.filter(c => c.href.startsWith("/article-"))) {
       expect(app, `route missing for ${item.href}`).toContain(
-        `<Route path="${item.href}">`,
+        `<Route path="${item.href}">`
       );
     }
   });
@@ -179,15 +193,15 @@ describe("routing", () => {
     // looks like a working page, so nothing would report it.
     const app = readFileSync(
       join(__dirname, "../../client/src/App.tsx"),
-      "utf-8",
+      "utf-8"
     );
     for (const item of CONTENT.filter(c => c.href.startsWith("/article-"))) {
       const block = app.slice(
         app.indexOf(`<Route path="${item.href}">`),
-        app.indexOf("</Route>", app.indexOf(`<Route path="${item.href}">`)),
+        app.indexOf("</Route>", app.indexOf(`<Route path="${item.href}">`))
       );
       expect(block, `${item.href} passes the wrong slug`).toContain(
-        `slug="${item.slug}"`,
+        `slug="${item.slug}"`
       );
     }
   });
@@ -195,7 +209,7 @@ describe("routing", () => {
   it("serves the canonical /article/:slug route", () => {
     const app = readFileSync(
       join(__dirname, "../../client/src/App.tsx"),
-      "utf-8",
+      "utf-8"
     );
     expect(app).toContain('<Route path="/article/:slug">');
   });

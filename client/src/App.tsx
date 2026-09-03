@@ -67,8 +67,7 @@ function lazyPage<P extends object = Record<string, never>>(
     const here =
       typeof window !== "undefined" ? window.location.pathname : path;
     const Ready = (preloaded.get(path) ?? preloaded.get(here)) as
-      | ComponentType<P>
-      | undefined;
+      ComponentType<P> | undefined;
     return Ready ? <Ready {...props} /> : <Lazy {...props} />;
   };
 }
@@ -246,24 +245,24 @@ const ContentIndexPage = lazyPage<{
   kind: ContentKind;
   heading: string;
   intro: string;
-}>(
-  "/blog",
-  () => import("./pages/ContentIndex"),
-  ["/publications", "/technical-reports", "/benchmarks"]
-);
+}>("/blog", () => import("./pages/ContentIndex"), [
+  "/publications",
+  "/technical-reports",
+  "/benchmarks",
+]);
 
 const ArticlePage = lazyPage<{ slug?: string }>(
   "/article/:slug",
   () => import("./pages/Article"),
   [
-  "/article-eos-platform-launch",
-  "/article-eai-llm-bench",
-  "/article-eboot-secure-boot-deepdive",
-  "/article-edb-encryption-at-rest",
-  "/article-eni-1024-channel-pipeline",
-  "/article-eos-roadmap-2026",
-  "/article-eosim-hil-bridge",
-  "/article-foundation-membership-2026",
+    "/article-eos-platform-launch",
+    "/article-eai-llm-bench",
+    "/article-eboot-secure-boot-deepdive",
+    "/article-edb-encryption-at-rest",
+    "/article-eni-1024-channel-pipeline",
+    "/article-eos-roadmap-2026",
+    "/article-eosim-hil-bridge",
+    "/article-foundation-membership-2026",
   ]
 );
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));

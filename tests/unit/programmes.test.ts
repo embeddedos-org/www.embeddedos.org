@@ -34,8 +34,10 @@ describe("registry integrity", () => {
   it("gives every programme a name and a summary someone can act on", () => {
     for (const p of PROGRAMMES) {
       expect(p.name.trim(), `${p.slug} name`).not.toBe("");
-      expect(p.summary.trim().length, `${p.slug} summary too short`)
-        .toBeGreaterThan(40);
+      expect(
+        p.summary.trim().length,
+        `${p.slug} summary too short`
+      ).toBeGreaterThan(40);
     }
   });
 
@@ -55,7 +57,7 @@ describe("claims match reality", () => {
     const unreachable = PROGRAMMES.filter(p => isActive(p) && !p.href);
     expect(
       unreachable.map(p => p.slug),
-      "active programmes with no href",
+      "active programmes with no href"
     ).toEqual([]);
   });
 
@@ -65,7 +67,7 @@ describe("claims match reality", () => {
     const premature = PROGRAMMES.filter(p => p.status === "planned" && p.href);
     expect(
       premature.map(p => p.slug),
-      "planned programmes with an href",
+      "planned programmes with an href"
     ).toEqual([]);
   });
 
@@ -86,7 +88,7 @@ describe("claims match reality", () => {
     const running = PROGRAMMES.filter(p => p.status !== "planned");
     expect(
       running.map(p => `${p.slug}=${p.status}`),
-      "a programme claims to be running — confirm it does before updating this test",
+      "a programme claims to be running — confirm it does before updating this test"
     ).toEqual([]);
   });
 });
@@ -99,7 +101,11 @@ describe("tracks", () => {
   });
 
   it("byTrack returns only that track", () => {
-    for (const t of ["community", "research", "marketing"] as ProgrammeTrack[]) {
+    for (const t of [
+      "community",
+      "research",
+      "marketing",
+    ] as ProgrammeTrack[]) {
       expect(byTrack(t).every(p => p.track === t)).toBe(true);
     }
   });
@@ -108,17 +114,17 @@ describe("tracks", () => {
     // A track with entries and no page is data nobody can see.
     const research = readFileSync(
       join(__dirname, "../../client/src/pages/Research.tsx"),
-      "utf-8",
+      "utf-8"
     );
     const involved = readFileSync(
       join(__dirname, "../../client/src/pages/GetInvolved.tsx"),
-      "utf-8",
+      "utf-8"
     );
     const rendered = research + involved;
     for (const t of ["community", "research"] as ProgrammeTrack[]) {
       if (byTrack(t).length === 0) continue;
       expect(rendered, `${t} track is not rendered on any page`).toContain(
-        `track="${t}"`,
+        `track="${t}"`
       );
     }
   });

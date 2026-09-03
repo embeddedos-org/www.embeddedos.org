@@ -465,7 +465,7 @@ export interface CategorySummary<T> {
  * brief; a category that vanished is a mystery.
  */
 export function kindSummary(
-  kinds: readonly ContentKind[],
+  kinds: readonly ContentKind[]
 ): CategorySummary<ContentKind>[] {
   const counts = countsByKind();
   return kinds.map(kind => ({

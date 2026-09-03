@@ -173,7 +173,10 @@ describe("storage proxy", () => {
         continue;
       }
       const res = await fetch(`${BASE}/media/${f}`);
-      if (res.status !== 200 || !want.test(res.headers.get("content-type") ?? ""))
+      if (
+        res.status !== 200 ||
+        !want.test(res.headers.get("content-type") ?? "")
+      )
         bad.push(`${f} -> ${res.status} ${res.headers.get("content-type")}`);
     }
     expect(unknown, "no expected content-type for these").toEqual([]);

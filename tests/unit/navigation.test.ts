@@ -77,7 +77,8 @@ const isParameterised = (route: string) => route.includes(":");
 describe("route coverage", () => {
   it("gives every route a home in the footer, directly or through its hub", () => {
     const missing = routes.filter(r => {
-      if (r === "/" || isParameterised(r) || footerAll.includes(r)) return false;
+      if (r === "/" || isParameterised(r) || footerAll.includes(r))
+        return false;
       const hub = HUBS.find(h => r.startsWith(h.prefix));
       return !(hub && footerAll.includes(hub.hub));
     });

@@ -229,7 +229,9 @@ export default function Research() {
                 <div>
                   <div className="text-white font-medium mb-1">{p.title}</div>
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="text-orange-400">{formatDate(p.date)}</span>
+                    <span className="text-orange-400">
+                      {formatDate(p.date)}
+                    </span>
                     <span className="text-gray-500">{badgeOf(p)}</span>
                   </div>
                 </div>
