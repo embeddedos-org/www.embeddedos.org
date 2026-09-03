@@ -37,9 +37,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No `version:` here on purpose. package.json's `packageManager` field
+      # pins pnpm@10.4.1 with a hash, and specifying a version in both places
+      # is a hard error in action-setup v4 (ERR_PNPM_BAD_PM_VERSION), which is
+      # how this workflow failed on its first run. One source of truth.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - uses: actions/setup-node@v4
         with:
