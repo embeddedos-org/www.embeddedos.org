@@ -9,6 +9,7 @@
     "build:client": "NODE_ENV=production vite build",
     "build:server": "NODE_ENV=production esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "prerender": "node scripts/prerender.mjs",
+    "showcase": "node scripts/showcase-shots.mjs showcase-frames",
     "deploy:branch": "node scripts/deploy-branch.mjs",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",

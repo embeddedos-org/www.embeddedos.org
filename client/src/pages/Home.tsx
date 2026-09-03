@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { SOCIAL_URLS } from "@/data/foundation";
+import ProductShowcase from "@/components/ProductShowcase";
 import {
   ArrowRight,
   Github,
@@ -432,6 +433,9 @@ export default function Home() {
           <ProductMarquee />
         </Suspense>
       </div>
+
+      {/* ── PRODUCT SHOWCASE VIDEO ── */}
+      <ProductShowcase />
 
       {/* ── STATS BAR ── */}
       <section

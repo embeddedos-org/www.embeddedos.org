@@ -114,3 +114,4 @@ temp/
 # Playwright test output (generated)
 test-results/
 playwright-report/
+showcase-frames/

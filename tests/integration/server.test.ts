@@ -140,20 +140,56 @@ describe("storage proxy", () => {
     expect(res.status).toBe(404);
   });
 
-  it("every image referenced by the build is actually served", async () => {
+  it("every asset referenced by the build is actually served", async () => {
+    // This asserted `^image/` on everything in /media until the product
+    // showcase reel landed there, which is the right kind of failure: the
+    // directory stopped being images-only and the test said so. Widened to
+    // check the served type against the extension rather than dropping the
+    // type check, because "200 with the wrong content-type" is exactly how a
+    // video ends up downloading instead of playing.
+    const EXPECTED_TYPE: Record<string, RegExp> = {
+      ".jpg": /^image\/jpeg/,
+      ".jpeg": /^image\/jpeg/,
+      ".png": /^image\/png/,
+      ".webp": /^image\/webp/,
+      ".svg": /^image\/svg/,
+      ".gif": /^image\/gif/,
+      ".avif": /^image\/avif/,
+      ".mp4": /^video\/mp4/,
+    };
+
     const dist = path.join(ROOT, "dist", "public", "media");
     const files = fs.readdirSync(dist);
     expect(files.length).toBeGreaterThan(15);
+
     const bad: string[] = [];
+    const unknown: string[] = [];
     for (const f of files) {
+      const want = EXPECTED_TYPE[path.extname(f).toLowerCase()];
+      // An unrecognised extension is a finding, not something to skip past:
+      // it means an asset kind nobody decided how to serve.
+      if (!want) {
+        unknown.push(f);
+        continue;
+      }
       const res = await fetch(`${BASE}/media/${f}`);
-      if (
-        res.status !== 200 ||
-        !/^image\//.test(res.headers.get("content-type") ?? "")
-      )
-        bad.push(f);
+      if (res.status !== 200 || !want.test(res.headers.get("content-type") ?? ""))
+        bad.push(`${f} -> ${res.status} ${res.headers.get("content-type")}`);
     }
+    expect(unknown, "no expected content-type for these").toEqual([]);
     expect(bad).toEqual([]);
+  });
+
+  it("serves the showcase reel with range support so it can be seeked", async () => {
+    // A <video> that cannot answer a Range request plays only from the start:
+    // dragging the scrubber does nothing. Express's sendFile handles this, but
+    // it is a property of the route the page depends on, so it gets a test
+    // rather than an assumption.
+    const res = await fetch(BASE + "/media/product-showcase.mp4", {
+      headers: { Range: "bytes=1000-2000" },
+    });
+    expect(res.status).toBe(206);
+    expect(res.headers.get("content-range")).toMatch(/^bytes 1000-2000\/\d+$/);
   });
 });
 
