@@ -13,6 +13,26 @@
 # status instead, matching the express handler in server/_core/vite.ts that the
 # e2e suite exercises.
 
+# Send the apex to www, once, with a 301.
+#
+# embeddedos.org and www.embeddedos.org both answered 200 with byte-identical
+# content, so the site had two addresses. That splits inbound links between
+# them, and analytics counts them as separate hostnames: a visitor crossing
+# from one to the other starts a new session and is attributed to "direct".
+# The GA4 data stream is defined as https://www.embeddedos.org, and the pages
+# already declare <link rel="canonical" href="https://www.embeddedos.org/">,
+# so www is the address the site claims — this makes the server agree.
+#
+# The condition is anchored to the bare apex rather than negating www. A rule
+# written as "if host is not www, redirect to www" also matches www itself on
+# any request Apache re-enters, which is the usual way this becomes a loop.
+#
+# HTTPS is already handled upstream: http://www.embeddedos.org answers 301 to
+# https before this file is consulted, so there is no scheme rewrite here.
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^embeddedos\.org$ [NC]
+RewriteRule ^(.*)$ https://www.embeddedos.org/$1 [R=301,L]
+
 Options -Indexes
 
 ErrorDocument 404 /404.html
