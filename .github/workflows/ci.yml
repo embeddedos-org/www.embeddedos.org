@@ -1,0 +1,90 @@
+# Build and test on every push and pull request.
+#
+# Before this, the only workflow in the repository was claude-code-review.yml.
+# Nothing compiled the site, nothing ran the 450 tests, and nothing noticed when
+# a change broke either. Four pull requests merged into master this week with no
+# automated check of any kind.
+#
+# The job order is deliberate. `pnpm build` must run before the test step,
+# because two suites need build output and *silently skip* without it rather
+# than failing:
+#
+#   tests/security  needs dist/index.js — 21 tests, all skipped when absent
+#   e2e             needs dist/public   — Playwright serves the prerendered tree
+#
+# A green run that skipped every security test is worse than a red one, so the
+# build is a hard dependency rather than a convenience.
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+# A second push to the same branch makes the first run irrelevant. Cancelling it
+# frees the runner instead of queueing behind work nobody will read.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # --no-frozen-lockfile because pnpm-lock.yaml's patchedDependencies has
+      # drifted from package.json; a frozen install fails outright. Worth
+      # repairing separately, but a CI that cannot install is no CI at all.
+      - name: Install
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm check
+
+      - name: Lint
+        run: pnpm lint
+
+      # Client, prerender and server. Everything below depends on the output.
+      - name: Build
+        run: pnpm build
+
+      - name: Unit and integration tests
+        run: pnpm test
+
+      # Named separately from `pnpm test` so a skip is visible in the job list.
+      # These are the tests most likely to be quietly lost again.
+      - name: Security tests
+        run: pnpm test:security
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Smoke tests
+        run: pnpm test:smoke
+
+      - name: Accessibility tests
+        run: pnpm test:a11y
+
+      # The report is what makes a failed browser test diagnosable after the
+      # runner is gone. Uploaded only on failure — on success it is noise.
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
