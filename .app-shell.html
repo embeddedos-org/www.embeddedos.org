@@ -2,6 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Google Analytics 4 — G-VTNZKL95DQ
+      Placed directly after <meta charset> because Google asks for it as high in
+      <head> as possible, and a gtag before the charset declaration would be
+      parsed under the wrong encoding.
+
+      Hardcoded rather than env-driven, deliberately. The Umami block at the
+      bottom of <body> is env-driven and has never run: VITE_ANALYTICS_ENDPOINT
+      and VITE_ANALYTICS_WEBSITE_ID were never set, so its guard returns early
+      and the live page ships a literal "%VITE_ANALYTICS_ENDPOINT%" string. An
+      analytics tag that silently does nothing is the failure being avoided here.
+
+      A GA4 Measurement ID is not a secret — it is served to every visitor in
+      this file — so there is nothing to protect by moving it into the
+      environment.
+    -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VTNZKL95DQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-VTNZKL95DQ");
+    </script>
     <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EmbeddedOS — The Operating System for Every Device</title>
@@ -80,7 +105,7 @@
           "https://x.com/EmbeddedOS_ORG",
           "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
           "https://www.youtube.com/@EmbeddedOS_ORG",
-          "https://www.instagram.com/embeddedos.org",
+          "https://www.instagram.com/embeddedos_org",
           "https://www.facebook.com/profile.php?id=61588978691494"
         ]
       }
@@ -105,10 +130,10 @@
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
       />
     </noscript>
-    <script type="module" crossorigin src="/assets/index-RS7scPqw.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vendor-react-r7gXz3yt.js">
-    <link rel="modulepreload" crossorigin href="/assets/vendor-motion-C_3LH3Yb.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-U7v3l89B.css">
+    <script type="module" crossorigin src="/assets/index-Cb69KY2v.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-DdUyh3Gc.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-motion-mgp-wB1q.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DBOJalGe.css">
   </head>
 
   <body>
