@@ -262,17 +262,34 @@ describe("dependencies", () => {
         );
       }
 
-      const critical: string[] = [];
+      // Fails on critical AND high. It asserted only on critical, which meant
+      // a high-severity advisory in a production dependency passed without
+      // comment — an odd line to draw for a server that parses untrusted
+      // request data.
+      //
+      // Moderate is reported, not failed. There are two open today (both qs,
+      // both fixed by the override in package.json) and turning them red would
+      // be a decision about this project's risk appetite rather than a fact
+      // about its security. The count is printed so it cannot be forgotten.
+      const blocking: string[] = [];
       for (const line of raw.trim().split("\n")) {
         try {
           const j = JSON.parse(line);
           const counts = j.metadata?.vulnerabilities;
-          if (counts?.critical) critical.push(`critical: ${counts.critical}`);
+          if (!counts) continue;
+          if (counts.critical) blocking.push(`critical: ${counts.critical}`);
+          if (counts.high) blocking.push(`high: ${counts.high}`);
+          if (counts.moderate) {
+            console.warn(
+              `[security] ${counts.moderate} moderate advisory/advisories in ` +
+                `production dependencies — not blocking, but review them.`
+            );
+          }
         } catch {
           /* not a JSON line */
         }
       }
-      expect(critical).toEqual([]);
+      expect(blocking, "critical or high advisories").toEqual([]);
     },
     AUDIT_TIMEOUT_MS
   );
