@@ -10,7 +10,6 @@ import EBot from "./components/EBot";
 import SearchModal from "./components/SearchModal";
 import DonateModal from "./components/DonateModal";
 import Home from "./pages/Home";
-import type { ContentKind } from "@/data/content";
 import { lazy, Suspense, useEffect, useRef, type ComponentType } from "react";
 import { applyRouteMeta, readHeading } from "./lib/page-meta";
 
@@ -211,45 +210,67 @@ const ResourcesPage = lazyPage("/resources", () => import("./pages/Resources"));
  * saying "no episodes yet" is a placeholder with a URL. The full taxonomy,
  * including its empty categories, is published on /research instead.
  */
-const CONTENT_INDEXES = [
-  {
-    path: "/blog",
-    kind: "blog" as const,
-    heading: "Engineering Blog",
-    intro:
-      "Deep dives from the people building EmbeddedOS — design decisions, trade-offs, and the things that did not work.",
-  },
-  {
-    path: "/publications",
-    kind: "publication" as const,
-    heading: "Publications",
-    intro:
-      "Peer-facing papers on the architecture, security model and toolchain of EmbeddedOS.",
-  },
-  {
-    path: "/technical-reports",
-    kind: "technical-report" as const,
-    heading: "Technical Reports",
-    intro:
-      "Engineering write-ups of individual subsystems, measured on real hardware where the measurement is the point.",
-  },
-  {
-    path: "/benchmarks",
-    kind: "benchmark" as const,
-    heading: "Benchmarks",
-    intro:
-      "Performance results with the configuration stated, so they can be reproduced or disputed.",
-  },
-];
-const ContentIndexPage = lazyPage<{
-  kind: ContentKind;
-  heading: string;
-  intro: string;
-}>("/blog", () => import("./pages/ContentIndex"), [
-  "/publications",
-  "/technical-reports",
-  "/benchmarks",
-]);
+// Every category index — content kinds and research areas alike — is the same
+// component behind a different path. The alias list is what lets the route
+// preloader warm any of them from the one chunk.
+const ContentIndexPage = lazyPage<{ path: string }>(
+  "/blog",
+  () => import("./pages/ContentIndex"),
+  [
+    "/publications",
+    "/technical-reports",
+    "/benchmarks",
+    "/press-releases",
+    "/newsletter",
+    "/case-studies",
+    "/member-stories",
+    "/product-showcases",
+    "/project-showcases",
+    "/videos",
+    "/podcast",
+    "/webinars",
+    "/white-papers",
+    "/datasets",
+    "/research/architecture",
+    "/research/security",
+    "/research/ai",
+    "/research/embedded-systems",
+    "/research/rtos",
+    "/research/linux",
+    "/research/hardware",
+    "/research/networking",
+  ]
+);
+
+const ProgrammeDetailPage = lazyPage<{ path: string }>(
+  "/programmes/ambassador",
+  () => import("./pages/ProgrammePage"),
+  [
+    "/programmes/university-program",
+    "/programmes/community-meetups",
+    "/programmes/conference-presence",
+    "/programmes/member-marketing",
+    "/programmes/partner-marketing",
+    "/programmes/university-collaborations",
+    "/programmes/industry-collaborations",
+    "/programmes/grants",
+  ]
+);
+
+const ProgrammesPage = lazyPage(
+  "/programmes",
+  () => import("./pages/Programmes")
+);
+const BrandAssetsPage = lazyPage("/brand", () => import("./pages/BrandAssets"));
+const PressKitPage = lazyPage("/press-kit", () => import("./pages/PressKit"));
+const SocialMediaPage = lazyPage(
+  "/social",
+  () => import("./pages/SocialMedia")
+);
+const YouTubeChannelPage = lazyPage(
+  "/youtube",
+  () => import("./pages/YouTubeChannel")
+);
 
 const ArticlePage = lazyPage<{ slug?: string }>(
   "/article/:slug",
@@ -662,38 +683,187 @@ function Router() {
       </Route>
       <Route path="/blog">
         <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage
-            kind={CONTENT_INDEXES[0].kind}
-            heading={CONTENT_INDEXES[0].heading}
-            intro={CONTENT_INDEXES[0].intro}
-          />
+          <ContentIndexPage path="/blog" />
         </Suspense>
       </Route>
       <Route path="/publications">
         <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage
-            kind={CONTENT_INDEXES[1].kind}
-            heading={CONTENT_INDEXES[1].heading}
-            intro={CONTENT_INDEXES[1].intro}
-          />
+          <ContentIndexPage path="/publications" />
         </Suspense>
       </Route>
       <Route path="/technical-reports">
         <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage
-            kind={CONTENT_INDEXES[2].kind}
-            heading={CONTENT_INDEXES[2].heading}
-            intro={CONTENT_INDEXES[2].intro}
-          />
+          <ContentIndexPage path="/technical-reports" />
         </Suspense>
       </Route>
       <Route path="/benchmarks">
         <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage
-            kind={CONTENT_INDEXES[3].kind}
-            heading={CONTENT_INDEXES[3].heading}
-            intro={CONTENT_INDEXES[3].intro}
-          />
+          <ContentIndexPage path="/benchmarks" />
+        </Suspense>
+      </Route>
+      <Route path="/press-releases">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/press-releases" />
+        </Suspense>
+      </Route>
+      <Route path="/newsletter">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/newsletter" />
+        </Suspense>
+      </Route>
+      <Route path="/case-studies">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/case-studies" />
+        </Suspense>
+      </Route>
+      <Route path="/member-stories">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/member-stories" />
+        </Suspense>
+      </Route>
+      <Route path="/product-showcases">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/product-showcases" />
+        </Suspense>
+      </Route>
+      <Route path="/project-showcases">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/project-showcases" />
+        </Suspense>
+      </Route>
+      <Route path="/videos">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/videos" />
+        </Suspense>
+      </Route>
+      <Route path="/podcast">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/podcast" />
+        </Suspense>
+      </Route>
+      <Route path="/webinars">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/webinars" />
+        </Suspense>
+      </Route>
+      <Route path="/white-papers">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/white-papers" />
+        </Suspense>
+      </Route>
+      <Route path="/datasets">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/datasets" />
+        </Suspense>
+      </Route>
+      <Route path="/research/architecture">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/architecture" />
+        </Suspense>
+      </Route>
+      <Route path="/research/security">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/security" />
+        </Suspense>
+      </Route>
+      <Route path="/research/ai">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/ai" />
+        </Suspense>
+      </Route>
+      <Route path="/research/embedded-systems">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/embedded-systems" />
+        </Suspense>
+      </Route>
+      <Route path="/research/rtos">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/rtos" />
+        </Suspense>
+      </Route>
+      <Route path="/research/linux">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/linux" />
+        </Suspense>
+      </Route>
+      <Route path="/research/hardware">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/hardware" />
+        </Suspense>
+      </Route>
+      <Route path="/research/networking">
+        <Suspense fallback={<PageLoader />}>
+          <ContentIndexPage path="/research/networking" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammesPage />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/ambassador">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/ambassador" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/university-program">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/university-program" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/community-meetups">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/community-meetups" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/conference-presence">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/conference-presence" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/member-marketing">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/member-marketing" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/partner-marketing">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/partner-marketing" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/university-collaborations">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/university-collaborations" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/industry-collaborations">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/industry-collaborations" />
+        </Suspense>
+      </Route>
+      <Route path="/programmes/grants">
+        <Suspense fallback={<PageLoader />}>
+          <ProgrammeDetailPage path="/programmes/grants" />
+        </Suspense>
+      </Route>
+      <Route path="/brand">
+        <Suspense fallback={<PageLoader />}>
+          <BrandAssetsPage />
+        </Suspense>
+      </Route>
+      <Route path="/press-kit">
+        <Suspense fallback={<PageLoader />}>
+          <PressKitPage />
+        </Suspense>
+      </Route>
+      <Route path="/social">
+        <Suspense fallback={<PageLoader />}>
+          <SocialMediaPage />
+        </Suspense>
+      </Route>
+      <Route path="/youtube">
+        <Suspense fallback={<PageLoader />}>
+          <YouTubeChannelPage />
         </Suspense>
       </Route>
       <Route path="/article/:slug">

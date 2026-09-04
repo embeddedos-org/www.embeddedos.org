@@ -186,20 +186,34 @@ export default function Research() {
             By subject
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {/*
+              Each subject is now a link to its own page. /research is the
+              footer's hub for the eight /research/* routes, and a hub whose
+              members are not reachable from it is not a hub — it just looked
+              like one.
+            */}
             {areaSummary().map(c => (
-              <div
+              <Link
                 key={c.key}
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3"
+                href={`/research/${c.key}`}
+                className="bg-white/5 border border-white/10 hover:border-white/25 rounded-lg px-4 py-3 block transition-colors"
               >
-                <div className="text-white text-sm font-medium">{c.label}</div>
+                <div className="text-white text-sm font-medium underline decoration-white/20 underline-offset-4">
+                  {c.label}
+                </div>
+                {/*
+                  text-gray-600 here measured 1.95:1 against this card, well
+                  under the 4.5:1 WCAG 1.4.3 wants. gray-400 is 5.79:1 and
+                  still reads as secondary next to the purple count.
+                */}
                 <div
                   className={`text-xs mt-1 ${
-                    c.count > 0 ? "text-purple-400" : "text-gray-600"
+                    c.count > 0 ? "text-purple-400" : "text-gray-400"
                   }`}
                 >
                   {c.count > 0 ? `${c.count} published` : "none yet"}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -65,6 +65,13 @@ const footerAll = [...new Set([...footerHrefs, ...legalHrefs])];
 const HUBS: Array<{ prefix: string; hub: string }> = [
   { prefix: "/product-", hub: "/products" },
   { prefix: "/article-", hub: "/news" },
+  // The eight research-area pages are listed on /research, and the nine
+  // programme pages on /programmes. Both hubs are in the footer and both link
+  // every member, so the chain from the footer to any page stays unbroken —
+  // which is the property this file protects. The alternative was seventeen
+  // more footer links, which buries the columns that matter.
+  { prefix: "/research/", hub: "/research" },
+  { prefix: "/programmes/", hub: "/programmes" },
 ];
 
 /**

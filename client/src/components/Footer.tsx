@@ -40,13 +40,39 @@ const FOOTER_LINKS = {
     { name: "Industries", href: "/industries" },
     { name: "Transparency", href: "/transparency" },
     { name: "Research", href: "/research" },
-    { name: "Future Research", href: "/future-research" },
     { name: "Patents", href: "/patents" },
+    { name: "Programmes", href: "/programmes" },
+  ],
+  // The two functions from the Foundation's organisational design. Splitting
+  // them out of "Foundation" keeps that column about the institution and gives
+  // the 37 published categories a home a reader can actually scan.
+  Marketing: [
     { name: "News", href: "/news" },
     { name: "Blog", href: "/blog" },
+    { name: "Press Releases", href: "/press-releases" },
+    { name: "Newsletter", href: "/newsletter" },
+    { name: "Case Studies", href: "/case-studies" },
+    { name: "Member Stories", href: "/member-stories" },
+    { name: "Product Showcases", href: "/product-showcases" },
+    { name: "Project Showcases", href: "/project-showcases" },
+    { name: "Videos", href: "/videos" },
+    { name: "YouTube", href: "/youtube" },
+    { name: "Podcast", href: "/podcast" },
+    { name: "Webinars", href: "/webinars" },
+    { name: "Social Media", href: "/social" },
+    { name: "Brand Assets", href: "/brand" },
+    { name: "Press Kit", href: "/press-kit" },
+  ],
+  // "Research" is the hub for the eight /research/* area pages, which are
+  // linked from it rather than listed here; see tests/unit/navigation.test.ts.
+  Research: [
+    { name: "Research", href: "/research" },
     { name: "Publications", href: "/publications" },
+    { name: "White Papers", href: "/white-papers" },
     { name: "Technical Reports", href: "/technical-reports" },
     { name: "Benchmarks", href: "/benchmarks" },
+    { name: "Datasets", href: "/datasets" },
+    { name: "Future Research", href: "/future-research" },
   ],
   "Join & Support": [
     { name: "Careers", href: "/careers" },

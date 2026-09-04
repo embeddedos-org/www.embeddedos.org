@@ -5,10 +5,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
-    "build": "pnpm build:client && pnpm prerender && pnpm build:server",
+    "build": "pnpm build:client && pnpm prerender && pnpm sitemap && pnpm build:server",
     "build:client": "NODE_ENV=production vite build",
     "build:server": "NODE_ENV=production esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "prerender": "node scripts/prerender.mjs",
+    "sitemap": "node scripts/gen-sitemap.mjs",
     "showcase": "node scripts/showcase-shots.mjs showcase-frames",
     "deploy:branch": "node scripts/deploy-branch.mjs",
     "start": "NODE_ENV=production node dist/index.js",

@@ -36,6 +36,24 @@ const PAGES = [
   "/faq",
   "/careers",
   "/get-involved",
+  // One page per distinct component added for the Marketing and Research
+  // structure. Listing all 33 would treble the suite's runtime to re-test the
+  // same four components with different text; listing none would have shipped
+  // them unchecked, which is how the last contrast failure reached master.
+  //
+  // Both states of the category index are here on purpose: the empty branch
+  // renders entirely different markup from the populated one, so covering only
+  // one of them covers neither.
+  "/press-releases", // category index, empty branch
+  "/publications", // category index, populated branch
+  "/research/security", // research area, populated
+  "/research/linux", // research area, empty
+  "/programmes", // programme hub
+  "/programmes/ambassador", // programme detail
+  "/brand", // brand assets
+  "/press-kit", // press kit
+  "/social", // social accounts
+  "/youtube", // channel page
 ];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
