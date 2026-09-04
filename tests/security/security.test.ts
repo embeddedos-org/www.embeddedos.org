@@ -219,7 +219,7 @@ describe("dependencies", () => {
   const AUDIT_TIMEOUT_MS = 480_000;
 
   it(
-    "has no critical advisories in production dependencies",
+    "has no critical or high advisories in production dependencies",
     () => {
       let raw = "";
       let failure: Error | undefined;
@@ -262,31 +262,64 @@ describe("dependencies", () => {
         );
       }
 
-      // Fails on critical AND high. It asserted only on critical, which meant
-      // a high-severity advisory in a production dependency passed without
-      // comment — an odd line to draw for a server that parses untrusted
-      // request data.
+      // Parse the whole document, not line by line.
       //
-      // Moderate is reported, not failed. There are two open today (both qs,
-      // both fixed by the override in package.json) and turning them red would
-      // be a decision about this project's risk appetite rather than a fact
-      // about its security. The count is printed so it cannot be forgotten.
-      const blocking: string[] = [];
-      for (const line of raw.trim().split("\n")) {
-        try {
-          const j = JSON.parse(line);
-          const counts = j.metadata?.vulnerabilities;
-          if (!counts) continue;
-          if (counts.critical) blocking.push(`critical: ${counts.critical}`);
-          if (counts.high) blocking.push(`high: ${counts.high}`);
-          if (counts.moderate) {
-            console.warn(
-              `[security] ${counts.moderate} moderate advisory/advisories in ` +
-                `production dependencies — not blocking, but review them.`
-            );
+      // This is the bug that made the gate decorative. `pnpm audit --json`
+      // emits ONE pretty-printed JSON object spanning ~120 lines; the previous
+      // code did raw.split("\n") and JSON.parse'd each line, so every line
+      // threw, the catch swallowed it, and `metadata.vulnerabilities` was never
+      // found. The result array was therefore always empty and the test passed
+      // no matter what the audit reported — including a critical advisory.
+      //
+      // The NDJSON fallback is kept because some pnpm versions do emit one
+      // object per line, and a parser that only handles today's format would
+      // fail the same silent way after an upgrade.
+      const reports: unknown[] = [];
+      try {
+        reports.push(JSON.parse(raw));
+      } catch {
+        for (const line of raw.trim().split("\n")) {
+          try {
+            reports.push(JSON.parse(line));
+          } catch {
+            /* not a JSON line */
           }
-        } catch {
-          /* not a JSON line */
+        }
+      }
+
+      const counted = reports
+        .map(
+          r =>
+            (r as { metadata?: { vulnerabilities?: Record<string, number> } })
+              .metadata?.vulnerabilities
+        )
+        .filter((v): v is Record<string, number> => Boolean(v));
+
+      // If the output parsed but carried no counts, the shape changed and this
+      // check is blind again. Fail rather than infer "no advisories" from
+      // "nothing recognised" — that inference is what went wrong before.
+      expect(
+        counted.length,
+        `parsed ${reports.length} JSON document(s) from pnpm audit but found no ` +
+          `metadata.vulnerabilities — the report format changed and this test ` +
+          `can no longer see advisories`
+      ).toBeGreaterThan(0);
+
+      // Fails on critical AND high. It asserted on critical alone, an odd line
+      // to draw for a server that parses untrusted request data.
+      //
+      // Moderate is reported, not failed. Two are open today (both qs, fixed by
+      // qs >= 6.16.0) and turning them red would be a decision about this
+      // project's risk appetite rather than a fact about its security.
+      const blocking: string[] = [];
+      for (const counts of counted) {
+        if (counts.critical) blocking.push(`critical: ${counts.critical}`);
+        if (counts.high) blocking.push(`high: ${counts.high}`);
+        if (counts.moderate) {
+          console.warn(
+            `[security] ${counts.moderate} moderate advisory/advisories in ` +
+              `production dependencies — not blocking, but review them.`
+          );
         }
       }
       expect(blocking, "critical or high advisories").toEqual([]);
