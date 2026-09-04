@@ -206,28 +206,74 @@ describe("server behaviour", () => {
 });
 
 describe("dependencies", () => {
-  it("has no critical advisories in production dependencies", () => {
-    let raw = "";
-    try {
-      raw = execFileSync("pnpm", ["audit", "--prod", "--json"], {
-        cwd: ROOT,
-        encoding: "utf8",
-        stdio: ["ignore", "pipe", "ignore"],
-      });
-    } catch (e: any) {
-      raw = e.stdout ?? ""; // pnpm exits non-zero when advisories exist
-    }
-    if (!raw.trim()) return; // audit unavailable offline — do not fail the suite
-    const critical: string[] = [];
-    for (const line of raw.trim().split("\n")) {
+  /**
+   * `pnpm audit` queries the registry, so this is the one test here that
+   * depends on the network. It timed out under vitest's 30s default on a CI
+   * runner and took the whole suite red.
+   *
+   * The runner's own log settles the budget: the audit child process ran for
+   * 250s after vitest had already given up on it. Eight minutes leaves real
+   * headroom over that, so a failure here means the audit is broken rather
+   * than merely slow — which is the only way this test is worth having.
+   */
+  const AUDIT_TIMEOUT_MS = 480_000;
+
+  it(
+    "has no critical advisories in production dependencies",
+    () => {
+      let raw = "";
+      let failure: Error | undefined;
       try {
-        const j = JSON.parse(line);
-        const counts = j.metadata?.vulnerabilities;
-        if (counts?.critical) critical.push(`critical: ${counts.critical}`);
-      } catch {
-        /* not a JSON line */
+        raw = execFileSync("pnpm", ["audit", "--prod", "--json"], {
+          cwd: ROOT,
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+          timeout: AUDIT_TIMEOUT_MS - 60_000,
+        });
+      } catch (e: unknown) {
+        // pnpm exits non-zero when advisories exist, and its report is still on
+        // stdout — that is a successful audit with findings, not a failure to
+        // audit. Anything with no stdout at all is the latter.
+        const err = e as { stdout?: string };
+        raw = err.stdout ?? "";
+        if (!raw.trim()) failure = e as Error;
       }
-    }
-    expect(critical).toEqual([]);
-  });
+
+      if (!raw.trim()) {
+        // This previously returned early with "audit unavailable offline — do
+        // not fail the suite", which meant a security check reported PASS on
+        // every run where it could not actually run. The project standard is
+        // explicit that verification which cannot run must fail closed.
+        //
+        // Set ALLOW_OFFLINE_AUDIT=1 to work offline. That is a deliberate,
+        // visible choice by whoever sets it, which a silent skip was not.
+        if (process.env.ALLOW_OFFLINE_AUDIT === "1") {
+          console.warn(
+            "[security] dependency audit skipped: ALLOW_OFFLINE_AUDIT=1"
+          );
+          return;
+        }
+        throw new Error(
+          "pnpm audit produced no output, so production dependencies were " +
+            "NOT checked for advisories. This test fails closed rather than " +
+            "reporting a pass it did not verify. Re-run with network access, " +
+            "or set ALLOW_OFFLINE_AUDIT=1 to skip it deliberately." +
+            (failure ? `\nUnderlying error: ${failure.message}` : "")
+        );
+      }
+
+      const critical: string[] = [];
+      for (const line of raw.trim().split("\n")) {
+        try {
+          const j = JSON.parse(line);
+          const counts = j.metadata?.vulnerabilities;
+          if (counts?.critical) critical.push(`critical: ${counts.critical}`);
+        } catch {
+          /* not a JSON line */
+        }
+      }
+      expect(critical).toEqual([]);
+    },
+    AUDIT_TIMEOUT_MS
+  );
 });

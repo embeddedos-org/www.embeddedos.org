@@ -77,13 +77,17 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Unit and integration tests
-        run: pnpm test
-
-      # Named separately from `pnpm test` so a skip is visible in the job list.
-      # These are the tests most likely to be quietly lost again.
+      # The security suite runs FIRST and on its own. Two reasons: `pnpm test`
+      # is `vitest run` with no path, so it already includes tests/security —
+      # running both meant the four-minute dependency audit executed twice —
+      # and a named step is how a future skip stays visible in the job list.
       - name: Security tests
         run: pnpm test:security
+
+      # Everything else. --exclude keeps the security suite from running a
+      # second time now that it has its own step above.
+      - name: Unit, integration and performance tests
+        run: pnpm exec vitest run --exclude 'tests/security/**'
 
       - name: Smoke tests
         run: pnpm test:smoke
