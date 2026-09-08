@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect } from "react";
+import React, { Suspense, useRef, useEffect, useState } from "react";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { gsap } from "gsap";
@@ -217,10 +217,17 @@ function StatCounter({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+  // Seeded to the real value, not 0: if `inView` never fires (a prerender
+  // snapshot taken before the observer sees the element, or a stray re-render
+  // that would otherwise clobber an out-of-band DOM mutation), this is what
+  // stays on screen. The count-up below is a progressive enhancement on top
+  // of an always-correct fallback, not a value the page depends on animating
+  // into.
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
-    if (!inView || !ref.current) return;
-    let start = 0;
+    if (!inView) return;
+    let rafId: number;
     const end = value;
     const duration = 1500;
     const startTime = performance.now();
@@ -228,17 +235,19 @@ function StatCounter({
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      start = Math.round(eased * end);
-      if (ref.current) ref.current.textContent = start.toString();
-      if (progress < 1) requestAnimationFrame(update);
+      setDisplay(Math.round(eased * end));
+      if (progress < 1) rafId = requestAnimationFrame(update);
     };
-    requestAnimationFrame(update);
+    rafId = requestAnimationFrame(update);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [inView, value]);
 
   return (
     <span>
       <span ref={ref} style={{ color }}>
-        0
+        {display}
       </span>
       <span style={{ color }}>{suffix}</span>
     </span>
