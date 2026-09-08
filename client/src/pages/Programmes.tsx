@@ -21,7 +21,7 @@ import {
   type ProgrammeTrack,
   isActive,
 } from "@/data/programmes";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const TRACKS: ProgrammeTrack[] = ["community", "marketing", "research"];
 
@@ -60,12 +60,13 @@ export default function Programmes() {
                 is the kind of thing that makes everything else harder to
                 believe, so it is said plainly instead.
               </p>
-              <a
-                href={`mailto:${CONTACT_EMAILS.contact}`}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "contact" })}
                 className="inline-block mt-4 text-sm text-[#F97316] underline hover:no-underline"
               >
-                Help start one — {CONTACT_EMAILS.contact}
-              </a>
+                Help start one — contact us
+              </button>
             </div>
           )}
 

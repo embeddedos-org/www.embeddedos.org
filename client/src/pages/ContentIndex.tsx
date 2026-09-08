@@ -41,7 +41,7 @@ import {
   isInternal,
 } from "@/data/content";
 import { type Category, categoryByPath } from "@/data/categories";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -137,12 +137,17 @@ export default function ContentIndex({ path }: ContentIndexProps) {
                 {category.emptyNote}
               </p>
               <div className="flex flex-wrap gap-4 mt-6 text-sm">
-                <a
-                  href={`mailto:${CONTACT_EMAILS.contact}`}
+                <button
+                  type="button"
+                  onClick={() =>
+                    openContactForm({
+                      topic: category.contactTopic ?? "contact",
+                    })
+                  }
                   className="inline-flex items-center gap-2 text-[#F97316] underline hover:no-underline"
                 >
-                  <Mail size={14} /> {CONTACT_EMAILS.contact}
-                </a>
+                  <Mail size={14} /> Send us a message
+                </button>
                 <Link
                   href="/news"
                   className="inline-flex items-center gap-2 text-white/60 underline hover:no-underline"

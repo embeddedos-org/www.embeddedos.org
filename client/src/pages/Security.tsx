@@ -7,13 +7,14 @@ import {
   CheckCircle2,
   Mail,
 } from "lucide-react";
+import { openContactForm } from "@/lib/contact-form";
 
 const policies = [
   {
     icon: AlertTriangle,
     color: "#EF4444",
     title: "Responsible Disclosure",
-    desc: "Email security@embeddedos.org with vulnerability details. We follow a 90-day disclosure timeline. Critical vulnerabilities are patched within 7 days.",
+    desc: "Use the contact form below with vulnerability details. We follow a 90-day disclosure timeline. Critical vulnerabilities are patched within 7 days.",
   },
   {
     icon: Lock,
@@ -96,13 +97,14 @@ export default function Security() {
               </div>
               <p className="text-gray-300 text-sm">
                 Do <strong>not</strong> open a public GitHub issue for security
-                vulnerabilities. Email{" "}
-                <a
-                  href="mailto:security@embeddedos.org"
+                vulnerabilities.{" "}
+                <button
+                  type="button"
+                  onClick={() => openContactForm({ topic: "security" })}
                   className="text-orange-400 underline underline-offset-2"
                 >
-                  security@embeddedos.org
-                </a>{" "}
+                  Report it here
+                </button>{" "}
                 with details. We will respond within 48 hours.
               </p>
             </div>
@@ -164,12 +166,13 @@ export default function Security() {
           <h2 className="text-2xl font-bold text-white mb-4">
             Contact Security Team
           </h2>
-          <a
-            href="mailto:security@embeddedos.org"
+          <button
+            type="button"
+            onClick={() => openContactForm({ topic: "security" })}
             className="inline-flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors"
           >
-            <Mail className="w-4 h-4" /> security@embeddedos.org
-          </a>
+            <Mail className="w-4 h-4" /> Contact Security Team
+          </button>
         </div>
       </section>
     </div>

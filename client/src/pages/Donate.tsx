@@ -16,6 +16,7 @@ import {
   Star,
   RefreshCw,
 } from "lucide-react";
+import { openContactForm } from "@/lib/contact-form";
 const STATS = [
   { icon: Cpu, value: "22+", label: "Open-Source Repos", color: "#F97316" },
   {
@@ -260,12 +261,13 @@ export default function Donate() {
                 </div>
                 <div>
                   Wire / check:{" "}
-                  <a
-                    href="mailto:foundation@embeddedos.org"
+                  <button
+                    type="button"
+                    onClick={() => openContactForm({ topic: "finance" })}
                     className="text-orange-400 underline underline-offset-2"
                   >
-                    foundation@embeddedos.org
-                  </a>
+                    contact Finance &amp; Governance
+                  </button>
                 </div>
                 <div>
                   GitHub Sponsors:{" "}

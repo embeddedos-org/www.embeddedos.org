@@ -10,7 +10,7 @@ import {
   Cpu,
   Brain,
 } from "lucide-react";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const positions = [
   {
@@ -145,13 +145,19 @@ export default function Internship() {
                     {p.compensation}
                   </span>
                 </div>
-                <a
-                  href={`mailto:${CONTACT_EMAILS.contact}?subject=Internship Application`}
+                <button
+                  type="button"
+                  onClick={() =>
+                    openContactForm({
+                      topic: "contact",
+                      subject: "Internship Application",
+                    })
+                  }
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   style={{ background: p.color + "20", color: p.color }}
                 >
                   Apply Now <ArrowRight className="w-3 h-3" />
-                </a>
+                </button>
               </motion.div>
             ))}
           </div>
@@ -182,12 +188,18 @@ export default function Internship() {
                   {f.duration} · {f.stipend}
                 </div>
                 <p className="text-gray-400 text-sm">{f.desc}</p>
-                <a
-                  href={`mailto:${CONTACT_EMAILS.contact}?subject=Fellowship Application`}
+                <button
+                  type="button"
+                  onClick={() =>
+                    openContactForm({
+                      topic: "contact",
+                      subject: "Fellowship Application",
+                    })
+                  }
                   className="mt-4 inline-flex items-center gap-2 text-orange-400 text-sm font-medium hover:underline"
                 >
                   Apply <ArrowRight className="w-3 h-3" />
-                </a>
+                </button>
               </motion.div>
             ))}
           </div>

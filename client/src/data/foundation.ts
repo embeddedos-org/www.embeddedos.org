@@ -227,19 +227,29 @@ export const OUT_OF_SCOPE = [
 ] as const;
 
 /**
- * Where to reach the Foundation, by subject.
+ * Where the Foundation's mail actually goes, by subject.
  *
- * This is also the list to check mailboxes against: the site has no server and
- * therefore sends no mail itself, so every address here has to exist as a real
- * cPanel mailbox or the message bounces with nothing on the site to show for it.
- * `sponsors` and `conduct` were previously typed straight into Sponsors.tsx and
- * CodeOfConduct.tsx, which kept them out of exactly that check.
+ * No page renders these anymore — the contact form (`ContactFormModal`,
+ * built from `CONTACT_TOPICS` below) is the only thing visitors see, and it
+ * posts a topic key to `client/public/api/contact.php`, whose own
+ * `TOPIC_INBOXES` is what resolves a key to a mailbox on the server. This
+ * constant stays as the client-side record of what those addresses are — the
+ * thing `tests/unit/foundation-facts.test.ts` cross-checks every other file
+ * against so a stray or undeclared `@embeddedos.org` address (a typo, a
+ * leftover literal) is still caught even though nothing links to one
+ * directly — and it is kept in step with `TOPIC_INBOXES` by hand; the two
+ * cannot import each other (one is TypeScript, one is PHP).
  *
- * `contact` and `support` replaced a single `hello@`, which carried everything
- * from legal notices to build failures. They are split by what the sender
- * wants: `contact` for the Foundation as an organisation — enquiries, press,
- * events, membership, and the addresses printed in the privacy and terms
- * pages — and `support` for people who are stuck on the software.
+ * Every address here still has to exist as a real cPanel mailbox or a
+ * message bounces with nothing to show for it. `sponsors` and `conduct` were
+ * previously typed straight into Sponsors.tsx and CodeOfConduct.tsx, which
+ * kept them out of exactly that check.
+ *
+ * `contact` and `support` replaced a single `hello@`, which carried
+ * everything from legal notices to build failures. They are split by what
+ * the sender wants: `contact` for the Foundation as an organisation —
+ * enquiries, press, events, membership, and what the privacy and terms pages
+ * point at — and `support` for people who are stuck on the software.
  */
 export const CONTACT_EMAILS = {
   contact: "contact@embeddedos.org",
@@ -253,6 +263,85 @@ export const CONTACT_EMAILS = {
   sponsors: "sponsors@embeddedos.org",
   conduct: "conduct@embeddedos.org",
 } as const;
+
+/**
+ * The client-facing description of each `CONTACT_EMAILS` key, deliberately
+ * without the address itself. The contact form (`ContactFormModal`) and every
+ * page that used to print a `mailto:` link now show this list instead: the
+ * visitor picks a topic, the form posts to `/api/contact.php`, and the PHP
+ * endpoint — not this bundle — is the only place that resolves a topic to an
+ * inbox (see `client/public/api/contact.php`'s `TOPIC_INBOXES`). Keep this
+ * list's keys in lockstep with `CONTACT_EMAILS` and with `TOPIC_INBOXES`;
+ * `tests/unit/foundation-facts.test.ts` and `tests/php/contact.test.php`
+ * cross-check both.
+ */
+export const CONTACT_TOPICS = [
+  {
+    key: "contact",
+    label: "General Inquiries",
+    description:
+      "Questions about EmbeddedOS products, partnerships, or the Foundation.",
+  },
+  {
+    key: "support",
+    label: "Technical Support",
+    description:
+      "Build failures, board bring-up, toolchain setup, and questions the documentation does not answer.",
+  },
+  {
+    key: "security",
+    label: "Security Vulnerabilities",
+    description:
+      "Report security vulnerabilities via responsible disclosure. Do not use GitHub issues.",
+  },
+  {
+    key: "press",
+    label: "Press & Media",
+    description:
+      "Press inquiries, interview requests, and media kit downloads.",
+  },
+  {
+    key: "partners",
+    label: "Partnerships",
+    description:
+      "Corporate sponsorships, hardware partnerships, and research collaborations.",
+  },
+  {
+    key: "careers",
+    label: "Careers & Internships",
+    description:
+      "Job applications, internship inquiries, and fellowship applications.",
+  },
+  {
+    key: "donations",
+    label: "Donations & Fundraising",
+    description:
+      "Tax-deductible donations, grant applications, and fundraising questions.",
+  },
+  {
+    key: "finance",
+    label: "Finance & Governance",
+    description:
+      "Registration documents, donation receipts, wire and check gifts, grant paperwork.",
+  },
+  {
+    key: "sponsors",
+    label: "Sponsorship",
+    description:
+      "Becoming a sponsor, sponsorship tiers, and existing-sponsor questions.",
+  },
+  {
+    key: "conduct",
+    label: "Code of Conduct",
+    description: "Report a Code of Conduct concern in a Foundation space.",
+  },
+] as const satisfies ReadonlyArray<{
+  key: keyof typeof CONTACT_EMAILS;
+  label: string;
+  description: string;
+}>;
+
+export type ContactTopicKey = (typeof CONTACT_TOPICS)[number]["key"];
 
 /**
  * The Foundation's accounts, as one list. `/contact` previously linked

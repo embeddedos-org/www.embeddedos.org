@@ -14,7 +14,8 @@
 
 import { ExternalLink } from "lucide-react";
 
-import { CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
+import { SOCIAL_URLS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 import { categoryByPath } from "@/data/categories";
 
 /**
@@ -127,13 +128,13 @@ export default function SocialMedia() {
               direct messages asking for keys, credentials or payment, and does
               not sell anything over social media. If you find an account
               presenting itself as EmbeddedOS and it is not listed above, please
-              tell us at{" "}
-              <a
-                href={`mailto:${CONTACT_EMAILS.security}`}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "security" })}
                 className="text-[#F97316] underline hover:no-underline"
               >
-                {CONTACT_EMAILS.security}
-              </a>
+                tell us
+              </button>
               .
             </p>
           </div>

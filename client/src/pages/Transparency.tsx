@@ -10,12 +10,8 @@ import {
   Mail,
   ArrowRight,
 } from "lucide-react";
-import {
-  FOUNDATION,
-  IRS_LOOKUP_URL,
-  CONTACT_EMAILS,
-  OUT_OF_SCOPE,
-} from "@/data/foundation";
+import { FOUNDATION, IRS_LOOKUP_URL, OUT_OF_SCOPE } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -477,13 +473,14 @@ export default function Transparency() {
               and we will send it.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href={`mailto:${CONTACT_EMAILS.finance}`}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "finance" })}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl btn-press transition-colors"
               >
                 <Mail size={16} aria-hidden="true" />
-                {CONTACT_EMAILS.finance}
-              </a>
+                Contact Finance &amp; Governance
+              </button>
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl btn-press border border-white/10 transition-colors"

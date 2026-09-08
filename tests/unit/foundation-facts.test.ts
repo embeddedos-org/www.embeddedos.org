@@ -302,6 +302,33 @@ describe("the Foundation's accounts are spelled one way", () => {
     expect(undeclared, "mailto: links to undeclared addresses").toEqual([]);
   });
 
+  it("writes mailto: only inside the one fallback that still needs it", () => {
+    // ContactFormModal (client/src/lib/contact-form.ts's openContactForm)
+    // replaced every mailto: link on the site with a POST to
+    // client/public/api/contact.php. The single exception is Careers' own
+    // application form, which already had a working, tested degrade path —
+    // application-email.ts's composeApplication()/shortMailto() — for when
+    // /api/apply.php does not answer; smallest-safe-change kept that intact
+    // rather than rewriting a system that already worked. A mailto: anywhere
+    // else means a page was missed by the sweep.
+    const EXEMPT_FILES = new Set(["client/src/lib/application-email.ts"]);
+
+    const stray: string[] = [];
+    for (const { file, text } of sources) {
+      if (EXEMPT_FILES.has(file)) continue;
+      // Requires an actual address after the scheme, like the check above,
+      // so a doc comment that merely mentions `mailto:` links in prose (this
+      // file's own comment included) does not trip the check.
+      if (/mailto:[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+/.test(text)) {
+        stray.push(file);
+      }
+    }
+
+    expect(stray, "files with a mailto: outside the Careers fallback").toEqual(
+      []
+    );
+  });
+
   it("has retired hello@ everywhere, not just where it was noticed", () => {
     // It appeared 18 times across 10 files, including the eBot knowledge base
     // and the privacy and terms pages, where a stale address is a published
@@ -339,6 +366,56 @@ describe("the Foundation's accounts are spelled one way", () => {
     }
 
     expect(stray, "addresses that reach no declared mailbox").toEqual([]);
+  });
+
+  it("prints no address anywhere except its one declared home", () => {
+    // The contact form (ContactFormModal, posting a topic key to
+    // client/public/api/contact.php — a PHP file, so it is outside this
+    // test's client/src + shared sweep entirely) replaced every visible
+    // address on the site: no page imports CONTACT_EMAILS any more. So a
+    // declared address appearing in any other file is a regression back to a
+    // printed mailto: link or plain-text address, not a false positive.
+    //
+    // Three deliberate exceptions:
+    //  - foundation.ts is the declaration itself.
+    //  - application-email.ts's CAREERS_ADDRESS builds the mailto: URL
+    //    Careers' application form falls back to if /api/apply.php does not
+    //    answer. It is never rendered as visible text (see Careers.tsx's
+    //    "sent"/"prepared" panels) — only handed to the browser as an href
+    //    the visitor's own mail client opens.
+    //  - EOffice.tsx's eContacts mockup is fictional product-demo sample
+    //    data, not the Foundation's own contact information (also exempted,
+    //    under different names, by the stray-address check above).
+    //  - client/index.html's JSON-LD carries "email": contact@embeddedos.org
+    //    as schema.org NGO structured data, added deliberately (see
+    //    MEMORY.md, 2026-08-08) for Google Ad Grants reviewer legitimacy —
+    //    predates this suite's other checks, which already hold it to
+    //    foundation.ts (see "publishes the same contact address the pages
+    //    publish" above) rather than banning it. Whether crawler-only
+    //    structured data should count as "listed" the way a page's own text
+    //    does is a real open question, called out for the site owner rather
+    //    than decided here.
+    const EXEMPT_FILES = new Set([
+      "client/src/data/foundation.ts",
+      "client/src/lib/application-email.ts",
+      "client/src/pages/EOffice.tsx",
+      "client/index.html",
+    ]);
+
+    const declared = new Set(Object.values(contactEmails()));
+    const printed: string[] = [];
+    for (const { file, text } of sources) {
+      if (EXEMPT_FILES.has(file)) continue;
+      for (const [, address] of text.matchAll(
+        /([A-Za-z0-9._%+-]+@embeddedos\.org)/g
+      )) {
+        if (declared.has(address)) printed.push(`${file} → ${address}`);
+      }
+    }
+    expect(
+      printed,
+      "a declared address printed outside its one exempt file"
+    ).toEqual([]);
   });
 
   it("links every account from the footer, which is on every page", () => {

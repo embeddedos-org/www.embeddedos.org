@@ -15,7 +15,8 @@ import {
   BRAND_PERMITTED,
   BRAND_TYPE,
 } from "@/data/brand";
-import { CONTACT_EMAILS, FOUNDATION } from "@/data/foundation";
+import { FOUNDATION } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 import { categoryByPath } from "@/data/categories";
 
 export default function BrandAssets() {
@@ -85,12 +86,13 @@ export default function BrandAssets() {
             </div>
             <p className="text-white/55 text-sm mt-5 leading-relaxed">
               Anything not covered above, or a use you are unsure about, goes to{" "}
-              <a
-                href={`mailto:${CONTACT_EMAILS.contact}`}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "contact" })}
                 className="text-[#F97316] underline hover:no-underline"
               >
-                {CONTACT_EMAILS.contact}
-              </a>
+                us
+              </button>
               . A short description and a mock-up is usually enough.
             </p>
           </div>

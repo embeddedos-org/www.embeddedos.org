@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Handshake, Star, ArrowRight, Mail } from "lucide-react";
+import { openContactForm } from "@/lib/contact-form";
 
 const tiers = [
   {
@@ -118,13 +119,14 @@ export default function Partners() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="mailto:partners@embeddedos.org"
+                <button
+                  type="button"
+                  onClick={() => openContactForm({ topic: "partners" })}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full justify-center"
                   style={{ background: t.color + "20", color: t.color }}
                 >
                   Become a Sponsor <ArrowRight className="w-3 h-3" />
-                </a>
+                </button>
               </motion.div>
             ))}
           </div>
@@ -140,12 +142,13 @@ export default function Partners() {
             Hardware companies, cloud providers, universities, and research labs
             — we welcome all partnership discussions.
           </p>
-          <a
-            href="mailto:partners@embeddedos.org"
+          <button
+            type="button"
+            onClick={() => openContactForm({ topic: "partners" })}
             className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
           >
-            <Mail className="w-4 h-4" /> partners@embeddedos.org
-          </a>
+            <Mail className="w-4 h-4" /> Contact Partnerships
+          </button>
         </div>
       </section>
     </div>

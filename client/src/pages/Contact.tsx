@@ -13,66 +13,84 @@ import {
 } from "lucide-react";
 import {
   FOUNDATION,
-  CONTACT_EMAILS,
   SOCIAL_URLS,
   MAILING_ADDRESS,
+  type ContactTopicKey,
 } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
-const contacts = [
+/**
+ * The topics shown on this page, in display order, with the icon/colour this
+ * page has always used per topic. Deliberately a subset of `CONTACT_TOPICS`:
+ * `sponsors` and `conduct` are reached from `/sponsors` and `/code-of-conduct`
+ * instead, same as before this page had a form.
+ *
+ * No address appears here or anywhere below it — clicking a card opens
+ * `ContactFormModal` via `openContactForm`, and the topic key is the only
+ * thing that travels to the server; see client/public/api/contact.php's
+ * `TOPIC_INBOXES` for where it resolves to a mailbox.
+ */
+const contacts: Array<{
+  key: ContactTopicKey;
+  icon: typeof Mail;
+  color: string;
+  title: string;
+  desc: string;
+}> = [
   {
+    key: "contact",
     icon: Mail,
     color: "#F97316",
     title: "General Inquiries",
-    email: CONTACT_EMAILS.contact,
     desc: "Questions about EmbeddedOS products, partnerships, or the Foundation.",
   },
   {
+    key: "support",
     icon: Mail,
     color: "#F59E0B",
     title: "Technical Support",
-    email: CONTACT_EMAILS.support,
     desc: "Build failures, board bring-up, toolchain setup, and questions the documentation does not answer.",
   },
   {
+    key: "security",
     icon: Mail,
     color: "#EF4444",
     title: "Security Vulnerabilities",
-    email: CONTACT_EMAILS.security,
     desc: "Report security vulnerabilities via responsible disclosure. Do not use GitHub issues.",
   },
   {
+    key: "press",
     icon: Mail,
     color: "#22D3EE",
     title: "Press & Media",
-    email: CONTACT_EMAILS.press,
     desc: "Press inquiries, interview requests, and media kit downloads.",
   },
   {
+    key: "partners",
     icon: Mail,
     color: "#A855F7",
     title: "Partnerships & Sponsors",
-    email: CONTACT_EMAILS.partners,
     desc: "Corporate sponsorships, hardware partnerships, and research collaborations.",
   },
   {
+    key: "careers",
     icon: Mail,
     color: "#34D399",
     title: "Careers & Internships",
-    email: CONTACT_EMAILS.careers,
     desc: "Job applications, internship inquiries, and fellowship applications.",
   },
   {
+    key: "donations",
     icon: Mail,
     color: "#FBBF24",
     title: "Donations & Fundraising",
-    email: CONTACT_EMAILS.donations,
     desc: "Tax-deductible donations, grant applications, and fundraising questions.",
   },
   {
+    key: "finance",
     icon: Mail,
     color: "#60A5FA",
     title: "Finance & Governance",
-    email: CONTACT_EMAILS.finance,
     desc: "Registration documents, donation receipts, wire and check gifts, grant paperwork.",
   },
 ];
@@ -140,8 +158,8 @@ export default function Contact() {
               Get in touch with the EmbeddedOS Foundation team.
             </p>
             <p className="text-sm text-gray-500 mt-4 max-w-xl mx-auto leading-relaxed">
-              Every address below reaches a person, not a queue. Security
-              reports are answered within 48 hours under the{" "}
+              Every topic below reaches a person, not a queue. Security reports
+              are answered within 48 hours under the{" "}
               <Link
                 href="/security"
                 className="text-orange-400 underline underline-offset-2"
@@ -156,16 +174,18 @@ export default function Contact() {
 
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Email Contacts</h2>
+          <h2 className="text-xl font-bold text-white mb-6">Get in Touch</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {contacts.map((c, i) => (
-              <motion.div
-                key={c.email}
+              <motion.button
+                key={c.key}
+                type="button"
+                onClick={() => openContactForm({ topic: c.key })}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-5"
+                className="bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/[0.07] rounded-xl p-5 text-left transition-colors"
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -178,16 +198,14 @@ export default function Contact() {
                     <div className="text-white font-medium mb-0.5">
                       {c.title}
                     </div>
-                    <a
-                      href={"mailto:" + c.email}
-                      className="text-orange-400 text-sm hover:underline"
-                    >
-                      {c.email}
-                    </a>
+                    <span className="text-orange-400 text-sm inline-flex items-center gap-1">
+                      Send a message
+                      <ArrowRight className="w-3 h-3" />
+                    </span>
                     <p className="text-gray-500 text-xs mt-1">{c.desc}</p>
                   </div>
                 </div>
-              </motion.div>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -278,14 +296,14 @@ export default function Contact() {
                   {/* Inline links inside a paragraph carry a persistent
                       underline: colour alone is a WCAG 1.4.1 failure (axe
                       link-in-text-block), enforced on this page. */}
-                  For wire transfers, gifts by check or a donation receipt,
-                  email{" "}
-                  <a
-                    href={`mailto:${CONTACT_EMAILS.finance}`}
+                  For wire transfers, gifts by check or a donation receipt,{" "}
+                  <button
+                    type="button"
+                    onClick={() => openContactForm({ topic: "finance" })}
                     className="text-orange-400 underline underline-offset-2"
                   >
-                    {CONTACT_EMAILS.finance}
-                  </a>
+                    contact Finance &amp; Governance
+                  </button>
                   .
                 </p>
               </div>

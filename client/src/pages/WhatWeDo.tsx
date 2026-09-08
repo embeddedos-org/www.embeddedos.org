@@ -404,7 +404,7 @@ function UseCaseCard({
       </div>
       <Link href={uc.href}>
         <div
-          className="flex items-center gap-1 text-xs font-semibold mt-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="flex items-center gap-1 text-xs font-semibold mt-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
           style={{ color: uc.color }}
         >
           Learn more <ArrowRight size={12} />
@@ -680,7 +680,7 @@ export default function WhatWeDo() {
                 </p>
                 <Link href={card.href}>
                   <div
-                    className="flex items-center gap-1 text-sm font-semibold transition-opacity"
+                    className="flex items-center gap-1 text-sm font-semibold py-0.5 transition-opacity"
                     style={{ color: card.color }}
                   >
                     {card.cta} <ArrowRight size={14} />

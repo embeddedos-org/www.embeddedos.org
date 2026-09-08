@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import EBot from "./components/EBot";
 import SearchModal from "./components/SearchModal";
 import DonateModal from "./components/DonateModal";
+import ContactFormModal from "./components/ContactFormModal";
 import Home from "./pages/Home";
 import { lazy, Suspense, useEffect, useRef, type ComponentType } from "react";
 import { applyRouteMeta, readHeading } from "./lib/page-meta";
@@ -1169,6 +1170,7 @@ function App() {
           <Toaster />
           <SearchModal />
           <DonateModal />
+          <ContactFormModal />
           <Navbar />
           <main id="main-content">
             <Router />

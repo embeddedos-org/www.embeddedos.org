@@ -66,7 +66,7 @@ const faqs = [
   {
     cat: "Community",
     q: "How do I report a security vulnerability?",
-    a: "Email security@embeddedos.org with a description of the vulnerability, affected components, and reproduction steps. We follow responsible disclosure with a 90-day disclosure timeline. Critical vulnerabilities are patched within 7 days. Do not open public GitHub issues for security vulnerabilities.",
+    a: "Use the contact form on the Security page with a description of the vulnerability, affected components, and reproduction steps. We follow responsible disclosure with a 90-day disclosure timeline. Critical vulnerabilities are patched within 7 days. Do not open public GitHub issues for security vulnerabilities.",
   },
   {
     cat: "Community",

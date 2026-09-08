@@ -16,7 +16,8 @@ import {
   Instagram,
 } from "lucide-react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
-import { CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
+import { SOCIAL_URLS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -378,12 +379,13 @@ export default function About() {
                   Contact
                 </div>
                 <div className="text-white">
-                  <a
-                    href={`mailto:${CONTACT_EMAILS.contact}`}
+                  <button
+                    type="button"
+                    onClick={() => openContactForm({ topic: "contact" })}
                     className="text-[#F97316] hover:underline"
                   >
-                    {CONTACT_EMAILS.contact}
-                  </a>
+                    Send a message
+                  </button>
                 </div>
               </div>
             </div>
@@ -447,26 +449,36 @@ export default function About() {
                 },
                 {
                   icon: Mail,
-                  href: `mailto:${CONTACT_EMAILS.contact}`,
+                  onClick: () => openContactForm({ topic: "contact" }),
                   label: "Email",
                   color: "#34D399",
                 },
-              ].map(({ icon: Icon, href, label, color }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel={
-                    href.startsWith("mailto")
-                      ? undefined
-                      : "noopener noreferrer"
-                  }
-                  className="flex items-center gap-2 px-4 py-2.5 glass rounded-xl border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-150 text-sm font-medium"
-                >
-                  <Icon size={16} style={{ color }} />
-                  {label}
-                </a>
-              ))}
+              ].map(({ icon: Icon, href, onClick, label, color }) => {
+                const className =
+                  "flex items-center gap-2 px-4 py-2.5 glass rounded-xl border border-white/10 hover:border-white/20 text-white/70 hover:text-white transition-all duration-150 text-sm font-medium";
+                return href ? (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={className}
+                  >
+                    <Icon size={16} style={{ color }} />
+                    {label}
+                  </a>
+                ) : (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={onClick}
+                    className={className}
+                  >
+                    <Icon size={16} style={{ color }} />
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
         </div>

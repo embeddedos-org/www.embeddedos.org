@@ -65,7 +65,10 @@ describe("answerQuestion", () => {
     const answer = answerQuestion("what is the airspeed velocity of a swallow");
     expect(answer.kind).toBe("unknown");
     expect(answer.reply.toLowerCase()).toContain("don't know");
-    expect(answer.links.some(l => l.href.startsWith("mailto:"))).toBe(true);
+    // No email address is ever offered — the fallback points at the contact
+    // form instead (see shared/ebot-knowledge.ts's KnowledgeLink doc comment).
+    expect(answer.links.some(l => l.href === "contact:contact")).toBe(true);
+    expect(answer.links.some(l => l.href.startsWith("mailto:"))).toBe(false);
   });
 
   it("handles empty and punctuation-only input without throwing", () => {

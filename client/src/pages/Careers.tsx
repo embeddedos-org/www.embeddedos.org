@@ -37,9 +37,9 @@ import {
   composeApplication,
   postApplication,
   shortMailto,
-  CAREERS_ADDRESS,
 } from "@/lib/application-email";
 import { copyText } from "@/lib/clipboard";
+import { openContactForm } from "@/lib/contact-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -854,10 +854,9 @@ function ApplicationForm() {
           Application received
         </h3>
         <p className="text-white/60 mb-6 max-w-lg mx-auto">
-          Thank you — your application reached{" "}
-          <span className="text-white/80">{CAREERS_ADDRESS}</span> and a
-          confirmation is on its way to your inbox. A person reads every one; we
-          usually reply within 5–10 business days.
+          Thank you — your application was received, and a confirmation is on
+          its way to your inbox. A person reads every one; we usually reply
+          within 5–10 business days.
         </p>
         <p className="text-sm text-white/50 mb-6 max-w-lg mx-auto">
           To add a CV, reply to that confirmation email with it attached.
@@ -889,9 +888,8 @@ function ApplicationForm() {
             One step left — send the email
           </h3>
           <p className="text-white/60 mb-6 max-w-lg mx-auto">
-            Your application is prepared as an email to{" "}
-            <span className="text-white/80">{CAREERS_ADDRESS}</span>. Your mail
-            app should have opened with it.{" "}
+            Your application is prepared as an email. Your mail app should have
+            opened with it.{" "}
             <span className="text-[#FDBA74]">
               It is not sent until you send it
             </span>{" "}
@@ -1256,13 +1254,14 @@ function ApplicationForm() {
           {submitting ? "Sending…" : "Send Application"}
         </Button>
         <p className="text-xs text-white/30">
-          Or email directly:{" "}
-          <a
-            href="mailto:careers@embeddedos.org"
+          Or{" "}
+          <button
+            type="button"
+            onClick={() => openContactForm({ topic: "careers" })}
             className="text-[#F97316] hover:underline"
           >
-            careers@embeddedos.org
-          </a>
+            contact us directly
+          </button>
         </p>
       </div>
     </form>
@@ -1428,9 +1427,13 @@ function JobCard({
                 Apply Now
                 <ExternalLink size={14} />
               </a>
-              <span className="text-xs text-white/30">
-                or email careers@embeddedos.org
-              </span>
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "careers" })}
+                className="text-xs text-white/30 hover:text-white/50 hover:underline transition-colors"
+              >
+                or contact us directly
+              </button>
             </div>
           </motion.div>
         )}
@@ -1918,15 +1921,15 @@ export default function Careers() {
               Submit Your Application
             </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              Fill out the form below or email your resume and statement of
-              interest directly to{" "}
-              <a
-                href="mailto:careers@embeddedos.org"
+              Fill out the form below or{" "}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "careers" })}
                 className="text-[#F97316] hover:underline"
               >
-                careers@embeddedos.org
-              </a>
-              .
+                contact us directly
+              </button>{" "}
+              with your resume and statement of interest.
             </p>
           </motion.div>
 
@@ -1969,13 +1972,19 @@ export default function Careers() {
               variants={fadeUp}
               className="flex flex-wrap items-center justify-center gap-4"
             >
-              <a
-                href="mailto:careers@embeddedos.org?subject=General Application"
+              <button
+                type="button"
+                onClick={() =>
+                  openContactForm({
+                    topic: "careers",
+                    subject: "General Application",
+                  })
+                }
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all duration-150 active:scale-95"
               >
                 Send Open Application
                 <ExternalLink size={16} />
-              </a>
+              </button>
               <Link
                 href="/internship"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-xl transition-all duration-150 active:scale-95"

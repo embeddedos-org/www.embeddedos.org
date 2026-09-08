@@ -12,9 +12,26 @@ import {
   Globe,
   Award,
 } from "lucide-react";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
-const tiers = [
+const tiers: Array<{
+  id: string;
+  name: string;
+  price: string;
+  period: string;
+  icon: typeof Users;
+  color: string;
+  border: string;
+  badge: string;
+  description: string;
+  benefits: string[];
+  cta: string;
+  ctaHref: string;
+  /** When set, the CTA opens the contact form instead of following ctaHref. */
+  ctaAction?: () => void;
+  external: boolean;
+  highlight?: boolean;
+}> = [
   {
     id: "community",
     name: "Community Member",
@@ -133,8 +150,9 @@ const tiers = [
       "Joint press release opportunity",
     ],
     cta: "Contact Us",
-    ctaHref: `mailto:${CONTACT_EMAILS.contact}`,
-    external: true,
+    ctaHref: "",
+    ctaAction: () => openContactForm({ topic: "contact" }),
+    external: false,
     highlight: false,
   },
 ];
@@ -288,7 +306,19 @@ export default function Membership() {
                     ))}
                   </ul>
 
-                  {tier.external ? (
+                  {tier.ctaAction ? (
+                    <button
+                      type="button"
+                      onClick={tier.ctaAction}
+                      className={`w-full py-2.5 rounded-xl text-sm font-semibold text-center transition-all ${
+                        tier.highlight
+                          ? "bg-purple-500 hover:bg-purple-600 text-white"
+                          : "bg-white/10 hover:bg-white/20 text-white"
+                      }`}
+                    >
+                      {tier.cta}
+                    </button>
+                  ) : tier.external ? (
                     <a
                       href={tier.ctaHref}
                       target={

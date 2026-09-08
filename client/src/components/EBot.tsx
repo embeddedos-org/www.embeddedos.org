@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Bot, User, Minimize2, ArrowUpRight } from "lucide-react";
 import { Link } from "wouter";
 import { answerQuestion, type KnowledgeLink } from "@shared/ebot-knowledge";
+import { openContactForm } from "@/lib/contact-form";
+import type { ContactTopicKey } from "@/data/foundation";
 
 interface Message {
   role: "user" | "assistant";
@@ -51,19 +53,39 @@ function MarkdownText({ text }: { text: string }) {
 }
 
 /**
- * A link under an answer. Internal routes go through wouter so the SPA does not
- * reload; anything with a scheme (mailto:, https:) is a plain anchor.
+ * A link under an answer. Internal routes go through wouter so the SPA does
+ * not reload; a `contact:<topic>` href (see `KnowledgeLink` in
+ * shared/ebot-knowledge.ts) opens the contact form instead of navigating —
+ * no email address is ever put in front of a visitor, here or anywhere else
+ * on the site; anything else with a scheme (https:, etc.) is a plain anchor.
  */
 function AnswerLink({ link }: { link: KnowledgeLink }) {
   const className =
     "inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-[#F97316]/10 border border-[#F97316]/25 text-[#FDBA74] hover:bg-[#F97316]/20 hover:text-white transition-colors";
+
+  const contactTopic = link.href.startsWith("contact:")
+    ? (link.href.slice("contact:".length) as ContactTopicKey)
+    : null;
+  if (contactTopic) {
+    return (
+      <button
+        type="button"
+        onClick={() => openContactForm({ topic: contactTopic })}
+        className={className}
+      >
+        {link.label}
+        <ArrowUpRight className="w-3 h-3" />
+      </button>
+    );
+  }
+
   const external = /^[a-z]+:/i.test(link.href);
 
   if (external) {
     return (
       <a
         href={link.href}
-        target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+        target="_blank"
         rel="noopener noreferrer"
         className={className}
       >

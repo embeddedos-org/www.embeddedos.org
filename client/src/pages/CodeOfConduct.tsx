@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, CheckCircle2, XCircle } from "lucide-react";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const expected = [
   "Use welcoming and inclusive language in all community spaces.",
@@ -128,13 +128,14 @@ export default function CodeOfConduct() {
             <h2 className="text-xl font-bold text-white mb-4">Enforcement</h2>
             <p className="text-gray-300 text-sm leading-relaxed mb-4">
               Instances of abusive, harassing, or otherwise unacceptable
-              behavior may be reported by contacting the Foundation at{" "}
-              <a
-                href={`mailto:${CONTACT_EMAILS.conduct}`}
+              behavior may be reported by{" "}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "conduct" })}
                 className="text-orange-400 underline underline-offset-2"
               >
-                {CONTACT_EMAILS.conduct}
-              </a>
+                contacting the Foundation
+              </button>
               . All complaints will be reviewed and investigated promptly and
               fairly.
             </p>

@@ -13,9 +13,9 @@
 
 import { Mail } from "lucide-react";
 import { Link } from "wouter";
+import { openContactForm } from "@/lib/contact-form";
 
 import {
-  CONTACT_EMAILS,
   FOUNDATION,
   IRS_LOOKUP_URL,
   MAILING_ADDRESS,
@@ -80,12 +80,13 @@ export default function PressKit() {
               general contact form. Say what your deadline is and it will be
               treated as the constraint it is.
             </p>
-            <a
-              href={`mailto:${CONTACT_EMAILS.press}`}
+            <button
+              type="button"
+              onClick={() => openContactForm({ topic: "press" })}
               className="inline-flex items-center gap-2 text-[#F97316] underline hover:no-underline font-semibold"
             >
-              <Mail size={15} aria-hidden="true" /> {CONTACT_EMAILS.press}
-            </a>
+              <Mail size={15} aria-hidden="true" /> Contact Press &amp; Media
+            </button>
           </div>
 
           <div>

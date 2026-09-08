@@ -10,7 +10,8 @@ import {
   Instagram,
   ExternalLink,
 } from "lucide-react";
-import { CONTACT_EMAILS, SOCIAL_URLS } from "@/data/foundation";
+import { SOCIAL_URLS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const LOGO_MARK = "/media/embeddedos-logo-mark_bc053888.jpg";
 
@@ -203,7 +204,7 @@ const SOCIAL_LINKS = [
   },
   {
     icon: Mail,
-    href: `mailto:${CONTACT_EMAILS.contact}`,
+    onClick: () => openContactForm({ topic: "contact" }),
     label: "Email",
     color: "#F97316",
   },
@@ -214,10 +215,12 @@ function FooterLink({
 }: {
   link: { name: string; href: string; external?: boolean };
 }) {
-  // py-1.5 on small screens lifts each link from a 20px to a ~32px touch target
-  // without changing the desktop footer's density.
+  // py-1.5 on small screens lifts each link from a 20px to a ~32px touch
+  // target without changing the desktop footer's density. min-w-6 (24px) does
+  // the same for width: most labels are already wider, so it only affects the
+  // handful ("eAI", "eNI") whose text alone is narrower than the 24px floor.
   const cls =
-    "group relative inline-flex items-center gap-1 py-1.5 sm:py-0 text-sm text-white/50 hover:text-white transition-colors duration-200";
+    "group relative inline-flex items-center gap-1 py-1.5 sm:py-0 min-w-6 text-sm text-white/50 hover:text-white transition-colors duration-200";
   const inner = (
     <>
       {link.name}
@@ -317,26 +320,42 @@ export default function Footer() {
 
             {/* Social icons */}
             <div className="flex items-center flex-wrap gap-2">
-              {SOCIAL_LINKS.map(({ icon: Icon, href, label, color }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel={
-                    href.startsWith("mailto")
-                      ? undefined
-                      : "noopener noreferrer"
-                  }
-                  aria-label={label}
-                  className="group w-9 h-9 flex items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white transition-all duration-200"
-                  style={{ "--hover-color": color } as React.CSSProperties}
-                >
-                  <Icon
-                    size={15}
-                    className="transition-transform duration-200 group-hover:scale-110"
-                  />
-                </a>
-              ))}
+              {SOCIAL_LINKS.map(
+                ({ icon: Icon, href, onClick, label, color }) => {
+                  const className =
+                    "group w-9 h-9 flex items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white transition-all duration-200";
+                  const iconEl = (
+                    <Icon
+                      size={15}
+                      className="transition-transform duration-200 group-hover:scale-110"
+                    />
+                  );
+                  return href ? (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className={className}
+                      style={{ "--hover-color": color } as React.CSSProperties}
+                    >
+                      {iconEl}
+                    </a>
+                  ) : (
+                    <button
+                      key={label}
+                      type="button"
+                      onClick={onClick}
+                      aria-label={label}
+                      className={className}
+                      style={{ "--hover-color": color } as React.CSSProperties}
+                    >
+                      {iconEl}
+                    </button>
+                  );
+                }
+              )}
             </div>
           </div>
 

@@ -30,10 +30,17 @@
 import { STACK } from "./stack-data";
 import { searchSite } from "./site-index";
 
-/** A link eBot can offer alongside an answer. */
+/**
+ * A link eBot can offer alongside an answer.
+ *
+ * `href` is a site route, an absolute URL for anything off-site, or a
+ * `contact:<topic>` pseudo-link — a `CONTACT_TOPICS` key from
+ * client/src/data/foundation.ts — which `EBot.tsx`'s `AnswerLink` renders as
+ * a button that opens the contact form instead of an anchor. No address is
+ * ever put here; that would defeat the point of the form.
+ */
 export type KnowledgeLink = {
   label: string;
-  /** Site route, or an absolute URL for anything off-site. */
   href: string;
 };
 
@@ -341,11 +348,11 @@ export const TOPICS: Topic[] = [
     answer:
       `The Foundation lists open roles, internships and fellowships on the careers page, including F-1 CPT/OPT and research placements.\n` +
       `\n` +
-      `Applications go to **careers@embeddedos.org**. The careers page has a form that prepares the whole application as an email for you, and you can attach a CV to that email before sending.`,
+      `The careers page has an application form, or you can contact the careers team directly using the link below.`,
     links: [
       { label: "Open positions", href: "/careers" },
       { label: "Internships & fellowships", href: "/internship" },
-      { label: "Email careers@", href: "mailto:careers@embeddedos.org" },
+      { label: "Contact Careers", href: "contact:careers" },
     ],
   },
   {
@@ -397,7 +404,7 @@ export const TOPICS: Topic[] = [
       `The contact page lists all of them along with the Foundation's registered address.`,
     links: [
       { label: "Contact page", href: "/contact" },
-      { label: "Email contact@", href: "mailto:contact@embeddedos.org" },
+      { label: "Contact us", href: "contact:contact" },
     ],
   },
   {
@@ -418,13 +425,13 @@ export const TOPICS: Topic[] = [
       "encryption",
     ],
     answer:
-      `Report vulnerabilities to **security@embeddedos.org** under the responsible-disclosure policy — not through GitHub issues. Reports are answered within 48 hours.\n` +
+      `Report vulnerabilities using the contact form under the responsible-disclosure policy — not through GitHub issues. Reports are answered within 48 hours.\n` +
       `\n` +
       `On the engineering side, **eBoot** provides secure boot with a hardware root of trust, signed images, A/B OTA updates and anti-rollback protection.`,
     links: [
       { label: "Security policy", href: "/security" },
       { label: "eBoot", href: "/eboot" },
-      { label: "Email security@", href: "mailto:security@embeddedos.org" },
+      { label: "Contact Security", href: "contact:security" },
     ],
   },
   {
@@ -673,11 +680,11 @@ export function answerQuestion(question: string): Answer {
     reply:
       "I don't know that one — I only know what's published on this site, and I'd rather say so than guess.\n" +
       "\n" +
-      "Try rephrasing, or email **contact@embeddedos.org** and a person will answer.",
+      "Try rephrasing, or use the contact link below and a person will answer.",
     links: [
       { label: "FAQ", href: "/faq" },
       { label: "Documentation", href: "/docs" },
-      { label: "Email contact@", href: "mailto:contact@embeddedos.org" },
+      { label: "Contact us", href: "contact:contact" },
     ],
     kind: "unknown",
   };

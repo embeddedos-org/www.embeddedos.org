@@ -31,6 +31,7 @@
  */
 
 import type { ContentKind, ResearchArea } from "./content";
+import type { ContactTopicKey } from "./foundation";
 
 export type CategoryGroup = "marketing" | "research";
 
@@ -64,6 +65,12 @@ export interface Category {
    * bespoke page) or already has content.
    */
   emptyNote?: string;
+  /**
+   * Which `CONTACT_TOPICS` key the empty-state's "get in touch" button routes
+   * to. Defaults to "contact" (see ContentIndex.tsx) when omitted; set this
+   * where a category has a more specific inbox, e.g. Press Releases → press.
+   */
+  contactTopic?: ContactTopicKey;
 }
 
 const kind = (k: ContentKind): CategoryBinding => ({ type: "kind", kind: k });
@@ -99,7 +106,8 @@ export const MARKETING_CATEGORIES: readonly Category[] = [
     summary:
       "Formal announcements issued by the Foundation, written for journalists and analysts.",
     emptyNote:
-      "The Foundation has not issued a formal press release yet. Announcements so far have gone out through News. Journalists working to a deadline should email press@embeddedos.org directly rather than wait for this page.",
+      "The Foundation has not issued a formal press release yet. Announcements so far have gone out through News. Journalists working to a deadline should contact Press & Media directly rather than wait for this page.",
+    contactTopic: "press",
   },
   {
     path: "/newsletter",
@@ -119,7 +127,7 @@ export const MARKETING_CATEGORIES: readonly Category[] = [
     summary:
       "How organisations deployed EmbeddedOS, what it replaced, and what it measurably cost or saved.",
     emptyNote:
-      "None published. A case study needs a real deployment and numbers its subject is willing to stand behind, so these will follow the first production users rather than lead them. If you are running EmbeddedOS in production and would talk about it, email contact@embeddedos.org.",
+      "None published. A case study needs a real deployment and numbers its subject is willing to stand behind, so these will follow the first production users rather than lead them. If you are running EmbeddedOS in production and would talk about it, get in touch below.",
   },
   {
     path: "/member-stories",
@@ -139,7 +147,7 @@ export const MARKETING_CATEGORIES: readonly Category[] = [
     summary:
       "Shipping products built on EmbeddedOS, with the parts of the stack they use.",
     emptyNote:
-      "None published. This page is for products that have actually shipped to customers, which is a deliberately higher bar than a demo. Building one? Email contact@embeddedos.org.",
+      "None published. This page is for products that have actually shipped to customers, which is a deliberately higher bar than a demo. Building one? Get in touch below.",
   },
   {
     path: "/project-showcases",
@@ -149,7 +157,7 @@ export const MARKETING_CATEGORIES: readonly Category[] = [
     summary:
       "Community projects, research builds and hardware experiments running on the stack.",
     emptyNote:
-      "None published. Unlike Product Showcases there is no shipping requirement here — a working project on real hardware is enough. Send one to contact@embeddedos.org.",
+      "None published. Unlike Product Showcases there is no shipping requirement here — a working project on real hardware is enough. Send one in using the link below.",
   },
   {
     path: "/videos",

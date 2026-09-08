@@ -22,7 +22,7 @@ import {
   TRACK_LABEL,
   isActive,
 } from "@/data/programmes";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 export interface ProgrammePageProps {
   /** The category path, e.g. "/programmes/ambassador". */
@@ -116,12 +116,15 @@ export default function ProgrammePage({ path }: ProgrammePageProps) {
                 similar and can say what went wrong — that is genuinely useful
                 now, and more useful than it will be later.
               </p>
-              <a
-                href={`mailto:${CONTACT_EMAILS.contact}?subject=${encodeURIComponent(programme.name)}`}
+              <button
+                type="button"
+                onClick={() =>
+                  openContactForm({ topic: "contact", subject: programme.name })
+                }
                 className="inline-flex items-center gap-2 mt-5 text-sm text-[#F97316] underline hover:no-underline"
               >
-                <Mail size={14} /> {CONTACT_EMAILS.contact}
-              </a>
+                <Mail size={14} /> Contact us about this
+              </button>
             </div>
           )}
 

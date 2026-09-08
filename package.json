@@ -39,7 +39,7 @@
     "test:controls": "playwright test e2e/controls-interaction.spec.ts",
     "test:links": "LINK_SWEEP=1 playwright test e2e/link-destinations.spec.ts",
     "test:all": "pnpm check && pnpm lint && pnpm build && pnpm test && pnpm test:php && pnpm audit:site && pnpm audit:mobile && pnpm test:e2e:all",
-    "test:php": "php tests/php/apply.test.php",
+    "test:php": "php tests/php/apply.test.php && php tests/php/contact.test.php",
     "test:e2e:all": "playwright test"
   },
   "dependencies": {

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Star, Building2, Globe, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
-import { CONTACT_EMAILS } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 
 const tiers = [
   {
@@ -187,12 +187,13 @@ export default function SponsorsPage() {
             EmbeddedOS website.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a
-              href={`mailto:${CONTACT_EMAILS.sponsors}`}
+            <button
+              type="button"
+              onClick={() => openContactForm({ topic: "sponsors" })}
               className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black rounded-lg font-semibold transition-colors"
             >
               Contact Sponsorship Team <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
             <Link
               href="/donate"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
