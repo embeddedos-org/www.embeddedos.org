@@ -24,6 +24,7 @@ const DIST = path.resolve(import.meta.dirname, "../../dist/public");
 const HTACCESS = path.join(DIST, ".htaccess");
 
 const CPANEL_YML = path.join(DIST, ".cpanel.yml");
+const HOME_HTML = path.join(DIST, "index.html");
 
 const readHtaccess = () => fs.readFileSync(HTACCESS, "utf8");
 
@@ -45,6 +46,14 @@ describe("the build ships the hosting config", () => {
       fs.existsSync(CPANEL_YML),
       ".cpanel.yml missing from dist/public — cPanel would have nothing to deploy with"
     ).toBe(true);
+  });
+
+  it("does not ship the removed homepage showcase video", () => {
+    const html = fs.readFileSync(HOME_HTML, "utf8");
+    expect(html).not.toContain("Twenty seconds");
+    expect(html).not.toContain("See the stack");
+    expect(html).not.toContain("product-showcase.mp4");
+    expect(html).not.toMatch(/<video\b/i);
   });
 
   it("copies .htaccess by name, since the glob skips dotfiles", () => {

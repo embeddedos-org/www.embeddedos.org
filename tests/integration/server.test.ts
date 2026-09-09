@@ -182,18 +182,6 @@ describe("storage proxy", () => {
     expect(unknown, "no expected content-type for these").toEqual([]);
     expect(bad).toEqual([]);
   });
-
-  it("serves the showcase reel with range support so it can be seeked", async () => {
-    // A <video> that cannot answer a Range request plays only from the start:
-    // dragging the scrubber does nothing. Express's sendFile handles this, but
-    // it is a property of the route the page depends on, so it gets a test
-    // rather than an assumption.
-    const res = await fetch(BASE + "/media/product-showcase.mp4", {
-      headers: { Range: "bytes=1000-2000" },
-    });
-    expect(res.status).toBe(206);
-    expect(res.headers.get("content-range")).toMatch(/^bytes 1000-2000\/\d+$/);
-  });
 });
 
 describe("api surface", () => {

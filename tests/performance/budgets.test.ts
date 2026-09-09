@@ -98,16 +98,10 @@ describe("javascript budgets", () => {
 describe("image budgets", () => {
   const IMG_DIR = path.join(DIST, "media");
 
-  /**
-   * Everything in /media that is not video. Split out when the product
-   * showcase reel landed in this directory and tripped the image budget at
-   * 548 KB: an image and a video are not the same kind of cost. An image is
-   * fetched whether or not the visitor wants it, so 260 KB is a real ceiling;
-   * the reel is preload="none" and only downloads when someone presses play,
-   * which is a choice they made.
-   */
   const imageFiles = () =>
-    fs.readdirSync(IMG_DIR).filter(f => !/\.(mp4|webm|mov)$/i.test(f));
+    fs
+      .readdirSync(IMG_DIR)
+      .filter(f => /\.(avif|gif|jpe?g|png|svg|webp)$/i.test(f));
 
   it("no single image exceeds 260 KB", () => {
     const oversized = imageFiles()
@@ -115,34 +109,6 @@ describe("image budgets", () => {
       .filter(([, s]) => s > 260 * 1024)
       .map(([f, s]) => `${f} = ${kb(s)} KB`);
     expect(oversized).toEqual([]);
-  });
-
-  it("no single video exceeds 3 MB", () => {
-    // Video gets its own ceiling rather than an exemption. Someone who presses
-    // play on a phone still pays for the whole file, and 3 MB is where asking
-    // them to stops being reasonable.
-    const oversized = fs
-      .readdirSync(IMG_DIR)
-      .filter(f => /\.(mp4|webm|mov)$/i.test(f))
-      .map(f => [f, fs.statSync(path.join(IMG_DIR, f)).size] as const)
-      .filter(([, s]) => s > 3 * 1024 * 1024)
-      .map(([f, s]) => `${f} = ${kb(s)} KB`);
-    expect(oversized).toEqual([]);
-  });
-
-  it("every video poster is small enough to load eagerly", () => {
-    // The poster is the part that *is* unconditional: it renders on first
-    // paint for every visitor, video or not, so it lives under the image rule.
-    const posters = imageFiles().filter(f => /-poster\./.test(f));
-    expect(
-      posters.length,
-      "expected at least one video poster"
-    ).toBeGreaterThan(0);
-    const heavy = posters
-      .map(f => [f, fs.statSync(path.join(IMG_DIR, f)).size] as const)
-      .filter(([, s]) => s > 150 * 1024)
-      .map(([f, s]) => `${f} = ${kb(s)} KB`);
-    expect(heavy).toEqual([]);
   });
 
   it("the site logo is small enough for a 40px slot", () => {
