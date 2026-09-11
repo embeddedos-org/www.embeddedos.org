@@ -10,6 +10,7 @@ import {
   Instagram,
   ExternalLink,
 } from "lucide-react";
+import { COMMUNITY_LINKS } from "@/data/community";
 import { SOCIAL_URLS } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
 
@@ -81,6 +82,7 @@ const FOOTER_LINKS = {
     { name: "Get Involved", href: "/get-involved" },
     { name: "Membership", href: "/membership" },
     { name: "Community", href: "/community" },
+    ...COMMUNITY_LINKS.map(link => ({ ...link, external: true })),
     { name: "Events", href: "/events" },
     { name: "Partners", href: "/partners" },
     { name: "Sponsors", href: "/sponsors" },

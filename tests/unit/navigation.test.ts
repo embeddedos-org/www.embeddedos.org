@@ -25,6 +25,8 @@ const read = (p: string) => readFileSync(path.join(root, p), "utf8");
 const appSource = read("client/src/App.tsx");
 const navSource = read("client/src/components/Navbar.tsx");
 const footerSource = read("client/src/components/Footer.tsx");
+const communitySource = read("client/src/pages/Community.tsx");
+const communityDataSource = read("client/src/data/community.ts");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
 const routes = [
@@ -155,6 +157,26 @@ describe("menu separation", () => {
     expect(navSource).toMatch(/^\s{2}Products: \{/m);
     expect(navSource).toMatch(/^\s{2}Docs: \{/m);
     expect(navSource).toMatch(/^\s{2}Community: \{/m);
+  });
+});
+
+describe("community resources", () => {
+  const expected = [
+    "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
+    "https://github.com/orgs/embeddedos-org/discussions",
+    "https://github.com/embeddedos-org/www.embeddedos.org/issues",
+    "https://github.com/orgs/embeddedos-org/projects",
+    "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
+  ];
+
+  it("publishes the exact repository and organization destinations", () => {
+    for (const href of expected) expect(communityDataSource).toContain(href);
+    expect(communityDataSource).not.toContain("/agents");
+  });
+
+  it("uses the shared destinations in the footer and community page", () => {
+    expect(footerSource).toContain("...COMMUNITY_LINKS.map");
+    expect(communitySource).toContain("COMMUNITY_LINKS.map");
   });
 });
 

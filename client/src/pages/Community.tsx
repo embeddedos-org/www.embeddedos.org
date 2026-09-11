@@ -13,6 +13,7 @@ import {
   Instagram,
 } from "lucide-react";
 import { Link } from "wouter";
+import { COMMUNITY_LINKS } from "@/data/community";
 import { SOCIAL_URLS } from "@/data/foundation";
 import { BOARD_COUNT } from "@/data/stack";
 
@@ -159,6 +160,34 @@ export default function Community() {
                   {w.cta} <ArrowRight className="w-3 h-3" />
                 </a>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 px-4" data-community-resources>
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-3">
+            Community Resources
+          </h2>
+          <p className="text-gray-400 mb-6">
+            Follow public decisions, report work, and find the guidance used to
+            contribute to this repository.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {COMMUNITY_LINKS.map(link => (
+              <a
+                key={link.name}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/5 border border-white/10 rounded-xl p-5 hover:border-orange-400/40 transition-all"
+              >
+                <div className="text-white font-medium">{link.name}</div>
+                <div className="text-gray-400 text-sm mt-1">
+                  {link.description}
+                </div>
+              </a>
             ))}
           </div>
         </div>
