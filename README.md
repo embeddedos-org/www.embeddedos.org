@@ -2,6 +2,8 @@
 
 The public website of the Embedded Operating Systems Research Foundation.
 
+Community resources: [Wiki](https://github.com/embeddedos-org/www.embeddedos.org/wiki) · [Discussions](https://github.com/orgs/embeddedos-org/discussions) · [Issues](https://github.com/embeddedos-org/www.embeddedos.org/issues) · [Projects](https://github.com/orgs/embeddedos-org/projects) · [AGENTS.md](https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md)
+
 A React single-page application that is **prerendered to static HTML at build
 time** — every route ships as a real document with its own `<title>`, meta
 description and canonical URL, readable without JavaScript.
@@ -77,6 +79,7 @@ server/          Express + tRPC API
   _core/         Server bootstrap, auth, storage proxy, vite middleware
   routers.ts     tRPC route definitions
 shared/          Types and data used by both sides
+docs/wiki/       Reviewable, byte-identical mirrors of the repository wiki
 scripts/         Build and maintenance tooling (prerender, audits, deploy)
 e2e/             Playwright suites
 tests/           Vitest suites (unit, integration, security, performance)

@@ -58,6 +58,33 @@ test.describe("navigation", () => {
     }
   });
 
+  test("the community resources use exact secure external links", async ({
+    page,
+  }) => {
+    const expected = [
+      "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
+      "https://github.com/orgs/embeddedos-org/discussions",
+      "https://github.com/embeddedos-org/www.embeddedos.org/issues",
+      "https://github.com/orgs/embeddedos-org/projects",
+      "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
+    ];
+
+    for (const route of ["/", "/community"]) {
+      await page.goto(route);
+      const scope =
+        route === "/"
+          ? page.locator("footer")
+          : page.locator("[data-community-resources]");
+      for (const href of expected) {
+        const link = scope.locator(`a[href="${href}"]`);
+        await expect(link, `${href} on ${route}`).toHaveCount(1);
+        await expect(link).toHaveAttribute("target", "_blank");
+        await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      }
+      await expect(scope.locator('a[href="/agents"]')).toHaveCount(0);
+    }
+  });
+
   test("every footer link resolves to a real page", async ({
     page,
     request,
