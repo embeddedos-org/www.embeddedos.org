@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { SOCIAL_URLS } from "@/data/foundation";
+import TiltCard from "../components/TiltCard";
 import {
   ArrowRight,
   Github,
@@ -46,11 +47,11 @@ import {
 gsap.registerPlugin();
 
 const CircuitHero = React.lazy(() => import("../components/CircuitHero"));
+const HeroTechStack = React.lazy(() => import("../components/HeroTechStack"));
 const ProductMarquee = React.lazy(() => import("../components/ProductMarquee"));
 const BootPipeline = React.lazy(() => import("../components/BootPipeline"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
 
-const HERO_IMG = "/media/hero-background_1bafea1c.jpg";
 const ARCH_IMG = "/media/architecture-diagram-hero_72436b3f.jpg";
 const COMMUNITY_IMG = "/media/community-illustration-eos_6f39c9db.jpg";
 const OPEN_SOURCE_IMG = "/media/what-we-do-illustration_4c2ad2f7.jpg";
@@ -406,16 +407,30 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Hero image */}
+            {/* Hero 3D scene */}
             <div className="hero-image opacity-0 relative lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden">
-                <img
-                  src={HERO_IMG}
-                  alt="EmbeddedOS running across multiple devices"
-                  className="w-full h-auto object-cover rounded-2xl"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1D3A]/70 to-transparent rounded-2xl" />
+              <div
+                className="relative rounded-2xl overflow-hidden border border-white/8 aspect-[4/3]"
+                style={{
+                  background:
+                    "linear-gradient(160deg, rgba(11,29,58,0.9), rgba(5,10,20,0.95))",
+                }}
+              >
+                <Suspense
+                  fallback={
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-6 h-6 border-2 border-[#F97316] border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  }
+                >
+                  <HeroTechStack />
+                </Suspense>
+              </div>
+              {/* The 3D scene's own overlay names the active stage; this line
+                  just signals that the diagram is interactive. */}
+              <div className="mt-3 flex items-center justify-center gap-1.5 text-[10px] sm:text-xs text-white/40 px-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
+                Hover the diagram to inspect each stage of the build
               </div>
               {/* One floating badge, not two: the board count it used to sit
                   beside is already in the stat row a few inches below. */}
@@ -529,23 +544,25 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   custom={i}
-                  className="glass rounded-2xl p-6 border border-white/5 card-hover"
+                  className="h-full"
                 >
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
-                    style={{
-                      background: `${pillar.color}20`,
-                      border: `1px solid ${pillar.color}40`,
-                    }}
-                  >
-                    <Icon size={22} style={{ color: pillar.color }} />
-                  </div>
-                  <h3 className="font-heading font-bold text-white text-lg mb-2">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-sm text-white/55 leading-relaxed">
-                    {pillar.desc}
-                  </p>
+                  <TiltCard className="glass rounded-2xl p-6 border border-white/5">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                      style={{
+                        background: `${pillar.color}20`,
+                        border: `1px solid ${pillar.color}40`,
+                      }}
+                    >
+                      <Icon size={22} style={{ color: pillar.color }} />
+                    </div>
+                    <h3 className="font-heading font-bold text-white text-lg mb-2">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-sm text-white/55 leading-relaxed">
+                      {pillar.desc}
+                    </p>
+                  </TiltCard>
                 </motion.div>
               );
             })}
@@ -685,41 +702,43 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   custom={i % 8}
-                  className="group relative glass-card rounded-2xl p-5 overflow-hidden cursor-default"
+                  className="h-full"
                 >
-                  {/* Hover glow border */}
-                  <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                    style={{
-                      boxShadow: `inset 0 0 0 1px ${product.color}40, 0 0 30px ${product.color}08`,
-                    }}
-                  />
-                  <div className="flex items-start justify-between mb-3">
+                  <TiltCard className="group relative glass-card rounded-2xl p-5 overflow-hidden cursor-default">
+                    {/* Hover glow border */}
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                       style={{
-                        background: `${product.color}20`,
-                        border: `1px solid ${product.color}40`,
+                        boxShadow: `inset 0 0 0 1px ${product.color}40, 0 0 30px ${product.color}08`,
                       }}
-                    >
-                      <Icon size={20} style={{ color: product.color }} />
+                    />
+                    <div className="flex items-start justify-between mb-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+                        style={{
+                          background: `${product.color}20`,
+                          border: `1px solid ${product.color}40`,
+                        }}
+                      >
+                        <Icon size={20} style={{ color: product.color }} />
+                      </div>
+                      <span
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                        style={{
+                          background: `${product.color}20`,
+                          color: product.color,
+                        }}
+                      >
+                        {product.tag}
+                      </span>
                     </div>
-                    <span
-                      className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                      style={{
-                        background: `${product.color}20`,
-                        color: product.color,
-                      }}
-                    >
-                      {product.tag}
-                    </span>
-                  </div>
-                  <h3 className="font-heading font-bold text-white text-sm mb-1.5 group-hover:text-white transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-xs text-white/50 leading-relaxed group-hover:text-white/65 transition-colors">
-                    {product.desc}
-                  </p>
+                    <h3 className="font-heading font-bold text-white text-sm mb-1.5 group-hover:text-white transition-colors">
+                      {product.name}
+                    </h3>
+                    <p className="text-xs text-white/50 leading-relaxed group-hover:text-white/65 transition-colors">
+                      {product.desc}
+                    </p>
+                  </TiltCard>
                 </motion.div>
               );
             })}
@@ -935,23 +954,25 @@ export default function Home() {
                 viewport={{ once: true }}
                 custom={i * 0.05}
               >
-                <Link
-                  href={cat.href}
-                  className="glass-card rounded-xl p-4 flex flex-col items-center gap-2.5 group block"
-                >
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
-                    style={{
-                      background: `${cat.color}18`,
-                      border: `1px solid ${cat.color}35`,
-                    }}
+                <TiltCard className="rounded-xl">
+                  <Link
+                    href={cat.href}
+                    className="glass-card rounded-xl p-4 flex flex-col items-center gap-2.5 group block h-full"
                   >
-                    <cat.Icon size={18} style={{ color: cat.color }} />
-                  </div>
-                  <span className="text-white/70 text-xs font-semibold text-center group-hover:text-white transition-colors">
-                    {cat.label}
-                  </span>
-                </Link>
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+                      style={{
+                        background: `${cat.color}18`,
+                        border: `1px solid ${cat.color}35`,
+                      }}
+                    >
+                      <cat.Icon size={18} style={{ color: cat.color }} />
+                    </div>
+                    <span className="text-white/70 text-xs font-semibold text-center group-hover:text-white transition-colors">
+                      {cat.label}
+                    </span>
+                  </Link>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
@@ -1005,23 +1026,25 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   custom={i}
-                  className="group relative flex gap-4 p-5 glass-card rounded-2xl overflow-hidden"
+                  className="h-full"
                 >
-                  {/* Numbered accent */}
-                  <div className="absolute top-4 right-4 font-heading font-extrabold text-4xl text-white/[0.04] select-none pointer-events-none">
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <div className="w-10 h-10 rounded-xl bg-[#F97316]/15 border border-[#F97316]/30 flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110">
-                    <Icon size={20} className="text-[#F97316]" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-bold text-white text-sm mb-1">
-                      {f.title}
-                    </h3>
-                    <p className="text-xs text-white/50 leading-relaxed group-hover:text-white/65 transition-colors">
-                      {f.desc}
-                    </p>
-                  </div>
+                  <TiltCard className="group relative flex gap-4 p-5 glass-card rounded-2xl overflow-hidden">
+                    {/* Numbered accent */}
+                    <div className="absolute top-4 right-4 font-heading font-extrabold text-4xl text-white/[0.04] select-none pointer-events-none">
+                      {String(i + 1).padStart(2, "0")}
+                    </div>
+                    <div className="w-10 h-10 rounded-xl bg-[#F97316]/15 border border-[#F97316]/30 flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110">
+                      <Icon size={20} className="text-[#F97316]" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-bold text-white text-sm mb-1">
+                        {f.title}
+                      </h3>
+                      <p className="text-xs text-white/50 leading-relaxed group-hover:text-white/65 transition-colors">
+                        {f.desc}
+                      </p>
+                    </div>
+                  </TiltCard>
                 </motion.div>
               );
             })}
