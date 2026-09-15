@@ -11,6 +11,9 @@
  */
 import { test, expect, type Page } from "@playwright/test";
 
+const PUBLIC_BUSINESS_ADDRESS =
+  "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
+
 test.describe("clear mission", () => {
   test("the homepage states the nonprofit mission above the footer", async ({
     page,
@@ -200,13 +203,22 @@ test.describe("nonprofit transparency", () => {
     expect(text).not.toMatch(/EIN available upon request/i);
   });
 
-  test("a verifiable postal address is published", async ({ page }) => {
+  test("the contact page publishes the complete legal business address", async ({
+    page,
+  }) => {
     await page.goto("/contact");
     const address = page.locator("main address");
     await expect(address).toBeVisible();
-    const text = await address.innerText();
-    expect(text).toMatch(/2601 Cortez Dr/);
-    expect(text).toMatch(/Santa Clara, CA 95051/);
+    await expect(address).toContainText(PUBLIC_BUSINESS_ADDRESS);
+  });
+
+  test("the footer publishes the same legal business address", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const address = page.locator("footer address");
+    await expect(address).toBeVisible();
+    await expect(address).toHaveText(PUBLIC_BUSINESS_ADDRESS);
   });
 
   test("use-of-funds is stated and no financial figure is invented", async ({
@@ -236,6 +248,14 @@ test.describe("nonprofit transparency", () => {
     expect(data["@type"]).toBe("NGO");
     expect(data.taxID).toBe("41-4821627");
     expect(data.nonprofitStatus).toBe("Nonprofit501c3");
+    expect(data.address).toEqual({
+      "@type": "PostalAddress",
+      streetAddress: "2601 Cortez Dr, Unit 1104",
+      addressLocality: "Santa Clara",
+      addressRegion: "CA",
+      postalCode: "95051",
+      addressCountry: "US",
+    });
   });
 });
 

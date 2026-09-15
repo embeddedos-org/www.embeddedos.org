@@ -11,10 +11,16 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { COMMUNITY_LINKS } from "@/data/community";
-import { SOCIAL_URLS } from "@/data/foundation";
+import {
+  FOUNDATION,
+  MAILING_ADDRESS,
+  SOCIAL_URLS,
+  formatMailingAddress,
+} from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
 
 const LOGO_MARK = "/media/embeddedos-logo-mark_bc053888.jpg";
+const WEBSITE_HOST = new URL(FOUNDATION.website).hostname;
 
 /**
  * The footer is the site's organisational map; the header is its product menu.
@@ -41,7 +47,6 @@ const FOOTER_LINKS = {
     { name: "Organization", href: "/organization" },
     { name: "Industries", href: "/industries" },
     { name: "Transparency", href: "/transparency" },
-    { name: "Research", href: "/research" },
     { name: "Patents", href: "/patents" },
     { name: "Programmes", href: "/programmes" },
   ],
@@ -270,19 +275,21 @@ export default function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-16 bg-[#F97316]/4 blur-[40px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
-        {/* Seven tracks: two for the brand block, one for each of the five link
-            columns. The brand needs the extra width for its description; the
-            link columns hold short labels and wrap acceptably when narrow. */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-x-8 gap-y-10">
+        {/* At xl, the brand and all seven link groups share one row. Below xl,
+            the existing responsive spans keep the denser columns readable. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 xl:grid-cols-[2fr_repeat(7,minmax(0,1fr))] gap-x-8 xl:gap-x-6 gap-y-10">
           {/* Brand */}
-          <div className="sm:col-span-2 md:col-span-3 lg:col-span-2">
+          <div
+            data-footer-section="Brand"
+            className="sm:col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-1"
+          >
             <Link href="/" className="flex items-center gap-3 mb-5 group w-fit">
               <div className="relative">
                 <img
                   loading="lazy"
                   decoding="async"
                   src={LOGO_MARK}
-                  alt="EmbeddedOS"
+                  alt={FOUNDATION.shortName}
                   className="w-10 h-10 rounded-xl"
                 />
                 <div
@@ -295,7 +302,7 @@ export default function Footer() {
                   EmbeddedOS
                 </div>
                 <div className="text-[10px] text-[#F97316] font-bold tracking-[0.15em] uppercase">
-                  Foundation · 501(c)(3)
+                  {FOUNDATION.taxStatus}
                 </div>
               </div>
             </Link>
@@ -306,19 +313,23 @@ export default function Footer() {
               experience.
             </p>
 
-            <p className="text-xs text-white/25 mb-6 max-w-xs leading-relaxed">
-              Embedded Operating Systems Research Foundation
+            <p className="text-xs text-white/25 mb-2 max-w-xs leading-relaxed">
+              {FOUNDATION.legalName}
               <br />
-              501(c)(3) · MIT License ·{" "}
+              {FOUNDATION.softwareLicense} ·{" "}
               <a
-                href="https://www.embeddedos.org/"
+                href={FOUNDATION.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#F97316]/70 hover:text-[#F97316] transition-colors"
               >
-                www.embeddedos.org
+                {WEBSITE_HOST}
               </a>
             </p>
+
+            <address className="text-xs text-white/25 mb-6 max-w-xs not-italic leading-relaxed">
+              {formatMailingAddress(MAILING_ADDRESS)}
+            </address>
 
             {/* Social icons */}
             <div className="flex items-center flex-wrap gap-2">
@@ -363,7 +374,7 @@ export default function Footer() {
 
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([section, links]) => (
-            <div key={section}>
+            <div key={section} data-footer-section={section}>
               {/* h2, not h3: the footer is a top-level landmark, and pages
                   whose body has no h2 (e.g. /faq, whose questions are buttons)
                   would otherwise jump h1 -> h3, which is a WCAG heading-order
@@ -392,7 +403,7 @@ export default function Footer() {
         <div className="flex flex-col gap-4 text-xs text-white/25">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-center sm:text-left">
-              © 2018–2026 Embedded Operating Systems Research Foundation.
+              © 2018–2026 {FOUNDATION.legalName}.
               <span className="mx-1.5 text-white/15">·</span>
               <a
                 href="https://opensource.org/licenses/MIT"
@@ -400,10 +411,10 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="hover:text-white/50 transition-colors"
               >
-                MIT License
+                {FOUNDATION.softwareLicense}
               </a>
               <span className="mx-1.5 text-white/15">·</span>
-              501(c)(3)
+              {FOUNDATION.taxStatus}
             </div>
 
             <div className="flex items-center flex-wrap justify-center gap-x-4 gap-y-1">

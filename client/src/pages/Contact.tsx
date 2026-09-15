@@ -14,7 +14,7 @@ import {
 import {
   FOUNDATION,
   SOCIAL_URLS,
-  MAILING_ADDRESS,
+  formatMailingAddress,
   type ContactTopicKey,
 } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
@@ -25,9 +25,9 @@ import { openContactForm } from "@/lib/contact-form";
  * `sponsors` and `conduct` are reached from `/sponsors` and `/code-of-conduct`
  * instead, same as before this page had a form.
  *
- * No address appears here or anywhere below it — clicking a card opens
- * `ContactFormModal` via `openContactForm`, and the topic key is the only
- * thing that travels to the server; see client/public/api/contact.php's
+ * No email address appears in these cards: clicking one opens
+ * `ContactFormModal` via `openContactForm`, and the topic key is the only thing
+ * that travels to the server; see client/public/api/contact.php's
  * `TOPIC_INBOXES` for where it resolves to a mailbox.
  */
 const contacts: Array<{
@@ -280,17 +280,12 @@ export default function Contact() {
                 <div className="text-gray-500 text-xs uppercase tracking-widest mb-1.5">
                   Mailing address
                 </div>
-                {/* itemProp/address markup mirrors the PostalAddress in the
-                    JSON-LD in client/index.html; both read MAILING_ADDRESS. */}
+                {/* The JSON-LD in client/index.html is static, so unit tests
+                    keep its PostalAddress in sync with this canonical value. */}
                 <address className="text-gray-300 text-sm not-italic leading-relaxed">
                   {FOUNDATION.legalName}
                   <br />
-                  {MAILING_ADDRESS.street}
-                  <br />
-                  {MAILING_ADDRESS.city}, {MAILING_ADDRESS.region}{" "}
-                  {MAILING_ADDRESS.postalCode}
-                  <br />
-                  {MAILING_ADDRESS.country}
+                  {formatMailingAddress()}
                 </address>
                 <p className="text-gray-500 text-xs leading-relaxed mt-2">
                   {/* Inline links inside a paragraph carry a persistent

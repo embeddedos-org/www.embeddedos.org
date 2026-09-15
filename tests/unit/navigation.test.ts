@@ -35,25 +35,23 @@ const routes = [
   ),
 ].filter(r => r !== "/404");
 
-/** Extract the internal hrefs from a named object literal in a source file. */
-function hrefsIn(source: string, declaration: string): string[] {
+/** Extract every internal href from a named object literal in source order. */
+function rawHrefsIn(source: string, declaration: string): string[] {
   const start = source.indexOf(declaration);
   if (start === -1) throw new Error(`${declaration} not found`);
   const rest = source.slice(start);
   const end = rest.search(/\n\}(?: as const)?;\n/);
   const block = rest.slice(0, end);
-  return [
-    ...new Set([...block.matchAll(/href:\s*"(\/[^"]*)"/g)].map(m => m[1])),
-  ];
+  return [...block.matchAll(/href:\s*"(\/[^"]*)"/g)].map(m => m[1]);
 }
 
-const navHrefs = hrefsIn(navSource, "const NAV_ITEMS = {");
-const footerHrefs = hrefsIn(footerSource, "const FOOTER_LINKS = {");
+const navHrefs = [...new Set(rawHrefsIn(navSource, "const NAV_ITEMS = {"))];
+const footerHrefs = rawHrefsIn(footerSource, "const FOOTER_LINKS = {");
 const legalBlock =
   footerSource.match(/const LEGAL_LINKS = \[[\s\S]*?\n\];/)?.[0] ?? "";
-const legalHrefs = [
-  ...new Set([...legalBlock.matchAll(/href:\s*"(\/[^"]*)"/g)].map(m => m[1])),
-];
+const legalHrefs = [...legalBlock.matchAll(/href:\s*"(\/[^"]*)"/g)].map(
+  m => m[1]
+);
 const footerAll = [...new Set([...footerHrefs, ...legalHrefs])];
 
 /**
@@ -184,6 +182,8 @@ describe("footer columns", () => {
   it("has a column for each area of the site", () => {
     for (const heading of [
       "Foundation",
+      "Marketing",
+      "Research",
       "Join & Support",
       "Platform",
       "Applications",
@@ -199,10 +199,15 @@ describe("footer columns", () => {
     }
   });
 
-  it("lists no route twice within the footer", () => {
+  it("lists no raw route twice within the footer", () => {
     const all = [...footerHrefs, ...legalHrefs];
-    const seen = new Set<string>();
-    const dupes = all.filter(h => (seen.has(h) ? true : (seen.add(h), false)));
-    expect(dupes).toEqual([]);
+    const counts = new Map<string, number>();
+    for (const href of all) counts.set(href, (counts.get(href) ?? 0) + 1);
+
+    const dupes = [...counts.entries()]
+      .filter(([, count]) => count > 1)
+      .map(([href, count]) => `${href} (${count})`);
+
+    expect(dupes, "duplicate footer hrefs before deduplication").toEqual([]);
   });
 });

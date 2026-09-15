@@ -79,7 +79,7 @@
       name and the tax ID from the page text either way, but only a reviewer
       does; this states the same facts in a form the crawler parses directly.
       Every value here is duplicated from client/src/data/foundation.ts — change
-      both, or neither. tests/unit/foundation-schema.test.ts fails if they drift.
+      both, or neither. tests/unit/foundation-facts.test.ts fails if they drift.
     -->
     <script type="application/ld+json">
       {
@@ -97,7 +97,7 @@
         "email": "contact@embeddedos.org",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "2601 Cortez Dr",
+          "streetAddress": "2601 Cortez Dr, Unit 1104",
           "addressLocality": "Santa Clara",
           "addressRegion": "CA",
           "postalCode": "95051",
