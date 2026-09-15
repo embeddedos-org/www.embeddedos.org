@@ -73,13 +73,27 @@ if (routeDirs.length < 50) {
   );
 }
 
-for (const required of [".htaccess", ".cpanel.yml"]) {
+for (const required of [
+  ".htaccess",
+  ".cpanel.yml",
+  "404.html",
+  "robots.txt",
+  "sitemap.xml",
+]) {
   if (!fs.existsSync(path.join(DIST, required))) {
     die(
       `${required} is missing from the build. It lives in client/public/ so vite ` +
         `copies it on every build — check it was not deleted.`
     );
   }
+}
+
+const homepage = fs.readFileSync(path.join(DIST, "index.html"), "utf8");
+if (/<div id=["']root["']><\/div>/.test(homepage)) {
+  die(
+    "The homepage is still an empty Vite shell. Run the full build and verify " +
+      "that prerender completed before publishing."
+  );
 }
 
 if (git(["status", "--porcelain"])) {
