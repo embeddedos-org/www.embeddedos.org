@@ -89,7 +89,7 @@ const MISSION_PILLARS = [
 const PRODUCTS = [
   {
     name: "EOS Kernel",
-    desc: "The core real-time operating system kernel with sub-microsecond latency and deterministic scheduling.",
+    desc: "The core real-time operating system kernel with priority-driven scheduling and target-dependent timing.",
     icon: Cpu,
     color: "#F97316",
     tag: "Core",
@@ -176,8 +176,8 @@ const PRODUCTS = [
 const FEATURES = [
   {
     icon: Terminal,
-    title: "Real-Time Performance",
-    desc: "Sub-microsecond interrupt latency with deterministic scheduling for mission-critical applications.",
+    title: "Real-Time Scheduling",
+    desc: "Priority-driven scheduling for real-time applications, with timing characterized per target.",
   },
   {
     icon: Lock,
@@ -201,8 +201,8 @@ const FEATURES = [
   },
   {
     icon: BarChart3,
-    title: "Production Ready",
-    desc: `Board definitions for ${BOARD_COUNT} targets spanning automotive, industrial, and IoT hardware.`,
+    title: "Broad Hardware Coverage",
+    desc: `Board definitions for ${BOARD_COUNT} targets spanning automotive, industrial, and IoT hardware. Maturity varies by target.`,
   },
 ];
 
@@ -580,7 +580,7 @@ export default function Home() {
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl btn-press"
             >
               <Heart size={16} />
-              Make a Tax-Deductible Donation
+              Make a Donation
             </Link>
             <Link
               href="/get-involved"
@@ -790,8 +790,9 @@ export default function Home() {
               4 Health Devices · 2 Patents Pending
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
-              Open-source medical-grade hardware covering ~95% of all clinically
-              relevant health metrics.
+              In-development open hardware designs for health-monitoring
+              research. Physical reliability and clinical validation are
+              pending.
             </p>
           </motion.div>
 

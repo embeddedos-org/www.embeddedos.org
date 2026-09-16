@@ -75,7 +75,7 @@ const STACKS = [
   },
   {
     name: "Health Stack",
-    desc: "Medical-grade biosensor stack for health monitoring devices with BLE and secure data.",
+    desc: "Research biosensor stack targeting health-monitoring designs with BLE and secure data.",
     color: "#F85149",
     icon: Activity,
     layers: [
@@ -92,11 +92,11 @@ const STACKS = [
   },
   {
     name: "AeroOS Stack",
-    desc: "Aerospace-grade RTOS stack with triple-redundant safety systems for flight-critical applications.",
+    desc: "Aerospace research stack exploring redundant safety architectures; it is not certified for flight.",
     color: "#60A5FA",
     icon: Zap,
     layers: [
-      "AeroOS (EoS Kernel + DO-178C)",
+      "AeroOS (EoS Kernel + DO-178C targets)",
       "Triple-Redundant Voting",
       "Flight Control Drivers",
       "Telemetry (BLE + 5G)",

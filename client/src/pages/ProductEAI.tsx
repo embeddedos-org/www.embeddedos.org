@@ -168,7 +168,7 @@ export default function ProductEAI() {
         {
           name: "eNI",
           route: "/product-eni",
-          desc: "1,024-channel neural interface feeds raw biosignals directly into eAI inference pipelines.",
+          desc: "A configuration-specific neural interface is intended to feed biosignals into eAI research pipelines.",
         },
         {
           name: "EIPC",

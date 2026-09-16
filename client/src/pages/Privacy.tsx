@@ -13,16 +13,16 @@ const SECTIONS = [
   {
     title: "1. Information We Collect",
     content: `We collect minimal information necessary to operate this website. This includes:
-    
-• **Usage Data:** Anonymous page view counts and referrer information collected via our self-hosted analytics (no third-party tracking).
+
+• **Usage Data:** This site does not currently load a browser analytics service. Our hosting provider may retain standard web-server logs, such as request time, requested path, referrer, IP address, and user agent, for security and reliability.
 • **Contact Information:** If you contact us through the form at www.embeddedos.org/contact, we retain your email address and message content solely to respond to your inquiry.
-• **Donation Data:** If you donate via our website, your payment is processed securely by Stripe. We receive only a notification of the donation amount and your name/email (if provided). Card details are never stored on our servers.
+• **Donation Data:** The donation flow uses a Zeffy-hosted donation form. Information you enter in that form goes directly to Zeffy and any payment or anti-abuse providers identified there; it is not first collected by this website. The Foundation may receive the donor contact details and transaction records Zeffy makes available to us. We do not receive or store full card or bank credentials on our servers.
 • **GitHub:** If you interact with our GitHub repositories, GitHub's privacy policy applies to that data.`,
   },
   {
     title: "2. How We Use Information",
     content: `We use collected information solely for:
-    
+
 • Operating and improving the EmbeddedOS website and documentation.
 • Responding to support and contact inquiries.
 • Sending project update emails if you have explicitly opted in.
@@ -32,7 +32,7 @@ We do not sell, rent, or share your personal information with third parties for 
   },
   {
     title: "3. Cookies",
-    content: `This website uses only essential cookies required for basic functionality (session management). We do not use advertising cookies, cross-site tracking cookies, or third-party analytics cookies.
+    content: `This website uses only essential cookies required for basic functionality (session management). We do not use advertising, analytics, or cross-site tracking cookies.
 
 You can disable cookies in your browser settings. Doing so will not prevent you from accessing any content on this website.`,
   },
@@ -40,7 +40,7 @@ You can disable cookies in your browser settings. Doing so will not prevent you 
     title: "4. Third-Party Services",
     content: `This website integrates with the following third-party services:
 
-• **Stripe** (donation payment processing) — governed by Stripe's Privacy Policy at stripe.com/privacy
+• **Zeffy** (hosted donation form and payment facilitation) — governed by Zeffy's Privacy Policy at zeffy.com/privacy-policy. Zeffy may identify additional payment and anti-abuse providers within its form.
 • **GitHub** (source code hosting) — governed by GitHub's Privacy Policy at docs.github.com/en/site-policy/privacy-policies
 • **InterServer** (web hosting) — governed by InterServer's Privacy Policy at interserver.net/privacy-policy
 
@@ -48,7 +48,7 @@ We have no control over the data practices of these third parties.`,
   },
   {
     title: "5. Data Retention",
-    content: `We retain contact inquiry emails for up to 12 months. Anonymous analytics data is retained for up to 24 months. Donation records are retained as required by IRS regulations for 501(c)(3) organizations (minimum 7 years).`,
+    content: `We retain contact inquiry emails for up to 12 months. Hosting logs are retained according to InterServer's operational policies. Retention of donation records depends on Zeffy's practices and the Foundation's applicable accounting and legal obligations.`,
   },
   {
     title: "6. Your Rights",
@@ -91,7 +91,7 @@ export default function Privacy() {
               Privacy Policy
             </h1>
             <p className="text-white/50 text-sm">
-              Effective date: January 1, 2026 · Embedded Operating Systems
+              Effective date: September 15, 2026 · Embedded Operating Systems
               Research Foundation
             </p>
           </motion.div>

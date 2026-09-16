@@ -50,8 +50,7 @@ const DOWNLOADS = [
       {
         name: "eos-platform",
         version: "v1.0.0",
-        description:
-          "Meta-distribution: one toolchain, every EoS profile. Unified package manifest and reproducible builds for all 52 supported boards.",
+        description: `Meta-distribution: one toolchain, every EoS profile. Unified package manifest for ${BOARD_COUNT} supported boards.`,
         size: "18 MB",
         license: "MIT",
         github: "https://github.com/embeddedos-org/eos",
@@ -114,7 +113,7 @@ const DOWNLOADS = [
         name: "eNI Neural Interface",
         version: "v0.8.0",
         description:
-          "Hardware abstraction layer for neural interface devices — EEG, EMG, ECoG, and spike sorting pipeline with 1,024-channel deterministic processing.",
+          "Hardware abstraction layer for configuration-specific EEG, EMG, ECoG, and spike-sorting research pipelines.",
         size: "920 KB",
         license: "MIT",
         github: "https://github.com/embeddedos-org/eNI",
@@ -188,7 +187,7 @@ const DOWNLOADS = [
         name: "EoS Aerospace Avionics",
         version: "v0.8.0",
         description:
-          "DO-178C-compliant avionics firmware for the AeroSwift VTOL platform. Flight control, navigation, telemetry, and redundancy management.",
+          "Avionics research firmware for the AeroSwift concept platform. DO-178C is a target standard; the software is not certified for flight.",
         size: "6.2 MB",
         license: "MIT",
         // eos-aero is a private repo — link the org profile until it is published.
@@ -206,11 +205,11 @@ const DOWNLOADS = [
         name: "eIPC Protocol",
         version: "v1.0.0",
         description:
-          "Ultra-low latency IPC protocol with wire format, CBOR codec, HMAC-SHA256 security, and sub-microsecond cross-core messaging.",
+          "IPC protocol with wire format, CBOR codec, HMAC-SHA256 security, and transport-dependent latency.",
         size: "210 KB",
         license: "MIT",
         github: "https://github.com/embeddedos-org/eipc",
-        tags: ["IPC", "CBOR", "HMAC", "Sub-µs"],
+        tags: ["IPC", "CBOR", "HMAC", "Multi-Transport"],
       },
       {
         name: "eBrowser Engine",

@@ -42,11 +42,11 @@ const phases = [
       },
       {
         done: true,
-        text: "ENI v0.1 — 1,024-channel neural signal acquisition, spike sorting",
+        text: "eAI Edge v0.1 profile — bundles eNI, EIPC, and eAI",
       },
       {
         done: true,
-        text: "EIPC v0.1 — capability tokens, zero-copy IPC, <1μs latency",
+        text: "EIPC v0.1 — capability tokens and zero-copy IPC",
       },
       {
         done: true,

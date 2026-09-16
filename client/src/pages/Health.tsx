@@ -37,7 +37,7 @@ const DEVICES = [
     id: "health-key-ultra",
     name: "HEALTH-KEY ULTRA",
     tagline: "USB-C Pendrive Health Monitor",
-    desc: "The world's first medical-grade health monitor in a USB-C pendrive form factor. Plug into any device for instant ECG, blood oxygen, alcohol detection, temperature, UV exposure, and motion tracking.",
+    desc: "An in-development USB-C research device intended to explore ECG, blood-oxygen, breath-alcohol, temperature, UV, and motion sensing. Physical reliability and clinical validation are pending.",
     patent: "U.S. Patent Pending — 64/073,334 (May 23, 2026)",
     color: "#F85149",
     icon: Activity,
@@ -45,7 +45,7 @@ const DEVICES = [
     chip: "nRF52840",
     device3d: "key" as const,
     waveType: "ecg" as const,
-    waveLabel: "Live ECG Simulation",
+    waveLabel: "Simulated ECG Concept",
     waveColor: "#F85149",
     metrics: [
       "ECG (12-lead)",
@@ -57,13 +57,13 @@ const DEVICES = [
       "IMU / Motion",
       "USB-C Pass-Through",
     ],
-    status: "Patent Pending",
+    status: "In Development",
   },
   {
     id: "health-band-neuro",
     name: "HEALTH-BAND Neuro",
     tagline: "AI-Powered Neuro Wristband",
-    desc: "A wristband that reads your muscles and nerves. sEMG gesture control lets you operate devices with hand gestures. TENS therapy provides pain relief. Full biometric monitoring included.",
+    desc: "An in-development wristband research design for sEMG gesture-control studies, biometric sensing, and TENS exploration. No therapeutic benefit or clinical performance is claimed.",
     patent: "U.S. Patent Pending — 64/076,078 (May 27, 2026)",
     color: "#F59E0B",
     icon: Watch,
@@ -71,11 +71,11 @@ const DEVICES = [
     chip: "nRF52840 + TFLite",
     device3d: "band" as const,
     waveType: "neural" as const,
-    waveLabel: "sEMG Neural Signal",
+    waveLabel: "Simulated sEMG Concept",
     waveColor: "#F59E0B",
     metrics: [
       "sEMG Gesture Control",
-      "TENS Therapy",
+      "TENS Stimulation Research",
       "BAC Breath",
       "ECG",
       "SpO₂",
@@ -83,13 +83,13 @@ const DEVICES = [
       "HRV",
       "Skin Temperature",
     ],
-    status: "Patent Pending",
+    status: "In Development",
   },
   {
     id: "health-ring",
     name: "HEALTH-RING",
     tagline: "Titanium Smart Ring",
-    desc: "Medical-grade health monitoring in a titanium ring. Continuous ECG for AFib detection, cuffless blood pressure, HbA1c estimation, sleep staging, and stress scoring — all from your finger.",
+    desc: "A concept ring for researching optical and electrical sensing. AFib, blood-pressure, HbA1c, sleep, and stress outputs are proposed research goals, not clinically validated measurements.",
     patent: "Provisional Target: 2026 Q3 — EOS-2026-003",
     color: "#A78BFA",
     icon: Fingerprint,
@@ -97,7 +97,7 @@ const DEVICES = [
     chip: "Custom ASIC",
     device3d: "ring" as const,
     waveType: "spo2" as const,
-    waveLabel: "SpO₂ Waveform",
+    waveLabel: "Simulated SpO₂ Concept",
     waveColor: "#A78BFA",
     metrics: [
       "ECG (AFib Detection)",
@@ -114,8 +114,8 @@ const DEVICES = [
   {
     id: "health-lab",
     name: "HEALTH-LAB",
-    tagline: "14-Day Biosensor Patch",
-    desc: "A flexible biosensor patch worn on the skin for 14 days. Continuously monitors glucose, lactate, cortisol, electrolytes, uric acid, and pH — the most comprehensive wearable biochemistry panel ever built.",
+    tagline: "Biosensor Patch Concept",
+    desc: "A concept flexible biosensor patch for studying glucose, lactate, cortisol, electrolyte, uric-acid, and pH sensing. Wear duration and measurement performance require physical validation.",
     patent: "Provisional Target: 2026 Q3 — EOS-2026-004",
     color: "#34D399",
     icon: Microscope,
@@ -123,7 +123,7 @@ const DEVICES = [
     chip: "Custom ASIC + BLE 5.3",
     device3d: "lab" as const,
     waveType: "temp" as const,
-    waveLabel: "Glucose Trend",
+    waveLabel: "Simulated Glucose Concept",
     waveColor: "#34D399",
     metrics: [
       "Continuous Glucose",
@@ -133,21 +133,20 @@ const DEVICES = [
       "Potassium (K⁺)",
       "Uric Acid",
       "pH",
-      "14-Day Wear",
+      "Target: 14-Day Wear",
     ],
     status: "In Development",
   },
 ];
 
 const STATS = [
-  { value: "4", label: "Health Devices", color: "#F97316" },
-  { value: "~95%", label: "Clinical Metrics Covered", color: "#34D399" },
+  { value: "4", label: "Device Concepts", color: "#F97316" },
+  { value: "Pending", label: "Clinical Validation", color: "#34D399" },
   { value: "2", label: "Patents Pending", color: "#A78BFA" },
-  { value: "1", label: "Unified App", color: "#22D3EE" },
+  { value: "Planned", label: "Health Hub App", color: "#22D3EE" },
 ];
 
 const STATUS_COLORS: Record<string, string> = {
-  "Patent Pending": "#34D399",
   "In Development": "#F59E0B",
 };
 
@@ -288,7 +287,7 @@ function DeviceCard({
             style={{ background: device.color }}
           />
           <span className="text-[9px] text-white/40 font-mono uppercase tracking-widest">
-            3D Preview
+            Illustrative 3D Concept
           </span>
         </div>
       </div>
@@ -360,6 +359,9 @@ function DeviceCard({
         </div>
 
         {/* Metrics */}
+        <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2">
+          Planned Research Metrics
+        </div>
         <div className="flex flex-wrap gap-1.5 mb-4">
           {device.metrics.map(m => (
             <span
@@ -403,11 +405,13 @@ export default function Health() {
               <span className="text-gradient">Wearable Health</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-6">
-              Four patent-pending health devices covering ~95% of all clinically
-              relevant health metrics. Open hardware, open firmware, unified
-              mobile app.
+              Four open health-research designs in development. Physical
+              reliability, clinical validation, and regulatory review are
+              pending; displayed metrics and signals are illustrative.
             </p>
-            {/* Live metric tickers */}
+            <div className="text-[10px] text-white/35 uppercase tracking-widest mb-2">
+              Illustrative Simulated Metrics
+            </div>
             <div className="flex flex-wrap justify-center gap-3 mb-6">
               {[
                 { label: "Heart Rate", value: "72 bpm", color: "#F85149" },
@@ -488,12 +492,12 @@ export default function Health() {
             className="mb-10 text-center"
           >
             <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              The Four-Device Ecosystem
+              Four Device Concepts
             </h2>
             <p className="text-white/50">
-              Interactive 3D previews with live biometric signal simulations.
-              Together, these four devices cover ~95% of all clinically relevant
-              health metrics.
+              Illustrative 3D concepts with simulated biometric signals. The
+              listed capabilities are research goals; coverage, reliability, and
+              clinical performance have not been validated.
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -513,13 +517,13 @@ export default function Health() {
           >
             <div className="text-center mb-6">
               <div className="badge-teal mb-3 inline-flex">
-                Capability Radar
+                Illustrative Planned-Capability Radar
               </div>
               <h3 className="font-heading font-bold text-white text-xl mb-1">
                 Device Capability Comparison
               </h3>
               <p className="text-sm text-white/40">
-                Click a device to toggle it. Hover to highlight.
+                Conceptual comparison, not measured device performance.
               </p>
             </div>
             <Suspense
@@ -536,7 +540,7 @@ export default function Health() {
                 href="/health-compare"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-white/40 hover:text-white transition-colors"
               >
-                Full spec comparison table <ArrowRight size={14} />
+                Planned specification table <ArrowRight size={14} />
               </Link>
             </div>
           </motion.div>
@@ -565,34 +569,34 @@ export default function Health() {
               </div>
               <div className="flex-1">
                 <h2 className="font-heading font-extrabold text-white text-2xl mb-2">
-                  Single Health Hub App
+                  Planned Health Hub App
                 </h2>
                 <p className="text-white/60 mb-4">
-                  One app for all four devices. iOS and Android. Connects via
-                  BLE 5.3 or USB-C. Includes Digital Twin, AI Food Camera,
-                  Doctor Dashboard, and Deficiency Alerts.
+                  A companion-app concept for the four device designs, with
+                  planned iOS, Android, BLE, and USB-C integration. The features
+                  below are research goals and are not diagnostic tools.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-3 mb-4">
                   {[
                     {
                       icon: Cpu,
                       label: "Digital Twin",
-                      desc: "Real-time health model",
+                      desc: "Planned research health model",
                     },
                     {
                       icon: Zap,
                       label: "AI Food Camera",
-                      desc: "Instant nutrition analysis",
+                      desc: "Planned nutrition research",
                     },
                     {
                       icon: Wifi,
-                      label: "Doctor Dashboard",
-                      desc: "Share with your physician",
+                      label: "Clinician Dashboard Concept",
+                      desc: "Planned research-data sharing",
                     },
                     {
                       icon: Shield,
-                      label: "Deficiency Alerts",
-                      desc: "Proactive health warnings",
+                      label: "Research Indicators",
+                      desc: "Not diagnostic or clinical alerts",
                     },
                   ].map(({ icon: Icon, label, desc }) => (
                     <div
@@ -637,12 +641,12 @@ export default function Health() {
             viewport={{ once: true }}
           >
             <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Open Hardware. Open Firmware. Open Data.
+              Open Health Research Direction
             </h2>
             <p className="text-white/50 max-w-xl mx-auto mb-6">
-              All schematics, firmware, and mobile app code are open source
-              under the MIT License. Build your own, contribute improvements, or
-              integrate with your platform.
+              The project intends to publish design files, research firmware,
+              and companion-app code as they become available. Review the linked
+              repositories for the artifacts currently available.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link

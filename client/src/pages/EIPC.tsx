@@ -94,8 +94,8 @@ const features = [
   {
     icon: Zap,
     color: "#F97316",
-    title: "Sub-microsecond Latency",
-    desc: "Shared memory transport for same-core communication, with zero serialisation overhead for binary payloads.",
+    title: "Shared-Memory Fast Path",
+    desc: "Shared memory transport for same-core communication, with latency dependent on the target and message configuration.",
   },
   {
     icon: Shield,
@@ -141,7 +141,7 @@ export default function EIPCPage() {
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Zero-copy, HMAC-authenticated IPC protocol for EoS services.
-              Sub-microsecond shared memory transport, 4 transport backends,
+              Transport-dependent latency, 4 transport backends,
               capability-based security.
             </p>
           </motion.div>

@@ -78,7 +78,7 @@ const layers = [
       },
       {
         name: "ENI",
-        desc: "1,024-channel neural interface, BCI output",
+        desc: "Configurable neural interface for BCI research",
         href: "/eai",
       },
     ],
@@ -169,7 +169,11 @@ const products = [
     color: "#34D399",
     name: "ENI",
     tagline: "Neural Interface",
-    metrics: ["1,024 channels", "30kHz sample rate", "24-bit ADC"],
+    metrics: [
+      "Configurable channels",
+      "Hardware-defined sample rate",
+      "Front-end-defined ADC",
+    ],
     href: "/eai",
   },
   {

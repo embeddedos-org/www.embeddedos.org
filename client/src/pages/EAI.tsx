@@ -36,12 +36,12 @@ const PRODUCTS = [
     color: "#34D399",
     name: "EAI Engine",
     tagline: "On-device AI inference — no cloud required",
-    desc: "EAI runs TFLite, ONNX, and GGUF models directly on microcontrollers. 4-bit quantization fits a 7B parameter model on 4MB of RAM. Supports vision, NLP, time-series classification, and anomaly detection.",
+    desc: "EAI is an in-development embedded inference runtime. Memory requirements depend on model size, architecture, runtime overhead, and target hardware. Research areas include vision, NLP, time-series classification, and anomaly detection.",
     specs: [
       { label: "Runtimes", value: "TFLite · ONNX · GGUF" },
       { label: "Quantization", value: "4-bit, 8-bit, FP16" },
       { label: "Min RAM", value: "256KB (classification)" },
-      { label: "LLM RAM", value: "4MB (7B 4-bit)" },
+      { label: "LLM Memory", value: "Model- and hardware-dependent" },
       { label: "Tasks", value: "Vision · NLP · Time-series · Anomaly" },
       { label: "Acceleration", value: "CMSIS-NN · Helium · RISC-V V-ext" },
     ],
@@ -60,13 +60,13 @@ const PRODUCTS = [
     color: "#A78BFA",
     name: "ENI Adapter",
     tagline: "Neural interface for BCI devices over standard buses",
-    desc: "ENI (Embedded Neural Interface) is a hardware abstraction layer for brain-computer interface devices. It normalises raw EEG, EMG, and ECoG signals into a standard EoS event stream, enabling any EoS app to consume neural data.",
+    desc: "ENI (Embedded Neural Interface) is an in-development hardware abstraction layer for neural research devices. It is designed to normalise EEG, EMG, and ECoG signals into a standard EoS event stream. Channel count and sample rate depend on the acquisition hardware and configuration; published limits remain research targets until measured on a named setup.",
     specs: [
       { label: "Signal types", value: "EEG · EMG · ECoG · EOG" },
       { label: "Buses", value: "SPI · I²C · UART · USB" },
-      { label: "Sampling", value: "Up to 32kHz per channel" },
-      { label: "Channels", value: "1–256 channels" },
-      { label: "Latency", value: "<500µs end-to-end" },
+      { label: "Sampling", value: "Acquisition-hardware dependent" },
+      { label: "Channels", value: "Configuration dependent" },
+      { label: "Latency", value: "Benchmark pending" },
       { label: "Output", value: "EoS event stream + raw buffer" },
     ],
     demo: [
@@ -438,8 +438,8 @@ export default function EAI() {
               Run AI on your embedded device today
             </h2>
             <p className="text-white/55 text-lg mb-6 max-w-xl mx-auto">
-              EAI and ENI ship with every EoS installation. No separate SDK
-              needed.
+              EAI and ENI are open-source research components under active
+              development for EoS integrations.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link

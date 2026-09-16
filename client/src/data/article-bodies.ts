@@ -87,28 +87,28 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
     ],
   },
   "eni-1024-channel-pipeline": {
-    lede: "How the Embedded Neural Interface stack moves a thousand-electrode array through filtering, sorting, and decoding inside a single RTOS frame — and why the hardest part was not the math.",
+    lede: "A research plan for measuring configurable neural acquisition, filtering, and decoding pipelines without treating unverified throughput targets as benchmark results.",
     sections: [
       {
-        heading: "Why determinism matters more than throughput",
-        text: "A neural decoder that processes 1,024 channels in 800 µs on average but occasionally takes 2 ms is useless for closed-loop stimulation. The stimulator fires based on decoded intent; a missed deadline means the stimulus arrives after the neural event it was supposed to respond to. Determinism — guaranteed worst-case latency — is the hard constraint.",
+        heading: "Why determinism needs measured evidence",
+        text: "Closed-loop neural research depends on worst-case latency, not only average throughput. ENI does not yet publish a verified end-to-end deadline: each result must name the acquisition front end, channel map, sample rate, processing stages, hardware target, dataset, and measurement method.",
       },
       {
-        heading: "The frame",
-        text: "eNI processes neural data in 1 ms frames. Each frame contains 1,024 channels × 30 kHz × 16-bit = 61.44 MB/s of raw data. The pipeline runs in 800 µs, leaving 200 µs margin for the RTOS scheduler and eIPC transport. The pipeline stages are: bandpass filter (300–6000 Hz) → threshold detection → waveform extraction → PCA feature extraction → k-means cluster assignment → EIPC publish.",
+        heading: "Configuration-specific frames",
+        text: "Channel count and sample rate depend on the acquisition hardware and configuration. A benchmark should report the resulting input bandwidth and measure each stage separately: filtering, threshold detection, waveform extraction, feature extraction, cluster assignment, and EIPC publication.",
       },
       {
-        heading: "Memory bank scheduling",
-        text: "The RK3588S has 4 independent memory banks. The pipeline assigns each stage to a different bank to eliminate bank conflicts. The filter stage reads from bank 0 and writes to bank 1. The threshold stage reads from bank 1. The waveform extractor reads from bank 1 and writes to bank 2. This scheduling reduces memory latency by 40% compared to a single-bank layout.",
+        heading: "Memory scheduling research",
+        text: "The research design evaluates staged buffers and hardware-specific memory placement to reduce contention. Any improvement percentage remains unverified until the repository publishes a reproducible benchmark and baseline for the named target.",
       },
       {
-        heading: "Open data",
-        text: "The 1,024-channel test dataset (synthetic Poisson spike trains with realistic noise) is available on GitHub under CC-BY-4.0. The eNI pipeline benchmark harness is included in the eNI repository and runs on any EoS device with 8+ MB PSRAM.",
+        heading: "Open benchmark requirements",
+        text: "A publishable result needs a versioned dataset, benchmark harness, target configuration, raw measurements, and license. Until those artifacts are linked and reproducible, this article describes the intended methodology rather than achieved ENI performance.",
       },
     ],
   },
   "eos-platform-launch": {
-    lede: "After eighteen months of incremental releases, the eos-platform meta-distribution reaches 1.0 with stable APIs, a unified package manifest, and reproducible builds across all 52 supported boards.",
+    lede: "After eighteen months of incremental releases, the eos-platform meta-distribution reaches 1.0 with stable APIs, a unified package manifest, and a reproducible-build goal across the supported board set.",
     sections: [
       {
         heading: "What is eos-platform?",
@@ -124,12 +124,12 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
       {
         heading: "Reproducible builds",
-        text: "All 52 board targets now produce bit-for-bit identical binaries when built from the same manifest and source tree. This is a prerequisite for the upcoming safety-certified profile (IEC 62443, ISO 26262 ASIL-B) where binary reproducibility is a compliance requirement.",
+        text: "A reproducible-build claim must identify the manifest revision, build environment, target set, and binary-comparison results. Until those artifacts are published, reproducibility remains a release goal rather than an achieved property.",
       },
     ],
   },
   "eos-roadmap-2026": {
-    lede: "Three large RTOS bets for 2026: a tickless scheduler with sub-microsecond wake latency, RT-IPC primitives sharing memory across security domains, and a formally verified context-switch path.",
+    lede: "Three large RTOS research targets for 2026: a tickless scheduler targeting sub-microsecond wake latency, RT-IPC primitives sharing memory across security domains, and a formally verified context-switch path.",
     sections: [
       {
         heading: "1. Tickless idle",

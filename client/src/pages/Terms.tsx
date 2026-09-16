@@ -52,11 +52,11 @@ const SECTIONS = [
   },
   {
     title: "7. Donations",
-    content: `Donations made through this website are processed securely by Stripe under their terms of service. Donations to the Foundation are tax-deductible to the extent permitted by law for U.S. taxpayers. The Foundation is a 501(c)(3) organization. Donations are non-refundable except at the Foundation's sole discretion.`,
+    content: `The donation flow uses a Zeffy-hosted donation form. Information and payment details entered there are submitted directly to Zeffy and any payment or anti-abuse providers identified in the form, under their applicable terms. The Foundation may receive donor contact details and transaction records made available by Zeffy, but this website does not receive or store full card or bank credentials. The Foundation is a 501(c)(3) organization but does not provide tax or legal advice; donors are responsible for determining how a contribution is treated in their circumstances. Contact the Foundation about donation or refund questions.`,
   },
   {
     title: "8. Links to Third-Party Sites",
-    content: `This website contains links to third-party websites including GitHub, Stripe, InterServer, and social media platforms. These links are provided for convenience only. The Foundation is not responsible for the content or privacy practices of third-party sites.`,
+    content: `This website contains links to third-party websites including GitHub, Zeffy, InterServer, and social media platforms. These links are provided for convenience only. The Foundation is not responsible for the content or privacy practices of third-party sites.`,
   },
   {
     title: "9. Governing Law",
@@ -88,7 +88,7 @@ export default function Terms() {
               Terms of Use
             </h1>
             <p className="text-white/50 text-sm">
-              Effective date: January 1, 2026 · Embedded Operating Systems
+              Effective date: September 15, 2026 · Embedded Operating Systems
               Research Foundation
             </p>
           </motion.div>

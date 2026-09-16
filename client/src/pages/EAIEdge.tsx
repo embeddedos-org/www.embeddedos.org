@@ -8,7 +8,7 @@ const pipeline = [
     name: "eNI",
     subtitle: "Neural / Sensor Input",
     color: "#A855F7",
-    desc: "Acquires neural signals (EEG, EMG, ECoG, LFP, Spikes, fNIRS) and sensor data. Applies hardware-accelerated filtering and spike sorting. Outputs structured EIPC messages.",
+    desc: "Research design for configuration-specific neural and sensor acquisition. Planned processing stages include filtering, spike sorting, and structured EIPC output.",
     icon: Brain,
   },
   {
@@ -16,7 +16,7 @@ const pipeline = [
     name: "eIPC",
     subtitle: "Secure Transport",
     color: "#22D3EE",
-    desc: "Routes neural data between eNI and eAI with HMAC-SHA256 integrity, AES-256 encryption. Supports shared memory, UART, SPI, and TCP transports.",
+    desc: "Intended to route research data between eNI and eAI using configuration-specific integrity, encryption, and transport options.",
     icon: Shield,
   },
   {
@@ -24,30 +24,30 @@ const pipeline = [
     name: "eAI",
     subtitle: "On-Device Inference",
     color: "#F97316",
-    desc: "Runs manifest-pinned ML models (TFLite, ONNX, GGUF) on the device NPU or CPU. Outputs decoded intent, classifications, or generated text via EIPC.",
+    desc: "Intended to evaluate manifest-pinned ML models on configured device accelerators or CPUs and publish research outputs through EIPC.",
     icon: Cpu,
   },
 ];
 
 const useCases = [
   {
-    title: "Motor BCI Prosthetics",
-    desc: "Decode motor intent from 64-channel ECoG → eIPC → eAI decoder → robotic arm control.",
+    title: "Motor BCI Research",
+    desc: "Concept pipeline for configuration-specific ECoG acquisition, experimental decoding, and assistive-control research.",
     color: "#A855F7",
   },
   {
-    title: "Seizure Detection & Suppression",
-    desc: "Continuous EEG monitoring → eAI seizure classifier → eIPC → neurostimulator trigger. <2s detection latency.",
+    title: "Seizure-Pattern Research",
+    desc: "Concept pipeline for EEG pattern-classification research. No detection performance, stimulation behavior, or treatment outcome is claimed.",
     color: "#F97316",
   },
   {
-    title: "Gesture Recognition",
-    desc: "8-channel EMG → eNI spike sorting → eIPC → eAI gesture classifier → EIPC actuator command. 50ms latency.",
+    title: "Gesture Research",
+    desc: "Concept pipeline for configuration-specific EMG acquisition and experimental gesture classification.",
     color: "#22D3EE",
   },
   {
-    title: "Cognitive Load Monitoring",
-    desc: "Frontal EEG → eAI fatigue model → EIPC alert → eOffice notification. Always-on at <5mW.",
+    title: "Cognitive-Indicator Research",
+    desc: "Concept pipeline for studying EEG-derived fatigue indicators. No safety-critical monitoring performance is claimed.",
     color: "#34D399",
   },
 ];
@@ -63,7 +63,7 @@ export default function EAIEdgePage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-sm font-medium mb-6">
-              <Brain className="w-4 h-4" /> EAI EDGE STACK
+              <Brain className="w-4 h-4" /> EAI EDGE RESEARCH CONCEPT
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-orange-300 bg-clip-text text-transparent">
               eAI Edge
@@ -72,9 +72,9 @@ export default function EAIEdgePage() {
               Intelligent Edge Node with Neural-Interface Input
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              One git clone, one cmake, one smoke test. The complete eNI → eIPC
-              → eAI pipeline as a manifest-pinned stack. Deploy a full
-              neural-interface AI node on any EoS device in under 10 minutes.
+              An in-development concept for a manifest-pinned eNI → eIPC → eAI
+              research workflow. Hardware support, setup steps, and performance
+              require validation on a named configuration.
             </p>
             <div className="flex flex-wrap gap-6 justify-center mt-8">
               <div className="text-center">
@@ -86,12 +86,14 @@ export default function EAIEdgePage() {
                 <div className="text-gray-500 text-sm">Profile</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-cyan-400">1024ch</div>
-                <div className="text-gray-500 text-sm">Max Channels</div>
+                <div className="text-3xl font-bold text-cyan-400">Config.</div>
+                <div className="text-gray-500 text-sm">
+                  Hardware-Defined Channels
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-400">&lt;5mW</div>
-                <div className="text-gray-500 text-sm">Always-On Power</div>
+                <div className="text-3xl font-bold text-green-400">Pending</div>
+                <div className="text-gray-500 text-sm">Power Validation</div>
               </div>
             </div>
           </motion.div>
@@ -101,11 +103,11 @@ export default function EAIEdgePage() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            The Pipeline
+            Planned Pipeline
           </h2>
           <p className="text-gray-400 text-center mb-8">
-            Three components, one manifest. eNI acquires, eIPC transports, eAI
-            infers.
+            The concept links three planned stages for acquisition, transport,
+            and experimental inference.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {pipeline.map((p, i) => (
@@ -146,10 +148,11 @@ export default function EAIEdgePage() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            Quick Start
+            Illustrative Setup
           </h2>
           <p className="text-gray-400 text-center mb-6">
-            Deploy the full eAI Edge stack in 3 commands.
+            Conceptual commands for a proposed workflow, not a verified
+            deployment recipe.
           </p>
           <div className="bg-black/50 border border-white/10 rounded-xl p-6 font-mono text-sm space-y-2">
             <div>
@@ -182,12 +185,14 @@ export default function EAIEdgePage() {
                 ebuild monitor --filter eai-edge
               </span>
             </div>
-            <div className="text-cyan-400">✓ eNI: 64ch EEG @ 1kHz — OK</div>
             <div className="text-cyan-400">
-              ✓ eIPC: 0.4ms transport latency — OK
+              [simulated] eNI: configuration detected
             </div>
             <div className="text-cyan-400">
-              ✓ eAI: gesture_classifier_v2.tflite loaded — OK
+              [simulated] eIPC: transport check pending
+            </div>
+            <div className="text-cyan-400">
+              [simulated] eAI: research model placeholder
             </div>
           </div>
         </div>
@@ -196,7 +201,7 @@ export default function EAIEdgePage() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Use Cases
+            Research Use Cases
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {useCases.map((u, i) => (

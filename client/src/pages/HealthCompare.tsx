@@ -24,7 +24,7 @@ const DEVICES = [
     icon: Activity,
     formFactor: "USB-C Pendrive",
     chip: "nRF52840",
-    status: "Patent Pending",
+    status: "In Development",
     patent: "64/073,334",
     targetUser: "Clinicians, travelers, developers",
     price: "TBD",
@@ -37,7 +37,7 @@ const DEVICES = [
     icon: Watch,
     formFactor: "Wristband",
     chip: "nRF52840 + TFLite",
-    status: "Patent Pending",
+    status: "In Development",
     patent: "64/076,078",
     targetUser: "Athletes, rehabilitation, developers",
     price: "TBD",
@@ -58,7 +58,7 @@ const DEVICES = [
   {
     id: "lab",
     name: "HEALTH-LAB",
-    tagline: "14-Day Biosensor Patch",
+    tagline: "Biosensor Patch Concept",
     color: "#34D399",
     icon: Microscope,
     formFactor: "Flexible Patch",
@@ -90,7 +90,7 @@ const ROWS: CompareRow[] = [
   },
   {
     category: "Hardware",
-    label: "MCU / Chip",
+    label: "Planned MCU / Chip",
     values: [
       "nRF52840",
       "nRF52840 + TFLite",
@@ -100,17 +100,17 @@ const ROWS: CompareRow[] = [
   },
   {
     category: "Hardware",
-    label: "Wireless",
+    label: "Planned Wireless",
     values: ["BLE 5.0 + USB", "BLE 5.0 + USB", "BLE 5.3", "BLE 5.3"],
   },
   {
     category: "Hardware",
-    label: "Battery Life",
+    label: "Target Battery Life",
     values: ["N/A (USB powered)", "7 days", "5 days", "14 days"],
   },
   {
     category: "Hardware",
-    label: "Water Resistance",
+    label: "Target Water Resistance",
     values: ["IPX4", "IP68", "IP68", "IP67"],
   },
   // Vitals
@@ -154,7 +154,7 @@ const ROWS: CompareRow[] = [
   },
   {
     category: "Advanced",
-    label: "TENS Therapy",
+    label: "TENS Stimulation Research",
     values: [false, true, false, false],
   },
   {
@@ -260,8 +260,8 @@ const ROWS: CompareRow[] = [
     category: "Status",
     label: "Development Stage",
     values: [
-      "Patent Pending",
-      "Patent Pending",
+      "In Development",
+      "In Development",
       "In Development",
       "In Development",
     ],
@@ -295,7 +295,9 @@ const fadeUp = {
 function CellValue({ value, color }: { value: RowValue; color: string }) {
   if (typeof value === "boolean") {
     return value ? (
-      <Check size={16} style={{ color }} className="mx-auto" />
+      <span className="inline-flex items-center justify-center gap-1 text-xs">
+        <Check size={14} style={{ color }} /> Planned
+      </span>
     ) : (
       <X size={14} className="mx-auto text-white/20" />
     );
@@ -338,7 +340,7 @@ export default function HealthCompare() {
                 color: "#F97316",
               }}
             >
-              <Activity size={12} /> Health Device Comparison
+              <Activity size={12} /> In-Development Design Comparison
             </span>
           </motion.div>
           <motion.h1
@@ -349,7 +351,7 @@ export default function HealthCompare() {
             className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
           >
             Compare All{" "}
-            <span style={{ color: "#F97316" }}>4 Health Devices</span>
+            <span style={{ color: "#F97316" }}>4 Health Concepts</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}
@@ -358,9 +360,9 @@ export default function HealthCompare() {
             custom={2}
             className="text-white/60 text-lg max-w-2xl mx-auto mb-6"
           >
-            Side-by-side specification comparison across all EmbeddedOS health
-            monitoring devices — from the USB-C pendrive to the 14-day biosensor
-            patch.
+            Side-by-side comparison of four in-development health research
+            designs. Listed capabilities are design goals; clinical validation
+            and regulatory review are pending.
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -401,10 +403,10 @@ export default function HealthCompare() {
           >
             <div className="text-center mb-4">
               <h3 className="font-heading font-bold text-white text-xl mb-1">
-                Capability Radar
+                Illustrative Planned-Capability Radar
               </h3>
               <p className="text-sm text-white/40">
-                Click devices to toggle. Hover to highlight.
+                Conceptual comparison, not measured device performance.
               </p>
             </div>
             <Suspense
@@ -622,13 +624,14 @@ export default function HealthCompare() {
                     {count}
                   </div>
                   <div className="text-xs text-white/40 mb-3">
-                    features checked
+                    planned features
                   </div>
                   <div className="text-xs text-white/50 mb-1">
                     <span className="text-white/70">Chip:</span> {d.chip}
                   </div>
                   <div className="text-xs text-white/50 mb-1">
-                    <span className="text-white/70">For:</span> {d.targetUser}
+                    <span className="text-white/70">Research audience:</span>{" "}
+                    {d.targetUser}
                   </div>
                   <div className="text-xs text-white/50">
                     <span className="text-white/70">Patent:</span> {d.patent}
@@ -651,12 +654,12 @@ export default function HealthCompare() {
             }}
           >
             <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Open-Source Health Platform
+              Open Health Research Concept
             </h2>
             <p className="text-white/60 max-w-xl mx-auto mb-6">
-              All EmbeddedOS health devices run on the same open-source EoS
-              firmware with a unified SDK. Build your own health applications,
-              extend the platform, or contribute to the research.
+              The device concepts are intended to share EoS research firmware
+              and SDK interfaces. Review the linked repository for the
+              components and integrations currently available.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
@@ -672,7 +675,7 @@ export default function HealthCompare() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
               >
-                <Github size={14} /> View SDK on GitHub
+                <Github size={14} /> View Repository on GitHub
               </a>
             </div>
           </motion.div>

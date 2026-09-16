@@ -2,48 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
-    <!-- Google Analytics 4 — G-VTNZKL95DQ
-      Placed directly after <meta charset> because Google asks for it as high in
-      <head> as possible, and a gtag before the charset declaration would be
-      parsed under the wrong encoding.
-
-      Hardcoded rather than env-driven, deliberately. The Umami block at the
-      bottom of <body> is env-driven and has never run: VITE_ANALYTICS_ENDPOINT
-      and VITE_ANALYTICS_WEBSITE_ID were never set, so its guard returns early
-      and the live page ships a literal "%VITE_ANALYTICS_ENDPOINT%" string. An
-      analytics tag that silently does nothing is the failure being avoided here.
-
-      A GA4 Measurement ID is not a secret — it is served to every visitor in
-      this file — so there is nothing to protect by moving it into the
-      environment.
-    -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-VTNZKL95DQ"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-VTNZKL95DQ");
-    </script>
     <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EmbeddedOS — The Operating System for Every Device</title>
-    <!--
-      "83 supported boards" is STACK.totals.boards from shared/stack-data.ts.
-      This read "52+ platforms" — the figure retired everywhere else in the site
-      because eos/boards holds 83 board definitions. The guard in
-      tests/integration/stack-claims.test.ts scans visible page text, which a
-      meta tag is not, so the stale claim survived here and went on being read by
-      crawlers and link previews. That test now checks meta descriptions too.
-    -->
+    <!-- Keep this count aligned with STACK.totals.boards in shared/stack-data.ts. -->
     <meta
       name="description"
-      content="EmbeddedOS — The open-source operating system for every device. 14 components, 83 supported boards, 300+ APIs."
+      content="EmbeddedOS — The open-source operating system for every device. 14 components, 83 board definitions, 300+ APIs."
     />
     <meta name="theme-color" content="#0B1D3A" />
     <link rel="canonical" href="https://www.embeddedos.org/" />
@@ -138,30 +103,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!--
-      Analytics loads only when VITE_ANALYTICS_* are actually configured.
-      Vite leaves %PLACEHOLDERS% untouched when the env var is unset, and a bare
-      <script src="%VITE_ANALYTICS_ENDPOINT%/umami"> would then request a
-      literal-percent URL on every page load and try to execute the HTML
-      response as JavaScript.
-    -->
-    <script>
-      (function () {
-        var endpoint = "%VITE_ANALYTICS_ENDPOINT%";
-        var websiteId = "%VITE_ANALYTICS_WEBSITE_ID%";
-        if (
-          !endpoint ||
-          !websiteId ||
-          endpoint.charAt(0) === "%" ||
-          websiteId.charAt(0) === "%"
-        )
-          return;
-        var s = document.createElement("script");
-        s.defer = true;
-        s.src = endpoint + "/umami";
-        s.setAttribute("data-website-id", websiteId);
-        document.head.appendChild(s);
-      })();
-    </script>
   </body>
 </html>

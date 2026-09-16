@@ -31,7 +31,7 @@ const DEVICES = [
       "Temperature",
       "UV Index",
     ],
-    desc: "The world's first medical-grade health monitor in a USB-C pendrive. Plug into any device for instant ECG, blood oxygen, alcohol detection, temperature, UV exposure, and motion tracking.",
+    desc: "In-development USB-C research design for exploring ECG, blood-oxygen, breath-alcohol, temperature, UV, and motion sensing. Validation is pending.",
     signalPath: ["Sensor Array", "nRF52840", "USB-C", "Mobile App"],
   },
   {
@@ -47,13 +47,13 @@ const DEVICES = [
     waveType: "neural" as const,
     metrics: [
       "sEMG Gesture Control",
-      "TENS Therapy",
+      "TENS Stimulation Research",
       "ECG",
       "SpO₂",
       "HRV",
       "Skin Temp",
     ],
-    desc: "A wristband that reads your muscles and nerves. sEMG gesture control lets you operate devices with hand gestures. TENS therapy provides pain relief. Full biometric monitoring included.",
+    desc: "In-development wristband research design for sEMG gesture studies, biometric sensing, and TENS exploration. No therapeutic benefit is claimed.",
     signalPath: ["sEMG Electrodes", "nRF52840", "TFLite AI", "Gesture Output"],
   },
   {
@@ -75,13 +75,13 @@ const DEVICES = [
       "Sleep Staging",
       "Stress Score",
     ],
-    desc: "Medical-grade health monitoring in a titanium ring. Continuous ECG for AFib detection, cuffless blood pressure, HbA1c estimation, sleep staging, and stress scoring — all from your finger.",
+    desc: "Concept ring for researching optical and electrical sensing. Clinical measurement and diagnostic performance have not been validated.",
     signalPath: ["Optical Sensors", "Custom ASIC", "BLE 5.3", "Health App"],
   },
   {
     id: "lab",
     name: "HEALTH-LAB",
-    tagline: "14-Day Biosensor Patch",
+    tagline: "Biosensor Patch Concept",
     color: "#34D399",
     icon: Microscope,
     glowClass: "animate-glow-green",
@@ -97,7 +97,7 @@ const DEVICES = [
       "Uric Acid",
       "pH",
     ],
-    desc: "A flexible biosensor patch worn on the skin for 14 days. Continuously monitors glucose, lactate, cortisol, electrolytes, uric acid, and pH — the most comprehensive wearable biochemistry panel ever built.",
+    desc: "Concept flexible biosensor patch for studying multiple biochemical sensing methods. Wear duration and measurement performance require physical validation.",
     signalPath: [
       "Biosensor Array",
       "Custom ASIC",
@@ -347,7 +347,7 @@ export default function HealthShowcase() {
                 className="text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0"
                 style={{ background: `${device.color}20`, color: device.color }}
               >
-                {device.patent}
+                In Development · {device.patent}
               </span>
             </div>
           </div>
@@ -358,7 +358,7 @@ export default function HealthShowcase() {
               className="p-5 border-r"
               style={{ borderColor: `${device.color}15` }}
             >
-              {/* Live waveform */}
+              {/* Illustrative simulated waveform */}
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <div
@@ -366,7 +366,7 @@ export default function HealthShowcase() {
                     style={{ background: device.color }}
                   />
                   <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono">
-                    Live Signal
+                    Simulated Signal
                   </span>
                 </div>
                 <div
@@ -383,7 +383,7 @@ export default function HealthShowcase() {
               {/* Signal path */}
               <div className="mb-4">
                 <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2 font-mono">
-                  Signal Path
+                  Illustrative Signal Path
                 </div>
                 <SignalPath steps={device.signalPath} color={device.color} />
               </div>
@@ -427,7 +427,7 @@ export default function HealthShowcase() {
                 {device.desc}
               </p>
               <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2 font-mono">
-                Monitored Metrics
+                Planned Research Metrics
               </div>
               <div className="flex flex-wrap gap-1.5 mb-5">
                 {device.metrics.map((m, i) => (

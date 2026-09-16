@@ -176,19 +176,19 @@ const CATEGORIES = [
     color: "#EF4444",
     title: "eHealth365",
     subtitle: "Wearable Health Platform",
-    status: "Production",
-    standard: "510(k) Class II",
+    status: "Design",
+    standard: "IEC 60601-1; FDA pathway",
     products: [
       "HEALTH-KEY ULTRA",
       "HEALTH-BAND Neuro",
       "HEALTH-RING",
       "HEALTH-LAB",
     ],
-    desc: "Four-device wearable health monitoring ecosystem covering ~90% of all health metrics. From cardiovascular vitals to blood chemistry, neural signals to activity tracking.",
+    desc: "Four in-development health research designs spanning cardiovascular, biochemical, neural, and activity sensing goals. Physical and clinical validation are pending.",
     specs: [
       { label: "MCU", value: "nRF5340 + STM32H7" },
       { label: "Connectivity", value: "BLE 5.3 LR" },
-      { label: "FDA Path", value: "510(k) / De Novo" },
+      { label: "FDA Work", value: "Planned; not submitted" },
       { label: "Sensors", value: "ECG, EEG, SpO₂, CGM" },
     ],
     href: "/health",
@@ -199,16 +199,16 @@ const CATEGORIES = [
     icon: Car,
     color: "#F97316",
     title: "eRadar360 / Aegis One",
-    subtitle: "Automotive Safety System",
-    status: "Production",
-    standard: "ISO 26262 ASIL-D",
+    subtitle: "Automotive Sensing Concept",
+    status: "Design",
+    standard: "ISO 26262",
     products: ["Front Radar", "Rear Radar", "Side Radars ×4", "Fusion ECU"],
-    desc: "360° automotive safety system fusing 4× 77 GHz FMCW radar, 8× cameras, LiDAR, and V2X. AI threat detection running on EoS.",
+    desc: "Design-stage automotive sensing reference architecture for radar, camera, LiDAR, and V2X fusion. Detection performance and safety behavior are not yet validated.",
     specs: [
-      { label: "Radar", value: "TI AWR2944 77 GHz" },
-      { label: "Range", value: "0–250 m, 0.75 m res" },
-      { label: "Latency", value: "<10 ms threat detect" },
-      { label: "Standard", value: "ISO 26262 ASIL-D" },
+      { label: "Proposed Radar", value: "TI AWR2944 77 GHz" },
+      { label: "Range", value: "Design target; test pending" },
+      { label: "Latency", value: "Benchmark pending" },
+      { label: "Standard", value: "ISO 26262 target" },
     ],
     href: "/eradar360",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -218,16 +218,16 @@ const CATEGORIES = [
     icon: Plane,
     color: "#22D3EE",
     title: "eAerospace",
-    subtitle: "Aircraft, UAV & Space Systems",
+    subtitle: "Aircraft, UAV & Space Concepts",
     status: "Design",
     standard: "DO-254 / ECSS",
     products: ["Aircraft Components", "Avionics", "UAV / VTOL", "CubeSat"],
-    desc: "Complete aerospace hardware portfolio from flight computers and avionics to UAV swarm controllers and 1U CubeSat reference designs. All running EoS.",
+    desc: "Concept aerospace reference designs spanning flight computers, avionics, UAV controllers, and CubeSat hardware. No flight testing or certification is claimed.",
     specs: [
-      { label: "MCU", value: "STM32H7, LEON3FT" },
-      { label: "Bus", value: "ARINC-429, CAN FD" },
-      { label: "Standard", value: "DO-254, ECSS" },
-      { label: "Class", value: "IPC Class 3" },
+      { label: "Proposed MCU", value: "STM32H7, LEON3FT" },
+      { label: "Proposed Bus", value: "ARINC-429, CAN FD" },
+      { label: "Targets", value: "DO-254, ECSS" },
+      { label: "PCB Target", value: "IPC Class 3" },
     ],
     href: "/aerospace",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -241,12 +241,12 @@ const CATEGORIES = [
     status: "Design",
     standard: "FAA / EASA",
     products: ["Urban Drone (eVTOL)", "Space Shuttle", "Eco Car", "Combo Unit"],
-    desc: "Solar-hybrid personal transport — 4-product line. 4-5 seat capacity, solar + water/hydrogen hybrid power. From $28K mass-market EcoCar to $4M suborbital Space Shuttle.",
+    desc: "Concept studies for four solar-hybrid personal-transport designs. Capacity, propulsion, altitude, and pricing are planning targets, not validated specifications or offers for sale.",
     specs: [
-      { label: "Power", value: "Solar + H₂ hybrid" },
-      { label: "Range", value: "0–100 km altitude" },
-      { label: "Seats", value: "4–5 passengers" },
-      { label: "Price", value: "$28K – $9M" },
+      { label: "Power Target", value: "Solar + H₂ hybrid" },
+      { label: "Altitude Target", value: "Up to 100 km" },
+      { label: "Capacity Target", value: "4–5 passengers" },
+      { label: "Price Estimate", value: "$28K – $9M planning range" },
     ],
     href: "/aerospace",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -284,7 +284,7 @@ const CATEGORIES = [
       { label: "Protocols", value: "Modbus, PROFIBUS, OPC-UA" },
       { label: "Standard", value: "IEC 61010-1, 61131-3" },
       { label: "Temp range", value: "-40°C to +85°C" },
-      { label: "Certif.", value: "CE, UL, ATEX" },
+      { label: "Targets", value: "CE, UL, ATEX" },
     ],
     href: "/ecad-hardware",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -298,7 +298,7 @@ const CATEGORIES = [
     status: "Design",
     standard: "IEC 60601-1",
     products: ["ECG / EEG", "Ultrasound", "Surgical Robots", "Lab Equipment"],
-    desc: "Medical hardware portfolio covering diagnostic equipment, surgical devices, patient care systems, and laboratory equipment. All designed to IEC 60601-1 medical-grade standards.",
+    desc: "Medical research design portfolio spanning diagnostic, surgical, patient-care, and laboratory concepts. IEC 60601-1 is a design target, not an achieved certification.",
     specs: [
       { label: "Standard", value: "IEC 60601-1, ISO 13485" },
       { label: "FDA Path", value: "510(k) / PMA" },
@@ -327,7 +327,7 @@ const CATEGORIES = [
       { label: "Standard", value: "IEC 62619, IEC 61730" },
       { label: "Voltage", value: "12V – 1500V DC" },
       { label: "Power", value: "Up to 250 kW" },
-      { label: "Certif.", value: "UL 1973, CE" },
+      { label: "Targets", value: "UL 1973, CE" },
     ],
     href: "/ecad-hardware",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -351,7 +351,7 @@ const CATEGORIES = [
       { label: "Standard", value: "IEC 62264, IEC 62056" },
       { label: "Comms", value: "5G, LoRaWAN, NB-IoT" },
       { label: "Protocols", value: "DLMS/COSEM, MQTT" },
-      { label: "Certif.", value: "FCC, CE, ETSI" },
+      { label: "Targets", value: "FCC, CE, ETSI" },
     ],
     href: "/ecad-hardware",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -399,7 +399,7 @@ const CATEGORIES = [
       { label: "Standard", value: "Matter 1.3, Zigbee" },
       { label: "Comms", value: "BLE 5.3, ANT+, Wi-Fi 6" },
       { label: "MCU", value: "nRF5340, ESP32-S3" },
-      { label: "Certif.", value: "FCC, CE, Bluetooth SIG" },
+      { label: "Targets", value: "FCC, CE, Bluetooth SIG" },
     ],
     href: "/ecad-hardware",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -461,12 +461,12 @@ const CATEGORIES = [
       "Biometric Access",
       "Perimeter Sensors",
     ],
-    desc: "Cybersecurity hardware portfolio covering security appliances, physical security, and access control. FIPS 140-3 and CC EAL4+ certified designs.",
+    desc: "Cybersecurity reference designs for security appliances, physical security, and access control. FIPS 140-3 and CC EAL4+ are targets, not achieved certifications.",
     specs: [
       { label: "Standard", value: "FIPS 140-3, CC EAL4+" },
       { label: "Crypto", value: "AES-256, RSA-4096, ECC" },
       { label: "Biometrics", value: "Fingerprint, Iris, Face" },
-      { label: "Certif.", value: "ISO 27001, FIPS 201-3" },
+      { label: "Targets", value: "ISO 27001, FIPS 201-3" },
     ],
     href: "/ecad-hardware",
     ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
@@ -498,7 +498,6 @@ const CATEGORIES = [
 ];
 
 const STATUS_COLORS: Record<string, string> = {
-  Production: "#34D399",
   Design: "#FBBF24",
   Concept: "#A78BFA",
 };
@@ -606,7 +605,7 @@ function CategoryCard({
       {/* Standard badge */}
       <div className="px-5 pb-3">
         <span className="text-[10px] font-mono" style={{ color: cat.color }}>
-          Standard: {cat.standard}
+          Target standards: {cat.standard}
         </span>
       </div>
 
@@ -638,9 +637,7 @@ function CategoryCard({
 }
 
 export default function EcadHardware() {
-  const [filter, setFilter] = useState<
-    "all" | "Production" | "Design" | "Concept"
-  >("all");
+  const [filter, setFilter] = useState<"all" | "Design" | "Concept">("all");
 
   const filtered =
     filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
@@ -657,6 +654,9 @@ export default function EcadHardware() {
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
         />
+        <div className="absolute bottom-4 right-6 z-10 rounded-md border border-white/10 bg-[#050A14]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60">
+          Illustrative concept artwork
+        </div>
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -692,7 +692,7 @@ export default function EcadHardware() {
                 color: "#F97316",
               }}
             >
-              <Package size={12} /> eCAD HARDWARE PRODUCTS · MIT LICENSE
+              <Package size={12} /> eCAD HARDWARE DESIGNS · MIT LICENSE
             </span>
             <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
               Hardware{" "}
@@ -708,13 +708,13 @@ export default function EcadHardware() {
               Portfolio
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              15 CAD hardware design categories — from health wearables to
-              aerospace systems, industrial PLCs to personal air mobility
-              vehicles. All engineered to run the EmbeddedOS stack. KiCad
-              schematics, Altium designs, Gerber files, BOMs, and datasheets.
+              15 hardware design categories — from health wearables to aerospace
+              systems, industrial PLCs to personal air mobility concepts. The
+              repository includes a mix of design documents, KiCad sources,
+              BOMs, and datasheets; coverage varies by design.
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {(["all", "Production", "Design", "Concept"] as const).map(f => (
+              {(["all", "Design", "Concept"] as const).map(f => (
                 <motion.button
                   key={f}
                   whileHover={{ scale: 1.03 }}
@@ -753,8 +753,8 @@ export default function EcadHardware() {
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { value: "15", label: "Design Categories", color: "#F97316" },
-            { value: "2", label: "Production Ready", color: "#34D399" },
-            { value: "50+", label: "Product Lines", color: "#22D3EE" },
+            { value: "0", label: "Certifications Held", color: "#34D399" },
+            { value: "50+", label: "Design Entries", color: "#22D3EE" },
             { value: "10", label: "Future Concepts", color: "#A78BFA" },
           ].map((s, i) => (
             <motion.div
@@ -865,7 +865,7 @@ export default function EcadHardware() {
               {
                 icon: "🛰️",
                 name: "eCubeSat-1U",
-                desc: "1U CubeSat with EmbeddedOS flight SW",
+                desc: "1U CubeSat concept with research firmware",
                 tier: "$30K",
               },
             ].map((item, i) => (
@@ -921,10 +921,11 @@ export default function EcadHardware() {
               <Layers className="w-4 h-4" /> BLOCK DIAGRAMS
             </div>
             <h2 className="text-3xl font-black text-white mb-3">
-              Hardware Architecture
+              Illustrative Concept Architecture
             </h2>
             <p className="text-gray-400">
-              Interactive 3D block diagrams for key hardware product pipelines.
+              Interactive concept diagrams for proposed hardware pipelines; not
+              as-built schematics.
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -953,12 +954,12 @@ export default function EcadHardware() {
       <section className="py-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-black mb-4">
-            Run EmbeddedOS on Your Hardware
+            Explore the Hardware Designs
           </h2>
           <p className="text-gray-400 mb-8">
-            All hardware designs are MIT-licensed and available on GitHub. KiCad
-            schematics, Altium designs, Gerber files, BOMs, and datasheets
-            included.
+            The repository is MIT-licensed and includes a mix of design
+            documents, KiCad sources, BOMs, and datasheets. Artifact coverage
+            varies by design.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a

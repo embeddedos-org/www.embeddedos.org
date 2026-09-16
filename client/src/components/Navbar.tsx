@@ -246,7 +246,7 @@ const NAV_ITEMS = {
           },
           {
             name: "ENI",
-            desc: "1,024-channel neural interface",
+            desc: "Configurable neural research interface",
             icon: Activity,
             href: "/product-eni",
             color: "#10B981",
