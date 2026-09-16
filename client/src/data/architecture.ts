@@ -1,0 +1,117 @@
+export const MATURITY_STATUSES = [
+  "Shipped profile",
+  "Available project",
+  "Experimental / Research",
+  "Planned",
+  "Design / Concept",
+] as const;
+
+export type MaturityStatus = (typeof MATURITY_STATUSES)[number];
+
+export type ArchitectureStageId =
+  | "hardware-sensors"
+  | "secure-boot"
+  | "eos-kernel-drivers"
+  | "ipc-data-storage"
+  | "applications"
+  | "on-device-ai"
+  | "physical-action-feedback";
+
+export type ArchitectureStage = {
+  id: ArchitectureStageId;
+  label: string;
+  shortLabel: string;
+  description: string;
+  maturity: MaturityStatus;
+  products: readonly string[];
+  href: string;
+  color: string;
+};
+
+export const ARCHITECTURE_STAGES = [
+  {
+    id: "hardware-sensors",
+    label: "Hardware / sensors",
+    shortLabel: "Hardware",
+    description:
+      "Open board and sensor designs provide reference inputs for physical-device prototypes.",
+    maturity: "Design / Concept",
+    products: ["eCAD hardware", "sensor references"],
+    href: "/ecad-hardware",
+    color: "#38BDF8",
+  },
+  {
+    id: "secure-boot",
+    label: "Secure boot",
+    shortLabel: "Secure boot",
+    description:
+      "eBoot provides an available project for verified startup and image handoff.",
+    maturity: "Available project",
+    products: ["eBoot"],
+    href: "/eboot",
+    color: "#FBBF24",
+  },
+  {
+    id: "eos-kernel-drivers",
+    label: "EoS kernel / drivers",
+    shortLabel: "EoS",
+    description:
+      "The EoS project covers the real-time kernel, hardware abstraction, and device drivers.",
+    maturity: "Available project",
+    products: ["EoS"],
+    href: "/eos",
+    color: "#34D399",
+  },
+  {
+    id: "ipc-data-storage",
+    label: "IPC / data / storage",
+    shortLabel: "IPC + data",
+    description:
+      "Available communication and storage projects connect processes and retain device data.",
+    maturity: "Available project",
+    products: ["eIPC", "eDB"],
+    href: "/eipc",
+    color: "#22D3EE",
+  },
+  {
+    id: "applications",
+    label: "Applications",
+    shortLabel: "Applications",
+    description:
+      "Application projects demonstrate interfaces and device workloads built on the platform.",
+    maturity: "Available project",
+    products: ["eApps", "eOffice", "eServiceApps"],
+    href: "/eapps",
+    color: "#F97316",
+  },
+  {
+    id: "on-device-ai",
+    label: "On-device AI",
+    shortLabel: "On-device AI",
+    description:
+      "eAI and eosllm research explore local inference, agent workflows, and longer-term AGI-enabling methods within device constraints; no AGI system is claimed as achieved.",
+    maturity: "Experimental / Research",
+    products: ["eAI", "eosllm", "AGI research"],
+    href: "/eai",
+    color: "#A78BFA",
+  },
+  {
+    id: "physical-action-feedback",
+    label: "Physical action / feedback",
+    shortLabel: "Action + feedback",
+    description:
+      "Planned integrations close the loop from inference to actuators and measured feedback.",
+    maturity: "Planned",
+    products: ["actuator integrations", "feedback loops"],
+    href: "/roadmap",
+    color: "#F472B6",
+  },
+] as const satisfies readonly ArchitectureStage[];
+
+export const EAI_EDGE_PROFILE = {
+  name: "eAI Edge",
+  maturity: "Shipped profile" as const,
+  sequence: ["eNI", "eIPC", "eAI"] as const,
+  description:
+    "A shipped integration profile connecting neural input through IPC to on-device AI.",
+};
