@@ -11,6 +11,7 @@ import {
   applyMeta,
   escapeAttr,
   discoverRoutes,
+  formatHostForUrl,
 } from "../../scripts/prerender.mjs";
 
 const SHELL = `<!doctype html><html lang="en"><head>
@@ -66,6 +67,14 @@ describe("escapeAttr", () => {
 
   it("escapes ampersands before entities so output is not double-broken", () => {
     expect(escapeAttr("&amp;")).toBe("&amp;amp;");
+  });
+});
+
+describe("prerender host formatting", () => {
+  it("keeps IPv4 hosts usable and brackets IPv6 hosts for URLs", () => {
+    expect(formatHostForUrl("127.0.0.1")).toBe("127.0.0.1");
+    expect(formatHostForUrl("172.31.123.79")).toBe("172.31.123.79");
+    expect(formatHostForUrl("::1")).toBe("[::1]");
   });
 });
 
