@@ -167,6 +167,30 @@ test.describe("responsive layout", () => {
     });
   }
 
+  test("the brand and all seven footer groups align at xl desktop", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    const sections = page.locator("footer [data-footer-section]");
+    await expect(sections).toHaveCount(8);
+    await expect(sections.first()).toBeVisible();
+
+    const rows = await sections.evaluateAll(elements =>
+      elements.map(element => ({
+        section: element.getAttribute("data-footer-section"),
+        top: Math.round(element.getBoundingClientRect().top),
+      }))
+    );
+    const topEdges = rows.map(row => row.top);
+
+    expect(
+      Math.max(...topEdges) - Math.min(...topEdges),
+      `footer sections do not share one row: ${JSON.stringify(rows)}`
+    ).toBeLessThanOrEqual(1);
+  });
+
   test("body copy is legible on mobile (no text under 12px)", async ({
     page,
   }) => {

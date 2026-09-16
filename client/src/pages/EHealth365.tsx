@@ -153,6 +153,9 @@ function DeviceCard3D({
       <p className="text-sm text-white/40 mb-4">{tagline}</p>
 
       {/* Metrics */}
+      <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2">
+        Planned Capabilities
+      </div>
       <div className="space-y-1.5 mb-5">
         {metrics.map(m => (
           <div
@@ -333,24 +336,25 @@ export default function EHealth365() {
                   eCAD Hardware
                 </span>
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#34D399]/10 text-[#34D399] border border-[#34D399]/20 uppercase tracking-widest">
-                  2 Devices
+                  Concept Design
                 </span>
               </div>
               <h1 className="text-5xl lg:text-6xl font-heading font-black mb-4 leading-tight">
                 e<span className="text-[#F97316]">Health</span>365
               </h1>
               <p className="text-xl text-white/60 mb-2 font-semibold">
-                Two-Device Health Monitoring System
+                Two-Device Health Research Concept
               </p>
               <p className="text-lg text-white/50 mb-8 leading-relaxed">
-                Smart Ring Pro + Smart Patch Pro + AI mobile hub — covering ~90%
-                of all health metrics with just two wearable devices.
+                Smart Ring Pro + Smart Patch Pro + AI mobile hub — a concept
+                system with planned sensing capabilities that require
+                validation.
               </p>
               <div className="grid grid-cols-3 gap-4 mb-8">
                 {[
-                  { val: "~90%", label: "Health Metrics" },
-                  { val: "2", label: "Devices" },
-                  { val: "24/7", label: "Monitoring" },
+                  { val: "Design", label: "Current Stage" },
+                  { val: "2", label: "Device Concepts" },
+                  { val: "Pending", label: "Validation" },
                 ].map(s => (
                   <div
                     key={s.label}
@@ -384,7 +388,7 @@ export default function EHealth365() {
             </motion.div>
           </div>
 
-          {/* Right — Live biometrics */}
+          {/* Right — simulated concept biometrics */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -392,7 +396,7 @@ export default function EHealth365() {
             className="space-y-3"
           >
             <div className="text-xs font-bold text-white/30 uppercase tracking-widest mb-4">
-              Live Biometric Feed
+              Simulated Concept Data
             </div>
             <BiometricWave
               color="#F85149"
@@ -436,11 +440,11 @@ export default function EHealth365() {
             className="mb-12"
           >
             <h2 className="text-3xl font-heading font-black mb-3">
-              Two Devices, Complete Coverage
+              Two Planned Device Concepts
             </h2>
             <p className="text-white/50">
-              Each device is engineered for a specific sensing modality —
-              together they cover the full health picture.
+              Each concept targets a different sensing modality. The listed
+              capabilities are design goals, not validated measurements.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -459,8 +463,8 @@ export default function EHealth365() {
                 "Ketones via micro breath port (2× daily)",
                 "Hydration hint via skin conductance (every 4 hrs)",
               ]}
-              price="$299"
-              battery="4–5 days"
+              price="Estimate: $299"
+              battery="Target: 4–5 days"
               form="Titanium/ceramic · No screen · Haptic feedback"
             />
             <DeviceCard3D
@@ -478,8 +482,8 @@ export default function EHealth365() {
                 "Vitamins A,C,D,E,K,B1–B12 (monthly blood cartridge)",
                 "Iron, zinc, calcium, magnesium (monthly mineral cartridge)",
               ]}
-              price="$199"
-              battery="7 days"
+              price="Estimate: $199"
+              battery="Target: 7 days"
               form="Flexible adhesive puck · Upper arm · Weekly patch"
             />
           </div>
@@ -496,10 +500,10 @@ export default function EHealth365() {
             className="mb-8"
           >
             <h2 className="text-3xl font-heading font-black mb-3">
-              Health Metric Coverage Matrix
+              Planned Sensing Matrix
             </h2>
             <p className="text-white/50 mb-6">
-              Filter by device to see what each one monitors.
+              Filter by device to see the planned sensing responsibilities.
             </p>
             <div className="flex gap-2">
               {(["ring", "patch", "app"] as const).map(d => (
@@ -534,13 +538,13 @@ export default function EHealth365() {
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="text-left py-3 px-4 text-xs font-bold text-white/40 uppercase tracking-wider">
-                    Health Metric
+                    Research Metric
                   </th>
                   <th className="text-left py-3 px-4 text-xs font-bold text-white/40 uppercase tracking-wider">
-                    Method
+                    Proposed Method
                   </th>
                   <th className="text-left py-3 px-4 text-xs font-bold text-white/40 uppercase tracking-wider">
-                    Schedule
+                    Target Schedule
                   </th>
                 </tr>
               </thead>
@@ -586,25 +590,34 @@ export default function EHealth365() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <h2 className="text-3xl font-heading font-black mb-3">Pricing</h2>
+            <h2 className="text-3xl font-heading font-black mb-3">
+              Concept Cost Estimates
+            </h2>
+            <p className="text-white/50">
+              Illustrative planning estimates, not products offered for sale.
+            </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
                 item: "Smart Ring Pro",
                 price: "$299",
-                note: "One-time purchase",
+                note: "Concept estimate",
               },
-              { item: "Smart Patch Pro", price: "$199", note: "Starter kit" },
+              {
+                item: "Smart Patch Pro",
+                price: "$199",
+                note: "Concept estimate",
+              },
               {
                 item: "Weekly patch refills",
                 price: "$15/week",
-                note: "Consumable",
+                note: "Concept estimate",
               },
               {
                 item: "Monthly blood cartridge",
                 price: "$25/month",
-                note: "Vitamins + minerals",
+                note: "Concept estimate",
               },
             ].map((p, i) => (
               <motion.div
@@ -623,10 +636,6 @@ export default function EHealth365() {
               </motion.div>
             ))}
           </div>
-          <p className="text-sm text-white/30 mt-4">
-            Total first year: ~$1,100 (ring + patch + refills + app
-            subscription)
-          </p>
         </div>
       </section>
 

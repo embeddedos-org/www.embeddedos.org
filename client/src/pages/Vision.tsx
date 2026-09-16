@@ -69,8 +69,9 @@ const timeline = [
     event: "EAI v0.1 released — INT8 inference on Cortex-M55 with Helium MVE",
   },
   {
-    year: "2025",
-    event: "ENI v0.1 released — 1,024-channel neural signal acquisition",
+    year: "Current",
+    event:
+      "eAI Edge v0.1 profile is recorded as shipped, bundling eNI, EIPC, and eAI",
   },
   {
     year: "2025",

@@ -1,95 +1,65 @@
-# Unverified performance claims
+# Public Claim Register
 
-Figures the site states as present-tense fact that no repository in
-`/home/srpatcha/eos` is known to measure. Each needs one of three decisions
-from the project owner:
+This register tracks public claims changed during truth and policy reviews. It preserves the wording that was previously published, distinguishes repository evidence from design intent, and records the treatment used when achieved performance, certification, or product maturity cannot be verified.
 
-1. **Publish the measurement** — cite a benchmark, report or datasheet, and
-   link it from the page.
-2. **Move it to a target** — restate on `/roadmap` as a dated goal, the way the
-   eFab profiles already are.
-3. **Retire it** — replace with the capability, as was done for the kernel.
+## Evidence rules
 
-Until then they are neither confirmed nor contradicted here: the evidence is
-absent, not negative. `tests/integration/stack-claims.test.ts` deliberately
-does not fail on these, because failing them would assert they are false.
+- **Verified**: supported by a reproducible repository artifact, named test result, or authoritative external record.
+- **Repository-observed**: supported by current repository content but not independently verified in hardware, clinical, flight, or regulatory testing.
+- **Target**: an explicitly prospective design or research objective.
+- **Unknown**: no sufficient source was found; the claim must not be presented as achieved.
 
-## Already resolved
+A patent filing or planned standards pathway does not prove product maturity, clinical performance, certification, or regulatory clearance. A theoretical limit, sample configuration, simulation, or generated visual does not prove measured performance.
 
-The kernel's timing **was** provably unsourced and self-contradictory —
-`/eos` said "Sub-1ms interrupt latency", `/architecture` said `<1µs`
-scheduling, `/ecosystem` said `≤10μs context switch`, and the manifest said
-"sub-1μs". `embeddedos-org/eos` has no context-switch or interrupt-latency
-benchmark; `tests/test_performance_benchmarks.c` times a host loop and asserts
-`<100 ns` per iteration, which measures the host, not the kernel. All four were
-replaced with the capability they described, and the test guards that.
+## Current critical corrections
 
-Also resolved: the platform count (`52+` on seventeen pages → 83 board
-definitions across 55 architectures, counted from `eos/boards/*.yaml`) and
-EoSim's simulated platforms (quoted as the same `52+` → 150, counted from
-`EoSim/platforms/`).
+| ID    | Public surfaces                                                                                              | Previous public claim                                                                                                                              | Evidence status                                                                                                                                                           | Published treatment                                                                                                                                                                                             |
+| ----- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C-001 | `/`, EoS feature summaries, product examples                                                                 | Sub-microsecond kernel, interrupt, wake, jitter, or scheduling performance                                                                         | Unknown. No named target, benchmark harness, measurement conditions, or raw result was found.                                                                             | Removed achieved numeric timing. Timing is target-dependent; roadmap numbers must be explicitly prospective.                                                                                                    |
+| C-002 | `/eai`                                                                                                       | A 7B model at 4-bit fits in 4 MB RAM                                                                                                               | Contradicted by model-weight arithmetic: 7 billion parameters at 4 bits require roughly 3.5 GB for weights alone, before runtime overhead.                                | Removed the prose and summary claims. Memory is described as model-, runtime-, and hardware-dependent.                                                                                                          |
+| C-003 | `/eai`, `/eni`, `/neural-link-ai`, `/product-eni`, navigation, architecture, downloads, books, and summaries | Conflicting universal ENI limits of 1-256 or 1,024 channels and 30, 32, or 100 kHz                                                                 | Unknown as universal platform limits. No single named acquisition front end and reproducible measurement supports one canonical pair.                                     | Current capability text is configuration-specific. Numeric examples are retained only when clearly identified as filing-specific or future research targets.                                                    |
+| C-004 | ENI and NeuralLinkAI application pages                                                                       | `<500 us` processing, `<2 s` seizure detection, `95%+` decoding, `40+` characters/minute, and treatment outcomes                                   | Unknown. No protocol, dataset, target build, clinical study, or reproducible result was found.                                                                            | Removed achieved-performance wording. Uses are research targets requiring protocol-specific validation; no clinical outcome is claimed.                                                                         |
+| C-005 | `/health`, `/health-compare`, `/ehealth365`, homepage health showcase, products, and hardware lab            | Medical-grade devices, world's-first claims, 90-95% clinical-metric coverage, therapy or diagnostic capability, and commercially available pricing | Repository-observed design work only. `client/src/data/industries.ts` records physical reliability testing and FDA submission as pending.                                 | Reclassified as in-development designs or concepts. Capabilities, schedules, battery life, wear duration, and costs are presented as plans or estimates. Clinical validation and regulatory review are pending. |
+| C-006 | `/aerospace`, architecture summaries, downloads, and announcements                                           | Present-tense aircraft, achieved range/speed/capacity, aerospace-grade software, and DO-178C compliance                                            | Repository-observed design work only. `client/src/data/industries.ts` classifies aerospace as Design Phase and states that certification has not occurred.                | Reclassified AeroSwift as a concept design. Aircraft figures are design targets. Flight testing and certification are explicitly disclaimed.                                                                    |
+| C-007 | `/eradar360`, `/ecad-hardware`, and cross-page use cases                                                     | Pre-production/production status, `<10 ms` or `<50 ms` detection, `97%` accuracy, completed compliance documentation, and market pricing           | Repository-observed design work only. Radar is Design Phase; no reproducible performance or certification evidence was found.                                             | Reclassified as Design. Achieved latency and accuracy figures were removed, component/specification values are proposed targets, costs are estimates, and certification language is prospective.                |
+| C-008 | `/ecad-hardware` and `/hardware-lab`                                                                         | Production-ready categories and certified/compliant medical, industrial, security, or aerospace designs                                            | Unknown as achieved certification. Repository guidance states that target standards are not certifications and no certification authority has reviewed the designs.       | Removed Production status and production-ready counts. Standards are targets and diagrams are illustrative concepts.                                                                                            |
+| C-009 | HTML shell and `/privacy`                                                                                    | "No third-party tracking" while GA4 and an optional analytics loader were present in the HTML shell                                                | Directly contradicted by the former `client/index.html`.                                                                                                                  | Removed both browser analytics loaders. The policy now states that hosting may retain standard server logs without claiming that a client-side analytics service runs.                                          |
+| C-010 | `/privacy`, `/terms`, `/donate`                                                                              | Privacy and Terms named Stripe while the public donation page embeds and links to Zeffy                                                            | Verified from the Zeffy embed and hosted fallback URLs in `client/src/pages/Donate.tsx`. The static production deployment does not expose the repository's server router. | Privacy and Terms identify the current Zeffy-hosted public flow and describe the data boundary without naming unverified downstream providers. Unqualified tax-deductibility wording was removed.               |
+| C-011 | Health, eHealth365, aerospace, radar, and hardware visuals                                                   | Generated waveforms, telemetry, alert feeds, and 3D representations could be read as live or as-built evidence                                     | The visuals are generated client-side demonstrations, not measurements from deployed products.                                                                            | Added visible `Illustrative`, `Concept`, or `Simulated` labels where those visuals render.                                                                                                                      |
 
-Also resolved, 2026-08-23 — nine of the ten rows this section used to list
-below. No repository this project can see measures any of these, so "publish
-the measurement" was not available; each was retired to a capability
-description (no number), or, for the two rows with a specific alternative
-already established elsewhere, brought in line with it:
+## Historical resolution record
 
-- `/product-eos` — the `< 1 µs` IRQ latency and `< 200 ns` context-switch
-  figures (subtitle, stat, feature and spec) are gone, replaced with
-  "Deterministic IRQ Handling" / bounded, priority-driven dispatch — the same
-  treatment `/eos`, `/architecture` and `/ecosystem` already got.
-- `/product-eni` and `/eni` — both figures retired. `/product-eni` no longer
-  claims `< 1 ms`; `/eni`'s Output step and `/product-eni`'s own BCI usage
-  example no longer claim `< 10 ms`. The two pages had, between them, three
-  different numbers for essentially the same path — a stronger version of the
-  kernel-timing contradiction.
-- `/product-eipc` — brought in line with `/eipc`'s existing relative-ordering
-  model (shared memory lowest, then SPI, then UART, then TCP highest) instead
-  of the absolute `< 1 ms` / `< 100 µs` figures it had been stating on its own.
-- `/product-edb` — the `< 1 ms` query latency is retired; the page now
-  describes the index structure (B-tree/hash/inverted) and says plainly that
-  latency depends on storage medium and workload, per the original note.
-- `/product-eai` — the `< 50 ms` vision inference figure is retired; the stat
-  slot now shows the backend count (4), which the specs table already
-  supported.
-- `/neural-link-ai` — the `< 5 ms` decode figure and the `< 10 ms` motor-
-  prosthetic figure are both retired.
-- `/what-we-do` — the `< 10 ms` EAI threat-detection figure is retired.
-- `/research` — retitled from "EoS Kernel: Deterministic Scheduling with
-  Sub-10μs Context Switch" / "Performance Report" to "EoS Kernel:
-  Deterministic Scheduling Architecture" / "Architecture Overview", since no
-  such report exists to publish.
-- `/future-research` — kept as a target per the original note, but reworded
-  so the `< 5 ms` round-trip figure reads unambiguously as something the
-  2026–2029 closed-loop-BCI research direction is aiming for, not a claim
-  about what exists today.
+The register previously documented these corrections in narrative form. They remain here so later edits do not erase why a number was retired.
 
-Verified: `pnpm check`, `pnpm build` (client + prerender, 95/95 routes, 0
-failed/thin) and `pnpm build:server` all pass; `pnpm test:unit` (124 passed,
-1 pre-existing skip) and `pnpm test:integration` (146 passed, including all
-16 `stack-claims.test.ts` cases) both pass against the rebuilt site.
+- The kernel timing conflict appeared as `Sub-1ms interrupt latency`, `<1 us` scheduling, `<=10 us` context switch, and `sub-1 us` in different surfaces. The inspected EoS repository had no context-switch or interrupt-latency benchmark; its performance test timed a host loop rather than the kernel. Those achieved figures were retired.
+- The site formerly repeated `52+` as both an EoS board count and an EoSim platform count. Repository-derived stack data separated those concepts. The current source data, not the historical numbers in this paragraph, is authoritative.
+- `/product-eos` formerly published `<1 us` IRQ latency and `<200 ns` context-switch figures. They were replaced with scheduler and dispatch descriptions.
+- `/product-eni` and `/eni` formerly published `<1 ms` and `<10 ms` variants for related paths. `/neural-link-ai` also published `<5 ms` decoding and `<10 ms` motor-prosthetic timing. Those numbers were retired because no configuration-specific benchmark was available.
+- `/product-eipc` formerly published absolute `<1 ms` and `<100 us` figures. Those were replaced with relative transport descriptions. The later review also retired remaining achieved sub-microsecond EIPC wording.
+- `/product-edb` formerly published `<1 ms` query latency. It was replaced with an index description and a statement that latency depends on storage and workload.
+- `/product-eai` formerly published `<50 ms` vision inference. The number was removed because no target configuration or result was available.
+- `/what-we-do` formerly published `<10 ms` EAI threat-detection performance. The use case is now a design-stage research description.
+- `/research` was retitled from a `Sub-10 us Context Switch` performance report to a scheduling architecture overview because no such performance report was available.
+- `/future-research` retained a closed-loop BCI timing number only as an explicit future research target, not an achieved result.
+- On 2026-08-23 the remaining `/eradar360` alert-latency claim was intentionally left open rather than guessed. The current review superseded that decision after confirming the page represented design-stage work and the available simulation generated synthetic values.
 
-## Open
+Historical verification recorded by the earlier review: `pnpm check`, `pnpm build`, `pnpm build:server`, `pnpm test:unit`, and `pnpm test:integration` passed at that time. This is historical evidence only and does not establish the state of later commits.
 
-| Page         | Claim                   | Note                                                                                                                                                                                            |
-| ------------ | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/eradar360` | `< 50 ms` alert latency | Reviewed 2026-08-23 — still unsourced, and not resolvable as "plausibly a design requirement" without the actual spec. Owner asked to leave it unchanged for now rather than guess; still open. |
+## Open evidence questions
 
-## Other numbers worth confirming
+| Item                                                           | Current treatment                                                                                                                                         | Required evidence before stronger wording                                                                                |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| ENI `1,024 channels at 30 kHz` research target                 | Retained only where explicitly identified as a future target or filing-specific description.                                                              | Named acquisition hardware, firmware revision, benchmark harness, raw results, and reproducible measurement method.      |
+| Patent filing numbers and filing-specific channel geometry     | Left as patent-filing descriptions, not platform specifications or product-maturity evidence. Filing status was not independently checked in this review. | USPTO or counsel-provided filing record matching the published application number and claims.                            |
+| Radar component, range, field-of-view, and classifier values   | Presented as proposed architecture or design targets, not measured performance.                                                                           | Built hardware revision, calibration procedure, test environment, raw results, dataset, and report.                      |
+| AeroSwift capacity, battery, range, speed, and altitude values | Presented only as design targets on a concept page.                                                                                                       | As-built configuration plus independently reviewable ground and flight-test evidence.                                    |
+| Health sensing, battery, wear-duration, and cost figures       | Presented as planned capabilities, targets, or concept estimates rather than clinical measurements or market offers.                                      | Physical reliability testing, cost-model basis, protocol-specific clinical validation, and applicable regulatory review. |
+| Zeffy downstream payment and anti-abuse providers              | Described generically because Zeffy controls the hosted form and may change its providers.                                                                | Current Zeffy notices shown to donors at the point of collection.                                                        |
+| Legacy Stripe server router                                    | Retained in source but not used by the static public client or deployment described in `server/routers.ts`.                                               | Remove it if obsolete, or update policy and deployment documentation before exposing a server-backed Stripe flow.        |
+| Governance headcounts                                          | `5 directors`, `7 members`, and `12 maintainers` remain outside this focused claims change.                                                               | Current board minutes, TSC roster, and maintainer roster.                                                                |
+| Site inventory counts                                          | `300+ APIs`, `14 books`, `60+ apps`, and `4 health devices` remain outside this focused claims change unless derived elsewhere.                           | Reproducible source inventory or remove the number.                                                                      |
+| Architecture inventory                                         | `33 HAL drivers`, `41 form factors`, and `64KB min RAM` remain outside this focused claims change.                                                        | Reproducible source inventory and configuration-specific memory evidence.                                                |
 
-Not performance figures, so not covered by the tests above, but stated as fact
-and not derived from any repository:
+## Maintenance rule
 
-- `5 directors`, `7 members` (TSC), `12 maintainers` (`/organization`) — governance
-  headcounts. Nothing in the repositories or on the site establishes them. The
-  surrounding text was expanded on 2026-08-08 to describe each body's mandate and
-  joining process, which is verifiable; the counts themselves were left alone
-  because removing them was not the option chosen. Either confirm them against
-  the board minutes and the TSC roster, or drop the badges and let the mandate
-  text stand on its own.
-- `300+ APIs`, `14 books`, `60+ apps`, `4 health devices` (`/`, `/about`)
-- `33 HAL drivers`, `41 form factors`, `64KB min RAM` (`/architecture`)
-- Patent application numbers on `/about` and `/patents` — these are of the form
-  `64/073,334`, and US provisional applications are numbered in the `63/`
-  series. Worth checking against the filing receipts.
+Before restoring retired wording or converting a Target or Unknown entry into an achieved claim, add the evidence location and test conditions to this register and add a regression test that exercises the public surface. When evidence is configuration-specific, publish the configuration with the result rather than promoting it to a universal platform limit.

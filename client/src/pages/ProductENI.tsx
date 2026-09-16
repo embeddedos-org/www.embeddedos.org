@@ -5,8 +5,8 @@ export default function ProductENI() {
     <ProductDetailPage
       badge="Neural Interface"
       title="eNI — Neural Interface Platform"
-      subtitle="1,024 Channels · 30 kHz EEG · Spike Sorting · BCI Ready"
-      description="A high-density neural signal acquisition and processing platform. Acquires EEG, EMG, ECoG, LFP, and spike trains from up to 1,024 channels simultaneously, applies real-time hardware-accelerated filtering and spike sorting, and delivers structured data to eAI for on-device BCI decoding."
+      subtitle="Configurable Channels · Hardware-Defined Sample Rates · Neural Research"
+      description="An in-development neural signal acquisition and processing platform for EEG, EMG, ECoG, LFP, and spike-train research. Channel count and sample rate depend on the acquisition hardware and configuration; performance limits remain research targets until measured on a named setup."
       accent="#10B981"
       gradient="from-emerald-500/20 to-green-600/20"
       lang="C / VHDL"
@@ -14,17 +14,17 @@ export default function ProductENI() {
       heroImage="/media/product-eni-neural_0723fbf2.jpg"
       stackHighlight="neural interface"
       stats={[
-        { value: "1,024", label: "Simultaneous Channels" },
-        { value: "30 kHz", label: "EEG Sample Rate" },
-        { value: "100 kHz", label: "EMG Sample Rate" },
-        { value: "24-bit", label: "ADC Resolution" },
+        { value: "Configurable", label: "Channel Map" },
+        { value: "Hardware", label: "Sample-Rate Limit" },
+        { value: "Research", label: "Spike-Sorting Pipeline" },
+        { value: "Front End", label: "ADC Resolution" },
       ]}
       workflow={[
         {
           step: 1,
           title: "Configure the Acquisition Pipeline",
           desc: "Select the signal modality (EEG, EMG, ECoG, LFP, spikes) and configure the channel map, sample rate, and hardware filter parameters. eNI supports mixed-modality acquisition — EEG and EMG simultaneously on different channel groups.",
-          code: "eni_config_t cfg = {\n    .modality    = ENI_MOD_EEG | ENI_MOD_EMG,\n    .eeg_channels = 256,\n    .emg_channels = 64,\n    .eeg_fs       = 30000,  // 30 kHz\n    .emg_fs       = 100000, // 100 kHz\n    .ref          = ENI_REF_AVERAGE,\n};\neni_t eni = eni_open(&cfg);",
+          code: "eni_config_t cfg = {\n    .modality     = ENI_MOD_EEG | ENI_MOD_EMG,\n    .eeg_channels = BOARD_EEG_CHANNELS,\n    .emg_channels = BOARD_EMG_CHANNELS,\n    .eeg_fs       = BOARD_EEG_SAMPLE_RATE,\n    .emg_fs       = BOARD_EMG_SAMPLE_RATE,\n    .ref          = ENI_REF_AVERAGE,\n};\neni_t eni = eni_open(&cfg);",
         },
         {
           step: 2,
@@ -41,7 +41,7 @@ export default function ProductENI() {
         {
           step: 4,
           title: "Stream Data to eAI via EIPC",
-          desc: "eNI packages filtered signals and spike events into EIPC messages and sends them to the eAI inference task. The EIPC transport adds HMAC-SHA256 integrity and AES-256 encryption — critical for medical-grade data.",
+          desc: "eNI packages filtered signals and spike events into EIPC messages and sends them to the eAI inference task. The design uses HMAC-SHA256 integrity and AES-256 encryption; medical use would require system-level validation and regulatory approval.",
           code: "// eNI streams to eAI via EIPC\nvoid eni_stream_task(void *arg) {\n    for (;;) {\n        eni_frame_t frame;\n        eni_read(eni, &frame, ENI_WAIT_FOREVER);\n        eipc_send(eai_port, &frame, sizeof(frame));\n    }\n}",
         },
         {
@@ -55,13 +55,13 @@ export default function ProductENI() {
         {
           title: "Motor BCI Prosthetic",
           scenario:
-            "Decoding 64-channel ECoG signals in real time to control a robotic arm.",
-          code: '// Motor BCI pipeline: ECoG → eNI → EIPC → eAI → arm\n#include <eni/eni.h>\n#include <eai/model.h>\n#include <eipc/eipc.h>\n\nvoid bci_pipeline_init(void) {\n    // Configure eNI for 64-channel ECoG\n    eni_config_t cfg = {\n        .modality    = ENI_MOD_ECOG,\n        .eeg_channels = 64,\n        .eeg_fs       = 30000,\n    };\n    eni_t eni = eni_open(&cfg);\n    eni_filter_bandpass(eni, 70.0f, 200.0f); // High-gamma band\n\n    // Load motor decoder\n    eai_model_t decoder = eai_model_load("motor_decoder_v3.eai",\n                                         EAI_BACKEND_NPU);\n\n    // Stream: eNI → eAI → robotic arm\n    eni_stream_to_eai(eni, decoder, arm_actuator_port);\n}',
+            "Illustrative research configuration for evaluating ECoG motor-intent decoding with an assistive controller.",
+          code: '// Illustrative research pipeline: ECoG → eNI → EIPC → eAI\n#include <eni/eni.h>\n#include <eai/model.h>\n#include <eipc/eipc.h>\n\nvoid bci_pipeline_init(void) {\n    eni_config_t cfg = {\n        .modality     = ENI_MOD_ECOG,\n        .eeg_channels = BOARD_ECOG_CHANNELS,\n        .eeg_fs       = BOARD_ECOG_SAMPLE_RATE,\n    };\n    eni_t eni = eni_open(&cfg);\n    eni_filter_bandpass(eni, 70.0f, 200.0f);\n\n    eai_model_t decoder = eai_model_load("research_decoder.eai",\n                                         EAI_BACKEND_NPU);\n    eni_stream_to_eai(eni, decoder, research_output_port);\n}',
         },
         {
           title: "Seizure Detection",
           scenario:
-            "Continuous EEG monitoring on a wearable device, detecting seizure onset and triggering a neurostimulator within 2 seconds.",
+            "Illustrative research pipeline for evaluating EEG pattern detection; it does not claim clinical detection performance or treatment efficacy.",
           code: '// Seizure detection pipeline\n#include <eni/eni.h>\n#include <eai/model.h>\n\nvoid seizure_monitor_task(void *arg) {\n    eni_t eni = eni_open(&eeg_256ch_cfg);\n    eai_model_t detector = eai_model_load("seizure_v2.eai",\n                                           EAI_BACKEND_NPU);\n\n    for (;;) {\n        eni_frame_t frame;\n        eni_read(eni, &frame, ENI_WAIT_FOREVER);\n\n        float prob = eai_infer_scalar(detector, frame.eeg);\n        if (prob > 0.92f) {\n            // Trigger closed-loop neurostimulator\n            eipc_send(stim_port, &STIM_SUPPRESS_CMD, 4);\n            log_seizure_event(frame.timestamp);\n        }\n    }\n}',
         },
       ]}
@@ -79,13 +79,13 @@ export default function ProductENI() {
           "eAI — receives eNI data for BCI decoding, seizure detection, gesture recognition",
           "eHealth365 HEALTH-BAND Neuro — sEMG + TENS wristband uses eNI acquisition",
           "eAI Edge Stack — the full eNI → EIPC → eAI pipeline for BCI applications",
-          "Research tools — 1,024-channel recordings for neuroscience research",
+          "Research tools — configuration-specific neural recordings",
         ],
       }}
       features={[
         {
-          name: "1,024 Simultaneous Channels",
-          desc: "Acquire EEG, EMG, ECoG, LFP, and spike trains from up to 1,024 channels at once.",
+          name: "Configurable Channel Maps",
+          desc: "Configure EEG, EMG, ECoG, LFP, and spike-train inputs within the limits of the attached acquisition hardware.",
         },
         {
           name: "Hardware Spike Sorter",
@@ -104,8 +104,8 @@ export default function ProductENI() {
           desc: "Filtering and spike sorting run in the FPGA/DSP pipeline ahead of the CPU, so the electrode-to-EIPC path carries no software filtering overhead.",
         },
         {
-          name: "Medical-Grade Isolation",
-          desc: "Patient isolation per IEC 60601-1. Galvanic isolation on all electrode inputs.",
+          name: "Isolation Design Target",
+          desc: "The hardware design targets IEC 60601-1 patient-isolation requirements; certification and physical validation are pending.",
         },
         {
           name: "Impedance Measurement",
@@ -118,14 +118,12 @@ export default function ProductENI() {
       ]}
       specs={[
         {
-          key: "Max Channels",
-          value: "1,024 simultaneous (EEG + EMG + ECoG mixed)",
+          key: "Channels and Sample Rate",
+          value: "Configuration-specific; limited by the acquisition front end",
         },
-        { key: "EEG Sample Rate", value: "Up to 30 kHz per channel" },
-        { key: "EMG Sample Rate", value: "Up to 100 kHz per channel" },
-        { key: "ADC Resolution", value: "24-bit" },
-        { key: "Input Noise", value: "< 1 µVrms (0.5–300 Hz bandwidth)" },
-        { key: "CMRR", value: "> 120 dB" },
+        { key: "ADC Resolution", value: "Acquisition-front-end dependent" },
+        { key: "Input Noise", value: "Hardware benchmark pending" },
+        { key: "CMRR", value: "Hardware benchmark pending" },
         {
           key: "Processing Path",
           value:
@@ -134,7 +132,7 @@ export default function ProductENI() {
         {
           key: "Safety",
           value:
-            "IEC 60601-1 patient isolation; galvanic isolation on all inputs",
+            "Design target: IEC 60601-1 patient isolation; validation pending",
         },
         {
           key: "Interface",

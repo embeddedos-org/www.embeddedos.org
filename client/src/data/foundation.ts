@@ -36,14 +36,37 @@ export const FOUNDATION = {
  * A verifiable address is one of the things an Ad Grants reviewer looks for, and
  * it was previously absent from every page.
  */
+export interface MailingAddress {
+  readonly street: string;
+  readonly unit: string;
+  readonly city: string;
+  readonly region: string;
+  readonly postalCode: string;
+  readonly country: string;
+  readonly countryCode: string;
+}
+
 export const MAILING_ADDRESS = {
   street: "2601 Cortez Dr",
+  unit: "Unit 1104",
   city: "Santa Clara",
   region: "CA",
   postalCode: "95051",
   country: "United States",
   countryCode: "US",
-} as const;
+} as const satisfies MailingAddress;
+
+export function formatStreetAddress(
+  address: MailingAddress = MAILING_ADDRESS
+): string {
+  return `${address.street}, ${address.unit}`;
+}
+
+export function formatMailingAddress(
+  address: MailingAddress = MAILING_ADDRESS
+): string {
+  return `${formatStreetAddress(address)}, ${address.city}, ${address.region} ${address.postalCode}, ${address.country}`;
+}
 
 /**
  * The IRS's public lookup for exempt organisations. Linked rather than deep
@@ -357,4 +380,5 @@ export const SOCIAL_URLS = {
   instagram: "https://www.instagram.com/embeddedos_org",
   facebook: "https://www.facebook.com/profile.php?id=61588978691494",
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
+  discord: "https://discord.gg/n6Kd9fwja",
 } as const;

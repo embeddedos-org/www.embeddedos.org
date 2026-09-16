@@ -109,7 +109,7 @@ export default function Donate() {
             </Badge>
             <Badge className="bg-green-500/20 text-green-300 border-green-500/30 px-3 py-1">
               <Shield className="w-3.5 h-3.5 mr-1.5" />
-              Tax-Deductible
+              Secure Donation
             </Badge>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-5 leading-tight">
@@ -331,7 +331,7 @@ export default function Donate() {
                   </div>
                   <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-xs text-green-300">
                     <Shield className="w-3.5 h-3.5 inline mr-1.5" />
-                    Tax-deductible donation · EIN 41-4821627
+                    Donation processed on Zeffy · EIN 41-4821627
                   </div>
                 </CardContent>
               </Card>

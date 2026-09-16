@@ -190,9 +190,9 @@ const FAMILIES = [
     color: "#F85149",
     icon: Heart,
     title: "Health Devices",
-    tagline: "Medical-grade wearables powered by EmbeddedOS.",
+    tagline: "In-development health research designs powered by EmbeddedOS.",
     description:
-      "Four patent-pending health monitoring devices — from a USB-C ECG pendrive to a 14-day biochemistry biosensor patch — all running EoS firmware with an open-source SDK and unified mobile app.",
+      "Four in-development health research designs — from a USB-C sensing design to a planned biochemistry biosensor patch. Physical reliability and clinical validation are pending.",
     href: "/health",
     products: [
       {

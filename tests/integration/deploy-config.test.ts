@@ -25,6 +25,8 @@ const HTACCESS = path.join(DIST, ".htaccess");
 
 const CPANEL_YML = path.join(DIST, ".cpanel.yml");
 const HOME_HTML = path.join(DIST, "index.html");
+const SITEMAP = path.join(DIST, "sitemap.xml");
+const ROBOTS = path.join(DIST, "robots.txt");
 
 const readHtaccess = () => fs.readFileSync(HTACCESS, "utf8");
 
@@ -46,6 +48,18 @@ describe("the build ships the hosting config", () => {
       fs.existsSync(CPANEL_YML),
       ".cpanel.yml missing from dist/public — cPanel would have nothing to deploy with"
     ).toBe(true);
+  });
+
+  it("ships the crawler files generated for this build", () => {
+    expect(fs.existsSync(SITEMAP), "dist/public/sitemap.xml missing").toBe(
+      true
+    );
+    expect(fs.existsSync(ROBOTS), "dist/public/robots.txt missing").toBe(true);
+  });
+
+  it("ships prerendered homepage content instead of the empty Vite shell", () => {
+    const html = fs.readFileSync(HOME_HTML, "utf8");
+    expect(html).not.toMatch(/<div id=["']root["']><\/div>/);
   });
 
   it("does not ship the removed homepage showcase video", () => {

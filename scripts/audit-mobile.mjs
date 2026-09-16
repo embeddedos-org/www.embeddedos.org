@@ -18,6 +18,9 @@ import { chromium } from "@playwright/test";
 
 const DIST = path.resolve(import.meta.dirname, "..", "dist", "public");
 const PORT = Number(process.env.AUDIT_PORT ?? 41888);
+const HOST = process.env.AUDIT_HOST ?? "127.0.0.1";
+const URL_HOST = HOST.includes(":") ? `[${HOST}]` : HOST;
+const BASE = `http://${URL_HOST}:${PORT}`;
 const MOBILE = { width: 375, height: 667 };
 
 // Sampled rather than exhaustive: these cover every distinct page layout in use.
@@ -67,7 +70,7 @@ function startServer() {
       : res.status(404).send("not found");
   });
   return new Promise(resolve => {
-    const server = app.listen(PORT, "127.0.0.1", () => resolve(server));
+    const server = app.listen(PORT, HOST, () => resolve(server));
   });
 }
 
@@ -107,7 +110,7 @@ for (const route of ROUTES) {
     // An error with no location is kept: silently swallowing one would be the
     // worse failure, and first-party 404s still fail the gate.
     const url = m.location()?.url ?? "";
-    if (url && !url.startsWith(`http://127.0.0.1:${PORT}`)) {
+    if (url && !url.startsWith(BASE)) {
       thirdPartyRequestFailures.push(url.slice(0, 90));
       return;
     }
@@ -125,14 +128,14 @@ for (const route of ROUTES) {
     // and reCAPTCHA; those fail intermittently from CI and sandboxed networks
     // and named different chunks on every run. A gate that goes red on someone
     // else's CDN teaches people to ignore it. They are surfaced as notes below.
-    if (!url.startsWith(`http://127.0.0.1:${PORT}`)) {
+    if (!url.startsWith(BASE)) {
       thirdPartyRequestFailures.push(url.slice(0, 90));
       return;
     }
     failedRequests.push(`${url.slice(0, 90)}`);
   });
 
-  await page.goto(`http://127.0.0.1:${PORT}${route}`, {
+  await page.goto(`${BASE}${route}`, {
     waitUntil: "domcontentloaded",
   });
   await page

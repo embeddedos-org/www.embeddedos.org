@@ -8,33 +8,33 @@ const channels = [
     id: "eeg",
     label: "EEG",
     color: "#A855F7",
-    hz: "30 kHz",
-    bits: "24-bit",
-    count: "1,024 ch",
+    hz: "Config-specific",
+    bits: "Front-end specific",
+    count: "Config-specific",
   },
   {
     id: "emg",
     label: "EMG",
     color: "#F97316",
-    hz: "100 kHz",
-    bits: "16-bit",
-    count: "256 ch",
+    hz: "Config-specific",
+    bits: "Front-end specific",
+    count: "Config-specific",
   },
   {
     id: "ecog",
     label: "ECoG",
     color: "#22D3EE",
-    hz: "30 kHz",
-    bits: "24-bit",
-    count: "512 ch",
+    hz: "Config-specific",
+    bits: "Front-end specific",
+    count: "Config-specific",
   },
   {
     id: "lfp",
     label: "LFP",
     color: "#34D399",
-    hz: "10 kHz",
-    bits: "24-bit",
-    count: "128 ch",
+    hz: "Config-specific",
+    bits: "Front-end specific",
+    count: "Config-specific",
   },
 ];
 
@@ -42,7 +42,7 @@ const pipeline = [
   {
     step: "01",
     title: "Acquisition",
-    desc: "1,024-channel simultaneous neural signal acquisition at up to 100 kHz per channel. 24-bit ADC resolution with <2μV RMS noise floor.",
+    desc: "Configure acquisition for the attached front end. Channel count and sample rate depend on the acquisition hardware and configuration; limits require measurement on a named setup.",
   },
   {
     step: "02",
@@ -52,7 +52,7 @@ const pipeline = [
   {
     step: "03",
     title: "Spike Detection",
-    desc: "Real-time spike detection using threshold crossing and template matching. Processes 1,024 channels in <500μs on Cortex-M55.",
+    desc: "Threshold-crossing and template-matching spike detection are research pipeline goals; throughput and latency benchmarks are pending for each hardware configuration.",
   },
   {
     step: "04",
@@ -76,13 +76,13 @@ const useCases = [
     icon: Brain,
     color: "#A855F7",
     title: "Brain-Computer Interface",
-    desc: "Motor cortex decoding for prosthetic limb control. 95%+ decode accuracy for 8-direction cursor control.",
+    desc: "Research target: evaluate motor-intent decoding for assistive control and publish protocol-specific accuracy results.",
   },
   {
     icon: Activity,
     color: "#F97316",
     title: "Closed-Loop Neurostimulation",
-    desc: "Real-time feedback loop: detect neural biomarkers → trigger stimulation → measure response. For epilepsy, Parkinson's, depression.",
+    desc: "Research target: study detect-stimulate-measure feedback loops. No clinical efficacy or treatment claim is made.",
   },
   {
     icon: Cpu,
@@ -138,7 +138,7 @@ export default function ENIPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-sm font-medium mb-6">
-              <Brain className="w-4 h-4" /> ENI
+              <Brain className="w-4 h-4" /> ENI · RESEARCH
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
               ENI
@@ -147,9 +147,9 @@ export default function ENIPage() {
               Embedded Neural Interface Framework
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              1,024-channel neural signal acquisition, real-time spike
-              detection, and AI-powered neural decoding for brain-computer
-              interfaces and closed-loop neurostimulation.
+              An in-development neural acquisition and processing framework.
+              Channel count and sample rate depend on the acquisition hardware
+              and configuration; performance remains a research target.
             </p>
           </motion.div>
         </div>
@@ -161,7 +161,7 @@ export default function ENIPage() {
             Signal Acquisition Modes
           </h2>
           <p className="text-gray-400 text-center mb-8">
-            ENI supports four neural signal types with hardware-optimized
+            ENI research covers four signal types through configurable
             acquisition pipelines.
           </p>
           <div className="flex gap-2 mb-6 justify-center flex-wrap">
@@ -203,7 +203,7 @@ export default function ENIPage() {
                 >
                   {ch.hz}
                 </div>
-                <div className="text-gray-500 text-sm">Sample Rate</div>
+                <div className="text-gray-500 text-sm">Configured Rate</div>
               </div>
               <div>
                 <div
@@ -212,7 +212,7 @@ export default function ENIPage() {
                 >
                   {ch.bits}
                 </div>
-                <div className="text-gray-500 text-sm">ADC Resolution</div>
+                <div className="text-gray-500 text-sm">ADC Configuration</div>
               </div>
               <div>
                 <div
@@ -221,7 +221,7 @@ export default function ENIPage() {
                 >
                   {ch.count}
                 </div>
-                <div className="text-gray-500 text-sm">Max Channels</div>
+                <div className="text-gray-500 text-sm">Configured Channels</div>
               </div>
             </motion.div>
           </AnimatePresence>

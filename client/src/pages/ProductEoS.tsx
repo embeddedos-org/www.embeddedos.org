@@ -61,7 +61,7 @@ export default function ProductEoS() {
         {
           title: "Industrial Motor Controller",
           scenario:
-            "A 3-phase BLDC motor controller running field-oriented control at 20 kHz PWM with < 1 µs jitter.",
+            "Illustrative motor-control configuration using a 20 kHz PWM loop; timing and jitter require target-specific measurement.",
           code: "// EoS real-time motor control (FOC at 20 kHz)\n#include <eos/kernel.h>\n#include <eos/hal/pwm.h>\n#include <eos/hal/adc.h>\n\n// High-priority ISR — runs every 50 µs\nEOS_ISR void foc_isr(void) {\n    float ia = eos_hal_adc_read_dma(ADC1, CH0);\n    float ib = eos_hal_adc_read_dma(ADC1, CH1);\n\n    float id, iq;\n    clarke_park(ia, ib, rotor_angle, &id, &iq);\n\n    float vd = pi_ctrl(&ctrl_d, id_ref - id);\n    float vq = pi_ctrl(&ctrl_q, iq_ref - iq);\n\n    float duty[3];\n    inv_park_svpwm(vd, vq, rotor_angle, duty);\n    eos_hal_pwm_set_duty3(TIM1, duty);\n}",
         },
         {
@@ -83,7 +83,7 @@ export default function ProductEoS() {
         ],
         enabledBy: [
           "eAI — on-device ML inference runs as EoS tasks using the HAL NPU driver",
-          "eNI — 1,024-channel neural signal acquisition runs as a high-priority EoS ISR",
+          "eNI — configuration-specific neural acquisition is an intended EoS integration",
           "EIPC — inter-process and inter-board communication built on EoS IPC primitives",
           "eDB — embedded database engine runs as an EoS service task",
           "eOffice — all 11 office apps are EoS application-layer processes",

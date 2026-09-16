@@ -17,8 +17,13 @@
  * tells crawlers the entire site changed daily, which is false and is treated
  * as noise.
  *
- * Usage: node scripts/gen-sitemap.mjs [--check]
- *   --check  exit 1 if the committed sitemap is stale, without rewriting it
+ * Usage: node scripts/gen-sitemap.mjs [--dist] [--check]
+ *   --dist   write the current build's sitemap directly to dist/public
+ *   --check  exit 1 if the selected sitemap is stale, without rewriting it
+ *
+ * The normal source command keeps client/public/sitemap.xml reviewable. The
+ * production build passes --dist after prerendering so it does not modify a
+ * tracked source file and the deployed sitemap describes that exact build.
  */
 
 import fs from "node:fs";
@@ -28,8 +33,11 @@ import { fileURLToPath } from "node:url";
 import { discoverRoutes } from "./prerender.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = path.join(ROOT, "client", "public", "sitemap.xml");
+const SOURCE_OUT = path.join(ROOT, "client", "public", "sitemap.xml");
 const DIST = path.join(ROOT, "dist", "public");
+const DIST_OUT = path.join(DIST, "sitemap.xml");
+const WRITE_DIST = process.argv.includes("--dist");
+const OUT = WRITE_DIST ? DIST_OUT : SOURCE_OUT;
 const ORIGIN = "https://www.embeddedos.org";
 
 /**
@@ -114,6 +122,13 @@ function build() {
 
 const xml = build();
 
+if (WRITE_DIST && !fs.existsSync(DIST)) {
+  console.error(
+    `[sitemap] ${DIST} does not exist. Run the client build and prerender first.`
+  );
+  process.exit(1);
+}
+
 if (process.argv.includes("--check")) {
   const current = fs.existsSync(OUT) ? fs.readFileSync(OUT, "utf8") : "";
   // Compare the URL set rather than the bytes: lastmod moves with the build,
@@ -134,7 +149,9 @@ if (process.argv.includes("--check")) {
       console.error(
         `  stray ${stray.length}: ${stray.slice(0, 5).join(", ")}${stray.length > 5 ? " …" : ""}`
       );
-    console.error("  run: pnpm sitemap");
+    console.error(
+      `  run: ${WRITE_DIST ? "pnpm sitemap:dist" : "pnpm sitemap"}`
+    );
     process.exit(1);
   }
   console.log(`[sitemap] up to date — ${b.length} URLs`);

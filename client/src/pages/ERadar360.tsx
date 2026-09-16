@@ -164,7 +164,7 @@ function AlertDemo() {
     <div className="rounded-2xl border border-white/10 bg-[#0D1117] p-5">
       <div className="flex items-center justify-between mb-4">
         <span className="text-xs font-bold text-white/40 uppercase tracking-widest">
-          Live Alert Feed
+          Simulated Alert Feed
         </span>
         <button
           onClick={() => setRunning(r => !r)}
@@ -217,7 +217,7 @@ export default function ERadar360() {
       icon: Radio,
       label: "Front Radar",
       value:
-        "TI AWR2944 · 77 GHz FMCW · 120° FOV · 0–250 m · 0.75 m resolution",
+        "Proposed TI AWR2944 front radar · 77 GHz FMCW · targets: 120° FOV, 250 m range, 0.75 m resolution",
       color: "#22D3EE",
       delay: 0,
     },
@@ -225,7 +225,7 @@ export default function ERadar360() {
       icon: Radio,
       label: "Rear Radar",
       value:
-        "TI AWR2944 · 77 GHz FMCW · 120° FOV · 0–150 m · 0.75 m resolution",
+        "Proposed TI AWR2944 rear radar · 77 GHz FMCW · targets: 120° FOV, 150 m range, 0.75 m resolution",
       color: "#22D3EE",
       delay: 0.05,
     },
@@ -233,49 +233,53 @@ export default function ERadar360() {
       icon: Zap,
       label: "Laser Detection",
       value:
-        "5× Hamamatsu G12183-010K InGaAs APD · 360° (72° spacing) · <50 ms latency",
+        "Five-sensor InGaAs APD concept · 360° layout · latency benchmark pending",
       color: "#F97316",
       delay: 0.1,
     },
     {
       icon: Wifi,
       label: "V2X",
-      value: "Autotalks TEKTON3 DSRC + C-V2X · 1 km LOS · BSM, TIM, SPaT, MAP",
+      value:
+        "Proposed Autotalks TEKTON3 DSRC + C-V2X · target: 1 km LOS · planned BSM, TIM, SPaT, MAP support",
       color: "#A78BFA",
       delay: 0.15,
     },
     {
       icon: Cpu,
       label: "AI Processor",
-      value: "Rockchip RK3588S · 6 TOPS NPU · 97% false-alert suppression",
+      value: "Rockchip RK3588S design target · classifier validation pending",
       color: "#34D399",
       delay: 0.2,
     },
     {
       icon: Cpu,
       label: "Co-Processor",
-      value: "STM32H7B3 · Laser ADC · OBD-II parsing · GPS fusion",
+      value:
+        "Proposed STM32H7B3 co-processor · planned laser ADC, OBD-II parsing, and GPS fusion",
       color: "#F59E0B",
       delay: 0.25,
     },
     {
       icon: MapPin,
       label: "GNSS",
-      value: "u-blox NEO-M9N · GPS + GLONASS + Galileo + BeiDou",
+      value:
+        "Proposed u-blox NEO-M9N · planned GPS, GLONASS, Galileo, and BeiDou support",
       color: "#60A5FA",
       delay: 0.3,
     },
     {
       icon: Eye,
       label: "Display",
-      value: '4" Samsung AMOLED · 480×800 · MIPI-DSI',
+      value: 'Proposed 4" Samsung AMOLED · 480×800 · MIPI-DSI',
       color: "#F472B6",
       delay: 0.35,
     },
     {
       icon: Lock,
       label: "Connectivity",
-      value: "Wi-Fi 6 + BT 5.3 + USB-C · 12V OBD-II or USB-C 5V/3A",
+      value:
+        "Proposed Wi-Fi 6, BT 5.3, and USB-C · target power: 12V OBD-II or USB-C 5V/3A",
       color: "#22D3EE",
       delay: 0.4,
     },
@@ -353,28 +357,28 @@ export default function ERadar360() {
                   eCAD Hardware
                 </span>
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20 uppercase tracking-widest">
-                  Pre-Production
+                  Design Stage
                 </span>
               </div>
               <h1 className="text-5xl lg:text-6xl font-heading font-black mb-4 leading-tight">
                 eRadar<span className="text-[#22D3EE]">360</span>
               </h1>
               <p className="text-xl text-white/60 mb-2 font-semibold">
-                Also marketed as{" "}
-                <span className="text-[#A78BFA]">Aegis One</span> (OEM)
+                Planned OEM name:{" "}
+                <span className="text-[#A78BFA]">Aegis One</span>
               </p>
               <p className="text-lg text-white/50 mb-8 leading-relaxed">
-                360° automotive safety — fusing 77 GHz radar, laser detection,
-                V2X communication, and 6 TOPS AI in a single windshield-mounted
-                device.
+                A design-stage automotive sensing concept combining 77 GHz
+                radar, laser detection, V2X, and edge AI. Hardware performance
+                and safety behavior have not been validated.
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 {[
-                  "360° Radar",
-                  "Laser Detection",
-                  "V2X / DSRC",
-                  "6 TOPS AI",
-                  "97% Accuracy",
+                  "360° Radar Design",
+                  "Laser Detection Concept",
+                  "V2X / DSRC Design",
+                  "AI Design Target",
+                  "Validation Pending",
                 ].map(tag => (
                   <span
                     key={tag}
@@ -413,7 +417,7 @@ export default function ERadar360() {
             <div className="rounded-3xl border border-[#22D3EE]/20 bg-[#0D1117] p-8 w-full max-w-sm">
               <div className="text-center mb-4">
                 <span className="text-xs font-bold text-[#22D3EE]/60 uppercase tracking-widest">
-                  Live Radar Simulation
+                  Illustrative Radar Simulation
                 </span>
               </div>
               <RadarSweep active={radarActive} />
@@ -434,9 +438,9 @@ export default function ERadar360() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3 w-full max-w-sm">
               {[
-                { val: "250 m", label: "Max Range" },
-                { val: "<50 ms", label: "Alert Latency" },
-                { val: "97%", label: "Accuracy" },
+                { val: "250 m", label: "Range Target" },
+                { val: "Pending", label: "Latency Benchmark" },
+                { val: "Pending", label: "Accuracy Validation" },
               ].map(s => (
                 <div
                   key={s.label}
@@ -468,7 +472,8 @@ export default function ERadar360() {
               Sensor Architecture
             </h2>
             <p className="text-white/50">
-              Four independent sensor modalities fused by a 6 TOPS AI processor.
+              Proposed sensor modalities and processing hardware for a reference
+              design.
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -491,34 +496,34 @@ export default function ERadar360() {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-heading font-black mb-4">
-                Real-Time Threat Detection
+                Threat-Detection Research
               </h2>
               <p className="text-white/50 mb-6 leading-relaxed">
-                The AI processor fuses radar, laser, and V2X data streams in
-                real time. Threats are classified, filtered (97% false-alert
-                suppression), and surfaced to the driver in under 50 ms.
+                The reference design proposes radar, laser, and V2X fusion with
+                an edge classifier. Detection latency, false-alert rate, and
+                driver-alert behavior require physical testing.
               </p>
               <div className="space-y-3">
                 {[
                   {
                     icon: Radio,
                     label: "Radar fusion",
-                    desc: "Front + rear 77 GHz FMCW, 0.75 m resolution",
+                    desc: "Proposed front + rear 77 GHz FMCW; 0.75 m resolution target",
                   },
                   {
                     icon: Zap,
                     label: "Laser grid",
-                    desc: "5-point 360° coverage, <50 ms alert latency",
+                    desc: "Five-point coverage concept; latency benchmark pending",
                   },
                   {
                     icon: Wifi,
                     label: "V2X messages",
-                    desc: "BSM, TIM, SPaT, MAP at 1 km LOS range",
+                    desc: "Planned BSM, TIM, SPaT, and MAP support; 1 km LOS target",
                   },
                   {
                     icon: Cpu,
                     label: "AI classifier",
-                    desc: "RK3588S NPU, 6 TOPS, radar signature fingerprinting",
+                    desc: "Proposed RK3588S NPU and radar-signature classifier; validation pending",
                   },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-3">
@@ -556,10 +561,11 @@ export default function ERadar360() {
             className="mb-12"
           >
             <h2 className="text-3xl font-heading font-black mb-3">
-              Configurations & Pricing
+              Planned Configurations & Cost Estimates
             </h2>
             <p className="text-white/50">
-              Three configurations for consumer, pro, and OEM markets.
+              Illustrative reference configurations and planning estimates; no
+              product is offered for sale.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -574,24 +580,24 @@ export default function ERadar360() {
               >
                 {i === 1 && (
                   <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#22D3EE]/20 text-[#22D3EE] uppercase tracking-widest mb-3">
-                    Most Popular
+                    Reference Configuration
                   </span>
                 )}
                 <h3 className="text-lg font-bold text-white mb-1">{c.name}</h3>
                 <p className="text-sm text-white/40 mb-4">{c.desc}</p>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-white/40">COGS</span>
+                    <span className="text-white/40">COGS Estimate</span>
                     <span className="text-white font-mono">{c.cogs}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/40">MSRP</span>
+                    <span className="text-white/40">Price Estimate</span>
                     <span className="text-[#22D3EE] font-bold font-mono">
                       {c.msrp}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/40">Margin</span>
+                    <span className="text-white/40">Margin Estimate</span>
                     <span className="text-[#34D399] font-mono">{c.margin}</span>
                   </div>
                 </div>
@@ -611,10 +617,11 @@ export default function ERadar360() {
             className="mb-10"
           >
             <h2 className="text-3xl font-heading font-black mb-3">
-              Regulatory Compliance
+              Regulatory and Safety Targets
             </h2>
             <p className="text-white/50">
-              Full documentation complete for all major markets.
+              These standards guide the design; no certification or regulatory
+              approval is claimed.
             </p>
           </motion.div>
           <div className="flex flex-wrap gap-3">
@@ -628,7 +635,7 @@ export default function ERadar360() {
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-[#34D399]/10 text-[#34D399] border border-[#34D399]/20"
               >
                 <Shield size={12} />
-                {c}
+                Target: {c}
               </motion.span>
             ))}
           </div>
@@ -647,8 +654,9 @@ export default function ERadar360() {
               Explore the CAD Files
             </h2>
             <p className="text-white/50 mb-8">
-              Full KiCad schematics, PCB stackup, BOM, pick-and-place, firmware,
-              and simulation code — all open-source under MIT License.
+              Draft KiCad schematic, PCB stackup documentation, BOM,
+              pick-and-place data, firmware, and simulation code are available
+              under the MIT License.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a

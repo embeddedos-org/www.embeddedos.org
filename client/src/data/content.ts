@@ -229,7 +229,7 @@ export const CONTENT: readonly ContentItem[] = [
     title:
       "HEALTH-KEY ULTRA Patent Application Filed — U.S. App. No. 64/073,334",
     summary:
-      "Patent application filed for the HEALTH-KEY ULTRA USB-C health monitoring key (U.S. Provisional Application No. 64/073,334). The device measures ECG, SpO₂, heart rate, and skin conductance through a USB-C connector, powered by the EmbeddedOS health firmware stack.",
+      "Patent application filed for the HEALTH-KEY ULTRA USB-C health-monitoring concept (U.S. Provisional Application No. 64/073,334). The filing describes proposed ECG, SpO₂, heart-rate, and skin-conductance sensing; it is not evidence of a clinically validated device.",
     href: "https://github.com/embeddedos-org/eos-health",
     tags: ["Health", "Patent", "HEALTH-KEY"],
   },
@@ -240,7 +240,7 @@ export const CONTENT: readonly ContentItem[] = [
     badge: "Announcement",
     title: "AeroSwift Personal and Transit VTOL Aircraft Platforms Announced",
     summary:
-      "EmbeddedOS announces the AeroSwift aerospace platform — a family of VTOL aircraft powered by the EmbeddedOS avionics stack. AeroSwift Personal is a 1-2 seat personal air vehicle; AeroSwift Transit is a 10-seat urban air taxi. Both run EmbeddedOS with DO-178C-compliant flight software.",
+      "EmbeddedOS announces AeroSwift, a concept family of VTOL aircraft and avionics research designs. Personal and Transit describe target capacities; DO-178C is a target standard, and no flight testing or certification is claimed.",
     href: "/aerospace",
     tags: ["Aerospace", "AeroSwift", "VTOL"],
   },
@@ -321,7 +321,7 @@ export const CONTENT: readonly ContentItem[] = [
     badge: "Roadmap",
     title: "EoS RTOS Roadmap 2026: Tickless Idle, RT-IPC, Formal Verification",
     summary:
-      "Three large RTOS bets for 2026: a tickless scheduler with sub-microsecond wake latency, RT-IPC primitives sharing memory across security domains, and a formally verified context-switch path using TLA+ and Coq.",
+      "Three large RTOS research targets for 2026: a tickless scheduler targeting sub-microsecond wake latency, RT-IPC primitives sharing memory across security domains, and a formally verified context-switch path using TLA+ and Coq.",
     href: "/article-eos-roadmap-2026",
     tags: ["Roadmap", "RTOS", "2026"],
   },
@@ -331,10 +331,9 @@ export const CONTENT: readonly ContentItem[] = [
     kind: "technical-report",
     date: "2025-08-01",
     badge: "Research",
-    title:
-      "ENI's 1,024-Channel Pipeline: Deterministic Spike Sorting in 800 µs",
+    title: "ENI's Configurable Neural Pipeline: A Deterministic Benchmark Plan",
     summary:
-      "How the Embedded Neural Interface stack moves a thousand-electrode array through filtering, sorting, and decoding inside a single RTOS frame — and why determinism matters more than throughput.",
+      "A research plan for configuration-specific acquisition, filtering, and decoding benchmarks, with no unverified channel, sample-rate, or latency result presented as achieved.",
     href: "/article-eni-1024-channel-pipeline",
     tags: ["ENI", "BCI", "Research"],
   },
@@ -410,7 +409,7 @@ export const CONTENT: readonly ContentItem[] = [
     badge: "Release",
     title: "eos-platform 1.0: One Toolchain, Every EoS Profile",
     summary:
-      "After eighteen months of incremental releases, the eos-platform meta-distribution reaches 1.0 with stable APIs, a unified package manifest, and reproducible builds across all 52 supported boards.",
+      "The eos-platform 1.0 announcement describes stable APIs, a unified package manifest, and a reproducible-build goal across the supported board set.",
     href: "/article-eos-platform-launch",
     tags: ["eos-platform", "Release", "1.0"],
   },

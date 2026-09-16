@@ -27,6 +27,7 @@ const navSource = read("client/src/components/Navbar.tsx");
 const footerSource = read("client/src/components/Footer.tsx");
 const communitySource = read("client/src/pages/Community.tsx");
 const communityDataSource = read("client/src/data/community.ts");
+const foundationSource = read("client/src/data/foundation.ts");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
 const routes = [
@@ -35,25 +36,23 @@ const routes = [
   ),
 ].filter(r => r !== "/404");
 
-/** Extract the internal hrefs from a named object literal in a source file. */
-function hrefsIn(source: string, declaration: string): string[] {
+/** Extract every internal href from a named object literal in source order. */
+function rawHrefsIn(source: string, declaration: string): string[] {
   const start = source.indexOf(declaration);
   if (start === -1) throw new Error(`${declaration} not found`);
   const rest = source.slice(start);
   const end = rest.search(/\n\}(?: as const)?;\n/);
   const block = rest.slice(0, end);
-  return [
-    ...new Set([...block.matchAll(/href:\s*"(\/[^"]*)"/g)].map(m => m[1])),
-  ];
+  return [...block.matchAll(/href:\s*"(\/[^"]*)"/g)].map(m => m[1]);
 }
 
-const navHrefs = hrefsIn(navSource, "const NAV_ITEMS = {");
-const footerHrefs = hrefsIn(footerSource, "const FOOTER_LINKS = {");
+const navHrefs = [...new Set(rawHrefsIn(navSource, "const NAV_ITEMS = {"))];
+const footerHrefs = rawHrefsIn(footerSource, "const FOOTER_LINKS = {");
 const legalBlock =
   footerSource.match(/const LEGAL_LINKS = \[[\s\S]*?\n\];/)?.[0] ?? "";
-const legalHrefs = [
-  ...new Set([...legalBlock.matchAll(/href:\s*"(\/[^"]*)"/g)].map(m => m[1])),
-];
+const legalHrefs = [...legalBlock.matchAll(/href:\s*"(\/[^"]*)"/g)].map(
+  m => m[1]
+);
 const footerAll = [...new Set([...footerHrefs, ...legalHrefs])];
 
 /**
@@ -164,6 +163,7 @@ describe("community resources", () => {
   const expected = [
     "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
     "https://github.com/orgs/embeddedos-org/discussions",
+    "https://discord.gg/n6Kd9fwja",
     "https://github.com/embeddedos-org/www.embeddedos.org/issues",
     "https://github.com/orgs/embeddedos-org/projects",
     "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
@@ -171,6 +171,10 @@ describe("community resources", () => {
 
   it("publishes the exact repository and organization destinations", () => {
     for (const href of expected) expect(communityDataSource).toContain(href);
+    expect(foundationSource).toContain(
+      'discord: "https://discord.gg/n6Kd9fwja"'
+    );
+    expect(communitySource).toContain("SOCIAL_URLS.discord");
     expect(communityDataSource).not.toContain("/agents");
   });
 
@@ -184,6 +188,8 @@ describe("footer columns", () => {
   it("has a column for each area of the site", () => {
     for (const heading of [
       "Foundation",
+      "Marketing",
+      "Research",
       "Join & Support",
       "Platform",
       "Applications",
@@ -193,16 +199,27 @@ describe("footer columns", () => {
     }
   });
 
+  it("keeps the published legal address readable", () => {
+    expect(footerSource).toMatch(
+      /<address className="[^"]*text-white\/60[^"]*"/
+    );
+  });
+
   it("publishes the policy pages in the bottom bar", () => {
     for (const href of ["/privacy", "/terms", "/licenses", "/security"]) {
       expect(legalHrefs).toContain(href);
     }
   });
 
-  it("lists no route twice within the footer", () => {
+  it("lists no raw route twice within the footer", () => {
     const all = [...footerHrefs, ...legalHrefs];
-    const seen = new Set<string>();
-    const dupes = all.filter(h => (seen.has(h) ? true : (seen.add(h), false)));
-    expect(dupes).toEqual([]);
+    const counts = new Map<string, number>();
+    for (const href of all) counts.set(href, (counts.get(href) ?? 0) + 1);
+
+    const dupes = [...counts.entries()]
+      .filter(([, count]) => count > 1)
+      .map(([href, count]) => `${href} (${count})`);
+
+    expect(dupes, "duplicate footer hrefs before deduplication").toEqual([]);
   });
 });

@@ -5,7 +5,9 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { SOCIAL_URLS } from "@/data/foundation";
+import { ARCHITECTURE_STAGES, EAI_EDGE_PROFILE } from "@/data/architecture";
 import TiltCard from "../components/TiltCard";
+import HeroTechStack from "../components/HeroTechStack";
 import {
   ArrowRight,
   Github,
@@ -47,9 +49,7 @@ import {
 gsap.registerPlugin();
 
 const CircuitHero = React.lazy(() => import("../components/CircuitHero"));
-const HeroTechStack = React.lazy(() => import("../components/HeroTechStack"));
 const ProductMarquee = React.lazy(() => import("../components/ProductMarquee"));
-const BootPipeline = React.lazy(() => import("../components/BootPipeline"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
 
 const ARCH_IMG = "/media/architecture-diagram-hero_72436b3f.jpg";
@@ -89,7 +89,7 @@ const MISSION_PILLARS = [
 const PRODUCTS = [
   {
     name: "EOS Kernel",
-    desc: "The core real-time operating system kernel with sub-microsecond latency and deterministic scheduling.",
+    desc: "The core real-time operating system kernel with priority-driven scheduling and target-dependent timing.",
     icon: Cpu,
     color: "#F97316",
     tag: "Core",
@@ -176,8 +176,8 @@ const PRODUCTS = [
 const FEATURES = [
   {
     icon: Terminal,
-    title: "Real-Time Performance",
-    desc: "Sub-microsecond interrupt latency with deterministic scheduling for mission-critical applications.",
+    title: "Real-Time Scheduling",
+    desc: "Priority-driven scheduling for real-time applications, with timing characterized per target.",
   },
   {
     icon: Lock,
@@ -201,8 +201,8 @@ const FEATURES = [
   },
   {
     icon: BarChart3,
-    title: "Production Ready",
-    desc: `Board definitions for ${BOARD_COUNT} targets spanning automotive, industrial, and IoT hardware.`,
+    title: "Broad Hardware Coverage",
+    desc: `Board definitions for ${BOARD_COUNT} targets spanning automotive, industrial, and IoT hardware. Maturity varies by target.`,
   },
 ];
 
@@ -345,18 +345,24 @@ export default function Home() {
 
               <h1
                 id="hero-heading"
-                className="hero-title display-1 text-white mb-8 opacity-0"
+                className="hero-title display-1 text-white mb-6 opacity-0"
               >
-                The Operating System for Every Device
+                Open-source embedded systems for intelligent physical devices
               </h1>
 
-              <p className="hero-subtitle measure text-lg sm:text-xl text-white/70 leading-relaxed mb-10 opacity-0">
-                The Embedded Operating Systems Research Foundation is a
-                501(c)(3) nonprofit. We build a free, open-source operating
-                system for embedded devices — and give away the tools,
-                documentation, and training that engineers, students, and
-                researchers need to use it.
+              <p className="hero-subtitle measure text-lg sm:text-xl text-white/70 leading-relaxed mb-5 opacity-0">
+                From open hardware and secure boot to a real-time OS, developer
+                tools, and on-device AI.
               </p>
+              <div className="hero-subtitle mb-8 opacity-0">
+                <p className="font-heading text-base font-semibold text-cyan-300">
+                  Open infrastructure for physical AI.
+                </p>
+                <p className="mt-2 font-mono text-xs text-emerald-300/90">
+                  {EAI_EDGE_PROFILE.maturity}: {EAI_EDGE_PROFILE.name} ={" "}
+                  {EAI_EDGE_PROFILE.sequence.join(" → ")}
+                </p>
+              </div>
 
               <div className="hero-actions flex flex-wrap items-center gap-4 opacity-0">
                 <Link
@@ -407,38 +413,16 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Hero 3D scene */}
+            {/* Accessible technical reference view */}
             <div className="hero-image opacity-0 relative lg:col-span-5">
               <div
-                className="relative rounded-2xl overflow-hidden border border-white/8 aspect-[4/3]"
+                className="relative overflow-hidden rounded-2xl border border-white/8"
                 style={{
                   background:
                     "linear-gradient(160deg, rgba(11,29,58,0.9), rgba(5,10,20,0.95))",
                 }}
               >
-                <Suspense
-                  fallback={
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="w-6 h-6 border-2 border-[#F97316] border-t-transparent rounded-full animate-spin" />
-                    </div>
-                  }
-                >
-                  <HeroTechStack />
-                </Suspense>
-              </div>
-              {/* The 3D scene's own overlay names the active stage; this line
-                  just signals that the diagram is interactive. */}
-              <div className="mt-3 flex items-center justify-center gap-1.5 text-[10px] sm:text-xs text-white/40 px-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
-                Hover the diagram to inspect each stage of the build
-              </div>
-              {/* One floating badge, not two: the board count it used to sit
-                  beside is already in the stat row a few inches below. */}
-              <div className="absolute -top-4 -right-4 glass rounded-xl px-4 py-3 border border-white/10 animate-float-delayed">
-                <div className="text-xs text-white/50 mb-0.5">Foundation</div>
-                <div className="font-heading font-bold text-[#F97316] text-lg">
-                  MIT License
-                </div>
+                <HeroTechStack />
               </div>
             </div>
           </div>
@@ -580,7 +564,7 @@ export default function Home() {
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl btn-press"
             >
               <Heart size={16} />
-              Make a Tax-Deductible Donation
+              Make a Donation
             </Link>
             <Link
               href="/get-involved"
@@ -617,52 +601,91 @@ export default function Home() {
             className="text-center mb-12"
           >
             <div className="badge-teal mb-4 inline-flex">
-              System Architecture
+              Architecture and maturity
             </div>
             <h2 id="arch-heading" className="display-2 text-white mb-4">
-              Built Layer by Layer
+              An Illustrative Reference Architecture
             </h2>
-            <p className="text-white/50 max-w-2xl mx-auto">
-              From silicon to application, every layer of EmbeddedOS is designed
-              for reliability, security, and developer experience.
+            <p className="text-white/50 max-w-3xl mx-auto">
+              This seven-stage view shows how the projects can compose. It is a
+              reference model, not a claim that the full architecture ships as
+              one product; planned and concept stages describe direction rather
+              than current availability.
             </p>
           </motion.div>
 
-          {/* Animated boot pipeline */}
-          <motion.div
+          <motion.ol
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             custom={1}
-            className="rounded-2xl overflow-hidden border border-white/10 p-8 glass"
+            className="grid gap-3 sm:grid-cols-2 lg:grid-cols-7"
+            aria-label="Architecture stages and maturity"
           >
-            <Suspense
-              fallback={
-                <div className="h-32 flex items-center justify-center text-white/20 text-sm">
-                  Loading pipeline...
+            {ARCHITECTURE_STAGES.map((stage, index) => (
+              <li
+                key={stage.id}
+                className="border-t bg-white/[0.025] px-3 py-4"
+                style={{ borderColor: stage.color }}
+              >
+                <div className="font-mono text-[10px] text-white/35">
+                  STAGE 0{index + 1}
                 </div>
-              }
-            >
-              <BootPipeline />
-            </Suspense>
-          </motion.div>
-          {/* Architecture image below */}
+                <h3 className="mt-2 text-sm font-bold text-white">
+                  {stage.label}
+                </h3>
+                <div
+                  className="mt-3 inline-flex rounded-full border px-2 py-1 font-mono text-[9px] uppercase tracking-wide"
+                  style={{
+                    borderColor: `${stage.color}66`,
+                    color: stage.color,
+                  }}
+                >
+                  {stage.maturity}
+                </div>
+              </li>
+            ))}
+          </motion.ol>
+
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             custom={2}
+            className="mt-6 border-y border-emerald-300/20 py-4 text-center font-mono text-sm text-emerald-300"
+          >
+            <p>
+              {EAI_EDGE_PROFILE.maturity}: {EAI_EDGE_PROFILE.name} ={" "}
+              {EAI_EDGE_PROFILE.sequence.join(" → ")}
+            </p>
+            <p className="mt-2 text-xs text-white/55">
+              Research horizon: AGI-enabling methods for autonomous physical
+              systems. No achieved AGI system is claimed as available today.
+            </p>
+          </motion.div>
+
+          <motion.figure
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={3}
             className="rounded-2xl overflow-hidden border border-white/10 mt-8"
           >
             <img
               src={ARCH_IMG}
-              alt="EmbeddedOS architecture diagram showing Hardware, Kernel, Platform, and Application layers"
+              alt="Illustrative EmbeddedOS reference architecture showing hardware, kernel, platform, and application layers"
               className="w-full h-auto"
               loading="lazy"
             />
-          </motion.div>
+            <figcaption className="border-t border-white/10 bg-[#050A14] px-4 py-3 text-center text-xs text-white/45">
+              Illustrative reference only. Individual projects and integrations
+              have different maturity levels; planned elements are not yet
+              available products.
+            </figcaption>
+          </motion.figure>
         </div>
       </section>
 
@@ -790,8 +813,9 @@ export default function Home() {
               4 Health Devices · 2 Patents Pending
             </h2>
             <p className="text-white/50 max-w-2xl mx-auto">
-              Open-source medical-grade hardware covering ~95% of all clinically
-              relevant health metrics.
+              In-development open hardware designs for health-monitoring
+              research. Physical reliability and clinical validation are
+              pending.
             </p>
           </motion.div>
 

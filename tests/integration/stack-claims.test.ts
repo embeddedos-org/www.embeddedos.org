@@ -105,11 +105,9 @@ describe("retired claims do not reappear", () => {
     // — and the site stated it three incompatible ways at once ("Sub-1ms
     // interrupt latency", "<1us" scheduling, "<=10us context switch").
     //
-    // Product-level figures (eRadar360 alert latency, eNI end-to-end, eDB
-    // query) are NOT covered here. They may be design targets or measured on
-    // hardware this repository cannot see; failing them would assert they are
-    // false, which the evidence does not support either way. They are listed in
-    // docs/unverified-claims.md for the owner to confirm or retire.
+    // Product-level claims are governed separately: the critical retired
+    // radar/ENI strings and their required status language are covered by
+    // public-claims-policy.test.ts. This check remains scoped to kernel timing.
     const pattern =
       /(sub-?\s*\d+\s*(ms|[μµ]s)|[<≤]\s*\d+\s*(ms|[μµ]s))[^.]{0,40}(context switch|interrupt latency|scheduling latency)/i;
 

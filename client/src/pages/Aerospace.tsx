@@ -37,46 +37,46 @@ const fadeUp = {
 const VEHICLES = [
   {
     name: "AeroSwift-Personal (AS-1/2)",
-    tagline: "Personal Air Vehicle",
-    desc: "A 1-to-2 passenger personal air vehicle (PAV) designed for daily consumer commutes. Features foldable wings for garage storage, solar-hybrid propulsion, and a 90 kWh battery pack for 300+ km range.",
+    tagline: "Personal Air Vehicle Concept",
+    desc: "Concept design for a 1-to-2 passenger personal air vehicle. Foldable wings, solar-hybrid propulsion, a 90 kWh battery, and 300+ km range are design targets, not flight-tested specifications.",
     color: "#60A5FA",
     icon: Plane,
     model: "personal" as const,
     telemetry: [
-      { label: "Passengers", value: "1–2" },
-      { label: "Battery", value: "90 kWh" },
-      { label: "Range", value: "300+ km" },
-      { label: "Storage", value: "Foldable Wings" },
-      { label: "Top Speed", value: "185 mph" },
-      { label: "Altitude", value: "1,200 ft" },
+      { label: "Target Capacity", value: "1–2" },
+      { label: "Target Battery", value: "90 kWh" },
+      { label: "Target Range", value: "300+ km" },
+      { label: "Design Feature", value: "Foldable Wings" },
+      { label: "Target Speed", value: "185 mph" },
+      { label: "Target Altitude", value: "1,200 ft" },
     ],
     features: [
-      "Consumer commute",
-      "Garage-storable",
-      "Autonomous flight modes",
-      "Tesla-style controls",
+      "Target use: consumer commute",
+      "Design goal: garage storage",
+      "Proposed autonomous flight modes",
+      "Proposed touchscreen controls",
     ],
   },
   {
     name: "AeroSwift-Transit (AS-10)",
-    tagline: "Urban Air Taxi",
-    desc: "A 10-passenger urban air mobility (UAM) shuttle for commercial air taxi networks. Features a wide-body cabin, 480 kWh solid-state battery, triple-redundant safety systems, and AeroOS real-time OS.",
+    tagline: "Urban Air Taxi Concept",
+    desc: "Concept design for a 10-passenger urban-air-mobility shuttle. Cabin capacity, a 480 kWh solid-state battery, redundancy, and performance figures are design targets, not flight-tested specifications.",
     color: "#F472B6",
     icon: Rocket,
     model: "transit" as const,
     telemetry: [
-      { label: "Passengers", value: "10" },
-      { label: "Battery", value: "480 kWh" },
-      { label: "Range", value: "320 km" },
-      { label: "Safety", value: "Triple-Redundant" },
-      { label: "Top Speed", value: "210 mph" },
-      { label: "Altitude", value: "2,800 ft" },
+      { label: "Target Capacity", value: "10" },
+      { label: "Target Battery", value: "480 kWh" },
+      { label: "Target Range", value: "320 km" },
+      { label: "Design Target", value: "Triple-Redundant" },
+      { label: "Target Speed", value: "210 mph" },
+      { label: "Target Altitude", value: "2,800 ft" },
     ],
     features: [
-      "Commercial air taxi",
-      "Wide-body cabin",
-      "Fleet management",
-      "AeroOS RTOS",
+      "Target use: commercial air taxi",
+      "Proposed wide-body cabin",
+      "Planned fleet management",
+      "AeroOS research architecture",
     ],
   },
 ];
@@ -84,37 +84,37 @@ const VEHICLES = [
 const TECH_STACK = [
   {
     name: "AeroOS",
-    desc: "Real-time operating system for flight control",
+    desc: "Research operating-system design for flight-control studies",
     icon: Cpu,
     color: "#F97316",
   },
   {
     name: "Flight Computer",
-    desc: "8-layer & 12-layer TMR PCB design",
+    desc: "Proposed 8-layer and 12-layer TMR PCB designs",
     icon: Shield,
     color: "#22D3EE",
   },
   {
     name: "Solar-Hybrid Drive",
-    desc: "Photovoltaic + battery propulsion system",
+    desc: "Proposed photovoltaic and battery propulsion concept",
     icon: Zap,
     color: "#F59E0B",
   },
   {
     name: "BLE + 5G Telemetry",
-    desc: "Real-time fleet monitoring and control",
+    desc: "Planned fleet telemetry and control research",
     icon: Wifi,
     color: "#34D399",
   },
   {
     name: "Solid-State Battery",
-    desc: "480 kWh next-gen energy storage",
+    desc: "480 kWh energy-storage design target",
     icon: Battery,
     color: "#A78BFA",
   },
   {
     name: "VTOL Aerodynamics",
-    desc: "Vertical takeoff and landing system",
+    desc: "Proposed vertical-takeoff-and-landing architecture",
     icon: Wind,
     color: "#60A5FA",
   },
@@ -285,7 +285,7 @@ function VehicleCard({
             style={{ background: vehicle.color }}
           />
           <span className="text-[9px] text-white/40 font-mono uppercase tracking-widest">
-            3D Simulation
+            Concept 3D Render
           </span>
         </div>
         <div
@@ -304,7 +304,7 @@ function VehicleCard({
       <div className="px-4 py-2 bg-[#040810] border-b border-white/5">
         <div className="flex items-center justify-between mb-1">
           <span className="text-[9px] text-white/30 uppercase tracking-widest flex items-center gap-1">
-            <Navigation className="w-2.5 h-2.5" /> Live Flight Telemetry
+            <Navigation className="w-2.5 h-2.5" /> Simulated Flight Telemetry
           </span>
           <span
             className="text-[9px] font-mono"
@@ -402,16 +402,16 @@ export default function Aerospace() {
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-teal mb-4 inline-flex">
               <Plane size={12} />
-              eos-aero · AeroSwift Platform
+              eos-aero · Concept Design
             </div>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
               Solar-Hybrid{" "}
               <span className="text-gradient-blue">VTOL Aircraft</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
-              The AeroSwift Platform — a unified family of solar-hybrid vertical
-              takeoff and landing aircraft powered by AeroOS, scaling from
-              personal transport to commercial urban air mobility.
+              AeroSwift is a concept family of solar-hybrid vertical-takeoff
+              aircraft and a research software architecture. No aircraft has
+              been flight-tested or certified.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a
@@ -433,10 +433,10 @@ export default function Aerospace() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {[
-              { value: "2", label: "Vehicle Models", color: "#60A5FA" },
-              { value: "480 kWh", label: "Max Battery", color: "#F59E0B" },
-              { value: "VTOL", label: "Flight Mode", color: "#34D399" },
-              { value: "AeroOS", label: "Real-Time OS", color: "#F97316" },
+              { value: "2", label: "Concept Designs", color: "#60A5FA" },
+              { value: "480 kWh", label: "Battery Target", color: "#F59E0B" },
+              { value: "VTOL", label: "Design Goal", color: "#34D399" },
+              { value: "AeroOS", label: "Research OS", color: "#F97316" },
             ].map(s => (
               <div key={s.label}>
                 <div
@@ -463,11 +463,11 @@ export default function Aerospace() {
             className="mb-10 text-center"
           >
             <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              Two Vehicle Models
+              Two Vehicle Concepts
             </h2>
             <p className="text-white/50">
-              Interactive 3D renders with live flight telemetry simulation. One
-              unified hardware architecture, one OS, infinite scale.
+              Illustrative 3D concept renders with simulated telemetry. Values
+              shown are design targets pending hardware and flight testing.
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -492,8 +492,8 @@ export default function Aerospace() {
               AeroOS Technology Stack
             </h2>
             <p className="text-white/50">
-              Built on EmbeddedOS with aerospace-grade extensions for
-              safety-critical flight systems.
+              A research architecture targeting aerospace safety objectives. It
+              has not been certified for safety-critical flight.
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -542,12 +542,12 @@ export default function Aerospace() {
           >
             <Gauge className="w-10 h-10 text-[#60A5FA] mx-auto mb-4" />
             <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Open Aerospace Platform
+              Open Aerospace Research
             </h2>
             <p className="text-white/50 max-w-xl mx-auto mb-6">
-              AeroOS and all flight control firmware are open source. Build on
-              top of AeroSwift, contribute to the platform, or integrate
-              EmbeddedOS into your own aerospace project.
+              Explore the available research designs and software, contribute
+              evidence, or use the concepts as a starting point for
+              independently validated aerospace work.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a

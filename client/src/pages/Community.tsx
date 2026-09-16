@@ -238,6 +238,13 @@ export default function Community() {
               },
               {
                 icon: MessageSquare,
+                label: "Discord",
+                desc: "Real-time community chat and collaboration",
+                href: SOCIAL_URLS.discord,
+                color: "#5865F2",
+              },
+              {
+                icon: MessageSquare,
                 label: "GitHub Discussions",
                 desc: "Q&A, show & tell, and RFC discussions",
                 href: SOCIAL_URLS.discussions,

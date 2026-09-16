@@ -1432,7 +1432,7 @@ const MODULES = [
     color: "#10B981",
     title: "ENI — Embedded Neural Interface",
     description:
-      "1,024-channel neural recording, real-time spike sorting, and TENS neuromodulation",
+      "Configuration-specific neural-recording and spike-sorting research API design",
     subsections: [
       {
         name: "Event System",

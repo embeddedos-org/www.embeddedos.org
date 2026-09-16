@@ -14,6 +14,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import {
+  MAILING_ADDRESS,
+  formatMailingAddress,
+  formatStreetAddress,
+} from "../../client/src/data/foundation";
 
 const ROOT = path.resolve(__dirname, "../..");
 const INDEX_HTML = path.join(ROOT, "client/index.html");
@@ -27,6 +32,8 @@ const appTsx = fs.readFileSync(APP_TSX, "utf8");
 const foundationTs = fs.readFileSync(FOUNDATION_TS, "utf8");
 
 const ORIGIN = "https://www.embeddedos.org";
+const PUBLIC_BUSINESS_ADDRESS =
+  "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
 
 /** The single JSON-LD block in the shell, parsed. */
 function structuredData(): Record<string, unknown> {
@@ -118,6 +125,25 @@ function sitemapPaths(): string[] {
   ].map(m => m[1] || "/");
 }
 
+describe("the public business address", () => {
+  it("formats the canonical unit and complete address without retyping fields", () => {
+    expect(formatStreetAddress()).toBe("2601 Cortez Dr, Unit 1104");
+    expect(formatMailingAddress()).toBe(PUBLIC_BUSINESS_ADDRESS);
+  });
+
+  it("keeps the structured address identical to the canonical fields", () => {
+    const address = structuredData().address as Record<string, string>;
+    expect(address.streetAddress).toBe(formatStreetAddress());
+    expect(address.addressLocality).toBe(MAILING_ADDRESS.city);
+    expect(address.addressRegion).toBe(MAILING_ADDRESS.region);
+    expect(address.postalCode).toBe(MAILING_ADDRESS.postalCode);
+    expect(address.addressCountry).toBe(MAILING_ADDRESS.countryCode);
+
+    const publicAddress = `${address.streetAddress}, ${address.addressLocality}, ${address.addressRegion} ${address.postalCode}, ${MAILING_ADDRESS.country}`;
+    expect(publicAddress).toBe(PUBLIC_BUSINESS_ADDRESS);
+  });
+});
+
 describe("structured data agrees with the source of truth", () => {
   it("publishes the same EIN the pages publish", () => {
     expect(structuredData().taxID).toBe(foundationValue("ein"));
@@ -137,14 +163,9 @@ describe("structured data agrees with the source of truth", () => {
     expect(structuredData().email).toBe(contactEmails().contact);
   });
 
-  it("publishes the same postal address the contact page publishes", () => {
+  it("publishes a PostalAddress", () => {
     const address = structuredData().address as Record<string, string>;
     expect(address["@type"]).toBe("PostalAddress");
-    expect(address.streetAddress).toBe(foundationValue("street"));
-    expect(address.addressLocality).toBe(foundationValue("city"));
-    expect(address.addressRegion).toBe(foundationValue("region"));
-    expect(address.postalCode).toBe(foundationValue("postalCode"));
-    expect(address.addressCountry).toBe(foundationValue("countryCode"));
   });
 
   it("declares 501(c)(3) status", () => {
@@ -246,6 +267,11 @@ const SOCIAL_ACCOUNTS: { key: string; anySpelling: RegExp }[] = [
     key: "discussions",
     anySpelling:
       /https?:\/\/(?:www\.)?github\.com\/orgs\/embeddedos-org\/discussions\/?(?![\w.\-/$])/gi,
+  },
+  {
+    key: "discord",
+    anySpelling:
+      /https?:\/\/(?:www\.)?discord\.gg\/n6Kd9fwja\/?(?![\w.\-/$])/gi,
   },
 ];
 

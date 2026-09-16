@@ -5,11 +5,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
-    "build": "pnpm build:client && pnpm prerender && pnpm sitemap && pnpm build:server",
+    "build": "pnpm build:client && pnpm prerender && pnpm sitemap:dist && pnpm build:server",
     "build:client": "NODE_ENV=production vite build",
     "build:server": "NODE_ENV=production esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "prerender": "node scripts/prerender.mjs",
     "sitemap": "node scripts/gen-sitemap.mjs",
+    "sitemap:dist": "node scripts/gen-sitemap.mjs --dist",
+    "sitemap:check": "node scripts/gen-sitemap.mjs --check",
     "deploy:branch": "node scripts/deploy-branch.mjs",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
@@ -94,7 +96,7 @@
     "mysql2": "^3.15.0",
     "nanoid": "^5.1.5",
     "next-themes": "^0.4.6",
-    "nodemailer": "^9.0.3",
+    "nodemailer": "^9.1.1",
     "react": "^19.2.1",
     "react-day-picker": "^9.11.1",
     "react-dom": "^19.2.1",
@@ -130,7 +132,6 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.9.0",
     "jsdom": "^30.0.1",
-    "pnpm": "^10.15.1",
     "prettier": "^3.6.2",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.1.14",
@@ -151,7 +152,8 @@
     },
     "overrides": {
       "postcss>nanoid": "^3.3.18",
-      "esbuild": "^0.25.0"
+      "esbuild": "^0.25.0",
+      "qs": "^6.16.0"
     }
   }
 }

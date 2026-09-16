@@ -4,47 +4,62 @@ import { Brain, Zap, Shield, Activity, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 const specs = [
-  { label: "Max Channels", value: "1024", unit: "channels", color: "#A855F7" },
-  { label: "Sample Rate", value: "30,000", unit: "Hz", color: "#F97316" },
+  {
+    label: "Channel Count",
+    value: "Config.",
+    unit: "hardware-defined",
+    color: "#A855F7",
+  },
+  {
+    label: "Sample Rate",
+    value: "Config.",
+    unit: "hardware-defined",
+    color: "#F97316",
+  },
   { label: "Applications", value: "4", unit: "use cases", color: "#22D3EE" },
-  { label: "Signal Types", value: "6", unit: "types", color: "#34D399" },
+  {
+    label: "Research Modalities",
+    value: "6",
+    unit: "modalities",
+    color: "#34D399",
+  },
 ];
 
 const signalTypes = [
   {
     id: "eeg",
     name: "EEG",
-    desc: "Electroencephalography — scalp-level brain activity. 0.1–100 Hz, 10–100 μV amplitude. Used for BCI, sleep staging, seizure detection.",
+    desc: "Scalp-level electrical activity considered for BCI, sleep, and seizure-pattern research. Performance depends on the protocol, electrodes, and acquisition hardware.",
     color: "#A855F7",
   },
   {
     id: "emg",
     name: "EMG",
-    desc: "Electromyography — muscle electrical activity. 20–2000 Hz, 0.1–10 mV amplitude. Used for prosthetic control, gesture recognition.",
+    desc: "Muscle electrical activity considered for assistive-control and gesture research. Performance depends on the protocol, electrodes, and acquisition hardware.",
     color: "#F97316",
   },
   {
     id: "ecog",
     name: "ECoG",
-    desc: "Electrocorticography — cortical surface recording. 0.1–500 Hz, 0.01–5 mV amplitude. High spatial resolution for motor BCI.",
+    desc: "Cortical-surface recording modality considered for motor-interface research. Clinical use is outside the current platform claim.",
     color: "#22D3EE",
   },
   {
     id: "lfp",
     name: "LFP",
-    desc: "Local Field Potentials — deep brain recording. 0.1–300 Hz. Used for DBS optimization and Parkinson's closed-loop therapy.",
+    desc: "Deep-brain recording modality considered for laboratory research. No therapeutic or clinical use is claimed.",
     color: "#34D399",
   },
   {
     id: "spikes",
     name: "Spikes",
-    desc: "Single-unit action potentials — individual neuron recording. 300–5000 Hz, 50–500 μV. Highest resolution BCI signal.",
+    desc: "Single-unit action-potential research. Acquisition and resolution depend on the electrode and hardware configuration.",
     color: "#FBBF24",
   },
   {
     id: "fnirs",
     name: "fNIRS",
-    desc: "Functional near-infrared spectroscopy — hemodynamic response. 0.01–1 Hz. Non-invasive, wearable brain imaging.",
+    desc: "Optical hemodynamic-response modality considered for non-invasive research. Hardware support requires configuration-specific validation.",
     color: "#F472B6",
   },
 ];
@@ -53,26 +68,26 @@ const applications = [
   {
     icon: Activity,
     color: "#A855F7",
-    title: "Motor Prosthetics",
-    desc: "Decode motor intent from M1 cortex to control robotic limbs in real time. Supports 6-DOF arm control from 64-channel ECoG.",
+    title: "Motor Assistive-Control Research",
+    desc: "Research target: evaluate motor-intent decoding for assistive control using a configuration documented with the acquisition hardware.",
   },
   {
     icon: Brain,
     color: "#F97316",
-    title: "Seizure Detection",
-    desc: "Real-time seizure detection from scalp EEG with <2s detection latency. Triggers closed-loop neurostimulation to abort seizures.",
+    title: "Seizure-Pattern Research",
+    desc: "Research target: study seizure-pattern detection from scalp EEG. No clinical performance or treatment outcome is claimed.",
   },
   {
     icon: Zap,
     color: "#22D3EE",
-    title: "BCI Communication",
-    desc: "P300 and SSVEP-based communication for locked-in patients. 40+ characters/minute with 95%+ accuracy on 8-channel EEG.",
+    title: "BCI Communication Research",
+    desc: "Research target: evaluate P300- and SSVEP-based communication with protocol-specific accuracy and throughput reporting.",
   },
   {
     icon: Shield,
     color: "#34D399",
-    title: "Cognitive Monitoring",
-    desc: "Continuous cognitive load and fatigue monitoring for safety-critical operators (pilots, surgeons, drivers). Real-time alerting.",
+    title: "Cognitive-Indicator Research",
+    desc: "Research target: investigate cognitive-load and fatigue indicators; safety-critical use would require independent validation and approval.",
   },
 ];
 
@@ -90,7 +105,7 @@ export default function NeuralLinkAIPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-sm font-medium mb-6">
-              <Brain className="w-4 h-4" /> NEURAL LINK AI
+              <Brain className="w-4 h-4" /> NEURAL LINK AI · RESEARCH
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
               Neural Link AI
@@ -99,9 +114,9 @@ export default function NeuralLinkAIPage() {
               eNI — Embedded Neural Interface Platform
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              The EmbeddedOS neural interface platform for brain-computer
-              interfaces and neural signal processing. 1024 channels, 6 signal
-              types, closed-loop stimulation.
+              An in-development neural-interface research platform. Channel
+              count and sample rate depend on the acquisition hardware and
+              configuration; no clinical performance is claimed.
             </p>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
@@ -130,11 +145,11 @@ export default function NeuralLinkAIPage() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            Supported Signal Types
+            Research Signal Modalities
           </h2>
           <p className="text-gray-400 text-center mb-8">
-            eNI supports 6 neural signal modalities with unified acquisition,
-            filtering, and decoding API.
+            The research design considers six neural signal modalities. Hardware
+            support and performance require configuration-specific validation.
           </p>
           <div className="flex flex-wrap gap-2 mb-6 justify-center">
             {signalTypes.map(s => (

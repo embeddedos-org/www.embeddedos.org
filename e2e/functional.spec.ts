@@ -129,8 +129,9 @@ test.describe("donation surface", () => {
   test("the donate page presents a usable giving path", async ({ page }) => {
     await page.goto("/donate");
     await expect(page.locator("h1").first()).toBeVisible();
-    await expect(page.locator("body")).toContainText(/tax[- ]deductible/i);
+    await expect(page.locator("body")).toContainText("501(c)(3)");
     await expect(page.locator("body")).toContainText("41-4821627");
+    await expect(page.locator("body")).not.toContainText(/tax[- ]deductible/i);
     // Either the embed renders, or the fallback link to the hosted form is offered.
     const iframe = page.locator('iframe[title*="Donation" i]');
     await expect(iframe).toHaveCount(1);

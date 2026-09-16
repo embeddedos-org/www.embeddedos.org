@@ -28,6 +28,13 @@ const DIST = path.join(ROOT, "dist", "public");
 const APP_TSX = path.join(ROOT, "client", "src", "App.tsx");
 const ORIGIN = process.env.SITE_ORIGIN ?? "https://www.embeddedos.org";
 const PORT = Number(process.env.PRERENDER_PORT ?? 41234);
+const HOST = process.env.PRERENDER_HOST ?? "127.0.0.1";
+
+export function formatHostForUrl(host) {
+  return host.includes(":") ? `[${host}]` : host;
+}
+
+const URL_HOST = formatHostForUrl(HOST);
 /**
  * Prerendering 95 routes is the largest single cost in the verification gate —
  * 119s of a 149s `pnpm build` at the old fixed default of 4, which is most of
@@ -86,7 +93,7 @@ function startServer(shell) {
   app.use(express.static(DIST, { index: false, redirect: false }));
   app.use((_req, res) => res.type("html").send(shell));
   return new Promise(resolve => {
-    const server = app.listen(PORT, "127.0.0.1", () => resolve(server));
+    const server = app.listen(PORT, HOST, () => resolve(server));
   });
 }
 
@@ -444,7 +451,7 @@ async function main() {
       const errors = [];
       page.on("pageerror", e => errors.push(String(e)));
       try {
-        await page.goto(`http://127.0.0.1:${PORT}${route}`, {
+        await page.goto(`http://${URL_HOST}:${PORT}${route}`, {
           waitUntil: "domcontentloaded",
           timeout: 45_000,
         });

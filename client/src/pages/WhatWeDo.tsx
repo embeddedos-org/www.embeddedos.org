@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import {
@@ -6,11 +6,9 @@ import {
   Zap,
   Brain,
   Network,
-  Database,
   Package,
   Monitor,
   Globe,
-  Smartphone,
   Layers,
   Shield,
   Activity,
@@ -28,183 +26,31 @@ import {
   Building2,
   Leaf,
   Microscope,
+  type LucideIcon,
 } from "lucide-react";
 import { BOARD_COUNT, REPO_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import {
+  ARCHITECTURE_STAGES,
+  MATURITY_STATUSES,
+  type ArchitectureStageId,
+} from "@/data/architecture";
 
-const STACK_LAYERS = [
-  {
-    id: "hardware",
-    label: "Hardware Layer",
-    color: "#22D3EE",
-    bg: "rgba(34,211,238,0.08)",
-    border: "rgba(34,211,238,0.3)",
-    items: [
-      {
-        icon: Heart,
-        label: "Health Devices",
-        sub: "KEY, BAND, RING, LAB",
-        href: "/health",
-      },
-      {
-        icon: Plane,
-        label: "Aerospace",
-        sub: "AeroSwift, ePAM",
-        href: "/aerospace",
-      },
-      {
-        icon: Car,
-        label: "Transport",
-        sub: "eRadar360, ADAS",
-        href: "/eradar360",
-      },
-      {
-        icon: Factory,
-        label: "Industrial",
-        sub: "PLCs, Sensors, HMI",
-        href: "/ecad-hardware",
-      },
-      {
-        icon: Bot,
-        label: "Robotics",
-        sub: "Arms, AMR, Cobots",
-        href: "/ecad-hardware",
-      },
-      {
-        icon: Leaf,
-        label: "Energy",
-        sub: "BMS, Solar, Grid",
-        href: "/ecad-hardware",
-      },
-    ],
-  },
-  {
-    id: "os",
-    label: "OS Foundation",
-    color: "#34D399",
-    bg: "rgba(52,211,153,0.08)",
-    border: "rgba(52,211,153,0.3)",
-    items: [
-      {
-        icon: Cpu,
-        label: "EoS Kernel",
-        sub: "RTOS · 33 HAL peripherals · 41 profiles",
-        href: "/eos",
-      },
-      {
-        icon: Shield,
-        label: "eBoot",
-        sub: "Secure bootloader · A/B slots · Ed25519",
-        href: "/eboot",
-      },
-      {
-        icon: Package,
-        label: "eBuild",
-        sub: "Cross-compile · 18 commands · 14 SDKs",
-        href: "/ebuild",
-      },
-      {
-        icon: Network,
-        label: "EIPC",
-        sub: "Secure IPC · HMAC-SHA256 · zero-copy",
-        href: "/eipc",
-      },
-    ],
-  },
-  {
-    id: "intelligence",
-    label: "Intelligence Layer",
-    color: "#A78BFA",
-    bg: "rgba(167,139,250,0.08)",
-    border: "rgba(167,139,250,0.3)",
-    items: [
-      {
-        icon: Brain,
-        label: "EAI Runtime",
-        sub: "On-device LLM · ReAct agents · LoRA",
-        href: "/eai",
-      },
-      {
-        icon: Activity,
-        label: "ENI / Neural",
-        sub: "1,024-ch BCI · spike sorting · TENS",
-        href: "/eni",
-      },
-      {
-        icon: Database,
-        label: "eDB",
-        sub: "SQL + Doc + KV · AES-256 · REST API",
-        href: "/edb",
-      },
-    ],
-  },
-  {
-    id: "applications",
-    label: "Application Layer",
-    color: "#F97316",
-    bg: "rgba(249,115,22,0.08)",
-    border: "rgba(249,115,22,0.3)",
-    items: [
-      {
-        icon: Monitor,
-        label: "eOffice Suite",
-        sub: "11 productivity apps · CRDT collab",
-        href: "/eoffice",
-      },
-      {
-        icon: Layers,
-        label: "eApps (43)",
-        sub: "Productivity · Media · Games · Connectivity",
-        href: "/eapps",
-      },
-      {
-        icon: Globe,
-        label: "eBrowser",
-        sub: "Embedded web engine · DOM API · JS",
-        href: "/ebrowser",
-      },
-      {
-        icon: Smartphone,
-        label: "eServiceApps",
-        sub: "Flutter super-app · eSocial · eRide",
-        href: "/eserviceapps",
-      },
-    ],
-  },
-  {
-    id: "tools",
-    label: "Developer Tools",
-    color: "#FBBF24",
-    bg: "rgba(251,191,36,0.08)",
-    border: "rgba(251,191,36,0.3)",
-    items: [
-      {
-        icon: Code2,
-        label: "EoStudio IDE",
-        sub: "Board picker · HAL config · AI tutor",
-        href: "/eostudio",
-      },
-      {
-        icon: HardDrive,
-        label: "EoSim",
-        sub: `${SIM_PLATFORM_COUNT} virtual platforms · QEMU · HIL`,
-        href: "/eosim",
-      },
-      {
-        icon: Wifi,
-        label: "eFlow",
-        sub: "Visual node editor · 5 block categories",
-        href: "/eflow",
-      },
-    ],
-  },
-];
+const STAGE_ICONS: Record<ArchitectureStageId, LucideIcon> = {
+  "hardware-sensors": Cpu,
+  "secure-boot": Shield,
+  "eos-kernel-drivers": Layers,
+  "ipc-data-storage": Network,
+  applications: Monitor,
+  "on-device-ai": Brain,
+  "physical-action-feedback": Activity,
+};
 
 const USE_CASES = [
   {
     icon: Heart,
     color: "#EF4444",
     title: "Healthcare & Wearables",
-    desc: "EoS runs on nRF5340 inside HEALTH-KEY ULTRA and HEALTH-BAND Neuro. ENI captures 4-channel EEG and sEMG. EAI classifies neurological patterns in real time. eDB stores encrypted biometric history. eServiceApps delivers the companion mobile app.",
+    desc: "HEALTH-KEY ULTRA and HEALTH-BAND Neuro are in-development reference designs. The proposed stack combines EoS, configuration-specific ENI acquisition, EAI research models, encrypted local data, and a planned companion app; clinical validation is pending.",
     products: ["EoS", "ENI", "EAI", "eDB", "eServiceApps"],
     href: "/health",
   },
@@ -212,7 +58,7 @@ const USE_CASES = [
     icon: Plane,
     color: "#22D3EE",
     title: "Aerospace & UAV",
-    desc: "AeroSwift Personal runs EoS on STM32H7 with ARINC-429 HAL. eBoot provides cryptographically verified staged boot. EIPC routes sensor data between flight-computer cores. EoSim validates firmware against a digital twin before hardware deployment.",
+    desc: "AeroSwift Personal is a concept aircraft and software reference architecture. The design combines EoS, an ARINC-429 HAL target, eBoot, EIPC, and EoSim; it has not been flight-tested or certified.",
     products: ["EoS", "eBoot", "EIPC", "EoSim"],
     href: "/aerospace",
   },
@@ -220,7 +66,7 @@ const USE_CASES = [
     icon: Car,
     color: "#F97316",
     title: "Automotive & ADAS",
-    desc: "eRadar360 Aegis One fuses 4× 77 GHz FMCW radar, 8× cameras, and V2X on EoS. EAI runs the threat-detection neural network in real time. EIPC safely routes CAN FD data between AUTOSAR partitions. eBuild cross-compiles the full stack for NXP S32K344.",
+    desc: "eRadar360 Aegis One is a design-stage reference architecture combining radar, camera, and V2X inputs with experimental EAI detection, EIPC data paths, and an eBuild target for NXP S32K344. Performance, partitioning, and end-to-end integration remain validation targets.",
     products: ["EoS", "EAI", "EIPC", "eBuild"],
     href: "/eradar360",
   },
@@ -236,7 +82,7 @@ const USE_CASES = [
     icon: Bot,
     color: "#A78BFA",
     title: "Robotics & Cobots",
-    desc: "EoS SMP runs on Cortex-A72 with real-time servo control. ENI reads sEMG for human-robot collaboration. EAI runs SLAM and path-planning models on-device. EoStudio provides a visual robot configuration and simulation environment.",
+    desc: "This reference scenario explores EoS servo control, ENI sEMG input, on-device EAI models, and EoStudio-assisted configuration. Individual elements carry separate maturity labels and require system-specific validation.",
     products: ["EoS", "ENI", "EAI", "EoStudio"],
     href: "/ecad-hardware",
   },
@@ -252,7 +98,7 @@ const USE_CASES = [
     icon: Microscope,
     color: "#F59E0B",
     title: "Medical Devices",
-    desc: "EoS targets IEC 60601-1 certified medical hardware. ENI captures 1,024-channel neural signals for BCI and neurofeedback. EAI classifies seizure patterns and motor imagery. eDB stores HIPAA-compliant patient data with full audit trails.",
+    desc: "The medical research stack targets IEC 60601-1 design requirements. ENI channel count and sample rate are configuration-specific; BCI, neurofeedback, seizure-pattern classification, and regulated patient-data use all require separate validation and approval.",
     products: ["EoS", "ENI", "EAI", "eDB"],
     href: "/ecad-hardware",
   },
@@ -278,71 +124,70 @@ const PRODUCT_NUMBERS = [
 function AnimatedStackDiagram() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [activeLayer, setActiveLayer] = useState<string | null>(null);
 
   return (
     <div ref={ref} className="w-full max-w-5xl mx-auto">
-      <div className="space-y-3">
-        {STACK_LAYERS.map((layer, li) => (
-          <motion.div
-            key={layer.id}
-            initial={{ opacity: 0, x: -40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{
-              delay: li * 0.12,
-              duration: 0.5,
-              ease: [0.23, 1, 0.32, 1],
-            }}
-            onMouseEnter={() => setActiveLayer(layer.id)}
-            onMouseLeave={() => setActiveLayer(null)}
-            className="rounded-xl border transition-all duration-300 cursor-default"
-            style={{
-              background:
-                activeLayer === layer.id ? layer.bg : "rgba(255,255,255,0.02)",
-              borderColor:
-                activeLayer === layer.id
-                  ? layer.border
-                  : "rgba(255,255,255,0.08)",
-            }}
-          >
-            <div
-              className="px-5 py-3 flex items-center gap-3 border-b"
-              style={{ borderColor: "rgba(255,255,255,0.06)" }}
+      <ol className="space-y-3" aria-label="Architecture stages by maturity">
+        {ARCHITECTURE_STAGES.map((stage, index) => {
+          const StageIcon = STAGE_ICONS[stage.id];
+          return (
+            <motion.li
+              key={stage.id}
+              initial={{ opacity: 0, x: -40 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{
+                delay: index * 0.08,
+                duration: 0.5,
+                ease: [0.23, 1, 0.32, 1],
+              }}
+              className="rounded-xl border px-5 py-4"
+              style={{
+                background: `${stage.color}0D`,
+                borderColor: `${stage.color}40`,
+              }}
             >
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ background: layer.color }}
-              />
-              <span
-                className="text-xs font-semibold tracking-widest uppercase"
-                style={{ color: layer.color }}
-              >
-                {layer.label}
-              </span>
-            </div>
-            <div className="p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {layer.items.map(item => (
-                <Link key={item.label} href={item.href}>
-                  <motion.div
-                    whileHover={{ scale: 1.04, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="rounded-lg p-3 flex flex-col gap-1.5 cursor-pointer transition-colors"
-                    style={{ background: "rgba(255,255,255,0.04)" }}
-                  >
-                    <item.icon size={18} style={{ color: layer.color }} />
-                    <div className="text-xs font-semibold text-white">
-                      {item.label}
-                    </div>
-                    <div className="text-[10px] text-gray-500 leading-tight">
-                      {item.sub}
-                    </div>
-                  </motion.div>
+              <div className="flex flex-wrap items-start gap-4">
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+                  style={{ background: `${stage.color}1A`, color: stage.color }}
+                >
+                  <StageIcon size={20} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-[10px] text-white/35">
+                      STAGE 0{index + 1}
+                    </span>
+                    <h3 className="font-bold text-white">{stage.label}</h3>
+                    <span
+                      className="rounded-full border px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide"
+                      style={{
+                        borderColor: `${stage.color}66`,
+                        color: stage.color,
+                      }}
+                    >
+                      {stage.maturity}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm leading-relaxed text-gray-400">
+                    {stage.description}
+                  </p>
+                  <p className="mt-2 font-mono text-[10px] text-white/45">
+                    {stage.products.join(" · ")}
+                  </p>
+                </div>
+                <Link
+                  href={stage.href}
+                  className="inline-flex min-h-11 items-center gap-1 px-2 text-xs font-semibold"
+                  style={{ color: stage.color }}
+                >
+                  Project detail <ArrowRight size={12} />
                 </Link>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+              </div>
+            </motion.li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
@@ -484,11 +329,17 @@ export default function WhatWeDo() {
               </span>{" "}
               Does
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-10">
-              We build the complete software stack for intelligent embedded
-              devices — from the bare-metal kernel to AI inference, neural
-              interfaces, productivity apps, and developer tools. One
-              open-source foundation powering every device category.
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-6">
+              We build open-source embedded-system projects spanning secure
+              boot, a real-time OS, communications, applications, developer
+              tools, on-device AI, and longer-term artificial general
+              intelligence (AGI) research. Each architecture stage below is
+              labeled by its current maturity; no achieved AGI system is
+              claimed.
+            </p>
+            <p className="mb-10 text-sm text-cyan-300/80">
+              The architecture below is an illustrative reference, not a claim
+              that every stage is available as one production system.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/getting-started">
@@ -562,16 +413,30 @@ export default function WhatWeDo() {
       {/* Full Stack Architecture */}
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-black mb-4">
-              The Complete Embedded Stack
+              Architecture by Maturity
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Every layer is open-source, MIT-licensed, and designed to work
-              together — or independently. Hover a layer to explore. Click any
-              product to learn more.
+            <p className="text-gray-400 max-w-3xl mx-auto">
+              Seven stages describe a possible path from sensing to physical
+              feedback. Available projects, research, plans, and concepts are
+              shown separately so the reference view does not imply uniform
+              readiness.
             </p>
           </div>
+          <ul
+            className="mb-10 flex flex-wrap justify-center gap-2"
+            aria-label="Approved maturity labels"
+          >
+            {MATURITY_STATUSES.map(status => (
+              <li
+                key={status}
+                className="rounded-full border border-white/15 bg-white/[0.03] px-3 py-1 font-mono text-[10px] uppercase tracking-wide text-white/65"
+              >
+                {status}
+              </li>
+            ))}
+          </ul>
           <AnimatedStackDiagram />
         </div>
       </section>
@@ -587,8 +452,9 @@ export default function WhatWeDo() {
               What We Build
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Five product families that compose into any embedded system — from
-              a 32 KB microcontroller to a quad-core application processor.
+              Project families that can be evaluated separately or composed for
+              device prototypes across microcontroller and application-processor
+              targets.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -607,7 +473,7 @@ export default function WhatWeDo() {
                 color: "#A78BFA",
                 title: "EAI + ENI",
                 sub: "Intelligence",
-                desc: "On-device LLM inference with 12 model families, ReAct agents, and LoRA fine-tuning. 1,024-channel neural interface for BCI, sEMG, and EEG applications.",
+                desc: "On-device AI, configurable neural-interface research, and longer-term AGI-enabling research. Model and acquisition limits depend on the named hardware configuration; no achieved AGI system is claimed.",
                 href: "/eai",
                 cta: "Explore EAI",
               },
@@ -700,8 +566,9 @@ export default function WhatWeDo() {
               Industry Use Cases
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              EmbeddedOS products compose into complete solutions across eight
-              major device categories.
+              These reference scenarios show where projects may compose across
+              device categories. They mix available work, research, and planned
+              integrations rather than representing end-to-end shipped systems.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -723,8 +590,9 @@ export default function WhatWeDo() {
               Hardware Design Portfolio
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              15 CAD hardware design categories — from health wearables to
-              aerospace systems — all engineered to run the EmbeddedOS stack.
+              CAD and hardware references span health, aerospace, industrial,
+              and other device concepts. Their availability and validation vary
+              by design.
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -897,11 +765,12 @@ export default function WhatWeDo() {
               Open Source. Forever.
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              EmbeddedOS Research Foundation is a 501(c)(3) nonprofit. Every
-              line of code is MIT-licensed. No vendor lock-in, no proprietary
-              blobs, no closed APIs. We believe the infrastructure for
-              intelligent devices should be a public good — freely available to
-              every engineer, student, and researcher on Earth.
+              EmbeddedOS Research Foundation is a 501(c)(3) nonprofit.
+              Foundation-authored projects are published under the MIT license,
+              with public repositories and documentation. We believe open
+              infrastructure for intelligent devices should be a public good
+              that engineers, students, and researchers can inspect and build
+              upon.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/about">

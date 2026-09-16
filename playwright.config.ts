@@ -1,6 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const PORT = Number(process.env.E2E_PORT ?? 42200);
+const HOST = process.env.E2E_HOST ?? "127.0.0.1";
+const URL_HOST = HOST.includes(":") ? `[${HOST}]` : HOST;
+const BASE_URL = `http://${URL_HOST}:${PORT}`;
 
 export default defineConfig({
   testDir: "./e2e",
@@ -29,7 +32,7 @@ export default defineConfig({
   workers: process.env.CI ? 4 : undefined,
   reporter: [["list"]],
   use: {
-    baseURL: `http://127.0.0.1:${PORT}`,
+    baseURL: BASE_URL,
     trace: "on-first-retry",
     headless: true,
   },
@@ -48,7 +51,7 @@ export default defineConfig({
   // prerendered HTML, the storage proxy and the real 404 handler.
   webServer: {
     command: `NODE_ENV=production PORT=${PORT} node dist/index.js`,
-    port: PORT,
+    url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
     stdout: "ignore",

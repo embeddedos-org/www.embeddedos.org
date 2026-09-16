@@ -21,7 +21,7 @@ import {
   Layers,
 } from "lucide-react";
 import { Link } from "wouter";
-import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import { SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -112,33 +112,33 @@ const BOARD_FAMILIES = [
 const FEATURES = [
   {
     icon: Cpu,
-    title: `${BOARD_COUNT} Boards`,
-    desc: "Comprehensive BSP support across ARM, RISC-V, Xtensa, AVR, and automotive SoCs.",
+    title: "Board Definitions",
+    desc: "Repository board definitions across ARM, RISC-V, Xtensa, AVR, and automotive SoC targets.",
   },
   {
     icon: Zap,
     title: "EoSim Simulator",
-    desc: `Test firmware on ${SIM_PLATFORM_COUNT} virtual platforms without physical hardware.`,
+    desc: `${SIM_PLATFORM_COUNT} repository platform profiles for firmware simulation without physical hardware.`,
   },
   {
     icon: Shield,
     title: "Secure Boot",
-    desc: "Hardware-backed secure boot with eBoot on every supported platform.",
+    desc: "Design goal: hardware-backed secure boot with eBoot; per-platform validation is pending.",
   },
   {
     icon: Wifi,
     title: "Universal Drivers",
-    desc: "Unified driver model — write once, run on any supported board.",
+    desc: "Unified driver-model goal; portability and hardware validation vary by target.",
   },
   {
     icon: Wrench,
-    title: "ebuild Integration",
-    desc: "One command to build for any target: `ebuild build --target stm32h7`.",
+    title: "ebuild Targeting",
+    desc: "Repository tooling exposes target-based builds, for example: `ebuild build --target stm32h7`; results vary by target.",
   },
   {
     icon: ArrowRight,
     title: "OTA Updates",
-    desc: "Delta OTA firmware updates with rollback protection on all platforms.",
+    desc: "Design target: delta OTA updates with rollback protection; per-platform validation is pending.",
   },
 ];
 
@@ -249,11 +249,11 @@ const ECAD_FAMILIES = [
   {
     icon: Heart,
     name: "eHealth365",
-    tagline: "Smart Ring Pro + Smart Patch Pro — ~90% health metric coverage",
+    tagline: "Smart Ring Pro + Smart Patch Pro — in-development concepts",
     color: "#F97316",
     products: [
-      "Smart Ring Pro — vitality hub ($299)",
-      "Smart Patch Pro — chemistry hub ($199)",
+      "Smart Ring Pro — planning estimate: $299",
+      "Smart Patch Pro — planning estimate: $199",
       "AI mobile health hub",
       "Monthly blood + mineral cartridges",
     ],
@@ -263,13 +263,13 @@ const ECAD_FAMILIES = [
   {
     icon: Radio,
     name: "eRadar360 / Aegis One",
-    tagline: "360° automotive safety — radar, laser, V2X, 6 TOPS AI",
+    tagline: "Design-stage automotive sensing reference architecture",
     color: "#22D3EE",
     products: [
-      "TI AWR2944 77 GHz FMCW radar",
-      "5× InGaAs APD laser detection",
-      "Autotalks TEKTON3 V2X",
-      "RK3588S 6 TOPS NPU",
+      "Proposed TI AWR2944 77 GHz FMCW radar",
+      "Proposed 5× InGaAs APD laser layout",
+      "Proposed Autotalks TEKTON3 V2X",
+      "Proposed RK3588S NPU",
     ],
     href: "/eradar360",
     delay: 0.05,
@@ -284,7 +284,7 @@ const ECAD_FAMILIES = [
       "HEALTH-KEY ULTRA — multi-biometric wristband",
       "HEALTH-BAND Neuro — EEG + neural feedback",
       "HEALTH-RING — continuous vitals ring",
-      "HEALTH-LAB — clinical-grade patch",
+      "HEALTH-LAB — research patch concept",
     ],
     href: "/health",
     delay: 0.1,
@@ -292,13 +292,13 @@ const ECAD_FAMILIES = [
   {
     icon: Plane,
     name: "eAerospace",
-    tagline: "Aircraft, avionics, UAV/drone, and space systems",
+    tagline: "Concept reference designs for aircraft, UAV, and space systems",
     color: "#60A5FA",
     products: [
-      "Aircraft — STM32H7, CAN FD, ARINC-429",
-      "Avionics — RK3588S, ZED-F9P, DO-254",
-      "UAV/VTOL/Swarm — STM32G4, nRF5340",
-      "Space/CubeSat — LEON3FT, ECSS",
+      "Proposed aircraft stack — STM32H7, CAN FD, ARINC-429",
+      "Proposed avionics stack — RK3588S, ZED-F9P",
+      "Proposed UAV/VTOL/swarm stack — STM32G4, nRF5340",
+      "Proposed space/CubeSat stack — LEON3FT; ECSS target",
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eAerospace_CAD_Design",
     external: true,
@@ -337,13 +337,13 @@ const ECAD_FAMILIES = [
   {
     icon: Microscope,
     name: "eMedical",
-    tagline: "Medical-grade devices — FDA 510(k), IEC 62304, ISO 14971",
+    tagline: "Medical research designs — regulatory targets identified",
     color: "#A78BFA",
     products: [
       "Diagnostic imaging peripherals",
       "Patient monitoring devices",
       "Implantable-adjacent sensors",
-      "FDA 510(k) / IEC 62304 / ISO 14971",
+      "Targets: FDA pathway / IEC 62304 / ISO 14971",
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eMedical_CAD_Design",
     external: true,
@@ -397,13 +397,13 @@ const ECAD_FAMILIES = [
   {
     icon: Shield,
     name: "eCybersecurity",
-    tagline: "HSM, TPM, secure elements — FIPS 140-3 compliant",
+    tagline: "HSM, TPM, secure elements — FIPS 140-3 design target",
     color: "#34D399",
     products: [
       "Hardware security modules (HSM)",
       "TPM 2.0 compatible designs",
       "Secure boot hardware roots",
-      "FIPS 140-3 compliant designs",
+      "FIPS 140-3 target designs",
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eCybersecurity_CAD_Design",
     external: true,
@@ -412,13 +412,13 @@ const ECAD_FAMILIES = [
   {
     icon: Car,
     name: "eTransport",
-    tagline: "Automotive ECUs — AUTOSAR, ISO 26262, CAN FD",
+    tagline: "Automotive ECU concepts targeting AUTOSAR and ISO 26262",
     color: "#60A5FA",
     products: [
-      "AUTOSAR-compliant ECUs",
+      "ECU designs targeting AUTOSAR",
       "CAN FD / LIN / FlexRay interfaces",
       "V2X communication modules",
-      "ISO 26262 ASIL-B/D designs",
+      "ISO 26262 ASIL-B/D design targets",
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eTransport_CAD_Design",
     external: true,
@@ -438,12 +438,12 @@ export default function HardwareLab() {
               Hardware Lab
             </div>
             <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-              {BOARD_COUNT} Supported{" "}
-              <span className="text-gradient">Hardware Platforms</span>
+              Repository{" "}
+              <span className="text-gradient">Hardware Definitions</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
-              EmbeddedOS runs on ARM Cortex-M/A, RISC-V, Xtensa, AVR, and
-              automotive SoCs. One OS, every device.
+              EmbeddedOS defines targets across ARM Cortex-M/A, RISC-V, Xtensa,
+              AVR, and automotive SoCs. Hardware validation varies by target.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a
@@ -509,11 +509,11 @@ export default function HardwareLab() {
             className="mb-10 text-center"
           >
             <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              Supported Board Families
+              Hardware Targets & Profiles
             </h2>
             <p className="text-white/50">
-              Comprehensive BSP coverage across all major embedded
-              architectures.
+              Repository board definitions, simulation profiles, and planned
+              targets; inclusion does not claim physical validation.
             </p>
           </motion.div>
           <div className="space-y-8">
@@ -567,14 +567,15 @@ export default function HardwareLab() {
           >
             <div className="badge-teal mb-4 inline-flex">
               <Layers size={12} />
-              eCAD Hardware Products
+              eCAD Hardware Designs
             </div>
             <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              18 Hardware Product Families
+              18 Hardware Design Families
             </h2>
             <p className="text-white/50">
-              Open-source hardware designs across health, automotive, aerospace,
-              industrial, consumer, and beyond — all running EoS.
+              Open-source design concepts across health, automotive, aerospace,
+              industrial, consumer, and beyond. EoS integration and hardware
+              validation vary by design.
             </p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">

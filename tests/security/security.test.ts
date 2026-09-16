@@ -16,7 +16,9 @@ const ROOT = path.resolve(import.meta.dirname, "../..");
 const DIST = path.join(ROOT, "dist", "public");
 const DIST_SERVER = path.join(ROOT, "dist", "index.js");
 const PORT = Number(process.env.SEC_PORT ?? 42102);
-const BASE = `http://127.0.0.1:${PORT}`;
+const HOST = process.env.SEC_HOST ?? "127.0.0.1";
+const URL_HOST = HOST.includes(":") ? `[${HOST}]` : HOST;
+const BASE = `http://${URL_HOST}:${PORT}`;
 
 let server: ChildProcess;
 
