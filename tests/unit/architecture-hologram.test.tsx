@@ -8,6 +8,7 @@ import HeroTechStack, {
   nextStageIndex,
 } from "../../client/src/components/HeroTechStack";
 import { ARCHITECTURE_STAGES } from "../../client/src/data/architecture";
+import { createRendererOrFallback } from "../../client/src/lib/webgl-renderer";
 
 type MatchMediaOptions = {
   reducedMotion?: boolean;
@@ -57,6 +58,20 @@ describe("architecture hologram progressive enhancement", () => {
     expect(
       await screen.findByText("Static view: WebGL is unavailable")
     ).toBeInTheDocument();
+  });
+
+  it("signals a fallback when Three.js renderer initialization throws", () => {
+    const onUnavailable = vi.fn();
+    const result = createRendererOrFallback(
+      { canvas: document.createElement("canvas") },
+      onUnavailable,
+      () => {
+        throw new Error("WebGL renderer initialization failed");
+      }
+    );
+
+    expect(result).toBeInstanceOf(Promise);
+    expect(onUnavailable).toHaveBeenCalledTimes(1);
   });
 
   it("renders the semantic fallback when the interactive renderer fails", () => {

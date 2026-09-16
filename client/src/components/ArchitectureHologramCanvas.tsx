@@ -7,6 +7,7 @@ import {
   type ArchitectureStage,
   type ArchitectureStageId,
 } from "@/data/architecture";
+import { createRendererOrFallback } from "@/lib/webgl-renderer";
 
 const STAGE_GAP = 0.72;
 const FIRST_STAGE_Y = -2.16;
@@ -145,7 +146,9 @@ export default function ArchitectureHologramCanvas(
       camera={{ position: [5.8, 2.8, 6.8], fov: 38 }}
       dpr={[1, 1.5]}
       frameloop={props.motionPaused ? "demand" : "always"}
-      gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+      gl={defaults =>
+        createRendererOrFallback(defaults, props.onRendererUnavailable)
+      }
       onCreated={({ gl }) => {
         gl.domElement.addEventListener(
           "webglcontextlost",
