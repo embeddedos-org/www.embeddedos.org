@@ -380,4 +380,5 @@ export const SOCIAL_URLS = {
   instagram: "https://www.instagram.com/embeddedos_org",
   facebook: "https://www.facebook.com/profile.php?id=61588978691494",
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
+  discord: "https://discord.gg/n6Kd9fwja",
 } as const;

@@ -27,6 +27,7 @@ const navSource = read("client/src/components/Navbar.tsx");
 const footerSource = read("client/src/components/Footer.tsx");
 const communitySource = read("client/src/pages/Community.tsx");
 const communityDataSource = read("client/src/data/community.ts");
+const foundationSource = read("client/src/data/foundation.ts");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
 const routes = [
@@ -162,6 +163,7 @@ describe("community resources", () => {
   const expected = [
     "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
     "https://github.com/orgs/embeddedos-org/discussions",
+    "https://discord.gg/n6Kd9fwja",
     "https://github.com/embeddedos-org/www.embeddedos.org/issues",
     "https://github.com/orgs/embeddedos-org/projects",
     "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
@@ -169,6 +171,10 @@ describe("community resources", () => {
 
   it("publishes the exact repository and organization destinations", () => {
     for (const href of expected) expect(communityDataSource).toContain(href);
+    expect(foundationSource).toContain(
+      'discord: "https://discord.gg/n6Kd9fwja"'
+    );
+    expect(communitySource).toContain("SOCIAL_URLS.discord");
     expect(communityDataSource).not.toContain("/agents");
   });
 

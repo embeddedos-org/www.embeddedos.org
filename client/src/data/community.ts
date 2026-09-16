@@ -10,6 +10,11 @@ export const COMMUNITY_LINKS = [
     description: "Questions, proposals, and community conversations",
   },
   {
+    name: "Discord",
+    href: "https://discord.gg/n6Kd9fwja",
+    description: "Real-time community chat and collaboration",
+  },
+  {
     name: "Issues",
     href: "https://github.com/embeddedos-org/www.embeddedos.org/issues",
     description: "Bug reports, feature requests, and tracked work",

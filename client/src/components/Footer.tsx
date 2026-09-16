@@ -8,6 +8,7 @@ import {
   Linkedin,
   Facebook,
   Instagram,
+  MessageCircle,
   ExternalLink,
 } from "lucide-react";
 import { COMMUNITY_LINKS } from "@/data/community";
@@ -208,6 +209,12 @@ const SOCIAL_LINKS = [
     href: SOCIAL_URLS.facebook,
     label: "Facebook",
     color: "#1877F2",
+  },
+  {
+    icon: MessageCircle,
+    href: SOCIAL_URLS.discord,
+    label: "Discord",
+    color: "#5865F2",
   },
   {
     icon: Mail,

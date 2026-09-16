@@ -268,6 +268,11 @@ const SOCIAL_ACCOUNTS: { key: string; anySpelling: RegExp }[] = [
     anySpelling:
       /https?:\/\/(?:www\.)?github\.com\/orgs\/embeddedos-org\/discussions\/?(?![\w.\-/$])/gi,
   },
+  {
+    key: "discord",
+    anySpelling:
+      /https?:\/\/(?:www\.)?discord\.gg\/n6Kd9fwja\/?(?![\w.\-/$])/gi,
+  },
 ];
 
 describe("the Foundation's accounts are spelled one way", () => {
