@@ -1,10 +1,12 @@
 import {
+  Component,
   Suspense,
   lazy,
   useEffect,
   useRef,
   useState,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import { Pause, Play } from "lucide-react";
 import {
@@ -121,6 +123,40 @@ function StaticArchitecture({ reason }: { reason: string }) {
   );
 }
 
+type HologramErrorBoundaryProps = {
+  children: ReactNode;
+  onUnavailable: () => void;
+};
+
+type HologramErrorBoundaryState = {
+  hasError: boolean;
+};
+
+export class HologramErrorBoundary extends Component<
+  HologramErrorBoundaryProps,
+  HologramErrorBoundaryState
+> {
+  state: HologramErrorBoundaryState = { hasError: false };
+
+  static getDerivedStateFromError(): HologramErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch() {
+    this.props.onUnavailable();
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <StaticArchitecture reason="Static view: interactive renderer unavailable" />
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 export default function HeroTechStack() {
   const [activeStageId, setActiveStageId] =
     useState<ArchitectureStageId>("hardware-sensors");
@@ -158,18 +194,22 @@ export default function HeroTechStack() {
       <div className="relative min-h-[340px] flex-1">
         <div className="absolute inset-0" aria-hidden="true">
           {webGLAvailable ? (
-            <Suspense
-              fallback={
-                <StaticArchitecture reason="Loading interactive view" />
-              }
+            <HologramErrorBoundary
+              onUnavailable={() => setWebGLAvailable(false)}
             >
-              <ArchitectureHologramCanvas
-                activeStageId={activeStageId}
-                motionPaused={motionPaused}
-                onSelectStage={setActiveStageId}
-                onRendererUnavailable={() => setWebGLAvailable(false)}
-              />
-            </Suspense>
+              <Suspense
+                fallback={
+                  <StaticArchitecture reason="Loading interactive view" />
+                }
+              >
+                <ArchitectureHologramCanvas
+                  activeStageId={activeStageId}
+                  motionPaused={motionPaused}
+                  onSelectStage={setActiveStageId}
+                  onRendererUnavailable={() => setWebGLAvailable(false)}
+                />
+              </Suspense>
+            </HologramErrorBoundary>
           ) : (
             <StaticArchitecture
               reason={

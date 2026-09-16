@@ -199,6 +199,12 @@ describe("footer columns", () => {
     }
   });
 
+  it("keeps the published legal address readable", () => {
+    expect(footerSource).toMatch(
+      /<address className="[^"]*text-white\/60[^"]*"/
+    );
+  });
+
   it("publishes the policy pages in the bottom bar", () => {
     for (const href of ["/privacy", "/terms", "/licenses", "/security"]) {
       expect(legalHrefs).toContain(href);

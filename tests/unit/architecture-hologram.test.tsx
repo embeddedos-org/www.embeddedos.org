@@ -4,6 +4,7 @@ import "@testing-library/jest-dom/vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import HeroTechStack, {
+  HologramErrorBoundary,
   nextStageIndex,
 } from "../../client/src/components/HeroTechStack";
 import { ARCHITECTURE_STAGES } from "../../client/src/data/architecture";
@@ -56,6 +57,26 @@ describe("architecture hologram progressive enhancement", () => {
     expect(
       await screen.findByText("Static view: WebGL is unavailable")
     ).toBeInTheDocument();
+  });
+
+  it("renders the semantic fallback when the interactive renderer fails", () => {
+    const onUnavailable = vi.fn();
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    function BrokenRenderer(): never {
+      throw new Error("renderer initialization failed");
+    }
+
+    render(
+      <HologramErrorBoundary onUnavailable={onUnavailable}>
+        <BrokenRenderer />
+      </HologramErrorBoundary>
+    );
+
+    expect(
+      screen.getByText("Static view: interactive renderer unavailable")
+    ).toBeInTheDocument();
+    expect(onUnavailable).toHaveBeenCalledTimes(1);
   });
 
   it("moves stage selection with arrow, Home, and End keys", () => {

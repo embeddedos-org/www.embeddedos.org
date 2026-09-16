@@ -320,7 +320,7 @@ export default function Footer() {
               experience.
             </p>
 
-            <p className="text-xs text-white/25 mb-2 max-w-xs leading-relaxed">
+            <p className="text-xs text-white/60 mb-2 max-w-xs leading-relaxed">
               {FOUNDATION.legalName}
               <br />
               {FOUNDATION.softwareLicense} ·{" "}
@@ -334,7 +334,7 @@ export default function Footer() {
               </a>
             </p>
 
-            <address className="text-xs text-white/25 mb-6 max-w-xs not-italic leading-relaxed">
+            <address className="text-xs text-white/60 mb-6 max-w-xs not-italic leading-relaxed">
               {formatMailingAddress(MAILING_ADDRESS)}
             </address>
 
