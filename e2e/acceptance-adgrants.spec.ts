@@ -13,6 +13,7 @@ import { test, expect, type Page } from "@playwright/test";
 
 const PUBLIC_BUSINESS_ADDRESS =
   "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
+const E2E_HOST = process.env.E2E_HOST ?? "127.0.0.1";
 
 test.describe("clear mission", () => {
   test("the homepage states the nonprofit mission above the footer", async ({
@@ -465,9 +466,11 @@ test.describe("secure and crawlable", () => {
       // here by design, and needs the wider budget rather than a shorter wait.
       test.slow();
       const insecure: string[] = [];
-      page.on("request", r => {
-        if (r.url().startsWith("http://") && !r.url().includes("127.0.0.1"))
-          insecure.push(r.url());
+      page.on("request", request => {
+        const url = new URL(request.url());
+        if (url.protocol === "http:" && url.hostname !== E2E_HOST) {
+          insecure.push(request.url());
+        }
       });
       await page.goto(route);
       expect(insecure).toEqual([]);

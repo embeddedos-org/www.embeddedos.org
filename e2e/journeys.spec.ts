@@ -26,9 +26,11 @@ test.describe("donor journey", () => {
     await cta.click();
     await page.waitForURL("**/donate");
 
-    // 4. The donation page states tax-deductibility and the EIN.
-    await expect(page.locator("body")).toContainText(/tax[- ]deductible/i);
+    // 4. The donation page states its nonprofit status and EIN without making
+    // an unqualified tax-deductibility promise.
+    await expect(page.locator("body")).toContainText("501(c)(3)");
     await expect(page.locator("body")).toContainText("41-4821627");
+    await expect(page.locator("body")).not.toContainText(/tax[- ]deductible/i);
   });
 });
 
