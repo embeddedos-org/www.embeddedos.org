@@ -7,7 +7,6 @@ import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { SOCIAL_URLS } from "@/data/foundation";
 import { ARCHITECTURE_STAGES, EAI_EDGE_PROFILE } from "@/data/architecture";
 import TiltCard from "../components/TiltCard";
-import HeroTechStack from "../components/HeroTechStack";
 import {
   ArrowRight,
   Github,
@@ -49,6 +48,9 @@ import {
 gsap.registerPlugin();
 
 const CircuitHero = React.lazy(() => import("../components/CircuitHero"));
+const CadEvolutionHero = React.lazy(
+  () => import("../components/CadEvolutionHero")
+);
 const ProductMarquee = React.lazy(() => import("../components/ProductMarquee"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
 
@@ -413,7 +415,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Accessible technical reference view */}
+            {/* 3D CAD-to-ecosystem evolution */}
             <div className="hero-image opacity-0 relative lg:col-span-5">
               <div
                 className="relative overflow-hidden rounded-2xl border border-white/8"
@@ -422,7 +424,9 @@ export default function Home() {
                     "linear-gradient(160deg, rgba(11,29,58,0.9), rgba(5,10,20,0.95))",
                 }}
               >
-                <HeroTechStack />
+                <Suspense fallback={null}>
+                  <CadEvolutionHero />
+                </Suspense>
               </div>
             </div>
           </div>
