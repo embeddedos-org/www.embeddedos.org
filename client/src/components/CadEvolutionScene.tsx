@@ -288,17 +288,30 @@ function AppModules({ highlight }: { highlight: boolean }) {
   );
 }
 
+// Seeded PRNG (mulberry32) — geometry must be deterministic so prerendered
+// snapshots are stable frame-to-frame and run-to-run.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 // ── Stage 5 — on-device AI: NPU block + neural particle swarm ────────────────
 function NpuSwarm() {
   const ref = useRef<THREE.Points>(null);
   const { positions } = useMemo(() => {
+    const rand = mulberry32(0xe05a1);
     const count = 90;
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 0.9 + Math.random() * 0.7;
+      const a = rand() * Math.PI * 2;
+      const r = 0.9 + rand() * 0.7;
       positions[i * 3] = 0.78 + Math.cos(a) * r;
-      positions[i * 3 + 1] = DIE_TOP + 0.3 + (Math.random() - 0.5) * 0.9;
+      positions[i * 3 + 1] = DIE_TOP + 0.3 + (rand() - 0.5) * 0.9;
       positions[i * 3 + 2] = 0.78 + Math.sin(a) * r;
     }
     return { positions };
@@ -398,10 +411,12 @@ export function CadEvolutionScene({
   step,
   progress,
   reducedMotion,
+  onRendererUnavailable,
 }: {
   step: number;
   progress: MutableRefObject<number[]>;
   reducedMotion: boolean;
+  onRendererUnavailable?: () => void;
 }) {
   const activeIndex = Math.min(
     Math.max(step - 1, 0),
@@ -412,6 +427,14 @@ export function CadEvolutionScene({
       dpr={[1, 1.75]}
       camera={{ position: [8.2, 6.4, 8.2], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+      onCreated={({ gl }) => {
+        // If the GPU context dies mid-session, fall back to the static
+        // semantic view instead of a frozen canvas.
+        gl.domElement.addEventListener("webglcontextlost", event => {
+          event.preventDefault();
+          onRendererUnavailable?.();
+        });
+      }}
     >
       <fog attach="fog" args={["#0a1428", 16, 34]} />
       <ambientLight intensity={0.55} />

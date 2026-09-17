@@ -66,7 +66,7 @@ function usePrefersReducedMotion(): boolean {
  */
 export default function CadEvolutionHero() {
   const reducedMotion = usePrefersReducedMotion();
-  const [webglOk] = useState(() => supportsWebGL());
+  const [webglOk, setWebglOk] = useState(() => supportsWebGL());
   // stage 0..6 = the stage being explained; the 3D model builds stages 0..stage.
   const [stage, setStage] = useState(() =>
     reducedMotion ? TOTAL_STEPS - 1 : 0
@@ -156,6 +156,7 @@ export default function CadEvolutionHero() {
               step={stage + 1}
               progress={progress}
               reducedMotion={reducedMotion}
+              onRendererUnavailable={() => setWebglOk(false)}
             />
           </Suspense>
         ) : (
