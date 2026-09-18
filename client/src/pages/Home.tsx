@@ -1,4 +1,6 @@
 import React, { Suspense, useRef, useEffect, useState } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { supportsWebGL } from "../components/HeroTechStack";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { gsap } from "gsap";
@@ -48,6 +50,7 @@ import {
 gsap.registerPlugin();
 
 const CircuitHero = React.lazy(() => import("../components/CircuitHero"));
+
 const CadEvolutionHero = React.lazy(
   () => import("../components/CadEvolutionHero")
 );
@@ -268,6 +271,13 @@ const fadeUp = {
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+  const [webglReady, setWebglReady] = useState(false);
+  const decorativeWebGL = webglReady && !reducedMotion;
+
+  useEffect(() => {
+    setWebglReady(supportsWebGL());
+  }, []);
 
   useGSAP(
     () => {
@@ -320,10 +330,11 @@ export default function Home() {
         className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-grid"
         aria-labelledby="hero-heading"
       >
-        {/* Three.js Circuit Board */}
-        <Suspense fallback={null}>
-          <CircuitHero />
-        </Suspense>
+        {decorativeWebGL && (
+          <Suspense fallback={null}>
+            <CircuitHero />
+          </Suspense>
+        )}
 
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
