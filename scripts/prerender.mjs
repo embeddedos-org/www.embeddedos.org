@@ -394,6 +394,23 @@ export const SOCIAL_IMAGE_RULES = [
   ],
 ];
 
+/**
+ * Hand-written meta descriptions, keyed by route.
+ *
+ * extractMeta() takes the first substantive sentence on the page, which is
+ * accurate but frequently longer than a search result will show. Where a route
+ * appears in shared/route-descriptions.json that text is used instead. Both
+ * this file and client/src/lib/page-meta.ts read the same JSON, so a client
+ * navigation and the prerendered snapshot cannot disagree.
+ */
+export const ROUTE_DESCRIPTIONS = JSON.parse(
+  fs.readFileSync(path.join(ROOT, "shared", "route-descriptions.json"), "utf8")
+);
+
+export function descriptionFor(route, extracted) {
+  return ROUTE_DESCRIPTIONS[route] ?? extracted;
+}
+
 export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
 
 export function socialImageFor(route) {
@@ -420,7 +437,10 @@ export function applyMeta(html, { route, heading, description }) {
         : truncate(heading, MAX_TITLE - SHORT_SUFFIX.length) + SHORT_SUFFIX;
   }
 
-  const desc = truncate(description || FALLBACK_DESCRIPTION, 250);
+  const desc = truncate(
+    descriptionFor(route, description) || FALLBACK_DESCRIPTION,
+    250
+  );
 
   let out = html;
   const set = (pattern, replacement) => {

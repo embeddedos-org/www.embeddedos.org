@@ -58,6 +58,20 @@ describe("metadata is present and unique", () => {
   });
 });
 
+describe("descriptions stay within a search snippet", () => {
+  it("has no description-long warning", () => {
+    expect(of("description-long").map(f => `${f.route} ${f.detail}`)).toEqual(
+      []
+    );
+  });
+
+  it("has no description-short warning", () => {
+    expect(of("description-short").map(f => `${f.route} ${f.detail}`)).toEqual(
+      []
+    );
+  });
+});
+
 describe("canonical URLs are correct", () => {
   it.each(["canonical-missing", "canonical-multiple", "canonical-mismatch"])(
     "has no %s",

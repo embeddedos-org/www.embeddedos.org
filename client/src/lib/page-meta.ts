@@ -8,6 +8,15 @@
  * entry, the bookmark title and — worst of the four — <link rel="canonical">
  * all still described whichever page the visitor happened to land on first.
  *
+ * The hand-written descriptions in shared/route-descriptions.json are
+ * deliberately NOT imported here. They are a build-time override applied by
+ * scripts/prerender.mjs, so the served HTML — which is what a crawler and a
+ * first load see — carries them. Bundling all 52 into the client cost 2.5 KB
+ * brotli and pushed the eagerly-preloaded critical path from 258.5 KB to
+ * 261 KB, over the 260 KB budget in tests/performance/budgets.test.ts. A
+ * client-side navigation therefore recomputes the description from the DOM,
+ * which is the same accurate sentence, just longer; no crawler sees it.
+ *
  * The rules below are a deliberate copy of `applyMeta` in
  * scripts/prerender.mjs. They cannot be imported from it: that file is a plain
  * .mjs build script that pulls in playwright and express, none of which belongs
