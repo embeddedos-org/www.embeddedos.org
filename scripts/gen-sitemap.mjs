@@ -12,10 +12,15 @@
  * `discoverRoutes()` the prerenderer uses, so a page that is prerendered and a
  * page that is listed for crawlers cannot disagree.
  *
- * `lastmod` is the date the route's prerendered file was last written, not the
- * day the script ran — stamping everything with today's date on every build
- * tells crawlers the entire site changed daily, which is false and is treated
- * as noise.
+ * No `lastmod`. It was the mtime of the route's prerendered file, meant to be
+ * "when this page last changed" rather than the day the script ran — but the
+ * prerenderer rewrites every file on every build, so the two were the same
+ * thing: each deploy stamped all 131 URLs with its own date (deploy 8b44122
+ * says 2026-09-16 on every one; the two before it say 2026-09-04 on every
+ * one). Nothing at build time knows when a page's content changed — a fresh
+ * checkout has fresh mtimes, and a page's text comes from shared registries
+ * as much as from its own component — and Google uses lastmod only when it
+ * is consistently accurate and says to omit it otherwise. So it is omitted.
  *
  * Usage: node scripts/gen-sitemap.mjs [--dist] [--check]
  *   --dist   write the current build's sitemap directly to dist/public
@@ -79,19 +84,6 @@ function ruleFor(p) {
   return RULES.find(r => r.test(p));
 }
 
-/** The prerendered file's mtime, or today when the site has not been built. */
-function lastmodFor(route) {
-  const file =
-    route === "/"
-      ? path.join(DIST, "index.html")
-      : path.join(DIST, route.slice(1), "index.html");
-  try {
-    return fs.statSync(file).mtime.toISOString().slice(0, 10);
-  } catch {
-    return new Date().toISOString().slice(0, 10);
-  }
-}
-
 function build() {
   // Sorted so the file has a stable order and a diff shows real changes rather
   // than the order Vite happened to walk the routes in.
@@ -109,7 +101,6 @@ function build() {
       return [
         "  <url>",
         `    <loc>${loc}</loc>`,
-        `    <lastmod>${lastmodFor(route)}</lastmod>`,
         `    <changefreq>${changefreq}</changefreq>`,
         `    <priority>${priority}</priority>`,
         "  </url>",
@@ -131,8 +122,8 @@ if (WRITE_DIST && !fs.existsSync(DIST)) {
 
 if (process.argv.includes("--check")) {
   const current = fs.existsSync(OUT) ? fs.readFileSync(OUT, "utf8") : "";
-  // Compare the URL set rather than the bytes: lastmod moves with the build,
-  // and failing a check because a timestamp advanced would be noise.
+  // Compare the URL set rather than the bytes, so a formatting change to the
+  // generator does not read as a stale sitemap.
   const locs = s =>
     [...s.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]).sort();
   const a = locs(current);

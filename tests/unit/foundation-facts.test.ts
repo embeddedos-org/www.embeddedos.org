@@ -475,6 +475,14 @@ describe("the Foundation's accounts are spelled one way", () => {
 });
 
 describe("the sitemap covers the site", () => {
+  it("carries no lastmod, which nothing at build time can set truthfully", () => {
+    // Every build rewrites every prerendered file, so a file-mtime lastmod
+    // stamped the whole site with the deploy date (all 131 URLs, every
+    // deploy). Google ignores a lastmod that is not consistently accurate
+    // and recommends omitting it; a date that comes back here is that noise.
+    expect(sitemap).not.toMatch(/<lastmod>/);
+  });
+
   it("lists every static route", () => {
     const missing = declaredRoutes().filter(r => !sitemapPaths().includes(r));
     expect(missing, "routes absent from sitemap.xml").toEqual([]);
