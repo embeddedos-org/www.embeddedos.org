@@ -12,6 +12,7 @@ import {
   escapeAttr,
   discoverRoutes,
   formatHostForUrl,
+  restoreDeferredStylesheets,
 } from "../../scripts/prerender.mjs";
 
 const SHELL = `<!doctype html><html lang="en"><head>
@@ -172,6 +173,57 @@ describe("applyMeta", () => {
     });
     expect(out).not.toMatch(/content="[^"]*"[^"=>\s][^>]*>/);
     expect(titleOf(out)).toContain("&quot;");
+  });
+});
+
+describe("restoreDeferredStylesheets", () => {
+  // The fonts link exactly as origin/deploy 8b44122 shipped it on every route:
+  // onload has run, so the `media="print"` the shell declares is already "all".
+  const FONTS_HREF =
+    "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400&amp;display=swap";
+  const captured =
+    `<link rel="preload" as="style" href="${FONTS_HREF}">\n` +
+    `<link rel="stylesheet" href="${FONTS_HREF}" media="all" onload="this.media = 'all'">\n` +
+    `<link rel="stylesheet" crossorigin="" href="/assets/index-C2T_nuYj.css">`;
+
+  it("re-defers a stylesheet whose onload switches it on", () => {
+    const out = restoreDeferredStylesheets(captured);
+    const fonts = out.match(
+      /<link rel="stylesheet" href="[^"]*fonts[^>]*>/
+    )![0];
+    expect(fonts).toContain('media="print"');
+    expect(fonts).not.toContain('media="all"');
+    // The handler that flips it back to "all" once loaded must survive, or
+    // the fonts would never apply.
+    expect(fonts).toContain(`onload="this.media = 'all'"`);
+  });
+
+  it("leaves every other link alone", () => {
+    const out = restoreDeferredStylesheets(captured);
+    expect(out).toContain(
+      `<link rel="preload" as="style" href="${FONTS_HREF}">`
+    );
+    expect(out).toContain(
+      '<link rel="stylesheet" crossorigin="" href="/assets/index-C2T_nuYj.css">'
+    );
+    // A stylesheet meant to block — no deferring onload — keeps its media.
+    const blocking = '<link rel="stylesheet" href="/print.css" media="all">';
+    expect(restoreDeferredStylesheets(blocking)).toBe(blocking);
+  });
+
+  it("adds the attribute when the snapshot carries none", () => {
+    expect(
+      restoreDeferredStylesheets(
+        `<link rel="stylesheet" href="/f.css" onload="this.media='all'">`
+      )
+    ).toBe(
+      `<link media="print" rel="stylesheet" href="/f.css" onload="this.media='all'">`
+    );
+  });
+
+  it("is idempotent, so a standalone re-run of the prerenderer is safe", () => {
+    const once = restoreDeferredStylesheets(captured);
+    expect(restoreDeferredStylesheets(once)).toBe(once);
   });
 });
 

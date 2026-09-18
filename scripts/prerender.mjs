@@ -343,6 +343,34 @@ export const escapeAttr = s =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
+/**
+ * Put deferred stylesheets back the way the shell declares them.
+ *
+ * index.html loads the webfonts as `media="print" onload="this.media='all'"`:
+ * a print stylesheet does not block first paint, so the browser fetches it off
+ * the critical path and the onload switches it on once it has arrived. The
+ * snapshot is serialised from a live page, by which point onload has already
+ * run — so what every route wrote to disk was `media="all"` with the handler
+ * still attached, and every deployed page requested Google Fonts as a
+ * render-blocking stylesheet. The shell's own trick was undone by the
+ * prerender of it, on every route, since the day both landed (e13c116).
+ *
+ * String-level on purpose: doing it in the page would leave the same window
+ * that captureHtml() closes for the opacity strip, and this way the rule is
+ * testable without a browser. Only a stylesheet whose onload sets media to
+ * "all" is touched — that handler is the marker of a deferred sheet, and
+ * nothing else in the head carries one.
+ */
+export function restoreDeferredStylesheets(html) {
+  return html.replace(/<link\b[^>]*>/g, tag => {
+    if (!/\brel="stylesheet"/.test(tag)) return tag;
+    if (!/\bonload="[^"]*\bthis\.media\s*=\s*'all'[^"]*"/.test(tag)) return tag;
+    return /\bmedia="[^"]*"/.test(tag)
+      ? tag.replace(/\bmedia="[^"]*"/, 'media="print"')
+      : tag.replace(/^<link\b/, '<link media="print"');
+  });
+}
+
 /** Rewrite the head of a snapshot with route-specific title/description/canonical. */
 export function applyMeta(html, { route, heading, description }) {
   const canonical = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
@@ -457,7 +485,10 @@ async function main() {
         });
         await settle(page);
         const meta = await extractMeta(page);
-        const html = applyMeta(await captureHtml(page), { route, ...meta });
+        const html = applyMeta(
+          restoreDeferredStylesheets(await captureHtml(page)),
+          { route, ...meta }
+        );
         const target = writeSnapshot(route, html);
         const textLength = await page.evaluate(
           () => document.getElementById("root").innerText.trim().length
