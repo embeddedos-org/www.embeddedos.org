@@ -18,7 +18,7 @@ import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 // @ts-expect-error - plain .mjs script, no type declarations
-import { discoverRoutes } from "../../scripts/prerender.mjs";
+import { discoverRoutes, CRASH_MARKER } from "../../scripts/prerender.mjs";
 
 const DIST = path.resolve(import.meta.dirname, "../../dist/public");
 const HTACCESS = path.join(DIST, ".htaccess");
@@ -60,6 +60,17 @@ describe("the build ships the hosting config", () => {
   it("ships prerendered homepage content instead of the empty Vite shell", () => {
     const html = fs.readFileSync(HOME_HTML, "utf8");
     expect(html).not.toMatch(/<div id=["']root["']><\/div>/);
+  });
+
+  it("ships no route that rendered the ErrorBoundary instead of its page", () => {
+    // The prerenderer refuses such a snapshot (CRASH_MARKER), but a stale
+    // dist from before that gate, or a hand-run build, could still carry one.
+    const crashed = fs
+      .globSync("**/index.html", { cwd: DIST })
+      .filter(f =>
+        fs.readFileSync(path.join(DIST, f), "utf8").includes(CRASH_MARKER)
+      );
+    expect(crashed).toEqual([]);
   });
 
   it("does not ship the removed homepage showcase video", () => {

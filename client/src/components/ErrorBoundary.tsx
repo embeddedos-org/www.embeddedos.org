@@ -24,7 +24,13 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex items-center justify-center min-h-screen p-8 bg-background">
+        // The attribute is the prerenderer's crash marker (CRASH_MARKER in
+        // scripts/prerender.mjs): a snapshot containing it fails the build
+        // instead of shipping this screen as the page.
+        <div
+          data-error-boundary
+          className="flex items-center justify-center min-h-screen p-8 bg-background"
+        >
           <div className="flex flex-col items-center w-full max-w-2xl p-8">
             <AlertTriangle
               size={48}

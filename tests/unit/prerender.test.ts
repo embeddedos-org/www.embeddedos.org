@@ -12,7 +12,11 @@ import {
   escapeAttr,
   discoverRoutes,
   formatHostForUrl,
+  report,
+  CRASH_MARKER,
 } from "../../scripts/prerender.mjs";
+import fs from "node:fs";
+import path from "node:path";
 
 const SHELL = `<!doctype html><html lang="en"><head>
 <title>EmbeddedOS — The Operating System for Every Device</title>
@@ -172,6 +176,80 @@ describe("applyMeta", () => {
     });
     expect(out).not.toMatch(/content="[^"]*"[^"=>\s][^>]*>/);
     expect(titleOf(out)).toContain("&quot;");
+  });
+});
+
+describe("report", () => {
+  /** A route that rendered the way every healthy route does. */
+  const rendered = (route: string, extra: object = {}) => ({
+    route,
+    ok: true,
+    textLength: 2400,
+    errors: [],
+    consoleErrors: [],
+    degraded: false,
+    crashed: false,
+    ...extra,
+  });
+
+  it("passes a run where every route rendered", () => {
+    const { exitCode, problems } = report([rendered("/"), rendered("/about")]);
+    expect(problems).toEqual([]);
+    expect(exitCode).toBe(0);
+  });
+
+  it("fails a run where a route shipped the ErrorBoundary screen", () => {
+    // The screen carries plenty of visible text — the heading plus a stack
+    // trace — so it clears the THIN threshold and pageerror never fired.
+    // Before this gate the run below exited 0 and shipped the stack trace.
+    const { exitCode, lines, problems } = report([
+      rendered("/"),
+      rendered("/eos", {
+        textLength: 900,
+        crashed: true,
+        consoleErrors: [
+          "TypeError: Cannot read properties of undefined (reading 'map')\n    at EoS (index-abc.js:1:2)",
+        ],
+      }),
+    ]);
+    expect(exitCode).toBe(1);
+    expect(lines.some(l => /^\s+CRASH\s+\/eos\b/.test(l))).toBe(true);
+    // React's report of the caught error is the only clue to the cause, so
+    // its first line must be printed with the route.
+    expect(lines.join("\n")).toContain("Cannot read properties of undefined");
+    expect(problems.join("\n")).toMatch(/1 route\(s\) threw during render/);
+  });
+
+  it("still fails a run with an unrendered route, and lists its page errors", () => {
+    const { exitCode, lines } = report([
+      {
+        route: "/x",
+        ok: false,
+        error: "Timeout 45000ms exceeded",
+        errors: ["Error: boom"],
+      },
+    ]);
+    expect(exitCode).toBe(1);
+    expect(lines.some(l => /^\s+FAIL\s+\/x\b/.test(l))).toBe(true);
+    expect(lines.some(l => /^\s+ERROR\s+\/x\s+Error: boom/.test(l))).toBe(true);
+  });
+
+  it("keeps the degraded-embed gate", () => {
+    const { exitCode } = report([rendered("/donate", { degraded: true })]);
+    expect(exitCode).toBe(1);
+  });
+
+  it("uses the attribute the ErrorBoundary actually renders", () => {
+    // The marker is matched on the snapshot's markup, so the string here and
+    // the JSX attribute in ErrorBoundary.tsx must be the same thing.
+    const source = fs.readFileSync(
+      path.resolve(
+        import.meta.dirname,
+        "../../client/src/components/ErrorBoundary.tsx"
+      ),
+      "utf8"
+    );
+    expect(source).toMatch(new RegExp(`<div\\s+${CRASH_MARKER}\\b`));
   });
 });
 

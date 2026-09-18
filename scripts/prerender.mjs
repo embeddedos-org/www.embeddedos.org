@@ -394,6 +394,98 @@ export function applyMeta(html, { route, heading, description }) {
   return out;
 }
 
+/**
+ * Attribute the app's ErrorBoundary puts on its fallback screen — see
+ * client/src/components/ErrorBoundary.tsx, which is the only place it is set.
+ */
+export const CRASH_MARKER = "data-error-boundary";
+
+/**
+ * Judge a finished run: the lines to print and the exit code it deserves.
+ *
+ * Pure, so the gate can be tested without rendering anything. A route is a
+ * problem when it did not render, shipped the donation embed's failure text,
+ * or shipped the ErrorBoundary's fallback screen instead of the page.
+ *
+ * The last one used to pass. The boundary wraps the whole app, so a render
+ * error on any page replaces it with "An unexpected error occurred." and a
+ * stack trace — hundreds of characters of visible text, which clears the
+ * 200-character settle() floor and usually the 500-character THIN line too.
+ * And because React reports a caught error through console.error rather than
+ * window.onerror, the page's `pageerror` listener never fires for it either.
+ * So the snapshot was written, counted as rendered, and the build went green
+ * with a stack trace deployed as the page. Uncaught page errors are listed
+ * here as well; they were collected on every route and never read. They do
+ * not fail the run: they never have, and gating on them is a separate
+ * decision from refusing to ship a crash screen.
+ */
+export function report(results) {
+  const sorted = [...results].sort((a, b) => a.route.localeCompare(b.route));
+  const failed = sorted.filter(r => !r.ok);
+  const thin = sorted.filter(r => r.ok && r.textLength < 500);
+  const degraded = sorted.filter(r => r.ok && r.degraded);
+  const crashed = sorted.filter(r => r.ok && r.crashed);
+
+  const lines = [];
+  for (const r of failed)
+    lines.push(`  FAIL  ${r.route.padEnd(38)} ${r.error}`);
+  for (const r of thin) {
+    lines.push(
+      `  THIN  ${r.route.padEnd(38)} only ${r.textLength} chars of text`
+    );
+  }
+  for (const r of degraded) {
+    lines.push(
+      `  DEGRADED  ${r.route.padEnd(34)} shipped the "embed failed to load" fallback`
+    );
+  }
+  for (const r of crashed) {
+    lines.push(
+      `  CRASH  ${r.route.padEnd(37)} shipped the ErrorBoundary screen, not the page`
+    );
+    // The first console error is React's own report of the caught exception.
+    const [why] = r.consoleErrors ?? [];
+    if (why) lines.push(`         ${why.split("\n")[0].slice(0, 200)}`);
+  }
+  for (const r of sorted) {
+    for (const e of r.errors ?? []) {
+      lines.push(`  ERROR  ${r.route.padEnd(37)} ${e}`);
+    }
+  }
+
+  const ok = sorted.filter(r => r.ok);
+  const avgText = ok.length
+    ? Math.round(ok.reduce((s, r) => s + r.textLength, 0) / ok.length)
+    : 0;
+  lines.push(
+    `[prerender] ${ok.length}/${sorted.length} rendered · avg ${avgText} chars of visible text · ` +
+      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded · ` +
+      `${crashed.length} crashed`
+  );
+
+  const problems = [];
+  if (failed.length) {
+    problems.push(`[prerender] ${failed.length} route(s) failed to render.`);
+  }
+  if (degraded.length) {
+    problems.push(
+      `[prerender] ${degraded.length} route(s) shipped a degraded snapshot ` +
+        `(a third-party embed hadn't loaded when the page was captured). ` +
+        `Re-run pnpm prerender — a transient network hiccup at build time, ` +
+        `not a code change, is the usual cause.`
+    );
+  }
+  if (crashed.length) {
+    problems.push(
+      `[prerender] ${crashed.length} route(s) threw during render and ` +
+        `snapshotted the ErrorBoundary fallback. That is a code defect on the ` +
+        `page, not a build hiccup — the CRASH line carries React's report.`
+    );
+  }
+
+  return { lines, problems, exitCode: problems.length ? 1 : 0 };
+}
+
 function writeSnapshot(route, html) {
   const target =
     route === "/"
@@ -450,6 +542,12 @@ async function main() {
       const page = await context.newPage();
       const errors = [];
       page.on("pageerror", e => errors.push(String(e)));
+      // React reports an error the boundary caught through console.error, not
+      // window.onerror, so this is the only record of *why* a route crashed.
+      const consoleErrors = [];
+      page.on("console", m => {
+        if (m.type() === "error") consoleErrors.push(m.text());
+      });
       try {
         await page.goto(`http://${URL_HOST}:${PORT}${route}`, {
           waitUntil: "domcontentloaded",
@@ -471,6 +569,9 @@ async function main() {
         const degraded = html.includes(
           "The embedded donation form could not load"
         );
+        // The ErrorBoundary replaced the page. Detected on the markup rather
+        // than through `errors`, which React never fires for a caught error.
+        const crashed = html.includes(CRASH_MARKER);
         results.push({
           route,
           ok: true,
@@ -479,7 +580,9 @@ async function main() {
           heading: meta.heading,
           target,
           errors,
+          consoleErrors,
           degraded,
+          crashed,
         });
       } catch (err) {
         results.push({ route, ok: false, error: err.message, errors });
@@ -503,47 +606,10 @@ async function main() {
   const staleShell = path.join(DIST, "app-shell.html");
   if (fs.existsSync(staleShell)) fs.rmSync(staleShell);
 
-  results.sort((a, b) => a.route.localeCompare(b.route));
-  const failed = results.filter(r => !r.ok);
-  const thin = results.filter(r => r.ok && r.textLength < 500);
-  const degraded = results.filter(r => r.ok && r.degraded);
-
-  for (const r of results) {
-    if (!r.ok) console.log(`  FAIL  ${r.route.padEnd(38)} ${r.error}`);
-  }
-  for (const r of thin) {
-    console.log(
-      `  THIN  ${r.route.padEnd(38)} only ${r.textLength} chars of text`
-    );
-  }
-  for (const r of degraded) {
-    console.log(
-      `  DEGRADED  ${r.route.padEnd(34)} shipped the "embed failed to load" fallback`
-    );
-  }
-
-  const ok = results.filter(r => r.ok);
-  const avgText = ok.length
-    ? Math.round(ok.reduce((s, r) => s + r.textLength, 0) / ok.length)
-    : 0;
-  console.log(
-    `[prerender] ${ok.length}/${results.length} rendered · avg ${avgText} chars of visible text · ` +
-      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded`
-  );
-
-  if (failed.length) {
-    console.error(`[prerender] ${failed.length} route(s) failed to render.`);
-    process.exitCode = 1;
-  }
-  if (degraded.length) {
-    console.error(
-      `[prerender] ${degraded.length} route(s) shipped a degraded snapshot ` +
-        `(a third-party embed hadn't loaded when the page was captured). ` +
-        `Re-run pnpm prerender — a transient network hiccup at build time, ` +
-        `not a code change, is the usual cause.`
-    );
-    process.exitCode = 1;
-  }
+  const { lines, problems, exitCode } = report(results);
+  for (const line of lines) console.log(line);
+  for (const problem of problems) console.error(problem);
+  if (exitCode) process.exitCode = exitCode;
 }
 
 // Only run when executed directly (`node scripts/prerender.mjs`), so unit tests
