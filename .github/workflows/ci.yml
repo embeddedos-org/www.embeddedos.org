@@ -93,6 +93,21 @@ jobs:
       - name: Unit, integration and performance tests
         run: pnpm exec vitest run --exclude 'tests/security/**'
 
+      # The two /api/*.php endpoints are the only code that runs on the
+      # production host, and tests/php/ holds the unit cases for their pure
+      # functions — header injection, control characters, the closed enums,
+      # the rate limiter. `pnpm test:php` was reachable only through
+      # `pnpm test:all`, which this workflow does not run, so those cases had
+      # never executed in CI. The runner image ships PHP: the vitest step
+      # above already starts `php -S` for tests/integration/apply-endpoint,
+      # and that suite skips itself, loudly, when php is absent. This one
+      # must not skip — hence `php --version` first, so a missing interpreter
+      # fails here rather than passing an empty step.
+      - name: PHP endpoint tests
+        run: |
+          php --version
+          pnpm test:php
+
       - name: Smoke tests
         run: pnpm test:smoke
 
