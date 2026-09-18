@@ -10,11 +10,17 @@
  */
 import { describe, it, expect } from "vitest";
 // @ts-expect-error - plain .mjs script, no type declarations
-import { applyMeta } from "../../scripts/prerender.mjs";
+import {
+  applyMeta,
+  socialImageFor as prerenderSocialImageFor,
+  SOCIAL_IMAGE_RULES as PRERENDER_SOCIAL_IMAGE_RULES,
+} from "../../scripts/prerender.mjs";
 import {
   buildTitle,
   canonicalFor,
   truncate,
+  socialImageFor,
+  SOCIAL_IMAGE_RULES,
   DEFAULT_TITLE,
   FALLBACK_DESCRIPTION,
 } from "../../client/src/lib/page-meta";
@@ -85,6 +91,50 @@ describe("client and prerenderer agree on the canonical URL", () => {
   it("gives the homepage a trailing slash and nothing else a double one", () => {
     expect(canonicalFor("/")).toBe("https://www.embeddedos.org/");
     expect(canonicalFor("/eni")).toBe("https://www.embeddedos.org/eni");
+  });
+});
+
+describe("client and prerenderer agree on the social image", () => {
+  const routes = [
+    "/",
+    "/architecture",
+    "/eboot",
+    "/product-eboot",
+    "/eos",
+    "/product-eos",
+    "/eai",
+    "/eni",
+    "/eoffice",
+    "/eapps",
+    "/edb",
+    "/eipc",
+    "/eosim",
+    "/eostudio",
+    "/ecad-hardware",
+    "/community",
+    "/mission",
+    "/careers",
+    "/does-not-match-any-rule",
+  ];
+
+  it.each(routes)("resolves %s to the same image in both", route => {
+    expect(socialImageFor(route)).toBe(prerenderSocialImageFor(route));
+  });
+
+  it("declares the same rules in both implementations", () => {
+    expect(SOCIAL_IMAGE_RULES.map(([p, v]) => [p.source, v])).toEqual(
+      PRERENDER_SOCIAL_IMAGE_RULES.map(([p, v]: [RegExp, string]) => [
+        p.source,
+        v,
+      ])
+    );
+  });
+
+  it("returns an absolute URL on the site origin", () => {
+    for (const route of routes)
+      expect(socialImageFor(route)).toMatch(
+        /^https:\/\/www\.embeddedos\.org\/media\/[\w.-]+\.(jpg|png|webp)$/
+      );
   });
 });
 

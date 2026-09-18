@@ -35,13 +35,25 @@ const ORIGIN = "https://www.embeddedos.org";
 const PUBLIC_BUSINESS_ADDRESS =
   "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
 
-/** The single JSON-LD block in the shell, parsed. */
+/** Every JSON-LD block in the shell, parsed. */
+function structuredDataBlocks(): Record<string, unknown>[] {
+  const blocks = [
+    ...indexHtml.matchAll(
+      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
+    ),
+  ].map(m => JSON.parse(m[1]) as Record<string, unknown>);
+  expect(
+    blocks.length,
+    "index.html must carry a JSON-LD block"
+  ).toBeGreaterThan(0);
+  return blocks;
+}
+
+/** The organisation block, selected by @type rather than by position. */
 function structuredData(): Record<string, unknown> {
-  const match = indexHtml.match(
-    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/
-  );
-  expect(match, "index.html must carry a JSON-LD block").not.toBeNull();
-  return JSON.parse(match![1]);
+  const ngo = structuredDataBlocks().find(b => b["@type"] === "NGO");
+  expect(ngo, "index.html must carry an NGO JSON-LD block").toBeDefined();
+  return ngo!;
 }
 
 /** A string literal assigned to `key:` in foundation.ts. */

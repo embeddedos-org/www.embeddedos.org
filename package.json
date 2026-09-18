@@ -23,6 +23,8 @@
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "sync:stack": "node scripts/sync-stack-data.mjs",
     "audit:site": "node scripts/audit.mjs",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "seo:check": "node scripts/seo-audit.mjs --strict",
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "test:unit": "vitest run tests/unit",

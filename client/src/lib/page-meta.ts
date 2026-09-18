@@ -56,6 +56,56 @@ export function canonicalFor(route: string): string {
   return route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
 }
 
+export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [
+  [
+    /^\/(architecture|flow|ecosystem|stacks)$/,
+    "/media/architecture-diagram-hero_72436b3f.jpg",
+  ],
+  [/^\/(eboot|product-eboot)$/, "/media/arch-eboot-chain_b9f999b5.jpg"],
+  [
+    /^\/(eos|product-eos|product-eos-platform)$/,
+    "/media/arch-eos-kernel_d7d1b4a5.jpg",
+  ],
+  [
+    /^\/(eai|eni|neural-link-ai|product-eai|product-eni|eai-edge)$/,
+    "/media/arch-eai-neural_4d7964d2.jpg",
+  ],
+  [
+    /^\/(eoffice|product-eoffice|eosuite)$/,
+    "/media/arch-eoffice-suite_d63eacf5.jpg",
+  ],
+  [
+    /^\/(eapps|product-eapps|eserviceapps|product-eserviceapps)$/,
+    "/media/product-eapps_89b01d4a.jpg",
+  ],
+  [/^\/(edb|product-edb)$/, "/media/product-edb_9cd0fe0e.jpg"],
+  [/^\/(eipc|product-eipc)$/, "/media/product-eipc-ipc_be829de0.jpg"],
+  [/^\/(eosim|product-eosim)$/, "/media/product-eosim-sim_78145da3.jpg"],
+  [
+    /^\/(eostudio|product-eostudio)$/,
+    "/media/product-eostudio-ide_2fc95a2d.jpg",
+  ],
+  [
+    /^\/(ecad-hardware|hardware-lab)$/,
+    "/media/product-ecad-hardware_f5806032.jpg",
+  ],
+  [
+    /^\/(community|get-involved|events|membership)$/,
+    "/media/community-illustration-eos_6f39c9db.jpg",
+  ],
+  [
+    /^\/(what-we-do|mission|about|organization|transparency)$/,
+    "/media/what-we-do-illustration_4c2ad2f7.jpg",
+  ],
+];
+
+export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
+
+export function socialImageFor(route: string): string {
+  const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
+  return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
+}
+
 const clean = (s: string | null | undefined) =>
   (s ?? "").replace(/\s+/g, " ").trim();
 
@@ -108,11 +158,17 @@ export function applyRouteMeta(route: string, doc: Document = document): void {
   );
   const canonical = canonicalFor(route);
 
+  const image = socialImageFor(route);
+
   doc.title = title;
   setMeta(doc, 'meta[name="description"]', description);
   setMeta(doc, 'meta[property="og:title"]', title);
   setMeta(doc, 'meta[property="og:description"]', description);
   setMeta(doc, 'meta[property="og:url"]', canonical);
+  setMeta(doc, 'meta[property="og:image"]', image);
+  setMeta(doc, 'meta[name="twitter:title"]', title);
+  setMeta(doc, 'meta[name="twitter:description"]', description);
+  setMeta(doc, 'meta[name="twitter:image"]', image);
 
   const link = doc.querySelector('link[rel="canonical"]');
   if (link) link.setAttribute("href", canonical);

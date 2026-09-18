@@ -140,7 +140,7 @@ export default function EServiceAppsPage() {
                 className="bg-white/5 border border-white/10 rounded-2xl p-6"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-white font-bold text-lg">{app.name}</h3>
+                  <h2 className="text-white font-bold text-lg">{app.name}</h2>
                   <span
                     className="px-2 py-0.5 rounded-full text-xs"
                     style={{ background: app.color + "20", color: app.color }}

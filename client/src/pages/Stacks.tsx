@@ -157,9 +157,9 @@ export default function Stacks() {
                   >
                     <Icon size={24} style={{ color: stack.color }} />
                   </div>
-                  <h3 className="font-heading font-bold text-white text-base mb-1">
+                  <h2 className="font-heading font-bold text-white text-base mb-1">
                     {stack.name}
-                  </h3>
+                  </h2>
                   <p className="text-xs text-white/50 leading-relaxed mb-4">
                     {stack.desc}
                   </p>

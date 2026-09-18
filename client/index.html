@@ -39,6 +39,18 @@
       content="https://www.embeddedos.org/media/hero-background_1bafea1c.jpg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="EmbeddedOS — The Operating System for Every Device"
+    />
+    <meta
+      name="twitter:description"
+      content="Open-source embedded OS powering IoT, edge AI, automotive, and industrial systems."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.embeddedos.org/media/hero-background_1bafea1c.jpg"
+    />
     <!--
       Nonprofit identity as structured data. Google reads the mission, the legal
       name and the tax ID from the page text either way, but only a reviewer
@@ -46,6 +58,20 @@
       Every value here is duplicated from client/src/data/foundation.ts — change
       both, or neither. tests/unit/foundation-facts.test.ts fails if they drift.
     -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "EmbeddedOS Research Foundation",
+        "alternateName": "EmbeddedOS",
+        "url": "https://www.embeddedos.org",
+        "inLanguage": "en",
+        "publisher": {
+          "@type": "NGO",
+          "name": "Embedded Operating Systems Research Foundation"
+        }
+      }
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
