@@ -86,6 +86,63 @@ check(
     !preg_match('/[\r\n]/', header_safe("x\r\ny\nz\rw"))
 );
 
+// ── encode_header_text: non-ASCII subjects on the wire ───────────────────────
+
+/** Decode a value the way a mail reader does; null if any word is malformed. */
+function decode_header_text(string $encoded): ?string
+{
+    $out = '';
+    foreach (preg_split("/\r\n /", $encoded) as $word) {
+        if (!preg_match('/^=\?UTF-8\?B\?([A-Za-z0-9+\/]+={0,2})\?=$/', $word, $m)) {
+            return null;
+        }
+        $out .= base64_decode($m[1], true);
+    }
+    return $out;
+}
+
+equals('plain ASCII is passed through untouched', 'Application received', encode_header_text('Application received'));
+
+// The acknowledgement subject this file actually sends carries an em dash,
+// so the encoded path is the normal one, not a corner.
+$ackSubject = 'We received your message — EmbeddedOS Research Foundation';
+$encoded    = encode_header_text($ackSubject);
+check('a subject with an em dash is encoded', $encoded !== $ackSubject);
+check(
+    'the encoded form is 7-bit: nothing outside printable ASCII and folding',
+    !preg_match('/[^\x20-\x7E\r\n]/', $encoded)
+);
+equals('the encoded form decodes back to the original', $ackSubject, decode_header_text($encoded));
+
+$name = encode_header_text('[Application] Zoë Müller — Research Engineer');
+equals('a non-ASCII name round-trips', '[Application] Zoë Müller — Research Engineer', decode_header_text($name));
+
+// 200 two-byte characters is the longest a validated field can be; the
+// result must fold into words no longer than RFC 2047 allows, each of
+// which decodes on its own without a character cut in half.
+$long    = str_repeat('ü', 200);
+$folded  = encode_header_text($long);
+$words   = preg_split("/\r\n /", $folded);
+check('a long subject folds into several encoded-words', count($words) > 1);
+check(
+    'no encoded-word exceeds 75 characters',
+    max(array_map('strlen', $words)) <= 75
+);
+check(
+    'every encoded-word is whole UTF-8 on its own',
+    array_reduce(
+        $words,
+        static fn(bool $ok, string $w): bool => $ok && preg_match('//u', (string) decode_header_text($w)) === 1,
+        true
+    )
+);
+equals('a long subject round-trips across the fold', $long, decode_header_text($folded));
+
+check(
+    'folding uses CRLF followed by a space, which mail() preserves',
+    !preg_match('/(?<!\r)\n|\r(?!\n )/', $folded)
+);
+
 // ── h: HTML escaping (shared with apply.php) ─────────────────────────────────
 
 equals('h escapes angle brackets', '&lt;script&gt;', h('<script>'));

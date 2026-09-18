@@ -148,6 +148,56 @@ function char_len(string $value): int
 }
 
 /**
+ * Make a header value safe for the wire when it is not plain ASCII.
+ *
+ * mail() writes the Subject exactly as given. Header field bodies are
+ * US-ASCII (RFC 5322 §2.2; UTF-8 is allowed only under SMTPUTF8, RFC 6532,
+ * which the local MTA cannot assume of the next hop), and RFC 2047 says
+ * non-ASCII text in a header goes as encoded-words. Every acknowledgement
+ * this file sends has an em dash in its subject, and the staff copy carries
+ * the sender's name, so this is the normal case rather than an edge one.
+ * Captured from mail() with sendmail_path pointed at a file: the bytes went
+ * out raw, C3 AB for "ë", E2 80 94 for "—".
+ *
+ * B-encoding, chunked so each encoded-word stays within the 75 characters
+ * RFC 2047 §2 allows (12 of overhead, so 45 bytes of input -> 60 of
+ * base64), split on character boundaries so no word ends mid-sequence, and
+ * folded with CRLF SP, which mail() preserves (it only rewrites a bare CR
+ * or LF). Adjacent encoded-words separated by folding white space are
+ * concatenated by the reader (§6.2). No mbstring, for the reason char_len()
+ * gives.
+ */
+function encode_header_text(string $text): string
+{
+    if (!preg_match('/[^\x20-\x7E]/', $text)) {
+        return $text;
+    }
+
+    $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
+    if ($chars === false) {
+        $chars = str_split($text);
+    }
+
+    $words = [];
+    $chunk = '';
+    foreach ($chars as $char) {
+        if (strlen($chunk) + strlen($char) > 45) {
+            $words[] = $chunk;
+            $chunk   = '';
+        }
+        $chunk .= $char;
+    }
+    if ($chunk !== '') {
+        $words[] = $chunk;
+    }
+
+    return implode("\r\n ", array_map(
+        static fn(string $w): string => '=?UTF-8?B?' . base64_encode($w) . '?=',
+        $words
+    ));
+}
+
+/**
  * A URL safe to place in an href.
  *
  * Returns null for anything that is not plainly http(s). The previous
@@ -434,7 +484,9 @@ $body = "--$boundary\r\n"
     . staff_html($application, $submittedAt) . "\r\n"
     . "--$boundary--\r\n";
 
-$subject = "[Application] $subjectName — {$application['roleCategory']}";
+$subject = encode_header_text(
+    "[Application] $subjectName — {$application['roleCategory']}"
+);
 
 // The staff copy is the one that must not be lost. If it fails, the caller is
 // told, and the client falls back to opening a mail draft.
@@ -446,7 +498,7 @@ if (!@mail(STAFF_INBOX, $subject, $body, $headers)) {
 // bounce here must not report failure and send the applicant round again.
 @mail(
     header_safe($application['email']),
-    'Application received — EmbeddedOS Research Foundation',
+    encode_header_text('Application received — EmbeddedOS Research Foundation'),
     applicant_text($application),
     implode("\r\n", [
         'MIME-Version: 1.0',
