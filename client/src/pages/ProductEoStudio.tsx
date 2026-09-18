@@ -69,7 +69,7 @@ export default function ProductEoStudio() {
         importance: "high",
         role: "Developer Experience Layer",
         summary:
-          "EoStudio is the developer-facing face of the EoS ecosystem. It lowers the barrier to entry for embedded development by providing visual tools (board picker, HAL configurator, EIPC topology editor, eFlow block editor) that generate correct EoS code automatically. For experienced developers, it provides a best-in-class code editor with EoS-aware completions and AI assist. EoStudio is the tool that makes EoS accessible to students, hobbyists, and professional engineers alike — and it is the primary way most developers interact with the entire EoS stack.",
+          "EoStudio is the developer-facing face of the EoS ecosystem. It lowers the barrier to entry for embedded development by providing visual tools (board picker, HAL configurator, EIPC topology editor, eFlow block editor) that generate correct EoS code automatically. For experienced developers, it provides a full-featured code editor with EoS-aware completions and AI assist. EoStudio is the tool that makes EoS accessible to students, hobbyists, and professional engineers alike — and it is the primary way most developers interact with the entire EoS stack.",
         dependsOn: [
           "eBuild — all compile, flash, and simulate operations invoke eBuild",
           "EoSim — the Simulate button launches EoSim",

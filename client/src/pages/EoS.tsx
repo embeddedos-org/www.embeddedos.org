@@ -106,7 +106,7 @@ const FEATURES = [
     icon: Terminal,
     color: "#F59E0B",
     title: "EoS Language",
-    desc: "The fastest embedded API surface — direct memory-mapped register access with type safety.",
+    desc: "A low-overhead embedded API surface — direct memory-mapped register access with type safety.",
   },
   {
     icon: Cpu,
