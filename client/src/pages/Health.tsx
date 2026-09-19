@@ -15,6 +15,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Suspense, lazy, useState, useRef, useEffect } from "react";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 const DeviceRadarChart = lazy(() => import("../components/DeviceRadarChart"));
 
 const HealthDevice3DCanvas = lazy(() =>
@@ -160,6 +161,9 @@ function BiometricWaveform({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
+  // F-23: paint one static frame instead of looping when the visitor
+  // prefers reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
   const offsetRef = useRef(0);
 
   useEffect(() => {
@@ -228,12 +232,13 @@ function BiometricWaveform({
       ctx.fillRect(w * 0.85, 0, w * 0.15, h);
 
       offsetRef.current += type === "neural" ? 0.06 : 0.03;
-      frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
     return () => cancelAnimationFrame(frameRef.current);
-  }, [type, color]);
+  }, [type, color, reduceMotion]);
 
   return (
     <canvas
@@ -242,6 +247,7 @@ function BiometricWaveform({
       height={60}
       className="w-full h-full"
       style={{ display: "block" }}
+      aria-hidden="true"
     />
   );
 }

@@ -1,66 +1,18 @@
-import { trpc } from "@/lib/trpc";
-import { UNAUTHED_ERR_MSG } from "@shared/const";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
-import superjson from "superjson";
 import App, { preloadRoute } from "./App";
-import { startLogin } from "./const";
 import "./index.css";
 
-const queryClient = new QueryClient();
-
-const redirectToLoginIfUnauthorized = (error: unknown) => {
-  if (!(error instanceof TRPCClientError)) return;
-  if (typeof window === "undefined") return;
-
-  const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
-
-  if (!isUnauthorized) return;
-
-  startLogin();
-};
-
-queryClient.getQueryCache().subscribe(event => {
-  if (event.type === "updated" && event.action.type === "error") {
-    const error = event.query.state.error;
-    redirectToLoginIfUnauthorized(error);
-    console.error("[API Query Error]", error);
-  }
-});
-
-queryClient.getMutationCache().subscribe(event => {
-  if (event.type === "updated" && event.action.type === "error") {
-    const error = event.mutation.state.error;
-    redirectToLoginIfUnauthorized(error);
-    console.error("[API Mutation Error]", error);
-  }
-});
-
-const trpcClient = trpc.createClient({
-  links: [
-    httpBatchLink({
-      url: "/api/trpc",
-      transformer: superjson,
-      fetch(input, init) {
-        return globalThis.fetch(input, {
-          ...(init ?? {}),
-          credentials: "include",
-        });
-      },
-    }),
-  ],
-});
+// NOTE (F-07): this entry used to wrap <App/> in the tRPC + react-query +
+// superjson stack (@trpc/client, @trpc/react-query, @tanstack/react-query).
+// That stack is dead weight in production: AGENTS.md itself says "Do not
+// assume a server process or /api/trpc exists in production", the only
+// client reference was a doc comment in an unimported component, and the
+// contact/careers forms POST to the PHP endpoints directly. It has been
+// removed from the entry so ~100 KB raw never downloads, parses or compiles
+// on any page load. The dev/test server (server/) still uses tRPC — that is
+// a separate bundle (pnpm build:server), untouched by this change.
 
 const container = document.getElementById("root")!;
-
-const tree = (
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
-);
 
 // `pnpm prerender` writes real HTML into #root for all 92 routes, and every
 // route except "/" is code-split. Mounting React before the route's chunk has
@@ -80,5 +32,5 @@ const tree = (
 // route and fell back to a client render — the blank window came back, now with
 // errors on top. createRoot is the honest choice for snapshot-prerendered HTML.
 void preloadRoute(window.location.pathname).then(() => {
-  createRoot(container).render(tree);
+  createRoot(container).render(<App />);
 });

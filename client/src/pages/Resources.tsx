@@ -55,7 +55,7 @@ const sections = [
     items: [
       {
         name: "GitHub — embeddedos-org",
-        desc: "All 22 repositories: kernel, drivers, apps, tools.",
+        desc: "All 23 public repositories: kernel, drivers, apps, tools.",
         link: "https://github.com/embeddedos-org",
         external: true,
       },

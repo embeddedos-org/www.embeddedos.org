@@ -127,6 +127,7 @@ export default function FAQ() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search questions..."
+              aria-label="Search frequently asked questions"
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50"
             />
           </div>

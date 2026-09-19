@@ -22,7 +22,9 @@ import {
   TRACK_LABEL,
   isActive,
 } from "@/data/programmes";
+import { PROGRAMME_DETAILS } from "@/data/programme-details";
 import { openContactForm } from "@/lib/contact-form";
+import AboutSections from "@/components/AboutSections";
 
 export interface ProgrammePageProps {
   /** The category path, e.g. "/programmes/ambassador". */
@@ -161,6 +163,19 @@ export default function ProgrammePage({ path }: ProgrammePageProps) {
           </div>
         </div>
       </section>
+
+      {/*
+        Long-form detail content (F-11): six substantial sections per
+        programme — why it exists, what it will involve, who it is for,
+        how to get involved — so a planned programme's page is worth a
+        reader's time before there is anything to apply for.
+      */}
+      {PROGRAMME_DETAILS[programme.slug] && (
+        <AboutSections
+          title="About this programme"
+          sections={PROGRAMME_DETAILS[programme.slug]}
+        />
+      )}
     </div>
   );
 }

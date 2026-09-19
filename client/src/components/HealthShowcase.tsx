@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link } from "wouter";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 const DEVICES = [
   {
@@ -121,6 +122,9 @@ function WaveCanvas({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
+  // F-23: paint one static frame instead of looping when the visitor
+  // prefers reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
   const offsetRef = useRef(0);
 
   useEffect(() => {
@@ -201,12 +205,13 @@ function WaveCanvas({
 
       offsetRef.current +=
         type === "neural" ? 0.07 : type === "ecg" ? 0.04 : 0.025;
-      frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
     return () => cancelAnimationFrame(frameRef.current);
-  }, [type, color]);
+  }, [type, color, reduceMotion]);
 
   return (
     <canvas
@@ -215,6 +220,7 @@ function WaveCanvas({
       height={height}
       className="w-full h-full"
       style={{ display: "block" }}
+      aria-hidden="true"
     />
   );
 }

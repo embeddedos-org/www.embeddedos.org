@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { answerQuestion, type KnowledgeLink } from "@shared/ebot-knowledge";
 import { openContactForm } from "@/lib/contact-form";
 import type { ContactTopicKey } from "@/data/foundation";
+import { useFocusTrap } from "@/lib/focus-trap";
 
 interface Message {
   role: "user" | "assistant";
@@ -109,7 +110,13 @@ export default function EBot() {
   const [thinking, setThinking] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const replyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // F-19: trap Tab inside the chat panel while it is open (WCAG 2.4.3) and
+  // return focus to the FAB on close. Inactive while minimized — only the
+  // header is visible then, so there is nothing to trap inside.
+  useFocusTrap(open && !minimized, panelRef);
 
   // Answering is synchronous and local, so the only thing that can leak here is
   // the deliberate typing pause below.
@@ -191,6 +198,7 @@ export default function EBot() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={panelRef}
             initial={{ opacity: 0, scale: 0.85, y: 20 }}
             animate={
               minimized
@@ -202,7 +210,9 @@ export default function EBot() {
             className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 bg-[#0d1424]"
             style={{ maxHeight: minimized ? 56 : 520 }}
             role="dialog"
+            aria-modal="true"
             aria-label="eBot, the EmbeddedOS assistant"
+            tabIndex={-1}
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#F97316]/20 to-[#A78BFA]/10 border-b border-white/10">
@@ -336,6 +346,7 @@ export default function EBot() {
                       onChange={e => setInput(e.target.value)}
                       onKeyDown={handleKey}
                       placeholder="Ask eBot anything…"
+                      aria-label="Ask eBot anything"
                       className="flex-1 bg-transparent text-sm text-white placeholder-white/30 outline-none min-w-0"
                       disabled={thinking}
                     />

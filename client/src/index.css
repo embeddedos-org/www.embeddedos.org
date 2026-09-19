@@ -992,7 +992,16 @@
   .animate-particle-2,
   .animate-particle-3,
   .animate-marquee,
-  .animate-tick-up {
+  .animate-tick-up,
+  /* F-23: Tailwind built-ins used for ambient motion — loading spinners keep
+     their role="status" label, status dots and skeleton shimmer go static,
+     the scroll cue and OTP caret stop moving. Deliberately NOT killed here:
+     animate-in/out and accordion transitions are brief, user-initiated state
+     feedback, not ambient motion. */
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-caret-blink {
     animation: none !important;
   }
   .card-tilt:hover {

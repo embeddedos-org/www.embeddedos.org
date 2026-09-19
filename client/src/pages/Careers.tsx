@@ -1632,6 +1632,7 @@ export default function Careers() {
               <input
                 type="text"
                 placeholder="Search positions..."
+                aria-label="Search open positions"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#F97316]/50"

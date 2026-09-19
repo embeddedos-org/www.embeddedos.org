@@ -35,9 +35,28 @@ export default defineConfig(({ command }) => ({
     // <link rel="modulepreload"> for the 1.1 MB three.js chunk on every page.
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom", "wouter"],
-          "vendor-motion": ["framer-motion", "gsap", "@gsap/react"],
+        // Function form: the object form does exact module-id matching, so
+        // "react-dom" matched react-dom/index.js but NOT react-dom/client.js
+        // (imported by main.tsx) — 6 react-dom modules sat in the entry
+        // while 5 sat in vendor-react (F-14). Matching on the package path
+        // keeps the whole package in its vendor chunk.
+        //
+        // F-17: gsap/@gsap are deliberately NOT listed here. They were the
+        // only static gsap consumer's dependency (Home.tsx) yet rode in
+        // vendor-motion, modulepreloaded on all 131 pages. Home now imports
+        // gsap dynamically, so it ships as its own async chunk loaded only
+        // on the homepage.
+        manualChunks(id) {
+          if (
+            id.includes("node_modules/react-dom/") ||
+            id.includes("node_modules/react/") ||
+            id.includes("node_modules/wouter/")
+          ) {
+            return "vendor-react";
+          }
+          if (id.includes("node_modules/framer-motion/")) {
+            return "vendor-motion";
+          }
         },
       },
     },

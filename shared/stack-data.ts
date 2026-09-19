@@ -11,13 +11,22 @@
 
 export const STACK = {
   source: {
-    manifest: "embeddedos-org/eos-stack-manifest",
-    manifestUpdated: "2026-06-01T00:00:00Z",
+    // The eos-stack-manifest repository no longer exists (verified 2026-09-18:
+    // the org holds 26 repos and none is named eos-stack-manifest), so the
+    // counts below were refreshed by hand from the live org API instead of the
+    // `pnpm sync:stack` manifest pipeline. Restore the pipeline if a manifest
+    // source returns.
+    manifest: "embeddedos-org/eos-stack-manifest (removed 2026-09-18)",
+    manifestUpdated: "2026-09-18T00:00:00Z",
     boards: "embeddedos-org/eos (boards/*.yaml)",
   },
   totals: {
-    repositories: 22,
-    projects: 22,
+    // Public repositories in the org (26 total; www.embeddedos.org, eVera and
+    // embeddedos-stack are private). Verified against the live org API
+    // 2026-09-18 — the field feeds "open-source repos" copy, so it must stay
+    // the public count, not the total.
+    repositories: 23,
+    projects: 21,
     boards: 83,
     architectures: 55,
     families: 75,
@@ -323,15 +332,6 @@ export const STACK = {
       platform: "meta",
       language: "Python",
       description: "",
-    },
-    {
-      name: "eos-stack-manifest",
-      repo: "embeddedos-org/eos-stack-manifest",
-      tier: 5,
-      type: "meta",
-      platform: "meta",
-      language: "JavaScript",
-      description: "orchestrates all repos in the embeddedos-org organization.",
     },
   ],
   roadmap: [

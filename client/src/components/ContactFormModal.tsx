@@ -269,7 +269,10 @@ export default function ContactFormModal() {
                     </div>
 
                     {status === "error" && (
-                      <div className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-300 text-xs">
+                      <div
+                        role="alert"
+                        className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-300 text-xs"
+                      >
                         <AlertTriangle
                           size={14}
                           className="flex-shrink-0 mt-0.5"

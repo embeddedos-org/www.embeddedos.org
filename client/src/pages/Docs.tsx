@@ -211,6 +211,7 @@ export default function Docs() {
               <input
                 type="text"
                 placeholder="Search documentation..."
+                aria-label="Search documentation"
                 className="w-full pl-11 pr-4 py-3 glass rounded-xl border border-white/10 text-white placeholder:text-white/30 focus:outline-none focus:border-[#F97316]/50 text-sm"
                 onFocus={() => {
                   const e = new CustomEvent("open-search");
