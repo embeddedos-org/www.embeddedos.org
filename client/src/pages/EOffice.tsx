@@ -709,6 +709,12 @@ export default function EOffice() {
               >
                 <ChevronRight size={15} /> Get Started
               </Link>
+              <Link
+                href="/product-eoffice"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                eOffice engineering detail
+              </Link>
             </div>
           </motion.div>
         </div>

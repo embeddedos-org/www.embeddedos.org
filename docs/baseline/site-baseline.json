@@ -13,7 +13,7 @@
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
   "cssBrotliKB": 24.6,
-  "totalJsBrotliKB": 770.1,
+  "totalJsBrotliKB": 770.7,
   "largestPages": [
    {
     "route": "/",
@@ -41,7 +41,7 @@
    },
    {
     "route": "/architecture",
-    "brotliKB": 14.4
+    "brotliKB": 14.5
    },
    {
     "route": "/product-eai",
@@ -106,14 +106,10 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13207,
+  "totalInternalLinks": 13220,
   "totalExternalLinks": 2658,
   "genericAnchors": 0,
-  "orphans": [
-   "/product-eapps",
-   "/product-eos-platform",
-   "/product-eserviceapps"
-  ],
+  "orphans": [],
   "chromeOnly": [
    "/benchmarks",
    "/blog",
@@ -133,9 +129,6 @@
    "/podcast",
    "/press-kit",
    "/press-releases",
-   "/product-eapps",
-   "/product-eos-platform",
-   "/product-eserviceapps",
    "/product-showcases",
    "/programmes",
    "/project-showcases",
@@ -148,28 +141,13 @@
    "/white-papers",
    "/youtube"
   ],
-  "unreachableFromHome": [
-   "/product-eapps",
-   "/product-eoffice",
-   "/product-eos-platform",
-   "/product-eserviceapps"
-  ],
+  "unreachableFromHome": [],
   "depthHistogram": {
    "0": 1,
    "1": 92,
-   "2": 26,
-   "3": 3,
-   "4": 3,
-   "5": 1,
-   "6": 1
+   "2": 38
   },
-  "deeperThan3": [
-   "/product-eipc",
-   "/product-ebuild",
-   "/product-eni",
-   "/product-eostudio",
-   "/product-eosim"
-  ]
+  "deeperThan3": []
  },
  "crawlability": {
   "robotsTxtPresent": true,

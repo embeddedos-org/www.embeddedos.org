@@ -430,6 +430,12 @@ export default function EBoot() {
               >
                 <ChevronRight size={15} /> EoS Kernel
               </Link>
+              <Link
+                href="/product-eboot"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                eBoot engineering detail
+              </Link>
             </div>
           </motion.div>
         </div>

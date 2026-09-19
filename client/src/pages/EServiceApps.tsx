@@ -181,6 +181,12 @@ export default function EServiceAppsPage() {
             >
               eOffice Suite
             </Link>
+            <Link
+              href="/product-eserviceapps"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
+            >
+              eServiceApps engineering detail
+            </Link>
           </div>
         </div>
       </section>

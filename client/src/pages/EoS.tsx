@@ -427,6 +427,12 @@ export default function EoS() {
               >
                 <Terminal size={15} /> Try EoSim
               </Link>
+              <Link
+                href="/product-eos"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                EoS engineering detail
+              </Link>
             </div>
           </motion.div>
         </div>
