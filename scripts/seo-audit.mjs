@@ -148,9 +148,14 @@ export function parseDocument(file) {
       ),
     ],
     imagesWithoutAlt: images.filter(t => !/\balt=/i.test(t)).length,
-    imagesWithoutDimensions: images.filter(
-      t => !attr(t, "width") || !attr(t, "height")
-    ).length,
+    imagesWithoutDimensions: images.filter(t => {
+      if (attr(t, "width") && attr(t, "height")) return false;
+      const cls = attr(t, "class") ?? "";
+      const outOfFlow = /\babsolute\b/.test(cls) && /\binset-0\b/.test(cls);
+      const fillsBox = /\bh-full\b/.test(cls);
+      const fixedHeight = /\bh-(\d+|\[[^\]]+\]|screen|px)\b/.test(cls);
+      return !outOfFlow && !fillsBox && !fixedHeight;
+    }).length,
     imageCount: images.length,
     contentLinks: [
       ...new Set(
@@ -356,7 +361,7 @@ export function audit(docs, sitemap) {
         "info",
         "img-no-dimensions",
         d.route,
-        `${d.imagesWithoutDimensions} of ${d.imageCount} <img> without width/height`
+        `${d.imagesWithoutDimensions} of ${d.imageCount} <img> can shift layout: no width/height and no fixed height`
       );
 
   return findings;

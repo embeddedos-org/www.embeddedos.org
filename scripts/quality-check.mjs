@@ -35,6 +35,13 @@ const CHECKS = [
     needsBuild: true,
   },
   {
+    id: "security",
+    label: "Security",
+    cmd: ["pnpm", "exec", "vitest", "run", "tests/security"],
+    kind: "repo",
+    needsBuild: true,
+  },
+  {
     id: "unit",
     label: "Unit + integration",
     cmd: ["pnpm", "exec", "vitest", "run", "tests/unit", "tests/integration"],
