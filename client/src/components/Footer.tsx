@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { COMMUNITY_LINKS } from "@/data/community";
 import {
+  CONTACT_EMAILS,
   FOUNDATION,
   MAILING_ADDRESS,
   SOCIAL_URLS,
@@ -334,9 +335,20 @@ export default function Footer() {
               </a>
             </p>
 
-            <address className="text-xs text-white/60 mb-6 max-w-xs not-italic leading-relaxed">
+            <address className="text-xs text-white/60 mb-2 max-w-xs not-italic leading-relaxed">
               {formatMailingAddress(MAILING_ADDRESS)}
             </address>
+            {/*
+              A published, crawler-visible mailbox. The contact form stays the
+              primary path, but reviewers and crawlers need a verifiable
+              address — see F-03.
+            */}
+            <a
+              href={`mailto:${CONTACT_EMAILS.contact}`}
+              className="text-xs text-white/60 underline decoration-white/20 underline-offset-4 hover:text-white transition-colors mb-6 inline-block"
+            >
+              {CONTACT_EMAILS.contact}
+            </a>
 
             {/* Social icons */}
             <div className="flex items-center flex-wrap gap-2">

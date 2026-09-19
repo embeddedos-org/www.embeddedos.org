@@ -337,7 +337,18 @@ describe("the Foundation's accounts are spelled one way", () => {
     // /api/apply.php does not answer; smallest-safe-change kept that intact
     // rather than rewriting a system that already worked. A mailto: anywhere
     // else means a page was missed by the sweep.
-    const EXEMPT_FILES = new Set(["client/src/lib/application-email.ts"]);
+    //
+    // Deliberate exception (F-03, 2026-09-18): the footer and the contact page
+    // publish contact@embeddedos.org as a real mailto: link so Grants
+    // reviewers and crawlers see a verifiable address. Both build it as
+    // `mailto:${CONTACT_EMAILS.contact}` — correct by construction — so the
+    // literal-address regex below does not see them; they are listed here so
+    // the exemption is explicit rather than incidental.
+    const EXEMPT_FILES = new Set([
+      "client/src/lib/application-email.ts",
+      "client/src/components/Footer.tsx",
+      "client/src/pages/Contact.tsx",
+    ]);
 
     const stray: string[] = [];
     for (const { file, text } of sources) {

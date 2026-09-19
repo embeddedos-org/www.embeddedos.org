@@ -1108,7 +1108,7 @@ export default function Quantum() {
               {
                 phase: "Phase 2",
                 title: "Real-Time Control & QEC",
-                status: "Planned Q4 2025",
+                status: "Planned",
                 color: "border-cyan-500",
                 badge: "bg-cyan-500/20 text-cyan-300",
                 items: [
