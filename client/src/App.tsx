@@ -31,10 +31,9 @@ import { OPEN_CONTACT_EVENT } from "./lib/contact-form";
 //   listener (attached in its mount effect, which runs before the gate's
 //   re-dispatch effect) opens it. No open event is ever lost.
 // - DonateModal / EBot: loaded when the browser is idle (requestIdleCallback
-//   with a setTimeout fallback). DonateModal keeps its own 20s session
-//   auto-show timer untouched — it simply starts a moment later, off the
-//   critical path; EBot's chat FAB appears once idle rather than competing
-//   with first paint.
+//   with a setTimeout fallback). DonateModal opens only on the explicit
+//   manual trigger (`open-donate`) — it has no auto-show timer; EBot's chat
+//   FAB appears once idle rather than competing with first paint.
 const loadSearchModal = () => import("./components/SearchModal");
 const loadDonateModal = () => import("./components/DonateModal");
 const loadContactFormModal = () => import("./components/ContactFormModal");
