@@ -7,13 +7,13 @@
   "assets": 157
  },
  "bytes": {
-  "criticalPathBrotliKB": 258.5,
+  "criticalPathBrotliKB": 258.3,
   "criticalPathBudgetKB": 260,
   "homepageHtmlBrotliKB": 18,
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
-  "cssBrotliKB": 24.7,
-  "totalJsBrotliKB": 769.5,
+  "cssBrotliKB": 24.6,
+  "totalJsBrotliKB": 769.6,
   "largestPages": [
    {
     "route": "/",
@@ -41,11 +41,11 @@
    },
    {
     "route": "/architecture",
-    "brotliKB": 14.5
+    "brotliKB": 14.4
    },
    {
-    "route": "/products",
-    "brotliKB": 13.5
+    "route": "/product-eai",
+    "brotliKB": 13.6
    }
   ]
  },
@@ -106,7 +106,7 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13107,
+  "totalInternalLinks": 13176,
   "totalExternalLinks": 2658,
   "genericAnchors": 0,
   "orphans": [
@@ -122,7 +122,6 @@
    "/changelog",
    "/datasets",
    "/downloads",
-   "/ecosystem",
    "/eosuite",
    "/eserviceapps",
    "/events",

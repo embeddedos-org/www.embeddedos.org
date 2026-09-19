@@ -4,6 +4,7 @@ import { Link, useLocation } from "wouter";
 import StructuredData from "@/components/StructuredData";
 import { ECOSYSTEM } from "@/data/ecosystem";
 import { ORIGIN } from "@/lib/page-meta";
+import { componentRouteFor, splitRelationship } from "@/lib/component-links";
 import {
   ArrowRight,
   Terminal,
@@ -104,6 +105,24 @@ const importanceBadge: Record<
     bg: "#22D3EE15",
   },
 };
+
+function RelatedComponent({ text, accent }: { text: string; accent: string }) {
+  const { head, rest } = splitRelationship(text);
+  const route = componentRouteFor(head);
+  if (!route) return <>{text}</>;
+  return (
+    <span>
+      <Link
+        href={route}
+        className="font-semibold underline decoration-dotted underline-offset-2 hover:decoration-solid"
+        style={{ color: accent }}
+      >
+        {head}
+      </Link>
+      {rest}
+    </span>
+  );
+}
 
 export default function ProductDetailPage({
   badge,
@@ -472,7 +491,16 @@ export default function ProductDetailPage({
               </h2>
             </div>
             <p className="text-white/40 text-sm mb-6">
-              Why {shortName} matters — and what breaks without it.
+              Why {shortName} matters — and what breaks without it. See how the
+              pieces fit together in the{" "}
+              <Link
+                href="/ecosystem"
+                className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                style={{ color: accent }}
+              >
+                EmbeddedOS ecosystem overview
+              </Link>
+              .
             </p>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 mb-6">
               <p className="text-white/80 leading-relaxed text-base">
@@ -492,7 +520,7 @@ export default function ProductDetailPage({
                         className="flex items-center gap-2 text-sm text-white/60"
                       >
                         <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                        {dep}
+                        <RelatedComponent text={dep} accent={accent} />
                       </div>
                     ))}
                   </div>
@@ -513,7 +541,7 @@ export default function ProductDetailPage({
                           className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                           style={{ background: accent }}
                         />
-                        {dep}
+                        <RelatedComponent text={dep} accent={accent} />
                       </div>
                     ))}
                   </div>
