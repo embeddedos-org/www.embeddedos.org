@@ -6,13 +6,118 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import EBot from "./components/EBot";
-import SearchModal from "./components/SearchModal";
-import DonateModal from "./components/DonateModal";
-import ContactFormModal from "./components/ContactFormModal";
 import Home from "./pages/Home";
-import { lazy, Suspense, useEffect, useRef, type ComponentType } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
 import { applyRouteMeta, readHeading } from "./lib/page-meta";
+import { OPEN_CONTACT_EVENT } from "./lib/contact-form";
+
+// --- Modal widget code-splitting (F-07) --------------------------------------
+// The four modal widgets (EBot, SearchModal, DonateModal, ContactFormModal)
+// were statically imported here, so their code — including EBot's knowledge
+// base — downloaded, parsed and compiled before first paint on every page,
+// though none is ever visible on load. They are now split into async chunks:
+//
+// - SearchModal / ContactFormModal: mounted on the FIRST open event only.
+//   ModalGate listens for the event from the entry chunk, loads the widget
+//   chunk, mounts it, then re-dispatches the event — the widget's own
+//   listener (attached in its mount effect, which runs before the gate's
+//   re-dispatch effect) opens it. No open event is ever lost.
+// - DonateModal / EBot: loaded when the browser is idle (requestIdleCallback
+//   with a setTimeout fallback). DonateModal keeps its own 20s session
+//   auto-show timer untouched — it simply starts a moment later, off the
+//   critical path; EBot's chat FAB appears once idle rather than competing
+//   with first paint.
+const loadSearchModal = () => import("./components/SearchModal");
+const loadDonateModal = () => import("./components/DonateModal");
+const loadContactFormModal = () => import("./components/ContactFormModal");
+const loadEBot = () => import("./components/EBot");
+
+const SearchModalLazy = lazy(loadSearchModal);
+const DonateModalLazy = lazy(loadDonateModal);
+const ContactFormModalLazy = lazy(loadContactFormModal);
+const EBotLazy = lazy(loadEBot);
+
+/** Mount a modal widget on its first open event; re-fire the event once mounted. */
+function ModalGate({
+  event,
+  load,
+  children,
+}: {
+  event: string;
+  load: () => Promise<unknown>;
+  children: ReactNode;
+}) {
+  const [ready, setReady] = useState(false);
+  const pending = useRef<Event | null>(null);
+
+  useEffect(() => {
+    const onFirstOpen = (e: Event) => {
+      pending.current = e;
+      window.removeEventListener(event, onFirstOpen);
+      void load().then(
+        () => setReady(true),
+        () => {
+          // Chunk failed to load (offline?): re-arm so a later open retries
+          // instead of silently swallowing every future event.
+          pending.current = null;
+          window.addEventListener(event, onFirstOpen);
+        }
+      );
+    };
+    window.addEventListener(event, onFirstOpen);
+    return () => window.removeEventListener(event, onFirstOpen);
+  }, [event, load]);
+
+  // Child effects (where the widget attaches its own open listener) run
+  // before this parent effect, so the re-dispatched event always lands.
+  useEffect(() => {
+    if (!ready || !pending.current) return;
+    const e = pending.current;
+    pending.current = null;
+    const detail = (e as CustomEvent).detail;
+    window.dispatchEvent(
+      detail !== undefined ? new CustomEvent(e.type, { detail }) : new Event(e.type)
+    );
+  }, [ready]);
+
+  if (!ready) return null;
+  return <Suspense fallback={null}>{children}</Suspense>;
+}
+
+/** Load a widget when the browser is idle, off the critical path. */
+function IdleGate({
+  load,
+  children,
+}: {
+  load: () => Promise<unknown>;
+  children: ReactNode;
+}) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const kick = () => {
+      void load().then(() => {
+        if (!cancelled) setReady(true);
+      });
+    };
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(kick, { timeout: 2500 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+      };
+    }
+    const t = setTimeout(kick, 1200);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [load]);
+
+  if (!ready) return null;
+  return <Suspense fallback={null}>{children}</Suspense>;
+}
 
 // Lazy-load all pages for code splitting
 // --- Route preloading -------------------------------------------------------
@@ -1168,15 +1273,23 @@ function App() {
           <ScrollToTop />
           <RouteMeta />
           <Toaster />
-          <SearchModal />
-          <DonateModal />
-          <ContactFormModal />
+          <ModalGate event="open-search" load={loadSearchModal}>
+            <SearchModalLazy />
+          </ModalGate>
+          <IdleGate load={loadDonateModal}>
+            <DonateModalLazy />
+          </IdleGate>
+          <ModalGate event={OPEN_CONTACT_EVENT} load={loadContactFormModal}>
+            <ContactFormModalLazy />
+          </ModalGate>
           <Navbar />
           <main id="main-content" tabIndex={-1}>
             <Router />
           </main>
           <Footer />
-          <EBot />
+          <IdleGate load={loadEBot}>
+            <EBotLazy />
+          </IdleGate>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

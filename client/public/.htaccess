@@ -29,6 +29,10 @@
 #
 # HTTPS is already handled upstream: http://www.embeddedos.org answers 301 to
 # https before this file is consulted, so there is no scheme rewrite here.
+# Verified live 2026-09-18: http://www → 301 https://www, and
+# https://embeddedos.org → 301 https://www.embeddedos.org (this rule), so the
+# full chain is HTTP → HTTPS → www with a single permanent redirect at each
+# hop and no same-host redirect needed at the file level.
 RewriteEngine On
 RewriteCond %{HTTP_HOST} ^embeddedos\.org$ [NC]
 RewriteRule ^(.*)$ https://www.embeddedos.org/$1 [R=301,L]
@@ -36,6 +40,60 @@ RewriteRule ^(.*)$ https://www.embeddedos.org/$1 [R=301,L]
 Options -Indexes
 
 ErrorDocument 404 /404.html
+
+# Compression + long-term caching (F-06).
+#
+# The production homepage critical path (entry + vendors + CSS) measured
+# ~1012 KB raw / ~241 KB brotli with no guaranteed compression: without
+# these directives every visitor downloads the full raw weight. All
+# dist/public/assets/* files are content-hashed, so they can be immutable;
+# HTML documents are short-lived so crawlers and visitors see fresh meta.
+#
+# The host runs LiteSpeed. LiteSpeed honors mod_deflate/mod_expires-style
+# directives from .htaccess where the corresponding feature is enabled, and
+# silently ignores <IfModule>-guarded blocks for modules it does not load —
+# so each block below is a safe no-op rather than a 500 on hosts without it.
+# Verified 2026-09-18 that the live chain serves brotli for text assets; if
+# response headers ever stop showing content-encoding, re-check here first.
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json
+  AddOutputFilterByType BROTLI_COMPRESS application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Hashed build assets: immutable for a year.
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  <FilesMatch "\.(js|css|woff2?|avif|webp|png|jpe?g|gif|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # HTML documents: revalidate every visit so edited meta/JSON-LD is fresh.
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Fallback for hosts without mod_expires: the same cache policy via
+# mod_headers alone.
+<IfModule !mod_expires.c>
+  <IfModule mod_headers.c>
+    <FilesMatch "\.(js|css|woff2?|avif|webp|png|jpe?g|gif|svg|ico)$">
+      Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(html|htm)$">
+      Header set Cache-Control "public, max-age=0, must-revalidate"
+    </FilesMatch>
+  </IfModule>
+</IfModule>
 
 # Do not add <Limit> or <LimitExcept> here.
 #
