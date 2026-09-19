@@ -237,23 +237,35 @@ settled.
 
 ---
 
-## D-10 — Most tutorial content is invisible without JavaScript
+## D-10 — One page still renders only its active tab
 
-**Verified.** `/getting-started` defines 51 step and path titles in its data;
-**9 appear in the prerendered HTML and 42 do not**. The page renders only the
-active tab, so the prerenderer captures one path out of six and a crawler sees
-roughly a sixth of the instructions.
+**Partly resolved.** Three of the pages first reported under this heading were
+not what the heading claimed, and the survey that checked them said so rather
+than assuming:
 
-Six other pages use the same pattern: `/api-docs`, `/architecture`, `/books`,
-`/eflow`, `/eosuite`, `/health-compare`.
+| Page               | Titles in source | In prerendered HTML | Status                             |
+| ------------------ | ---------------- | ------------------- | ---------------------------------- |
+| `/getting-started` | 51               | 8 → **51**          | fixed                              |
+| `/eflow`           | 20               | 5 → **20**          | fixed                              |
+| `/architecture`    | 7 panels         | 1                   | **open**                           |
+| `/api-docs`        | 66               | 6                   | blocked by PR #56                  |
+| `/eosuite`         | 55               | 11                  | blocked by PR #56                  |
+| `/books`           | 14               | 14                  | no gate — earlier report was wrong |
+| `/health-compare`  | 32               | 32                  | no gate — earlier report was wrong |
 
-This is not a broken page — every path is reachable by clicking — but the
-instructional content search engines would index mostly is not in the HTML.
-Fixing it means rendering inactive panels and hiding them with CSS, or
-prerendering one URL per path. Both change how those pages are built, and the
-second changes the URL space.
+`/architecture` is left open deliberately. Its seven panels each embed
+`ArchitectureDiagram3D`, and a WebGL canvas inside a `hidden` panel
+initialises at zero size, so the fix has to keep the canvas mounted for the
+active diagram only while the six other text panels render. That is a
+different change from the two done here, and worth its own review. Its
+diagram titles and subtitles are already in the HTML; what is missing is the
+descriptions and the layer labels.
 
-**Owner:** maintainer, because the second option adds routes.
+`/api-docs` and `/eosuite` are the larger losses — 60 and 44 titles — and both
+files belong to PR #56.
+
+**Owner:** nobody, for `/architecture`; it is ordinary work. The other two
+wait on the merge order in D-1.
 
 ---
 
@@ -295,23 +307,36 @@ that use it.
 
 ---
 
-## D-12 — `eos-health` is on the site but not in the ecosystem graph
+## D-12 — Two device repositories sit outside the ecosystem graph
 
-**Verified.** `/downloads` links `github.com/embeddedos-org/eos-health`, which
-is public, MIT, written in C and actively pushed. `docs/ecosystem-graph.json`
-records eighteen components and does not include it.
+**Verified.** `docs/ecosystem-graph.json` records eighteen components. A sweep
+of every `github.com/embeddedos-org/*` URL in the built site and in
+`client/src` found two public repositories the graph does not carry:
 
-It is a device mono-repo — four wearables, a mobile app, firmware, patents —
-rather than an operating-system component, so whether it belongs in a graph
-that models the OS stack is a taxonomy question. The graph already carries
-`eCAD-Hardware-Products`, which is also hardware, so there is a precedent
-either way.
+| Repository   | Language   | Licence | Linked from  | In graph |
+| ------------ | ---------- | ------- | ------------ | -------- |
+| `eos-health` | C          | MIT     | `/downloads` | no       |
+| `eos-aero`   | TypeScript | none    | site content | no       |
 
-Its README also claims the four devices cover "~95% of all clinically
-relevant health metrics". The website does not repeat that figure, and C-005
-already retired coverage claims of that kind from the health pages.
+Both are device or application product lines rather than operating-system
+components, which is why this is a decision and not an omission: the graph
+models the EmbeddedOS stack, though it already carries
+`eCAD-Hardware-Products`, so hardware is not automatically out of scope.
 
-**Owner:** maintainer.
+`eos-aero` carries no licence at all, which matters more than its absence from
+the graph — every other repository in the organisation is MIT, and the site
+says so.
+
+The sweep also confirmed what is _not_ a gap: `embeddedos-org`,
+`embeddedos-org.github.io` and `.github` are org-infrastructure repositories,
+`eVera` and `www.embeddedos.org` are private, and `eos-stack-manifest` and
+`eFab` return 404 to an authenticated request, so they do not exist.
+
+`eos-health`'s README claims its four devices cover "~95% of all clinically
+relevant health metrics". The website does not repeat it, and C-005 already
+retired coverage claims of that kind from the health pages.
+
+**Owner:** maintainer, for both the taxonomy and the `eos-aero` licence.
 
 ---
 
