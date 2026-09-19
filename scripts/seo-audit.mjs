@@ -133,6 +133,19 @@ export function parseDocument(file) {
     ],
     httpLinks: hrefs.filter(h => /^http:\/\//i.test(h)),
     imagesWithoutAlt: images.filter(t => !/\balt=/i.test(t)).length,
+    imagesWithoutDimensions: images.filter(
+      t => !attr(t, "width") || !attr(t, "height")
+    ).length,
+    imageCount: images.length,
+    contentLinks: [
+      ...new Set(
+        [
+          ...(body.match(/<main[\s\S]*?<\/main>/i)?.[0] ?? "").matchAll(
+            /<a\b[^>]*href="(\/[^"#?][^"]*|\/)"/g
+          ),
+        ].map(m => m[1].split(/[?#]/)[0].replace(/\/$/, "") || "/")
+      ),
+    ],
     bodyTextLength: text(body).length,
   };
 }
@@ -286,6 +299,49 @@ export function audit(docs, sitemap) {
     add("error", "sitemap-missing", "-", "dist/public/sitemap.xml absent");
   }
 
+  const robotsPath = path.join(DIST, "robots.txt");
+  if (!fs.existsSync(robotsPath)) {
+    add("error", "robots-missing", "-", "dist/public/robots.txt absent");
+  } else {
+    const robots = fs.readFileSync(robotsPath, "utf8");
+    if (!/^sitemap:/im.test(robots))
+      add("warn", "robots-no-sitemap", "-", "robots.txt references no sitemap");
+    const disallowAll = /^disallow:\s*\/\s*$/im.test(robots);
+    if (disallowAll)
+      add(
+        "error",
+        "robots-disallow-all",
+        "-",
+        "robots.txt disallows everything"
+      );
+    const declared = robots.match(/^sitemap:\s*(\S+)/im)?.[1];
+    if (declared && sitemap && !declared.endsWith("/sitemap.xml"))
+      add("warn", "robots-sitemap-mismatch", "-", declared);
+  }
+
+  const contentIn = new Map([...routes].map(r => [r, 0]));
+  for (const d of docs)
+    for (const href of d.contentLinks ?? [])
+      if (contentIn.has(href) && href !== d.route)
+        contentIn.set(href, contentIn.get(href) + 1);
+  for (const [route, count] of contentIn)
+    if (count === 0 && !EXEMPT.has(route) && inbound.get(route) > 0)
+      add(
+        "info",
+        "chrome-only-page",
+        route,
+        "linked only from the header/footer, never from page content"
+      );
+
+  for (const d of docs)
+    if (d.imagesWithoutDimensions > 0)
+      add(
+        "info",
+        "img-no-dimensions",
+        d.route,
+        `${d.imagesWithoutDimensions} of ${d.imageCount} <img> without width/height`
+      );
+
   return findings;
 }
 
@@ -293,6 +349,7 @@ const docs = documents().map(parseDocument);
 const findings = audit(docs, sitemapRoutes());
 const errors = findings.filter(f => f.level === "error");
 const warnings = findings.filter(f => f.level === "warn");
+const infos = findings.filter(f => f.level === "info");
 
 if (JSON_OUT) {
   console.log(JSON.stringify({ documents: docs.length, findings }, null, 1));
@@ -306,6 +363,7 @@ if (JSON_OUT) {
   for (const [label, list] of [
     ["ERRORS", errors],
     ["WARNINGS", warnings],
+    ["INFO", infos],
   ]) {
     if (!list.length) continue;
     console.log(`${label} (${list.length}):`);
@@ -317,7 +375,9 @@ if (JSON_OUT) {
     }
     console.log("");
   }
-  console.log(`[seo] ${errors.length} errors, ${warnings.length} warnings`);
+  console.log(
+    `[seo] ${errors.length} errors, ${warnings.length} warnings, ${infos.length} info`
+  );
 }
 
 if (STRICT && errors.length) process.exitCode = 1;

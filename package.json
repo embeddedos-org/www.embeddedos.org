@@ -26,6 +26,7 @@
     "seo:audit": "node scripts/seo-audit.mjs",
     "seo:check": "node scripts/seo-audit.mjs --strict",
     "seo:links": "node scripts/link-graph.mjs",
+    "seo:diff": "node scripts/seo-diff.mjs",
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "test:unit": "vitest run tests/unit",
@@ -144,6 +145,9 @@
     "typescript-eslint": "^8",
     "vite": "^7.1.7",
     "vitest": "^3.2.7"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {

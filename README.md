@@ -23,20 +23,28 @@ the hosting model changes.
 
 ## Requirements
 
-| Tool    | Version used here | Notes                                                             |
-| ------- | ----------------- | ----------------------------------------------------------------- |
-| Node.js | 24.19.0           | **Not installed system-wide in this WSL environment** — see below |
-| pnpm    | 10.4.1            | Pinned by `packageManager` in `package.json`                      |
+| Tool    | Version used here | Notes                                                    |
+| ------- | ----------------- | -------------------------------------------------------- |
+| Node.js | 22                | Matches `.nvmrc`, `engines.node` and the version CI runs |
+| pnpm    | 10.4.1            | Pinned by `packageManager` in `package.json`             |
 
-Node lives in a local toolchain directory. Put it on `PATH` before running
-anything in this repository, in every new shell:
+`.nvmrc` pins the major version, so with nvm installed:
+
+```bash
+nvm use
+```
+
+On a machine where Node is installed in a local toolchain directory rather
+than through a version manager, put it on `PATH` in every new shell instead:
 
 ```bash
 export PATH="$HOME/.local/node/bin:$PATH"
 ```
 
-Every command below assumes that has been done. If `pnpm: command not found` is
-the first thing you see, this is why.
+Every command below assumes one of those has been done. If
+`pnpm: command not found` is the first thing you see, this is why. Do not run
+the `pnpm` shim that ships with corepack unless it has already downloaded
+pnpm — it fetches on first use and will hang on a slow connection.
 
 ---
 
