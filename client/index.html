@@ -43,9 +43,10 @@
       h6 {
         font-family: "Space Grotesk", system-ui, sans-serif;
         font-weight: 700;
-        line-height: 1.2;
-        letter-spacing: -0.02em;
-        margin: 0 0 0.5em;
+        /* line-height, letter-spacing and margin are owned by the design system
+           (display-*, leading-*, mb-*) in the deferred stylesheet. They must not
+           be set here: this block is unlayered, and unlayered author styles beat
+           Tailwind's @layer utilities, so they would permanently override them. */
       }
       p {
         margin: 0 0 1em;
