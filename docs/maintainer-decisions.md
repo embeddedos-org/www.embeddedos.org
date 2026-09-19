@@ -216,6 +216,95 @@ say which.
 
 ---
 
+## D-9 — The homepage's content links are the site's discovery bottleneck
+
+**Verified** from the built HTML. The homepage's `<main>` links 14 internal
+pages. None of them is `/architecture`, `/ecosystem`, `/products`,
+`/downloads`, `/stacks`, or any component page. Following in-content links
+only — which is what a crawler does, and what a reader who never opens the
+mega-menu does — every one of those was unreachable from the homepage.
+
+The navigation reaches them in one click, so a person using the menu is fine.
+A crawler weighing in-content links, and anyone browsing without the menu, is
+not.
+
+`client/src/pages/Home.tsx` is one of the four files PR #56 conflicts in, so
+this was not changed here. `/getting-started` now carries the same links,
+which puts each target two clicks from the homepage instead of unreachable.
+
+**Owner:** whoever lands #56, or a follow-up once the merge order in D-1 is
+settled.
+
+---
+
+## D-10 — Most tutorial content is invisible without JavaScript
+
+**Verified.** `/getting-started` defines 51 step and path titles in its data;
+**9 appear in the prerendered HTML and 42 do not**. The page renders only the
+active tab, so the prerenderer captures one path out of six and a crawler sees
+roughly a sixth of the instructions.
+
+Six other pages use the same pattern: `/api-docs`, `/architecture`, `/books`,
+`/eflow`, `/eosuite`, `/health-compare`.
+
+This is not a broken page — every path is reachable by clicking — but the
+instructional content search engines would index mostly is not in the HTML.
+Fixing it means rendering inactive panels and hiding them with CSS, or
+prerendering one URL per path. Both change how those pages are built, and the
+second changes the URL space.
+
+**Owner:** maintainer, because the second option adds routes.
+
+---
+
+## D-11 — Four 3D components have no WebGL or reduced-motion guard
+
+**Verified** by reading the components. Eight files import `three` or
+`@react-three/fiber`:
+
+| Component                    | WebGL check | Reduced motion | Used by                                        |
+| ---------------------------- | ----------- | -------------- | ---------------------------------------------- |
+| `ArchitectureDiagram3D`      | yes         | yes            | `/architecture`, `/ecad-hardware`              |
+| `ArchitectureHologramCanvas` | yes         | via parent     | homepage hero                                  |
+| `EoS3D`                      | **no**      | **no**         | `/eapps`, `/eai`, `/eboot`, `/eos`, `/eoffice` |
+| `AeroSwift3D`                | **no**      | **no**         | `/aerospace`                                   |
+| `HealthDevice3D`             | **no**      | **no**         | `/health`                                      |
+| `CircuitHero`                | **no**      | **no**         | homepage                                       |
+
+`EoS3D` reaches five component pages — the widest exposure. On a machine
+without WebGL, or for a visitor who has asked for reduced motion, these render
+whatever the library does by default; no fallback was found.
+
+This costs nothing in the critical path: the homepage preloads no three.js
+chunk, and the 872 KB `react-three-fiber` bundle is fetched only by routes
+that use it. The concern is accessibility and failure behaviour, not bytes.
+
+**Owner:** maintainer for the visual direction. Adding the existing
+`useReducedMotion` hook and the WebGL probe already in `HeroTechStack` is
+mechanical, but what each canvas should fall back to is a design decision.
+
+---
+
+## D-12 — `eos-health` is on the site but not in the ecosystem graph
+
+**Verified.** `/downloads` links `github.com/embeddedos-org/eos-health`, which
+is public, MIT, written in C and actively pushed. `docs/ecosystem-graph.json`
+records eighteen components and does not include it.
+
+It is a device mono-repo — four wearables, a mobile app, firmware, patents —
+rather than an operating-system component, so whether it belongs in a graph
+that models the OS stack is a taxonomy question. The graph already carries
+`eCAD-Hardware-Products`, which is also hardware, so there is a precedent
+either way.
+
+Its README also claims the four devices cover "~95% of all clinically
+relevant health metrics". The website does not repeat that figure, and C-005
+already retired coverage claims of that kind from the health pages.
+
+**Owner:** maintainer.
+
+---
+
 ## What was fixed without a decision
 
 | PR  | Fix                                                                                                                                   |
