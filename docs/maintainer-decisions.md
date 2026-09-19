@@ -257,31 +257,41 @@ second changes the URL space.
 
 ---
 
-## D-11 — Four 3D components have no WebGL or reduced-motion guard
+## D-11 — Two 3D components still have no WebGL or reduced-motion guard
 
-**Verified** by reading the components. Eight files import `three` or
-`@react-three/fiber`:
+**Corrected.** An earlier pass listed four unguarded components. A closer read
+found that claim was wrong about one of them: `CircuitHero` has no internal
+check, but its only call site in `client/src/pages/Home.tsx` already applies
+both the WebGL probe and `useReducedMotion`, so it cannot mount without them.
+Adding a guard inside it would be dead code. No change was made.
 
-| Component                    | WebGL check | Reduced motion | Used by                                        |
-| ---------------------------- | ----------- | -------------- | ---------------------------------------------- |
-| `ArchitectureDiagram3D`      | yes         | yes            | `/architecture`, `/ecad-hardware`              |
-| `ArchitectureHologramCanvas` | yes         | via parent     | homepage hero                                  |
-| `EoS3D`                      | **no**      | **no**         | `/eapps`, `/eai`, `/eboot`, `/eos`, `/eoffice` |
-| `AeroSwift3D`                | **no**      | **no**         | `/aerospace`                                   |
-| `HealthDevice3D`             | **no**      | **no**         | `/health`                                      |
-| `CircuitHero`                | **no**      | **no**         | homepage                                       |
+The remaining position, after this branch:
 
-`EoS3D` reaches five component pages — the widest exposure. On a machine
-without WebGL, or for a visitor who has asked for reduced motion, these render
-whatever the library does by default; no fallback was found.
+| Component                    | WebGL        | Reduced motion | Used by                                        | Status                            |
+| ---------------------------- | ------------ | -------------- | ---------------------------------------------- | --------------------------------- |
+| `ArchitectureDiagram3D`      | yes          | yes            | `/architecture`, `/ecad-hardware`              | already guarded                   |
+| `ArchitectureHologramCanvas` | yes          | at call site   | homepage hero                                  | already guarded                   |
+| `CircuitHero`                | at call site | at call site   | homepage                                       | already guarded, no change needed |
+| `EoS3D` (5 canvases)         | **added**    | **added**      | `/eos`, `/eboot`, `/eai`, `/eoffice`, `/eapps` | fixed here                        |
+| `AeroSwift3D` (2 canvases)   | **added**    | **added**      | `/aerospace`                                   | fixed here                        |
+| `HealthDevice3D`             | no           | no             | `/health`                                      | **blocked**                       |
 
-This costs nothing in the critical path: the homepage preloads no three.js
+`HealthDevice3D` is blocked on both ends: the component and its only consumer
+`client/src/pages/Health.tsx` are both owned by PR #56, so there is no
+un-owned file through which a guard could be added.
+
+All of these are decorative. None imports `Text` or `Html` from drei, so no
+information exists inside any canvas that is not also in the surrounding DOM,
+and two of the pages label them "Concept 3D Render" and "Illustrative 3D
+Concept" themselves. The guard therefore hides the canvas when WebGL is
+absent and switches `frameloop` to `demand` under reduced motion, matching
+what `ArchitectureDiagram3D` already does.
+
+There is no critical-path cost either way: the homepage preloads no three.js
 chunk, and the 872 KB `react-three-fiber` bundle is fetched only by routes
-that use it. The concern is accessibility and failure behaviour, not bytes.
+that use it.
 
-**Owner:** maintainer for the visual direction. Adding the existing
-`useReducedMotion` hook and the WebGL probe already in `HeroTechStack` is
-mechanical, but what each canvas should fall back to is a design decision.
+**Owner:** maintainer, for `HealthDevice3D` once #56 lands.
 
 ---
 
