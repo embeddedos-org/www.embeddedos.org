@@ -1,0 +1,303 @@
+{
+  "$comment": "Verified EmbeddedOS ecosystem model. Every field is sourced from the component's own repository, recorded in `evidence`. Nothing here is inferred from a name. Generated for the architecture explorer proposed in issue #52; see docs/ecosystem-graph.md for provenance and rules.",
+  "generated": "2026-09-19",
+  "sourceOfTruth": "each component's README on its default branch",
+  "components": [
+    {
+      "id": "eos",
+      "name": "EoS",
+      "purpose": "Multi-platform embedded OS framework in C11: RTOS kernel, HAL with host and bare-metal backends, driver framework, networking, power and runtime services.",
+      "repository": "https://github.com/embeddedos-org/eos",
+      "language": "C11",
+      "version": "0.5.0",
+      "maturity": "Experimental",
+      "maturityEvidence": "README: \"The repository as a whole is Experimental.\" and \"Nothing here has been observed to boot on hardware. No latency, throughput or power figure is published, because no reproducible benchmark exists to link to.\"",
+      "caveats": [
+        "Networking is Planned: net/ is an API with a POSIX backend for host builds; eos_net_connect() returns -1 on bare metal.",
+        "RSA and ECC signature verification are stubs and refuse to run unless EOS_ALLOW_STUB_CRYPTO is defined. AES, SHA-256 and SHA-512 are implemented and pass NIST vectors.",
+        "84 board descriptors, of which 71 are named generic-* and none has been validated on hardware."
+      ],
+      "sitePage": "/eos",
+      "gettingStarted": "cmake -B build/host -DCMAKE_BUILD_TYPE=Release && cmake --build build/host --parallel"
+    },
+    {
+      "id": "eboot",
+      "name": "eBoot",
+      "purpose": "Two-stage secure bootloader. Stage-0 performs early hardware bring-up; Stage-1 scans, selects, verifies and jumps to an application or RTOS image. Ed25519 image authentication, A/B slots, recovery and firmware-update transports.",
+      "repository": "https://github.com/embeddedos-org/eBoot",
+      "language": "C",
+      "version": "3.0.2",
+      "maturity": "Available project",
+      "maturityEvidence": "README describes a working CMake project with unit, functional, fuzz, performance and simulation test suites; 83 board directories.",
+      "caveats": [],
+      "sitePage": "/eboot",
+      "gettingStarted": "cmake -S . -B build -DEBLDR_BUILD_TESTS=ON && cmake --build build --parallel && ctest --test-dir build"
+    },
+    {
+      "id": "efirmware",
+      "name": "eFirmware",
+      "purpose": "Firmware image toolkit: build, sign-slot, inspect and verify the firmware containers eBoot loads.",
+      "repository": "https://github.com/embeddedos-org/eFirmware",
+      "language": "C11",
+      "maturity": "Early",
+      "maturityEvidence": "README: \"Status: early.\" Image container, SHA-256, CRC-32 and the efwtool host utility are Working; the update agent, transports and board bring-up are listed \"Not started\".",
+      "caveats": ["No site page exists for this component."],
+      "sitePage": null,
+      "gettingStarted": "See the repository README"
+    },
+    {
+      "id": "ebuild",
+      "name": "ebuild",
+      "purpose": "Unified embedded build system in Python. A project is described in one build.yaml; ebuild resolves the dependency and toolchain graph and drives an underlying backend, then extends into firmware and system-image workflows.",
+      "repository": "https://github.com/embeddedos-org/ebuild",
+      "language": "Python 3.8+",
+      "maturity": "Available project",
+      "maturityEvidence": "README documents backend dispatch to CMake, Make, Meson, Cargo and Kbuild, or Ninja generation, plus a demo.md end-to-end walkthrough.",
+      "caveats": [
+        "Unrelated to Gentoo's ebuild format; the README states this."
+      ],
+      "sitePage": "/ebuild",
+      "gettingStarted": "pip install -e . then ebuild build"
+    },
+    {
+      "id": "eipc",
+      "name": "eIPC",
+      "purpose": "Transport-agnostic inter-process communication library in Go. Exchanges messages as framed envelopes over pluggable transports and signs every frame for integrity.",
+      "repository": "https://github.com/embeddedos-org/eIPC",
+      "language": "Go",
+      "maturity": "Available project",
+      "maturityEvidence": "README lists TCP, Unix socket, shared memory and Windows named-pipe transports, HMAC-SHA256 frame integrity, replay protection, a C SDK and unit/functional/integration/performance test suites.",
+      "caveats": [],
+      "sitePage": "/eipc",
+      "gettingStarted": "See examples/hello-eipc in the repository"
+    },
+    {
+      "id": "eai",
+      "name": "eAI",
+      "purpose": "On-device AI layer in C. Provides a runtime contract for loading and running models, plus EAI-Min (a lightweight agent runtime for IoT devices) and EAI-Framework (a larger platform for industrial systems).",
+      "repository": "https://github.com/embeddedos-org/eAI",
+      "language": "C",
+      "version": "0.2.0",
+      "maturity": "Experimental / Research",
+      "maturityEvidence": "README describes platform adapters, model-format loaders, optional accelerator backends and a BCI module; version 0.2.0.",
+      "caveats": [],
+      "sitePage": "/eai",
+      "gettingStarted": "CMakePresets.json defines the presets used by CI"
+    },
+    {
+      "id": "eni",
+      "name": "eNI",
+      "purpose": "Neural-interface adapter in C. Acquires data from BCI hardware and simulators through a provider model, runs it through DSP, a neural decoder and an on-device inference engine, and drives a stimulator/feedback path.",
+      "repository": "https://github.com/embeddedos-org/eNI",
+      "language": "C",
+      "version": "0.3.0",
+      "maturity": "Experimental / Research",
+      "maturityEvidence": "README lists providers (eeg, lsl, neuralink, simulator, wireless), formats (EDF+, BDF+, XDF, native ENI), session management and calibration; version 0.3.0.",
+      "caveats": [
+        "Channel count and sample rate depend on the acquisition hardware and configuration; unverified-claims.md C-003 retired universal platform limits."
+      ],
+      "sitePage": "/eni",
+      "gettingStarted": "CMakePresets.json defines the presets used by CI"
+    },
+    {
+      "id": "eosim",
+      "name": "EoSim",
+      "purpose": "Simulation and validation platform in Python, with a native simulation engine plus QEMU and Renode backends.",
+      "repository": "https://github.com/embeddedos-org/EoSim",
+      "language": "Python",
+      "maturity": "Available project",
+      "maturityEvidence": "README documents a CLI (eosim list/info/run/test/doctor/stats/gui) and pip installation.",
+      "caveats": [
+        "The README's own platform count (52+) differs from the site's simulated-platform figure; unverified-claims.md records that board and platform counts were previously conflated."
+      ],
+      "sitePage": "/eosim",
+      "gettingStarted": "pip install git+https://github.com/embeddedos-org/eosim.git then eosim list"
+    },
+    {
+      "id": "eostudio",
+      "name": "EoStudio",
+      "purpose": "Python development and design platform: a visual editor and design suite with multi-target code generation, driven from a single CLI entry point.",
+      "repository": "https://github.com/embeddedos-org/EoStudio",
+      "language": "Python",
+      "version": "3.1.0",
+      "maturity": "Available project",
+      "maturityEvidence": "README documents the click-based CLI, plugin system and ebuild integration.",
+      "caveats": [],
+      "sitePage": "/eostudio",
+      "gettingStarted": "Open a project containing build.yaml; EoStudio drives ebuild"
+    },
+    {
+      "id": "edb",
+      "name": "eDB",
+      "purpose": "Embedded multi-model database. A Python engine built on SQLite exposes relational, document, key-value, graph and full-text-search interfaces behind one handle, as a library, a FastAPI HTTP API, or a React database-manager UI.",
+      "repository": "https://github.com/embeddedos-org/eDB",
+      "language": "Python + TypeScript",
+      "maturity": "Available project",
+      "maturityEvidence": "README documents the five engines, SQLite WAL journaling, FTS5, transactions via savepoints, JWT auth and RBAC.",
+      "caveats": [],
+      "sitePage": "/edb",
+      "gettingStarted": "See examples/quickstart.py in the repository"
+    },
+    {
+      "id": "eosllm",
+      "name": "eosllm",
+      "purpose": "On-device LLM inference engine in portable ISO C99. Compiles to a single static library with a stable C ABI, plus CLI and server tools that run models entirely locally.",
+      "repository": "https://github.com/embeddedos-org/eosllm",
+      "language": "C99",
+      "version": "0.1.0",
+      "maturity": "Experimental / Research",
+      "maturityEvidence": "README: version 0.1.0, ABI 1; the CLI describes current generation as \"Phase 1\" — greedy text generation from a Llama/Qwen2-class GGUF model.",
+      "caveats": [],
+      "sitePage": null,
+      "gettingStarted": "See the repository README"
+    },
+    {
+      "id": "ebrowser",
+      "name": "eBrowser",
+      "purpose": "Privacy-oriented web browser in C11 for embedded targets and desktops. UI rendered with LVGL, TLS via mbedTLS; builds for EoS, SDL2 or WebAssembly.",
+      "repository": "https://github.com/embeddedos-org/eBrowser",
+      "language": "C11",
+      "maturity": "Available project",
+      "maturityEvidence": "README documents engine, render, network, input and security modules toggled through CMake options.",
+      "caveats": [
+        "README scope note: \"It is not a Chromium/WebKit/Servo replacement and does not aim for full web-platform parity.\""
+      ],
+      "sitePage": "/ebrowser",
+      "gettingStarted": "See the repository README"
+    },
+    {
+      "id": "eoffice",
+      "name": "eOffice",
+      "purpose": "Open-source office suite as a TypeScript/React monorepo. One Vite web app hosts a launcher and eleven productivity apps, also shipping as PWA, Electron desktop and editor/browser extensions.",
+      "repository": "https://github.com/embeddedos-org/eOffice",
+      "language": "TypeScript",
+      "version": "1.0.0",
+      "maturity": "Available project",
+      "maturityEvidence": "README lists the eleven apps under apps/ as a pnpm workspace.",
+      "caveats": [],
+      "sitePage": "/eoffice",
+      "gettingStarted": "See the repository README"
+    },
+    {
+      "id": "eapps",
+      "name": "eApps",
+      "purpose": "Unified marketplace and monorepo for EoS applications across native, desktop, mobile, web, browser-extension, dev-tool, CLI and enterprise categories.",
+      "repository": "https://github.com/embeddedos-org/eApps",
+      "language": "Mixed",
+      "maturity": "Available project",
+      "maturityEvidence": "README documents the category table and a live GitHub Pages app store.",
+      "caveats": [
+        "eOffice, EoStudio, EoSim and eBrowser were extracted to their own repositories; the README says so."
+      ],
+      "sitePage": "/eapps",
+      "gettingStarted": "https://embeddedos-org.github.io/eApps/"
+    },
+    {
+      "id": "ecad",
+      "name": "eCAD-Hardware-Products",
+      "purpose": "Hardware and PCB CAD design collection organised by application domain, with datasheets, BOMs, power-budget scripts and some KiCad schematics.",
+      "repository": "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+      "language": "Mixed",
+      "maturity": "Design / Concept",
+      "maturityEvidence": "README: \"Status varies by design. Directories are at different maturity levels (many \\\"Design\\\" / \\\"Pre-production\\\"); PCB and CAD folders often contain .gitkeep placeholders rather than finished layouts.\"",
+      "caveats": ["16 domain collections; completeness varies by design."],
+      "sitePage": "/ecad-hardware",
+      "gettingStarted": "Read each design's own README and docs/"
+    },
+    {
+      "id": "enet",
+      "name": "eNet",
+      "purpose": "Networking subsystem for EmbeddedOS: TCP/IP, UDP, DHCP, DNS, MQTT, CoAP, discovery.",
+      "repository": "https://github.com/embeddedos-org/eNet",
+      "language": null,
+      "maturity": "Planned",
+      "maturityEvidence": "Repository description: \"Planned; implementation currently in eos/net.\"",
+      "caveats": ["No implementation yet."],
+      "sitePage": null,
+      "gettingStarted": null
+    },
+    {
+      "id": "esec",
+      "name": "eSec",
+      "purpose": "Security framework for EmbeddedOS: crypto abstraction, key management, device identity, attestation.",
+      "repository": "https://github.com/embeddedos-org/eSec",
+      "language": null,
+      "maturity": "Planned",
+      "maturityEvidence": "Repository description: \"Planned; implementation currently in eos/services/security.\"",
+      "caveats": ["No implementation yet."],
+      "sitePage": null,
+      "gettingStarted": null
+    },
+    {
+      "id": "eflow",
+      "name": "eFlow",
+      "purpose": "Visual programming and dataflow authoring for EmbeddedOS, layered on EoStudio and ebuild.",
+      "repository": "https://github.com/embeddedos-org/eFlow",
+      "language": null,
+      "maturity": "Planned",
+      "maturityEvidence": "Repository description: \"Planned; no implementation yet.\"",
+      "caveats": [
+        "The site page /eflow describes it in present tense; the repository says it is planned."
+      ],
+      "sitePage": "/eflow",
+      "gettingStarted": null
+    }
+  ],
+  "relationships": [
+    {
+      "from": "eboot",
+      "to": "eos",
+      "type": "verifies-and-boots",
+      "evidence": "eBoot README: \"providing verified boot for EoS and other payloads\"."
+    },
+    {
+      "from": "efirmware",
+      "to": "eboot",
+      "type": "produces-images-for",
+      "evidence": "eFirmware README: \"the firmware containers eBoot loads\"; \"156-byte container, byte-compatible with eBoot\"."
+    },
+    {
+      "from": "eostudio",
+      "to": "ebuild",
+      "type": "front-end-for",
+      "evidence": "EoStudio README: \"EoStudio is a front end for ebuild, the platform's build control plane — it drives ebuild rather than reimplementing what ebuild does.\""
+    },
+    {
+      "from": "eni",
+      "to": "eipc",
+      "type": "streams-over",
+      "evidence": "eNI README: integrations/ includes eipc_streaming."
+    },
+    {
+      "from": "eipc",
+      "to": "eos",
+      "type": "messaging-layer-for",
+      "evidence": "eIPC README: \"it provides the messaging layer between services\"."
+    },
+    {
+      "from": "eos",
+      "to": "eai",
+      "type": "ecosystem-sibling",
+      "evidence": "EoS README: \"EoS is the OS core of the EmbeddedOS ecosystem, alongside eBoot (secure bootloader), eAI (on-device AI), and eNI (neural interface).\""
+    },
+    {
+      "from": "eos",
+      "to": "eni",
+      "type": "ecosystem-sibling",
+      "evidence": "EoS README: same sentence as above."
+    }
+  ],
+  "profiles": [
+    {
+      "id": "eai-edge",
+      "name": "eAI Edge",
+      "sequence": ["eni", "eipc", "eai"],
+      "maturity": "In-development concept",
+      "evidence": "client/src/data/architecture.ts EAI_EDGE_PROFILE; the site page /eai-edge describes it as an in-development concept requiring validation."
+    }
+  ],
+  "notes": [
+    "eos-stack-manifest and eFab are referenced by shared/stack-data.ts, client/src/data/stack.ts and scripts/sync-stack-data.mjs but both return HTTP 404, so `pnpm sync:stack` cannot run and the generated figures are not currently reproducible.",
+    "No component in this graph publishes a reproducible latency, throughput or power benchmark. Any performance figure on the website must therefore be phrased as a target, per docs/unverified-claims.md."
+  ]
+}
