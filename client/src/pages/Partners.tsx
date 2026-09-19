@@ -91,7 +91,7 @@ const PARTNERS_ABOUT: ReadonlyArray<AboutSection> = [
   {
     heading: "How to start",
     body: [
-      "Use the contact form with the partnerships topic, or write to partners@embeddedos.org. Tell us about your organisation and which tier you are considering, and we will reply with the agreement and the next steps.",
+      "Use the contact form with the partnerships topic. Tell us about your organisation and which tier you are considering, and we will reply with the agreement and the next steps.",
       "The tiers are the same public terms for everyone — a nonprofit's partnerships should be as transparent as its code.",
     ],
   },
