@@ -862,6 +862,7 @@ export default function Navbar() {
                         onClick={() =>
                           setMobileExpanded(e => (e === label ? null : label))
                         }
+                        aria-expanded={isExpanded}
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
                       >
                         {label}

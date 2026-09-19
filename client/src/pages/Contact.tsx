@@ -176,6 +176,17 @@ export default function Contact() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl font-bold text-white mb-6">Get in Touch</h2>
+          {/*
+            F-34: the topic cards below open a JavaScript form dialog. Without
+            JS they are inert, so no-JS visitors get a plain-HTML pointer to
+            the published mailbox (which is also prerendered further down).
+          */}
+          <noscript>
+            <p className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+              The topic form needs JavaScript. You can reach us directly by
+              email instead — see "Prefer email?" below.
+            </p>
+          </noscript>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {contacts.map((c, i) => (
               <motion.button

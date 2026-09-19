@@ -13,6 +13,7 @@ import {
   Gauge,
 } from "lucide-react";
 import { Suspense, lazy, useRef, useEffect } from "react";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 const AeroSwiftPersonalCanvas = lazy(() =>
   import("../components/AeroSwift3D").then(m => ({
@@ -144,6 +145,9 @@ function TelemetryGauge({
 function FlightSimChart({ color }: { color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
+  // F-23: paint one static frame instead of looping when the visitor
+  // prefers reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
   const offsetRef = useRef(0);
 
   useEffect(() => {
@@ -225,12 +229,13 @@ function FlightSimChart({ color }: { color: string }) {
       ctx.fillRect(w * 0.9, 0, w * 0.1, h);
 
       offsetRef.current += 0.025;
-      frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
     return () => cancelAnimationFrame(frameRef.current);
-  }, [color]);
+  }, [color, reduceMotion]);
 
   return (
     <canvas
@@ -239,6 +244,7 @@ function FlightSimChart({ color }: { color: string }) {
       height={80}
       className="w-full h-full"
       style={{ display: "block" }}
+      aria-hidden="true"
     />
   );
 }

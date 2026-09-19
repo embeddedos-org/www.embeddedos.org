@@ -2,14 +2,17 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { RoundedBox, Torus, Cylinder } from "@react-three/drei";
 import * as THREE from "three";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 // ── HEALTH-KEY ULTRA — smart key fob ─────────────────────────────────────────
 function KeyUltraModel({ hovered }: { hovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.Mesh>(null);
+  // F-23: freeze the ambient auto-rotation for reduced-motion visitors.
+  const reduceMotion = usePrefersReducedMotion();
 
   useFrame(({ clock }) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || reduceMotion) return;
     groupRef.current.rotation.y = clock.getElapsedTime() * 0.5;
     groupRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.3) * 0.15;
     if (glowRef.current) {
@@ -71,9 +74,11 @@ function KeyUltraModel({ hovered }: { hovered: boolean }) {
 // ── HEALTH-BAND Neuro — smartwatch band ───────────────────────────────────────
 function BandNeuroModel({ hovered }: { hovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
+  // F-23: freeze the ambient auto-rotation for reduced-motion visitors.
+  const reduceMotion = usePrefersReducedMotion();
 
   useFrame(({ clock }) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || reduceMotion) return;
     groupRef.current.rotation.y = clock.getElapsedTime() * 0.4;
     groupRef.current.rotation.z = Math.sin(clock.getElapsedTime() * 0.25) * 0.1;
   });
@@ -145,9 +150,11 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
 // ── HEALTH-RING — smart ring ──────────────────────────────────────────────────
 function RingModel({ hovered }: { hovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
+  // F-23: freeze the ambient auto-rotation for reduced-motion visitors.
+  const reduceMotion = usePrefersReducedMotion();
 
   useFrame(({ clock }) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || reduceMotion) return;
     groupRef.current.rotation.y = clock.getElapsedTime() * 0.6;
     groupRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.4) * 0.2;
   });
@@ -188,9 +195,11 @@ function RingModel({ hovered }: { hovered: boolean }) {
 // ── HEALTH-LAB — portable lab device ─────────────────────────────────────────
 function LabModel({ hovered }: { hovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
+  // F-23: freeze the ambient auto-rotation for reduced-motion visitors.
+  const reduceMotion = usePrefersReducedMotion();
 
   useFrame(({ clock }) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || reduceMotion) return;
     groupRef.current.rotation.y = clock.getElapsedTime() * 0.35;
     groupRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.2) * 0.12;
   });
@@ -290,6 +299,9 @@ export function BiometricWaveform({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
   const offsetRef = useRef(0);
+  // F-23: with reduced motion the waveform paints one static frame instead
+  // of scrolling forever.
+  const reduceMotion = usePrefersReducedMotion();
 
   const generateWave = useMemo(() => {
     switch (type) {
@@ -404,7 +416,8 @@ export function BiometricWaveform({
       ctx.fillRect(w * 0.85, 0, w * 0.15, h);
 
       offsetRef.current += type === "neural" ? 0.06 : 0.03;
-      frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
@@ -413,6 +426,7 @@ export function BiometricWaveform({
 
   return (
     <canvas
+      aria-hidden="true"
       ref={el => {
         if (el) {
           canvasRef.current = el;

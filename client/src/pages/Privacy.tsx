@@ -32,7 +32,11 @@ We do not sell, rent, or share your personal information with third parties for 
   },
   {
     title: "3. Cookies",
-    content: `This website uses only essential cookies required for basic functionality (session management). We do not use advertising, analytics, or cross-site tracking cookies.
+    content: `This website does not set any cookies of its own — there are no session, advertising, analytics, or cross-site tracking cookies from embeddedos.org.
+
+What the site does store, in your browser's local storage (not cookies), is limited to two functional preferences: your theme choice (light/dark) and whether you have dismissed the donate dialog. Both stay on your device, are never transmitted to us, and clearing your browser storage simply resets them.
+
+The one third-party cookie involved in loading this site comes from Google Fonts (fonts.gstatic.com), which serves the typefaces used across the pages and may set a cache cookie per Google's own privacy policy. We do not use Google Analytics or any other tracking service.
 
 You can disable cookies in your browser settings. Doing so will not prevent you from accessing any content on this website.`,
   },

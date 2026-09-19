@@ -329,7 +329,8 @@ export default function Footer() {
                 href={FOUNDATION.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#F97316]/70 hover:text-[#F97316] transition-colors"
+                /* F-32: #F97316 at 70% was 3.85:1 — full strength is 6.95:1. */
+                className="text-[#F97316] hover:underline transition-colors"
               >
                 {WEBSITE_HOST}
               </a>
@@ -398,7 +399,9 @@ export default function Footer() {
                   whose body has no h2 (e.g. /faq, whose questions are buttons)
                   would otherwise jump h1 -> h3, which is a WCAG heading-order
                   violation. h2 is correct on every page and skips nothing. */}
-              <h2 className="text-[10px] font-extrabold text-white/30 uppercase tracking-[0.18em] mb-5">
+              {/* F-32: text-white/30 was 2.5:1 — section headings are 10px text
+                  and need 4.5:1. white/60 reaches 7.3:1 on the footer bg. */}
+              <h2 className="text-[10px] font-extrabold text-white/60 uppercase tracking-[0.18em] mb-5">
                 {section}
               </h2>
               <ul className="space-y-3">
@@ -419,7 +422,8 @@ export default function Footer() {
             outgrew a single row when Licenses, Security and Code of Conduct
             joined Privacy and Terms, and squeezed the tagline into a three-line
             wrap between them. */}
-        <div className="flex flex-col gap-4 text-xs text-white/25">
+        {/* F-32: text-white/25 was 2.1:1 on the footer background. */}
+        <div className="flex flex-col gap-4 text-xs text-white/60">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-center sm:text-left">
               © 2018–2026 {FOUNDATION.legalName}.

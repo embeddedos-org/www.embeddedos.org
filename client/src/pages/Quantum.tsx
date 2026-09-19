@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 import { Link } from "wouter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,9 @@ import {
 // ── Animated qubit particle canvas ──────────────────────────────────────────
 function QuantumCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // F-23: paint one static frame instead of looping when the visitor prefers
+  // reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -63,7 +67,7 @@ function QuantumCanvas() {
       color: colors[Math.floor(Math.random() * colors.length)],
     }));
 
-    let animId: number;
+    let animId = 0;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -111,7 +115,8 @@ function QuantumCanvas() {
         if (q.y < 0 || q.y > canvas.height) q.vy *= -1;
       });
 
-      animId = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) animId = requestAnimationFrame(draw);
     };
     draw();
 
@@ -119,12 +124,13 @@ function QuantumCanvas() {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [reduceMotion]);
 
   return (
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full opacity-60"
+      aria-hidden="true"
     />
   );
 }

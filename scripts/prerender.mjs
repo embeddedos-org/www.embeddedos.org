@@ -516,6 +516,22 @@ export function applyMeta(html, { route, heading, description, image }) {
     );
   }
 
+  // F-24: WebSite entity on the homepage only. Deliberately no SearchAction:
+  // site search lives in a modal, there is no /search route, and a
+  // SearchAction pointing at a URL that does not exist is invalid markup.
+  if (route === "/") {
+    const websiteJson = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "EmbeddedOS",
+      url: `${ORIGIN}/`,
+    });
+    out = out.replace(
+      /<\/head>/i,
+      `<script type="application/ld+json">${websiteJson}</script>\n</head>`
+    );
+  }
+
   return out;
 }
 

@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 interface TraceSegment {
   x1: number;
@@ -141,6 +142,9 @@ const PADS = [
 export default function PCBTrace({ running = true }: { running?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
+  // F-23: paint one static frame instead of looping when the visitor
+  // prefers reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
   const tRef = useRef(0);
 
   useEffect(() => {
@@ -253,7 +257,8 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
       ctx.textBaseline = "middle";
       ctx.fillText("MCU", 0.5 * w, 0.5 * h);
 
-      frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
@@ -261,7 +266,7 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
       cancelAnimationFrame(frameRef.current);
       ro.disconnect();
     };
-  }, [running]);
+  }, [running, reduceMotion]);
 
   return (
     <canvas
