@@ -103,6 +103,7 @@ for (const file of files.sort()) {
     afterKb: Math.round(after / 1024),
     dims: `${meta.width}x${meta.height}`,
     newDims: `${outMeta.width}x${outMeta.height}`,
+    webpKb,
     skipped: !shrank,
   });
 }
