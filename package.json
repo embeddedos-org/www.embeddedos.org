@@ -27,6 +27,8 @@
     "seo:check": "node scripts/seo-audit.mjs --strict",
     "seo:links": "node scripts/link-graph.mjs",
     "seo:diff": "node scripts/seo-diff.mjs",
+    "seo:integrity": "node scripts/link-integrity.mjs",
+    "quality:check": "node scripts/quality-check.mjs",
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "test:unit": "vitest run tests/unit",
