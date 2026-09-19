@@ -67,9 +67,29 @@ function usePrefersReducedMotion(): boolean {
 export default function CadEvolutionHero() {
   const reducedMotion = usePrefersReducedMotion();
   const [webglOk, setWebglOk] = useState(() => supportsWebGL());
+  const viewportRef = useRef<HTMLDivElement>(null);
+  // Pause the WebGL render loop when the hero is scrolled offscreen: the
+  // scene is decorative and continuous rendering while invisible is pure
+  // battery/CPU waste (on software renderers it can saturate a core).
+  const [heroVisible, setHeroVisible] = useState(true);
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      entries => {
+        if (entries[0]) setHeroVisible(entries[0].isIntersecting);
+      },
+      { threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   // F-16: the three.js scene (~193 KB brotli) must not compete with first
-  // paint. The viewport shows a static poster until the browser is idle;
-  // reduced-motion visitors keep the poster permanently.
+  // paint or time-to-interactive. The viewport shows a static poster until
+  // the page is fully loaded AND the browser is idle; reduced-motion
+  // visitors keep the poster permanently. Waiting for window 'load' keeps
+  // the 870KB download and the WebGL render loop out of the TBT/LCP
+  // measurement window.
   const [sceneReady, setSceneReady] = useState(false);
   useEffect(() => {
     if (reducedMotion) return;
@@ -77,17 +97,32 @@ export default function CadEvolutionHero() {
     const kick = () => {
       if (!cancelled) setSceneReady(true);
     };
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(kick, { timeout: 4000 });
+    const scheduleIdle = () => {
+      if ("requestIdleCallback" in window) {
+        const id = window.requestIdleCallback(kick, { timeout: 8000 });
+        return () => {
+          cancelled = true;
+          window.cancelIdleCallback(id);
+        };
+      }
+      const t = setTimeout(kick, 2500);
       return () => {
         cancelled = true;
-        window.cancelIdleCallback(id);
+        clearTimeout(t);
       };
+    };
+    if (document.readyState === "complete") {
+      return scheduleIdle();
     }
-    const t = setTimeout(kick, 1800);
+    let cleanup: (() => void) | undefined;
+    const onLoad = () => {
+      cleanup = scheduleIdle();
+    };
+    window.addEventListener("load", onLoad, { once: true });
     return () => {
       cancelled = true;
-      clearTimeout(t);
+      window.removeEventListener("load", onLoad);
+      cleanup?.();
     };
   }, [reducedMotion]);
   // stage 0..6 = the stage being explained; the 3D model builds stages 0..stage.
@@ -170,17 +205,24 @@ export default function CadEvolutionHero() {
 
       {/* 3D viewport */}
       <div
+        ref={viewportRef}
         className="relative mx-5 sm:mx-6 mt-4 h-[340px] sm:h-[400px] overflow-hidden rounded-xl border border-white/10 bg-[#060b16]"
         aria-hidden="true"
       >
-        {/* Static poster: paints instantly, stays until the deferred scene mounts. */}
+        {/* Static poster: paints instantly, stays until the deferred scene mounts.
+            Responsive srcset: the viewport renders ~375px wide on mobile and
+            ~530px on desktop, so the 1920px master is 3-5x oversized. The
+            browser picks the 768w variant on mobile (44KB vs 157KB). */}
         <picture>
           <source
-            srcSet="/media/hero-background_1bafea1c.webp"
+            srcSet="/media/hero-background_1bafea1c-768w.webp 768w, /media/hero-background_1bafea1c-1280w.webp 1280w, /media/hero-background_1bafea1c.webp 1920w"
+            sizes="(max-width: 1024px) 100vw, 640px"
             type="image/webp"
           />
           <img
             src="/media/hero-background_1bafea1c.jpg"
+            srcSet="/media/hero-background_1bafea1c-768w.jpg 768w, /media/hero-background_1bafea1c-1280w.jpg 1280w, /media/hero-background_1bafea1c.jpg 1920w"
+            sizes="(max-width: 1024px) 100vw, 640px"
             alt=""
             width={1920}
             height={1080}
@@ -188,7 +230,7 @@ export default function CadEvolutionHero() {
             className="absolute inset-0 h-full w-full object-cover"
           />
         </picture>
-        {webglOk && sceneReady ? (
+        {webglOk && sceneReady && heroVisible ? (
           <Suspense fallback={null}>
             <CadEvolutionScene
               step={stage + 1}

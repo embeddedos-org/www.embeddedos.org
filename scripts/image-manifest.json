@@ -85,6 +85,14 @@
     "what-we-do-illustration_4c2ad2f7.jpg": {
       "sha256": "94253d2ffc0a4c165e203143bf25727a3fd49f12f393c448ac4760383c630ce1",
       "webpSha256": "55570fb153c5e4c6eccb4af940ce706d6528df4611e081077c69bef959541c13"
+    },
+    "hero-background_1bafea1c-1280w.jpg": {
+      "sha256": "e3bfef907c7886d18ec7b553813eadcfad34231568a83387ec621295bc35ea67",
+      "webpSha256": "1d7b1ee35ec16e0ba88d70586b980530fac45147c8eeb3c48e0c87226080635b"
+    },
+    "hero-background_1bafea1c-768w.jpg": {
+      "sha256": "a0ae430ef46eb14c5b3b980713bc0517e8ad83b315d8bc7e8fea7c01ef3170cf",
+      "webpSha256": "fd1196a6b636e50f89865ff3779dcd4db41e4e2262b19d006bf8081455a032f9"
     }
   }
 }
