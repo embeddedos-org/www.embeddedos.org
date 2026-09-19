@@ -1,4 +1,10 @@
-import React, { Suspense, useRef, useEffect, useState, type ComponentType } from "react";
+import React, {
+  Suspense,
+  useRef,
+  useEffect,
+  useState,
+  type ComponentType,
+} from "react";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
@@ -366,7 +372,11 @@ export default function Home() {
           .from(".hero-subtitle", { opacity: 0, y: 30, duration: 0.6 }, "-=0.4")
           .from(".hero-actions", { opacity: 0, y: 20, duration: 0.5 }, "-=0.3")
           .from(".hero-stats", { opacity: 0, y: 20, duration: 0.5 }, "-=0.25")
-          .from(".hero-image", { opacity: 0, scale: 0.95, duration: 0.8 }, "-=0.5");
+          .from(
+            ".hero-image",
+            { opacity: 0, scale: 0.95, duration: 0.8 },
+            "-=0.5"
+          );
       }, heroRef);
     });
     return () => {

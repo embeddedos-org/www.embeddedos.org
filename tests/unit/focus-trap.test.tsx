@@ -31,13 +31,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function Dialog({
-  active,
-  onClose,
-}: {
-  active: boolean;
-  onClose: () => void;
-}) {
+function Dialog({ active, onClose }: { active: boolean; onClose: () => void }) {
   const panelRef = useRef<HTMLDivElement>(null);
   useFocusTrap(active, panelRef);
   if (!active) return null;

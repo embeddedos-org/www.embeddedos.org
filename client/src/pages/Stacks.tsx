@@ -1,12 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  Layers,
-  Cpu,
-  Zap,
-  Bot,
-  Globe,
-  Activity,
-} from "lucide-react";
+import { Layers, Cpu, Zap, Bot, Globe, Activity } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },

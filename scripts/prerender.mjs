@@ -332,8 +332,7 @@ async function extractMeta(page) {
       .querySelector("main img")
       ?.getAttribute("src")
       ?.trim();
-    const image =
-      rawSrc && !rawSrc.startsWith("data:") ? rawSrc : "";
+    const image = rawSrc && !rawSrc.startsWith("data:") ? rawSrc : "";
 
     return { heading, description: description || fallback, image };
   });

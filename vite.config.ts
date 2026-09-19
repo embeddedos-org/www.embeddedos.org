@@ -47,7 +47,11 @@ export default defineConfig(({ command }) => ({
         // gsap dynamically, so it ships as its own async chunk loaded only
         // on the homepage.
         manualChunks(id) {
-          if (id.includes("node_modules/react-dom/") || id.includes("node_modules/react/") || id.includes("node_modules/wouter/")) {
+          if (
+            id.includes("node_modules/react-dom/") ||
+            id.includes("node_modules/react/") ||
+            id.includes("node_modules/wouter/")
+          ) {
             return "vendor-react";
           }
           if (id.includes("node_modules/framer-motion/")) {

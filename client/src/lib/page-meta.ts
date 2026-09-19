@@ -162,12 +162,11 @@ function setMeta(doc: Document, selector: string, value: string) {
 
 /** Read the page's own representative image: the first image in <main>. */
 export function readPageImage(doc: Document = document): string {
-  const src = doc
-    .querySelector("main img")
-    ?.getAttribute("src")
-    ?.trim();
+  const src = doc.querySelector("main img")?.getAttribute("src")?.trim();
   if (!src || src.startsWith("data:")) return "";
-  return src.startsWith("http") ? src : `${ORIGIN}${src.startsWith("/") ? "" : "/"}${src}`;
+  return src.startsWith("http")
+    ? src
+    : `${ORIGIN}${src.startsWith("/") ? "" : "/"}${src}`;
 }
 
 /**
@@ -177,7 +176,9 @@ export function readPageImage(doc: Document = document): string {
 export function applyRouteMeta(route: string, doc: Document = document): void {
   const title = buildTitle(readHeading(doc), route);
   const description = truncate(
-    DESCRIPTION_OVERRIDES[route] || readDescription(doc) || FALLBACK_DESCRIPTION,
+    DESCRIPTION_OVERRIDES[route] ||
+      readDescription(doc) ||
+      FALLBACK_DESCRIPTION,
     250
   );
   const canonical = canonicalFor(route);

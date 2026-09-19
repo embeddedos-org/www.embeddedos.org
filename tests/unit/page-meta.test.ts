@@ -10,7 +10,12 @@
  */
 import { describe, it, expect } from "vitest";
 // @ts-expect-error - plain .mjs script, no type declarations
-import { applyMeta, deferStylesheet, TITLE_OVERRIDES as PRERENDER_TITLES, DESCRIPTION_OVERRIDES as PRERENDER_DESCRIPTIONS } from "../../scripts/prerender.mjs";
+import {
+  applyMeta,
+  deferStylesheet,
+  TITLE_OVERRIDES as PRERENDER_TITLES,
+  DESCRIPTION_OVERRIDES as PRERENDER_DESCRIPTIONS,
+} from "../../scripts/prerender.mjs";
 import {
   buildTitle,
   canonicalFor,
@@ -39,7 +44,9 @@ const titleFrom = (html: string) =>
 const canonicalFrom = (html: string) =>
   html.match(/<link\s+rel="canonical"\s+href="([^"]*)"/i)?.[1] ?? "";
 const metaFrom = (html: string, name: string) =>
-  html.match(new RegExp(`<meta\\s+(?:name|property)="${name}"\\s+content="([^"]*)"`, "i"))?.[1] ?? "";
+  html.match(
+    new RegExp(`<meta\\s+(?:name|property)="${name}"\\s+content="([^"]*)"`, "i")
+  )?.[1] ?? "";
 
 /** Headings chosen to straddle the 70-character title budget. */
 const HEADINGS = [
@@ -215,7 +222,7 @@ describe("stylesheet deferral", () => {
   it("leaves the already-deferred webfont stylesheet alone", () => {
     const out = deferStylesheet(CSS_SHELL);
     expect(out.match(/fonts\.googleapis\.com/g)?.length).toBe(1);
-    expect(out).not.toContain("as=\"style\" href=\"https://fonts.googleapis.com");
+    expect(out).not.toContain('as="style" href="https://fonts.googleapis.com');
   });
 });
 

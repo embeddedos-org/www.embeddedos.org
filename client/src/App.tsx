@@ -7,7 +7,15 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import { lazy, Suspense, useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type ReactNode,
+} from "react";
 import { applyRouteMeta, readHeading } from "./lib/page-meta";
 import { OPEN_CONTACT_EVENT } from "./lib/contact-form";
 
@@ -76,7 +84,9 @@ function ModalGate({
     pending.current = null;
     const detail = (e as CustomEvent).detail;
     window.dispatchEvent(
-      detail !== undefined ? new CustomEvent(e.type, { detail }) : new Event(e.type)
+      detail !== undefined
+        ? new CustomEvent(e.type, { detail })
+        : new Event(e.type)
     );
   }, [ready]);
 

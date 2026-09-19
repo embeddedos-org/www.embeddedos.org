@@ -16,8 +16,8 @@ import { useEffect, useRef, type RefObject } from "react";
 export function focusableWithin(root: HTMLElement): HTMLElement[] {
   return Array.from(
     root.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), ' +
-        'textarea:not([disabled]), select:not([disabled]), ' +
+      "a[href], button:not([disabled]), input:not([disabled]), " +
+        "textarea:not([disabled]), select:not([disabled]), " +
         '[tabindex]:not([tabindex="-1"])'
     )
   ).filter(

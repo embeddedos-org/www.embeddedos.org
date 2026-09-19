@@ -255,7 +255,8 @@ export default function Contact() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl font-bold text-white mb-6">
             Social & Community
-          </h2>          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          </h2>{" "}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {social.map((s, i) => (
               <motion.a
                 key={s.name}
