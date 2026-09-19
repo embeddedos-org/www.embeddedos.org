@@ -1,0 +1,192 @@
+{
+ "capturedFrom": "dist/public",
+ "counts": {
+  "htmlDocuments": 134,
+  "routes": 133,
+  "sitemapUrls": 131,
+  "assets": 157
+ },
+ "bytes": {
+  "criticalPathBrotliKB": 258.5,
+  "criticalPathBudgetKB": 260,
+  "homepageHtmlBrotliKB": 18,
+  "entryJsBrotliKB": 149.3,
+  "vendorJsBrotliKB": 66.5,
+  "cssBrotliKB": 24.7,
+  "totalJsBrotliKB": 768.9,
+  "largestPages": [
+   {
+    "route": "/",
+    "brotliKB": 18
+   },
+   {
+    "route": "/careers",
+    "brotliKB": 15.6
+   },
+   {
+    "route": "/industries",
+    "brotliKB": 15.6
+   },
+   {
+    "route": "/ecad-hardware",
+    "brotliKB": 15.3
+   },
+   {
+    "route": "/quantum",
+    "brotliKB": 15.3
+   },
+   {
+    "route": "/what-we-do",
+    "brotliKB": 14.8
+   },
+   {
+    "route": "/architecture",
+    "brotliKB": 14.5
+   },
+   {
+    "route": "/products",
+    "brotliKB": 13.5
+   }
+  ]
+ },
+ "metadata": {
+  "withTitle": 133,
+  "withDescription": 133,
+  "withCanonical": 133,
+  "withRobots": 0,
+  "withViewport": 133,
+  "withCharset": 133,
+  "withLang": 133,
+  "duplicateTitleGroups": 0,
+  "duplicateDescriptionGroups": 0,
+  "descriptionLengths": {
+   "min": 71,
+   "median": 124,
+   "max": 159,
+   "over160": 0
+  },
+  "titleLengths": {
+   "min": 27,
+   "median": 44,
+   "max": 70,
+   "over70": 0
+  }
+ },
+ "social": {
+  "withOgTitle": 133,
+  "withOgDescription": 133,
+  "withOgImage": 133,
+  "withOgUrl": 133,
+  "withTwitterCard": 133,
+  "withTwitterImage": 133,
+  "distinctOgImages": 14
+ },
+ "structuredData": {
+  "coverageByType": {
+   "NGO": 133,
+   "WebSite": 133,
+   "BreadcrumbList": 13,
+   "SoftwareSourceCode": 13
+  },
+  "pagesWithAnySchema": 133
+ },
+ "images": {
+  "total": 298,
+  "missingAlt": 0,
+  "decorativeEmptyAlt": 16,
+  "missingDimensions": 34,
+  "lazy": 166,
+  "pagesWithImagesMissingDims": 18
+ },
+ "accessibility": {
+  "pagesWithMain": 132,
+  "pagesWithNav": 132,
+  "pagesMissingH1": 1,
+  "pagesMultipleH1": 0,
+  "pagesWithHeadingSkip": 0
+ },
+ "linkGraph": {
+  "totalInternalLinks": 13107,
+  "totalExternalLinks": 2658,
+  "genericAnchors": 26,
+  "orphans": [
+   "/product-eapps",
+   "/product-eos-platform",
+   "/product-eserviceapps"
+  ],
+  "chromeOnly": [
+   "/benchmarks",
+   "/blog",
+   "/careers",
+   "/case-studies",
+   "/changelog",
+   "/datasets",
+   "/downloads",
+   "/ecosystem",
+   "/eosuite",
+   "/eserviceapps",
+   "/events",
+   "/fundraising",
+   "/kids",
+   "/member-stories",
+   "/newsletter",
+   "/partners",
+   "/patents",
+   "/podcast",
+   "/press-kit",
+   "/press-releases",
+   "/product-eapps",
+   "/product-eos-platform",
+   "/product-eserviceapps",
+   "/product-showcases",
+   "/programmes",
+   "/project-showcases",
+   "/publications",
+   "/quantum",
+   "/social",
+   "/stacks",
+   "/technical-reports",
+   "/vision",
+   "/webinars",
+   "/white-papers",
+   "/youtube"
+  ],
+  "unreachableFromHome": [
+   "/product-eapps",
+   "/product-eoffice",
+   "/product-eos-platform",
+   "/product-eserviceapps"
+  ],
+  "depthHistogram": {
+   "0": 1,
+   "1": 92,
+   "2": 26,
+   "3": 3,
+   "4": 3,
+   "5": 1,
+   "6": 1
+  },
+  "deeperThan3": [
+   "/product-eipc",
+   "/product-ebuild",
+   "/product-eni",
+   "/product-eostudio",
+   "/product-eosim"
+  ]
+ },
+ "crawlability": {
+  "robotsTxtPresent": true,
+  "robotsTxtHasSitemap": true,
+  "robotsTxtDisallowAll": false,
+  "pagesWithNoindex": 0,
+  "sitemapHasLastmod": true,
+  "has404Page": true,
+  "manifestPresent": true,
+  "faviconPresent": true
+ },
+ "javascriptDependence": {
+  "medianMainTextChars": 1699,
+  "pagesWithEmptyMain": 1,
+  "pagesWithNoscript": 1
+ }
+}

@@ -29,6 +29,7 @@
     "seo:diff": "node scripts/seo-diff.mjs",
     "seo:integrity": "node scripts/link-integrity.mjs",
     "quality:check": "node scripts/quality-check.mjs",
+    "baseline": "node scripts/site-baseline.mjs --out docs/baseline/site-baseline.json",
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "test:unit": "vitest run tests/unit",
