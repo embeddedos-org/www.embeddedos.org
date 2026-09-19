@@ -61,12 +61,13 @@ test.describe("navigation", () => {
   test("the community resources use exact secure external links", async ({
     page,
   }) => {
+    // NOTE (Ad Grants link-integrity, 2026-09-19): the wiki/issues/AGENTS.md
+    // entries that pointed at github.com/embeddedos-org/www.embeddedos.org
+    // were removed — that repository is private, so those links 404 for every
+    // public visitor.
     const expected = [
-      "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
       "https://github.com/orgs/embeddedos-org/discussions",
-      "https://github.com/embeddedos-org/www.embeddedos.org/issues",
       "https://github.com/orgs/embeddedos-org/projects",
-      "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
     ];
 
     for (const route of ["/", "/community"]) {

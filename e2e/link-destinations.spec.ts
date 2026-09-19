@@ -11,7 +11,7 @@
  * footer used to leave the viewport where it was, so the next page opened
  * scrolled past its own heading and the click read as "nothing happened".
  *
- * Sharded one test per source route so the ~320 clicks run in parallel.
+ * Sharded one test per source route so the ~380 clicks run in parallel.
  */
 import { test, expect } from "@playwright/test";
 import fs from "node:fs";
@@ -41,26 +41,27 @@ function linksByRoute(): Map<string, string[]> {
 const ROUTES = linksByRoute();
 
 /**
- * Opt-in, via `pnpm test:links`.
+ * Runs in CI on every build via `pnpm test:links` (see .github/workflows/ci.yml).
  *
- * This sweep does ~320 real navigations and is sensitive to machine load in a
- * way the rest of the suite is not: under parallel workers a different page
- * each run reports resting a few hundred pixels down, and none of it
- * reproduces. Twelve controlled navigations from the page that fails most
- * often measured y=0 every time, five reproductions of its worst path measured
- * y=0, and none of the implicated pages contains scrolling, focus or iframe
- * code that could explain it.
+ * This sweep does ~380 real navigations and is sensitive to machine load in a
+ * way the rest of the suite is not: under high parallel-worker counts a
+ * different page each run reports resting a few hundred pixels down, and none
+ * of it reproduces. Twelve controlled navigations from the page that fails
+ * most often measured y=0 every time, five reproductions of its worst path
+ * measured y=0, and none of the implicated pages contains scrolling, focus or
+ * iframe code that could explain it.
  *
- * So it is kept as a diagnostic rather than promoted to a gate — a check that
- * fails one test in eighty for reasons outside the code teaches the team to
- * ignore red, which costs more than this suite is worth. The defects it found
- * are guarded for real by the scroll tests in regression.spec.ts, which are
- * deterministic and fail when the fix is removed.
+ * So CI runs it with bounded parallelism (--workers=2) and --retries=2
+ * rather than the default worker count: the failure mode is load, not code,
+ * and a retry re-runs the flaked shard under less contention. Two workers —
+ * not four — because each shard drives real navigations through the heaviest
+ * pages in the build, and this suite is the one the config's "leave headroom"
+ * note is about. A check that fails one test in eighty for reasons outside
+ * the code teaches the team to ignore red, which costs more than this suite
+ * is worth — hence the guard rails instead of the old opt-in. The defects it
+ * found are additionally guarded by the scroll tests in regression.spec.ts,
+ * which are deterministic and fail when the fix is removed.
  */
-test.skip(
-  !process.env.LINK_SWEEP,
-  "on-demand sweep — run `pnpm test:links` (see the note in this file)"
-);
 
 /**
  * Entry animations are what made this suite flaky: a link that is still

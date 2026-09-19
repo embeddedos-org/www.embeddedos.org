@@ -94,6 +94,7 @@ out of its budget before reaching the last categories and reported them SKIP, so
 duplicating five rows cost the results of two others.
 
 Use **`test:e2e:all`** to run every spec in one command; `test:all` calls it.
-Both `test:controls` and `test:links` still target their specs directly, and
-`test:links` is the only way `link-destinations` actually runs — it skips
-itself unless `LINK_SWEEP` is set, and wants `--workers=1`.
+`test:links` runs the internal click sweep (`e2e/link-destinations.spec.ts`,
+bounded to `--workers=2 --retries=2` — see the note in that spec for why) and
+`test:links:external` runs the outbound-URL sweep
+(`e2e/external-links.spec.ts`); both also run in CI on every build.

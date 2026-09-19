@@ -38,7 +38,8 @@
     "test:functional": "playwright test e2e/functional.spec.ts",
     "test:journeys": "playwright test e2e/journeys.spec.ts e2e/links-and-controls.spec.ts",
     "test:controls": "playwright test e2e/controls-interaction.spec.ts",
-    "test:links": "LINK_SWEEP=1 playwright test e2e/link-destinations.spec.ts",
+    "test:links": "playwright test e2e/link-destinations.spec.ts --workers=2 --retries=2",
+    "test:links:external": "playwright test e2e/external-links.spec.ts",
     "test:all": "pnpm check && pnpm lint && pnpm build && pnpm test && pnpm test:php && pnpm audit:site && pnpm audit:mobile && pnpm test:e2e:all",
     "test:php": "php tests/php/apply.test.php && php tests/php/contact.test.php",
     "test:e2e:all": "playwright test"

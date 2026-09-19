@@ -1,9 +1,10 @@
+// NOTE (Ad Grants link-integrity, 2026-09-19): the entries that pointed at
+// github.com/embeddedos-org/www.embeddedos.org (Wiki, Issues, AGENTS.md) were
+// removed. That repository is private, so those links 404 for every public
+// visitor — including an Ad Grants website review — and there is no public
+// equivalent to repoint them at. They live on in git history if the repo ever
+// goes public.
 export const COMMUNITY_LINKS = [
-  {
-    name: "Wiki",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
-    description: "Repository guides and project documentation",
-  },
   {
     name: "Discussions",
     href: "https://github.com/orgs/embeddedos-org/discussions",
@@ -15,18 +16,8 @@ export const COMMUNITY_LINKS = [
     description: "Real-time community chat and collaboration",
   },
   {
-    name: "Issues",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org/issues",
-    description: "Bug reports, feature requests, and tracked work",
-  },
-  {
     name: "Projects",
     href: "https://github.com/orgs/embeddedos-org/projects",
     description: "Organization planning and delivery boards",
-  },
-  {
-    name: "AGENTS.md",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
-    description: "Repository-specific guidance for coding agents",
   },
 ] as const;

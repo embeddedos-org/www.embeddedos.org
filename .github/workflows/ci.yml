@@ -32,7 +32,9 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # 45 minutes: the link-integrity sweeps add ~15 minutes of real browser
+    # navigations and outbound fetches on top of the build and test suites.
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v4
@@ -98,6 +100,23 @@ jobs:
 
       - name: Accessibility tests
         run: pnpm test:a11y
+
+      # Link integrity runs on every build, not opt-in: a broken link is a
+      # listed Google Ad Grants website-policy rejection reason ("All links
+      # should work correctly"). Two sweeps:
+      #
+      #   test:links          clicks every internal link and asserts it lands
+      #                       on the page it names, at the top. Bounded to 2
+      #                       workers with 2 retries — the suite flakes under
+      #                       high parallelism for load reasons outside the
+      #                       code (see the note in
+      #                       e2e/link-destinations.spec.ts).
+      #   test:links:external fetches every outbound URL and asserts it
+      #                       resolves. A documented allowlist in
+      #                       e2e/external-links.spec.ts covers the handful of
+      #                       legitimate destinations that block bots.
+      - name: Link integrity
+        run: pnpm test:links && pnpm test:links:external
 
       # The report is what makes a failed browser test diagnosable after the
       # runner is gone. Uploaded only on failure — on success it is noise.
