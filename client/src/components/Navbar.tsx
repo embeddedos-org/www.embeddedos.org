@@ -615,6 +615,8 @@ export default function Navbar() {
                 loading="eager"
                 fetchPriority="high"
                 src={LOGO_MARK}
+                width={32}
+                height={32}
                 alt="EmbeddedOS"
                 className="w-8 h-8 rounded-lg object-cover transition-transform duration-200 group-hover:scale-105"
               />
@@ -845,6 +847,8 @@ export default function Navbar() {
                     loading="eager"
                     fetchPriority="high"
                     src={LOGO_MARK}
+                    width={32}
+                    height={32}
                     alt="EmbeddedOS"
                     className="w-7 h-7 rounded-lg"
                   />
