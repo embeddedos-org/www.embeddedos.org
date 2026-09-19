@@ -931,6 +931,68 @@ export default function GettingStarted() {
         </div>
       </section>
 
+      <section className="pb-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-6"
+          >
+            <h2 className="font-heading font-black text-2xl text-white mb-1">
+              Once it builds, where to look next
+            </h2>
+            <p className="text-white/40 text-sm">
+              The pages that explain how the pieces fit together
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {[
+              {
+                href: "/architecture",
+                label: "How EmbeddedOS is put together",
+                desc: "The full stack, layer by layer, with the diagrams.",
+              },
+              {
+                href: "/ecosystem",
+                label: "Every component and what it does",
+                desc: "Each project, its purpose, and how they depend on each other.",
+              },
+              {
+                href: "/products",
+                label: "The component reference pages",
+                desc: "Engineering detail for each project, with usage examples.",
+              },
+              {
+                href: "/downloads",
+                label: "Every repository and install command",
+                desc: "All EmbeddedOS repositories, MIT licensed, in one list.",
+              },
+              {
+                href: "/stacks",
+                label: "Pick a stack for your device",
+                desc: "Which components you need for the kind of hardware you are building.",
+              },
+            ].map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="block rounded-2xl border border-white/8 p-5 transition-all hover:border-white/20"
+                style={{ background: "rgba(255,255,255,0.02)" }}
+              >
+                <span className="block font-bold text-white text-sm mb-1">
+                  {l.label}
+                </span>
+                <span className="block text-white/50 text-xs leading-relaxed">
+                  {l.desc}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Quick reference */}
       <section className="pb-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">

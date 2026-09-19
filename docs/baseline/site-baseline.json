@@ -7,24 +7,24 @@
   "assets": 157
  },
  "bytes": {
-  "criticalPathBrotliKB": 258.5,
+  "criticalPathBrotliKB": 258.4,
   "criticalPathBudgetKB": 260,
   "homepageHtmlBrotliKB": 18,
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
   "cssBrotliKB": 24.6,
-  "totalJsBrotliKB": 770,
+  "totalJsBrotliKB": 770.1,
   "largestPages": [
    {
     "route": "/",
     "brotliKB": 18
    },
    {
-    "route": "/industries",
-    "brotliKB": 15.6
+    "route": "/careers",
+    "brotliKB": 15.7
    },
    {
-    "route": "/careers",
+    "route": "/industries",
     "brotliKB": 15.6
    },
    {
@@ -44,7 +44,7 @@
     "brotliKB": 14.4
    },
    {
-    "route": "/product-eos",
+    "route": "/product-eai",
     "brotliKB": 13.7
    }
   ]
@@ -106,7 +106,7 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13202,
+  "totalInternalLinks": 13207,
   "totalExternalLinks": 2658,
   "genericAnchors": 0,
   "orphans": [
@@ -142,7 +142,6 @@
    "/publications",
    "/quantum",
    "/social",
-   "/stacks",
    "/technical-reports",
    "/vision",
    "/webinars",
