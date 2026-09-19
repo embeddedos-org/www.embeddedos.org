@@ -41,7 +41,9 @@ import {
   isInternal,
 } from "@/data/content";
 import { type Category, categoryByPath } from "@/data/categories";
+import { CATEGORY_ABOUT } from "@/data/category-about";
 import { openContactForm } from "@/lib/contact-form";
+import AboutSections from "@/components/AboutSections";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -233,6 +235,18 @@ export default function ContentIndex({ path }: ContentIndexProps) {
           </div>
         </div>
       </section>
+
+      {/*
+        Long-form about content (F-01): the fourteen empty categories carry
+        six substantial sections each, so the page is useful before the first
+        item exists. Categories with published items have no entry here.
+      */}
+      {CATEGORY_ABOUT[path] && (
+        <AboutSections
+          title={`About ${category.name}`}
+          sections={CATEGORY_ABOUT[path]}
+        />
+      )}
     </div>
   );
 }
