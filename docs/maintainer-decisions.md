@@ -37,17 +37,24 @@ The conflicts are not accidental: both changes add Twitter card tags, per-route
 `og:image`, and a title/description override table, having started from the
 same defects.
 
-|                             | #56                                                     | #53                                    |
-| --------------------------- | ------------------------------------------------------- | -------------------------------------- |
-| Twitter card tags           | all four                                                | all four                               |
-| Per-route `og:image`        | yes                                                     | yes                                    |
-| Route description overrides | 11 routes                                               | 52 routes                              |
-| Reduced-motion helper       | `client/src/lib/reduced-motion.ts` (not in this branch) | `client/src/hooks/useReducedMotion.ts` |
-| Reproducible SEO audit      | —                                                       | `scripts/seo-audit.mjs`                |
-| Internal link graph         | —                                                       | `scripts/link-graph.mjs`               |
-| Build-to-build SEO diff     | —                                                       | `scripts/seo-diff.mjs`                 |
-| Verified ecosystem graph    | —                                                       | `docs/ecosystem-graph.json`            |
-| WebP images                 | yes                                                     | —                                      |
+|                                 | #56                                                     | #53                                    |
+| ------------------------------- | ------------------------------------------------------- | -------------------------------------- |
+| Twitter card tags               | all four                                                | all four                               |
+| Per-route `og:image`            | yes                                                     | yes                                    |
+| Route description overrides     | 11 routes                                               | 52 routes                              |
+| Reduced-motion helper           | `client/src/lib/reduced-motion.ts` (not in this branch) | `client/src/hooks/useReducedMotion.ts` |
+| Reproducible SEO audit          | —                                                       | `scripts/seo-audit.mjs`                |
+| Internal link graph             | —                                                       | `scripts/link-graph.mjs`               |
+| Build-to-build SEO diff         | —                                                       | `scripts/seo-diff.mjs`                 |
+| Verified ecosystem graph        | —                                                       | `docs/ecosystem-graph.json`            |
+| WebP images                     | yes                                                     | —                                      |
+| Homepage image dimensions (CLS) | yes — the 3 in-flow images                              | —                                      |
+
+A later check reinforced this. Three homepage images are in flow with an
+automatic height, so they reserve no space before they load; they are the only
+images on the site that can shift layout. #56 already gives all three their
+intrinsic dimensions (1376x768, 1600x900, 1600x900), matching what this audit
+measured independently. Nothing in #53 touches them, deliberately.
 
 **Recommendation:** merge #56 first — it is larger, it carries the Ad Grants
 compliance work, and it is the harder of the two to rebase. #53 is then rebased
@@ -224,6 +231,7 @@ say which.
 | #53 | Product pages published `v0.1.0`; they now show each component's README-declared version, or the licence alone where none is verified |
 | #53 | Product pages gained a visible breadcrumb, `BreadcrumbList` and `SoftwareSourceCode`, all describing content already on the page      |
 | #53 | Eight `Learn more` and nine `View CAD Files` links now carry the name of what they link to, for anyone navigating by link text        |
+| #53 | `img-no-dimensions` reported 34 images across 18 pages; 30 of them cannot move anything, so it now reports only the 3 that can        |
 
 Run `pnpm quality:check` for the current state, and `pnpm quality:check
 --network` to include external destinations.
