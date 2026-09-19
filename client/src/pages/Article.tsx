@@ -18,6 +18,8 @@ import { Link, useRoute } from "wouter";
 
 import { bodyOf } from "@/data/article-bodies";
 import { badgeOf, bySlug, formatDate } from "@/data/content";
+import AboutSections from "@/components/AboutSections";
+import type { AboutSection } from "@/data/about-section";
 
 /** Badge colours, matching the palette /news uses for the same labels. */
 const BADGE_COLOR: Record<string, string> = {
@@ -35,6 +37,35 @@ const BADGE_COLOR: Record<string, string> = {
 };
 
 const DEFAULT_BADGE_COLOR = "#F97316";
+
+/**
+ * Supporting text for article pages (Ad Grants: substantial content).
+ * Describes the publication model — one renderer, one registry — not new
+ * claims about the articles themselves.
+ */
+const ARTICLE_ABOUT: ReadonlyArray<AboutSection> = [
+  {
+    heading: "How these articles are published",
+    body: [
+      "Every article on this site renders through this one page, from the Foundation's shared content registry. The title, date, badge, tags, and body all come from the same data the News page lists — which is why the two can never disagree about what an article says or when it appeared.",
+      "The registry replaced eight separate article pages whose metadata had drifted apart: seven of them showed a different publication date than the news listing. One source of truth is less interesting than eight bespoke pages, and considerably more honest.",
+    ],
+  },
+  {
+    heading: "What an article is",
+    body: [
+      "Articles are the long form: explanations of how something works, technical writing about the stack, and reflections on the work. News carries the timely announcement; the article carries the full treatment — the reasoning, the context, and the detail that would not fit in a listing.",
+      "Each article states its assumptions and links its evidence where evidence exists. The source material behind the technical claims — the code, the measurements, the filings — is public in the Foundation's repositories.",
+    ],
+  },
+  {
+    heading: "Dates and addresses",
+    body: [
+      "The date on an article is its publication date. The address is /article/ followed by the article's slug, and the older /article-xxx addresses from the previous site still resolve to the same pages — nothing already linked or indexed breaks.",
+      "If an article is corrected after publication, the correction is noted rather than silently made — the same standard our press releases are held to. The page you are reading is the current version, and the record of what changed stays with it.",
+    ],
+  },
+];
 
 export default function Article({ slug: slugProp }: { slug?: string }) {
   const [, params] = useRoute("/article/:slug");
@@ -127,6 +158,8 @@ export default function Article({ slug: slugProp }: { slug?: string }) {
           </div>
         </div>
       </section>
+
+      <AboutSections title="About these articles" sections={ARTICLE_ABOUT} />
     </div>
   );
 }
