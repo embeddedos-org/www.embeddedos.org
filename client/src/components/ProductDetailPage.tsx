@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import StructuredData from "@/components/StructuredData";
+import { ECOSYSTEM } from "@/data/ecosystem";
+import { ORIGIN } from "@/lib/page-meta";
 import {
   ArrowRight,
   Terminal,
@@ -123,9 +126,49 @@ export default function ProductDetailPage({
 }: ProductDetailProps) {
   const [activeExample, setActiveExample] = useState(0);
   const shortName = title.split(" — ")[0];
+  const [location] = useLocation();
+  const repoUrl = `https://github.com/${github}`;
+  const component = ECOSYSTEM.find(
+    c => c.repository.toLowerCase() === repoUrl.toLowerCase()
+  );
+  const pageUrl = `${ORIGIN}${location}`;
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${ORIGIN}/` },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Products",
+          item: `${ORIGIN}/products`,
+        },
+        { "@type": "ListItem", position: 3, name: shortName, item: pageUrl },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      name: shortName,
+      description,
+      codeRepository: component ? component.repository : repoUrl,
+      programmingLanguage: lang,
+      url: pageUrl,
+      license: "https://spdx.org/licenses/MIT.html",
+      isAccessibleForFree: true,
+      maintainer: {
+        "@type": "NGO",
+        name: "Embedded Operating Systems Research Foundation",
+        url: ORIGIN,
+      },
+      ...(component?.version ? { version: component.version } : {}),
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#0A0F1E] text-white">
+      <StructuredData schema={schema} />
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         {heroImage && (
@@ -146,6 +189,25 @@ export default function ProductDetailPage({
           }}
         />
         <div className="relative max-w-6xl mx-auto px-6">
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex items-center gap-2 text-xs font-mono text-white/40">
+              <li>
+                <Link href="/" className="hover:text-white/70">
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>
+                <Link href="/products" className="hover:text-white/70">
+                  Products
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" className="text-white/70">
+                {shortName}
+              </li>
+            </ol>
+          </nav>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,7 +229,9 @@ export default function ProductDetailPage({
                 {lang}
               </span>
               <span className="text-xs font-mono text-green-400 px-2 py-1 rounded border border-green-400/30 bg-green-400/10">
-                MIT · v0.1.0
+                {component?.version
+                  ? `MIT · v${component.version}`
+                  : "MIT licensed"}
               </span>
               {ecosystemRole && (
                 <span
@@ -494,9 +558,11 @@ export default function ProductDetailPage({
                 <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
                   MIT
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
-                  v0.1.0
-                </span>
+                {component?.version && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
+                    v{component.version}
+                  </span>
+                )}
               </div>
             </div>
             <a

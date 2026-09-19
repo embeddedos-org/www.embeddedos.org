@@ -170,7 +170,7 @@ export default function ProductEoS() {
           key: "License",
           value: "MIT — commercial use permitted without royalty",
         },
-        { key: "Current Version", value: "v0.1.0 (active development)" },
+        { key: "Current Version", value: "v0.5.0" },
         {
           key: "Build System",
           value: "eBuild (CMake + Ninja); POSIX make fallback",

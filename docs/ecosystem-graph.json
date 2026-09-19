@@ -18,7 +18,8 @@
         "84 board descriptors, of which 71 are named generic-* and none has been validated on hardware."
       ],
       "sitePage": "/eos",
-      "gettingStarted": "cmake -B build/host -DCMAKE_BUILD_TYPE=Release && cmake --build build/host --parallel"
+      "gettingStarted": "cmake -B build/host -DCMAKE_BUILD_TYPE=Release && cmake --build build/host --parallel",
+      "license": "MIT"
     },
     {
       "id": "eboot",
@@ -31,7 +32,8 @@
       "maturityEvidence": "README describes a working CMake project with unit, functional, fuzz, performance and simulation test suites; 83 board directories.",
       "caveats": [],
       "sitePage": "/eboot",
-      "gettingStarted": "cmake -S . -B build -DEBLDR_BUILD_TESTS=ON && cmake --build build --parallel && ctest --test-dir build"
+      "gettingStarted": "cmake -S . -B build -DEBLDR_BUILD_TESTS=ON && cmake --build build --parallel && ctest --test-dir build",
+      "license": "MIT"
     },
     {
       "id": "efirmware",
@@ -43,7 +45,8 @@
       "maturityEvidence": "README: \"Status: early.\" Image container, SHA-256, CRC-32 and the efwtool host utility are Working; the update agent, transports and board bring-up are listed \"Not started\".",
       "caveats": ["No site page exists for this component."],
       "sitePage": null,
-      "gettingStarted": "See the repository README"
+      "gettingStarted": "See the repository README",
+      "license": "MIT"
     },
     {
       "id": "ebuild",
@@ -57,7 +60,8 @@
         "Unrelated to Gentoo's ebuild format; the README states this."
       ],
       "sitePage": "/ebuild",
-      "gettingStarted": "pip install -e . then ebuild build"
+      "gettingStarted": "pip install -e . then ebuild build",
+      "license": "MIT"
     },
     {
       "id": "eipc",
@@ -69,7 +73,8 @@
       "maturityEvidence": "README lists TCP, Unix socket, shared memory and Windows named-pipe transports, HMAC-SHA256 frame integrity, replay protection, a C SDK and unit/functional/integration/performance test suites.",
       "caveats": [],
       "sitePage": "/eipc",
-      "gettingStarted": "See examples/hello-eipc in the repository"
+      "gettingStarted": "See examples/hello-eipc in the repository",
+      "license": "MIT"
     },
     {
       "id": "eai",
@@ -82,7 +87,8 @@
       "maturityEvidence": "README describes platform adapters, model-format loaders, optional accelerator backends and a BCI module; version 0.2.0.",
       "caveats": [],
       "sitePage": "/eai",
-      "gettingStarted": "CMakePresets.json defines the presets used by CI"
+      "gettingStarted": "CMakePresets.json defines the presets used by CI",
+      "license": "MIT"
     },
     {
       "id": "eni",
@@ -97,7 +103,8 @@
         "Channel count and sample rate depend on the acquisition hardware and configuration; unverified-claims.md C-003 retired universal platform limits."
       ],
       "sitePage": "/eni",
-      "gettingStarted": "CMakePresets.json defines the presets used by CI"
+      "gettingStarted": "CMakePresets.json defines the presets used by CI",
+      "license": "MIT"
     },
     {
       "id": "eosim",
@@ -111,7 +118,8 @@
         "The README's own platform count (52+) differs from the site's simulated-platform figure; unverified-claims.md records that board and platform counts were previously conflated."
       ],
       "sitePage": "/eosim",
-      "gettingStarted": "pip install git+https://github.com/embeddedos-org/eosim.git then eosim list"
+      "gettingStarted": "pip install git+https://github.com/embeddedos-org/eosim.git then eosim list",
+      "license": "MIT"
     },
     {
       "id": "eostudio",
@@ -124,7 +132,8 @@
       "maturityEvidence": "README documents the click-based CLI, plugin system and ebuild integration.",
       "caveats": [],
       "sitePage": "/eostudio",
-      "gettingStarted": "Open a project containing build.yaml; EoStudio drives ebuild"
+      "gettingStarted": "Open a project containing build.yaml; EoStudio drives ebuild",
+      "license": "MIT"
     },
     {
       "id": "edb",
@@ -136,7 +145,8 @@
       "maturityEvidence": "README documents the five engines, SQLite WAL journaling, FTS5, transactions via savepoints, JWT auth and RBAC.",
       "caveats": [],
       "sitePage": "/edb",
-      "gettingStarted": "See examples/quickstart.py in the repository"
+      "gettingStarted": "See examples/quickstart.py in the repository",
+      "license": "MIT"
     },
     {
       "id": "eosllm",
@@ -149,7 +159,8 @@
       "maturityEvidence": "README: version 0.1.0, ABI 1; the CLI describes current generation as \"Phase 1\" — greedy text generation from a Llama/Qwen2-class GGUF model.",
       "caveats": [],
       "sitePage": null,
-      "gettingStarted": "See the repository README"
+      "gettingStarted": "See the repository README",
+      "license": "MIT"
     },
     {
       "id": "ebrowser",
@@ -163,7 +174,8 @@
         "README scope note: \"It is not a Chromium/WebKit/Servo replacement and does not aim for full web-platform parity.\""
       ],
       "sitePage": "/ebrowser",
-      "gettingStarted": "See the repository README"
+      "gettingStarted": "See the repository README",
+      "license": "MIT"
     },
     {
       "id": "eoffice",
@@ -176,7 +188,8 @@
       "maturityEvidence": "README lists the eleven apps under apps/ as a pnpm workspace.",
       "caveats": [],
       "sitePage": "/eoffice",
-      "gettingStarted": "See the repository README"
+      "gettingStarted": "See the repository README",
+      "license": "MIT"
     },
     {
       "id": "eapps",
@@ -190,7 +203,8 @@
         "eOffice, EoStudio, EoSim and eBrowser were extracted to their own repositories; the README says so."
       ],
       "sitePage": "/eapps",
-      "gettingStarted": "https://embeddedos-org.github.io/eApps/"
+      "gettingStarted": "https://embeddedos-org.github.io/eApps/",
+      "license": "MIT"
     },
     {
       "id": "ecad",
@@ -202,7 +216,8 @@
       "maturityEvidence": "README: \"Status varies by design. Directories are at different maturity levels (many \\\"Design\\\" / \\\"Pre-production\\\"); PCB and CAD folders often contain .gitkeep placeholders rather than finished layouts.\"",
       "caveats": ["16 domain collections; completeness varies by design."],
       "sitePage": "/ecad-hardware",
-      "gettingStarted": "Read each design's own README and docs/"
+      "gettingStarted": "Read each design's own README and docs/",
+      "license": "MIT"
     },
     {
       "id": "enet",
@@ -214,7 +229,8 @@
       "maturityEvidence": "Repository description: \"Planned; implementation currently in eos/net.\"",
       "caveats": ["No implementation yet."],
       "sitePage": null,
-      "gettingStarted": null
+      "gettingStarted": null,
+      "license": "MIT"
     },
     {
       "id": "esec",
@@ -226,7 +242,8 @@
       "maturityEvidence": "Repository description: \"Planned; implementation currently in eos/services/security.\"",
       "caveats": ["No implementation yet."],
       "sitePage": null,
-      "gettingStarted": null
+      "gettingStarted": null,
+      "license": "MIT"
     },
     {
       "id": "eflow",
@@ -240,7 +257,8 @@
         "The site page /eflow describes it in present tense; the repository says it is planned."
       ],
       "sitePage": "/eflow",
-      "gettingStarted": null
+      "gettingStarted": null,
+      "license": "MIT"
     }
   ],
   "relationships": [
@@ -299,5 +317,6 @@
   "notes": [
     "eos-stack-manifest and eFab are referenced by shared/stack-data.ts, client/src/data/stack.ts and scripts/sync-stack-data.mjs but both return HTTP 404, so `pnpm sync:stack` cannot run and the generated figures are not currently reproducible.",
     "No component in this graph publishes a reproducible latency, throughput or power benchmark. Any performance figure on the website must therefore be phrased as a target, per docs/unverified-claims.md."
-  ]
+  ],
+  "licenseSource": "GitHub's repository licence API (spdx_id) for each repository, checked 2026-09-19; all 18 report MIT."
 }
