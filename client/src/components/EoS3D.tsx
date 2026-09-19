@@ -1,7 +1,15 @@
-import { useRef, useMemo } from "react";
+import {
+  type ComponentProps,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { RoundedBox, Torus } from "@react-three/drei";
 import * as THREE from "three";
+import { supportsWebGL } from "./HeroTechStack";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // ── Kernel Core ────────────────────────────────────────────────────────────────
 function KernelCore({ hovered }: { hovered: boolean }) {
@@ -407,9 +415,26 @@ function AppGridItem({
 }
 
 // ── Public Canvas exports ──────────────────────────────────────────────────────
+function GuardedCanvas({ children, ...props }: ComponentProps<typeof Canvas>) {
+  const [webglReady, setWebglReady] = useState(false);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    setWebglReady(supportsWebGL());
+  }, []);
+
+  if (!webglReady) return null;
+
+  return (
+    <Canvas frameloop={reducedMotion ? "demand" : "always"} {...props}>
+      {children}
+    </Canvas>
+  );
+}
+
 export function EoSKernelCanvas({ hovered }: { hovered: boolean }) {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 0, 4], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -417,13 +442,13 @@ export function EoSKernelCanvas({ hovered }: { hovered: boolean }) {
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#22D3EE" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#34D399" />
       <KernelCore hovered={hovered} />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
 
 export function EBootCanvas({ hovered }: { hovered: boolean }) {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 0, 5], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -431,13 +456,13 @@ export function EBootCanvas({ hovered }: { hovered: boolean }) {
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#FBBF24" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#34D399" />
       <EBootSequence hovered={hovered} />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
 
 export function EAINetworkCanvas({ hovered }: { hovered: boolean }) {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 0, 4.5], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -445,13 +470,13 @@ export function EAINetworkCanvas({ hovered }: { hovered: boolean }) {
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#A78BFA" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#22D3EE" />
       <EAINetwork hovered={hovered} />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
 
 export function EOfficeCanvas({ hovered }: { hovered: boolean }) {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 0, 4], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -459,13 +484,13 @@ export function EOfficeCanvas({ hovered }: { hovered: boolean }) {
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#F97316" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#A78BFA" />
       <EOfficeApps hovered={hovered} />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
 
 export function EAppsCanvas({ hovered }: { hovered: boolean }) {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 0, 4.5], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -473,6 +498,6 @@ export function EAppsCanvas({ hovered }: { hovered: boolean }) {
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#22D3EE" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#F97316" />
       <EAppsGrid hovered={hovered} />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
