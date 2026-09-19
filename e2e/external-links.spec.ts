@@ -49,6 +49,19 @@ const ALLOWLIST: { url: string; reason: string }[] = [
       "The IRS serves HTTP 403 to unauthenticated bot traffic. This is the " +
       "canonical IRS Tax Exempt Organization Search URL, verified 2026-09-19.",
   },
+  {
+    url: "https://x.com/EmbeddedOS_ORG",
+    reason:
+      "X serves HTTP 403 to unauthenticated bot traffic. This is the " +
+      "Foundation's official handle (twitter:site/creator meta and the " +
+      "footer social row use @EmbeddedOS_ORG sitewide), verified 2026-09-19.",
+  },
+  {
+    url: "https://www.interserver.net",
+    reason:
+      "InterServer serves HTTP 403 to unauthenticated bot traffic. The " +
+      "homepage loads normally for human visitors, verified 2026-09-19.",
+  },
 ];
 
 /** Unique external <a href> URLs across the prerendered tree. */
