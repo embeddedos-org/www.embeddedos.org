@@ -7,24 +7,24 @@
   "assets": 157
  },
  "bytes": {
-  "criticalPathBrotliKB": 258.3,
+  "criticalPathBrotliKB": 258.5,
   "criticalPathBudgetKB": 260,
   "homepageHtmlBrotliKB": 18,
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
   "cssBrotliKB": 24.6,
-  "totalJsBrotliKB": 769.6,
+  "totalJsBrotliKB": 770,
   "largestPages": [
    {
     "route": "/",
     "brotliKB": 18
    },
    {
-    "route": "/careers",
+    "route": "/industries",
     "brotliKB": 15.6
    },
    {
-    "route": "/industries",
+    "route": "/careers",
     "brotliKB": 15.6
    },
    {
@@ -44,8 +44,8 @@
     "brotliKB": 14.4
    },
    {
-    "route": "/product-eai",
-    "brotliKB": 13.6
+    "route": "/product-eos",
+    "brotliKB": 13.7
    }
   ]
  },
@@ -106,7 +106,7 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13176,
+  "totalInternalLinks": 13202,
   "totalExternalLinks": 2658,
   "genericAnchors": 0,
   "orphans": [
@@ -121,7 +121,6 @@
    "/case-studies",
    "/changelog",
    "/datasets",
-   "/downloads",
    "/eosuite",
    "/eserviceapps",
    "/events",

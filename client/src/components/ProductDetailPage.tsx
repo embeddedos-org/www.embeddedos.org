@@ -274,6 +274,19 @@ export default function ProductDetailPage({
             <p className="text-lg text-white/60 leading-relaxed mb-8 max-w-2xl">
               {description}
             </p>
+            {component?.sitePage && component.sitePage !== location && (
+              <p className="text-sm text-white/50 mb-6">
+                For a shorter introduction to {component.name}, see the{" "}
+                <Link
+                  href={component.sitePage}
+                  className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                  style={{ color: accent }}
+                >
+                  {component.name} overview
+                </Link>
+                . This page is the engineering detail.
+              </p>
+            )}
             <div className="flex gap-4 flex-wrap">
               <a
                 href={`https://github.com/${github}`}
@@ -600,8 +613,24 @@ export default function ProductDetailPage({
               className="inline-flex items-center gap-1 text-xs font-semibold transition-all hover:opacity-80"
               style={{ color: accent }}
             >
-              Open ↗
+              Open
+              <span className="sr-only">
+                {" "}
+                the {github} repository on GitHub
+              </span>{" "}
+              ↗
             </a>
+            <p className="text-white/40 text-xs mt-4">
+              Every EmbeddedOS repository, with install commands, is listed on{" "}
+              <Link
+                href="/downloads"
+                className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                style={{ color: accent }}
+              >
+                the downloads page
+              </Link>
+              .
+            </p>
           </motion.div>
 
           {/* EoS Stack */}
