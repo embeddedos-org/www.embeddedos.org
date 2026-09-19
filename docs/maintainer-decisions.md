@@ -185,18 +185,45 @@ superlative is reintroduced, so this stays decided either way.
 
 ---
 
+## D-8 — `/eai-edge` states a version nothing verifies
+
+**Verified.** `client/src/pages/EAIEdge.tsx` presents two figures as headline
+statistics: **v0.1.0** labelled "Current Version" and **v0.1** labelled
+"Profile".
+
+Neither matches anything recorded in `docs/ecosystem-graph.json`. The page
+describes "an in-development concept for a manifest-pinned eNI → eIPC → eAI
+research workflow", so the version does not belong to a single component: eAI's
+own README declares 0.2.0, eNI 0.3.0. A workflow or profile version may well
+exist, but no repository this audit can read states it.
+
+The identical string on the product pages was a placeholder and has been
+replaced there with each component's README-declared version. This one was
+left alone, because guessing which artefact it describes would replace an
+unverified number with a wrong one.
+
+**Options:** name the artefact and its version, or drop the two statistics.
+
+**Owner:** maintainer — only someone who knows what the profile refers to can
+say which.
+
+---
+
 ## What was fixed without a decision
 
-| PR  | Fix                                                                                  |
-| --- | ------------------------------------------------------------------------------------ |
-| #45 | Three footer links that returned 404                                                 |
-| #46 | 13 product pages with no inbound link, linked from `/products`                       |
-| #47 | Webfont stylesheet no longer render-blocking after prerender                         |
-| #48 | Build now fails when a route prerenders a crashed page                               |
-| #49 | `lastmod` removed — it stamped every URL with the build date                         |
-| #50 | PHP endpoint tests now run in CI                                                     |
-| #51 | Non-ASCII mail subjects encoded per RFC 2047                                         |
-| #53 | Per-route social metadata, heading structure, 52 descriptions, and the audit tooling |
+| PR  | Fix                                                                                                                                   |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| #45 | Three footer links that returned 404                                                                                                  |
+| #46 | 13 product pages with no inbound link, linked from `/products`                                                                        |
+| #47 | Webfont stylesheet no longer render-blocking after prerender                                                                          |
+| #48 | Build now fails when a route prerenders a crashed page                                                                                |
+| #49 | `lastmod` removed — it stamped every URL with the build date                                                                          |
+| #50 | PHP endpoint tests now run in CI                                                                                                      |
+| #51 | Non-ASCII mail subjects encoded per RFC 2047                                                                                          |
+| #53 | Per-route social metadata, heading structure, 52 descriptions, and the audit tooling                                                  |
+| #53 | Product pages published `v0.1.0`; they now show each component's README-declared version, or the licence alone where none is verified |
+| #53 | Product pages gained a visible breadcrumb, `BreadcrumbList` and `SoftwareSourceCode`, all describing content already on the page      |
+| #53 | Eight `Learn more` and nine `View CAD Files` links now carry the name of what they link to, for anyone navigating by link text        |
 
 Run `pnpm quality:check` for the current state, and `pnpm quality:check
 --network` to include external destinations.

@@ -132,6 +132,21 @@ export function parseDocument(file) {
       ),
     ],
     httpLinks: hrefs.filter(h => /^http:\/\//i.test(h)),
+    weakAnchors: [
+      ...new Set(
+        [...body.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)]
+          .map(m =>
+            decode(m[1].replace(/<[^>]*>/g, ""))
+              .replace(/\s+/g, " ")
+              .trim()
+          )
+          .filter(t =>
+            /^(click here|here|read more|learn more|more|link|this page|go)$/i.test(
+              t
+            )
+          )
+      ),
+    ],
     imagesWithoutAlt: images.filter(t => !/\balt=/i.test(t)).length,
     imagesWithoutDimensions: images.filter(
       t => !attr(t, "width") || !attr(t, "height")
@@ -255,6 +270,8 @@ export function audit(docs, sitemap) {
     if (d.imagesWithoutAlt)
       add("error", "img-alt-missing", d.route, `${d.imagesWithoutAlt} <img>`);
     for (const u of d.httpLinks) add("warn", "http-link", d.route, u);
+    for (const t of d.weakAnchors)
+      add("warn", "weak-anchor", d.route, `link text is only "${t}"`);
   }
 
   byValue(d => d.title, "title-duplicate");

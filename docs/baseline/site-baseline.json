@@ -13,7 +13,7 @@
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
   "cssBrotliKB": 24.7,
-  "totalJsBrotliKB": 768.9,
+  "totalJsBrotliKB": 769.5,
   "largestPages": [
    {
     "route": "/",
@@ -29,7 +29,7 @@
    },
    {
     "route": "/ecad-hardware",
-    "brotliKB": 15.3
+    "brotliKB": 15.4
    },
    {
     "route": "/quantum",
@@ -108,7 +108,7 @@
  "linkGraph": {
   "totalInternalLinks": 13107,
   "totalExternalLinks": 2658,
-  "genericAnchors": 26,
+  "genericAnchors": 0,
   "orphans": [
    "/product-eapps",
    "/product-eos-platform",

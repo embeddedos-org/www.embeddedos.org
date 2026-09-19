@@ -620,7 +620,8 @@ function CategoryCard({
             className="flex items-center gap-1 text-sm font-semibold cursor-pointer"
             style={{ color: cat.color }}
           >
-            Learn more <ArrowRight size={14} />
+            Learn more<span className="sr-only"> about {cat.title}</span>{" "}
+            <ArrowRight size={14} />
           </motion.div>
         </Link>
         <a href={cat.ghref} target="_blank" rel="noopener noreferrer">

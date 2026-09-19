@@ -226,7 +226,8 @@ function FamilyCard({
             } as React.CSSProperties
           }
         >
-          View CAD Files <ExternalLink size={11} />
+          View CAD Files<span className="sr-only"> for {name}</span>{" "}
+          <ExternalLink size={11} />
         </a>
       ) : (
         <Link
@@ -238,7 +239,8 @@ function FamilyCard({
             } as React.CSSProperties
           }
         >
-          Learn More <ChevronRight size={11} />
+          Learn More<span className="sr-only"> about {name}</span>{" "}
+          <ChevronRight size={11} />
         </Link>
       )}
     </motion.div>
