@@ -16,6 +16,10 @@
   "totalJsBrotliKB": 770.7,
   "largestPages": [
    {
+    "route": "/getting-started",
+    "brotliKB": 19.3
+   },
+   {
     "route": "/",
     "brotliKB": 18
    },
@@ -42,10 +46,6 @@
    {
     "route": "/architecture",
     "brotliKB": 14.5
-   },
-   {
-    "route": "/product-eai",
-    "brotliKB": 13.7
    }
   ]
  },
@@ -106,7 +106,7 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13220,
+  "totalInternalLinks": 13235,
   "totalExternalLinks": 2658,
   "genericAnchors": 0,
   "orphans": [],
