@@ -4,6 +4,12 @@
  * so no two diagrams look alike.
  */
 import { lazy, Suspense, useState } from "react";
+import {
+  ECOSYSTEM,
+  ROLE_LABEL,
+  ROLE_ORDER,
+  componentsInRole,
+} from "@/data/ecosystem";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Layers,
@@ -1102,6 +1108,88 @@ export default function Architecture() {
               501(c)(3) nonprofit · 0% platform fees · Tax-deductible
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Components, from the verified ecosystem graph ── */}
+      <section
+        className="py-16 px-4 border-t border-white/5"
+        id="components"
+        aria-labelledby="components-heading"
+      >
+        <div className="max-w-5xl mx-auto">
+          <h2
+            id="components-heading"
+            className="text-3xl font-bold text-white mb-3"
+          >
+            The components
+          </h2>
+          <p className="text-white/55 mb-3 max-w-3xl">
+            Every part of EmbeddedOS is a separate, independently versioned
+            repository. The grouping below follows the path a device takes at
+            runtime — hardware, boot, operating system, communication, on-device
+            AI, applications — with the development tooling that builds it last.
+          </p>
+          <p className="text-white/40 text-sm mb-10 max-w-3xl">
+            Each status is the word that component&rsquo;s own repository uses
+            to describe itself. Several are experimental or planned, and are
+            labelled as such rather than presented as finished.
+          </p>
+
+          {ROLE_ORDER.map(role => {
+            const items = componentsInRole(role);
+            if (items.length === 0) return null;
+            return (
+              <div key={role} className="mb-10">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-[#F97316] mb-4">
+                  {ROLE_LABEL[role]}
+                </h3>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {items.map(component => (
+                    <li
+                      key={component.id}
+                      className="rounded-2xl border border-white/8 p-5 bg-white/[0.02]"
+                    >
+                      <div className="flex items-baseline justify-between gap-3 mb-2">
+                        <h4 className="font-heading font-bold text-white text-lg">
+                          {component.name}
+                        </h4>
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-white/45 border border-white/12 rounded-full px-2 py-0.5 whitespace-nowrap">
+                          {component.maturity}
+                        </span>
+                      </div>
+                      <p className="text-white/60 text-sm leading-relaxed mb-4">
+                        {component.purpose}
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                        {component.sitePage && (
+                          <Link
+                            href={component.sitePage}
+                            className="text-[#F97316] hover:underline"
+                          >
+                            {component.name} on this site
+                          </Link>
+                        )}
+                        <a
+                          href={component.repository}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/60 hover:text-white hover:underline"
+                        >
+                          Source repository
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+
+          <p className="text-white/40 text-sm">
+            {ECOSYSTEM.length} components. Anything not listed here does not
+            exist as a repository yet.
+          </p>
         </div>
       </section>
 

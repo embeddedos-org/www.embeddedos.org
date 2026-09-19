@@ -7,6 +7,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { ECOSYSTEM, ROLE_ORDER } from "../../client/src/data/ecosystem";
 
 const root = path.resolve(__dirname, "../..");
 const graph = JSON.parse(
@@ -44,6 +45,50 @@ const MATURITIES = new Set([
   "Planned",
   "Design / Concept",
 ]);
+
+describe("client module mirrors the graph", () => {
+  it("carries every component, with the same name, maturity and repository", () => {
+    const drift: string[] = [];
+    for (const c of graph.components) {
+      const mirrored = ECOSYSTEM.find(m => m.id === c.id);
+      if (!mirrored) {
+        drift.push(`${c.id} missing from client module`);
+        continue;
+      }
+      if (mirrored.name !== c.name)
+        drift.push(`${c.id} name ${mirrored.name} != ${c.name}`);
+      if (mirrored.maturity !== c.maturity)
+        drift.push(`${c.id} maturity ${mirrored.maturity} != ${c.maturity}`);
+      if (mirrored.repository !== c.repository)
+        drift.push(`${c.id} repository differs`);
+      if (mirrored.sitePage !== c.sitePage)
+        drift.push(`${c.id} sitePage ${mirrored.sitePage} != ${c.sitePage}`);
+    }
+    expect(drift).toEqual([]);
+  });
+
+  it("adds no component the graph does not record", () => {
+    const ids = new Set(graph.components.map(c => c.id));
+    expect(ECOSYSTEM.filter(m => !ids.has(m.id)).map(m => m.id)).toEqual([]);
+  });
+
+  it("starts each purpose with the graph's own wording", () => {
+    const drift = ECOSYSTEM.filter(m => {
+      const c = graph.components.find(x => x.id === m.id);
+      if (!c) return true;
+      const head = m.purpose.replace(/…$/, "").slice(0, 40);
+      return !c.purpose.startsWith(head);
+    }).map(m => m.id);
+    expect(drift).toEqual([]);
+  });
+
+  it("gives every component a role the page can render", () => {
+    const roles = new Set(ROLE_ORDER);
+    expect(ECOSYSTEM.filter(m => !roles.has(m.role)).map(m => m.id)).toEqual(
+      []
+    );
+  });
+});
 
 describe("ecosystem graph", () => {
   it("gives every component a unique id", () => {
