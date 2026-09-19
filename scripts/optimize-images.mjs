@@ -11,7 +11,13 @@
  * beyond a small re-encode, and files are only replaced when the result is
  * smaller.
  *
- * Run with `pnpm optimize:images`. Commit the results.
+ * Also emits a `.webp` sibling for every JPEG (F-18): 25–35% smaller than the
+ * optimized JPEG at the same quality. Pages serve it via <picture> with the
+ * JPEG as fallback; the JPEG stays the og:image (widest social-crawler
+ * support). WebP files are only written when smaller than the JPEG.
+ *
+ * Run with `pnpm optimize:images`. Commit the results. Wired into `pnpm build`
+ * so new assets never ship raw.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -73,6 +79,22 @@ for (const file of files.sort()) {
   if (shrank) fs.writeFileSync(abs, output);
   const after = fs.statSync(abs).size;
   afterTotal += after;
+
+  // WebP sibling for <picture> (F-18). Re-encode from the (possibly resized)
+  // optimized buffer, not the original, so dimensions match the JPEG.
+  const webpPath = abs.replace(/\.(jpe?g|png)$/i, ".webp");
+  let webpKb = null;
+  try {
+    const webpBuf = await sharp(output)
+      .webp({ quality: Math.min(quality + 2, 82) })
+      .toBuffer();
+    if (webpBuf.length < after) {
+      fs.writeFileSync(webpPath, webpBuf);
+      webpKb = Math.round(webpBuf.length / 1024);
+    }
+  } catch {
+    // sharp without webp support: JPEG optimization above still stands.
+  }
 
   const outMeta = await sharp(abs).metadata();
   rows.push({

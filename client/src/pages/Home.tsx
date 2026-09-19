@@ -1,8 +1,6 @@
-import React, { Suspense, useRef, useEffect, useState } from "react";
+import React, { Suspense, useRef, useEffect, useState, type ComponentType } from "react";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { SOCIAL_URLS } from "@/data/foundation";
 import { ARCHITECTURE_STAGES, EAI_EDGE_PROFILE } from "@/data/architecture";
@@ -45,14 +43,86 @@ import {
   Radio,
 } from "lucide-react";
 
-gsap.registerPlugin();
-
-const CircuitHero = React.lazy(() => import("../components/CircuitHero"));
+const loadCircuitHero = () => import("../components/CircuitHero");
 const CadEvolutionHero = React.lazy(
   () => import("../components/CadEvolutionHero")
 );
 const ProductMarquee = React.lazy(() => import("../components/ProductMarquee"));
 const HealthShowcase = React.lazy(() => import("../components/HealthShowcase"));
+
+/**
+ * F-16: the three.js scenes cost ~193 KB brotli and must not compete with
+ * first paint. This renders a static poster instantly and swaps in the real
+ * scene only when the browser is idle. For reduced-motion visitors the poster
+ * *is* the experience — the scene never loads.
+ */
+function Lazy3DHero({
+  loader,
+  poster,
+  posterClassName,
+  eagerPoster,
+}: {
+  loader: () => Promise<{ default: ComponentType }>;
+  poster: string;
+  posterClassName?: string;
+  eagerPoster?: boolean;
+}) {
+  const [Scene, setScene] = useState<ComponentType | null>(null);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    let cancelled = false;
+    const kick = () => {
+      void loader().then(mod => {
+        if (!cancelled) setScene(() => mod.default);
+      });
+    };
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(kick, { timeout: 4000 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+      };
+    }
+    const t = setTimeout(kick, 1800);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [loader]);
+
+  // Poster filename without extension, for the WebP <source>.
+  const posterWebp = poster.replace(/\.(jpe?g|png)$/i, ".webp");
+
+  return (
+    <>
+      {/* Poster: instant, no JS needed. 1920x1080 intrinsic size reserves space. */}
+      <picture>
+        <source srcSet={posterWebp} type="image/webp" />
+        <img
+          src={poster}
+          alt=""
+          aria-hidden="true"
+          width={1920}
+          height={1080}
+          loading={eagerPoster ? "eager" : "lazy"}
+          fetchPriority={eagerPoster ? "high" : undefined}
+          className={posterClassName}
+        />
+      </picture>
+      {Scene ? (
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
+      ) : null}
+    </>
+  );
+}
 
 const ARCH_IMG = "/media/architecture-diagram-hero_72436b3f.jpg";
 const COMMUNITY_IMG = "/media/community-illustration-eos_6f39c9db.jpg";
@@ -269,48 +339,41 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      if (!heroTextRef.current) return;
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(
-        ".hero-badge",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 }
-      )
-        .fromTo(
-          ".hero-title",
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.7 },
-          "-=0.3"
-        )
-        .fromTo(
-          ".hero-subtitle",
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          "-=0.4"
-        )
-        .fromTo(
-          ".hero-actions",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5 },
-          "-=0.3"
-        )
-        .fromTo(
-          ".hero-stats",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5 },
-          "-=0.25"
-        )
-        .fromTo(
-          ".hero-image",
-          { opacity: 0, scale: 0.95 },
-          { opacity: 1, scale: 1, duration: 0.8 },
-          "-=0.5"
-        );
-    },
-    { scope: heroRef }
-  );
+  // F-15: the hero text renders VISIBLE by default (no opacity-0 classes).
+  // GSAP is progressive enhancement only: `from()` tweens from the hidden
+  // state to the natural visible state, so if the animation library fails —
+  // or the visitor prefers reduced motion — the headline is simply there.
+  // This also makes the prerendered (indexed) HTML carry the LCP headline
+  // with no JS gating.
+  //
+  // F-17: gsap is imported dynamically so it never enters the critical path.
+  // It was the only gsap consumer on the site, yet rode in vendor-motion —
+  // modulepreloaded on every one of the 131 pages. Now it loads async, only
+  // on the homepage, only when the hero mounts.
+  useEffect(() => {
+    if (!heroTextRef.current || !heroRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    let cancelled = false;
+    let ctx: { revert: () => void } | null = null;
+    void import("gsap").then(({ gsap }) => {
+      if (cancelled || !heroRef.current) return;
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        tl.from(".hero-badge", { opacity: 0, y: 20, duration: 0.6 })
+          .from(".hero-title", { opacity: 0, y: 40, duration: 0.7 }, "-=0.3")
+          .from(".hero-subtitle", { opacity: 0, y: 30, duration: 0.6 }, "-=0.4")
+          .from(".hero-actions", { opacity: 0, y: 20, duration: 0.5 }, "-=0.3")
+          .from(".hero-stats", { opacity: 0, y: 20, duration: 0.5 }, "-=0.25")
+          .from(".hero-image", { opacity: 0, scale: 0.95, duration: 0.8 }, "-=0.5");
+      }, heroRef);
+    });
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -320,10 +383,13 @@ export default function Home() {
         className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-grid"
         aria-labelledby="hero-heading"
       >
-        {/* Three.js Circuit Board */}
-        <Suspense fallback={null}>
-          <CircuitHero />
-        </Suspense>
+        {/* Three.js Circuit Board — deferred until idle (F-16); poster paints instantly */}
+        <Lazy3DHero
+          loader={loadCircuitHero}
+          poster="/media/hero-background_1bafea1c.jpg"
+          eagerPoster
+          posterClassName="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
 
         {/* Background glow */}
         <div className="absolute inset-0 pointer-events-none">
@@ -340,23 +406,23 @@ export default function Home() {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Text */}
             <div ref={heroTextRef} className="lg:col-span-7">
-              <div className="hero-badge eyebrow text-[#F97316] mb-8 inline-flex items-center gap-2.5 opacity-0">
+              <div className="hero-badge eyebrow text-[#F97316] mb-8 inline-flex items-center gap-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#F97316]" />
                 Foundation · 501(c)(3) · MIT License
               </div>
 
               <h1
                 id="hero-heading"
-                className="hero-title display-1 text-white mb-6 opacity-0"
+                className="hero-title display-1 text-white mb-6"
               >
                 Open-source embedded systems for intelligent physical devices
               </h1>
 
-              <p className="hero-subtitle measure text-lg sm:text-xl text-white/70 leading-relaxed mb-5 opacity-0">
+              <p className="hero-subtitle measure text-lg sm:text-xl text-white/70 leading-relaxed mb-5">
                 From open hardware and secure boot to a real-time OS, developer
                 tools, and on-device AI.
               </p>
-              <div className="hero-subtitle mb-8 opacity-0">
+              <div className="hero-subtitle mb-8">
                 <p className="font-heading text-base font-semibold text-cyan-300">
                   Open infrastructure for physical AI.
                 </p>
@@ -366,7 +432,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="hero-actions flex flex-wrap items-center gap-4 opacity-0">
+              <div className="hero-actions flex flex-wrap items-center gap-4">
                 <Link
                   href="/getting-started"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl btn-press"
@@ -394,7 +460,7 @@ export default function Home() {
               </div>
 
               {/* Mini stats */}
-              <div className="hero-stats mt-10 opacity-0">
+              <div className="hero-stats mt-10">
                 <hr className="rule mb-7" />
                 <div className="flex flex-wrap gap-x-14 gap-y-6">
                   {STATS.slice(0, 3).map(s => (
@@ -416,7 +482,7 @@ export default function Home() {
             </div>
 
             {/* 3D CAD-to-ecosystem evolution */}
-            <div className="hero-image opacity-0 relative lg:col-span-5">
+            <div className="hero-image relative lg:col-span-5">
               <div
                 className="relative overflow-hidden rounded-2xl border border-white/8"
                 style={{
@@ -678,12 +744,20 @@ export default function Home() {
             custom={3}
             className="rounded-2xl overflow-hidden border border-white/10 mt-8"
           >
-            <img
-              src={ARCH_IMG}
-              alt="Illustrative EmbeddedOS reference architecture showing hardware, kernel, platform, and application layers"
-              className="w-full h-auto"
-              loading="lazy"
-            />
+            <picture>
+              <source
+                srcSet="/media/architecture-diagram-hero_72436b3f.webp"
+                type="image/webp"
+              />
+              <img
+                src={ARCH_IMG}
+                alt="Illustrative EmbeddedOS reference architecture showing hardware, kernel, platform, and application layers"
+                width={1376}
+                height={768}
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </picture>
             <figcaption className="border-t border-white/10 bg-[#050A14] px-4 py-3 text-center text-xs text-white/45">
               Illustrative reference only. Individual projects and integrations
               have different maturity levels; planned elements are not yet
@@ -1133,12 +1207,20 @@ export default function Home() {
               custom={1}
               className="rounded-2xl overflow-hidden"
             >
-              <img
-                src={COMMUNITY_IMG}
-                alt="Global EmbeddedOS developer community"
-                className="w-full h-auto rounded-2xl"
-                loading="lazy"
-              />
+              <picture>
+                <source
+                  srcSet="/media/community-illustration-eos_6f39c9db.webp"
+                  type="image/webp"
+                />
+                <img
+                  src={COMMUNITY_IMG}
+                  alt="Global EmbeddedOS developer community"
+                  width={1600}
+                  height={900}
+                  className="w-full h-auto rounded-2xl"
+                  loading="lazy"
+                />
+              </picture>
             </motion.div>
           </div>
         </div>
@@ -1157,12 +1239,20 @@ export default function Home() {
             viewport={{ once: true }}
             className="rounded-2xl overflow-hidden relative"
           >
-            <img
-              src={OPEN_SOURCE_IMG}
-              alt="Open Minds, Open Code, Open Future"
-              className="w-full h-auto rounded-2xl"
-              loading="lazy"
-            />
+            <picture>
+              <source
+                srcSet="/media/what-we-do-illustration_4c2ad2f7.webp"
+                type="image/webp"
+              />
+              <img
+                src={OPEN_SOURCE_IMG}
+                alt="Open Minds, Open Code, Open Future"
+                width={1600}
+                height={900}
+                className="w-full h-auto rounded-2xl"
+                loading="lazy"
+              />
+            </picture>
           </motion.div>
         </div>
       </section>

@@ -99,6 +99,28 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      F-28: preload the two woff2 files the above-fold hero text needs (latin
+      subsets): Space Grotesk for the h1, DM Sans for body. All three families
+      are variable fonts, so one file covers every weight — trimming the
+      unused 300/italic axes would not save bytes. These URLs are versioned by
+      Google; refresh them from the css2 response if the font request below
+      changes. A stale preload 404s harmlessly (the CSS still loads the font).
+    -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2"
+    />
     <!-- Load webfonts without blocking first render. -->
     <link
       rel="preload"
