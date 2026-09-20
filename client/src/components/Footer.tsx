@@ -438,6 +438,8 @@ export default function Footer() {
               </a>
               <span className="mx-1.5 text-white/15">·</span>
               {FOUNDATION.taxStatus}
+              <span className="mx-1.5 text-white/15">·</span>
+              EIN {FOUNDATION.ein}
             </div>
 
             <div className="flex items-center flex-wrap justify-center gap-x-4 gap-y-1">
