@@ -398,9 +398,6 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-  }, []);
-
   // F-15: the hero text renders VISIBLE by default (no opacity-0 classes).
   // GSAP is progressive enhancement only: `from()` tweens from the hidden
   // state to the natural visible state, so if the animation library fails —
