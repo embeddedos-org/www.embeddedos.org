@@ -160,6 +160,11 @@ export default function ProductEOffice() {
           route: "/product-eipc",
           desc: "Inter-app communication and platform service access via EIPC.",
         },
+        {
+          name: "eApps",
+          route: "/product-eapps",
+          desc: "60+ first-party apps for EoS devices, distributed via the eApps package manager.",
+        },
       ]}
     />
   );
