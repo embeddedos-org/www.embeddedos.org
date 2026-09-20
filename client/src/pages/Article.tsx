@@ -19,6 +19,7 @@ import { Link, useRoute } from "wouter";
 import { bodyOf } from "@/data/article-bodies";
 import { badgeOf, bySlug, formatDate } from "@/data/content";
 import AboutSections from "@/components/AboutSections";
+import ArticleJsonLd from "@/components/ArticleJsonLd";
 import type { AboutSection } from "@/data/about-section";
 
 /** Badge colours, matching the palette /news uses for the same labels. */
@@ -100,6 +101,7 @@ export default function Article({ slug: slugProp }: { slug?: string }) {
 
   return (
     <div className="min-h-screen bg-[#0A0E1A] text-white">
+      <ArticleJsonLd item={item} />
       <section className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent" />
         <div className="max-w-3xl mx-auto relative z-10">
