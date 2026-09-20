@@ -228,6 +228,13 @@ The navigation reaches them in one click, so a person using the menu is fine.
 A crawler weighing in-content links, and anyone browsing without the menu, is
 not.
 
+**Corrected.** This entry said none of the homepage's 14 in-content links is a
+component page. Five of the named hubs are indeed absent, but two of the 14
+_are_ component pages as `docs/ecosystem-graph.json` defines them: `/eapps` and
+`/ecad-hardware` are both recorded `sitePage` values. The homepage is less
+isolated than the entry claimed, though the hubs it misses are the ones that
+matter.
+
 `client/src/pages/Home.tsx` is one of the four files PR #56 conflicts in, so
 this was not changed here. `/getting-started` now carries the same links,
 which puts each target two clicks from the homepage instead of unreachable.
@@ -252,6 +259,10 @@ than assuming:
 | `/eosuite`         | 55               | 11                  | blocked by PR #56                  |
 | `/books`           | 14               | 14                  | no gate — earlier report was wrong |
 | `/health-compare`  | 32               | 32                  | no gate — earlier report was wrong |
+
+`/architecture`'s loss is larger than this entry first recorded: 24 of 40 layer
+names, 6 of 7 descriptions, 6 of 7 "why it matters" paragraphs and 22 of 28
+statistic labels are absent, not only the descriptions and layer labels.
 
 `/architecture` is left open deliberately. Its seven panels each embed
 `ArchitectureDiagram3D`, and a WebGL canvas inside a `hidden` panel
@@ -279,14 +290,19 @@ Adding a guard inside it would be dead code. No change was made.
 
 The remaining position, after this branch:
 
-| Component                    | WebGL        | Reduced motion | Used by                                        | Status                            |
-| ---------------------------- | ------------ | -------------- | ---------------------------------------------- | --------------------------------- |
-| `ArchitectureDiagram3D`      | yes          | yes            | `/architecture`, `/ecad-hardware`              | already guarded                   |
-| `ArchitectureHologramCanvas` | yes          | at call site   | homepage hero                                  | already guarded                   |
-| `CircuitHero`                | at call site | at call site   | homepage                                       | already guarded, no change needed |
-| `EoS3D` (5 canvases)         | **added**    | **added**      | `/eos`, `/eboot`, `/eai`, `/eoffice`, `/eapps` | fixed here                        |
-| `AeroSwift3D` (2 canvases)   | **added**    | **added**      | `/aerospace`                                   | fixed here                        |
-| `HealthDevice3D`             | no           | no             | `/health`                                      | **blocked**                       |
+| Component                    | WebGL        | Reduced motion | Used by                                        | Status                             |
+| ---------------------------- | ------------ | -------------- | ---------------------------------------------- | ---------------------------------- |
+| `ArchitectureDiagram3D`      | yes          | yes            | `/architecture`, `/ecad-hardware`              | already guarded                    |
+| `ArchitectureHologramCanvas` | yes          | at call site   | homepage hero                                  | already guarded                    |
+| `CircuitHero`                | at call site | at call site   | homepage                                       | already guarded, no change needed  |
+| `EoS3D` (5 canvases)         | **added**    | **added**      | `/eos`, `/eboot`, `/eai`, `/eoffice`, `/eapps` | fixed here                         |
+| `AeroSwift3D` (2 canvases)   | **added**    | **added**      | `/aerospace`                                   | fixed here                         |
+| `HealthDevice3D`             | no           | #56 adds it    | `/health`                                      | **blocked, WebGL still unguarded** |
+
+**Corrected.** This entry said `HealthDevice3D` has neither guard. PR #56 does
+add `usePrefersReducedMotion` to it, but adds no WebGL check and no `frameloop`
+handling, so after #56 lands `/health` still mounts four unguarded WebGL
+contexts.
 
 `HealthDevice3D` is blocked on both ends: the component and its only consumer
 `client/src/pages/Health.tsx` are both owned by PR #56, so there is no
