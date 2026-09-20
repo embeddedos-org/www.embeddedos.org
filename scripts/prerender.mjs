@@ -534,6 +534,21 @@ export function applyMeta(html, { route, heading, description, image }) {
   return out;
 }
 
+// The exact heading text of the React ErrorBoundary fallback screen
+// (client/src/components/ErrorBoundary.tsx). A full-repo search shows this copy
+// appears nowhere else — not in docs, blog posts or any other page component —
+// so its presence in a snapshot means the route crashed into the boundary and
+// would otherwise be saved as a "successful" prerender of an error screen.
+export const ERROR_BOUNDARY_MARKER = "An unexpected error occurred.";
+
+/**
+ * True when a snapshot's HTML is the ErrorBoundary fallback screen rather than
+ * the route's real content.
+ */
+export function shippedErrorBoundary(html) {
+  return html.includes(ERROR_BOUNDARY_MARKER);
+}
+
 function writeSnapshot(route, html) {
   const target =
     route === "/"
@@ -613,6 +628,11 @@ async function main() {
         const degraded = html.includes(
           "The embedded donation form could not load"
         );
+        // A route that threw during render ships the React ErrorBoundary
+        // fallback screen instead of the route's content. Like the degraded
+        // case above, it renders "successfully" — so fail loudly here rather
+        // than shipping an error screen as a snapshot.
+        const errorBoundary = shippedErrorBoundary(html);
         results.push({
           route,
           ok: true,
@@ -622,6 +642,7 @@ async function main() {
           target,
           errors,
           degraded,
+          errorBoundary,
         });
       } catch (err) {
         results.push({ route, ok: false, error: err.message, errors });
@@ -649,6 +670,7 @@ async function main() {
   const failed = results.filter(r => !r.ok);
   const thin = results.filter(r => r.ok && r.textLength < 500);
   const degraded = results.filter(r => r.ok && r.degraded);
+  const errorBoundaryRoutes = results.filter(r => r.ok && r.errorBoundary);
 
   for (const r of results) {
     if (!r.ok) console.log(`  FAIL  ${r.route.padEnd(38)} ${r.error}`);
@@ -663,6 +685,11 @@ async function main() {
       `  DEGRADED  ${r.route.padEnd(34)} shipped the "embed failed to load" fallback`
     );
   }
+  for (const r of errorBoundaryRoutes) {
+    console.log(
+      `  ERROR-BOUNDARY  ${r.route.padEnd(30)} rendered the ErrorBoundary fallback`
+    );
+  }
 
   const ok = results.filter(r => r.ok);
   const avgText = ok.length
@@ -670,11 +697,20 @@ async function main() {
     : 0;
   console.log(
     `[prerender] ${ok.length}/${results.length} rendered · avg ${avgText} chars of visible text · ` +
-      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded`
+      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded · ` +
+      `${errorBoundaryRoutes.length} error-boundary`
   );
 
   if (failed.length) {
     console.error(`[prerender] ${failed.length} route(s) failed to render.`);
+    process.exitCode = 1;
+  }
+  if (errorBoundaryRoutes.length) {
+    for (const r of errorBoundaryRoutes) {
+      console.error(
+        `[prerender] Route ${r.route} rendered the ErrorBoundary fallback — failing the build.`
+      );
+    }
     process.exitCode = 1;
   }
   if (degraded.length) {
