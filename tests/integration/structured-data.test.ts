@@ -6,7 +6,12 @@ const ROOT = path.resolve(import.meta.dirname, "../..");
 const DIST = path.join(ROOT, "dist", "public");
 
 type Graph = {
-  components: Array<{ id: string; repository: string; version?: string }>;
+  components: Array<{
+    id: string;
+    repository: string;
+    version?: string;
+    language?: string;
+  }>;
 };
 
 const graph = JSON.parse(
@@ -15,6 +20,9 @@ const graph = JSON.parse(
 const repoSet = new Set(graph.components.map(c => c.repository));
 const versionByRepo = new Map(
   graph.components.map(c => [c.repository, c.version ?? null])
+);
+const languageByRepo = new Map(
+  graph.components.map(c => [c.repository, c.language ?? null])
 );
 
 const docs = new Map<string, string>();
@@ -173,6 +181,24 @@ describe("product pages", () => {
         invented.push(`${r}: ${node.version}`);
     }
     expect(invented).toEqual([]);
+  });
+
+  it("name the language the component repository actually uses", () => {
+    const wrong: string[] = [];
+    for (const r of productRoutes()) {
+      const node = nodesOf(r, "SoftwareSourceCode")[0];
+      const expected = languageByRepo.get(node?.codeRepository);
+      if (!expected) {
+        if (node?.programmingLanguage)
+          wrong.push(
+            `${r}: claims ${node.programmingLanguage}, graph has none`
+          );
+        continue;
+      }
+      if (node.programmingLanguage !== expected)
+        wrong.push(`${r}: ${node.programmingLanguage} != ${expected}`);
+    }
+    expect(wrong).toEqual([]);
   });
 
   it("never ship the placeholder version the pages used to hard-code", () => {

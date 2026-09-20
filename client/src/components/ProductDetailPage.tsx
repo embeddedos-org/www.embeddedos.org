@@ -172,7 +172,9 @@ export default function ProductDetailPage({
       name: shortName,
       description,
       codeRepository: component ? component.repository : repoUrl,
-      programmingLanguage: lang,
+      ...(component?.language
+        ? { programmingLanguage: component.language }
+        : {}),
       url: pageUrl,
       license: "https://spdx.org/licenses/MIT.html",
       isAccessibleForFree: true,
