@@ -179,7 +179,7 @@ export function applyRouteMeta(route: string, doc: Document = document): void {
     DESCRIPTION_OVERRIDES[route] ||
       readDescription(doc) ||
       FALLBACK_DESCRIPTION,
-    250
+    155
   );
   const canonical = canonicalFor(route);
   const image = readPageImage(doc);

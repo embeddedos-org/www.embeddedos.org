@@ -457,7 +457,7 @@ export function applyMeta(html, { route, heading, description, image }) {
 
   const desc = truncate(
     DESCRIPTION_OVERRIDES[route] || description || FALLBACK_DESCRIPTION,
-    250
+    155
   );
 
   // Per-route social image (F-13): the page's own first <main> image,

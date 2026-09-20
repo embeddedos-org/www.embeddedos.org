@@ -118,10 +118,10 @@ describe("per-route metadata overrides stay in lockstep", () => {
       description: "extracted text that must not win",
     });
     expect(metaFrom(rendered, "description")).toBe(
-      DESCRIPTION_OVERRIDES["/donate"]
+      truncate(DESCRIPTION_OVERRIDES["/donate"], 155)
     );
     expect(metaFrom(rendered, "twitter:description")).toBe(
-      DESCRIPTION_OVERRIDES["/donate"]
+      truncate(DESCRIPTION_OVERRIDES["/donate"], 155)
     );
   });
 
