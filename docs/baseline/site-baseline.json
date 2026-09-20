@@ -13,7 +13,7 @@
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
   "cssBrotliKB": 24.6,
-  "totalJsBrotliKB": 770.7,
+  "totalJsBrotliKB": 770.9,
   "largestPages": [
    {
     "route": "/getting-started",
@@ -25,7 +25,7 @@
    },
    {
     "route": "/careers",
-    "brotliKB": 15.7
+    "brotliKB": 15.6
    },
    {
     "route": "/industries",
@@ -118,7 +118,6 @@
    "/changelog",
    "/datasets",
    "/eosuite",
-   "/eserviceapps",
    "/events",
    "/fundraising",
    "/kids",
