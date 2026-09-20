@@ -130,6 +130,29 @@ for (const [route, hrefs] of ROUTES) {
       });
       await page.waitForTimeout(120);
 
+      // Playwright's actionability checks confirm the link itself is stable,
+      // but not that nothing is painted over it: on the heaviest page the
+      // card grid's entrance animations can leave a neighbouring card's
+      // description over the click point for a few frames after the link
+      // stops moving, and the click then times out on pointer interception.
+      // Poll the hit target instead of extending the blind pause — this waits
+      // for the real condition, and a link that is genuinely covered still
+      // fails loudly on the click below.
+      await page.waitForFunction(
+        selector => {
+          const el = document.querySelector(selector);
+          if (!el) return false;
+          const r = el.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            r.left + r.width / 2,
+            r.top + r.height / 2
+          );
+          return !!hit && (hit === el || el.contains(hit));
+        },
+        `main a[href="${href}"]`,
+        { timeout: 15_000 }
+      );
+
       await link.click({ timeout: 15_000 });
       await page.waitForTimeout(400);
 
