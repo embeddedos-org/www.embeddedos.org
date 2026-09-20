@@ -194,7 +194,7 @@ async function checkOutbound() {
     // eslint-disable-next-line no-console
     console.log(
       "link-integrity warnings (not failures):\n" +
-        warnings.map(w => `  - ${w}`).join("\n"),
+        warnings.map(w => `  - ${w}`).join("\n")
     );
   }
 

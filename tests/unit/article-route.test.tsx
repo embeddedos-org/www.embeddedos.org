@@ -227,9 +227,8 @@ describe("article structured data", () => {
     return JSON.parse(scripts[0].textContent ?? "") as JsonLdNode;
   };
   const newsArticleOf = (doc: JsonLdNode): JsonLdNode =>
-    ((doc["@graph"] as JsonLdNode[]).find(
-      e => e["@type"] === "NewsArticle"
-    ) ?? {}) as JsonLdNode;
+    ((doc["@graph"] as JsonLdNode[]).find(e => e["@type"] === "NewsArticle") ??
+      {}) as JsonLdNode;
 
   it.each(SLUGS)("%s exposes a valid NewsArticle entity", slug => {
     const item = bySlug(slug)!;
@@ -300,9 +299,7 @@ describe("article structured data", () => {
       JSON.parse(scripts[0].textContent ?? "") as Record<string, unknown>
     );
     expect(news.headline).toBe(bySlug(second)!.title);
-    expect(news["@id"]).toBe(
-      `https://www.embeddedos.org/article/${second}`
-    );
+    expect(news["@id"]).toBe(`https://www.embeddedos.org/article/${second}`);
   });
 
   it("renders no structured data for an unknown slug", () => {
@@ -317,7 +314,7 @@ describe("article structured data", () => {
     // terminate the element early. Rendering must keep it inert.
     const hostile = {
       ...bySlug(SLUGS[0])!,
-      title: 'A title with </script><script>alert(1)</script>',
+      title: "A title with </script><script>alert(1)</script>",
     };
     const { container } = render(<ArticleJsonLd item={hostile} />);
     const script = container.querySelector(

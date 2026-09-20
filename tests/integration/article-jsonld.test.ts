@@ -48,7 +48,10 @@ describe("built article pages", () => {
       "dist/public is missing — run `pnpm build` before tests/integration"
     ).toBe(true);
     const files = articleHtmlFiles();
-    expect(files.length, "expected the eight prerendered legacy article pages").toBe(8);
+    expect(
+      files.length,
+      "expected the eight prerendered legacy article pages"
+    ).toBe(8);
   });
 
   it.each(articleHtmlFiles())(
@@ -92,9 +95,7 @@ describe("built article pages", () => {
     // article's data is neither dropped by the snapshot nor duplicated.
     for (const file of articleHtmlFiles()) {
       const html = fs.readFileSync(file, "utf-8");
-      const newsCount = jsonLdBlocks(html).filter(d =>
-        newsArticleOf(d)
-      ).length;
+      const newsCount = jsonLdBlocks(html).filter(d => newsArticleOf(d)).length;
       expect(newsCount, `${slugOf(file)}: NewsArticle block count`).toBe(1);
     }
   });

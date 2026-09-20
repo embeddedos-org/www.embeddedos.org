@@ -57,7 +57,12 @@ export function articleJsonLd(item: ContentItem): Record<string, unknown> {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: `${ORIGIN}/` },
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${ORIGIN}/`,
+          },
           {
             "@type": "ListItem",
             position: 2,
