@@ -413,6 +413,7 @@ export default function EOSuitePage() {
             <input
               type="text"
               placeholder="Search apps..."
+              aria-label="Search apps"
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-white/30"

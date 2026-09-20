@@ -12,6 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 import { BOARD_COUNT } from "@/data/stack";
 const EBootCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EBootCanvas }))
@@ -195,7 +196,9 @@ export default function EBoot() {
                     </div>
                   }
                 >
-                  <EBootCanvas hovered={false} />
+                  <ViewportGate>
+                    <EBootCanvas hovered={false} />
+                  </ViewportGate>
                 </Suspense>
               </div>
               <div

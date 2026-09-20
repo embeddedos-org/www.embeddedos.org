@@ -22,8 +22,10 @@ export default defineConfig({
    * This changes concurrency, never coverage — the same tests run with the same
    * assertions. Retries stay at 2, so genuine order-dependence still surfaces
    * rather than being hidden. The one suite with a documented parallel-flake
-   * problem, link-destinations, is opt-in and skipped unless LINK_SWEEP is set;
-   * run that one with --workers=1, which is how its 83/83 pass was obtained.
+   * problem, link-destinations, runs in CI via `pnpm test:links` with bounded
+   * parallelism (--workers=4 --retries=2); see the note in
+   * e2e/link-destinations.spec.ts for why it does not use the default worker
+   * count.
    *
    * Bounded rather than unlimited: this machine has 8 cores, and leaving
    * headroom keeps the timing-sensitive checks from competing with the

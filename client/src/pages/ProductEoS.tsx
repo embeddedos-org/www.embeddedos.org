@@ -192,6 +192,11 @@ export default function ProductEoS() {
           route: "/product-eipc",
           desc: "Capability-secured IPC fabric: predictable latency, HMAC-authenticated messages.",
         },
+        {
+          name: "EoS Platform",
+          route: "/product-eos-platform",
+          desc: "Cloud-side fleet management: OTA firmware updates, device telemetry, and remote debug.",
+        },
       ]}
     />
   );

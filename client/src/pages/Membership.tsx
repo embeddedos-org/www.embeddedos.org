@@ -44,7 +44,7 @@ const tiers: Array<{
     description:
       "Join the EmbeddedOS community. Access all open-source repositories, documentation, and community forums.",
     benefits: [
-      "Access to all 22 open-source repositories",
+      "Access to all 23 open-source repositories",
       "Community forum participation",
       "GitHub Discussions access",
       "Newsletter updates",

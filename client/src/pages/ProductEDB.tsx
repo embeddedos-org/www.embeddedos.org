@@ -164,6 +164,11 @@ export default function ProductEDB() {
           route: "/product-eai",
           desc: "Stores AI model bundles, training datasets, and inference logs.",
         },
+        {
+          name: "eServiceApps",
+          route: "/product-eserviceapps",
+          desc: "eSocial, eRide, eTravel, eWallet, eHealth365 Mobile — offline-first apps with end-to-end encryption.",
+        },
       ]}
     />
   );

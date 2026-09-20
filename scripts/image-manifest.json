@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "settings": "70d5226d898c48f2",
+  "files": {
+    "arch-eai-neural_4d7964d2.jpg": {
+      "sha256": "52a2544e85d23085543052984c3a9ed9f267b485a972c636c1e7c8d3fb2cec97",
+      "webpSha256": "ec6e57b8ec5dc3f84e2fe6e6af2ce47391c2ac86a67cebc098f64e311fb07be9"
+    },
+    "arch-eboot-chain_b9f999b5.jpg": {
+      "sha256": "df4a7f45ea241f584b72f7623125d379c5282a2c81b1c2b0287f929fa1e11227",
+      "webpSha256": "14a25be5a8ad581dff0597c28468bc5c8ae5b96dcd078ed070563505c3700299"
+    },
+    "arch-eoffice-suite_d63eacf5.jpg": {
+      "sha256": "626a19bc9876fc9e19e56b8353c81241ce1b8daafeeaf80f81d6db184686f152",
+      "webpSha256": "9f94141c748119db6448e18796bba1f27ba68a31f6f1c7ed4d00a97e401cd0b5"
+    },
+    "arch-eos-kernel_d7d1b4a5.jpg": {
+      "sha256": "f4c8fe7084906b58f5f063cd6521eafd0f9d625924bae74bbbbc9688aac58da8",
+      "webpSha256": "85413a1f77db7d775254d8eeea0534ab615e203dd8bf8244a86c5f953b7b2dbe"
+    },
+    "architecture-diagram-hero_72436b3f.jpg": {
+      "sha256": "8bd0a9eb33908ed99be9ce52d039ca3c72a0b54a8ed8125634e7a3690920574a",
+      "webpSha256": "fffa70760373824a9c489584eb9301fbfa8fe9d13aa5498710ca741f7825e95b"
+    },
+    "community-illustration-eos_6f39c9db.jpg": {
+      "sha256": "e74fba984865bfbcc06fa0444829a50f8859ab1f7d85fbef83c3f3f7e12eb906",
+      "webpSha256": "3e5c3bc66238ba23403f95ea7697b441d293ac46864b3276a65b0dbbd1919e8d"
+    },
+    "embeddedos-logo-mark_bc053888.jpg": {
+      "sha256": "86ae01e09edfe5fbd899b3c0c79e1a9070e9d5d3cbb00d292361f99b2b2f7ffe",
+      "webpSha256": "29353e0127aa2974a1f689eaa6c6a8bffad71c255f1d90404bdd8bfba024a713"
+    },
+    "hero-background_1bafea1c.jpg": {
+      "sha256": "a0e75ff3fb12c236c634b3715ecde7530780fb6819f64c1a2eaffcd1bf78b8bb",
+      "webpSha256": "d74e255991cf12128b4dde284d1582bdcda984a04ff5305b12e1ee227a63c38d"
+    },
+    "product-eai-eni_df2d2734.jpg": {
+      "sha256": "fb909d287cef9648733806f0153955b8a33162f498ac933cb89e082f13f8398a",
+      "webpSha256": "23dd386f93ec1f5f4d9d481b537cc27c10e0c2f1d22c184d6bbe62469a3715ef"
+    },
+    "product-eapps_89b01d4a.jpg": {
+      "sha256": "6247e9b6392578a557ff1bad68da6ed9b6b688fdb26ea8252eea927ead9bc4f4",
+      "webpSha256": "8d93003b224e75b9e0855401b6fc0427478737a38833b2bc47c5606e53e5cb40"
+    },
+    "product-eboot_90e7936e.jpg": {
+      "sha256": "74fa92034283152de0225deeed56d294ee0ea72b9997df1e02b09190c43879f9",
+      "webpSha256": "a6c1ba624878f1c5b03ef60a4456cb8c2224a96355a38782196b3f94ab92224f"
+    },
+    "product-ecad-hardware_f5806032.jpg": {
+      "sha256": "c690416371cc0a2f256e5032669888646e7694ff1bc8327d3a3c1cb540cdf4ef",
+      "webpSha256": "52f7186db28824a2e47b951c53e73c0933a3740dcb3d3fb2186524cc558b9d6d"
+    },
+    "product-edb_9cd0fe0e.jpg": {
+      "sha256": "7d0d55338973fcae00a6d498672dfe676deb06adf84833a0c60ce85798baaf78",
+      "webpSha256": "5624385a49d3673513de021b7dae4534b126d1764ace8073ae0926e9dbda8297"
+    },
+    "product-eipc-ipc_be829de0.jpg": {
+      "sha256": "55768bf32a8b4901c2a7cab6e1daafc8d8ebaeeef75093296c4079bd041da4b8",
+      "webpSha256": "031c1b44a8632d93f85f5464a71c28f7bf35abbbd443c521a62f69888645c5ee"
+    },
+    "product-eni-neural_0723fbf2.jpg": {
+      "sha256": "55768bf32a8b4901c2a7cab6e1daafc8d8ebaeeef75093296c4079bd041da4b8",
+      "webpSha256": "031c1b44a8632d93f85f5464a71c28f7bf35abbbd443c521a62f69888645c5ee"
+    },
+    "product-eoffice_c4309cdd.jpg": {
+      "sha256": "bd703aff034763ed6b4ecd9a49d90f78baa927441246f62a5d9ac061ae1550fc",
+      "webpSha256": "6a2ec3d0de361d8c2176b359674a03a7ff49555e1e9aa89becfff031caa67c92"
+    },
+    "product-eos-kernel_0ca24d8d.jpg": {
+      "sha256": "7e7ab93534146693ed0bd87c7240c5164f5b862f551eaebb3911024a2e257562",
+      "webpSha256": "4d943722752582047d3807df2ca77fd9776cc136db6f2900d895d6bc1b65d9c5"
+    },
+    "product-eosim-sim_78145da3.jpg": {
+      "sha256": "61ff3d89bc115c865fdb181c57d2113db00763046d8ea45a728f086334848bf6",
+      "webpSha256": "8e28d789c19be09cb5fa0ed6b6413b367299f83a376ec59ababa049e46d24ebe"
+    },
+    "product-eostudio-ide_2fc95a2d.jpg": {
+      "sha256": "61ff3d89bc115c865fdb181c57d2113db00763046d8ea45a728f086334848bf6",
+      "webpSha256": "8e28d789c19be09cb5fa0ed6b6413b367299f83a376ec59ababa049e46d24ebe"
+    },
+    "product-eserviceapps_6c6d4f1a.jpg": {
+      "sha256": "6247e9b6392578a557ff1bad68da6ed9b6b688fdb26ea8252eea927ead9bc4f4",
+      "webpSha256": "8d93003b224e75b9e0855401b6fc0427478737a38833b2bc47c5606e53e5cb40"
+    },
+    "what-we-do-illustration_4c2ad2f7.jpg": {
+      "sha256": "94253d2ffc0a4c165e203143bf25727a3fd49f12f393c448ac4760383c630ce1",
+      "webpSha256": "55570fb153c5e4c6eccb4af940ce706d6528df4611e081077c69bef959541c13"
+    },
+    "hero-background_1bafea1c-1280w.jpg": {
+      "sha256": "e3bfef907c7886d18ec7b553813eadcfad34231568a83387ec621295bc35ea67",
+      "webpSha256": "1d7b1ee35ec16e0ba88d70586b980530fac45147c8eeb3c48e0c87226080635b"
+    },
+    "hero-background_1bafea1c-768w.jpg": {
+      "sha256": "a0ae430ef46eb14c5b3b980713bc0517e8ad83b315d8bc7e8fea7c01ef3170cf",
+      "webpSha256": "fd1196a6b636e50f89865ff3779dcd4db41e4e2262b19d006bf8081455a032f9"
+    }
+  }
+}

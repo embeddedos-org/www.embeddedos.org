@@ -60,9 +60,16 @@ const allPages = () =>
   }));
 
 describe("generated stack data", () => {
-  it("counts every repository in the manifest", () => {
-    expect(STACK.totals.repositories).toBe(22);
-    expect(STACK.projects).toHaveLength(STACK.totals.repositories);
+  it("counts the org's public repositories", () => {
+    // Hand-verified against the live org API 2026-09-18: 26 repos total,
+    // 3 private (www.embeddedos.org, eVera, embeddedos-stack), 23 public.
+    // Refresh from the API when the org adds or removes a public repo —
+    // this hardcodes the count deliberately so drift fails loudly.
+    expect(STACK.totals.repositories).toBe(23);
+    // projects is the curated stack (the phantom eos-stack-manifest entry was
+    // removed 2026-09-18 because the repo does not exist), so it tracks
+    // totals.projects, not the public-repo count.
+    expect(STACK.projects).toHaveLength(STACK.totals.projects);
   });
 
   it("places every project in a known tier", () => {

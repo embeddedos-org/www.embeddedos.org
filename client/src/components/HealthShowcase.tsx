@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link } from "wouter";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 const DEVICES = [
   {
@@ -121,7 +122,12 @@ function WaveCanvas({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
+  const lastFrameRef = useRef<number>(0);
+  // F-23: paint one static frame instead of looping when the visitor
+  // prefers reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
   const offsetRef = useRef(0);
+  const visibleRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -164,19 +170,22 @@ function WaveCanvas({
       }
     };
 
-    const draw = () => {
+    // P-01: paint one frame. Kept separate from the loop so the first frame
+    // can render immediately (prerender snapshot, reduced motion) and the
+    // loop below can throttle/pause without affecting it.
+    const paint = () => {
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
-      // Glow
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = color;
+      // P-01: glow without shadowBlur. shadowBlur forces a full-canvas
+      // offscreen blur pass on every frame and was the single most expensive
+      // call in this loop. A wide low-alpha halo stroke under the bright
+      // core stroke reads the same at these sizes for a fraction of the cost.
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
       ctx.beginPath();
 
-      const points = 300;
+      const points = 180;
       for (let i = 0; i < points; i++) {
         const px = (i / points) * w;
         const t = (i / points) * Math.PI * 6 + offsetRef.current;
@@ -184,6 +193,12 @@ function WaveCanvas({
         if (i === 0) ctx.moveTo(px, py);
         else ctx.lineTo(px, py);
       }
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.lineWidth = 7;
+      ctx.stroke();
+      ctx.restore();
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       // Fade edges
@@ -201,12 +216,60 @@ function WaveCanvas({
 
       offsetRef.current +=
         type === "neural" ? 0.07 : type === "ecg" ? 0.04 : 0.025;
-      frameRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
-    return () => cancelAnimationFrame(frameRef.current);
-  }, [type, color]);
+    // P-01: the rAF loop. Throttled to ~30fps (visually identical for a
+    // glowing waveform, halves the per-second canvas cost) and fully
+    // stopped — not just skipped — while the canvas is offscreen or the
+    // tab is hidden, so a below-the-fold showcase never burns main-thread
+    // time during page load.
+    let running = false;
+    const tick = (now: number) => {
+      frameRef.current = 0;
+      if (!running) return;
+      if (now - lastFrameRef.current >= 33) {
+        lastFrameRef.current = now;
+        paint();
+      }
+      frameRef.current = requestAnimationFrame(tick);
+    };
+    const start = () => {
+      if (running || reduceMotion) return;
+      running = true;
+      lastFrameRef.current = performance.now();
+      frameRef.current = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      running = false;
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      frameRef.current = 0;
+    };
+    const maybeStart = () => {
+      if (!document.hidden && visibleRef.current) start();
+      else stop();
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        maybeStart();
+      },
+      // Start a little before the canvas scrolls into view so the wave is
+      // already moving when the visitor arrives.
+      { rootMargin: "200px" }
+    );
+    io.observe(canvas);
+    document.addEventListener("visibilitychange", maybeStart);
+
+    paint();
+    maybeStart();
+
+    return () => {
+      stop();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", maybeStart);
+    };
+  }, [type, color, reduceMotion]);
 
   return (
     <canvas
@@ -215,11 +278,16 @@ function WaveCanvas({
       height={height}
       className="w-full h-full"
       style={{ display: "block" }}
+      aria-hidden="true"
     />
   );
 }
 
-// Signal path flow
+// Signal path flow.
+// P-01: plain elements with CSS transitions instead of framer-motion. The
+// animated values are simple style interpolations (background, border,
+// color, opacity over 0.3s) that CSS handles identically, without waking
+// the motion scheduler on every 900ms step.
 function SignalPath({ steps, color }: { steps: string[]; color: string }) {
   const [active, setActive] = useState(0);
   useEffect(() => {
@@ -231,29 +299,30 @@ function SignalPath({ steps, color }: { steps: string[]; color: string }) {
     <div className="flex items-center gap-1 flex-wrap">
       {steps.map((step, i) => (
         <div key={step} className="flex items-center gap-1">
-          <motion.div
-            animate={{
+          <div
+            className="text-[10px] font-bold px-2 py-1 rounded-lg border"
+            style={{
               background: i <= active ? `${color}25` : "rgba(255,255,255,0.04)",
               borderColor:
                 i <= active ? `${color}60` : "rgba(255,255,255,0.08)",
               color: i <= active ? color : "rgba(255,255,255,0.3)",
+              transition:
+                "background-color 0.3s, border-color 0.3s, color 0.3s",
             }}
-            transition={{ duration: 0.3 }}
-            className="text-[10px] font-bold px-2 py-1 rounded-lg border"
           >
             {step}
-          </motion.div>
+          </div>
           {i < steps.length - 1 && (
-            <motion.span
-              animate={{
+            <span
+              className="text-[10px]"
+              style={{
                 opacity: i < active ? 1 : 0.2,
                 color: i < active ? color : "#ffffff30",
+                transition: "opacity 0.3s, color 0.3s",
               }}
-              transition={{ duration: 0.3 }}
-              className="text-[10px]"
             >
               ▶
-            </motion.span>
+            </span>
           )}
         </div>
       ))}

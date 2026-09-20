@@ -271,6 +271,12 @@ test.describe("substantial, original content", () => {
     "/organization",
     "/getting-started",
     "/kids",
+    "/programmes",
+    "/youtube",
+    "/social",
+    "/partners",
+    "/news",
+    "/article-eos-platform-launch",
   ];
 
   for (const route of SAMPLE) {
@@ -287,7 +293,16 @@ test.describe("substantial, original content", () => {
   // One test per route: a single test that walked all three shared one 30s
   // budget across three navigations, so a loaded machine timed it out rather
   // than failing an assertion.
-  for (const route of ["/", "/about", "/what-we-do"]) {
+  for (const route of [
+    "/",
+    "/about",
+    "/what-we-do",
+    "/programmes",
+    "/youtube",
+    "/social",
+    "/partners",
+    "/news",
+  ]) {
     test(`${route} is not merely a list of links`, async ({ page }) => {
       await page.goto(route);
       const ratio = await page.evaluate(() => {

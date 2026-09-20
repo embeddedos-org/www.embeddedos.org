@@ -2611,12 +2611,14 @@ export default function ApiDocs() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search functions… (⌘F)"
+              aria-label="Search API functions"
               className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#22D3EE]/50 focus:bg-white/8 transition-all"
             />
             {search && (
               <button
                 onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
+                aria-label="Clear search"
+                className="absolute right-2 top-1/2 -translate-y-1/2 min-w-6 min-h-6 flex items-center justify-center text-white/30 hover:text-white"
               >
                 <X size={14} />
               </button>
