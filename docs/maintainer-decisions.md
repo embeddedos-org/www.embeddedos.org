@@ -340,6 +340,46 @@ retired coverage claims of that kind from the health pages.
 
 ---
 
+## D-13 — The install command on the primary onboarding path does not work
+
+**Verified independently.** `/getting-started` is one click from the homepage
+behind "Get Started Free", and it prints `pip install embeddedos-ebuild
+embeddedos-eosim`. None of those packages exists:
+
+| Package             | pypi.org/pypi/&lt;name&gt;/json |
+| ------------------- | ------------------------------- |
+| `embeddedos-ebuild` | 404                             |
+| `embeddedos-eosim`  | 404                             |
+| `eosim`             | 404                             |
+| `embeddedos`        | 404                             |
+| `numpy` (control)   | 200                             |
+
+The command appears six times across `/getting-started`, `/ebuild` and
+`/product-ebuild`. A reader who searches PyPI for the nearest name finds
+`ebuild`, which is an unrelated project by another author.
+
+ebuild's own README documents the working method instead:
+
+```
+Requires Python 3.8+.
+pip install -e .        # from the repo root
+./install.sh            # puts the 'ebuild' command on your PATH
+```
+
+It also warns that the `ninja` **pip package** specifically is required, and
+the site states Python 3.10+ where the README says 3.8+.
+
+**Not implemented here, deliberately.** The correct replacement depends on
+intent: if these packages are meant to be published to PyPI, the commands are
+right and the packages are missing; if they are not, the site should document
+the source install. Those are opposite fixes, and this is the site's primary
+call to action — a wrong guess there is worse than a recorded defect.
+
+**Owner:** maintainer. Either publish the packages or change the six commands
+to the README's.
+
+---
+
 ## What was fixed without a decision
 
 | PR  | Fix                                                                                                                                   |
