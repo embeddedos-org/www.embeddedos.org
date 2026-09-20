@@ -103,6 +103,43 @@ function header_safe(string $value): string
     return trim(str_replace(["\r", "\n", "\0", "%0a", "%0d", "%0A", "%0D"], '', $value));
 }
 
+/**
+ * Encode a mail subject as RFC 2047 encoded-words when it is not pure ASCII.
+ *
+ * mail() takes the Subject parameter as a raw header value, so bytes outside
+ * ASCII went onto the wire unencoded and the receiving side had to guess the
+ * charset — every acknowledgement subject carries an em dash, so every one of
+ * them was affected. Wrapping the non-ASCII runs in =?UTF-8?B?...?=
+ * encoded-words states the charset explicitly instead of hoping.
+ *
+ * Pure-ASCII subjects are returned byte-identical: encoding them would be
+ * valid too, but leaving them alone keeps headers readable and changes
+ * nothing that already works.
+ *
+ * mb_encode_mimeheader() does this correctly when mbstring is installed, and
+ * like char_len() this must not assume that it is — a missing function is a
+ * fatal error rather than a degraded one — so there is a small manual
+ * fallback: split the UTF-8 bytes into chunks, base64 each chunk as an
+ * encoded-word of at most 75 characters, and fold the words with CRLF + space.
+ */
+function encode_subject(string $subject): string
+{
+    if (preg_match('/[\x80-\xFF]/', $subject) !== 1) {
+        return $subject;
+    }
+    if (function_exists('mb_encode_mimeheader')) {
+        return mb_encode_mimeheader($subject, 'UTF-8', 'B', "\r\n");
+    }
+    $words = [];
+    // 45 bytes -> 60 base64 characters -> a 72-character encoded-word, inside
+    // the 75-character limit. Splitting raw bytes is safe: the words are
+    // decoded and concatenated before the result is read as UTF-8 again.
+    foreach (str_split($subject, 45) as $chunk) {
+        $words[] = '=?UTF-8?B?' . base64_encode($chunk) . '?=';
+    }
+    return implode("\r\n ", $words);
+}
+
 /** Escape for interpolation into the HTML body of an email. */
 function h(string $value): string
 {
@@ -360,7 +397,7 @@ $inbox       = TOPIC_INBOXES[$contact['topic']];
 $submittedAt = gmdate('Y-m-d H:i') . ' UTC';
 $boundary    = 'eos' . bin2hex(random_bytes(16));
 $replyTo     = header_safe($contact['email']);
-$subject     = header_safe(subject_line($contact));
+$subject     = encode_subject(header_safe(subject_line($contact)));
 
 $headers = implode("\r\n", [
     'MIME-Version: 1.0',
@@ -389,7 +426,7 @@ if (!@mail($inbox, $subject, $body, $headers)) {
 // bounce here must not report failure and send the sender round again.
 @mail(
     header_safe($contact['email']),
-    'We received your message — EmbeddedOS Research Foundation',
+    encode_subject('We received your message — EmbeddedOS Research Foundation'),
     sender_text($contact),
     implode("\r\n", [
         'MIME-Version: 1.0',
