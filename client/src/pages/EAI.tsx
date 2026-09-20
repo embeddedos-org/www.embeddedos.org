@@ -1,4 +1,5 @@
 import { useState, Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
@@ -195,7 +196,9 @@ export default function EAI() {
                 </div>
               }
             >
-              <EAINetworkCanvas hovered={false} />
+              <ViewportGate>
+                <EAINetworkCanvas hovered={false} />
+              </ViewportGate>
             </Suspense>
           </motion.div>
         </div>

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Suspense, lazy, useRef, useEffect } from "react";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import ViewportGate from "../components/ViewportGate";
 
 const AeroSwiftPersonalCanvas = lazy(() =>
   import("../components/AeroSwift3D").then(m => ({
@@ -279,9 +280,13 @@ function VehicleCard({
           }
         >
           {vehicle.model === "personal" ? (
-            <AeroSwiftPersonalCanvas />
+            <ViewportGate>
+              <AeroSwiftPersonalCanvas />
+            </ViewportGate>
           ) : (
-            <AeroSwiftTransitCanvas />
+            <ViewportGate>
+              <AeroSwiftTransitCanvas />
+            </ViewportGate>
           )}
         </Suspense>
         {/* Overlay badges */}

@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -198,7 +199,9 @@ export default function EApps() {
                   </div>
                 }
               >
-                <EAppsCanvas hovered={false} />
+                <ViewportGate>
+                  <EAppsCanvas hovered={false} />
+                </ViewportGate>
               </Suspense>
             </div>
           </motion.div>

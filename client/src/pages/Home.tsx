@@ -74,6 +74,7 @@ function Lazy3DHero({
   eagerPoster?: boolean;
 }) {
   const [Scene, setScene] = useState<ComponentType | null>(null);
+  const posterRef = useRef<HTMLPictureElement>(null);
 
   useEffect(() => {
     if (
@@ -83,22 +84,47 @@ function Lazy3DHero({
       return;
     }
     let cancelled = false;
+    let idleId: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     const kick = () => {
       void loader().then(mod => {
         if (!cancelled) setScene(() => mod.default);
       });
     };
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(kick, { timeout: 4000 });
-      return () => {
-        cancelled = true;
-        window.cancelIdleCallback(id);
-      };
-    }
-    const t = setTimeout(kick, 1800);
-    return () => {
+    // P-02: the 3D chunk (~230KB gzipped) downloads only when the hero is
+    // near the viewport AND the browser is idle - never on a blind timer.
+    const kickWhenIdle = () => {
+      if ("requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(kick, { timeout: 4000 });
+      } else {
+        timer = setTimeout(kick, 1800);
+      }
+    };
+    const cleanup = () => {
       cancelled = true;
-      clearTimeout(t);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      if (timer !== undefined) clearTimeout(timer);
+    };
+    const el = posterRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      kickWhenIdle();
+      return cleanup;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          io.disconnect();
+          kickWhenIdle();
+        }
+      },
+      // Prefetch: start the download before the hero scrolls into view so
+      // the scene is ready when the visitor arrives.
+      { rootMargin: "800px" }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cleanup();
     };
   }, [loader]);
 
@@ -122,7 +148,7 @@ function Lazy3DHero({
   return (
     <>
       {/* Poster: instant, no JS needed. 1920x1080 intrinsic size reserves space. */}
-      <picture>
+      <picture ref={posterRef}>
         <source
           srcSet={srcSetWebp}
           sizes="(max-width: 1024px) 100vw, 640px"
