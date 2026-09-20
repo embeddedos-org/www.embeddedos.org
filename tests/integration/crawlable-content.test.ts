@@ -14,6 +14,13 @@ const CASES = [
     panels: 6,
   },
   {
+    route: "/architecture",
+    source: "client/src/pages/Architecture.tsx",
+    pattern: /label: "([^"]{3,40})"/g,
+    label: "architecture layer labels",
+    panels: 7,
+  },
+  {
     route: "/eflow",
     source: "client/src/pages/EFlow.tsx",
     pattern: /name:\s*"([^"]{3,40})"/g,
@@ -50,6 +57,11 @@ describe("tab panels ship their content in HTML, not only after a click", () => 
     const missing = [...declared].filter(t => !text.includes(t));
     expect(declared.size).toBeGreaterThan(5);
     expect(missing).toEqual([]);
+  });
+
+  it("/architecture mounts exactly one WebGL canvas", () => {
+    const main = mainOf("/architecture");
+    expect(main.match(/<canvas/g) ?? []).toHaveLength(1);
   });
 
   it.each(CASES)("$route renders all $panels panels up front", testCase => {

@@ -13,7 +13,7 @@
   "entryJsBrotliKB": 149.3,
   "vendorJsBrotliKB": 66.5,
   "cssBrotliKB": 24.6,
-  "totalJsBrotliKB": 770.9,
+  "totalJsBrotliKB": 771.1,
   "largestPages": [
    {
     "route": "/getting-started",
@@ -22,6 +22,10 @@
    {
     "route": "/",
     "brotliKB": 18
+   },
+   {
+    "route": "/architecture",
+    "brotliKB": 17.2
    },
    {
     "route": "/careers",
@@ -42,10 +46,6 @@
    {
     "route": "/what-we-do",
     "brotliKB": 14.8
-   },
-   {
-    "route": "/architecture",
-    "brotliKB": 14.5
    }
   ]
  },
@@ -91,11 +91,11 @@
   "pagesWithAnySchema": 133
  },
  "images": {
-  "total": 298,
+  "total": 304,
   "missingAlt": 0,
   "decorativeEmptyAlt": 16,
-  "missingDimensions": 34,
-  "lazy": 166,
+  "missingDimensions": 40,
+  "lazy": 172,
   "pagesWithImagesMissingDims": 18
  },
  "accessibility": {
@@ -106,7 +106,7 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13235,
+  "totalInternalLinks": 13247,
   "totalExternalLinks": 2658,
   "genericAnchors": 0,
   "orphans": [],

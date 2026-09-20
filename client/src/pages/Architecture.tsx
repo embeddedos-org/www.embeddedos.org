@@ -10,7 +10,7 @@ import {
   ROLE_ORDER,
   componentsInRole,
 } from "@/data/ecosystem";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Layers,
   Cpu,
@@ -629,12 +629,21 @@ export default function Architecture() {
       <section className="py-4 px-4" id="diagrams">
         <div className="max-w-6xl mx-auto">
           {/* Selector tabs */}
-          <div className="flex flex-wrap gap-2 justify-center mb-10">
+          <div
+            className="flex flex-wrap gap-2 justify-center mb-10"
+            role="tablist"
+            aria-label="Architecture diagrams"
+          >
             {DIAGRAMS.map(d => {
               const Icon = d.icon;
               return (
                 <button
                   key={d.id}
+                  role="tab"
+                  id={`diagram-tab-${d.id}`}
+                  aria-selected={active === d.id}
+                  aria-controls={`diagram-panel-${d.id}`}
+                  tabIndex={active === d.id ? 0 : -1}
                   onClick={() => setActive(d.id)}
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-200 ${
                     active === d.id
@@ -662,174 +671,179 @@ export default function Architecture() {
           </div>
 
           {/* Active diagram */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35 }}
-            >
-              {/* Top: 3D canvas + info panel */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
-                {/* 3D Canvas */}
-                <div>
-                  <Suspense
-                    fallback={
-                      <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
-                        Loading 3D diagram…
-                      </div>
-                    }
-                  >
-                    <ArchitectureDiagram3D
-                      layers={diagram.layers}
-                      mode={diagram.mode}
-                      height={400}
-                      accentColor={diagram.color}
-                    />
-                  </Suspense>
-                  {/* Mode label */}
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="text-xs text-white/30">
-                      Visualization:
-                    </span>
-                    <span
-                      className="text-xs font-semibold px-2 py-0.5 rounded-full border"
+          {DIAGRAMS.map(d => {
+            const isActive = d.id === active;
+            return (
+              <div
+                key={d.id}
+                role="tabpanel"
+                id={`diagram-panel-${d.id}`}
+                aria-labelledby={`diagram-tab-${d.id}`}
+                hidden={!isActive}
+              >
+                {/* Top: 3D canvas + info panel */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
+                  {/* 3D Canvas */}
+                  <div>
+                    {isActive && (
+                      <Suspense
+                        fallback={
+                          <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
+                            Loading 3D diagram…
+                          </div>
+                        }
+                      >
+                        <ArchitectureDiagram3D
+                          layers={d.layers}
+                          mode={d.mode}
+                          height={400}
+                          accentColor={d.color}
+                        />
+                      </Suspense>
+                    )}
+                    {/* Mode label */}
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-xs text-white/30">
+                        Visualization:
+                      </span>
+                      <span
+                        className="text-xs font-semibold px-2 py-0.5 rounded-full border"
+                        style={{
+                          color: d.color,
+                          borderColor: d.color + "40",
+                          background: d.color + "12",
+                        }}
+                      >
+                        {MODE_LABELS[d.mode]}
+                      </span>
+                      <span className="text-xs text-white/20">
+                        · Drag to rotate · Interactive
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Info panel */}
+                  <div>
+                    <div
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 border"
                       style={{
-                        color: diagram.color,
-                        borderColor: diagram.color + "40",
-                        background: diagram.color + "12",
+                        background: d.color + "18",
+                        borderColor: d.color + "44",
+                        color: d.color,
                       }}
                     >
-                      {MODE_LABELS[diagram.mode]}
-                    </span>
-                    <span className="text-xs text-white/20">
-                      · Drag to rotate · Interactive
-                    </span>
-                  </div>
-                </div>
+                      <d.icon className="w-3.5 h-3.5" />
+                      {d.subtitle}
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-3">
+                      {d.title}
+                    </h2>
+                    <p className="text-gray-400 leading-relaxed mb-5">
+                      {d.desc}
+                    </p>
 
-                {/* Info panel */}
-                <div>
-                  <div
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 border"
-                    style={{
-                      background: diagram.color + "18",
-                      borderColor: diagram.color + "44",
-                      color: diagram.color,
-                    }}
-                  >
-                    <diagram.icon className="w-3.5 h-3.5" />
-                    {diagram.subtitle}
-                  </div>
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    {diagram.title}
-                  </h2>
-                  <p className="text-gray-400 leading-relaxed mb-5">
-                    {diagram.desc}
-                  </p>
-
-                  {/* Stats row */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-                    {diagram.stats.map(s => (
-                      <div
-                        key={s.label}
-                        className="rounded-xl p-3 text-center border border-white/5"
-                        style={{ background: diagram.color + "0d" }}
-                      >
+                    {/* Stats row */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                      {d.stats.map(s => (
                         <div
-                          className="font-bold text-lg"
-                          style={{ color: diagram.color }}
+                          key={s.label}
+                          className="rounded-xl p-3 text-center border border-white/5"
+                          style={{ background: d.color + "0d" }}
                         >
-                          {s.value}
-                        </div>
-                        <div className="text-[11px] text-white/40 mt-0.5">
-                          {s.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Layer list */}
-                  <div className="space-y-1.5 mb-5 max-h-52 overflow-y-auto pr-1">
-                    {[...diagram.layers].reverse().map(layer => (
-                      <div
-                        key={layer.label}
-                        className="flex items-start gap-3 p-2.5 rounded-xl bg-white/4 border border-white/6 hover:border-white/12 transition-colors"
-                      >
-                        <div
-                          className="w-2.5 h-2.5 rounded-sm mt-1 flex-shrink-0"
-                          style={{ background: layer.color }}
-                        />
-                        <div>
-                          <div className="text-white text-xs font-semibold">
-                            {layer.label}
+                          <div
+                            className="font-bold text-lg"
+                            style={{ color: d.color }}
+                          >
+                            {s.value}
                           </div>
-                          {layer.sublabels && (
-                            <div className="text-white/35 text-[10px] mt-0.5">
-                              {layer.sublabels.join(" · ")}
-                            </div>
-                          )}
+                          <div className="text-[11px] text-white/40 mt-0.5">
+                            {s.label}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
 
-                  {/* Learn more link */}
-                  <Link
-                    href={diagram.learnMore}
-                    className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:underline"
-                    style={{ color: diagram.color }}
-                  >
-                    Learn more about{" "}
-                    {diagram.title.split(" ").slice(0, 3).join(" ")}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
+                    {/* Layer list */}
+                    <div className="space-y-1.5 mb-5 max-h-52 overflow-y-auto pr-1">
+                      {[...d.layers].reverse().map(layer => (
+                        <div
+                          key={layer.label}
+                          className="flex items-start gap-3 p-2.5 rounded-xl bg-white/4 border border-white/6 hover:border-white/12 transition-colors"
+                        >
+                          <div
+                            className="w-2.5 h-2.5 rounded-sm mt-1 flex-shrink-0"
+                            style={{ background: layer.color }}
+                          />
+                          <div>
+                            <div className="text-white text-xs font-semibold">
+                              {layer.label}
+                            </div>
+                            {layer.sublabels && (
+                              <div className="text-white/35 text-[10px] mt-0.5">
+                                {layer.sublabels.join(" · ")}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
 
-              {/* Bottom: illustration + "Why This Matters" */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
-                <div className="rounded-2xl overflow-hidden border border-white/8 bg-white/3">
-                  <img
-                    src={diagram.image}
-                    alt={`${diagram.title} illustration`}
-                    className="w-full h-56 object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div
-                  className="rounded-2xl p-6 border"
-                  style={{
-                    background: diagram.color + "0a",
-                    borderColor: diagram.color + "30",
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle
-                      className="w-5 h-5"
-                      style={{ color: diagram.color }}
-                    />
-                    <span className="font-bold text-white text-base">
-                      Why This Matters
-                    </span>
-                  </div>
-                  <p className="text-white/70 leading-relaxed text-sm">
-                    {diagram.whyMatters}
-                  </p>
-                  <div className="mt-4 pt-4 border-t border-white/8">
+                    {/* Learn more link */}
                     <Link
-                      href="/donate"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-pink-400 hover:text-pink-300 transition-colors"
+                      href={d.learnMore}
+                      className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:underline"
+                      style={{ color: d.color }}
                     >
-                      <Heart className="w-4 h-4" />
-                      Support this research
+                      Learn more about{" "}
+                      {d.title.split(" ").slice(0, 3).join(" ")}
+                      <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>
+
+                {/* Bottom: illustration + "Why This Matters" */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
+                  <div className="rounded-2xl overflow-hidden border border-white/8 bg-white/3">
+                    <img
+                      src={d.image}
+                      alt={`${d.title} illustration`}
+                      className="w-full h-56 object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div
+                    className="rounded-2xl p-6 border"
+                    style={{
+                      background: d.color + "0a",
+                      borderColor: d.color + "30",
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <CheckCircle
+                        className="w-5 h-5"
+                        style={{ color: d.color }}
+                      />
+                      <span className="font-bold text-white text-base">
+                        Why This Matters
+                      </span>
+                    </div>
+                    <p className="text-white/70 leading-relaxed text-sm">
+                      {d.whyMatters}
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-white/8">
+                      <Link
+                        href="/donate"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-pink-400 hover:text-pink-300 transition-colors"
+                      >
+                        <Heart className="w-4 h-4" />
+                        Support this research
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
+            );
+          })}
         </div>
       </section>
 
