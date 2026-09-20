@@ -127,3 +127,28 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # The PHP endpoint unit tests (tests/php/*.test.php) are plain `php`
+  # invocations with no phpunit dependency: each file requires its endpoint,
+  # which returns early under the CLI SAPI, and asserts on the pure functions.
+  # They need no build, database, or browser, and they run in milliseconds —
+  # but until now no workflow executed them at all, so this job runs them on
+  # their own, independent of the long browser-bound suite above.
+  php-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # shivammathur/setup-php is the standard action for installing PHP on
+      # GitHub runners. The endpoints deliberately avoid mbstring (PCRE /u
+      # instead), so the default extension set is sufficient.
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: none
+
+      # Mirrors `pnpm test:php` verbatim without requiring a pnpm install.
+      - name: PHP endpoint tests
+        run: php tests/php/apply.test.php && php tests/php/contact.test.php
