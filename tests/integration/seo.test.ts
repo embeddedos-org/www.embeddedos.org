@@ -138,13 +138,58 @@ describe("links and sitemap", () => {
   });
 
   /**
-   * /product-eapps, /product-eos-platform and /product-eserviceapps have no
-   * inbound internal link. That is fixed on its own branch by the products-hub
-   * change; this bound stops the set growing in the meantime.
+   * The three product-detail orphans this bound used to allow are linked now,
+   * so the allowance is gone. Any orphan, product page or not, fails here.
    */
-  it("introduces no orphan page beyond the known product-detail set", () => {
-    const orphans = of("orphan-page").map(f => f.route);
-    expect(orphans.filter(r => !r.startsWith("/product-"))).toEqual([]);
-    expect(orphans.length).toBeLessThanOrEqual(3);
+  it("introduces no orphan page at all", () => {
+    expect(of("orphan-page").map(f => f.route)).toEqual([]);
+  });
+});
+
+/**
+ * Checks the audit emits but nothing asserted. A mutation run proved the gap:
+ * stripping every JSON-LD block from all 132 pages, adding a "Learn more"
+ * anchor, and adding a dimensionless image each left the suite green, because
+ * CI runs `pnpm seo:audit` without --strict and treats it as reporting.
+ */
+describe("checks the audit reports but nothing used to gate", () => {
+  it("leaves no weak anchor text anywhere", () => {
+    expect(of("weak-anchor").map(f => `${f.route} ${f.detail}`)).toEqual([]);
+  });
+
+  it("adds no image that can shift layout beyond the known homepage three", () => {
+    const routes = of("img-no-dimensions").map(f => f.route);
+    expect(routes.filter(r => r !== "/")).toEqual([]);
+  });
+
+  it("emits valid, present structured data on every page", () => {
+    const missing: string[] = [];
+    const walk = (dir: string) => {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, e.name);
+        if (e.isDirectory()) {
+          walk(full);
+          continue;
+        }
+        if (e.name !== "index.html") continue;
+        const html = fs.readFileSync(full, "utf8");
+        const types = [
+          ...html.matchAll(
+            /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
+          ),
+        ].flatMap(m => {
+          const parsed = JSON.parse(m[1]);
+          return (Array.isArray(parsed) ? parsed : [parsed]).map(
+            n => n["@type"]
+          );
+        });
+        const route =
+          "/" + path.relative(DIST, full).replace(/\/?index\.html$/, "");
+        if (!types.includes("WebSite") || !types.includes("NGO"))
+          missing.push(`${route}: ${types.join(",") || "(none)"}`);
+      }
+    };
+    walk(DIST);
+    expect(missing).toEqual([]);
   });
 });

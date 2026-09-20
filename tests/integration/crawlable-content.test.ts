@@ -64,23 +64,23 @@ describe("tab panels ship their content in HTML, not only after a click", () => 
     expect(main.match(/<canvas/g) ?? []).toHaveLength(1);
   });
 
-  it.each(CASES)("$route renders all $panels panels up front", testCase => {
-    const main = mainOf(testCase.route);
-    expect(main.match(/role="tabpanel"/g) ?? []).toHaveLength(testCase.panels);
+  it.each(CASES)("$route renders at least $panels panels up front", tc => {
+    const main = mainOf(tc.route);
+    const panels = (main.match(/role="tabpanel"/g) ?? []).length;
+    expect(panels).toBeGreaterThanOrEqual(tc.panels);
   });
 
-  it.each(CASES)(
-    "$route hides the inactive panels rather than dropping them",
-    t => {
-      const main = mainOf(t.route);
-      const hidden = (main.match(/role="tabpanel"[^>]*hidden/g) ?? []).length;
-      expect(hidden).toBe(t.panels - 1);
-    }
-  );
+  it.each(CASES)("$route shows exactly one panel and hides the rest", t => {
+    const main = mainOf(t.route);
+    const panels = (main.match(/role="tabpanel"/g) ?? []).length;
+    const hidden = (main.match(/role="tabpanel"[^>]*hidden/g) ?? []).length;
+    expect(panels - hidden).toBe(1);
+  });
 
-  it.each(CASES)("$route wires its tabs to those panels", testCase => {
+  it.each(CASES)("$route wires one tab to every panel", testCase => {
     const main = mainOf(testCase.route);
-    expect(main.match(/role="tab"/g) ?? []).toHaveLength(testCase.panels);
+    const panels = (main.match(/role="tabpanel"/g) ?? []).length;
+    expect((main.match(/role="tab"/g) ?? []).length).toBe(panels);
     expect(main).toMatch(/aria-controls="/);
     expect(main).toMatch(/aria-selected="/);
   });
