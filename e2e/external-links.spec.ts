@@ -8,10 +8,14 @@
  * How it works: the prerendered dist/public tree is scanned for every unique
  * external <a href> (anything http(s) that is not www.embeddedos.org itself),
  * and each URL is fetched — no browser needed. Redirects are followed;
- * anything that does not come back 2xx/3xx, or that fails to connect at all,
- * fails the run. A 429 or a dropped connection is retried with backoff (5s,
- * then 30s), because public hosts throttle CI runners and proxies blip —
- * neither is evidence of a dead link on its own.
+ * anything that comes back 400/403 on a non-allowlisted URL, 404, 410, or
+ * 5xx, or that fails to connect at all, fails the run. A 429 or a dropped
+ * connection is retried with backoff (5s, then 30s), because public hosts
+ * throttle CI runners and proxies blip — neither is evidence of a dead link
+ * on its own. A 429 that survives all retries is reported as a warning, not
+ * a failure: the host is up and answering, just refusing this particular
+ * traffic, and hard-failing on a throttled CI runner would red the build
+ * for no real reason.
  *
  * Bot-blocked allowlist: a few legitimate destinations refuse unauthenticated
  * bot traffic while working fine for human visitors. Those exact URLs are
@@ -61,6 +65,15 @@ const ALLOWLIST: { url: string; reason: string }[] = [
     reason:
       "InterServer serves HTTP 403 to unauthenticated bot traffic. The " +
       "homepage loads normally for human visitors, verified 2026-09-19.",
+  },
+  {
+    url: "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
+    reason:
+      "LinkedIn serves HTTP 403 to unauthenticated bot traffic, " +
+      "intermittently. This is the Foundation's active company page (slug " +
+      "'embedded-operating-systems-research-foundation', recent posts from " +
+      "'Embedded Operating Systems Research Foundation'), verified live " +
+      "2026-09-19.",
   },
 ];
 
@@ -112,6 +125,11 @@ async function checkOutbound() {
   expect(checked.length).toBeGreaterThan(50);
 
   const failures: string[] = [];
+  // A 429 that survives every retry is throttling, not a dead link, so it
+  // goes here instead of into failures: the host is up and answering, just
+  // refusing this traffic. The list is printed in the report below so a
+  // human can decide whether the destination deserves an allowlist entry.
+  const warnings: string[] = [];
 
   // Bounded parallelism: ~95 URLs, most answer in ~1s. Six at a time keeps
   // the sweep to a couple of minutes without hammering any single host.
@@ -123,8 +141,10 @@ async function checkOutbound() {
       let status: number | string = "connection failed";
       // Up to three attempts: public hosts throttle CI runners with 429s and
       // proxies drop connections, and neither is evidence of a dead link.
-      // Backoff grows (5s, 30s) so a short throttle clears; a genuinely dead
-      // destination fails every attempt the same way.
+      // Backoff grows (5s, 30s) so a short throttle clears; a 429 that
+      // survives all attempts becomes a warning rather than a failure (see
+      // the verdict below); a genuinely dead destination fails every attempt
+      // the same way.
       const waits = [5_000, 30_000];
       for (let attempt = 0; attempt <= waits.length; attempt++) {
         try {
@@ -159,12 +179,24 @@ async function checkOutbound() {
           break;
         }
       }
-      if (typeof status === "number" ? status >= 400 : true) {
+      if (typeof status === "number" && status === 429) {
+        warnings.push(`${url} -> 429 (throttled through all retries)`);
+      } else if (typeof status === "number" ? status >= 400 : true) {
         failures.push(`${url} -> ${status}`);
       }
     }
   }
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+
+  if (warnings.length > 0) {
+    // Playwright attaches stdout to the report; the heading keeps warnings
+    // visually distinct from the failing assertion below.
+    // eslint-disable-next-line no-console
+    console.log(
+      "link-integrity warnings (not failures):\n" +
+        warnings.map(w => `  - ${w}`).join("\n"),
+    );
+  }
 
   expect(failures, "dead outbound links").toEqual([]);
 }
