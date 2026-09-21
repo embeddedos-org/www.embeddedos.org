@@ -21,6 +21,7 @@ import {
   Radio,
   GitBranch,
   Network,
+  DraftingCompass,
 } from "lucide-react";
 import { Link } from "wouter";
 import type { DiagramMode } from "../components/ArchitectureDiagram3D";
@@ -30,9 +31,7 @@ import { ARCHITECTURE_STAGES } from "@/data/architecture";
 const ArchitectureDiagram3D = lazy(
   () => import("../components/ArchitectureDiagram3D")
 );
-const ArchitectureSystemMap3D = lazy(
-  () => import("../components/ArchitectureSystemMap3D")
-);
+const CadWalkthrough3D = lazy(() => import("../components/CadWalkthrough3D"));
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -370,8 +369,8 @@ interface DiagramDef {
   icon: LucideIcon;
   color: string;
   mode: DiagramMode;
-  /** Renders the dedicated system-map component instead of the generic one. */
-  systemMap?: boolean;
+  /** Renders the dedicated CAD walkthrough instead of the generic component. */
+  cadWalkthrough?: boolean;
   title: string;
   subtitle: string;
   desc: string;
@@ -384,22 +383,23 @@ interface DiagramDef {
 }
 
 const DIAGRAMS: DiagramDef[] = [
-  // ── System map — the default tab ──────────────────────────────────────────
-  // The seven-stage reference architecture as one connected, explorable map.
-  // Rendered by ArchitectureSystemMap3D (not the generic component below).
+  // ── CAD walkthrough — the default tab ─────────────────────────────────────
+  // From a bare CAD drawing to a complete product: each of the seven
+  // architecture stages bolts tangible parts onto one sensor board.
+  // Rendered by CadWalkthrough3D (not the generic component below).
   {
-    id: "system-map",
-    icon: Network,
+    id: "cad-walkthrough",
+    icon: DraftingCompass,
     color: "#38BDF8",
-    // Unused when systemMap is set; only satisfies the DiagramDef type.
+    // Unused when cadWalkthrough is set; only satisfies the DiagramDef type.
     mode: "matrix",
-    systemMap: true,
-    title: "EmbeddedOS System Map",
-    subtitle: "Hardware → Boot → EoS → Data → AI → Action",
-    desc: "The seven-stage reference architecture as one interactive system map: open hardware designs feed verified boot, the EoS real-time kernel, IPC and storage services, applications, on-device AI, and back out to physical action. Every link is drawn from the components' own documentation, and maturity badges distinguish available projects from research and plans.",
+    cadWalkthrough: true,
+    title: "CAD to Product Walkthrough",
+    subtitle: "CAD drawing → complete product",
+    desc: "One sensor board, built stage by stage: a bare CAD drawing gains sensor modules, secure-boot parts, the EoS SoC, IPC and storage, a display and app layer, an on-device AI accelerator, and finally actuator drivers — until it is a complete, powered product. Every step names the real architecture stage behind it, with maturity badges distinguishing available projects from research and plans.",
     image: "/media/architecture-diagram-hero_72436b3f.jpg",
     whyMatters:
-      "Newcomers can see in one glance how the pieces fit — and, just as importantly, what is already built versus what is still research. That honesty is what makes the platform worth evaluating.",
+      "Newcomers can watch the platform become a product — and, just as importantly, see what is already built versus what is still research. That honesty is what makes the platform worth evaluating.",
     stats: [
       { label: "Architecture Stages", value: "7" },
       { label: "Supported Boards", value: String(BOARD_COUNT) },
@@ -603,7 +603,7 @@ const DONOR_REASONS = [
 ];
 
 export default function Architecture() {
-  const [active, setActive] = useState("system-map");
+  const [active, setActive] = useState("cad-walkthrough");
   const diagram = DIAGRAMS.find(d => d.id === active) ?? DIAGRAMS[0];
 
   return (
@@ -635,8 +635,8 @@ export default function Architecture() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
               Eight distinct interactive 3D diagrams — each using a different
               visual model to best represent its product's architecture. From a
-              connected system map of all seven stages to layered OS stacks,
-              radial sensor fusion hubs, and dependency trees.
+              CAD drawing that builds into a complete product, to layered OS
+              stacks, radial sensor fusion hubs, and dependency trees.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a
@@ -707,15 +707,15 @@ export default function Architecture() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
                 {/* 3D Canvas */}
                 <div>
-                  {diagram.systemMap ? (
+                  {diagram.cadWalkthrough ? (
                     <Suspense
                       fallback={
                         <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
-                          Loading system map…
+                          Loading CAD walkthrough…
                         </div>
                       }
                     >
-                      <ArchitectureSystemMap3D height={400} />
+                      <CadWalkthrough3D height={400} />
                     </Suspense>
                   ) : (
                     <Suspense
@@ -746,13 +746,13 @@ export default function Architecture() {
                         background: diagram.color + "12",
                       }}
                     >
-                      {diagram.systemMap
-                        ? "System Map"
+                      {diagram.cadWalkthrough
+                        ? "CAD Walkthrough"
                         : MODE_LABELS[diagram.mode]}
                     </span>
                     <span className="text-xs text-white/20">
-                      {diagram.systemMap
-                        ? "· Drag to orbit · Click a node · Keyboard: stage list below"
+                      {diagram.cadWalkthrough
+                        ? "· Drag to orbit · Step through the build · Keyboard: stepper below"
                         : "· Drag to rotate · Interactive"}
                     </span>
                   </div>
@@ -957,7 +957,9 @@ export default function Architecture() {
                         background: d.color + "15",
                       }}
                     >
-                      {d.systemMap ? "System Map" : MODE_LABELS[d.mode]}
+                      {d.cadWalkthrough
+                        ? "CAD Walkthrough"
+                        : MODE_LABELS[d.mode]}
                     </span>
                   </div>
                   {/* Layer chips */}
