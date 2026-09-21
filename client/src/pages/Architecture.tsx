@@ -20,13 +20,18 @@ import {
   ArrowRight,
   Radio,
   GitBranch,
+  Network,
 } from "lucide-react";
 import { Link } from "wouter";
 import type { DiagramMode } from "../components/ArchitectureDiagram3D";
 import { BOARD_COUNT } from "@/data/stack";
+import { ARCHITECTURE_STAGES } from "@/data/architecture";
 
 const ArchitectureDiagram3D = lazy(
   () => import("../components/ArchitectureDiagram3D")
+);
+const ArchitectureSystemMap3D = lazy(
+  () => import("../components/ArchitectureSystemMap3D")
 );
 
 const fadeUp = {
@@ -365,6 +370,8 @@ interface DiagramDef {
   icon: LucideIcon;
   color: string;
   mode: DiagramMode;
+  /** Renders the dedicated system-map component instead of the generic one. */
+  systemMap?: boolean;
   title: string;
   subtitle: string;
   desc: string;
@@ -377,6 +384,38 @@ interface DiagramDef {
 }
 
 const DIAGRAMS: DiagramDef[] = [
+  // ── System map — the default tab ──────────────────────────────────────────
+  // The seven-stage reference architecture as one connected, explorable map.
+  // Rendered by ArchitectureSystemMap3D (not the generic component below).
+  {
+    id: "system-map",
+    icon: Network,
+    color: "#38BDF8",
+    // Unused when systemMap is set; only satisfies the DiagramDef type.
+    mode: "matrix",
+    systemMap: true,
+    title: "EmbeddedOS System Map",
+    subtitle: "Hardware → Boot → EoS → Data → AI → Action",
+    desc: "The seven-stage reference architecture as one interactive system map: open hardware designs feed verified boot, the EoS real-time kernel, IPC and storage services, applications, on-device AI, and back out to physical action. Every link is drawn from the components' own documentation, and maturity badges distinguish available projects from research and plans.",
+    image: "/media/architecture-diagram-hero_72436b3f.jpg",
+    whyMatters:
+      "Newcomers can see in one glance how the pieces fit — and, just as importantly, what is already built versus what is still research. That honesty is what makes the platform worth evaluating.",
+    stats: [
+      { label: "Architecture Stages", value: "7" },
+      { label: "Supported Boards", value: String(BOARD_COUNT) },
+      { label: "Maturity Levels", value: "5" },
+      { label: "Shipped Profile", value: "1" },
+    ],
+    layers: ARCHITECTURE_STAGES.map(s => ({
+      label: s.label,
+      sublabels: [...s.products],
+      color: s.color,
+      y: 0,
+      width: 3.6,
+    })),
+    learnMore: "/what-we-do",
+    bgGradient: "from-sky-500/10 via-transparent to-cyan-500/5",
+  },
   {
     id: "full-stack",
     icon: Layers,
@@ -564,7 +603,7 @@ const DONOR_REASONS = [
 ];
 
 export default function Architecture() {
-  const [active, setActive] = useState("full-stack");
+  const [active, setActive] = useState("system-map");
   const diagram = DIAGRAMS.find(d => d.id === active) ?? DIAGRAMS[0];
 
   return (
@@ -594,10 +633,10 @@ export default function Architecture() {
               Inside EmbeddedOS
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Seven distinct interactive 3D diagrams — each using a different
-              visual model to best represent its product's architecture. From
-              layered OS stacks to radial sensor fusion hubs and dependency
-              trees.
+              Eight distinct interactive 3D diagrams — each using a different
+              visual model to best represent its product's architecture. From a
+              connected system map of all seven stages to layered OS stacks,
+              radial sensor fusion hubs, and dependency trees.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a
@@ -668,20 +707,32 @@ export default function Architecture() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
                 {/* 3D Canvas */}
                 <div>
-                  <Suspense
-                    fallback={
-                      <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
-                        Loading 3D diagram…
-                      </div>
-                    }
-                  >
-                    <ArchitectureDiagram3D
-                      layers={diagram.layers}
-                      mode={diagram.mode}
-                      height={400}
-                      accentColor={diagram.color}
-                    />
-                  </Suspense>
+                  {diagram.systemMap ? (
+                    <Suspense
+                      fallback={
+                        <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
+                          Loading system map…
+                        </div>
+                      }
+                    >
+                      <ArchitectureSystemMap3D height={400} />
+                    </Suspense>
+                  ) : (
+                    <Suspense
+                      fallback={
+                        <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
+                          Loading 3D diagram…
+                        </div>
+                      }
+                    >
+                      <ArchitectureDiagram3D
+                        layers={diagram.layers}
+                        mode={diagram.mode}
+                        height={400}
+                        accentColor={diagram.color}
+                      />
+                    </Suspense>
+                  )}
                   {/* Mode label */}
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-xs text-white/30">
@@ -695,10 +746,14 @@ export default function Architecture() {
                         background: diagram.color + "12",
                       }}
                     >
-                      {MODE_LABELS[diagram.mode]}
+                      {diagram.systemMap
+                        ? "System Map"
+                        : MODE_LABELS[diagram.mode]}
                     </span>
                     <span className="text-xs text-white/20">
-                      · Drag to rotate · Interactive
+                      {diagram.systemMap
+                        ? "· Drag to orbit · Click a node · Keyboard: stage list below"
+                        : "· Drag to rotate · Interactive"}
                     </span>
                   </div>
                 </div>
@@ -902,7 +957,7 @@ export default function Architecture() {
                         background: d.color + "15",
                       }}
                     >
-                      {MODE_LABELS[d.mode]}
+                      {d.systemMap ? "System Map" : MODE_LABELS[d.mode]}
                     </span>
                   </div>
                   {/* Layer chips */}
@@ -940,7 +995,7 @@ export default function Architecture() {
             className="text-center mb-10"
           >
             <h2 className="text-2xl font-bold text-white mb-3">
-              5 Visualization Modes
+              6 Visualization Modes
             </h2>
             <p className="text-white/40 text-sm max-w-xl mx-auto">
               Each diagram type is chosen to match the product's actual
@@ -989,11 +1044,18 @@ export default function Architecture() {
                 desc: "3D grid of glowing nodes. Best for showing the full ecosystem of products at once.",
                 used: "Full Stack",
               },
+              {
+                color: "#38BDF8",
+                icon: Network,
+                title: "System Map",
+                desc: "Seven architecture stages as one connected 3D map with maturity badges and documented links. Best for seeing how the whole platform fits together.",
+                used: "Reference architecture",
+              },
             ].map((m, i) => {
               const Icon = m.icon;
               return (
                 <motion.div
-                  key={m.mode}
+                  key={m.title}
                   variants={fadeUp}
                   initial="hidden"
                   whileInView="visible"
