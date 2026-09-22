@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
+import { moveTabFocus } from "@/lib/tablist";
 import {
   Layers,
   ArrowRight,
@@ -629,6 +630,7 @@ export default function EFlow() {
             className="flex flex-wrap gap-2 mb-6"
             role="tablist"
             aria-label="Block categories"
+            onKeyDown={moveTabFocus}
           >
             {BLOCK_TYPES.map((cat, i) => (
               <button

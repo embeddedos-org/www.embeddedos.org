@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
+import { moveTabFocus } from "@/lib/tablist";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import {
   Terminal,
@@ -681,6 +682,7 @@ export default function GettingStarted() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
             role="tablist"
             aria-label="Getting started paths"
+            onKeyDown={moveTabFocus}
           >
             {PATHS.map(p => {
               const PIcon = p.icon;

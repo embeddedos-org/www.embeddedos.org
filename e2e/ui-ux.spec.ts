@@ -242,6 +242,55 @@ test.describe("keyboard operability", () => {
    * lost its focus ring with the test still green. A keyboard user meets all of
    * them.
    */
+  for (const [route, label] of [
+    ["/architecture", "Architecture diagrams"],
+  ] as const) {
+    test(`arrow keys move through the ${label} tabs and switch the panel`, async ({
+      page,
+    }) => {
+      await page.goto(route);
+      const tablist = page
+        .getByRole("tablist", { name: label })
+        .locator("visible=true");
+      const tabs = tablist.getByRole("tab");
+      const count = await tabs.count();
+      expect(count).toBeGreaterThan(2);
+      const vertical =
+        (await tablist.getAttribute("aria-orientation")) === "vertical";
+      const next = vertical ? "ArrowDown" : "ArrowRight";
+      const previous = vertical ? "ArrowUp" : "ArrowLeft";
+
+      await tabs.first().focus();
+      await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
+      const target = (await tabs.first().getAttribute("aria-controls")) ?? "";
+
+      await page.keyboard.press(next);
+      await expect(tabs.nth(1)).toBeFocused();
+      await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+      await expect(tabs.first()).toHaveAttribute("aria-selected", "false");
+      await expect(page.locator(`#${target}`)).toBeHidden();
+      const second = (await tabs.nth(1).getAttribute("aria-controls")) ?? "";
+      await expect(page.locator(`#${second}`)).toBeVisible();
+
+      await page.keyboard.press("End");
+      await expect(tabs.nth(count - 1)).toBeFocused();
+      await expect(tabs.nth(count - 1)).toHaveAttribute(
+        "aria-selected",
+        "true"
+      );
+
+      await page.keyboard.press(next);
+      await expect(tabs.first()).toBeFocused();
+
+      await page.keyboard.press(previous);
+      await expect(tabs.nth(count - 1)).toBeFocused();
+
+      await page.keyboard.press("Home");
+      await expect(tabs.first()).toBeFocused();
+      await expect(page.locator(`#${target}`)).toBeVisible();
+    });
+  }
+
   test("focused elements are visibly indicated", async ({ page }) => {
     await page.goto("/");
     // Under parallel load the first Tab can land before the document takes

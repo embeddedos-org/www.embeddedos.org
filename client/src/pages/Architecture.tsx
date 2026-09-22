@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import type { DiagramMode } from "../components/ArchitectureDiagram3D";
+import { moveTabFocus } from "@/lib/tablist";
 import { BOARD_COUNT } from "@/data/stack";
 import { ARCHITECTURE_STAGES } from "@/data/architecture";
 
@@ -672,6 +673,7 @@ export default function Architecture() {
             className="flex flex-wrap gap-2 justify-center mb-10"
             role="tablist"
             aria-label="Architecture diagrams"
+            onKeyDown={moveTabFocus}
           >
             {DIAGRAMS.map(d => {
               const Icon = d.icon;
