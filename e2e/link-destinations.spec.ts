@@ -112,8 +112,31 @@ for (const [route, hrefs] of ROUTES) {
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(120);
 
-      const link = page.locator(`main a[href="${href}"]`).first();
-      if ((await link.count()) === 0) continue;
+      const matches = page.locator(`main a[href="${href}"]`);
+      if ((await matches.count()) === 0) continue;
+      const { index, panel } = await matches.evaluateAll(links => {
+        const shown = links.findIndex(
+          el => !el.closest('[role="tabpanel"][hidden]')
+        );
+        if (shown >= 0) return { index: shown, panel: "" };
+        return {
+          index: 0,
+          panel: links[0].closest('[role="tabpanel"][hidden]')?.id ?? "",
+        };
+      });
+      if (panel) {
+        await page
+          .locator(`[role="tab"][aria-controls="${panel}"]`)
+          .locator("visible=true")
+          .first()
+          .click();
+        await page.waitForTimeout(120);
+        await page.evaluate(() =>
+          window.scrollTo(0, document.body.scrollHeight)
+        );
+        await page.waitForTimeout(120);
+      }
+      const link = matches.nth(index);
 
       // Centre the link rather than using scrollIntoViewIfNeeded, which parks
       // it flush against the top of the viewport — underneath the 64px fixed
@@ -139,8 +162,8 @@ for (const [route, hrefs] of ROUTES) {
       // for the real condition, and a link that is genuinely covered still
       // fails loudly on the click below.
       await page.waitForFunction(
-        selector => {
-          const el = document.querySelector(selector);
+        ([selector, nth]) => {
+          const el = document.querySelectorAll(selector)[nth];
           if (!el) return false;
           const r = el.getBoundingClientRect();
           const hit = document.elementFromPoint(
@@ -149,7 +172,7 @@ for (const [route, hrefs] of ROUTES) {
           );
           return !!hit && (hit === el || el.contains(hit));
         },
-        `main a[href="${href}"]`,
+        [`main a[href="${href}"]`, index] as const,
         { timeout: 15_000 }
       );
 
