@@ -50,8 +50,6 @@ import {
   Radio,
 } from "lucide-react";
 
-gsap.registerPlugin();
-
 const loadCircuitHero = () => import("../components/CircuitHero");
 const CadEvolutionHero = React.lazy(
   () => import("../components/CadEvolutionHero")
