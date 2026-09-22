@@ -52,6 +52,8 @@ const BOUNDED_COMPARISON = [
   /shared memory is fastest for same-chip/i,
   /fastest transport for same-core or same-chip/i,
   /badge: "Fastest"/,
+  /the fastest route to us is the press inbox/i,
+  /the fastest reliable record of what the Foundation has actually done/i,
 ];
 
 const sources = globSync("client/src/**/*.{ts,tsx}", { cwd: root })

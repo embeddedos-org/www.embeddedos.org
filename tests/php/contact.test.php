@@ -150,6 +150,59 @@ equals(
     subject_line($clean)
 );
 
+/**
+ * Reverse encode_subject()'s RFC 2047 B-words: drop the CRLF folding, then
+ * replace each =?UTF-8?B?...?= word with its decoded bytes. Works whether
+ * the words came from mb_encode_mimeheader() or the manual fallback.
+ */
+function decode_subject_words(string $encoded): string
+{
+    $unfolded = str_replace(["\r\n ", "\r\n\t"], '', $encoded);
+    return (string) preg_replace_callback(
+        '/=\?UTF-8\?B\?([A-Za-z0-9+\/=]+)\?=/i',
+        static fn(array $m): string => (string) base64_decode($m[1], true),
+        $unfolded
+    );
+}
+
+// ── encode_subject: RFC 2047 for non-ASCII subjects ──────────────────────────
+
+// A pure-ASCII subject must go out byte-identical: encoding it would be
+// harmless, but there is no reason to rewrite headers that already work.
+equals(
+    'an ASCII subject is left byte-identical',
+    '[Contact] Technical Support',
+    encode_subject('[Contact] Technical Support')
+);
+equals('an empty subject is left alone', '', encode_subject(''));
+$longAscii = '[Contact] ' . str_repeat('a', 200);
+equals('a long ASCII subject is neither encoded nor folded', $longAscii, encode_subject($longAscii));
+
+// The acknowledgement subject carries an em dash, so it used to go out as
+// raw UTF-8 in the Subject header.
+$ack = 'We received your message — EmbeddedOS Research Foundation';
+$enc = encode_subject($ack);
+check('a non-ASCII subject becomes RFC 2047 encoded-words', preg_match('/=\?UTF-8\?B\?/i', $enc) === 1);
+check('no raw high bytes remain in the encoded subject', preg_match('/[\x80-\xFF]/', $enc) !== 1);
+equals('the encoded acknowledgement decodes back to the original', $ack, decode_subject_words($enc));
+
+// A submitter's non-ASCII subject reaches the staff copy, and a long one must
+// fold into words of at most 75 characters each.
+$long = '[Contact] ' . str_repeat('ß', 80) . ' — kernel';
+$encLong = encode_subject($long);
+$words = [];
+preg_match_all(
+    '/=\?UTF-8\?B\?[A-Za-z0-9+\/=]+\?=/i',
+    str_replace(["\r\n ", "\r\n\t"], '', $encLong),
+    $words
+);
+check('a long non-ASCII subject folds into several encoded-words', count($words[0]) > 1);
+check(
+    'no encoded-word exceeds 75 characters',
+    array_filter($words[0], static fn(string $w): bool => strlen($w) > 75) === []
+);
+equals('the long subject still decodes back to the original', $long, decode_subject_words($encLong));
+
 // ── Escaping reaches the rendered bodies ─────────────────────────────────────
 
 [$clean] = validate_contact(valid_payload([

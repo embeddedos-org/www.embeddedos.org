@@ -4,48 +4,48 @@
   "htmlDocuments": 134,
   "routes": 133,
   "sitemapUrls": 131,
-  "assets": 157
+  "assets": 173
  },
  "bytes": {
-  "criticalPathBrotliKB": 258.4,
+  "criticalPathBrotliKB": 222.2,
   "criticalPathBudgetKB": 260,
-  "homepageHtmlBrotliKB": 18,
-  "entryJsBrotliKB": 149.3,
-  "vendorJsBrotliKB": 66.5,
-  "cssBrotliKB": 24.6,
-  "totalJsBrotliKB": 771.1,
+  "homepageHtmlBrotliKB": 19,
+  "entryJsBrotliKB": 89.1,
+  "vendorJsBrotliKB": 89.4,
+  "cssBrotliKB": 24.7,
+  "totalJsBrotliKB": 794.1,
   "largestPages": [
    {
     "route": "/getting-started",
-    "brotliKB": 19.3
-   },
-   {
-    "route": "/",
-    "brotliKB": 18
+    "brotliKB": 20.1
    },
    {
     "route": "/architecture",
-    "brotliKB": 17.2
+    "brotliKB": 19.6
+   },
+   {
+    "route": "/",
+    "brotliKB": 19
    },
    {
     "route": "/careers",
-    "brotliKB": 15.6
+    "brotliKB": 16.5
    },
    {
     "route": "/industries",
-    "brotliKB": 15.6
+    "brotliKB": 16.4
    },
    {
     "route": "/ecad-hardware",
-    "brotliKB": 15.4
+    "brotliKB": 16.2
    },
    {
     "route": "/quantum",
-    "brotliKB": 15.3
+    "brotliKB": 16.1
    },
    {
     "route": "/what-we-do",
-    "brotliKB": 14.8
+    "brotliKB": 15.7
    }
   ]
  },
@@ -61,8 +61,8 @@
   "duplicateDescriptionGroups": 0,
   "descriptionLengths": {
    "min": 71,
-   "median": 124,
-   "max": 159,
+   "median": 144,
+   "max": 155,
    "over160": 0
   },
   "titleLengths": {
@@ -79,7 +79,7 @@
   "withOgUrl": 133,
   "withTwitterCard": 133,
   "withTwitterImage": 133,
-  "distinctOgImages": 14
+  "distinctOgImages": 16
  },
  "structuredData": {
   "coverageByType": {
@@ -91,12 +91,12 @@
   "pagesWithAnySchema": 133
  },
  "images": {
-  "total": 304,
+  "total": 307,
   "missingAlt": 0,
-  "decorativeEmptyAlt": 16,
-  "missingDimensions": 40,
-  "lazy": 172,
-  "pagesWithImagesMissingDims": 18
+  "decorativeEmptyAlt": 18,
+  "missingDimensions": 38,
+  "lazy": 174,
+  "pagesWithImagesMissingDims": 17
  },
  "accessibility": {
   "pagesWithMain": 132,
@@ -106,8 +106,8 @@
   "pagesWithHeadingSkip": 0
  },
  "linkGraph": {
-  "totalInternalLinks": 13247,
-  "totalExternalLinks": 2658,
+  "totalInternalLinks": 13252,
+  "totalExternalLinks": 2257,
   "genericAnchors": 0,
   "orphans": [],
   "chromeOnly": [
@@ -153,14 +153,14 @@
   "robotsTxtHasSitemap": true,
   "robotsTxtDisallowAll": false,
   "pagesWithNoindex": 0,
-  "sitemapHasLastmod": true,
+  "sitemapHasLastmod": false,
   "has404Page": true,
   "manifestPresent": true,
   "faviconPresent": true
  },
  "javascriptDependence": {
-  "medianMainTextChars": 1699,
+  "medianMainTextChars": 3240,
   "pagesWithEmptyMain": 1,
-  "pagesWithNoscript": 1
+  "pagesWithNoscript": 2
  }
 }
