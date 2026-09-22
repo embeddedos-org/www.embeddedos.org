@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { HelpCircle, ChevronDown, Search } from "lucide-react";
 
 const faqs = [
@@ -163,6 +163,8 @@ export default function FAQ() {
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
+                aria-expanded={open === i}
+                aria-controls={`faq-answer-${i}`}
                 className="w-full flex items-center justify-between p-5 text-left"
               >
                 <div className="flex items-center gap-3">
@@ -178,20 +180,11 @@ export default function FAQ() {
                   }
                 />
               </button>
-              <AnimatePresence>
-                {open === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="px-5 pb-5 text-gray-300 text-sm leading-relaxed border-t border-white/5 pt-4">
-                      {f.a}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div id={`faq-answer-${i}`} hidden={open !== i}>
+                <div className="px-5 pb-5 text-gray-300 text-sm leading-relaxed border-t border-white/5 pt-4">
+                  {f.a}
+                </div>
+              </div>
             </motion.div>
           ))}
           {filtered.length === 0 && (

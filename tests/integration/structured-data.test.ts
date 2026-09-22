@@ -22,9 +22,6 @@ const repoSet = new Set(graph.components.map(c => c.repository));
 const versionByRepo = new Map(
   graph.components.map(c => [c.repository, c.version ?? null])
 );
-const languageByRepo = new Map(
-  graph.components.map(c => [c.repository, c.language ?? null])
-);
 const ownPageOf = new Map(graph.components.map(c => [`/product-${c.id}`, c]));
 
 const docs = new Map<string, string>();
