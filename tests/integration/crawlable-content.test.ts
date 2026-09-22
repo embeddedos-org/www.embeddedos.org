@@ -35,6 +35,13 @@ const CASES = [
     panels: 5,
   },
   {
+    route: "/eosuite",
+    source: "client/src/pages/EOSuite.tsx",
+    pattern: /\bname:\s*"([^"]{3,60})"/g,
+    label: "app names",
+    panels: 6,
+  },
+  {
     route: "/api-docs",
     source: "client/src/pages/ApiDocs.tsx",
     pattern: /\bsig:\s*"([^"]{11,})"/g,

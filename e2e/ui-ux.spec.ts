@@ -245,6 +245,7 @@ test.describe("keyboard operability", () => {
   for (const [route, label] of [
     ["/architecture", "Architecture diagrams"],
     ["/api-docs", "API modules"],
+    ["/eosuite", "App categories"],
   ] as const) {
     test(`arrow keys move through the ${label} tabs and switch the panel`, async ({
       page,

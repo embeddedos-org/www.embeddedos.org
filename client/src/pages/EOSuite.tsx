@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { moveTabFocus } from "@/lib/tablist";
 import { motion } from "framer-motion";
 import { Smartphone, ArrowRight, Search } from "lucide-react";
 import { Link } from "wouter";
@@ -333,13 +334,11 @@ const categories = [
 export default function EOSuitePage() {
   const [activeCategory, setActiveCategory] = useState("office");
   const [search, setSearch] = useState("");
-  const cat = categories.find(c => c.id === activeCategory)!;
-  const filtered = cat.apps.filter(
-    a =>
-      !search ||
-      a.name.toLowerCase().includes(search.toLowerCase()) ||
-      a.desc.toLowerCase().includes(search.toLowerCase())
-  );
+  const query = search.toLowerCase();
+  const matches = (a: { name: string; desc: string }) =>
+    !query ||
+    a.name.toLowerCase().includes(query) ||
+    a.desc.toLowerCase().includes(query);
   const totalApps = categories.reduce((sum, c) => sum + c.count, 0);
 
   return (
@@ -384,10 +383,20 @@ export default function EOSuitePage() {
 
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-wrap gap-2 mb-6 justify-center">
+          <div
+            className="flex flex-wrap gap-2 mb-6 justify-center"
+            role="tablist"
+            aria-label="App categories"
+            onKeyDown={moveTabFocus}
+          >
             {categories.map(c => (
               <button
                 key={c.id}
+                role="tab"
+                id={`suite-tab-${c.id}`}
+                aria-selected={activeCategory === c.id}
+                aria-controls={`suite-panel-${c.id}`}
+                tabIndex={activeCategory === c.id ? 0 : -1}
                 onClick={() => setActiveCategory(c.id)}
                 className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
                 style={
@@ -419,28 +428,37 @@ export default function EOSuitePage() {
               className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-white/30"
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((app, i) => (
-              <motion.div
-                key={app.name}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-4"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <h2 className="text-white font-semibold">{app.name}</h2>
-                  <span
-                    className="px-2 py-0.5 rounded text-xs"
-                    style={{ background: cat.color + "15", color: cat.color }}
-                  >
-                    {app.type}
-                  </span>
-                </div>
-                <p className="text-gray-400 text-sm">{app.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+          {categories.map(cat => (
+            <div
+              key={cat.id}
+              role="tabpanel"
+              id={`suite-panel-${cat.id}`}
+              aria-labelledby={`suite-tab-${cat.id}`}
+              hidden={cat.id !== activeCategory}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            >
+              {cat.apps.filter(matches).map((app, i) => (
+                <motion.div
+                  key={app.name}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white/5 border border-white/10 rounded-xl p-4"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h2 className="text-white font-semibold">{app.name}</h2>
+                    <span
+                      className="px-2 py-0.5 rounded text-xs"
+                      style={{ background: cat.color + "15", color: cat.color }}
+                    >
+                      {app.type}
+                    </span>
+                  </div>
+                  <p className="text-gray-400 text-sm">{app.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          ))}
         </div>
       </section>
 
