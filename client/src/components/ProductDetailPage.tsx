@@ -151,6 +151,10 @@ export default function ProductDetailPage({
     c => c.repository.toLowerCase() === repoUrl.toLowerCase()
   );
   const pageUrl = `${ORIGIN}${location}`;
+  const facts =
+    component && location === `/product-${component.id}` ? component : null;
+  const shownLang = facts?.language ?? lang;
+  const shownVersion = facts?.version ?? null;
   const schema = [
     {
       "@context": "https://schema.org",
@@ -169,12 +173,13 @@ export default function ProductDetailPage({
     {
       "@context": "https://schema.org",
       "@type": "SoftwareSourceCode",
-      name: shortName,
+      name: facts?.name ?? shortName,
+      ...(facts && facts.name !== shortName
+        ? { alternateName: shortName }
+        : {}),
       description,
       codeRepository: component ? component.repository : repoUrl,
-      ...(component?.language
-        ? { programmingLanguage: component.language }
-        : {}),
+      ...(facts?.language ? { programmingLanguage: facts.language } : {}),
       url: pageUrl,
       license: "https://spdx.org/licenses/MIT.html",
       isAccessibleForFree: true,
@@ -183,7 +188,7 @@ export default function ProductDetailPage({
         name: "Embedded Operating Systems Research Foundation",
         url: ORIGIN,
       },
-      ...(component?.version ? { version: component.version } : {}),
+      ...(shownVersion ? { version: shownVersion } : {}),
     },
   ];
 
@@ -247,12 +252,10 @@ export default function ProductDetailPage({
                 {badge}
               </span>
               <span className="text-xs font-mono text-white/40 px-2 py-1 rounded border border-white/10 bg-white/5">
-                {lang}
+                {shownLang}
               </span>
               <span className="text-xs font-mono text-green-400 px-2 py-1 rounded border border-green-400/30 bg-green-400/10">
-                {component?.version
-                  ? `MIT · v${component.version}`
-                  : "MIT licensed"}
+                {shownVersion ? `MIT · v${shownVersion}` : "MIT licensed"}
               </span>
               {ecosystemRole && (
                 <span
@@ -596,14 +599,14 @@ export default function ProductDetailPage({
               </div>
               <div className="flex gap-2 mt-2">
                 <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
-                  {lang}
+                  {shownLang}
                 </span>
                 <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
                   MIT
                 </span>
-                {component?.version && (
+                {shownVersion && (
                   <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
-                    v{component.version}
+                    v{shownVersion}
                   </span>
                 )}
               </div>

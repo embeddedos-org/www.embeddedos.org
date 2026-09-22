@@ -8,6 +8,7 @@ const DIST = path.join(ROOT, "dist", "public");
 type Graph = {
   components: Array<{
     id: string;
+    name: string;
     repository: string;
     version?: string;
     language?: string;
@@ -24,6 +25,7 @@ const versionByRepo = new Map(
 const languageByRepo = new Map(
   graph.components.map(c => [c.repository, c.language ?? null])
 );
+const ownPageOf = new Map(graph.components.map(c => [`/product-${c.id}`, c]));
 
 const docs = new Map<string, string>();
 
@@ -183,20 +185,42 @@ describe("product pages", () => {
     expect(invented).toEqual([]);
   });
 
-  it("name the language the component repository actually uses", () => {
+  it("state only graph facts on a component's own page, and none on a shared-repo page", () => {
     const wrong: string[] = [];
     for (const r of productRoutes()) {
       const node = nodesOf(r, "SoftwareSourceCode")[0];
-      const expected = languageByRepo.get(node?.codeRepository);
-      if (!expected) {
-        if (node?.programmingLanguage)
+      const own = ownPageOf.get(r);
+      if (own) {
+        if (node?.name !== own.name)
+          wrong.push(`${r}: name ${node?.name} != ${own.name}`);
+        if (own.language && node?.programmingLanguage !== own.language)
           wrong.push(
-            `${r}: claims ${node.programmingLanguage}, graph has none`
+            `${r}: language ${node?.programmingLanguage} != ${own.language}`
           );
-        continue;
+        if (own.version && node?.version !== own.version)
+          wrong.push(`${r}: version ${node?.version} != ${own.version}`);
+      } else {
+        for (const k of ["programmingLanguage", "version"])
+          if (node?.[k])
+            wrong.push(
+              `${r}: claims ${k}=${node[k]} from a repository it shares`
+            );
       }
-      if (node.programmingLanguage !== expected)
-        wrong.push(`${r}: ${node.programmingLanguage} != ${expected}`);
+    }
+    expect(wrong).toEqual([]);
+  });
+
+  it("show the same language in the visible badge and the JSON-LD", () => {
+    const wrong: string[] = [];
+    for (const r of productRoutes()) {
+      const lang = nodesOf(r, "SoftwareSourceCode")[0]?.programmingLanguage;
+      if (!lang) continue;
+      const badge = docs
+        .get(r)!
+        .match(/text-xs font-mono text-white\/40[^>]*>\s*([^<]{1,40})</)?.[1]
+        ?.trim();
+      if (badge !== lang)
+        wrong.push(`${r}: badge "${badge}" vs schema "${lang}"`);
     }
     expect(wrong).toEqual([]);
   });
