@@ -34,6 +34,14 @@ const CASES = [
     label: "visual block names",
     panels: 5,
   },
+  {
+    route: "/api-docs",
+    source: "client/src/pages/ApiDocs.tsx",
+    pattern: /\bsig:\s*"([^"]{11,})"/g,
+    label: "function signatures",
+    panels: 24,
+    tablists: 2,
+  },
 ] as const;
 
 const mainOf = (route: string) => {
@@ -44,7 +52,14 @@ const mainOf = (route: string) => {
 };
 
 const textOf = (html: string) =>
-  html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ");
+  html
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, "&");
 
 beforeAll(() => {
   if (!fs.existsSync(path.join(DIST, "index.html")))
@@ -78,6 +93,26 @@ describe("tab panels ship their content in HTML, not only after a click", () => 
     expect(main).toMatch(/aria-expanded="false"/);
   });
 
+  it("/api-docs keeps every function's return and example in the DOM, collapsed, behind a wired disclosure button", () => {
+    const main = mainOf("/api-docs");
+    const declared = [
+      ...fs
+        .readFileSync(path.join(ROOT, "client/src/pages/ApiDocs.tsx"), "utf8")
+        .matchAll(/\bsig:\s*["']/g),
+    ].length;
+    const details = (main.match(/id="api-[a-z0-9-]+-\d+"/g) ?? []).length;
+    const hidden = (main.match(/id="api-[a-z0-9-]+-\d+"[^>]*hidden/g) ?? [])
+      .length;
+    const buttons = (main.match(/aria-controls="api-[a-z0-9-]+-\d+"/g) ?? [])
+      .length;
+    const examples = (main.match(/<pre\b/g) ?? []).length;
+    expect(declared).toBeGreaterThan(200);
+    expect(details).toBe(declared);
+    expect(hidden).toBe(declared);
+    expect(buttons).toBe(declared);
+    expect(examples).toBe(declared);
+  });
+
   it("/architecture mounts exactly one WebGL canvas", () => {
     const main = mainOf("/architecture");
     expect(main.match(/<canvas/g) ?? []).toHaveLength(1);
@@ -101,8 +136,17 @@ describe("tab panels ship their content in HTML, not only after a click", () => 
   it.each(TABBED)("$route wires one tab to every panel", testCase => {
     const main = mainOf(testCase.route);
     const panels = (main.match(/role="tabpanel"/g) ?? []).length;
-    expect((main.match(/role="tab"/g) ?? []).length).toBe(panels);
-    expect(main).toMatch(/aria-controls="/);
-    expect(main).toMatch(/aria-selected="/);
+    const tablists = "tablists" in testCase ? testCase.tablists : 1;
+    const tabs = main.match(/<button\b[^>]*\brole="tab"[^>]*>/g) ?? [];
+    expect(tabs).toHaveLength(panels * tablists);
+    const targets = tabs.map(
+      tab => tab.match(/aria-controls="([^"]+)"/)?.[1] ?? "(none)"
+    );
+    const dangling = targets.filter(id => !main.includes(`id="${id}"`));
+    expect(dangling).toEqual([]);
+    expect(new Set(targets).size).toBe(panels);
+    expect(tabs.filter(tab => /aria-selected="true"/.test(tab))).toHaveLength(
+      tablists
+    );
   });
 });
