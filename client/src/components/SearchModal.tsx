@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useFocusTrap } from "@/lib/focus-trap";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -48,6 +49,11 @@ export default function SearchModal() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // F-20: trap Tab inside the search dialog while open (WCAG 2.4.3) and
+  // return focus to the trigger on close — same shared hook as EBot.
+  useFocusTrap(open, panelRef);
   const [, navigate] = useLocation();
 
   // Keyboard shortcut
@@ -182,6 +188,7 @@ export default function SearchModal() {
             onClick={() => setOpen(false)}
           >
             <motion.div
+              ref={panelRef}
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
@@ -195,6 +202,7 @@ export default function SearchModal() {
               role="dialog"
               aria-modal="true"
               aria-label="Search this site"
+              tabIndex={-1}
             >
               {/* Search input */}
               <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/10">
@@ -210,7 +218,8 @@ export default function SearchModal() {
                 {query && (
                   <button
                     onClick={() => setQuery("")}
-                    className="text-white/40 hover:text-white transition-colors"
+                    aria-label="Clear search"
+                    className="min-w-6 min-h-6 flex items-center justify-center text-white/40 hover:text-white transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>

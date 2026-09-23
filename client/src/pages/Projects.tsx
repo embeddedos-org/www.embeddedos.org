@@ -13,7 +13,6 @@ import {
   Wifi,
   Terminal,
   LayoutGrid,
-  Blocks,
   Plane,
   Rocket,
   Package,
@@ -123,13 +122,6 @@ const REPO_GROUPS = [
         desc: "Universal IDE v3.1 for EmbeddedOS development",
         icon: LayoutGrid,
         href: "https://github.com/embeddedos-org/eostudio",
-        stars: "⭐ Tools",
-      },
-      {
-        name: "eos-stack-manifest",
-        desc: "Unified build manifest for all project artifacts",
-        icon: Blocks,
-        href: "https://github.com/embeddedos-org/eos-stack-manifest",
         stars: "⭐ Tools",
       },
     ],
@@ -254,7 +246,7 @@ export default function Projects() {
               All <span className="text-gradient">Projects</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
-              22 open-source repositories spanning embedded OS, AI, health
+              23 open-source repositories spanning embedded OS, AI, health
               devices, aerospace, and developer tools. Everything is open.
               Everything is connected.
             </p>

@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 interface OscilloscopeProps {
   program: "blink" | "echo" | "gpio";
@@ -13,6 +14,9 @@ export default function Oscilloscope({
 }: OscilloscopeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<number>(0);
+  // F-23: paint one static frame instead of looping when the visitor
+  // prefers reduced motion.
+  const reduceMotion = usePrefersReducedMotion();
   const tRef = useRef(0);
 
   useEffect(() => {
@@ -136,7 +140,8 @@ export default function Oscilloscope({
       };
       ctx.fillText(labels[program] || "", w - 8, 14);
 
-      frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion; the loop otherwise.
+      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
@@ -144,7 +149,7 @@ export default function Oscilloscope({
       cancelAnimationFrame(frameRef.current);
       ro.disconnect();
     };
-  }, [program, running, color]);
+  }, [program, running, color, reduceMotion]);
 
   return (
     <canvas

@@ -1,4 +1,5 @@
 import { useState, Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 const EOfficeCanvas = lazy(() =>
@@ -468,7 +469,9 @@ export default function EOffice() {
                 </div>
               }
             >
-              <EOfficeCanvas hovered={false} />
+              <ViewportGate>
+                <EOfficeCanvas hovered={false} />
+              </ViewportGate>
             </Suspense>
           </motion.div>
         </div>

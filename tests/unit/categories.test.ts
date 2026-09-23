@@ -200,3 +200,48 @@ describe("honesty of empty categories", () => {
     }
   });
 });
+
+describe("about content for empty categories", () => {
+  it("gives every empty category substantial about content", async () => {
+    // F-01: fourteen categories have no published items. The emptyNote keeps
+    // the page honest; the about sections make it useful — 500+ words of
+    // truthful content describing what the category is for, what will appear,
+    // and how to take part. A missing entry is a page that fell back to a
+    // bare placeholder.
+    const { CATEGORY_ABOUT } =
+      await import("../../client/src/data/category-about");
+    const missing = ALL_CATEGORIES.filter(
+      c => c.emptyNote && !CATEGORY_ABOUT[c.path]
+    ).map(c => c.name);
+    expect(missing, "empty categories with no about content").toEqual([]);
+  });
+
+  it("keeps every about entry well-formed and substantial", async () => {
+    const { CATEGORY_ABOUT } =
+      await import("../../client/src/data/category-about");
+    for (const [path, sections] of Object.entries(CATEGORY_ABOUT)) {
+      expect(
+        categoryByPath(path),
+        `about entry for unknown category path ${path}`
+      ).toBeDefined();
+      // Four sections minimum; the drafts use four to seven depending on the
+      // category. What matters is the substance: 500+ words of it.
+      expect(sections.length, `${path} section count`).toBeGreaterThanOrEqual(
+        4
+      );
+      let words = 0;
+      for (const s of sections) {
+        expect(s.heading.trim().length, `${path} heading`).toBeGreaterThan(0);
+        expect(s.body.length, `${path} / ${s.heading}`).toBeGreaterThan(0);
+        for (const p of s.body) {
+          expect(p.trim().length, `${path} / ${s.heading}`).toBeGreaterThan(0);
+          // Paragraphs are plain strings; the renderer cannot be surprised by
+          // markup the data never promised.
+          expect(p, `${path} / ${s.heading}`).not.toMatch(/\]\(|^#{1,6}\s/m);
+          words += p.split(/\s+/).filter(Boolean).length;
+        }
+      }
+      expect(words, `${path} body words`).toBeGreaterThanOrEqual(500);
+    }
+  });
+});

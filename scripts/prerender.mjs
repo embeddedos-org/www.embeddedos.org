@@ -325,7 +325,16 @@ async function extractMeta(page) {
       description = text;
       break;
     }
-    return { heading, description: description || fallback };
+
+    // The page's own representative image for og:image/twitter:image (F-13):
+    // the first image inside <main>. Decorative data-URIs are skipped.
+    const rawSrc = document
+      .querySelector("main img")
+      ?.getAttribute("src")
+      ?.trim();
+    const image = rawSrc && !rawSrc.startsWith("data:") ? rawSrc : "";
+
+    return { heading, description: description || fallback, image };
   });
 }
 
@@ -343,8 +352,90 @@ export const escapeAttr = s =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
+/**
+ * Per-route title overrides (F-05). Deliberate copy of TITLE_OVERRIDES in
+ * client/src/lib/page-meta.ts — the two tables must stay identical;
+ * tests/unit/page-meta.test.ts enforces it.
+ */
+export const TITLE_OVERRIDES = {
+  "/": "Open-source embedded OS for every device | EmbeddedOS",
+};
+
+/**
+ * Per-route meta-description overrides (F-25). Deliberate copy of
+ * DESCRIPTION_OVERRIDES in client/src/lib/page-meta.ts — same contract.
+ */
+export const DESCRIPTION_OVERRIDES = {
+  "/":
+    "EmbeddedOS is a 501(c)(3) nonprofit building a free, open-source " +
+    "operating system for embedded devices — kernel, tools, docs and " +
+    "education, MIT licensed.",
+  "/donate":
+    "Support the EmbeddedOS Foundation's open-source embedded systems " +
+    "research and free education. 501(c)(3) nonprofit, EIN 41-4821627 — " +
+    "gifts are tax-deductible.",
+  "/projects":
+    "23 open-source repositories: the EoS real-time kernel, bootloader, " +
+    "IPC, build tools, AI, simulators, apps and hardware — all MIT " +
+    "licensed on GitHub.",
+  "/mission":
+    "Our mission: advance open-source embedded systems research, " +
+    "education and technology for the public benefit — free to read, " +
+    "audit, learn from and build on.",
+  "/about":
+    "The Embedded Operating Systems Research Foundation (EIN 41-4821627) " +
+    "is a 501(c)(3) public charity advancing open embedded systems.",
+  "/contact":
+    "Contact the EmbeddedOS Foundation: general inquiries, technical " +
+    "support, press, partnerships, careers and donations. Every topic " +
+    "reaches a person.",
+  "/books":
+    "Free technical books on embedded systems from the EmbeddedOS " +
+    "Foundation — full-length, openly licensed, including a kids edition.",
+  "/research":
+    "Open research into real-time operating systems, edge AI, health " +
+    "hardware, avionics and quantum control — published openly, never " +
+    "licensed.",
+  "/get-involved":
+    "Contribute to EmbeddedOS: code, docs, hardware testing, internships " +
+    "and community programmes. All work is public and MIT licensed.",
+  "/transparency":
+    "How the EmbeddedOS Foundation handles money and decisions: " +
+    "nonprofit disclosures, finances, governance and public records.",
+};
+
+/**
+ * Load the built stylesheet without blocking first render (F-07).
+ *
+ * Vite emits one render-blocking <link rel="stylesheet"> (~45 KB). This
+ * rewrites it to preload + the media="print" onload pattern (the same trick
+ * index.html already uses for webfonts) with a <noscript> fallback, so the
+ * CSS downloads early but applies without delaying first paint. Above-the-fold
+ * essentials are already inlined in index.html's <style> block (see
+ * client/src/critical.css), so there is no unstyled flash.
+ *
+ * The webfont stylesheet already uses media="print" itself and is left alone.
+ */
+export function deferStylesheet(html) {
+  return html.replace(
+    /<link\s+rel="stylesheet"(?![^>]*\bmedia=)[^>]*>/gi,
+    tag => {
+      const attrs = tag
+        .replace(/^<link\s+/i, "")
+        .replace(/\brel="stylesheet"\s*/i, "")
+        .replace(/\s*\/?>$/, "")
+        .trim();
+      return (
+        `<link rel="preload" as="style" ${attrs} />` +
+        `<link rel="stylesheet" ${attrs} media="print" onload="this.media='all'" />` +
+        `<noscript><link rel="stylesheet" ${attrs} /></noscript>`
+      );
+    }
+  );
+}
+
 /** Rewrite the head of a snapshot with route-specific title/description/canonical. */
-export function applyMeta(html, { route, heading, description }) {
+export function applyMeta(html, { route, heading, description, image }) {
   const canonical = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
 
   // Google truncates titles past roughly 70 characters, so budget the whole
@@ -355,14 +446,26 @@ export function applyMeta(html, { route, heading, description }) {
   const SHORT_SUFFIX = " | EmbeddedOS";
 
   let title = "EmbeddedOS — The Operating System for Every Device";
-  if (heading) {
+  if (TITLE_OVERRIDES[route]) {
+    title = TITLE_OVERRIDES[route];
+  } else if (heading) {
     title =
       heading.length + LONG_SUFFIX.length <= MAX_TITLE
         ? heading + LONG_SUFFIX
         : truncate(heading, MAX_TITLE - SHORT_SUFFIX.length) + SHORT_SUFFIX;
   }
 
-  const desc = truncate(description || FALLBACK_DESCRIPTION, 250);
+  const desc = truncate(
+    DESCRIPTION_OVERRIDES[route] || description || FALLBACK_DESCRIPTION,
+    155
+  );
+
+  // Per-route social image (F-13): the page's own first <main> image,
+  // absolutised; the shell's generic hero image stays the fallback.
+  const absImage =
+    image && !image.startsWith("http")
+      ? `${ORIGIN}${image.startsWith("/") ? "" : "/"}${image}`
+      : image || "";
 
   let out = html;
   const set = (pattern, replacement) => {
@@ -390,8 +493,60 @@ export function applyMeta(html, { route, heading, description }) {
     /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i,
     `<meta property="og:description" content="${escapeAttr(desc)}" />`
   );
+  // Twitter summary card tags mirror the og:* values (F-12). Patterns
+  // tolerate the tags being absent — applyRouteMeta creates them client-side
+  // only when the shell carries them, so a missing tag stays missing.
+  set(
+    /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="twitter:title" content="${escapeAttr(title)}" />`
+  );
+  set(
+    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="twitter:description" content="${escapeAttr(desc)}" />`
+  );
+  if (absImage) {
+    set(
+      /<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:image" content="${escapeAttr(absImage)}" />`
+    );
+    set(
+      /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="twitter:image" content="${escapeAttr(absImage)}" />`
+    );
+  }
+
+  // F-24: WebSite entity on the homepage only. Deliberately no SearchAction:
+  // site search lives in a modal, there is no /search route, and a
+  // SearchAction pointing at a URL that does not exist is invalid markup.
+  if (route === "/") {
+    const websiteJson = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "EmbeddedOS",
+      url: `${ORIGIN}/`,
+    });
+    out = out.replace(
+      /<\/head>/i,
+      `<script type="application/ld+json">${websiteJson}</script>\n</head>`
+    );
+  }
 
   return out;
+}
+
+// The exact heading text of the React ErrorBoundary fallback screen
+// (client/src/components/ErrorBoundary.tsx). A full-repo search shows this copy
+// appears nowhere else — not in docs, blog posts or any other page component —
+// so its presence in a snapshot means the route crashed into the boundary and
+// would otherwise be saved as a "successful" prerender of an error screen.
+export const ERROR_BOUNDARY_MARKER = "An unexpected error occurred.";
+
+/**
+ * True when a snapshot's HTML is the ErrorBoundary fallback screen rather than
+ * the route's real content.
+ */
+export function shippedErrorBoundary(html) {
+  return html.includes(ERROR_BOUNDARY_MARKER);
 }
 
 function writeSnapshot(route, html) {
@@ -457,7 +612,9 @@ async function main() {
         });
         await settle(page);
         const meta = await extractMeta(page);
-        const html = applyMeta(await captureHtml(page), { route, ...meta });
+        const html = deferStylesheet(
+          applyMeta(await captureHtml(page), { route, ...meta })
+        );
         const target = writeSnapshot(route, html);
         const textLength = await page.evaluate(
           () => document.getElementById("root").innerText.trim().length
@@ -471,6 +628,11 @@ async function main() {
         const degraded = html.includes(
           "The embedded donation form could not load"
         );
+        // A route that threw during render ships the React ErrorBoundary
+        // fallback screen instead of the route's content. Like the degraded
+        // case above, it renders "successfully" — so fail loudly here rather
+        // than shipping an error screen as a snapshot.
+        const errorBoundary = shippedErrorBoundary(html);
         results.push({
           route,
           ok: true,
@@ -480,6 +642,7 @@ async function main() {
           target,
           errors,
           degraded,
+          errorBoundary,
         });
       } catch (err) {
         results.push({ route, ok: false, error: err.message, errors });
@@ -507,6 +670,7 @@ async function main() {
   const failed = results.filter(r => !r.ok);
   const thin = results.filter(r => r.ok && r.textLength < 500);
   const degraded = results.filter(r => r.ok && r.degraded);
+  const errorBoundaryRoutes = results.filter(r => r.ok && r.errorBoundary);
 
   for (const r of results) {
     if (!r.ok) console.log(`  FAIL  ${r.route.padEnd(38)} ${r.error}`);
@@ -521,6 +685,11 @@ async function main() {
       `  DEGRADED  ${r.route.padEnd(34)} shipped the "embed failed to load" fallback`
     );
   }
+  for (const r of errorBoundaryRoutes) {
+    console.log(
+      `  ERROR-BOUNDARY  ${r.route.padEnd(30)} rendered the ErrorBoundary fallback`
+    );
+  }
 
   const ok = results.filter(r => r.ok);
   const avgText = ok.length
@@ -528,11 +697,20 @@ async function main() {
     : 0;
   console.log(
     `[prerender] ${ok.length}/${results.length} rendered · avg ${avgText} chars of visible text · ` +
-      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded`
+      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded · ` +
+      `${errorBoundaryRoutes.length} error-boundary`
   );
 
   if (failed.length) {
     console.error(`[prerender] ${failed.length} route(s) failed to render.`);
+    process.exitCode = 1;
+  }
+  if (errorBoundaryRoutes.length) {
+    for (const r of errorBoundaryRoutes) {
+      console.error(
+        `[prerender] Route ${r.route} rendered the ErrorBoundary fallback — failing the build.`
+      );
+    }
     process.exitCode = 1;
   }
   if (degraded.length) {

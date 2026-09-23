@@ -160,6 +160,10 @@ describe("menu separation", () => {
 });
 
 describe("community resources", () => {
+  // NOTE (Ad Grants link-integrity, 2026-09-19): the wiki/issues/AGENTS.md
+  // entries that pointed at github.com/embeddedos-org/www.embeddedos.org were
+  // removed from client/src/data/community.ts — that repository is private, so
+  // those links 404 for every public visitor.
   const expected = [
     "https://github.com/embeddedos-org/eos/wiki",
     "https://github.com/orgs/embeddedos-org/discussions",
