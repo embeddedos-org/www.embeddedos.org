@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
+import { moveTabFocus } from "@/lib/tablist";
 import {
   Search,
   ChevronRight,
@@ -2448,31 +2448,32 @@ function CopyButton({ text }: { text: string }) {
 }
 
 function ApiCard({
+  id,
   api,
 }: {
+  id: string;
   api: { sig: string; desc: string; ret: string; example: string };
 }) {
   const [open, setOpen] = useState(false);
   const fnMatch = api.sig.match(/(\w+)\s*\(/);
-  const fnName = fnMatch ? fnMatch[1] : "";
-  const retType = api.sig.split(" ")[0];
-  const rest = api.sig.slice(retType.length + 1);
+  const fnName = fnMatch?.[1] ?? "";
+  const nameAt = fnMatch?.index ?? api.sig.indexOf(" ") + 1;
+  const before = api.sig.slice(0, nameAt);
+  const after = api.sig.slice(nameAt + fnName.length);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-colors"
-    >
+    <div className="border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-colors">
       <button
         onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-controls={id}
         className="w-full text-left p-4 flex items-start justify-between gap-3 hover:bg-white/3 transition-colors"
       >
         <div className="flex-1 min-w-0">
           <code className="text-sm font-mono">
-            <span className="text-[#F59E0B]">{retType}</span>{" "}
+            <span className="text-[#F59E0B]">{before}</span>
             <span className="text-[#22D3EE] font-semibold">{fnName}</span>
-            <span className="text-white/60">{rest.slice(fnName.length)}</span>
+            <span className="text-white/60">{after}</span>
           </code>
           <p className="text-xs text-white/50 mt-1 truncate">{api.desc}</p>
         </div>
@@ -2481,60 +2482,44 @@ function ApiCard({
           className={`shrink-0 mt-1 text-white/30 transition-transform ${open ? "rotate-90" : ""}`}
         />
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
-              <p className="text-sm text-white/70">{api.desc}</p>
-              <div>
-                <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
-                  Returns
-                </span>
-                <p className="text-sm text-[#34D399] mt-1">{api.ret}</p>
-              </div>
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
-                    Example
-                  </span>
-                  <CopyButton text={api.example} />
-                </div>
-                <pre className="text-xs bg-black/40 rounded-lg p-3 overflow-x-auto text-[#A78BFA] border border-white/5">
-                  <code>{api.example}</code>
-                </pre>
-              </div>
+      <div id={id} hidden={!open}>
+        <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
+          <p className="text-sm text-white/70">{api.desc}</p>
+          <div>
+            <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+              Returns
+            </span>
+            <p className="text-sm text-[#34D399] mt-1">{api.ret}</p>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+                Example
+              </span>
+              <CopyButton text={api.example} />
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+            <pre className="text-xs bg-black/40 rounded-lg p-3 overflow-x-auto text-[#A78BFA] border border-white/5">
+              <code>{api.example}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
+
+const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
 export default function ApiDocs() {
   const [activeModule, setActiveModule] = useState("hal");
   const [search, setSearch] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const module = MODULES.find(m => m.id === activeModule)!;
-
-  const filteredSubsections = module.subsections
-    .map(sub => ({
-      ...sub,
-      apis: (sub.apis || []).filter(
-        api =>
-          !search ||
-          api.sig.toLowerCase().includes(search.toLowerCase()) ||
-          api.desc.toLowerCase().includes(search.toLowerCase())
-      ),
-    }))
-    .filter(sub => sub.apis.length > 0);
+  const query = search.toLowerCase();
+  const matches = (api: { sig: string; desc: string }) =>
+    !query ||
+    api.sig.toLowerCase().includes(query) ||
+    api.desc.toLowerCase().includes(query);
 
   const totalApis = MODULES.reduce(
     (acc, m) =>
@@ -2633,7 +2618,13 @@ export default function ApiDocs() {
           <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-3 px-2">
             Modules
           </div>
-          <nav className="space-y-0.5">
+          <div
+            className="space-y-0.5"
+            role="tablist"
+            aria-orientation="vertical"
+            aria-label="API modules"
+            onKeyDown={moveTabFocus}
+          >
             {MODULES.map(m => {
               const Icon = m.icon;
               const count = m.subsections.reduce(
@@ -2643,6 +2634,11 @@ export default function ApiDocs() {
               return (
                 <button
                   key={m.id}
+                  role="tab"
+                  id={`api-tab-${m.id}`}
+                  aria-selected={activeModule === m.id}
+                  aria-controls={`api-module-${m.id}`}
+                  tabIndex={activeModule === m.id ? 0 : -1}
                   onClick={() => setActiveModule(m.id)}
                   className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm transition-all ${
                     activeModule === m.id
@@ -2661,7 +2657,7 @@ export default function ApiDocs() {
                 </button>
               );
             })}
-          </nav>
+          </div>
           <div className="mt-6 px-2">
             <a
               href="https://github.com/embeddedos-org"
@@ -2677,124 +2673,145 @@ export default function ApiDocs() {
 
         {/* Main content */}
         <div className="flex-1 min-w-0 py-8 px-6">
-          {/* Module header */}
-          <motion.div
-            key={activeModule}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.2 }}
+          {/* Mobile module selector */}
+          <div
+            className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-6"
+            role="tablist"
+            aria-label="API modules"
+            onKeyDown={moveTabFocus}
           >
-            <div className="flex items-start gap-4 mb-8">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                style={{
-                  background: `${module.color}20`,
-                  border: `1px solid ${module.color}40`,
-                }}
+            {MODULES.map(m => (
+              <button
+                key={m.id}
+                role="tab"
+                id={`api-tab-mobile-${m.id}`}
+                aria-selected={activeModule === m.id}
+                aria-controls={`api-module-${m.id}`}
+                tabIndex={activeModule === m.id ? 0 : -1}
+                onClick={() => setActiveModule(m.id)}
+                className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  activeModule === m.id
+                    ? "bg-white/10 text-white"
+                    : "text-white/40 hover:text-white"
+                }`}
               >
-                <module.icon size={22} style={{ color: module.color }} />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold font-heading">
-                  {module.title}
-                </h2>
-                <p className="text-white/50 text-sm mt-1">
-                  {module.description}
-                </p>
-              </div>
-            </div>
+                {m.label}
+              </button>
+            ))}
+          </div>
 
-            {/* Mobile module selector */}
-            <div className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-6">
-              {MODULES.map(m => (
-                <button
-                  key={m.id}
-                  onClick={() => setActiveModule(m.id)}
-                  className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    activeModule === m.id
-                      ? "bg-white/10 text-white"
-                      : "text-white/40 hover:text-white"
-                  }`}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </div>
-
-            {filteredSubsections.length === 0 ? (
-              <div className="text-center py-16 text-white/30">
-                <Search size={32} className="mx-auto mb-3 opacity-50" />
-                <p>No functions match "{search}"</p>
-              </div>
-            ) : (
-              <div className="space-y-10">
-                {filteredSubsections.map(sub => (
-                  <div key={sub.name}>
-                    <h3
-                      className="text-lg font-semibold mb-1"
-                      style={{ color: module.color }}
-                    >
-                      {sub.name}
-                    </h3>
-                    {(sub as any).structs &&
-                      (sub as any).structs.map((st: any) => (
-                        <div
-                          key={st.name}
-                          className="mb-4 bg-white/3 border border-white/8 rounded-xl p-4"
-                        >
-                          <div className="text-xs font-bold text-white/40 uppercase tracking-wider mb-2">
-                            struct
-                          </div>
-                          <code className="text-sm font-mono text-[#F59E0B]">
-                            {st.name}
-                          </code>
-                          <div className="mt-3 overflow-x-auto">
-                            <table className="w-full text-xs">
-                              <thead>
-                                <tr className="text-white/30 border-b border-white/5">
-                                  <th className="text-left pb-2 pr-4 font-medium">
-                                    Field
-                                  </th>
-                                  <th className="text-left pb-2 pr-4 font-medium">
-                                    Type
-                                  </th>
-                                  <th className="text-left pb-2 font-medium">
-                                    Description
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {st.fields.map((f: any) => (
-                                  <tr
-                                    key={f.name}
-                                    className="border-b border-white/5 last:border-0"
-                                  >
-                                    <td className="py-1.5 pr-4 font-mono text-[#22D3EE]">
-                                      {f.name}
-                                    </td>
-                                    <td className="py-1.5 pr-4 font-mono text-[#F59E0B]">
-                                      {f.type}
-                                    </td>
-                                    <td className="py-1.5 text-white/60">
-                                      {f.desc}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      ))}
-                    <div className="space-y-2">
-                      {sub.apis.map(api => (
-                        <ApiCard key={api.sig} api={api} />
-                      ))}
-                    </div>
+          {MODULES.map(m => {
+            const subsections = m.subsections
+              .map(sub => ({ ...sub, apis: (sub.apis || []).filter(matches) }))
+              .filter(sub => sub.apis.length > 0);
+            return (
+              <section
+                key={m.id}
+                role="tabpanel"
+                id={`api-module-${m.id}`}
+                aria-labelledby={`api-tab-${m.id}`}
+                hidden={m.id !== activeModule}
+              >
+                <div className="flex items-start gap-4 mb-8">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                    style={{
+                      background: `${m.color}20`,
+                      border: `1px solid ${m.color}40`,
+                    }}
+                  >
+                    <m.icon size={22} style={{ color: m.color }} />
                   </div>
-                ))}
-              </div>
-            )}
-          </motion.div>
+                  <div>
+                    <h2 className="text-2xl font-bold font-heading">
+                      {m.title}
+                    </h2>
+                    <p className="text-white/50 text-sm mt-1">
+                      {m.description}
+                    </p>
+                  </div>
+                </div>
+
+                {subsections.length === 0 ? (
+                  <div className="text-center py-16 text-white/30">
+                    <Search size={32} className="mx-auto mb-3 opacity-50" />
+                    <p>No functions match "{search}"</p>
+                  </div>
+                ) : (
+                  <div className="space-y-10">
+                    {subsections.map(sub => (
+                      <div key={sub.name}>
+                        <h3
+                          className="text-lg font-semibold mb-1"
+                          style={{ color: m.color }}
+                        >
+                          {sub.name}
+                        </h3>
+                        {(sub as any).structs &&
+                          (sub as any).structs.map((st: any) => (
+                            <div
+                              key={st.name}
+                              className="mb-4 bg-white/3 border border-white/8 rounded-xl p-4"
+                            >
+                              <div className="text-xs font-bold text-white/40 uppercase tracking-wider mb-2">
+                                struct
+                              </div>
+                              <code className="text-sm font-mono text-[#F59E0B]">
+                                {st.name}
+                              </code>
+                              <div className="mt-3 overflow-x-auto">
+                                <table className="w-full text-xs">
+                                  <thead>
+                                    <tr className="text-white/30 border-b border-white/5">
+                                      <th className="text-left pb-2 pr-4 font-medium">
+                                        Field
+                                      </th>
+                                      <th className="text-left pb-2 pr-4 font-medium">
+                                        Type
+                                      </th>
+                                      <th className="text-left pb-2 font-medium">
+                                        Description
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {st.fields.map((f: any) => (
+                                      <tr
+                                        key={f.name}
+                                        className="border-b border-white/5 last:border-0"
+                                      >
+                                        <td className="py-1.5 pr-4 font-mono text-[#22D3EE]">
+                                          {f.name}
+                                        </td>
+                                        <td className="py-1.5 pr-4 font-mono text-[#F59E0B]">
+                                          {f.type}
+                                        </td>
+                                        <td className="py-1.5 text-white/60">
+                                          {f.desc}
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          ))}
+                        <div className="space-y-2">
+                          {sub.apis.map((api, i) => (
+                            <ApiCard
+                              key={api.sig}
+                              id={`api-${m.id}-${slug(sub.name)}-${i}`}
+                              api={api}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })}
         </div>
       </div>
     </div>

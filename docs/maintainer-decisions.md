@@ -12,10 +12,18 @@ Evidence labels follow [CLAUDE.md](../CLAUDE.md): **Verified** means a command
 was run and its output read.
 
 Recorded 2026-09-19 against `master` and the nine open pull requests.
+Updated 2026-09-22 after PR #56 merged and `master` (e0bbfad) was merged into
+PR #53: D-1 and D-10 are resolved, D-2, D-9 and D-11 are no longer blocked,
+and D-14 to D-19 are new.
 
 ---
 
 ## D-1 — Merge order between #53 and #56
+
+**Resolved.** #56 merged into `master` on 2026-09-19. `master` was then merged
+into #53 twice, in c5a5026 and d2f8f72, with the five conflicting files
+resolved by hand and no history rewritten. The trial-merge analysis below is
+kept as the record of why that order was recommended.
 
 **Decision:** which of the two overlapping pull requests lands first, and who
 rebases.
@@ -76,7 +84,13 @@ kind of duplication that quietly diverges.
 **Recommendation:** keep whichever lands first and delete the other in the
 rebase. There is no technical reason to prefer either.
 
-**Owner:** maintainer, or whoever performs the D-1 rebase.
+**Still open after the merge.** Both helpers are on the merged branch:
+`client/src/hooks/useReducedMotion.ts` (`useReducedMotion`, three importers)
+and `client/src/lib/reduced-motion.ts` (`usePrefersReducedMotion`, eight
+importers). Neither was removed in the merge, because the choice is the
+maintainer's and the removal touches eleven files that carry no SEO change.
+
+**Owner:** maintainer.
 
 ---
 
@@ -239,26 +253,37 @@ matter.
 this was not changed here. `/getting-started` now carries the same links,
 which puts each target two clicks from the homepage instead of unreachable.
 
-**Owner:** whoever lands #56, or a follow-up once the merge order in D-1 is
-settled.
+**No longer blocked, still open.** After the merge the homepage `<main>`
+still links 14 internal pages, and `/getting-started` is the only hub among
+them; `/architecture`, `/ecosystem`, `/products`, `/downloads` and `/stacks`
+are still absent. Verified from the 2026-09-22 build. The homepage is the
+page #56 reworked for Ad Grants, so which hubs it names, and where, is left
+to the maintainer.
+
+**Owner:** maintainer.
 
 ---
 
 ## D-10 — One page still renders only its active tab
 
-**Partly resolved.** Three of the pages first reported under this heading were
-not what the heading claimed, and the survey that checked them said so rather
-than assuming:
+**Resolved.** Every page that mounted content only behind a click now ships
+it in the prerendered HTML, hidden until selected, with tab or disclosure
+semantics. Verified from the 2026-09-22 build; each row is guarded by
+`tests/integration/crawlable-content.test.ts`.
 
-| Page               | Titles in source | In prerendered HTML | Status                             |
-| ------------------ | ---------------- | ------------------- | ---------------------------------- |
-| `/getting-started` | 51               | 8 → **51**          | fixed                              |
-| `/eflow`           | 20               | 5 → **20**          | fixed                              |
-| `/architecture`    | 7 panels         | 1                   | **open**                           |
-| `/api-docs`        | 66               | 6                   | blocked by PR #56                  |
-| `/eosuite`         | 55               | 11                  | blocked by PR #56                  |
-| `/books`           | 14               | 14                  | no gate — earlier report was wrong |
-| `/health-compare`  | 32               | 32                  | no gate — earlier report was wrong |
+| Page               | In source      | In prerendered HTML | Status                             |
+| ------------------ | -------------- | ------------------- | ---------------------------------- |
+| `/getting-started` | 51 titles      | 8 → **51**          | fixed                              |
+| `/eflow`           | 20 names       | 5 → **20**          | fixed                              |
+| `/architecture`    | 8 panels       | 1 → **8**           | fixed, one WebGL canvas            |
+| `/api-docs`        | 261 signatures | 32 → **261**        | fixed, 24 panels                   |
+| `/eosuite`         | 55 apps        | 11 → **55**         | fixed, 6 panels                    |
+| `/faq`             | 15 answers     | 0 → **15**          | fixed, disclosure buttons          |
+| `/books`           | 14             | 14                  | no gate — earlier report was wrong |
+| `/health-compare`  | 32             | 32                  | no gate — earlier report was wrong |
+
+The earlier analysis of `/architecture`, kept below, describes why that page
+needed a different fix from the others.
 
 `/architecture`'s loss is larger than this entry first recorded: 24 of 40 layer
 names, 6 of 7 descriptions, 6 of 7 "why it matters" paragraphs and 22 of 28
@@ -275,8 +300,7 @@ descriptions and the layer labels.
 `/api-docs` and `/eosuite` are the larger losses — 60 and 44 titles — and both
 files belong to PR #56.
 
-**Owner:** nobody, for `/architecture`; it is ordinary work. The other two
-wait on the merge order in D-1.
+**Owner:** none; nothing remains.
 
 ---
 
@@ -319,7 +343,13 @@ There is no critical-path cost either way: the homepage preloads no three.js
 chunk, and the 872 KB `react-three-fiber` bundle is fetched only by routes
 that use it.
 
-**Owner:** maintainer, for `HealthDevice3D` once #56 lands.
+**No longer blocked, still open.** #56 has merged. On the merged tree
+`client/src/components/HealthDevice3D.tsx` calls `usePrefersReducedMotion` at
+five sites and contains no WebGL probe, so `/health` still mounts its
+canvases without one. Adding the probe is ordinary work; it carries no SEO
+change, so it was not done in #53.
+
+**Owner:** maintainer.
 
 ---
 
@@ -396,6 +426,153 @@ to the README's.
 
 ---
 
+## D-14 — Which URL is an article's identity
+
+**Decision:** whether an article lives at `/article-<slug>` or
+`/article/<slug>`.
+
+**Verified** on the 2026-09-22 build. Every crawlable signal says
+`/article-<slug>`: the eight prerendered pages, their `<link rel="canonical">`
+(`https://www.embeddedos.org/article-eos-platform-launch`), the sitemap
+(eight `/article-` locations, zero `/article/`), and every internal link. The
+structured data says `/article/<slug>`: `ArticleJsonLd.tsx:30` builds
+`@id` and `mainEntityOfPage` from `${ORIGIN}/article/${slug}`, and
+`tests/integration/article-jsonld.test.ts` asserts that value as "the
+canonical URL, even though this file was built from a legacy /article-xxx
+route". So the intent is on record, and it is the opposite of what is
+served: `/article/:slug` is a wouter parameter route (`App.tsx:984`) that
+the prerenderer never builds, so no `dist/public/article/` directory
+exists, and a crawler following the JSON-LD `@id` reaches a URL the static
+host answers with the 404 page.
+
+Two ways to make them agree:
+
+- Keep `/article-<slug>` as the identity: derive `@id` and
+  `mainEntityOfPage` from the served canonical, and change the test to
+  match. Small, and confined to files this branch owns.
+- Make `/article/<slug>` real: prerender the eight parameter routes, add
+  them to the sitemap, canonicalise the legacy pages to them, and redirect
+  or keep the legacy addresses. Larger, and it changes eight published URLs.
+
+Neither was done, because the test states a deliberate choice, and reversing
+it without the author is exactly the kind of change this register exists
+to prevent.
+
+**Owner:** maintainer.
+
+---
+
+## D-15 — Every published URL is a redirect on the live host
+
+**Decision:** whether to serve `/about` directly, or keep redirecting it to
+`/about/`.
+
+Each route is prerendered as a directory (`/about/index.html`), and the
+host's directory handling answers the slash-less form with a 301 to the
+slash form. The maintainer's own `e2e/regression.spec.ts` records this
+("the live host 301s `/donate` to `/donate/`"). Every URL the site publishes
+is slash-less: 130 of the sitemap's 131 locations, all 132 canonicals, and
+every internal link. So each canonical names a URL that redirects to the
+page, and each sitemap entry costs a redirect before the page is fetched.
+
+**Verified** in a local Apache: `DirectorySlash Off` plus a rewrite of
+directory requests to their `index.html` answers `/about` with 200 and the
+right title and canonical, keeps `/about/` working, and leaves unknown
+paths on the 404 page. Not applied, because `client/public/.htaccess`
+records that the host runs LiteSpeed, and LiteSpeed's support for
+`DirectorySlash` could not be confirmed from its documentation. The
+alternative, publishing slash-terminated URLs everywhere, changes every
+canonical and sitemap entry on the site, which is not a change to make
+without the maintainer.
+
+**Owner:** maintainer, with access to the host to test either option.
+
+---
+
+## D-16 — Products described as shipped with no repository behind them
+
+**Decision:** per product, whether it is labelled a concept or removed.
+
+`eos-platform` has no repository: `gh api repos/embeddedos-org/eos-platform`
+returns 404. It is nevertheless the subject of a release article
+(`/article-eos-platform-launch`: "the eos-platform meta-distribution reaches
+1.0 with stable APIs"), a download card on `/downloads` with a version and a
+file size whose link goes to the `eos` repository, a product page, and a
+changelog. The same class, a named product with nothing published behind it,
+already has one row in `docs/unverified-claims.md` (EoS Language); the
+discovery pass found the surfaces are wider than that row.
+
+`/product-eos-platform`'s meta description already calls it a concept, and
+`/what-we-do` labels design-stage work with a "Design / Concept" badge, so
+the site has a house pattern for this. Applying it, or removing the pages,
+is a content decision.
+
+**Owner:** maintainer.
+
+---
+
+## D-17 — Component pages that contradict their own README
+
+**Decision:** the replacement wording, per component.
+
+`docs/ecosystem-graph.json` names each component's README as the source of
+truth, and the register retired the timing claims on these pages. The
+capability descriptions were left, and some of them describe different
+software from the README. The clearest case: `/product-edb` describes an
+embedded database for EoS devices with AES-256 at-rest encryption rooted in
+the eBoot chain of trust and a footprint under 64 KB; the eDB README
+describes "a Python engine (built on SQLite)" exposing SQL, document,
+key-value, graph and full-text interfaces, served as a library, a FastAPI
+HTTP API or a React database-manager UI, requiring Python 3.11+. The
+discovery pass found six component pages in this class, with eDB the
+clearest; the JSON-LD on each product page now takes its language and name
+from the graph, so the structured data is right while the prose is not.
+
+What each page should say instead is the Foundation's to write. The
+register rows quoting README against page, one per component, are the
+next step and need no decision.
+
+**Owner:** maintainer, for the wording.
+
+---
+
+## D-18 — One inventory, several published values
+
+**Decision:** the canonical value of each inventory figure.
+
+The number of supported boards is published as 24, 63, 83, 84 and 150 on
+different pages; architectures as 7, 10 and 55; and `shared/stack-data.ts`,
+which exists so that one value is used everywhere, is imported by only some
+of the pages that print these figures. The figures the register already
+covers (300+, 14, 60+, 33, 41, 64 KB) are a different set.
+
+Once a value is chosen per figure, the code change is mechanical: route
+every page through `STACK` and add a test that no inventory literal remains
+in `client/src`.
+
+**Owner:** maintainer, for the values.
+
+---
+
+## D-19 — Two product pages share another product's repository
+
+**Decision:** what `/product-eos-platform` and `/product-eserviceapps` are.
+
+`/product-eos-platform` resolves to the `eos` repository and
+`/product-eserviceapps` to `eApps`, and each describes something its
+repository's README does not. Until 5c0d112 both pages published the
+repository's version and language as their own, so a cloud fleet-management
+product carried the kernel's `v0.5.0`. They now keep their own title and
+badge and claim no language or version from a repository that describes
+something else; `codeRepository` still points at the shared repository,
+which is the one fact on record. Whether each is a concept, an alias of the
+component it points to, or a product with a repository not yet published,
+decides what the page should say.
+
+**Owner:** maintainer.
+
+---
+
 ## What was fixed without a decision
 
 | PR  | Fix                                                                                                                                   |
@@ -412,6 +589,18 @@ to the README's.
 | #53 | Product pages gained a visible breadcrumb, `BreadcrumbList` and `SoftwareSourceCode`, all describing content already on the page      |
 | #53 | Eight `Learn more` and nine `View CAD Files` links now carry the name of what they link to, for anyone navigating by link text        |
 | #53 | `img-no-dimensions` reported 34 images across 18 pages; 30 of them cannot move anything, so it now reports only the 3 that can        |
+| #53 | `/faq` shipped 15 questions and no answers; every answer is now in the HTML behind a disclosure button                                |
+| #53 | `/api-docs` shipped one module of 24; all 261 signatures, 24 headings and 263 return values and examples are now in the HTML          |
+| #53 | 29 API signatures rendered wrong (`void *eos_shmem_alloc` shown as `void eos_shmem_allocc`); every signature now renders as written   |
+| #53 | `/eosuite` shipped 11 apps of 55; all six categories are now in the HTML                                                              |
+| #53 | Tablists had roving tabindex and no arrow keys, so a keyboard user could reach only the selected tab; arrow, Home and End keys work   |
+| #53 | Product-page JSON-LD language disagreed with the visible badge on 11 of 13 pages; both now come from the ecosystem graph              |
+| #53 | Master's link-destinations spec could not reach a link inside a collapsed tab panel; it now selects the panel's tab first             |
+
+Open and safe, not done in #53: `/404` is prerendered as a 200 page with a
+canonical and no `noindex`. A `<meta name="robots" content="noindex">` added
+by `NotFound.tsx` on mount and removed on unmount, with a test for the
+cleanup, closes it.
 
 Run `pnpm quality:check` for the current state, and `pnpm quality:check
 --network` to include external destinations.
