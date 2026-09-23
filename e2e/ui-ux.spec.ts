@@ -167,14 +167,16 @@ test.describe("responsive layout", () => {
     });
   }
 
-  test("the brand and all seven footer groups align at xl desktop", async ({
+  test("the brand and all six footer groups align at xl desktop", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const sections = page.locator("footer [data-footer-section]");
-    await expect(sections).toHaveCount(8);
+    // Brand + six link columns (Ad Grants "clear navigation" rework cut the
+    // seventh column and ~40 links).
+    await expect(sections).toHaveCount(7);
     await expect(sections.first()).toBeVisible();
 
     const rows = await sections.evaluateAll(elements =>

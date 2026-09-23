@@ -170,6 +170,27 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
     ],
   },
+  "newsletter-issue-01": {
+    lede: "The first issue of the EmbeddedOS Foundation newsletter: who we are, what shipped recently, what is being designed next, and how to get involved.",
+    sections: [
+      {
+        heading: "Welcome",
+        text: "This is the first issue of the EmbeddedOS Foundation newsletter \u2014 a periodic email for people who want to stay in touch without watching every repository. Each issue rounds up what actually shipped, what is being designed, and where help is needed. Every issue stays readable on the web at this address; there is no subscriber-only content. The Foundation is the Embedded Operating Systems Research Foundation, a 501(c)(3) public charity (EIN 41-4821627) building an open-source operating system for embedded devices. Our five programmes are Open-Source Platform Engineering, Education and Free Curriculum, Research and Publication, Workforce Development, and Community and Ecosystem Stewardship.",
+      },
+      {
+        heading: "What shipped recently",
+        text: "The website now publishes across three feeds. News carries announcements as they happen: recent items include the eAI and eNI releases, the EoSim 2.4 simulator with its hardware-in-the-loop bridge, AES-XTS at-rest encryption in eDB, and the 2026 membership cycle with its three new working groups. The Blog carries longer pieces, such as the eBoot measured-launch walkthrough and the ENI neural-pipeline benchmark plan. The documentation, API reference, free technical books, and Kids Edition are all live and linked from the Resources section of the site.",
+      },
+      {
+        heading: "What is next",
+        text: "On the roadmap: the EoS RTOS work for 2026 (tickless idle, RT-IPC primitives, a formally verified context-switch path), continued eAI edge-runtime development, and steady publishing \u2014 at least one article a month \u2014 across News and the Blog. The newsletter itself will go out periodically rather than on a fixed schedule; we would rather send six substantive issues a year than twelve thin ones.",
+      },
+      {
+        heading: "How to get involved",
+        text: "Everything the Foundation makes is MIT-licensed and on GitHub under the embeddedos-org organization. Start with the Getting Started guide, browse the open issues, join the discussions, or come to a community event. Financial support goes through the Donate page, which uses a Zeffy-hosted donation form with no platform fee. To be notified of new newsletter issues, use the contact page and mention the newsletter \u2014 we will add you to the mailing list and confirm.",
+      },
+    ],
+  },
   "foundation-membership-2026": {
     lede: "The 2026 membership cycle opens with three new working groups (Safety-Certified, Embedded AI Ethics, and Neural Interface Standards) and a refreshed governance charter.",
     sections: [

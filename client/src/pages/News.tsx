@@ -193,6 +193,44 @@ export default function News() {
         </div>
       </section>
 
+      {/*
+        Marketing sections, in one place. /news is the footer's hub for them:
+        the sections below are not footer columns, so this row is their way
+        in — see tests/unit/navigation.test.ts.
+      */}
+      <section className="section-padding">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2">
+            Browse by section
+          </h2>
+          <p className="text-white/50 text-sm mb-6">
+            Every desk in the newsroom, from the blog to the press kit.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { label: "Blog", href: "/blog" },
+              { label: "Newsletter", href: "/newsletter" },
+              { label: "Case Studies", href: "/case-studies" },
+              { label: "Member Stories", href: "/member-stories" },
+              { label: "Product Showcases", href: "/product-showcases" },
+              { label: "Project Showcases", href: "/project-showcases" },
+              { label: "Videos", href: "/videos" },
+              { label: "Social Media", href: "/social" },
+              { label: "Press Kit", href: "/press-kit" },
+              { label: "Brand Assets", href: "/brand" },
+            ].map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 glass hover:bg-white/10 text-white/70 hover:text-white border border-white/10 rounded-xl text-sm font-medium transition-all duration-150"
+              >
+                {item.label} <ArrowRight size={13} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Follow */}
       <section className="section-padding bg-[#080F1E]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">

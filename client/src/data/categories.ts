@@ -46,6 +46,7 @@ export type CategoryGroup = "marketing" | "research";
  */
 export type CategoryBinding =
   | { type: "kind"; kind: ContentKind }
+  | { type: "kinds"; kinds: readonly ContentKind[] }
   | { type: "area"; area: ResearchArea }
   | { type: "programme"; slug: string }
   | { type: "page" };
@@ -74,6 +75,15 @@ export interface Category {
 }
 
 const kind = (k: ContentKind): CategoryBinding => ({ type: "kind", kind: k });
+/**
+ * A category fed by several kinds. /blog lists every hosted long-form article,
+ * which spans the blog, technical-report and benchmark kinds; binding each
+ * kind separately would triple the category, so one binding names them all.
+ */
+const kinds = (ks: readonly ContentKind[]): CategoryBinding => ({
+  type: "kinds",
+  kinds: ks,
+});
 const area = (a: ResearchArea): CategoryBinding => ({ type: "area", area: a });
 const programme = (slug: string): CategoryBinding => ({
   type: "programme",
@@ -86,7 +96,11 @@ export const MARKETING_CATEGORIES: readonly Category[] = [
     path: "/blog",
     name: "Blog",
     group: "marketing",
-    binding: kind("blog"),
+    // Every hosted long-form article, whatever its registry kind: the blog
+    // posts, the technical reports, the benchmark, and the launch announcement
+    // that ships as a full article. Single-kind indexes (/technical-reports,
+    // /benchmarks, /news) keep their own bindings.
+    binding: kinds(["blog", "technical-report", "benchmark"]),
     summary:
       "Deep dives from the people building EmbeddedOS — design decisions, trade-offs, and the things that did not work.",
   },
@@ -115,9 +129,7 @@ export const MARKETING_CATEGORIES: readonly Category[] = [
     group: "marketing",
     binding: kind("newsletter"),
     summary:
-      "A periodic summary of what shipped, what is being designed, and what needs help.",
-    emptyNote:
-      "No issue has been sent yet. The archive will appear here once the first one goes out, and every issue will stay readable on the web without subscribing.",
+      "A periodic summary of what shipped, what is being designed, and what needs help. Every issue stays readable on the web without subscribing.",
   },
   {
     path: "/case-studies",

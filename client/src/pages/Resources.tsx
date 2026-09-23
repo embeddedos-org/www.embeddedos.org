@@ -6,6 +6,7 @@ import {
   Download,
   ExternalLink,
   ArrowRight,
+  Globe,
 } from "lucide-react";
 import { Link } from "wouter";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
@@ -137,6 +138,70 @@ const sections = [
         name: "Internship Program",
         desc: "Paid internships for students and new graduates.",
         link: "/internship",
+        external: false,
+      },
+    ],
+  },
+  {
+    icon: Globe,
+    color: "#F97316",
+    title: "Site Pages",
+    items: [
+      // The footer's hub for these: they are real pages with no footer
+      // column, so this section is their way in — see
+      // tests/unit/navigation.test.ts.
+      {
+        name: "Live Demo",
+        desc: "Try EoS in your browser — no hardware needed.",
+        link: "/demo",
+        external: false,
+      },
+      {
+        name: "Hardware Lab",
+        desc: "The boards and rigs the Foundation tests against.",
+        link: "/hardware-lab",
+        external: false,
+      },
+      {
+        name: "Kids Edition",
+        desc: "Embedded computing for young learners, free.",
+        link: "/kids",
+        external: false,
+      },
+      {
+        name: "Building an OS",
+        desc: "How an operating system gets built, step by step.",
+        link: "/building-os",
+        external: false,
+      },
+      {
+        name: "AI OS",
+        desc: "The AI-native operating system track.",
+        link: "/ai-os",
+        external: false,
+      },
+      {
+        name: "Roadmap",
+        desc: "Where the platform is going and in what order.",
+        link: "/roadmap",
+        external: false,
+      },
+      {
+        name: "Stacks",
+        desc: "Curated software stacks for common targets.",
+        link: "/stacks",
+        external: false,
+      },
+      {
+        name: "eFlow Editor",
+        desc: "Visual programming for embedded pipelines.",
+        link: "/eflow",
+        external: false,
+      },
+      {
+        name: "Architecture",
+        desc: "How the EoS system fits together.",
+        link: "/architecture",
         external: false,
       },
     ],

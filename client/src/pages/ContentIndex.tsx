@@ -37,6 +37,7 @@ import {
   badgeOf,
   byArea,
   byKind,
+  byKinds,
   formatDate,
   isInternal,
 } from "@/data/content";
@@ -57,6 +58,7 @@ const fadeUp = {
 /** The items a category shows. Programme and bespoke categories show none. */
 export function itemsFor(category: Category): ContentItem[] {
   if (category.binding.type === "kind") return byKind(category.binding.kind);
+  if (category.binding.type === "kinds") return byKinds(category.binding.kinds);
   if (category.binding.type === "area") return byArea(category.binding.area);
   return [];
 }

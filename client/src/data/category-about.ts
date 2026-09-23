@@ -65,7 +65,7 @@ export const CATEGORY_ABOUT: Record<string, ReadonlyArray<AboutSection>> = {
     {
       heading: "What the newsletter is",
       body: [
-        "The Foundation will publish a newsletter: a periodic email rounding up what has actually shipped, what is being discussed, and where help is needed across our projects. No issue has been sent yet, so the archive above is empty for now. That is the honest state of things.",
+        "The Foundation publishes a newsletter: a periodic email rounding up what has actually shipped, what is being discussed, and where help is needed across our projects. The first issue is in the archive above, and every issue stays readable on the web without subscribing.",
         "The newsletter is for people who want to stay in touch without watching every repository. If you read an issue and find nothing relevant to you, that is a sign we did it right — it means we included only what was worth your time.",
       ],
     },

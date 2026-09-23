@@ -241,10 +241,22 @@ test.describe("nonprofit transparency", () => {
 
   test("the shell carries nonprofit structured data", async ({ page }) => {
     await page.goto("/");
+    // The shell carries two blocks (WebSite, then NGO). Select the NGO one
+    // by type rather than position so a reordering cannot silently assert
+    // against the wrong entity.
     const raw = await page
       .locator('script[type="application/ld+json"]')
-      .first()
-      .textContent();
+      .evaluateAll(els => {
+        for (const el of els) {
+          try {
+            const data = JSON.parse(el.textContent ?? "{}");
+            if (data["@type"] === "NGO") return el.textContent;
+          } catch {
+            // Not parseable JSON-LD; keep looking.
+          }
+        }
+        return null;
+      });
     const data = JSON.parse(raw ?? "{}");
     expect(data["@type"]).toBe("NGO");
     expect(data.taxID).toBe("41-4821627");

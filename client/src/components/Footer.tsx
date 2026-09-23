@@ -21,6 +21,19 @@ import {
 } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
 
+/**
+ * Community destinations kept in the footer.
+ *
+ * The full COMMUNITY_LINKS list lives on /community. The footer carries only
+ * the two contribution paths e2e pins (Discussions, Projects): Wiki, Issues,
+ * Discord and AGENTS.md are one click away on /community instead. A developer
+ * config filename (AGENTS.md) in a nonprofit footer confused reviewers, and
+ * six external links in Join & Support buried the donation path.
+ */
+const FOOTER_COMMUNITY_LINKS = COMMUNITY_LINKS.filter(
+  link => link.name === "Discussions" || link.name === "Projects"
+);
+
 const LOGO_MARK = "/media/embeddedos-logo-mark_bc053888.jpg";
 const WEBSITE_HOST = new URL(FOUNDATION.website).hostname;
 
@@ -33,129 +46,84 @@ const WEBSITE_HOST = new URL(FOUNDATION.website).hostname;
  * institutional pages now live here only, and the header keeps the builder's
  * journey: Projects, Products, Docs, Community.
  *
- * Every internal route should still be reachable from this footer. Pages linked
- * only from body copy on another page are one edit away from being orphaned,
- * and `/docs`, `/security`, `/licenses`, `/roadmap`, `/research` and `/demo`
- * had already reached that state — present in the router, absent from both
- * menus. tests/unit/navigation.test.ts fails when a new route is added without
- * a home in one of these columns.
+ * Six columns of at most eight links (Ad Grants: "clear navigation" — the
+ * footer previously ran seven columns and ~90 links). Depth beyond that lives
+ * on hub pages, and tests/unit/navigation.test.ts holds the chain: every route
+ * the router serves must appear here directly or on its hub (/news for the
+ * marketing sections, /research for research output, /resources for site
+ * pages, /ecosystem for project pages, /about for institutional pages,
+ * /donate for membership paths). A page linked only from body copy on another
+ * page is one edit away from being orphaned — `/docs`, `/security`,
+ * `/licenses`, `/roadmap`, `/research` and `/demo` had already reached that
+ * state once, which is why the hub rule exists.
  */
 const FOOTER_LINKS = {
   Foundation: [
     { name: "About", href: "/about" },
     { name: "Mission & Scope", href: "/mission" },
     { name: "Our Vision", href: "/vision" },
-    { name: "What We Do", href: "/what-we-do" },
     { name: "Organization", href: "/organization" },
-    { name: "Industries", href: "/industries" },
     { name: "Transparency", href: "/transparency" },
-    { name: "Patents", href: "/patents" },
     { name: "Programmes", href: "/programmes" },
-  ],
-  // The two functions from the Foundation's organisational design. Splitting
-  // them out of "Foundation" keeps that column about the institution and gives
-  // the 37 published categories a home a reader can actually scan.
-  Marketing: [
-    { name: "News", href: "/news" },
-    { name: "Blog", href: "/blog" },
-    { name: "Press Releases", href: "/press-releases" },
-    { name: "Newsletter", href: "/newsletter" },
-    { name: "Case Studies", href: "/case-studies" },
-    { name: "Member Stories", href: "/member-stories" },
-    { name: "Product Showcases", href: "/product-showcases" },
-    { name: "Project Showcases", href: "/project-showcases" },
-    { name: "Videos", href: "/videos" },
-    { name: "YouTube", href: "/youtube" },
-    { name: "Podcast", href: "/podcast" },
-    { name: "Webinars", href: "/webinars" },
-    { name: "Social Media", href: "/social" },
-    { name: "Brand Assets", href: "/brand" },
-    { name: "Press Kit", href: "/press-kit" },
-  ],
-  // "Research" is the hub for the eight /research/* area pages, which are
-  // linked from it rather than listed here; see tests/unit/navigation.test.ts.
-  Research: [
     { name: "Research", href: "/research" },
-    { name: "Publications", href: "/publications" },
-    { name: "White Papers", href: "/white-papers" },
-    { name: "Technical Reports", href: "/technical-reports" },
-    { name: "Benchmarks", href: "/benchmarks" },
-    { name: "Datasets", href: "/datasets" },
-    { name: "Future Research", href: "/future-research" },
-  ],
-  "Join & Support": [
-    { name: "Careers", href: "/careers" },
-    { name: "Internships", href: "/internship" },
-    { name: "Get Involved", href: "/get-involved" },
-    { name: "Membership", href: "/membership" },
-    { name: "Community", href: "/community" },
-    ...COMMUNITY_LINKS.map(link => ({ ...link, external: true })),
-    { name: "Events", href: "/events" },
-    { name: "Partners", href: "/partners" },
-    { name: "Sponsors", href: "/sponsors" },
-    { name: "Donate", href: "/donate" },
-    { name: "Fundraising", href: "/fundraising" },
     { name: "Contact", href: "/contact" },
   ],
+  // Marketing sections with their own indexes. The remaining sections
+  // (case studies, member stories, showcases, video, social, press kit) are
+  // one click away in /news "Browse by section" — see the hub rule above.
+  "News & Stories": [
+    { name: "News", href: "/news" },
+    { name: "Blog", href: "/blog" },
+    { name: "Newsletter", href: "/newsletter" },
+    { name: "Press Releases", href: "/press-releases" },
+    { name: "Events", href: "/events" },
+    { name: "Videos", href: "/videos" },
+    { name: "Podcast", href: "/podcast" },
+    { name: "Webinars", href: "/webinars" },
+  ],
+  // The three hubs (All Products, All Projects, Ecosystem) carry the full
+  // catalogue; the columns name the stack's front doors only.
   Platform: [
-    // "All Products" is the hub for the 13 /product-* detail pages, which are
-    // linked from it rather than listed here; see tests/unit/navigation.test.ts.
     { name: "All Products", href: "/products" },
     { name: "All Projects", href: "/projects" },
+    { name: "Ecosystem", href: "/ecosystem" },
     { name: "EoS Kernel", href: "/eos" },
-    { name: "eBoot", href: "/eboot" },
-    { name: "eIPC", href: "/eipc" },
     { name: "eAI", href: "/eai" },
-    { name: "eAI Edge", href: "/eai-edge" },
-    { name: "eNI", href: "/eni" },
-    { name: "Neural Link AI", href: "/neural-link-ai" },
     { name: "eBuild", href: "/ebuild" },
     { name: "Architecture", href: "/architecture" },
-    { name: "Ecosystem", href: "/ecosystem" },
-    { name: "Stacks", href: "/stacks" },
     { name: "Quantum (eQC)", href: "/quantum" },
-    { name: "eCAD Hardware", href: "/ecad-hardware" },
-    { name: "AeroSwift", href: "/aerospace" },
-    { name: "Health Devices", href: "/health" },
-    { name: "Compare Health", href: "/health-compare" },
-    {
-      name: "GitHub Org",
-      href: "https://github.com/embeddedos-org",
-      external: true,
-    },
   ],
   Applications: [
+    { name: "All Apps", href: "/eapps" },
     { name: "EoSuite", href: "/eosuite" },
     { name: "EoStudio IDE", href: "/eostudio" },
     { name: "EoSim Simulator", href: "/eosim" },
     { name: "eOffice Suite", href: "/eoffice" },
     { name: "eBrowser", href: "/ebrowser" },
     { name: "eDB", href: "/edb" },
-    { name: "eFlow", href: "/eflow" },
-    // /flow is the older visual-programming page; /eflow is the product page.
-    // Both are routed, so both are listed rather than leaving one orphaned.
-    { name: "Flow Editor", href: "/flow" },
     { name: "eServiceApps", href: "/eserviceapps" },
-    { name: "eRadar360", href: "/eradar360" },
-    { name: "eHealth365", href: "/ehealth365" },
-    { name: "All Apps", href: "/eapps" },
   ],
   Resources: [
+    { name: "All Resources", href: "/resources" },
     { name: "Documentation", href: "/docs" },
     { name: "Getting Started", href: "/getting-started" },
     { name: "API Reference", href: "/api-docs" },
     { name: "Books", href: "/books" },
     { name: "Downloads", href: "/downloads" },
-    { name: "Live Demo", href: "/demo" },
-    { name: "Hardware Lab", href: "/hardware-lab" },
-    { name: "Kids Edition", href: "/kids" },
-    { name: "Building an OS", href: "/building-os" },
-    { name: "AI OS", href: "/ai-os" },
-    { name: "Certification", href: "/certification" },
-    { name: "Roadmap", href: "/roadmap" },
     { name: "Changelog", href: "/changelog" },
     { name: "FAQ", href: "/faq" },
-    { name: "All Resources", href: "/resources" },
+  ],
+  "Join & Support": [
+    { name: "Get Involved", href: "/get-involved" },
+    { name: "Community", href: "/community" },
+    { name: "Careers", href: "/careers" },
+    { name: "Partners", href: "/partners" },
+    { name: "Donate", href: "/donate" },
+    { name: "Fundraising", href: "/fundraising" },
+    // Membership and Sponsors live one click away on /donate, which names
+    // both paths. The two slots they free carry the contribution links e2e
+    // pins to the footer; the rest of COMMUNITY_LINKS lives on /community.
+    ...FOOTER_COMMUNITY_LINKS.map(link => ({ ...link, external: true })),
   ],
 };
 
@@ -283,9 +251,9 @@ export default function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-16 bg-[#F97316]/4 blur-[40px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
-        {/* At xl, the brand and all seven link groups share one row. Below xl,
+        {/* At xl, the brand and all six link groups share one row. Below xl,
             the existing responsive spans keep the denser columns readable. */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 xl:grid-cols-[2fr_repeat(7,minmax(0,1fr))] gap-x-8 xl:gap-x-6 gap-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-[2fr_repeat(6,minmax(0,1fr))] gap-x-8 xl:gap-x-6 gap-y-10">
           {/* Brand */}
           <div
             data-footer-section="Brand"

@@ -29,7 +29,7 @@ const SLUGS = Object.keys(ARTICLE_BODIES);
 describe("every article renders", () => {
   it("has bodies to test", () => {
     // Without this the parameterised suite below is empty and green.
-    expect(SLUGS.length).toBe(8);
+    expect(SLUGS.length).toBe(9);
   });
 
   it.each(SLUGS)("%s renders title, lede and all sections", slug => {
@@ -51,7 +51,7 @@ describe("every article renders", () => {
   });
 
   it.each(SLUGS)("%s shows the registry date, not a second copy", slug => {
-    // The defect this whole change exists to prevent: seven of the eight
+    // The defect this whole change exists to prevent: seven of the original eight
     // article components carried their own date, and seven disagreed with the
     // listing — one by eleven months.
     render(<Article slug={slug} />);

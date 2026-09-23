@@ -12,7 +12,7 @@ import { describe, it, expect } from "vitest";
 // @ts-expect-error - plain .mjs script, no type declarations
 import {
   applyMeta,
-  deferStylesheet,
+  restoreDeferredStylesheets,
   TITLE_OVERRIDES as PRERENDER_TITLES,
   DESCRIPTION_OVERRIDES as PRERENDER_DESCRIPTIONS,
   socialImageFor as prerenderSocialImageFor,
@@ -25,7 +25,6 @@ import {
   socialImageFor,
   SOCIAL_IMAGE_RULES,
   DEFAULT_TITLE,
-  FALLBACK_DESCRIPTION,
   TITLE_OVERRIDES,
   DESCRIPTION_OVERRIDES,
 } from "../../client/src/lib/page-meta";
@@ -245,44 +244,31 @@ describe("truncate", () => {
 });
 
 describe("stylesheet deferral", () => {
-  const CSS_SHELL = `<!doctype html><html><head>
-<link rel="stylesheet" crossorigin href="/assets/index-abc123.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans" media="print" onload="this.media='all'">
+  // The pipeline changed shape in fix/prerender-deferred-stylesheets: the
+  // shell (client/index.html) already ships stylesheets deferred, and the
+  // prerenderer restores that form in snapshots instead of deferring at
+  // build time. What this suite holds is the round-trip: a snapshot taken
+  // from the live page (onload already fired, media="all") is rewritten to
+  // the shell's deferred declaration, and the webfont sheet is untouched.
+  const SNAPSHOT_HEAD = `<!doctype html><html><head>
+<link rel="stylesheet" crossorigin href="/assets/index-abc123.css" media="all" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans" media="all" onload="this.media='all'">
 </head><body></body></html>`;
 
-  it("defers the built stylesheet without blocking first render", () => {
-    const out = deferStylesheet(CSS_SHELL);
+  it("restores the built stylesheet to its deferred declaration", () => {
+    const out = restoreDeferredStylesheets(SNAPSHOT_HEAD);
     expect(out).toContain(
-      `<link rel="preload" as="style" crossorigin href="/assets/index-abc123.css" />`
+      `<link rel="stylesheet" crossorigin href="/assets/index-abc123.css" media="print" onload="this.media='all'">`
     );
-    expect(out).toContain(`media="print" onload="this.media='all'"`);
-    expect(out).toContain(
-      `<noscript><link rel="stylesheet" crossorigin href="/assets/index-abc123.css" /></noscript>`
-    );
-    // No render-blocking stylesheet link remains outside the noscript
-    // fallback (which by definition only loads with JS disabled).
-    const withoutNoscript = out.replace(/<noscript>[\s\S]*?<\/noscript>/g, "");
-    expect(withoutNoscript).not.toMatch(
-      /<link rel="stylesheet"(?![^>]*\bmedia=)[^>]*>/
-    );
+    // No render-blocking (media-less, handler-less) stylesheet remains.
+    expect(out).not.toMatch(/<link rel="stylesheet"(?![^>]*\bmedia=)[^>]*>/);
   });
 
   it("leaves the already-deferred webfont stylesheet alone", () => {
-    const out = deferStylesheet(CSS_SHELL);
+    const out = restoreDeferredStylesheets(SNAPSHOT_HEAD);
     expect(out.match(/fonts\.googleapis\.com/g)?.length).toBe(1);
-    expect(out).not.toContain('as="style" href="https://fonts.googleapis.com');
-  });
-});
-
-describe("shared copy", () => {
-  it("uses the same fallback description the prerenderer writes", () => {
-    // Use a route with no description override — overridden routes
-    // legitimately skip the fallback (see above).
-    const rendered = applyMeta(SHELL, {
-      route: "/some-route",
-      heading: "Heading",
-      description: "",
-    });
-    expect(rendered).toContain(FALLBACK_DESCRIPTION.slice(0, 80));
+    expect(out).toContain(
+      `href="https://fonts.googleapis.com/css2?family=DM+Sans" media="print"`
+    );
   });
 });

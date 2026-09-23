@@ -156,7 +156,7 @@ function lazyPage<P extends object = Record<string, never>>(
    * Extra concrete paths served by this same component.
    *
    * preloadRoute() keys the registry by exact pathname, so a component mounted
-   * at several URLs needs a loader entry for each. Without them the eight
+   * at several URLs needs a loader entry for each. Without them the
    * /article-xxx pages would lose synchronous hydration and flash <PageLoader />
    * over prerendered markup.
    */
@@ -315,8 +315,9 @@ const EAIEdgePage = lazyPage("/eai-edge", () => import("./pages/EAIEdge"));
 const EOSuitePage = lazyPage("/eosuite", () => import("./pages/EOSuite"));
 const ResourcesPage = lazyPage("/resources", () => import("./pages/Resources"));
 // One lazily-loaded component serves every article; the slug selects the
-// content. The eight legacy /article-xxx paths are kept as explicit routes
-// below so existing links and search-engine results keep working.
+// content. The /article-xxx paths (eight legacy entries plus later additions
+// such as the newsletter archive) are kept as explicit routes below so
+// existing links and search-engine results keep working.
 /**
  * Index pages for the content kinds that have something to list.
  *
@@ -399,6 +400,7 @@ const ArticlePage = lazyPage<{ slug?: string }>(
     "/article-eos-roadmap-2026",
     "/article-eosim-hil-bridge",
     "/article-foundation-membership-2026",
+    "/article-newsletter-issue-01",
   ]
 );
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
@@ -1024,6 +1026,11 @@ function Router() {
       <Route path="/article-foundation-membership-2026">
         <Suspense fallback={<PageLoader />}>
           <ArticlePage slug="foundation-membership-2026" />
+        </Suspense>
+      </Route>
+      <Route path="/article-newsletter-issue-01">
+        <Suspense fallback={<PageLoader />}>
+          <ArticlePage slug="newsletter-issue-01" />
         </Suspense>
       </Route>
       <Route path="/downloads">

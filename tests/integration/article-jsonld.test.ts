@@ -48,10 +48,10 @@ describe("built article pages", () => {
       "dist/public is missing — run `pnpm build` before tests/integration"
     ).toBe(true);
     const files = articleHtmlFiles();
-    expect(
-      files.length,
-      "expected the eight prerendered legacy article pages"
-    ).toBe(8);
+    // Eight legacy articles plus later additions (the newsletter archive).
+    // Every built article page is asserted below; the count pins the set so
+    // a silently dropped page cannot hide behind a passing loop.
+    expect(files.length, "expected the prerendered article pages").toBe(9);
   });
 
   it.each(articleHtmlFiles())(
