@@ -483,6 +483,41 @@ export default function About() {
           </motion.div>
         </div>
       </section>
+
+      {/*
+        The Foundation's institutional pages, in one place. /about is the
+        footer's hub for them: What We Do, Industries, Patents and Careers
+        are not footer columns, so this section is their way in — see
+        tests/unit/navigation.test.ts.
+      */}
+      <section className="section-cinematic bg-[#080F1E]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="font-heading font-bold text-white text-2xl mb-2">
+            The Foundation
+          </h2>
+          <p className="text-white/50 text-sm mb-6">
+            What we do, where we work, what we hold, and who does it.
+          </p>
+          <div className="flex justify-center flex-wrap gap-3">
+            {[
+              { label: "What We Do", href: "/what-we-do" },
+              { label: "Industries", href: "/industries" },
+              { label: "Patents", href: "/patents" },
+              { label: "Careers", href: "/careers" },
+              { label: "Mission & Scope", href: "/mission" },
+              { label: "Transparency", href: "/transparency" },
+            ].map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 glass hover:bg-white/10 text-white/70 hover:text-white border border-white/10 rounded-xl text-sm font-medium transition-all duration-150"
+              >
+                {item.label} <ArrowRight size={13} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

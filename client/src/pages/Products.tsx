@@ -47,6 +47,69 @@ const fadeUp = {
 
 // ─── Product families ─────────────────────────────────────────────────────────
 
+/**
+ * The per-product reference pages, and the section below that links them.
+ *
+ * Each of these 13 routes carries a full specification page, and until this
+ * section existed not one of them had an inbound link from a page a crawler
+ * could reach. They were linked only from the header's mega-menu, whose panels
+ * Radix mounts on hover — `scripts/prerender.mjs` snapshots a real browser and
+ * a crawler does not hover, so none of the 13 appeared in any of the 132
+ * prerendered pages. They linked to each other, forming a closed island, and
+ * /product-eapps, /product-eos-platform and /product-eserviceapps had no
+ * inbound link anywhere in the static site at all.
+ *
+ * The family cards above deliberately keep their existing destinations: they
+ * point at the overview pages (/eos, /eai, …), which is the right first stop.
+ * This section is the reference layer underneath them.
+ *
+ * tests/unit/navigation.test.ts fails if App.tsx declares a /product-* route
+ * that is missing here, so a new product page cannot be orphaned the same way.
+ */
+const PRODUCT_REFERENCE = [
+  { href: "/product-eos", name: "EoS Kernel", note: "Real-time embedded OS" },
+  {
+    href: "/product-eboot",
+    name: "eBootloader",
+    note: "Multi-architecture bootloader",
+  },
+  { href: "/product-eipc", name: "EIPC", note: "Inter-process communication" },
+  {
+    href: "/product-ebuild",
+    name: "eBuild",
+    note: "Build system & SDK generator",
+  },
+  { href: "/product-eai", name: "eAI", note: "On-device AI inference engine" },
+  { href: "/product-eni", name: "eNI", note: "Neural interface platform" },
+  { href: "/product-edb", name: "eDB", note: "Embedded multi-model database" },
+  {
+    href: "/product-eapps",
+    name: "eApps",
+    note: "Embedded application ecosystem",
+  },
+  {
+    href: "/product-eoffice",
+    name: "eOffice Suite",
+    note: "11-app embedded office suite",
+  },
+  {
+    href: "/product-eserviceapps",
+    name: "eServiceApps",
+    note: "Embedded service applications",
+  },
+  { href: "/product-eosim", name: "EoSim", note: "Virtual platform simulator" },
+  {
+    href: "/product-eostudio",
+    name: "EoStudio",
+    note: "Embedded development IDE",
+  },
+  {
+    href: "/product-eos-platform",
+    name: "EoS Platform",
+    note: "Device management & OTA",
+  },
+] as const;
+
 const FAMILIES = [
   {
     id: "platform",
@@ -727,6 +790,37 @@ export default function Products() {
               </motion.div>
             );
           })}
+        </div>
+      </section>
+
+      {/* ── Per-product reference pages ── */}
+      <section className="pb-16" aria-labelledby="product-reference-heading">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <h2
+            id="product-reference-heading"
+            className="font-heading font-bold text-2xl text-white mb-2"
+          >
+            Product reference
+          </h2>
+          <p className="text-white/50 text-sm mb-6 max-w-2xl">
+            One page per product, with its interfaces, configuration and
+            integration points.
+          </p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {PRODUCT_REFERENCE.map(p => (
+              <li key={p.href}>
+                <Link
+                  href={p.href}
+                  className="flex items-baseline gap-2 p-3 rounded-xl border border-white/8 hover:border-white/20 hover:bg-white/[0.03] transition-colors"
+                >
+                  <span className="font-semibold text-white text-sm">
+                    {p.name}
+                  </span>
+                  <span className="text-white/40 text-xs">{p.note}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

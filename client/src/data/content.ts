@@ -289,6 +289,17 @@ export const CONTENT: readonly ContentItem[] = [
     tags: ["eosllm", "LLM", "AI", "Edge AI"],
   },
   {
+    slug: "newsletter-issue-01",
+    kind: "newsletter",
+    date: "2026-09-01",
+    badge: "Issue 01",
+    title: "Newsletter Issue 01 — Welcome, What Shipped, What Is Next",
+    summary:
+      "The first EmbeddedOS Foundation newsletter: who we are, what the site now publishes (news, articles, documentation, free books), and how to follow along or get involved.",
+    href: "/article-newsletter-issue-01",
+    tags: ["Newsletter", "Foundation", "Welcome"],
+  },
+  {
     slug: "foundation-membership-2026",
     kind: "blog",
     date: "2025-11-01",
@@ -404,7 +415,7 @@ export const CONTENT: readonly ContentItem[] = [
   },
   {
     slug: "eos-platform-launch",
-    kind: "news",
+    kind: "blog",
     date: "2025-04-01",
     badge: "Release",
     title: "eos-platform 1.0: One Toolchain, Every EoS Profile",

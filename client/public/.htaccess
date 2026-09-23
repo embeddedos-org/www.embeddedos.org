@@ -121,3 +121,28 @@ ErrorDocument 404 /404.html
 # local MTA rather than authenticated SMTP. Protecting the source of an
 # open-source file was not worth a directive whose meaning changes between the
 # server it was tested on and the server it runs on.
+
+# Baseline security headers (Ad Grants site-quality review).
+#
+# Guarded by <IfModule mod_headers.c> like the cache blocks above: a safe
+# no-op where mod_headers is absent rather than a 500.
+#
+# Content-Security-Policy notes, because a wrong directive here breaks the
+# donation path silently:
+# - script-src 'unsafe-inline' is required by the font stylesheet's
+#   onload="this.media='all'" handler in client/index.html. Removing it
+#   would need that handler moved into a static file first.
+# - style-src 'unsafe-inline' is required by the inlined critical CSS in
+#   client/index.html (source of truth: client/src/critical.css).
+# - frame-src/connect-src name Zeffy explicitly: /donate embeds
+#   www.zeffy.com/en-US/embed/donation-form/... in an iframe, with a
+#   same-form fallback link when the frame cannot load.
+# - img-src has no remote entries: every image is same-origin (see
+#   client/public/media) and JSON-LD blocks are data, not script.
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src 'self' https://www.zeffy.com; connect-src 'self' https://www.zeffy.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+</IfModule>

@@ -24,7 +24,7 @@ function declaredRoutes(): string[] {
  *
  * Two forms count. `lazyPage("/x", ...)` registers its own path; the optional
  * third argument registers aliases, which is how one component can serve
- * several concrete URLs — the article page serves eight. An alias needs a
+ * several concrete URLs — the article page serves nine. An alias needs a
  * loader entry of its own because preloadRoute() keys the registry by exact
  * pathname, so omitting one costs that URL its synchronous hydration.
  *

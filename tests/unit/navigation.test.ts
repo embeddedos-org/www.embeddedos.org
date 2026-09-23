@@ -27,6 +27,14 @@ const navSource = read("client/src/components/Navbar.tsx");
 const footerSource = read("client/src/components/Footer.tsx");
 const communitySource = read("client/src/pages/Community.tsx");
 const communityDataSource = read("client/src/data/community.ts");
+const productsSource = read("client/src/pages/Products.tsx");
+const newsSource = read("client/src/pages/News.tsx");
+const researchSource = read("client/src/pages/Research.tsx");
+const resourcesSource = read("client/src/pages/Resources.tsx");
+const ecosystemSource = read("client/src/pages/Ecosystem.tsx");
+const aboutSource = read("client/src/pages/About.tsx");
+const donateSource = read("client/src/pages/Donate.tsx");
+const missionSource = read("client/src/pages/Mission.tsx");
 const foundationSource = read("client/src/data/foundation.ts");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
@@ -58,7 +66,7 @@ const footerAll = [...new Set([...footerHrefs, ...legalHrefs])];
 /**
  * Families of detail pages reached through a hub page instead of directly.
  *
- * Listing 13 product detail pages and 8 articles in the footer would bury the
+ * Listing 13 product detail pages and 9 articles in the footer would bury the
  * columns that matter. Each family has a hub that IS in the footer and that
  * links its members, so the chain from the footer to any page stays unbroken —
  * which is the property worth holding, not the literal presence of every URL.
@@ -76,6 +84,98 @@ const HUBS: Array<{ prefix: string; hub: string }> = [
 ];
 
 /**
+ * Pages with no footer column, grouped by the hub page that carries them.
+ *
+ * Ad Grants review: the footer ran seven columns and ~90 links. It now runs
+ * six columns of at most eight links, and the depth moved here — each hub is
+ * itself in the footer, and the "hub links its members" test below fails if a
+ * member is ever removed from its hub page. Adding a member means adding the
+ * link on the hub page AND the entry here, together.
+ */
+const HUB_MEMBERS: Array<{ hub: string; members: string[] }> = [
+  {
+    hub: "/news",
+    members: [
+      "/case-studies",
+      "/member-stories",
+      "/product-showcases",
+      "/project-showcases",
+      "/social",
+      "/press-kit",
+      "/brand",
+    ],
+  },
+  {
+    hub: "/research",
+    members: [
+      "/publications",
+      "/white-papers",
+      "/technical-reports",
+      "/benchmarks",
+      "/datasets",
+      "/future-research",
+    ],
+  },
+  {
+    hub: "/resources",
+    members: [
+      "/demo",
+      "/hardware-lab",
+      "/kids",
+      "/building-os",
+      "/ai-os",
+      "/roadmap",
+      "/stacks",
+      "/eflow",
+      "/architecture",
+      "/certification",
+      "/internship",
+    ],
+  },
+  {
+    hub: "/ecosystem",
+    members: [
+      "/eboot",
+      "/eipc",
+      "/eni",
+      "/eai-edge",
+      "/ecad-hardware",
+      "/aerospace",
+      "/health",
+      "/health-compare",
+      "/neural-link-ai",
+      "/flow",
+      "/ehealth365",
+      "/eradar360",
+      "/youtube",
+    ],
+  },
+  {
+    hub: "/about",
+    members: ["/what-we-do", "/industries", "/patents", "/careers"],
+  },
+  { hub: "/donate", members: ["/membership", "/sponsors"] },
+  { hub: "/mission", members: ["/industries"] },
+];
+
+const HUB_SOURCES: Record<string, string> = {
+  "/news": newsSource,
+  "/research": researchSource,
+  "/resources": resourcesSource,
+  "/ecosystem": ecosystemSource,
+  "/about": aboutSource,
+  "/donate": donateSource,
+  "/mission": missionSource,
+};
+
+/** Every route covered through a hub rather than a literal footer link. */
+function hubFor(route: string): string | undefined {
+  const prefix = HUBS.find(h => route.startsWith(h.prefix));
+  if (prefix) return prefix.hub;
+  return HUB_MEMBERS.find(h => h.members.includes(route))?.hub;
+}
+
+/**
  * A parameterised route is a template, not a page. `/article/:slug` has no
  * single URL to put in a footer; its concrete instances are the `/article-xxx`
  * paths, which the /news hub covers above.
@@ -87,8 +187,8 @@ describe("route coverage", () => {
     const missing = routes.filter(r => {
       if (r === "/" || isParameterised(r) || footerAll.includes(r))
         return false;
-      const hub = HUBS.find(h => r.startsWith(h.prefix));
-      return !(hub && footerAll.includes(hub.hub));
+      const hub = hubFor(r);
+      return !(hub && footerAll.includes(hub));
     });
     expect(
       missing,
@@ -107,6 +207,56 @@ describe("route coverage", () => {
       dangling,
       `links to non-existent routes:\n${dangling.join("\n")}`
     ).toEqual([]);
+  });
+});
+
+describe("hub pages link their members", () => {
+  for (const { hub, members } of HUB_MEMBERS) {
+    it(`${hub} links ${members.length} member pages`, () => {
+      const source = HUB_SOURCES[hub];
+      // Literal hrefs, data entries (`href: "/x"`, `link: "/x"`) and computed
+      // paths (`href={..."/x"...}` all count: what matters is the address
+      // appears in the hub's source, not which JSX form carries it. The
+      // research area links are computed (`/research/${c.key}`), so the
+      // prefix family above covers them rather than this list.
+      const missing = members.filter(m => !source.includes(`"${m}"`));
+      expect(missing, `${hub} does not link:\n${missing.join("\n")}`).toEqual(
+        []
+      );
+    });
+  }
+
+  it("keeps every hub itself in the footer", () => {
+    const hubs = [...new Set(HUB_MEMBERS.map(h => h.hub))];
+    for (const hub of hubs) expect(footerAll).toContain(hub);
+  });
+});
+
+describe("product reference pages", () => {
+  /** Every /product-* detail route the router serves, excluding the hubs. */
+  const detailRoutes = routes.filter(
+    r => r.startsWith("/product-") && r !== "/product-showcases"
+  );
+
+  /**
+   * These pages were reachable only from the header's mega-menu, which Radix
+   * mounts on hover — so none of them appeared in any prerendered page, and
+   * three had no inbound link anywhere in the static site. /products is their
+   * hub and must link each one.
+   */
+  it("links every product detail page from the products hub", () => {
+    const missing = detailRoutes.filter(
+      r => !productsSource.includes(`href: "${r}"`)
+    );
+    expect(missing, "product routes absent from /products").toEqual([]);
+  });
+
+  it("lists no product reference entry that is not a route", () => {
+    const listed = [
+      ...productsSource.matchAll(/href: "(\/product-[^"]+)"/g),
+    ].map(m => m[1]);
+    const stray = listed.filter(h => !routes.includes(h));
+    expect(stray, "product reference entries with no route").toEqual([]);
   });
 });
 
@@ -142,8 +292,8 @@ describe("menu separation", () => {
     // had no business in a product menu, asserted above.
     const orphaned = navHrefs.filter(h => {
       if (footerAll.includes(h)) return false;
-      const hub = HUBS.find(x => h.startsWith(x.prefix));
-      return !(hub && footerAll.includes(hub.hub));
+      const hub = hubFor(h);
+      return !(hub && footerAll.includes(hub));
     });
     expect(
       orphaned,
@@ -165,9 +315,12 @@ describe("community resources", () => {
   // removed from client/src/data/community.ts — that repository is private, so
   // those links 404 for every public visitor.
   const expected = [
+    "https://github.com/embeddedos-org/eos/wiki",
     "https://github.com/orgs/embeddedos-org/discussions",
     "https://discord.gg/n6Kd9fwja",
+    "https://github.com/embeddedos-org/eos/issues",
     "https://github.com/orgs/embeddedos-org/projects",
+    "https://github.com/embeddedos-org/eos/blob/master/AGENTS.md",
   ];
 
   it("publishes the exact repository and organization destinations", () => {
@@ -179,9 +332,31 @@ describe("community resources", () => {
     expect(communityDataSource).not.toContain("/agents");
   });
 
+  /**
+   * The footer renders these on all 132 prerendered pages, so one unreachable
+   * href is 132 broken links. This repository is private: every path under it
+   * answers 404 for a logged-out visitor, while looking correct to a signed-in
+   * maintainer — which is exactly how `/wiki`, `/issues` and `/blob/master/
+   * AGENTS.md` shipped and stayed broken.
+   */
+  it("links nothing into this repository, which is private", () => {
+    const offenders = [...communityDataSource.matchAll(/href: "([^"]+)"/g)]
+      .map(m => m[1])
+      .filter(href =>
+        href.includes("github.com/embeddedos-org/www.embeddedos.org")
+      );
+    expect(offenders).toEqual([]);
+  });
+
   it("uses the shared destinations in the footer and community page", () => {
-    expect(footerSource).toContain("...COMMUNITY_LINKS.map");
+    // The footer carries the two contribution links (Discussions, Projects)
+    // via FOOTER_COMMUNITY_LINKS; the full list, AGENTS.md included, renders
+    // on /community. Both spread the same shared data rather than retyping
+    // URLs — one unreachable href would otherwise be 132 broken links.
+    expect(footerSource).toContain("...FOOTER_COMMUNITY_LINKS.map");
+    expect(footerSource).toContain("COMMUNITY_LINKS.filter");
     expect(communitySource).toContain("COMMUNITY_LINKS.map");
+    expect(communityDataSource).toContain("AGENTS.md");
   });
 });
 
@@ -189,14 +364,35 @@ describe("footer columns", () => {
   it("has a column for each area of the site", () => {
     for (const heading of [
       "Foundation",
-      "Marketing",
-      "Research",
+      "News & Stories",
       "Join & Support",
       "Platform",
       "Applications",
       "Resources",
     ]) {
       expect(footerSource).toContain(heading);
+    }
+  });
+
+  it("keeps every column scannable: six columns, eight links each at most", () => {
+    // Ad Grants "clear navigation": the footer ran seven columns and ~90
+    // links. A column is the literal block between `  "Name": [` (or
+    // `  Name: [`) and the closing `  ],` at the same indent.
+    const start = footerSource.indexOf("const FOOTER_LINKS = {");
+    const end = footerSource.indexOf("\n};", start);
+    const block = footerSource.slice(start, end);
+    const columns = [
+      ...block.matchAll(
+        /^[ ]{2}(?:"[^"]+"|[\w &]+): \[$([\s\S]*?)^[ ]{2}\],/gm
+      ),
+    ];
+    expect(columns.length).toBeLessThanOrEqual(6);
+    expect(columns.length).toBeGreaterThan(0);
+    for (const col of columns) {
+      const count =
+        (col[1].match(/\{ name:/g) ?? []).length +
+        (col[1].includes("FOOTER_COMMUNITY_LINKS") ? 2 : 0);
+      expect(count, `footer column has ${count} links`).toBeLessThanOrEqual(8);
     }
   });
 

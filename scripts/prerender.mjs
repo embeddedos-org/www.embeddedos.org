@@ -355,7 +355,8 @@ export const escapeAttr = s =>
 /**
  * Per-route title overrides (F-05). Deliberate copy of TITLE_OVERRIDES in
  * client/src/lib/page-meta.ts — the two tables must stay identical;
- * tests/unit/page-meta.test.ts enforces it.
+ * tests/unit/page-meta.test.ts enforces it. (Restored: the deferred-stylesheet
+ * rework dropped these tables while keeping the references in applyMeta.)
  */
 export const TITLE_OVERRIDES = {
   "/": "Open-source embedded OS for every device | EmbeddedOS",
@@ -405,42 +406,8 @@ export const DESCRIPTION_OVERRIDES = {
 };
 
 /**
- * Load the built stylesheet without blocking first render (F-07).
- *
- * Vite emits one render-blocking <link rel="stylesheet"> (~45 KB). This
- * rewrites it to preload + the media="print" onload pattern (the same trick
- * index.html already uses for webfonts) with a <noscript> fallback, so the
- * CSS downloads early but applies without delaying first paint. Above-the-fold
- * essentials are already inlined in index.html's <style> block (see
- * client/src/critical.css), so there is no unstyled flash.
- *
- * The webfont stylesheet already uses media="print" itself and is left alone.
- */
-export function deferStylesheet(html) {
-  return html.replace(
-    /<link\s+rel="stylesheet"(?![^>]*\bmedia=)[^>]*>/gi,
-    tag => {
-      const attrs = tag
-        .replace(/^<link\s+/i, "")
-        .replace(/\brel="stylesheet"\s*/i, "")
-        .replace(/\s*\/?>$/, "")
-        .trim();
-      return (
-        `<link rel="preload" as="style" ${attrs} />` +
-        `<link rel="stylesheet" ${attrs} media="print" onload="this.media='all'" />` +
-        `<noscript><link rel="stylesheet" ${attrs} /></noscript>`
-      );
-    }
-  );
-}
-
-/**
- * Social preview image per section.
- *
- * Kept in step with SOCIAL_IMAGES in client/src/lib/page-meta.ts by
- * tests/unit/page-meta.test.ts, for the same reason the title and description
- * rules are duplicated there: this file pulls in playwright and express and
- * cannot be imported into the browser bundle.
+ * Social preview image per section. Kept in step with SOCIAL_IMAGE_RULES in
+ * client/src/lib/page-meta.ts by tests/unit/page-meta.test.ts.
  */
 export const SOCIAL_IMAGE_RULES = [
   [
@@ -485,28 +452,39 @@ export const SOCIAL_IMAGE_RULES = [
   ],
 ];
 
-/**
- * Hand-written meta descriptions, keyed by route.
- *
- * extractMeta() takes the first substantive sentence on the page, which is
- * accurate but frequently longer than a search result will show. Where a route
- * appears in shared/route-descriptions.json that text is used instead. Both
- * this file and client/src/lib/page-meta.ts read the same JSON, so a client
- * navigation and the prerendered snapshot cannot disagree.
- */
-export const ROUTE_DESCRIPTIONS = JSON.parse(
-  fs.readFileSync(path.join(ROOT, "shared", "route-descriptions.json"), "utf8")
-);
-
-export function descriptionFor(route, extracted) {
-  return ROUTE_DESCRIPTIONS[route] ?? extracted;
-}
-
 export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
 
 export function socialImageFor(route) {
   const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
   return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
+}
+
+/**
+ * Put deferred stylesheets back the way the shell declares them.
+ *
+ * index.html loads the webfonts as `media="print" onload="this.media='all'"`:
+ * a print stylesheet does not block first paint, so the browser fetches it off
+ * the critical path and the onload switches it on once it has arrived. The
+ * snapshot is serialised from a live page, by which point onload has already
+ * run — so what every route wrote to disk was `media="all"` with the handler
+ * still attached, and every deployed page requested Google Fonts as a
+ * render-blocking stylesheet. The shell's own trick was undone by the
+ * prerender of it, on every route, since the day both landed (e13c116).
+ *
+ * String-level on purpose: doing it in the page would leave the same window
+ * that captureHtml() closes for the opacity strip, and this way the rule is
+ * testable without a browser. Only a stylesheet whose onload sets media to
+ * "all" is touched — that handler is the marker of a deferred sheet, and
+ * nothing else in the head carries one.
+ */
+export function restoreDeferredStylesheets(html) {
+  return html.replace(/<link\b[^>]*>/g, tag => {
+    if (!/\brel="stylesheet"/.test(tag)) return tag;
+    if (!/\bonload="[^"]*\bthis\.media\s*=\s*'all'[^"]*"/.test(tag)) return tag;
+    return /\bmedia="[^"]*"/.test(tag)
+      ? tag.replace(/\bmedia="[^"]*"/, 'media="print"')
+      : tag.replace(/^<link\b/, '<link media="print"');
+  });
 }
 
 /** Rewrite the head of a snapshot with route-specific title/description/canonical. */
@@ -696,8 +674,9 @@ async function main() {
         });
         await settle(page);
         const meta = await extractMeta(page);
-        const html = deferStylesheet(
-          applyMeta(await captureHtml(page), { route, ...meta })
+        const html = applyMeta(
+          restoreDeferredStylesheets(await captureHtml(page)),
+          { route, ...meta }
         );
         const target = writeSnapshot(route, html);
         const textLength = await page.evaluate(

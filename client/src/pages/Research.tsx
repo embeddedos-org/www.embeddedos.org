@@ -23,6 +23,24 @@ import {
   type ContentItem,
 } from "@/data/content";
 
+/**
+ * Research output indexes, in one place. /research is the footer's hub
+ * for them: these indexes are not footer columns, so these cards are
+ * their way in — see tests/unit/navigation.test.ts.
+ */
+/**
+ * Where each research output kind is listed. Written out (rather than derived
+ * from the category registry) so the hub's promise is visible at the point of
+ * use — and so tests/unit/navigation.test.ts can see the addresses too.
+ */
+const RESEARCH_KIND_PATHS: Record<string, string> = {
+  publication: "/publications",
+  "white-paper": "/white-papers",
+  "technical-report": "/technical-reports",
+  benchmark: "/benchmarks",
+  dataset: "/datasets",
+};
+
 const areas = [
   {
     icon: Brain,
@@ -166,11 +184,14 @@ export default function Research() {
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-10">
             {kindSummary(RESEARCH_KINDS).map(c => (
-              <div
+              <Link
                 key={c.key}
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3"
+                href={RESEARCH_KIND_PATHS[c.key] ?? "/research"}
+                className="bg-white/5 border border-white/10 hover:border-white/25 rounded-lg px-4 py-3 block transition-colors"
               >
-                <div className="text-white text-sm font-medium">{c.label}</div>
+                <div className="text-white text-sm font-medium underline decoration-white/20 underline-offset-4">
+                  {c.label}
+                </div>
                 <div
                   className={`text-xs mt-1 ${
                     c.count > 0 ? "text-orange-400" : "text-gray-600"
@@ -178,7 +199,7 @@ export default function Research() {
                 >
                   {c.count > 0 ? `${c.count} published` : "none yet"}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

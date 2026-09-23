@@ -8,8 +8,9 @@
  * one by eleven months. Rendering both from the registry makes that
  * impossible rather than merely unlikely.
  *
- * The route is /article/:slug. The eight legacy /article-xxx paths still
- * resolve, so nothing that is already linked or indexed breaks; see App.tsx.
+ * The route is /article/:slug. The legacy /article-xxx paths (eight from the
+ * original migration, plus later additions such as the newsletter archive)
+ * still resolve, so nothing that is already linked or indexed breaks; see App.tsx.
  */
 
 import { motion } from "framer-motion";

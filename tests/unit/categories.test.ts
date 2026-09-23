@@ -134,7 +134,11 @@ describe("bindings resolve", () => {
     // to reach it from.
     const boundKinds = new Set(
       ALL_CATEGORIES.flatMap(c =>
-        c.binding.type === "kind" ? [c.binding.kind] : []
+        c.binding.type === "kind"
+          ? [c.binding.kind]
+          : c.binding.type === "kinds"
+            ? [...c.binding.kinds]
+            : []
       )
     );
     const orphaned = [...new Set(CONTENT.map(i => i.kind))].filter(
@@ -152,6 +156,47 @@ describe("bindings resolve", () => {
   });
 });
 
+describe("blog completeness", () => {
+  it("lists the eight long-form articles on /blog", async () => {
+    // Ad Grants review: the blog showed three posts while eight articles were
+    // published. The eight long-form pieces (blog, technical-report,
+    // benchmark kinds) must all appear on /blog through its kinds union.
+    // Data-only: resolving through itemsFor would drag the .tsx page (and
+    // framer-motion) into this node-environment test, so the union is
+    // evaluated here the same way ContentIndex.itemsFor evaluates it.
+    const { categoryByPath } = await import("../../client/src/data/categories");
+    const { byKinds, bySlug } = await import("../../client/src/data/content");
+    const { ARTICLE_BODIES } =
+      await import("../../client/src/data/article-bodies");
+    const blog = categoryByPath("/blog")!;
+    if (blog.binding.type !== "kinds") throw new Error("/blog is not a union");
+    const listed = new Set(byKinds(blog.binding.kinds).map(i => i.slug));
+    const hosted = Object.keys(ARTICLE_BODIES);
+    expect(hosted.length).toBeGreaterThan(0);
+    // Newsletter issues are hosted too, but they belong to /newsletter, not
+    // the blog — exclude them here and assert them on their own index below.
+    const articles = hosted.filter(s => bySlug(s)?.kind !== "newsletter");
+    expect(articles).toHaveLength(8);
+    for (const slug of articles) expect(listed, slug).toContain(slug);
+    expect(listed.size).toBe(articles.length);
+  });
+
+  it("lists the newsletter issue on /newsletter", async () => {
+    const { categoryByPath } = await import("../../client/src/data/categories");
+    const { byKind, bySlug } = await import("../../client/src/data/content");
+    const { ARTICLE_BODIES } =
+      await import("../../client/src/data/article-bodies");
+    const hostedNewsletters = Object.keys(ARTICLE_BODIES).filter(
+      s => bySlug(s)?.kind === "newsletter"
+    );
+    expect(hostedNewsletters.length).toBeGreaterThan(0);
+    const binding = categoryByPath("/newsletter")!.binding;
+    if (binding.type !== "kind") throw new Error("/newsletter is not a kind");
+    const listed = new Set(byKind(binding.kind).map(i => i.slug));
+    for (const slug of hostedNewsletters) expect(listed, slug).toContain(slug);
+  });
+});
+
 describe("honesty of empty categories", () => {
   it("every empty content category explains what goes there", () => {
     // The rule this file enforces: a category with nothing published may ship
@@ -162,6 +207,14 @@ describe("honesty of empty categories", () => {
         return (
           CONTENT.filter(i => i.kind === (c.binding as { kind: string }).kind)
             .length === 0 && !c.emptyNote
+        );
+      }
+      if (c.binding.type === "kinds") {
+        const wanted = new Set(
+          (c.binding as { kinds: readonly string[] }).kinds
+        );
+        return (
+          CONTENT.filter(i => wanted.has(i.kind)).length === 0 && !c.emptyNote
         );
       }
       if (c.binding.type === "area") {
@@ -184,6 +237,12 @@ describe("honesty of empty categories", () => {
         return CONTENT.some(
           i => i.kind === (c.binding as { kind: string }).kind
         );
+      if (c.binding.type === "kinds") {
+        const wanted = new Set(
+          (c.binding as { kinds: readonly string[] }).kinds
+        );
+        return CONTENT.some(i => wanted.has(i.kind));
+      }
       if (c.binding.type === "area")
         return CONTENT.some(
           i => i.area === (c.binding as { area: string }).area
