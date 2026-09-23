@@ -15,7 +15,7 @@ import {
   render,
   screen,
 } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import CardCarousel from "../../client/src/components/CardCarousel";
 
 afterEach(() => {
@@ -24,18 +24,29 @@ afterEach(() => {
 });
 
 function stubMatchMedia(matches: boolean) {
-  vi.stubGlobal(
-    "matchMedia",
-    vi.fn().mockImplementation((query: string) => ({
-      matches,
-      media: query,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    }))
-  );
+  const mock = vi.fn().mockImplementation((query: string) => ({
+    matches,
+    media: query,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+  }));
+  vi.stubGlobal("matchMedia", mock);
+  // vi.stubGlobal only touches the Node global; the lib reduced-motion hook
+  // reads window.matchMedia, so define it on the jsdom window too.
+  Object.defineProperty(window, "matchMedia", {
+    configurable: true,
+    writable: true,
+    value: mock,
+  });
 }
+
+// The lib reduced-motion hook reads window.matchMedia in its useState
+// initializer; jsdom doesn't implement it.
+beforeEach(() => {
+  stubMatchMedia(false);
+});
 
 /** jsdom has no layout: give the scroll track a 3-page geometry. */
 function mockTrack(track: HTMLElement) {
@@ -182,5 +193,64 @@ describe("CardCarousel", () => {
     expect(scrollTo).toHaveBeenCalledWith(
       expect.objectContaining({ left: 800 })
     );
+  });
+
+  it("pages with arrow keys when focus is on the pager buttons", () => {
+    renderCarousel();
+    const { track, scrollTo } = mockTrack(trackEl());
+    fireEvent.scroll(track);
+    fireEvent.keyDown(screen.getByRole("button", { name: "Next products" }), {
+      key: "ArrowRight",
+    });
+    expect(scrollTo).toHaveBeenCalledWith(
+      expect.objectContaining({ left: 800 })
+    );
+  });
+
+  it("self-corrects the page count when layout settles after mount", () => {
+    // The race this guards: the mount measurement can run before fonts or
+    // layout settle, leaving pageCount at 1 and the controls unrendered.
+    const callbacks: Array<() => void> = [];
+    class MockResizeObserver {
+      constructor(cb: () => void) {
+        callbacks.push(cb);
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+    vi.stubGlobal("ResizeObserver", MockResizeObserver);
+
+    renderCarousel();
+    const region = screen.getByRole("region", { name: "Product showcase" });
+    const track = region.firstElementChild as HTMLElement;
+    // Late-settling layout: at first everything fits on one page.
+    Object.defineProperty(track, "clientWidth", {
+      configurable: true,
+      get: () => 1200,
+    });
+    Object.defineProperty(track, "scrollWidth", {
+      configurable: true,
+      get: () => 1200,
+    });
+    fireEvent.scroll(track);
+    expect(
+      screen.queryByRole("button", { name: "Next products" })
+    ).not.toBeInTheDocument();
+
+    // Fonts load, cards widen past one viewport: the observer fires and the
+    // controls appear without any user interaction.
+    Object.defineProperty(track, "scrollWidth", {
+      configurable: true,
+      get: () => 3600,
+    });
+    act(() => {
+      callbacks.forEach(cb => cb());
+    });
+    expect(
+      screen.getByRole("button", { name: "Next products" })
+    ).toBeInTheDocument();
+    expect(screen.getByText("Page 1 of 3")).toBeInTheDocument();
+    vi.unstubAllGlobals();
   });
 });

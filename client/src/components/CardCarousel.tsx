@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useReducedMotion } from "../hooks/useReducedMotion";
+import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 interface CardCarouselProps {
   /** Accessible name for the carousel region, e.g. "Product showcase". */
@@ -36,7 +36,7 @@ export default function CardCarousel({
   children,
 }: CardCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = usePrefersReducedMotion();
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
 
@@ -61,9 +61,25 @@ export default function CardCarousel({
     syncPage();
     track.addEventListener("scroll", syncPage, { passive: true });
     window.addEventListener("resize", syncPage);
+    // Re-measure whenever the track's own box changes size. The initial
+    // mount measurement can run before layout/fonts settle (pageCount stuck
+    // at 1, controls never rendering); the observer self-corrects as soon
+    // as anything shifts. It also fires once on observe, giving an async
+    // re-measure right after mount for free.
+    let observer: ResizeObserver | undefined;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(() => syncPage());
+      observer.observe(track);
+    }
+    // Font swaps change card widths (and therefore the page count) without
+    // resizing the track itself, so re-measure once webfonts settle.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => syncPage());
+    }
     return () => {
       track.removeEventListener("scroll", syncPage);
       window.removeEventListener("resize", syncPage);
+      observer?.disconnect();
     };
   }, [syncPage]);
 
@@ -104,13 +120,8 @@ export default function CardCarousel({
     "disabled:opacity-30 disabled:pointer-events-none";
 
   return (
-    <div>
-      <div
-        role="region"
-        aria-roledescription="carousel"
-        aria-label={label}
-        onKeyDown={onKeyDown}
-      >
+    <div onKeyDown={onKeyDown}>
+      <div role="region" aria-roledescription="carousel" aria-label={label}>
         <div
           ref={trackRef}
           className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
