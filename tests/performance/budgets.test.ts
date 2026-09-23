@@ -147,4 +147,23 @@ describe("css budget", () => {
     const size = brotli(read(path.join(ASSETS, css)));
     expect(size, `${css} = ${kb(size)} KB brotli`).toBeLessThan(40 * 1024);
   });
+
+  it("keeps the webfont stylesheet off the critical path on every page", () => {
+    // index.html defers Google Fonts with media="print" + onload. The
+    // prerenderer snapshots a live DOM, where onload has already flipped that
+    // to media="all" — which is what every deployed route shipped, so the
+    // fonts CSS blocked first paint on all of them. Every snapshot must carry
+    // the deferred form the shell declares.
+    const blocking: string[] = [];
+    for (const f of fs.globSync("**/index.html", { cwd: DIST })) {
+      const html = fs.readFileSync(path.join(DIST, f), "utf8");
+      for (const m of html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)) {
+        const tag = m[0];
+        if (!/onload="[^"]*this\.media/.test(tag)) continue;
+        if (!/media="print"/.test(tag))
+          blocking.push(`${f}: ${tag.slice(0, 80)}`);
+      }
+    }
+    expect(blocking).toEqual([]);
+  });
 });

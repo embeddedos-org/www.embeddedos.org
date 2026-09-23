@@ -353,160 +353,31 @@ export const escapeAttr = s =>
     .replace(/>/g, "&gt;");
 
 /**
- * Per-route title overrides (F-05). Deliberate copy of TITLE_OVERRIDES in
- * client/src/lib/page-meta.ts — the two tables must stay identical;
- * tests/unit/page-meta.test.ts enforces it.
- */
-export const TITLE_OVERRIDES = {
-  "/": "Open-source embedded OS for every device | EmbeddedOS",
-};
-
-/**
- * Per-route meta-description overrides (F-25). Deliberate copy of
- * DESCRIPTION_OVERRIDES in client/src/lib/page-meta.ts — same contract.
- */
-export const DESCRIPTION_OVERRIDES = {
-  "/":
-    "EmbeddedOS is a 501(c)(3) nonprofit building a free, open-source " +
-    "operating system for embedded devices — kernel, tools, docs and " +
-    "education, MIT licensed.",
-  "/donate":
-    "Support the EmbeddedOS Foundation's open-source embedded systems " +
-    "research and free education. 501(c)(3) nonprofit, EIN 41-4821627 — " +
-    "gifts are tax-deductible.",
-  "/projects":
-    "23 open-source repositories: the EoS real-time kernel, bootloader, " +
-    "IPC, build tools, AI, simulators, apps and hardware — all MIT " +
-    "licensed on GitHub.",
-  "/mission":
-    "Our mission: advance open-source embedded systems research, " +
-    "education and technology for the public benefit — free to read, " +
-    "audit, learn from and build on.",
-  "/about":
-    "The Embedded Operating Systems Research Foundation (EIN 41-4821627) " +
-    "is a 501(c)(3) public charity advancing open embedded systems.",
-  "/contact":
-    "Contact the EmbeddedOS Foundation: general inquiries, technical " +
-    "support, press, partnerships, careers and donations. Every topic " +
-    "reaches a person.",
-  "/books":
-    "Free technical books on embedded systems from the EmbeddedOS " +
-    "Foundation — full-length, openly licensed, including a kids edition.",
-  "/research":
-    "Open research into real-time operating systems, edge AI, health " +
-    "hardware, avionics and quantum control — published openly, never " +
-    "licensed.",
-  "/get-involved":
-    "Contribute to EmbeddedOS: code, docs, hardware testing, internships " +
-    "and community programmes. All work is public and MIT licensed.",
-  "/transparency":
-    "How the EmbeddedOS Foundation handles money and decisions: " +
-    "nonprofit disclosures, finances, governance and public records.",
-};
-
-/**
- * Load the built stylesheet without blocking first render (F-07).
+ * Put deferred stylesheets back the way the shell declares them.
  *
- * Vite emits one render-blocking <link rel="stylesheet"> (~45 KB). This
- * rewrites it to preload + the media="print" onload pattern (the same trick
- * index.html already uses for webfonts) with a <noscript> fallback, so the
- * CSS downloads early but applies without delaying first paint. Above-the-fold
- * essentials are already inlined in index.html's <style> block (see
- * client/src/critical.css), so there is no unstyled flash.
+ * index.html loads the webfonts as `media="print" onload="this.media='all'"`:
+ * a print stylesheet does not block first paint, so the browser fetches it off
+ * the critical path and the onload switches it on once it has arrived. The
+ * snapshot is serialised from a live page, by which point onload has already
+ * run — so what every route wrote to disk was `media="all"` with the handler
+ * still attached, and every deployed page requested Google Fonts as a
+ * render-blocking stylesheet. The shell's own trick was undone by the
+ * prerender of it, on every route, since the day both landed (e13c116).
  *
- * The webfont stylesheet already uses media="print" itself and is left alone.
+ * String-level on purpose: doing it in the page would leave the same window
+ * that captureHtml() closes for the opacity strip, and this way the rule is
+ * testable without a browser. Only a stylesheet whose onload sets media to
+ * "all" is touched — that handler is the marker of a deferred sheet, and
+ * nothing else in the head carries one.
  */
-export function deferStylesheet(html) {
-  return html.replace(
-    /<link\s+rel="stylesheet"(?![^>]*\bmedia=)[^>]*>/gi,
-    tag => {
-      const attrs = tag
-        .replace(/^<link\s+/i, "")
-        .replace(/\brel="stylesheet"\s*/i, "")
-        .replace(/\s*\/?>$/, "")
-        .trim();
-      return (
-        `<link rel="preload" as="style" ${attrs} />` +
-        `<link rel="stylesheet" ${attrs} media="print" onload="this.media='all'" />` +
-        `<noscript><link rel="stylesheet" ${attrs} /></noscript>`
-      );
-    }
-  );
-}
-
-/**
- * Social preview image per section.
- *
- * Kept in step with SOCIAL_IMAGES in client/src/lib/page-meta.ts by
- * tests/unit/page-meta.test.ts, for the same reason the title and description
- * rules are duplicated there: this file pulls in playwright and express and
- * cannot be imported into the browser bundle.
- */
-export const SOCIAL_IMAGE_RULES = [
-  [
-    /^\/(architecture|flow|ecosystem|stacks)$/,
-    "/media/architecture-diagram-hero_72436b3f.jpg",
-  ],
-  [/^\/(eboot|product-eboot)$/, "/media/arch-eboot-chain_b9f999b5.jpg"],
-  [
-    /^\/(eos|product-eos|product-eos-platform)$/,
-    "/media/arch-eos-kernel_d7d1b4a5.jpg",
-  ],
-  [
-    /^\/(eai|eni|neural-link-ai|product-eai|product-eni|eai-edge)$/,
-    "/media/arch-eai-neural_4d7964d2.jpg",
-  ],
-  [
-    /^\/(eoffice|product-eoffice|eosuite)$/,
-    "/media/arch-eoffice-suite_d63eacf5.jpg",
-  ],
-  [
-    /^\/(eapps|product-eapps|eserviceapps|product-eserviceapps)$/,
-    "/media/product-eapps_89b01d4a.jpg",
-  ],
-  [/^\/(edb|product-edb)$/, "/media/product-edb_9cd0fe0e.jpg"],
-  [/^\/(eipc|product-eipc)$/, "/media/product-eipc-ipc_be829de0.jpg"],
-  [/^\/(eosim|product-eosim)$/, "/media/product-eosim-sim_78145da3.jpg"],
-  [
-    /^\/(eostudio|product-eostudio)$/,
-    "/media/product-eostudio-ide_2fc95a2d.jpg",
-  ],
-  [
-    /^\/(ecad-hardware|hardware-lab)$/,
-    "/media/product-ecad-hardware_f5806032.jpg",
-  ],
-  [
-    /^\/(community|get-involved|events|membership)$/,
-    "/media/community-illustration-eos_6f39c9db.jpg",
-  ],
-  [
-    /^\/(what-we-do|mission|about|organization|transparency)$/,
-    "/media/what-we-do-illustration_4c2ad2f7.jpg",
-  ],
-];
-
-/**
- * Hand-written meta descriptions, keyed by route.
- *
- * extractMeta() takes the first substantive sentence on the page, which is
- * accurate but frequently longer than a search result will show. Where a route
- * appears in shared/route-descriptions.json that text is used instead. Both
- * this file and client/src/lib/page-meta.ts read the same JSON, so a client
- * navigation and the prerendered snapshot cannot disagree.
- */
-export const ROUTE_DESCRIPTIONS = JSON.parse(
-  fs.readFileSync(path.join(ROOT, "shared", "route-descriptions.json"), "utf8")
-);
-
-export function descriptionFor(route, extracted) {
-  return ROUTE_DESCRIPTIONS[route] ?? extracted;
-}
-
-export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
-
-export function socialImageFor(route) {
-  const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
-  return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
+export function restoreDeferredStylesheets(html) {
+  return html.replace(/<link\b[^>]*>/g, tag => {
+    if (!/\brel="stylesheet"/.test(tag)) return tag;
+    if (!/\bonload="[^"]*\bthis\.media\s*=\s*'all'[^"]*"/.test(tag)) return tag;
+    return /\bmedia="[^"]*"/.test(tag)
+      ? tag.replace(/\bmedia="[^"]*"/, 'media="print"')
+      : tag.replace(/^<link\b/, '<link media="print"');
+  });
 }
 
 /** Rewrite the head of a snapshot with route-specific title/description/canonical. */
@@ -696,8 +567,9 @@ async function main() {
         });
         await settle(page);
         const meta = await extractMeta(page);
-        const html = deferStylesheet(
-          applyMeta(await captureHtml(page), { route, ...meta })
+        const html = applyMeta(
+          restoreDeferredStylesheets(await captureHtml(page)),
+          { route, ...meta }
         );
         const target = writeSnapshot(route, html);
         const textLength = await page.evaluate(
