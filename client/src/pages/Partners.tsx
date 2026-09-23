@@ -143,7 +143,7 @@ export default function Partners() {
                 className="bg-white/5 border border-white/10 rounded-xl p-6"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-white font-bold text-lg">{t.name}</h3>
+                  <h2 className="text-white font-bold text-lg">{t.name}</h2>
                   <span
                     className="text-sm font-semibold"
                     style={{ color: t.color }}

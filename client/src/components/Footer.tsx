@@ -297,6 +297,8 @@ export default function Footer() {
                   loading="lazy"
                   decoding="async"
                   src={LOGO_MARK}
+                  width={40}
+                  height={40}
                   alt={FOUNDATION.shortName}
                   className="w-10 h-10 rounded-xl"
                 />

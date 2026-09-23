@@ -5,6 +5,7 @@ import React, {
   useState,
   type ComponentType,
 } from "react";
+import { supportsWebGL } from "../components/HeroTechStack";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
@@ -77,9 +78,13 @@ function Lazy3DHero({
   const posterRef = useRef<HTMLPictureElement>(null);
 
   useEffect(() => {
+    // Reduced motion, or no WebGL at all: leave the poster in place and never
+    // download the ~230KB 3D chunk. supportsWebGL() probes for a real context,
+    // so a machine that would fall back to a blank canvas gets the image instead.
     if (
       typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        !supportsWebGL())
     ) {
       return;
     }

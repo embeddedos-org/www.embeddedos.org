@@ -140,7 +140,7 @@ export default function EServiceAppsPage() {
                 className="bg-white/5 border border-white/10 rounded-2xl p-6"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-white font-bold text-lg">{app.name}</h3>
+                  <h2 className="text-white font-bold text-lg">{app.name}</h2>
                   <span
                     className="px-2 py-0.5 rounded-full text-xs"
                     style={{ background: app.color + "20", color: app.color }}
@@ -180,6 +180,12 @@ export default function EServiceAppsPage() {
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
             >
               eOffice Suite
+            </Link>
+            <Link
+              href="/product-eserviceapps"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
+            >
+              eServiceApps engineering detail
             </Link>
           </div>
         </div>

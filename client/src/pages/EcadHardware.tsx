@@ -544,9 +544,9 @@ function CategoryCard({
         </motion.div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-bold text-white text-lg leading-tight">
+            <h2 className="font-bold text-white text-lg leading-tight">
               {cat.title}
-            </h3>
+            </h2>
             <span
               className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
               style={{
@@ -620,7 +620,8 @@ function CategoryCard({
             className="flex items-center gap-1 text-sm font-semibold cursor-pointer"
             style={{ color: cat.color }}
           >
-            Learn more <ArrowRight size={14} />
+            Learn more<span className="sr-only"> about {cat.title}</span>{" "}
+            <ArrowRight size={14} />
           </motion.div>
         </Link>
         <a href={cat.ghref} target="_blank" rel="noopener noreferrer">

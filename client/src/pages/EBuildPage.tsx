@@ -892,6 +892,12 @@ export default function EBuildPage() {
               >
                 Try eFlow Visual Editor <ArrowRight size={14} />
               </Link>
+              <Link
+                href="/product-ebuild"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white/70 border border-white/15 hover:border-white/30 transition-all"
+              >
+                eBuild engineering detail
+              </Link>
             </div>
           </motion.div>
         </div>

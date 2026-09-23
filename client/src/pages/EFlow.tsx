@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
 import {
@@ -625,10 +625,19 @@ export default function EFlow() {
           </motion.div>
 
           {/* Category tabs */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div
+            className="flex flex-wrap gap-2 mb-6"
+            role="tablist"
+            aria-label="Block categories"
+          >
             {BLOCK_TYPES.map((cat, i) => (
               <button
                 key={cat.category}
+                role="tab"
+                id={`blocks-tab-${i}`}
+                aria-selected={activeCategory === i}
+                aria-controls={`blocks-panel-${i}`}
+                tabIndex={activeCategory === i ? 0 : -1}
                 onClick={() => setActiveCategory(i)}
                 className="px-4 py-2 rounded-xl text-sm font-bold transition-all"
                 style={
@@ -646,22 +655,22 @@ export default function EFlow() {
             ))}
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
+          {BLOCK_TYPES.map((cat, i) => (
+            <div
+              key={cat.category}
+              role="tabpanel"
+              id={`blocks-panel-${i}`}
+              aria-labelledby={`blocks-tab-${i}`}
+              hidden={i !== activeCategory}
             >
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {BLOCK_TYPES[activeCategory].blocks.map(block => (
+                {cat.blocks.map(block => (
                   <div
                     key={block.name}
                     className="rounded-2xl border p-4"
                     style={{
-                      background: `${BLOCK_TYPES[activeCategory].color}06`,
-                      borderColor: `${BLOCK_TYPES[activeCategory].color}20`,
+                      background: `${cat.color}06`,
+                      borderColor: `${cat.color}20`,
                     }}
                   >
                     <div className="flex items-center justify-between mb-2">
@@ -687,7 +696,7 @@ export default function EFlow() {
                       className="rounded-lg p-2 text-[10px] font-mono overflow-x-auto"
                       style={{
                         background: "rgba(5,10,20,0.8)",
-                        color: BLOCK_TYPES[activeCategory].color,
+                        color: cat.color,
                       }}
                     >
                       {block.code}
@@ -695,8 +704,8 @@ export default function EFlow() {
                   </div>
                 ))}
               </div>
-            </motion.div>
-          </AnimatePresence>
+            </div>
+          ))}
         </div>
       </section>
 

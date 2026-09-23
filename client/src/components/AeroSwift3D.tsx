@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { RoundedBox, Cylinder, Cone } from "@react-three/drei";
 import * as THREE from "three";
+import { supportsWebGL } from "./HeroTechStack";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // ── Rotor blade ───────────────────────────────────────────────────────────────
 function Rotor({
@@ -262,9 +264,26 @@ function AeroSwiftTransit() {
 }
 
 // ── Exported canvas wrappers ──────────────────────────────────────────────────
+function GuardedCanvas({ children, ...props }: ComponentProps<typeof Canvas>) {
+  const [webglReady, setWebglReady] = useState(false);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    setWebglReady(supportsWebGL());
+  }, []);
+
+  if (!webglReady) return null;
+
+  return (
+    <Canvas frameloop={reducedMotion ? "demand" : "always"} {...props}>
+      {children}
+    </Canvas>
+  );
+}
+
 export function AeroSwiftPersonalCanvas() {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 1.5, 6], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
@@ -274,13 +293,13 @@ export function AeroSwiftPersonalCanvas() {
       <pointLight position={[-4, 2, 2]} intensity={1} color="#22D3EE" />
       <pointLight position={[0, -2, 4]} intensity={0.5} color="#A78BFA" />
       <AeroSwiftPersonal />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
 
 export function AeroSwiftTransitCanvas() {
   return (
-    <Canvas
+    <GuardedCanvas
       camera={{ position: [0, 2, 8], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
@@ -290,7 +309,7 @@ export function AeroSwiftTransitCanvas() {
       <pointLight position={[-5, 2, 2]} intensity={1} color="#22D3EE" />
       <pointLight position={[0, -2, 5]} intensity={0.5} color="#A78BFA" />
       <AeroSwiftTransit />
-    </Canvas>
+    </GuardedCanvas>
   );
 }
 

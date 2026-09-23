@@ -191,12 +191,12 @@ export default function CadEvolutionHero() {
         <p className="eyebrow text-[#38bdf8] mb-2">
           Interactive 3D · The EoS stack
         </p>
-        <h3
+        <h2
           id="cad-evolution-heading"
           className="font-heading text-xl sm:text-2xl font-bold text-white tracking-tight"
         >
           From CAD design to full ecosystem
-        </h3>
+        </h2>
         <p className="mt-2 text-sm text-white/60 leading-relaxed">
           Watch a bare circuit-board CAD model build itself into the complete
           EmbeddedOS platform — one stage at a time.
@@ -360,9 +360,9 @@ export default function CadEvolutionHero() {
               }}
               aria-hidden="true"
             />
-            <h4 className="font-heading text-base font-bold text-white">
+            <h3 className="font-heading text-base font-bold text-white">
               {current.label}
-            </h4>
+            </h3>
             <span
               className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${MATURITY_TONES[current.maturity]}`}
             >

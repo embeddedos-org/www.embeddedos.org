@@ -402,9 +402,9 @@ export default function HealthCompare() {
             className="mb-10 glass rounded-2xl p-8 border border-white/5"
           >
             <div className="text-center mb-4">
-              <h3 className="font-heading font-bold text-white text-xl mb-1">
+              <h2 className="font-heading font-bold text-white text-xl mb-1">
                 Illustrative Planned-Capability Radar
-              </h3>
+              </h2>
               <p className="text-sm text-white/40">
                 Conceptual comparison, not measured device performance.
               </p>

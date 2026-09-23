@@ -8,6 +8,15 @@
  * entry, the bookmark title and — worst of the four — <link rel="canonical">
  * all still described whichever page the visitor happened to land on first.
  *
+ * The hand-written descriptions in shared/route-descriptions.json are
+ * deliberately NOT imported here. They are a build-time override applied by
+ * scripts/prerender.mjs, so the served HTML — which is what a crawler and a
+ * first load see — carries them. Bundling all 52 into the client cost 2.5 KB
+ * brotli and pushed the eagerly-preloaded critical path from 258.5 KB to
+ * 261 KB, over the 260 KB budget in tests/performance/budgets.test.ts. A
+ * client-side navigation therefore recomputes the description from the DOM,
+ * which is the same accurate sentence, just longer; no crawler sees it.
+ *
  * The rules below are a deliberate copy of `applyMeta` in
  * scripts/prerender.mjs. They cannot be imported from it: that file is a plain
  * .mjs build script that pulls in playwright and express, none of which belongs
@@ -120,6 +129,56 @@ export function canonicalFor(route: string): string {
   return route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
 }
 
+export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [
+  [
+    /^\/(architecture|flow|ecosystem|stacks)$/,
+    "/media/architecture-diagram-hero_72436b3f.jpg",
+  ],
+  [/^\/(eboot|product-eboot)$/, "/media/arch-eboot-chain_b9f999b5.jpg"],
+  [
+    /^\/(eos|product-eos|product-eos-platform)$/,
+    "/media/arch-eos-kernel_d7d1b4a5.jpg",
+  ],
+  [
+    /^\/(eai|eni|neural-link-ai|product-eai|product-eni|eai-edge)$/,
+    "/media/arch-eai-neural_4d7964d2.jpg",
+  ],
+  [
+    /^\/(eoffice|product-eoffice|eosuite)$/,
+    "/media/arch-eoffice-suite_d63eacf5.jpg",
+  ],
+  [
+    /^\/(eapps|product-eapps|eserviceapps|product-eserviceapps)$/,
+    "/media/product-eapps_89b01d4a.jpg",
+  ],
+  [/^\/(edb|product-edb)$/, "/media/product-edb_9cd0fe0e.jpg"],
+  [/^\/(eipc|product-eipc)$/, "/media/product-eipc-ipc_be829de0.jpg"],
+  [/^\/(eosim|product-eosim)$/, "/media/product-eosim-sim_78145da3.jpg"],
+  [
+    /^\/(eostudio|product-eostudio)$/,
+    "/media/product-eostudio-ide_2fc95a2d.jpg",
+  ],
+  [
+    /^\/(ecad-hardware|hardware-lab)$/,
+    "/media/product-ecad-hardware_f5806032.jpg",
+  ],
+  [
+    /^\/(community|get-involved|events|membership)$/,
+    "/media/community-illustration-eos_6f39c9db.jpg",
+  ],
+  [
+    /^\/(what-we-do|mission|about|organization|transparency)$/,
+    "/media/what-we-do-illustration_4c2ad2f7.jpg",
+  ],
+];
+
+export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
+
+export function socialImageFor(route: string): string {
+  const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
+  return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
+}
+
 const clean = (s: string | null | undefined) =>
   (s ?? "").replace(/\s+/g, " ").trim();
 
@@ -182,7 +241,13 @@ export function applyRouteMeta(route: string, doc: Document = document): void {
     155
   );
   const canonical = canonicalFor(route);
-  const image = readPageImage(doc);
+  // Same priority as scripts/prerender.mjs: a curated per-route image wins,
+  // otherwise the page's own first <main> image, otherwise the site default.
+  const scraped = readPageImage(doc);
+  const curated = SOCIAL_IMAGE_RULES.some(([pattern]) => pattern.test(route))
+    ? socialImageFor(route)
+    : "";
+  const image = curated || scraped || socialImageFor(route);
 
   doc.title = title;
   setMeta(doc, 'meta[name="description"]', description);

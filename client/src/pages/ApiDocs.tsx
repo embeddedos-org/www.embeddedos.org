@@ -2676,7 +2676,7 @@ export default function ApiDocs() {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 min-w-0 py-8 px-6">
+        <div className="flex-1 min-w-0 py-8 px-6">
           {/* Module header */}
           <motion.div
             key={activeModule}
@@ -2795,7 +2795,7 @@ export default function ApiDocs() {
               </div>
             )}
           </motion.div>
-        </main>
+        </div>
       </div>
     </div>
   );

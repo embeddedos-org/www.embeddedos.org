@@ -434,6 +434,81 @@ export function deferStylesheet(html) {
   );
 }
 
+/**
+ * Social preview image per section.
+ *
+ * Kept in step with SOCIAL_IMAGES in client/src/lib/page-meta.ts by
+ * tests/unit/page-meta.test.ts, for the same reason the title and description
+ * rules are duplicated there: this file pulls in playwright and express and
+ * cannot be imported into the browser bundle.
+ */
+export const SOCIAL_IMAGE_RULES = [
+  [
+    /^\/(architecture|flow|ecosystem|stacks)$/,
+    "/media/architecture-diagram-hero_72436b3f.jpg",
+  ],
+  [/^\/(eboot|product-eboot)$/, "/media/arch-eboot-chain_b9f999b5.jpg"],
+  [
+    /^\/(eos|product-eos|product-eos-platform)$/,
+    "/media/arch-eos-kernel_d7d1b4a5.jpg",
+  ],
+  [
+    /^\/(eai|eni|neural-link-ai|product-eai|product-eni|eai-edge)$/,
+    "/media/arch-eai-neural_4d7964d2.jpg",
+  ],
+  [
+    /^\/(eoffice|product-eoffice|eosuite)$/,
+    "/media/arch-eoffice-suite_d63eacf5.jpg",
+  ],
+  [
+    /^\/(eapps|product-eapps|eserviceapps|product-eserviceapps)$/,
+    "/media/product-eapps_89b01d4a.jpg",
+  ],
+  [/^\/(edb|product-edb)$/, "/media/product-edb_9cd0fe0e.jpg"],
+  [/^\/(eipc|product-eipc)$/, "/media/product-eipc-ipc_be829de0.jpg"],
+  [/^\/(eosim|product-eosim)$/, "/media/product-eosim-sim_78145da3.jpg"],
+  [
+    /^\/(eostudio|product-eostudio)$/,
+    "/media/product-eostudio-ide_2fc95a2d.jpg",
+  ],
+  [
+    /^\/(ecad-hardware|hardware-lab)$/,
+    "/media/product-ecad-hardware_f5806032.jpg",
+  ],
+  [
+    /^\/(community|get-involved|events|membership)$/,
+    "/media/community-illustration-eos_6f39c9db.jpg",
+  ],
+  [
+    /^\/(what-we-do|mission|about|organization|transparency)$/,
+    "/media/what-we-do-illustration_4c2ad2f7.jpg",
+  ],
+];
+
+/**
+ * Hand-written meta descriptions, keyed by route.
+ *
+ * extractMeta() takes the first substantive sentence on the page, which is
+ * accurate but frequently longer than a search result will show. Where a route
+ * appears in shared/route-descriptions.json that text is used instead. Both
+ * this file and client/src/lib/page-meta.ts read the same JSON, so a client
+ * navigation and the prerendered snapshot cannot disagree.
+ */
+export const ROUTE_DESCRIPTIONS = JSON.parse(
+  fs.readFileSync(path.join(ROOT, "shared", "route-descriptions.json"), "utf8")
+);
+
+export function descriptionFor(route, extracted) {
+  return ROUTE_DESCRIPTIONS[route] ?? extracted;
+}
+
+export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
+
+export function socialImageFor(route) {
+  const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
+  return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
+}
+
 /** Rewrite the head of a snapshot with route-specific title/description/canonical. */
 export function applyMeta(html, { route, heading, description, image }) {
   const canonical = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
@@ -462,10 +537,19 @@ export function applyMeta(html, { route, heading, description, image }) {
 
   // Per-route social image (F-13): the page's own first <main> image,
   // absolutised; the shell's generic hero image stays the fallback.
-  const absImage =
+  // Two sources for og:image, in priority order. The curated per-route table
+  // (SOCIAL_IMAGE_RULES) is authoritative where it matches, because a hand-picked
+  // image beats whatever happens to be the first <main> img. Where no rule
+  // matches, fall back to the scraped page image (F-13), then to the site
+  // default. socialImageFor() already absolutises and always returns a value.
+  const scraped =
     image && !image.startsWith("http")
       ? `${ORIGIN}${image.startsWith("/") ? "" : "/"}${image}`
       : image || "";
+  const curated = SOCIAL_IMAGE_RULES.some(([re]) => re.test(route))
+    ? socialImageFor(route)
+    : "";
+  const absImage = curated || scraped || socialImageFor(route);
 
   let out = html;
   const set = (pattern, replacement) => {

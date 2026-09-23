@@ -95,6 +95,19 @@ jobs:
       - name: Unit, integration and performance tests
         run: pnpm exec vitest run --exclude 'tests/security/**'
 
+      # Reporting, not gating. tests/integration/seo.test.ts already fails the
+      # build on every SEO defect class and runs in the vitest step above; it
+      # carries the one bounded exemption these two cannot express, for the
+      # product-detail pages whose inbound links land in a separate change.
+      # Running --strict here as well would duplicate that gate and go red on
+      # the exemption. These steps put the numbers in the log so a reviewer can
+      # see what a pull request did to metadata coverage and the link graph.
+      - name: SEO audit
+        run: pnpm seo:audit
+
+      - name: Internal link graph
+        run: pnpm seo:links
+
       - name: Smoke tests
         run: pnpm test:smoke
 

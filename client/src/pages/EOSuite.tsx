@@ -429,7 +429,7 @@ export default function EOSuitePage() {
                 className="bg-white/5 border border-white/10 rounded-xl p-4"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-white font-semibold">{app.name}</h3>
+                  <h2 className="text-white font-semibold">{app.name}</h2>
                   <span
                     className="px-2 py-0.5 rounded text-xs"
                     style={{ background: cat.color + "15", color: cat.color }}

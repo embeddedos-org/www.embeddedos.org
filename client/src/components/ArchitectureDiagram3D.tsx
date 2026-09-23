@@ -7,10 +7,12 @@
  *   "tree"     — top-down hierarchy tree (eOffice app suite)
  *   "matrix"   — 3D grid of nodes (full stack overview)
  */
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
+import { supportsWebGL } from "./HeroTechStack";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export type DiagramMode = "layered" | "radial" | "pipeline" | "tree" | "matrix";
 
@@ -574,6 +576,13 @@ export default function ArchitectureDiagram3D({
             ? [0, 1.0, 6.0]
             : [0, 0, 5.5];
 
+  const [webglReady, setWebglReady] = useState(false);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    setWebglReady(supportsWebGL());
+  }, []);
+
   return (
     <div
       className={`relative w-full rounded-2xl overflow-hidden border border-white/8 ${className}`}
@@ -613,31 +622,41 @@ export default function ArchitectureDiagram3D({
         </span>
       </div>
 
-      <Canvas
-        camera={{ position: camPos, fov: 42 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: "transparent" }}
-      >
-        <ambientLight intensity={0.35} />
-        <directionalLight
-          position={[3, 5, 3]}
-          intensity={0.9}
-          color="#ffffff"
-        />
-        <pointLight position={[-3, 2, 2]} intensity={0.6} color={accent} />
-        <pointLight position={[3, -2, 2]} intensity={0.35} color="#22D3EE" />
-        <React.Suspense fallback={null}>
-          <SceneSwitch />
-        </React.Suspense>
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          minPolarAngle={Math.PI / 5}
-          maxPolarAngle={Math.PI / 1.6}
-          autoRotate={mode !== "pipeline"}
-          autoRotateSpeed={0.5}
-        />
-      </Canvas>
+      {!webglReady ? (
+        <div className="absolute inset-0 flex items-end justify-center pb-10 px-4">
+          <p className="text-xs text-white/60 text-center max-w-sm">
+            This diagram renders in 3D where WebGL is available. The layers it
+            shows are listed below.
+          </p>
+        </div>
+      ) : (
+        <Canvas
+          camera={{ position: camPos, fov: 42 }}
+          gl={{ antialias: true, alpha: true }}
+          style={{ background: "transparent" }}
+          frameloop={reducedMotion ? "demand" : "always"}
+        >
+          <ambientLight intensity={0.35} />
+          <directionalLight
+            position={[3, 5, 3]}
+            intensity={0.9}
+            color="#ffffff"
+          />
+          <pointLight position={[-3, 2, 2]} intensity={0.6} color={accent} />
+          <pointLight position={[3, -2, 2]} intensity={0.35} color="#22D3EE" />
+          <React.Suspense fallback={null}>
+            <SceneSwitch />
+          </React.Suspense>
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            minPolarAngle={Math.PI / 5}
+            maxPolarAngle={Math.PI / 1.6}
+            autoRotate={mode !== "pipeline" && !reducedMotion}
+            autoRotateSpeed={0.5}
+          />
+        </Canvas>
+      )}
     </div>
   );
 }
