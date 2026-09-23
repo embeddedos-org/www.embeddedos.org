@@ -165,9 +165,12 @@ describe("community resources", () => {
   // removed from client/src/data/community.ts — that repository is private, so
   // those links 404 for every public visitor.
   const expected = [
+    "https://github.com/embeddedos-org/eos/wiki",
     "https://github.com/orgs/embeddedos-org/discussions",
     "https://discord.gg/n6Kd9fwja",
+    "https://github.com/embeddedos-org/eos/issues",
     "https://github.com/orgs/embeddedos-org/projects",
+    "https://github.com/embeddedos-org/eos/blob/master/AGENTS.md",
   ];
 
   it("publishes the exact repository and organization destinations", () => {
@@ -177,6 +180,22 @@ describe("community resources", () => {
     );
     expect(communitySource).toContain("SOCIAL_URLS.discord");
     expect(communityDataSource).not.toContain("/agents");
+  });
+
+  /**
+   * The footer renders these on all 132 prerendered pages, so one unreachable
+   * href is 132 broken links. This repository is private: every path under it
+   * answers 404 for a logged-out visitor, while looking correct to a signed-in
+   * maintainer — which is exactly how `/wiki`, `/issues` and `/blob/master/
+   * AGENTS.md` shipped and stayed broken.
+   */
+  it("links nothing into this repository, which is private", () => {
+    const offenders = [...communityDataSource.matchAll(/href: "([^"]+)"/g)]
+      .map(m => m[1])
+      .filter(href =>
+        href.includes("github.com/embeddedos-org/www.embeddedos.org")
+      );
+    expect(offenders).toEqual([]);
   });
 
   it("uses the shared destinations in the footer and community page", () => {
