@@ -12,6 +12,7 @@ import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { SOCIAL_URLS } from "@/data/foundation";
 import { ARCHITECTURE_STAGES, EAI_EDGE_PROFILE } from "@/data/architecture";
 import TiltCard from "../components/TiltCard";
+import CardCarousel from "../components/CardCarousel";
 import {
   ArrowRight,
   Github,
@@ -853,7 +854,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <CardCarousel label="Product showcase" itemLabel="products">
             {PRODUCTS.map((product, i) => {
               const Icon = product.icon;
               return (
@@ -864,7 +865,7 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   custom={i % 8}
-                  className="h-full"
+                  className="h-full w-[82%] sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)] xl:w-[calc(25%-0.75rem)] shrink-0 snap-start"
                 >
                   <TiltCard className="group relative glass-card rounded-2xl p-5 overflow-hidden cursor-default">
                     {/* Hover glow border */}
@@ -904,7 +905,7 @@ export default function Home() {
                 </motion.div>
               );
             })}
-          </div>
+          </CardCarousel>
 
           <motion.div
             variants={fadeUp}
@@ -1006,7 +1007,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+          <CardCarousel label="Hardware categories" itemLabel="categories">
             {(
               [
                 {
@@ -1116,6 +1117,7 @@ export default function Home() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 custom={i * 0.05}
+                className="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(20%-0.8rem)] shrink-0 snap-start"
               >
                 <TiltCard className="rounded-xl">
                   <Link
@@ -1138,7 +1140,7 @@ export default function Home() {
                 </TiltCard>
               </motion.div>
             ))}
-          </div>
+          </CardCarousel>
 
           <div className="text-center">
             <Link
@@ -1178,7 +1180,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <CardCarousel label="Platform features" itemLabel="features">
             {FEATURES.map((f, i) => {
               const Icon = f.icon;
               return (
@@ -1189,7 +1191,7 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   custom={i}
-                  className="h-full"
+                  className="h-full w-[85%] sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)] shrink-0 snap-start"
                 >
                   <TiltCard className="group relative flex gap-4 p-5 glass-card rounded-2xl overflow-hidden">
                     {/* Numbered accent */}
@@ -1211,7 +1213,7 @@ export default function Home() {
                 </motion.div>
               );
             })}
-          </div>
+          </CardCarousel>
         </div>
       </section>
 
