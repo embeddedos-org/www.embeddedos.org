@@ -27,6 +27,7 @@ const navSource = read("client/src/components/Navbar.tsx");
 const footerSource = read("client/src/components/Footer.tsx");
 const communitySource = read("client/src/pages/Community.tsx");
 const communityDataSource = read("client/src/data/community.ts");
+const productsSource = read("client/src/pages/Products.tsx");
 const foundationSource = read("client/src/data/foundation.ts");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
@@ -107,6 +108,34 @@ describe("route coverage", () => {
       dangling,
       `links to non-existent routes:\n${dangling.join("\n")}`
     ).toEqual([]);
+  });
+});
+
+describe("product reference pages", () => {
+  /** Every /product-* detail route the router serves, excluding the hubs. */
+  const detailRoutes = routes.filter(
+    r => r.startsWith("/product-") && r !== "/product-showcases"
+  );
+
+  /**
+   * These pages were reachable only from the header's mega-menu, which Radix
+   * mounts on hover — so none of them appeared in any prerendered page, and
+   * three had no inbound link anywhere in the static site. /products is their
+   * hub and must link each one.
+   */
+  it("links every product detail page from the products hub", () => {
+    const missing = detailRoutes.filter(
+      r => !productsSource.includes(`href: "${r}"`)
+    );
+    expect(missing, "product routes absent from /products").toEqual([]);
+  });
+
+  it("lists no product reference entry that is not a route", () => {
+    const listed = [
+      ...productsSource.matchAll(/href: "(\/product-[^"]+)"/g),
+    ].map(m => m[1]);
+    const stray = listed.filter(h => !routes.includes(h));
+    expect(stray, "product reference entries with no route").toEqual([]);
   });
 });
 
