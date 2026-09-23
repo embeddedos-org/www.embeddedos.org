@@ -12,10 +12,11 @@
  * `discoverRoutes()` the prerenderer uses, so a page that is prerendered and a
  * page that is listed for crawlers cannot disagree.
  *
- * `lastmod` is the date the route's prerendered file was last written, not the
- * day the script ran — stamping everything with today's date on every build
+ * The sitemap intentionally omits <lastmod>: the route set is generated from
+ * discoverRoutes(), but the source file lives under source control and there
+ * is no tracked per-route modification date. Stamping it with the build date
  * tells crawlers the entire site changed daily, which is false and is treated
- * as noise.
+ * as noise — Google works fine without lastmod.
  *
  * Usage: node scripts/gen-sitemap.mjs [--dist] [--check]
  *   --dist   write the current build's sitemap directly to dist/public
@@ -79,19 +80,6 @@ function ruleFor(p) {
   return RULES.find(r => r.test(p));
 }
 
-/** The prerendered file's mtime, or today when the site has not been built. */
-function lastmodFor(route) {
-  const file =
-    route === "/"
-      ? path.join(DIST, "index.html")
-      : path.join(DIST, route.slice(1), "index.html");
-  try {
-    return fs.statSync(file).mtime.toISOString().slice(0, 10);
-  } catch {
-    return new Date().toISOString().slice(0, 10);
-  }
-}
-
 function build() {
   // Sorted so the file has a stable order and a diff shows real changes rather
   // than the order Vite happened to walk the routes in.
@@ -109,7 +97,6 @@ function build() {
       return [
         "  <url>",
         `    <loc>${loc}</loc>`,
-        `    <lastmod>${lastmodFor(route)}</lastmod>`,
         `    <changefreq>${changefreq}</changefreq>`,
         `    <priority>${priority}</priority>`,
         "  </url>",
@@ -131,8 +118,8 @@ if (WRITE_DIST && !fs.existsSync(DIST)) {
 
 if (process.argv.includes("--check")) {
   const current = fs.existsSync(OUT) ? fs.readFileSync(OUT, "utf8") : "";
-  // Compare the URL set rather than the bytes: lastmod moves with the build,
-  // and failing a check because a timestamp advanced would be noise.
+  // Compare the URL set rather than the bytes: a rewrite with the same route
+  // set should not read as a change.
   const locs = s =>
     [...s.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]).sort();
   const a = locs(current);

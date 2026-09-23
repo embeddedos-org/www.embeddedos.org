@@ -298,6 +298,12 @@ export default function ENIPage() {
             >
               API Reference
             </Link>
+            <Link
+              href="/product-eni"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
+            >
+              eNI engineering detail
+            </Link>
           </div>
         </div>
       </section>

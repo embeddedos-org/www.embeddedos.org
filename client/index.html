@@ -5,6 +5,77 @@
     <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EmbeddedOS — The Operating System for Every Device</title>
+    <!--
+      Critical CSS: above-the-fold essentials inlined so first paint does
+      not wait for the deferred 45 KB stylesheet (F-07). Source of truth is
+      client/src/critical.css — copy it here verbatim when it changes.
+    -->
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body {
+        margin: 0;
+        background-color: #0b1d3a;
+        color: #eef2f7;
+        font-family:
+          "DM Sans",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        /* line-height, letter-spacing and margin are owned by the design system
+           (display-*, leading-*, mb-*) in the deferred stylesheet. They must not
+           be set here: this block is unlayered, and unlayered author styles beat
+           Tailwind's @layer utilities, so they would permanently override them. */
+      }
+      p {
+        margin: 0 0 1em;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      main {
+        display: block;
+      }
+      .skip-to-content {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        z-index: 9999;
+        padding: 0.75rem 1.5rem;
+        background: #f97316;
+        color: #fff;
+        border-radius: 0.5rem;
+        font-weight: 600;
+      }
+      .skip-to-content:focus {
+        top: 1rem;
+      }
+    </style>
     <!-- Keep this count aligned with STACK.totals.boards in shared/stack-data.ts. -->
     <meta
       name="description"
@@ -39,6 +110,18 @@
       content="https://www.embeddedos.org/media/hero-background_1bafea1c.jpg"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="EmbeddedOS — The Operating System for Every Device"
+    />
+    <meta
+      name="twitter:description"
+      content="Open-source embedded OS powering IoT, edge AI, automotive, and industrial systems."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.embeddedos.org/media/hero-background_1bafea1c.jpg"
+    />
     <!--
       Nonprofit identity as structured data. Google reads the mission, the legal
       name and the tax ID from the page text either way, but only a reviewer
@@ -46,6 +129,20 @@
       Every value here is duplicated from client/src/data/foundation.ts — change
       both, or neither. tests/unit/foundation-facts.test.ts fails if they drift.
     -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "EmbeddedOS Research Foundation",
+        "alternateName": "EmbeddedOS",
+        "url": "https://www.embeddedos.org",
+        "inLanguage": "en",
+        "publisher": {
+          "@type": "NGO",
+          "name": "Embedded Operating Systems Research Foundation"
+        }
+      }
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -81,6 +178,28 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      F-28: preload the two woff2 files the above-fold hero text needs (latin
+      subsets): Space Grotesk for the h1, DM Sans for body. All three families
+      are variable fonts, so one file covers every weight — trimming the
+      unused 300/italic axes would not save bytes. These URLs are versioned by
+      Google; refresh them from the css2 response if the font request below
+      changes. A stale preload 404s harmlessly (the CSS still loads the font).
+    -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2"
+    />
     <!-- Load webfonts without blocking first render. -->
     <link
       rel="preload"

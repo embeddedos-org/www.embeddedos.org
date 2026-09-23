@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { BOARD_COUNT, ARCH_COUNT, boardsLabel } from "@/data/stack";
 import { Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 const EoSKernelCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EoSKernelCanvas }))
 );
@@ -106,7 +107,7 @@ const FEATURES = [
     icon: Terminal,
     color: "#F59E0B",
     title: "EoS Language",
-    desc: "The fastest embedded API surface — direct memory-mapped register access with type safety.",
+    desc: "A low-overhead embedded API surface — direct memory-mapped register access with type safety.",
   },
   {
     icon: Cpu,
@@ -225,7 +226,9 @@ export default function EoS() {
                     </div>
                   }
                 >
-                  <EoSKernelCanvas hovered={false} />
+                  <ViewportGate>
+                    <EoSKernelCanvas hovered={false} />
+                  </ViewportGate>
                 </Suspense>
               </div>
               <div
@@ -426,6 +429,12 @@ export default function EoS() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
               >
                 <Terminal size={15} /> Try EoSim
+              </Link>
+              <Link
+                href="/product-eos"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                EoS engineering detail
               </Link>
             </div>
           </motion.div>

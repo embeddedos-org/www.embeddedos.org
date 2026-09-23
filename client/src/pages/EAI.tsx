@@ -1,4 +1,5 @@
 import { useState, Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
@@ -195,7 +196,9 @@ export default function EAI() {
                 </div>
               }
             >
-              <EAINetworkCanvas hovered={false} />
+              <ViewportGate>
+                <EAINetworkCanvas hovered={false} />
+              </ViewportGate>
             </Suspense>
           </motion.div>
         </div>
@@ -454,6 +457,12 @@ export default function EAI() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
               >
                 <ChevronRight size={15} /> EAI API Reference
+              </Link>
+              <Link
+                href="/product-eai"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                EAI engineering detail
               </Link>
             </div>
           </motion.div>

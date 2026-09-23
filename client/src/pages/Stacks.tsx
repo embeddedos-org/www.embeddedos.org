@@ -1,13 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Layers,
-  Cpu,
-  Zap,
-  Bot,
-  Globe,
-  Activity,
-} from "lucide-react";
+import { Layers, Cpu, Zap, Bot, Globe, Activity } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -157,9 +149,9 @@ export default function Stacks() {
                   >
                     <Icon size={24} style={{ color: stack.color }} />
                   </div>
-                  <h3 className="font-heading font-bold text-white text-base mb-1">
+                  <h2 className="font-heading font-bold text-white text-base mb-1">
                     {stack.name}
-                  </h3>
+                  </h2>
                   <p className="text-xs text-white/50 leading-relaxed mb-4">
                     {stack.desc}
                   </p>
@@ -219,15 +211,6 @@ export default function Stacks() {
           <p className="text-white/50 mb-6">
             All stacks are open source. Pick one, customize it, and ship.
           </p>
-          <a
-            href="https://github.com/embeddedos-org/eos-stack-manifest"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
-          >
-            View Stack Manifest
-            <ArrowRight size={16} />
-          </a>
         </div>
       </section>
     </div>

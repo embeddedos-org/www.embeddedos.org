@@ -262,3 +262,26 @@ describe("discoverRoutes", () => {
     expect(routes).not.toContain("/ecosystem-map");
   });
 });
+
+describe("applyMeta WebSite JSON-LD (F-24)", () => {
+  const meta = { heading: "Home", description: "d".repeat(80) };
+
+  it("emits a WebSite entity on the homepage only", () => {
+    const out = applyMeta(SHELL, { ...meta, route: "/" });
+    const m = out.match(
+      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/
+    );
+    expect(m).not.toBeNull();
+    const json = JSON.parse(m![1]);
+    expect(json["@type"]).toBe("WebSite");
+    expect(json.url).toBe("https://www.embeddedos.org/");
+    // No SearchAction: site search lives in a modal, there is no /search
+    // route, and pointing a SearchAction at a missing URL is invalid markup.
+    expect(json.potentialAction).toBeUndefined();
+  });
+
+  it("does not emit WebSite JSON-LD on other routes", () => {
+    const out = applyMeta(SHELL, { ...meta, route: "/about" });
+    expect(out).not.toContain("application/ld+json");
+  });
+});

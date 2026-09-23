@@ -10,6 +10,7 @@ build/
 # Generated files
 *.tsbuildinfo
 coverage/
+docs/baseline/
 
 # drizzle-kit owns these: it rewrites the snapshot and journal on every
 # `generate`, so formatting them only produces a diff that comes straight back.

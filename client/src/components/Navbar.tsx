@@ -33,7 +33,6 @@ import {
   Fingerprint,
   Terminal,
   Braces,
-  Blocks,
   Bot,
   Rocket,
   LayoutGrid,
@@ -144,14 +143,6 @@ const NAV_ITEMS = {
             icon: LayoutGrid,
             href: "https://github.com/embeddedos-org/EoStudio",
             color: "#22D3EE",
-            external: true,
-          },
-          {
-            name: "eos-stack-manifest",
-            desc: "Unified build manifest",
-            icon: Blocks,
-            href: "https://github.com/embeddedos-org/eos-stack-manifest",
-            color: "#F59E0B",
             external: true,
           },
         ],
@@ -615,6 +606,8 @@ export default function Navbar() {
                 loading="eager"
                 fetchPriority="high"
                 src={LOGO_MARK}
+                width={32}
+                height={32}
                 alt="EmbeddedOS"
                 className="w-8 h-8 rounded-lg object-cover transition-transform duration-200 group-hover:scale-105"
               />
@@ -845,6 +838,8 @@ export default function Navbar() {
                     loading="eager"
                     fetchPriority="high"
                     src={LOGO_MARK}
+                    width={32}
+                    height={32}
                     alt="EmbeddedOS"
                     className="w-7 h-7 rounded-lg"
                   />
@@ -871,6 +866,7 @@ export default function Navbar() {
                         onClick={() =>
                           setMobileExpanded(e => (e === label ? null : label))
                         }
+                        aria-expanded={isExpanded}
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
                       >
                         {label}

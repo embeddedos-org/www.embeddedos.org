@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import StructuredData from "@/components/StructuredData";
+import { ECOSYSTEM } from "@/data/ecosystem";
+import { ORIGIN } from "@/lib/page-meta";
+import { componentRouteFor, splitRelationship } from "@/lib/component-links";
 import {
   ArrowRight,
   Terminal,
@@ -102,6 +106,24 @@ const importanceBadge: Record<
   },
 };
 
+function RelatedComponent({ text, accent }: { text: string; accent: string }) {
+  const { head, rest } = splitRelationship(text);
+  const route = componentRouteFor(head);
+  if (!route) return <>{text}</>;
+  return (
+    <span>
+      <Link
+        href={route}
+        className="font-semibold underline decoration-dotted underline-offset-2 hover:decoration-solid"
+        style={{ color: accent }}
+      >
+        {head}
+      </Link>
+      {rest}
+    </span>
+  );
+}
+
 export default function ProductDetailPage({
   badge,
   title,
@@ -123,9 +145,51 @@ export default function ProductDetailPage({
 }: ProductDetailProps) {
   const [activeExample, setActiveExample] = useState(0);
   const shortName = title.split(" — ")[0];
+  const [location] = useLocation();
+  const repoUrl = `https://github.com/${github}`;
+  const component = ECOSYSTEM.find(
+    c => c.repository.toLowerCase() === repoUrl.toLowerCase()
+  );
+  const pageUrl = `${ORIGIN}${location}`;
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${ORIGIN}/` },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Products",
+          item: `${ORIGIN}/products`,
+        },
+        { "@type": "ListItem", position: 3, name: shortName, item: pageUrl },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      name: shortName,
+      description,
+      codeRepository: component ? component.repository : repoUrl,
+      ...(component?.language
+        ? { programmingLanguage: component.language }
+        : {}),
+      url: pageUrl,
+      license: "https://spdx.org/licenses/MIT.html",
+      isAccessibleForFree: true,
+      maintainer: {
+        "@type": "NGO",
+        name: "Embedded Operating Systems Research Foundation",
+        url: ORIGIN,
+      },
+      ...(component?.version ? { version: component.version } : {}),
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#0A0F1E] text-white">
+      <StructuredData schema={schema} />
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         {heroImage && (
@@ -146,6 +210,25 @@ export default function ProductDetailPage({
           }}
         />
         <div className="relative max-w-6xl mx-auto px-6">
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex items-center gap-2 text-xs font-mono text-white/40">
+              <li>
+                <Link href="/" className="hover:text-white/70">
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>
+                <Link href="/products" className="hover:text-white/70">
+                  Products
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page" className="text-white/70">
+                {shortName}
+              </li>
+            </ol>
+          </nav>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,7 +250,9 @@ export default function ProductDetailPage({
                 {lang}
               </span>
               <span className="text-xs font-mono text-green-400 px-2 py-1 rounded border border-green-400/30 bg-green-400/10">
-                MIT · v0.1.0
+                {component?.version
+                  ? `MIT · v${component.version}`
+                  : "MIT licensed"}
               </span>
               {ecosystemRole && (
                 <span
@@ -191,6 +276,19 @@ export default function ProductDetailPage({
             <p className="text-lg text-white/60 leading-relaxed mb-8 max-w-2xl">
               {description}
             </p>
+            {component?.sitePage && component.sitePage !== location && (
+              <p className="text-sm text-white/50 mb-6">
+                For a shorter introduction to {component.name}, see the{" "}
+                <Link
+                  href={component.sitePage}
+                  className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                  style={{ color: accent }}
+                >
+                  {component.name} overview
+                </Link>
+                . This page is the engineering detail.
+              </p>
+            )}
             <div className="flex gap-4 flex-wrap">
               <a
                 href={`https://github.com/${github}`}
@@ -408,7 +506,16 @@ export default function ProductDetailPage({
               </h2>
             </div>
             <p className="text-white/40 text-sm mb-6">
-              Why {shortName} matters — and what breaks without it.
+              Why {shortName} matters — and what breaks without it. See how the
+              pieces fit together in the{" "}
+              <Link
+                href="/ecosystem"
+                className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                style={{ color: accent }}
+              >
+                EmbeddedOS ecosystem overview
+              </Link>
+              .
             </p>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 mb-6">
               <p className="text-white/80 leading-relaxed text-base">
@@ -428,7 +535,7 @@ export default function ProductDetailPage({
                         className="flex items-center gap-2 text-sm text-white/60"
                       >
                         <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                        {dep}
+                        <RelatedComponent text={dep} accent={accent} />
                       </div>
                     ))}
                   </div>
@@ -449,7 +556,7 @@ export default function ProductDetailPage({
                           className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                           style={{ background: accent }}
                         />
-                        {dep}
+                        <RelatedComponent text={dep} accent={accent} />
                       </div>
                     ))}
                   </div>
@@ -494,9 +601,11 @@ export default function ProductDetailPage({
                 <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
                   MIT
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
-                  v0.1.0
-                </span>
+                {component?.version && (
+                  <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/60">
+                    v{component.version}
+                  </span>
+                )}
               </div>
             </div>
             <a
@@ -506,8 +615,24 @@ export default function ProductDetailPage({
               className="inline-flex items-center gap-1 text-xs font-semibold transition-all hover:opacity-80"
               style={{ color: accent }}
             >
-              Open ↗
+              Open
+              <span className="sr-only">
+                {" "}
+                the {github} repository on GitHub
+              </span>{" "}
+              ↗
             </a>
+            <p className="text-white/40 text-xs mt-4">
+              Every EmbeddedOS repository, with install commands, is listed on{" "}
+              <Link
+                href="/downloads"
+                className="underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                style={{ color: accent }}
+              >
+                the downloads page
+              </Link>
+              .
+            </p>
           </motion.div>
 
           {/* EoS Stack */}

@@ -27,6 +27,7 @@ const navSource = read("client/src/components/Navbar.tsx");
 const footerSource = read("client/src/components/Footer.tsx");
 const communitySource = read("client/src/pages/Community.tsx");
 const communityDataSource = read("client/src/data/community.ts");
+const productsSource = read("client/src/pages/Products.tsx");
 const foundationSource = read("client/src/data/foundation.ts");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
@@ -110,6 +111,34 @@ describe("route coverage", () => {
   });
 });
 
+describe("product reference pages", () => {
+  /** Every /product-* detail route the router serves, excluding the hubs. */
+  const detailRoutes = routes.filter(
+    r => r.startsWith("/product-") && r !== "/product-showcases"
+  );
+
+  /**
+   * These pages were reachable only from the header's mega-menu, which Radix
+   * mounts on hover — so none of them appeared in any prerendered page, and
+   * three had no inbound link anywhere in the static site. /products is their
+   * hub and must link each one.
+   */
+  it("links every product detail page from the products hub", () => {
+    const missing = detailRoutes.filter(
+      r => !productsSource.includes(`href: "${r}"`)
+    );
+    expect(missing, "product routes absent from /products").toEqual([]);
+  });
+
+  it("lists no product reference entry that is not a route", () => {
+    const listed = [
+      ...productsSource.matchAll(/href: "(\/product-[^"]+)"/g),
+    ].map(m => m[1]);
+    const stray = listed.filter(h => !routes.includes(h));
+    expect(stray, "product reference entries with no route").toEqual([]);
+  });
+});
+
 describe("menu separation", () => {
   it("keeps the Foundation's institutional pages out of the header", () => {
     // These belong to the organisation, not to the software. A visitor opening
@@ -160,13 +189,17 @@ describe("menu separation", () => {
 });
 
 describe("community resources", () => {
+  // NOTE (Ad Grants link-integrity, 2026-09-19): the wiki/issues/AGENTS.md
+  // entries that pointed at github.com/embeddedos-org/www.embeddedos.org were
+  // removed from client/src/data/community.ts — that repository is private, so
+  // those links 404 for every public visitor.
   const expected = [
-    "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
+    "https://github.com/embeddedos-org/eos/wiki",
     "https://github.com/orgs/embeddedos-org/discussions",
     "https://discord.gg/n6Kd9fwja",
-    "https://github.com/embeddedos-org/www.embeddedos.org/issues",
+    "https://github.com/embeddedos-org/eos/issues",
     "https://github.com/orgs/embeddedos-org/projects",
-    "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
+    "https://github.com/embeddedos-org/eos/blob/master/AGENTS.md",
   ];
 
   it("publishes the exact repository and organization destinations", () => {
@@ -176,6 +209,22 @@ describe("community resources", () => {
     );
     expect(communitySource).toContain("SOCIAL_URLS.discord");
     expect(communityDataSource).not.toContain("/agents");
+  });
+
+  /**
+   * The footer renders these on all 132 prerendered pages, so one unreachable
+   * href is 132 broken links. This repository is private: every path under it
+   * answers 404 for a logged-out visitor, while looking correct to a signed-in
+   * maintainer — which is exactly how `/wiki`, `/issues` and `/blob/master/
+   * AGENTS.md` shipped and stayed broken.
+   */
+  it("links nothing into this repository, which is private", () => {
+    const offenders = [...communityDataSource.matchAll(/href: "([^"]+)"/g)]
+      .map(m => m[1])
+      .filter(href =>
+        href.includes("github.com/embeddedos-org/www.embeddedos.org")
+      );
+    expect(offenders).toEqual([]);
   });
 
   it("uses the shared destinations in the footer and community page", () => {

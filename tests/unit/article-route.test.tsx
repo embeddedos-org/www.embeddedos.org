@@ -18,6 +18,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import Article from "../../client/src/pages/Article";
+import ArticleJsonLd from "../../client/src/components/ArticleJsonLd";
 import { ARTICLE_BODIES, bodyOf } from "../../client/src/data/article-bodies";
 import { CONTENT, bySlug, formatDate } from "../../client/src/data/content";
 
@@ -212,5 +213,119 @@ describe("routing", () => {
       "utf-8"
     );
     expect(app).toContain('<Route path="/article/:slug">');
+  });
+});
+
+describe("article structured data", () => {
+  type JsonLdNode = Record<string, unknown>;
+  const jsonLdOf = (slug: string): JsonLdNode => {
+    const { container } = render(<Article slug={slug} />);
+    const scripts = container.querySelectorAll(
+      'script[type="application/ld+json"]'
+    );
+    expect(scripts.length, `${slug}: JSON-LD block count`).toBe(1);
+    return JSON.parse(scripts[0].textContent ?? "") as JsonLdNode;
+  };
+  const newsArticleOf = (doc: JsonLdNode): JsonLdNode =>
+    ((doc["@graph"] as JsonLdNode[]).find(e => e["@type"] === "NewsArticle") ??
+      {}) as JsonLdNode;
+
+  it.each(SLUGS)("%s exposes a valid NewsArticle entity", slug => {
+    const item = bySlug(slug)!;
+    const doc = jsonLdOf(slug);
+    expect(doc["@context"]).toBe("https://schema.org");
+    const news = newsArticleOf(doc);
+    expect(news, `${slug}: no NewsArticle in @graph`).toBeDefined();
+    expect(news.headline).toBe(item.title);
+    expect(news.datePublished).toBe(item.date);
+    // The description is the standfirst actually shown under the title.
+    expect(news.description).toBe(bodyOf(slug)!.lede);
+    expect(news.author).toEqual({
+      "@type": "Organization",
+      name: "Embedded Operating Systems (EoS) Research Foundation",
+    });
+    expect(news.publisher.name).toBe(
+      "Embedded Operating Systems (EoS) Research Foundation"
+    );
+    // The real logo asset the navbar/footer use; there is no
+    // embeddedos-logo.png on the site.
+    expect(news.publisher.logo.url).toBe(
+      "https://www.embeddedos.org/media/embeddedos-logo-mark_bc053888.jpg"
+    );
+    // The canonical URL, even when the page is served at a legacy address.
+    const canonical = `https://www.embeddedos.org/article/${slug}`;
+    expect(news["@id"]).toBe(canonical);
+    expect(news.mainEntityOfPage).toEqual({
+      "@type": "WebPage",
+      "@id": canonical,
+    });
+  });
+
+  it.each(SLUGS)("%s includes a Home > News > title breadcrumb", slug => {
+    const doc = jsonLdOf(slug);
+    const crumb = (doc["@graph"] as any[]).find(
+      e => e["@type"] === "BreadcrumbList"
+    );
+    expect(crumb, `${slug}: no BreadcrumbList in @graph`).toBeDefined();
+    expect(crumb.itemListElement).toEqual([
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.embeddedos.org/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "News",
+        item: "https://www.embeddedos.org/news",
+      },
+      { "@type": "ListItem", position: 3, name: bySlug(slug)!.title },
+    ]);
+  });
+
+  it("updates rather than duplicates the block when navigating between articles", () => {
+    // Client-side navigation re-renders the same component with a new slug.
+    // An effect that appends a script on each visit would leave the first
+    // article's JSON-LD behind; the declarative block must update in place.
+    const [first, second] = SLUGS;
+    const { rerender } = render(<Article slug={first} />);
+    rerender(<Article slug={second} />);
+    const scripts = document.querySelectorAll(
+      'script[type="application/ld+json"]'
+    );
+    expect(scripts.length).toBe(1);
+    const news = newsArticleOf(
+      JSON.parse(scripts[0].textContent ?? "") as Record<string, unknown>
+    );
+    expect(news.headline).toBe(bySlug(second)!.title);
+    expect(news["@id"]).toBe(`https://www.embeddedos.org/article/${second}`);
+  });
+
+  it("renders no structured data for an unknown slug", () => {
+    render(<Article slug="no-such-article" />);
+    expect(
+      document.querySelectorAll('script[type="application/ld+json"]').length
+    ).toBe(0);
+  });
+
+  it("escapes a script-breaking sequence in the source data", () => {
+    // The registry is trusted, but a title containing "</script>" must not
+    // terminate the element early. Rendering must keep it inert.
+    const hostile = {
+      ...bySlug(SLUGS[0])!,
+      title: "A title with </script><script>alert(1)</script>",
+    };
+    const { container } = render(<ArticleJsonLd item={hostile} />);
+    const script = container.querySelector(
+      'script[type="application/ld+json"]'
+    )!;
+    expect(script.innerHTML).not.toContain("</script>");
+    // Only "<" needs escaping: with it gone there is no "</script>" sequence
+    // for the parser to trip on; ">" is harmless and stays literal.
+    expect(script.innerHTML).toContain("\\u003c/script>");
+    // And the JSON still parses to the hostile title, decoded by the parser.
+    const news = newsArticleOf(JSON.parse(script.textContent ?? ""));
+    expect(news.headline).toBe(hostile.title);
   });
 });

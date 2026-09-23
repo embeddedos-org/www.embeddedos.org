@@ -125,6 +125,12 @@ export default function EoSimProductPage() {
               >
                 Getting Started
               </Link>
+              <Link
+                href="/product-eosim"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
+              >
+                EoSim engineering detail
+              </Link>
             </div>
           </motion.div>
         </div>

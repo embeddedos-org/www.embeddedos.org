@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -19,50 +18,6 @@ const IMPACT_ITEMS = [
   { icon: Plane, label: "Advance aerospace R&D", color: "#60A5FA" },
 ];
 
-const STORAGE_KEY = "eos-donate-dismissed";
-const DISMISS_HOURS = 168;
-/** Derived so the button's promise cannot drift from the code that keeps it —
- *  it read "remind me in 3 days" while the timer waited a week. */
-const DISMISS_DAYS = Math.round(DISMISS_HOURS / 24);
-const AUTO_SHOW_DELAY_MS = 20000; // 20 seconds — give visitors time to explore the page first
-
-/**
- * Routes where the prompt is never auto-shown: the pages with a form on them.
- *
- * A modal that covers the page after 20s is at its most expensive over a form
- * someone is part-way through, because the cost is not an interruption but
- * abandoned work.
- *
- * /donate is the obvious one — interrupting someone already donating works
- * against the conversion the prompt exists to cause, and its Zeffy embed nests
- * Stripe and two captchas and takes 14-18s to settle, so a visitor is very
- * likely still there when the timer fires.
- *
- * /careers was found the same way, by watching it happen: the application form
- * asks for a statement of at least 50 characters, so nobody completes it in
- * under 20 seconds, and the prompt landed on top of a half-written application.
- *
- * The manual trigger is unaffected — clicking Donate still opens the dialog.
- */
-const NO_AUTO_SHOW_ROUTES = new Set(["/donate", "/careers"]);
-
-/**
- * Compare paths without their trailing slash.
- *
- * The host 301s every prerendered route to a trailing slash — `/donate` to
- * `/donate/`, verified against production — and wouter hands back
- * `location.pathname` verbatim, so `location` is `"/donate/"` for a real
- * visitor. `<Route path="/donate">` still matches, because regexparam appends
- * an optional slash, so the page renders and nothing looks broken; an exact
- * `Set.has` against it silently does not.
- *
- * This is the trap that makes the bug invisible in test: the local harness
- * serves the build through `express.static(..., { redirect: false })`, so it
- * never issues that redirect, and an exclusion keyed on the exact string
- * passes locally while doing nothing on the live site.
- */
-const samePath = (path: string) => path.replace(/\/+$/, "") || "/";
-
 /** Focusable descendants, in tab order, skipping anything disabled or hidden. */
 const focusableWithin = (root: HTMLElement) =>
   Array.from(
@@ -72,49 +27,19 @@ const focusableWithin = (root: HTMLElement) =>
   ).filter(el => el.offsetParent !== null || el === document.activeElement);
 
 export default function DonateModal() {
-  const [location] = useLocation();
   const [open, setOpen] = useState(false);
-  const [elapsed, setElapsed] = useState(false);
-  const autoShown = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const returnFocusTo = useRef<HTMLElement | null>(null);
 
+  /**
+   * The modal opens ONLY on the explicit manual trigger (Donate buttons
+   * dispatch `open-donate`). There is deliberately no timed auto-show:
+   * Google Ad Grants reviewers flag unprompted pop-ups as a rejection
+   * reason, so the prompt never appears unless the visitor asks for it.
+   */
   const dismiss = useCallback(() => {
     setOpen(false);
-    localStorage.setItem(STORAGE_KEY, String(Date.now()));
   }, []);
-
-  // The delay is armed once per session, not once per page.
-  //
-  // Keying the timer itself on location would restart it on every navigation,
-  // so a visitor who changes page more often than every 20s would never see
-  // the prompt at all — a silent change to how often the Foundation gets to
-  // ask. This effect keeps the original single-shot timing and only records
-  // that the delay has elapsed; where it is allowed to *show* is the next
-  // effect's decision.
-  useEffect(() => {
-    const dismissed = localStorage.getItem(STORAGE_KEY);
-    if (dismissed) {
-      const hoursSince =
-        (Date.now() - parseInt(dismissed, 10)) / (1000 * 60 * 60);
-      if (hoursSince <= DISMISS_HOURS) return;
-    }
-    const timer = setTimeout(() => setElapsed(true), AUTO_SHOW_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Show it once, on the first route that allows it.
-  //
-  // Split from the timer so that a visitor sitting on /donate when the delay
-  // elapses is not skipped permanently — they are asked when they move on.
-  // `autoShown` makes it once per session: without it, every subsequent
-  // navigation would re-open a dialog the visitor had already dismissed.
-  useEffect(() => {
-    if (!elapsed || autoShown.current) return;
-    if (NO_AUTO_SHOW_ROUTES.has(samePath(location))) return;
-    autoShown.current = true;
-    setOpen(true);
-  }, [elapsed, location]);
 
   // Listen for manual trigger from Donate button
   useEffect(() => {
@@ -320,12 +245,13 @@ export default function DonateModal() {
                   </span>
                 </div>
 
-                {/* Dismiss */}
+                {/* Dismiss — manual trigger only; the modal never appears unprompted,
+                    so there is nothing to "remind" about. */}
                 <button
                   onClick={dismiss}
                   className="w-full text-xs text-white/30 hover:text-white/50 transition-colors py-1"
                 >
-                  Maybe later — remind me in {DISMISS_DAYS} days
+                  Maybe later
                 </button>
               </div>
             </div>

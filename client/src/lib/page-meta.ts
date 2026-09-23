@@ -8,6 +8,15 @@
  * entry, the bookmark title and — worst of the four — <link rel="canonical">
  * all still described whichever page the visitor happened to land on first.
  *
+ * The hand-written descriptions in shared/route-descriptions.json are
+ * deliberately NOT imported here. They are a build-time override applied by
+ * scripts/prerender.mjs, so the served HTML — which is what a crawler and a
+ * first load see — carries them. Bundling all 52 into the client cost 2.5 KB
+ * brotli and pushed the eagerly-preloaded critical path from 258.5 KB to
+ * 261 KB, over the 260 KB budget in tests/performance/budgets.test.ts. A
+ * client-side navigation therefore recomputes the description from the DOM,
+ * which is the same accurate sentence, just longer; no crawler sees it.
+ *
  * The rules below are a deliberate copy of `applyMeta` in
  * scripts/prerender.mjs. They cannot be imported from it: that file is a plain
  * .mjs build script that pulls in playwright and express, none of which belongs
@@ -24,6 +33,68 @@ export const DEFAULT_TITLE =
   "EmbeddedOS — The Operating System for Every Device";
 
 export const ORIGIN = "https://www.embeddedos.org";
+
+/**
+ * Per-route title overrides. Consulted before the heading-derived title.
+ *
+ * The homepage's h1 ("Open-source embedded systems for intelligent physical
+ * devices") truncates mid-phrase under the 70-char budget, dropping the key
+ * noun "devices" — see F-05. An explicit override keeps the indexed title
+ * short, complete and honest. Every value must stay ≤ 60 characters.
+ *
+ * Mirrored in scripts/prerender.mjs (TITLE_OVERRIDES); the two tables must
+ * stay identical — tests/unit/page-meta.test.ts enforces it.
+ */
+export const TITLE_OVERRIDES: Record<string, string> = {
+  "/": "Open-source embedded OS for every device | EmbeddedOS",
+};
+
+/**
+ * Per-route meta-description overrides, consulted before the extracted
+ * first-paragraph description (F-25). Hand-written for the highest-intent
+ * routes; every other route keeps the extracted description.
+ *
+ * Mirrored in scripts/prerender.mjs (DESCRIPTION_OVERRIDES); the two tables
+ * must stay identical — tests/unit/page-meta.test.ts enforces it.
+ */
+export const DESCRIPTION_OVERRIDES: Record<string, string> = {
+  "/":
+    "EmbeddedOS is a 501(c)(3) nonprofit building a free, open-source " +
+    "operating system for embedded devices — kernel, tools, docs and " +
+    "education, MIT licensed.",
+  "/donate":
+    "Support the EmbeddedOS Foundation's open-source embedded systems " +
+    "research and free education. 501(c)(3) nonprofit, EIN 41-4821627 — " +
+    "gifts are tax-deductible.",
+  "/projects":
+    "23 open-source repositories: the EoS real-time kernel, bootloader, " +
+    "IPC, build tools, AI, simulators, apps and hardware — all MIT " +
+    "licensed on GitHub.",
+  "/mission":
+    "Our mission: advance open-source embedded systems research, " +
+    "education and technology for the public benefit — free to read, " +
+    "audit, learn from and build on.",
+  "/about":
+    "The Embedded Operating Systems Research Foundation (EIN 41-4821627) " +
+    "is a 501(c)(3) public charity advancing open embedded systems.",
+  "/contact":
+    "Contact the EmbeddedOS Foundation: general inquiries, technical " +
+    "support, press, partnerships, careers and donations. Every topic " +
+    "reaches a person.",
+  "/books":
+    "Free technical books on embedded systems from the EmbeddedOS " +
+    "Foundation — full-length, openly licensed, including a kids edition.",
+  "/research":
+    "Open research into real-time operating systems, edge AI, health " +
+    "hardware, avionics and quantum control — published openly, never " +
+    "licensed.",
+  "/get-involved":
+    "Contribute to EmbeddedOS: code, docs, hardware testing, internships " +
+    "and community programmes. All work is public and MIT licensed.",
+  "/transparency":
+    "How the EmbeddedOS Foundation handles money and decisions: " +
+    "nonprofit disclosures, finances, governance and public records.",
+};
 
 export const FALLBACK_DESCRIPTION =
   "EmbeddedOS is a 501(c)(3) nonprofit foundation building an open-source " +
@@ -42,9 +113,11 @@ export function truncate(text: string, max: number): string {
  * Build the document title for a page whose main heading is `heading`.
  *
  * Long headings (the article pages) drop to the shorter brand suffix rather
- * than pushing the whole string past what a search result will show.
+ * than pushing the whole string past what a search result will show. A
+ * per-route override wins over both when one is declared.
  */
-export function buildTitle(heading: string): string {
+export function buildTitle(heading: string, route?: string): string {
+  if (route && TITLE_OVERRIDES[route]) return TITLE_OVERRIDES[route];
   if (!heading) return DEFAULT_TITLE;
   return heading.length + LONG_SUFFIX.length <= MAX_TITLE
     ? heading + LONG_SUFFIX
@@ -54,6 +127,56 @@ export function buildTitle(heading: string): string {
 /** The absolute URL a route should declare as its canonical. */
 export function canonicalFor(route: string): string {
   return route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
+}
+
+export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [
+  [
+    /^\/(architecture|flow|ecosystem|stacks)$/,
+    "/media/architecture-diagram-hero_72436b3f.jpg",
+  ],
+  [/^\/(eboot|product-eboot)$/, "/media/arch-eboot-chain_b9f999b5.jpg"],
+  [
+    /^\/(eos|product-eos|product-eos-platform)$/,
+    "/media/arch-eos-kernel_d7d1b4a5.jpg",
+  ],
+  [
+    /^\/(eai|eni|neural-link-ai|product-eai|product-eni|eai-edge)$/,
+    "/media/arch-eai-neural_4d7964d2.jpg",
+  ],
+  [
+    /^\/(eoffice|product-eoffice|eosuite)$/,
+    "/media/arch-eoffice-suite_d63eacf5.jpg",
+  ],
+  [
+    /^\/(eapps|product-eapps|eserviceapps|product-eserviceapps)$/,
+    "/media/product-eapps_89b01d4a.jpg",
+  ],
+  [/^\/(edb|product-edb)$/, "/media/product-edb_9cd0fe0e.jpg"],
+  [/^\/(eipc|product-eipc)$/, "/media/product-eipc-ipc_be829de0.jpg"],
+  [/^\/(eosim|product-eosim)$/, "/media/product-eosim-sim_78145da3.jpg"],
+  [
+    /^\/(eostudio|product-eostudio)$/,
+    "/media/product-eostudio-ide_2fc95a2d.jpg",
+  ],
+  [
+    /^\/(ecad-hardware|hardware-lab)$/,
+    "/media/product-ecad-hardware_f5806032.jpg",
+  ],
+  [
+    /^\/(community|get-involved|events|membership)$/,
+    "/media/community-illustration-eos_6f39c9db.jpg",
+  ],
+  [
+    /^\/(what-we-do|mission|about|organization|transparency)$/,
+    "/media/what-we-do-illustration_4c2ad2f7.jpg",
+  ],
+];
+
+export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
+
+export function socialImageFor(route: string): string {
+  const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
+  return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
 }
 
 const clean = (s: string | null | undefined) =>
@@ -96,23 +219,47 @@ function setMeta(doc: Document, selector: string, value: string) {
   if (el) el.setAttribute("content", value);
 }
 
+/** Read the page's own representative image: the first image in <main>. */
+export function readPageImage(doc: Document = document): string {
+  const src = doc.querySelector("main img")?.getAttribute("src")?.trim();
+  if (!src || src.startsWith("data:")) return "";
+  return src.startsWith("http")
+    ? src
+    : `${ORIGIN}${src.startsWith("/") ? "" : "/"}${src}`;
+}
+
 /**
  * Rewrite the head to describe `route`, reading the heading and description
  * out of the DOM exactly as the prerenderer reads them out of the page.
  */
 export function applyRouteMeta(route: string, doc: Document = document): void {
-  const title = buildTitle(readHeading(doc));
+  const title = buildTitle(readHeading(doc), route);
   const description = truncate(
-    readDescription(doc) || FALLBACK_DESCRIPTION,
-    250
+    DESCRIPTION_OVERRIDES[route] ||
+      readDescription(doc) ||
+      FALLBACK_DESCRIPTION,
+    155
   );
   const canonical = canonicalFor(route);
+  // Same priority as scripts/prerender.mjs: a curated per-route image wins,
+  // otherwise the page's own first <main> image, otherwise the site default.
+  const scraped = readPageImage(doc);
+  const curated = SOCIAL_IMAGE_RULES.some(([pattern]) => pattern.test(route))
+    ? socialImageFor(route)
+    : "";
+  const image = curated || scraped || socialImageFor(route);
 
   doc.title = title;
   setMeta(doc, 'meta[name="description"]', description);
   setMeta(doc, 'meta[property="og:title"]', title);
   setMeta(doc, 'meta[property="og:description"]', description);
   setMeta(doc, 'meta[property="og:url"]', canonical);
+  setMeta(doc, 'meta[name="twitter:title"]', title);
+  setMeta(doc, 'meta[name="twitter:description"]', description);
+  if (image) {
+    setMeta(doc, 'meta[property="og:image"]', image);
+    setMeta(doc, 'meta[name="twitter:image"]', image);
+  }
 
   const link = doc.querySelector('link[rel="canonical"]');
   if (link) link.setAttribute("href", canonical);

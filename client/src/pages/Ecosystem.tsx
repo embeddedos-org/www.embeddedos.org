@@ -52,12 +52,12 @@ const layers = [
       {
         name: "EIPC",
         desc: "Zero-copy IPC with capability-based access control",
-        href: "/eai",
+        href: "/eipc",
       },
       {
         name: "eDB",
         desc: "Multi-model embedded database (SQL + Doc + KV)",
-        href: "/products",
+        href: "/edb",
       },
       {
         name: "EoS Platform SDK",
@@ -79,7 +79,7 @@ const layers = [
       {
         name: "ENI",
         desc: "Configurable neural interface for BCI research",
-        href: "/eai",
+        href: "/eni",
       },
     ],
   },
@@ -91,7 +91,7 @@ const layers = [
       {
         name: "EoStudio IDE",
         desc: "12-editor unified development environment",
-        href: "/products",
+        href: "/eostudio",
       },
       {
         name: "eBuild",
@@ -101,7 +101,7 @@ const layers = [
       {
         name: "EoSim",
         desc: `${SIM_PLATFORM_COUNT}-platform in-browser simulator`,
-        href: "/demo",
+        href: "/eosim",
       },
       {
         name: "eFlow",
@@ -123,7 +123,7 @@ const layers = [
       {
         name: "eBrowser",
         desc: "Embedded HTML/CSS/JS rendering engine",
-        href: "/products",
+        href: "/ebrowser",
       },
       {
         name: "eOffice Suite",
@@ -133,7 +133,7 @@ const layers = [
       {
         name: "eServiceApps",
         desc: "System services and daemons",
-        href: "/products",
+        href: "/eserviceapps",
       },
     ],
   },
@@ -174,7 +174,7 @@ const products = [
       "Hardware-defined sample rate",
       "Front-end-defined ADC",
     ],
-    href: "/eai",
+    href: "/eni",
   },
   {
     icon: Database,
@@ -182,7 +182,7 @@ const products = [
     name: "EIPC",
     tagline: "IPC Bus",
     metrics: ["Zero-copy transport", "Capability tokens", "Shared memory"],
-    href: "/products",
+    href: "/eipc",
   },
   {
     icon: Code,
@@ -198,7 +198,7 @@ const products = [
     name: "EoStudio",
     tagline: "IDE",
     metrics: ["12 editors", "AI tutor", "Real-time debug"],
-    href: "/products",
+    href: "/eostudio",
   },
   {
     icon: Globe,

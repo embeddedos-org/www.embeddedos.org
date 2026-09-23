@@ -51,8 +51,8 @@ const IMPACT_ITEMS = [
   {
     icon: Users,
     color: "#A78BFA",
-    title: "Community Events",
-    detail: "3 conferences planned for 2025",
+    title: "501(c)(3) Nonprofit",
+    detail: "EIN 41-4821627 · deductible under IRC §170",
   },
   {
     icon: Zap,

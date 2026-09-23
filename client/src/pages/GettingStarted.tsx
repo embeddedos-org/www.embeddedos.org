@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
@@ -523,13 +523,12 @@ const PATH_CONTENT: Record<Path, PathContent> = {
 
 export default function GettingStarted() {
   const [activePath, setActivePath] = useState<Path>("nosim");
-  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
-  const content = PATH_CONTENT[activePath];
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  const copyCode = async (code: string, idx: number) => {
+  const copyCode = async (code: string, key: string) => {
     if (!(await copyText(code))) return;
-    setCopiedIdx(idx);
-    setTimeout(() => setCopiedIdx(null), 2000);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
   };
 
   return (
@@ -678,12 +677,21 @@ export default function GettingStarted() {
               Pick the option that matches where you are right now
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+            role="tablist"
+            aria-label="Getting started paths"
+          >
             {PATHS.map(p => {
               const PIcon = p.icon;
               return (
                 <button
                   key={p.id}
+                  role="tab"
+                  id={`path-tab-${p.id}`}
+                  aria-selected={activePath === p.id}
+                  aria-controls={`path-panel-${p.id}`}
+                  tabIndex={activePath === p.id ? 0 : -1}
                   onClick={() => setActivePath(p.id)}
                   className="relative flex items-center gap-3 p-4 rounded-2xl text-left transition-all"
                   style={
@@ -731,203 +739,272 @@ export default function GettingStarted() {
       {/* Path Content */}
       <section className="pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activePath}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            >
+          {(Object.keys(PATH_CONTENT) as Path[]).map(pathId => {
+            const content = PATH_CONTENT[pathId];
+            return (
               <div
-                className="rounded-2xl border p-6 mb-6"
-                style={{
-                  background: `${content.color}08`,
-                  borderColor: `${content.color}25`,
-                }}
+                key={pathId}
+                role="tabpanel"
+                id={`path-panel-${pathId}`}
+                aria-labelledby={`path-tab-${pathId}`}
+                hidden={pathId !== activePath}
               >
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h2 className="font-heading font-black text-2xl sm:text-3xl text-white">
-                    {content.title}
-                  </h2>
-                  <span
-                    className="px-3 py-1 rounded-full text-xs font-bold"
-                    style={{
-                      background: `${content.color}20`,
-                      color: content.color,
-                    }}
-                  >
-                    {content.time}
-                  </span>
-                </div>
-                <p className="text-white/60 text-base mb-4 leading-relaxed">
-                  {content.intro}
-                </p>
                 <div
-                  className="flex items-start gap-2 p-3 rounded-xl"
+                  className="rounded-2xl border p-6 mb-6"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: `${content.color}08`,
+                    borderColor: `${content.color}25`,
                   }}
                 >
-                  <Info size={14} className="text-white/40 mt-0.5 shrink-0" />
-                  <div>
-                    <span className="text-xs font-bold text-white/40 uppercase tracking-wider">
-                      Prerequisites:{" "}
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h2 className="font-heading font-black text-2xl sm:text-3xl text-white">
+                      {content.title}
+                    </h2>
+                    <span
+                      className="px-3 py-1 rounded-full text-xs font-bold"
+                      style={{
+                        background: `${content.color}20`,
+                        color: content.color,
+                      }}
+                    >
+                      {content.time}
                     </span>
-                    <span className="text-xs text-white/60">
-                      {content.prereq}
-                    </span>
+                  </div>
+                  <p className="text-white/60 text-base mb-4 leading-relaxed">
+                    {content.intro}
+                  </p>
+                  <div
+                    className="flex items-start gap-2 p-3 rounded-xl"
+                    style={{
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <Info size={14} className="text-white/40 mt-0.5 shrink-0" />
+                    <div>
+                      <span className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                        Prerequisites:{" "}
+                      </span>
+                      <span className="text-xs text-white/60">
+                        {content.prereq}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {content.steps.map((step, i) => (
+                    <motion.div
+                      key={step.title}
+                      variants={fadeUp}
+                      initial="hidden"
+                      animate="visible"
+                      custom={i}
+                      className="rounded-2xl border border-white/8 overflow-hidden"
+                      style={{ background: "rgba(255,255,255,0.02)" }}
+                    >
+                      <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
+                          style={{
+                            background: `${content.color}25`,
+                            border: `1px solid ${content.color}40`,
+                          }}
+                        >
+                          {i + 1}
+                        </div>
+                        <h3 className="font-heading font-bold text-white">
+                          {step.title}
+                        </h3>
+                      </div>
+                      <div className="px-5 py-4 space-y-3">
+                        {step.text && (
+                          <p className="text-sm text-white/60 leading-relaxed">
+                            {step.text}
+                          </p>
+                        )}
+                        {step.substeps && (
+                          <ul className="space-y-1.5">
+                            {step.substeps.map(s => (
+                              <li
+                                key={s}
+                                className="flex items-start gap-2 text-sm text-white/55"
+                              >
+                                <ChevronRight
+                                  size={13}
+                                  className="mt-0.5 shrink-0"
+                                  style={{ color: content.color }}
+                                />
+                                {s}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {step.code && (
+                          <div
+                            className="relative rounded-xl overflow-hidden border border-white/8"
+                            style={{ background: "rgba(5,10,20,0.9)" }}
+                          >
+                            <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
+                              <div className="flex gap-1.5">
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#F85149]/50" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#F0883E]/50" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#3FB950]/50" />
+                              </div>
+                              <button
+                                onClick={() =>
+                                  copyCode(step.code!, `${pathId}-${i}`)
+                                }
+                                className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
+                              >
+                                {copiedKey === `${pathId}-${i}` ? (
+                                  <CheckCircle2
+                                    size={12}
+                                    className="text-[#34D399]"
+                                  />
+                                ) : (
+                                  <Copy size={12} />
+                                )}
+                                {copiedKey === `${pathId}-${i}`
+                                  ? "Copied!"
+                                  : "Copy"}
+                              </button>
+                            </div>
+                            <pre className="p-4 text-xs overflow-x-auto font-mono leading-relaxed">
+                              <code style={{ color: "#E6EDF3" }}>
+                                {step.code}
+                              </code>
+                            </pre>
+                          </div>
+                        )}
+                        {step.tip && (
+                          <div
+                            className="flex items-start gap-2 p-3 rounded-xl text-xs"
+                            style={{
+                              background: `${content.color}08`,
+                              border: `1px solid ${content.color}20`,
+                            }}
+                          >
+                            <Star
+                              size={12}
+                              style={{ color: content.color }}
+                              className="mt-0.5 shrink-0"
+                            />
+                            <span style={{ color: content.color }}>
+                              <strong>Tip:</strong> {step.tip}
+                            </span>
+                          </div>
+                        )}
+                        {step.warn && (
+                          <div
+                            className="flex items-start gap-2 p-3 rounded-xl text-xs"
+                            style={{
+                              background: "rgba(248,81,73,0.08)",
+                              border: "1px solid rgba(248,81,73,0.2)",
+                            }}
+                          >
+                            <AlertCircle
+                              size={12}
+                              className="text-[#F85149] mt-0.5 shrink-0"
+                            />
+                            <span className="text-[#F85149]">
+                              <strong>Note:</strong> {step.warn}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div
+                  className="mt-8 rounded-2xl border border-white/8 p-5"
+                  style={{ background: "rgba(255,255,255,0.02)" }}
+                >
+                  <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
+                    What's Next
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {content.nextSteps.map(ns => (
+                      <Link
+                        key={ns.label}
+                        href={ns.href}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white/70 hover:text-white transition-all"
+                        style={{
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                        }}
+                      >
+                        {ns.label} <ArrowRight size={13} />
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
+            );
+          })}
+        </div>
+      </section>
 
-              <div className="space-y-4">
-                {content.steps.map((step, i) => (
-                  <motion.div
-                    key={step.title}
-                    variants={fadeUp}
-                    initial="hidden"
-                    animate="visible"
-                    custom={i}
-                    className="rounded-2xl border border-white/8 overflow-hidden"
-                    style={{ background: "rgba(255,255,255,0.02)" }}
-                  >
-                    <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-                      <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
-                        style={{
-                          background: `${content.color}25`,
-                          border: `1px solid ${content.color}40`,
-                        }}
-                      >
-                        {i + 1}
-                      </div>
-                      <h3 className="font-heading font-bold text-white">
-                        {step.title}
-                      </h3>
-                    </div>
-                    <div className="px-5 py-4 space-y-3">
-                      {step.text && (
-                        <p className="text-sm text-white/60 leading-relaxed">
-                          {step.text}
-                        </p>
-                      )}
-                      {step.substeps && (
-                        <ul className="space-y-1.5">
-                          {step.substeps.map(s => (
-                            <li
-                              key={s}
-                              className="flex items-start gap-2 text-sm text-white/55"
-                            >
-                              <ChevronRight
-                                size={13}
-                                className="mt-0.5 shrink-0"
-                                style={{ color: content.color }}
-                              />
-                              {s}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {step.code && (
-                        <div
-                          className="relative rounded-xl overflow-hidden border border-white/8"
-                          style={{ background: "rgba(5,10,20,0.9)" }}
-                        >
-                          <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
-                            <div className="flex gap-1.5">
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#F85149]/50" />
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#F0883E]/50" />
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#3FB950]/50" />
-                            </div>
-                            <button
-                              onClick={() => copyCode(step.code!, i)}
-                              className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
-                            >
-                              {copiedIdx === i ? (
-                                <CheckCircle2
-                                  size={12}
-                                  className="text-[#34D399]"
-                                />
-                              ) : (
-                                <Copy size={12} />
-                              )}
-                              {copiedIdx === i ? "Copied!" : "Copy"}
-                            </button>
-                          </div>
-                          <pre className="p-4 text-xs overflow-x-auto font-mono leading-relaxed">
-                            <code style={{ color: "#E6EDF3" }}>
-                              {step.code}
-                            </code>
-                          </pre>
-                        </div>
-                      )}
-                      {step.tip && (
-                        <div
-                          className="flex items-start gap-2 p-3 rounded-xl text-xs"
-                          style={{
-                            background: `${content.color}08`,
-                            border: `1px solid ${content.color}20`,
-                          }}
-                        >
-                          <Star
-                            size={12}
-                            style={{ color: content.color }}
-                            className="mt-0.5 shrink-0"
-                          />
-                          <span style={{ color: content.color }}>
-                            <strong>Tip:</strong> {step.tip}
-                          </span>
-                        </div>
-                      )}
-                      {step.warn && (
-                        <div
-                          className="flex items-start gap-2 p-3 rounded-xl text-xs"
-                          style={{
-                            background: "rgba(248,81,73,0.08)",
-                            border: "1px solid rgba(248,81,73,0.2)",
-                          }}
-                        >
-                          <AlertCircle
-                            size={12}
-                            className="text-[#F85149] mt-0.5 shrink-0"
-                          />
-                          <span className="text-[#F85149]">
-                            <strong>Note:</strong> {step.warn}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div
-                className="mt-8 rounded-2xl border border-white/8 p-5"
+      <section className="pb-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-6"
+          >
+            <h2 className="font-heading font-black text-2xl text-white mb-1">
+              Once it builds, where to look next
+            </h2>
+            <p className="text-white/40 text-sm">
+              The pages that explain how the pieces fit together
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {[
+              {
+                href: "/architecture",
+                label: "How EmbeddedOS is put together",
+                desc: "The full stack, layer by layer, with the diagrams.",
+              },
+              {
+                href: "/ecosystem",
+                label: "Every component and what it does",
+                desc: "Each project, its purpose, and how they depend on each other.",
+              },
+              {
+                href: "/products",
+                label: "The component reference pages",
+                desc: "Engineering detail for each project, with usage examples.",
+              },
+              {
+                href: "/downloads",
+                label: "Every repository and install command",
+                desc: "All EmbeddedOS repositories, MIT licensed, in one list.",
+              },
+              {
+                href: "/stacks",
+                label: "Pick a stack for your device",
+                desc: "Which components you need for the kind of hardware you are building.",
+              },
+            ].map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="block rounded-2xl border border-white/8 p-5 transition-all hover:border-white/20"
                 style={{ background: "rgba(255,255,255,0.02)" }}
               >
-                <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
-                  What's Next
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {content.nextSteps.map(ns => (
-                    <Link
-                      key={ns.label}
-                      href={ns.href}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white/70 hover:text-white transition-all"
-                      style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }}
-                    >
-                      {ns.label} <ArrowRight size={13} />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                <span className="block font-bold text-white text-sm mb-1">
+                  {l.label}
+                </span>
+                <span className="block text-white/50 text-xs leading-relaxed">
+                  {l.desc}
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

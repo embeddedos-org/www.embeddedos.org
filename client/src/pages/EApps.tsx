@@ -1,4 +1,6 @@
 import { Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -177,15 +179,23 @@ export default function EApps() {
               apps — all built on EmbeddedOS and available through the unified
               eApps store.
             </p>
-            <a
-              href="https://github.com/embeddedos-org/eApps"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
-            >
-              Browse on GitHub
-              <ArrowRight size={16} />
-            </a>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://github.com/embeddedos-org/eApps"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
+              >
+                Browse on GitHub
+                <ArrowRight size={16} />
+              </a>
+              <Link
+                href="/product-eapps"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                eApps engineering detail
+              </Link>
+            </div>
             {/* 3D eApps Animation */}
             <div
               className="mt-10 rounded-2xl border border-white/8 overflow-hidden h-56 max-w-lg mx-auto"
@@ -198,7 +208,9 @@ export default function EApps() {
                   </div>
                 }
               >
-                <EAppsCanvas hovered={false} />
+                <ViewportGate>
+                  <EAppsCanvas hovered={false} />
+                </ViewportGate>
               </Suspense>
             </div>
           </motion.div>

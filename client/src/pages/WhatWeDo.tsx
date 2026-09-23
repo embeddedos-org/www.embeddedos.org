@@ -252,7 +252,8 @@ function UseCaseCard({
           className="flex items-center gap-1 text-xs font-semibold mt-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
           style={{ color: uc.color }}
         >
-          Learn more <ArrowRight size={12} />
+          Learn more<span className="sr-only"> about {uc.title}</span>{" "}
+          <ArrowRight size={12} />
         </div>
       </Link>
     </motion.div>

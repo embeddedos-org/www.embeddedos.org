@@ -413,6 +413,7 @@ export default function EOSuitePage() {
             <input
               type="text"
               placeholder="Search apps..."
+              aria-label="Search apps"
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-white/30"
@@ -428,7 +429,7 @@ export default function EOSuitePage() {
                 className="bg-white/5 border border-white/10 rounded-xl p-4"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-white font-semibold">{app.name}</h3>
+                  <h2 className="text-white font-semibold">{app.name}</h2>
                   <span
                     className="px-2 py-0.5 rounded text-xs"
                     style={{ background: cat.color + "15", color: cat.color }}

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { COMMUNITY_LINKS } from "@/data/community";
 import {
+  CONTACT_EMAILS,
   FOUNDATION,
   MAILING_ADDRESS,
   SOCIAL_URLS,
@@ -296,6 +297,8 @@ export default function Footer() {
                   loading="lazy"
                   decoding="async"
                   src={LOGO_MARK}
+                  width={40}
+                  height={40}
                   alt={FOUNDATION.shortName}
                   className="w-10 h-10 rounded-xl"
                 />
@@ -328,15 +331,27 @@ export default function Footer() {
                 href={FOUNDATION.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#F97316]/70 hover:text-[#F97316] transition-colors"
+                /* F-32: #F97316 at 70% was 3.85:1 — full strength is 6.95:1. */
+                className="text-[#F97316] hover:underline transition-colors"
               >
                 {WEBSITE_HOST}
               </a>
             </p>
 
-            <address className="text-xs text-white/60 mb-6 max-w-xs not-italic leading-relaxed">
+            <address className="text-xs text-white/60 mb-2 max-w-xs not-italic leading-relaxed">
               {formatMailingAddress(MAILING_ADDRESS)}
             </address>
+            {/*
+              A published, crawler-visible mailbox. The contact form stays the
+              primary path, but reviewers and crawlers need a verifiable
+              address — see F-03.
+            */}
+            <a
+              href={`mailto:${CONTACT_EMAILS.contact}`}
+              className="text-xs text-white/60 underline decoration-white/20 underline-offset-4 hover:text-white transition-colors mb-6 inline-block"
+            >
+              {CONTACT_EMAILS.contact}
+            </a>
 
             {/* Social icons */}
             <div className="flex items-center flex-wrap gap-2">
@@ -386,7 +401,9 @@ export default function Footer() {
                   whose body has no h2 (e.g. /faq, whose questions are buttons)
                   would otherwise jump h1 -> h3, which is a WCAG heading-order
                   violation. h2 is correct on every page and skips nothing. */}
-              <h2 className="text-[10px] font-extrabold text-white/30 uppercase tracking-[0.18em] mb-5">
+              {/* F-32: text-white/30 was 2.5:1 — section headings are 10px text
+                  and need 4.5:1. white/60 reaches 7.3:1 on the footer bg. */}
+              <h2 className="text-[10px] font-extrabold text-white/60 uppercase tracking-[0.18em] mb-5">
                 {section}
               </h2>
               <ul className="space-y-3">
@@ -407,7 +424,8 @@ export default function Footer() {
             outgrew a single row when Licenses, Security and Code of Conduct
             joined Privacy and Terms, and squeezed the tagline into a three-line
             wrap between them. */}
-        <div className="flex flex-col gap-4 text-xs text-white/25">
+        {/* F-32: text-white/25 was 2.1:1 on the footer background. */}
+        <div className="flex flex-col gap-4 text-xs text-white/60">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-center sm:text-left">
               © 2018–2026 {FOUNDATION.legalName}.
@@ -422,6 +440,8 @@ export default function Footer() {
               </a>
               <span className="mx-1.5 text-white/15">·</span>
               {FOUNDATION.taxStatus}
+              <span className="mx-1.5 text-white/15">·</span>
+              EIN {FOUNDATION.ein}
             </div>
 
             <div className="flex items-center flex-wrap justify-center gap-x-4 gap-y-1">

@@ -35,13 +35,25 @@ const ORIGIN = "https://www.embeddedos.org";
 const PUBLIC_BUSINESS_ADDRESS =
   "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
 
-/** The single JSON-LD block in the shell, parsed. */
+/** Every JSON-LD block in the shell, parsed. */
+function structuredDataBlocks(): Record<string, unknown>[] {
+  const blocks = [
+    ...indexHtml.matchAll(
+      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
+    ),
+  ].map(m => JSON.parse(m[1]) as Record<string, unknown>);
+  expect(
+    blocks.length,
+    "index.html must carry a JSON-LD block"
+  ).toBeGreaterThan(0);
+  return blocks;
+}
+
+/** The organisation block, selected by @type rather than by position. */
 function structuredData(): Record<string, unknown> {
-  const match = indexHtml.match(
-    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/
-  );
-  expect(match, "index.html must carry a JSON-LD block").not.toBeNull();
-  return JSON.parse(match![1]);
+  const ngo = structuredDataBlocks().find(b => b["@type"] === "NGO");
+  expect(ngo, "index.html must carry an NGO JSON-LD block").toBeDefined();
+  return ngo!;
 }
 
 /** A string literal assigned to `key:` in foundation.ts. */
@@ -337,7 +349,18 @@ describe("the Foundation's accounts are spelled one way", () => {
     // /api/apply.php does not answer; smallest-safe-change kept that intact
     // rather than rewriting a system that already worked. A mailto: anywhere
     // else means a page was missed by the sweep.
-    const EXEMPT_FILES = new Set(["client/src/lib/application-email.ts"]);
+    //
+    // Deliberate exception (F-03, 2026-09-18): the footer and the contact page
+    // publish contact@embeddedos.org as a real mailto: link so Grants
+    // reviewers and crawlers see a verifiable address. Both build it as
+    // `mailto:${CONTACT_EMAILS.contact}` — correct by construction — so the
+    // literal-address regex below does not see them; they are listed here so
+    // the exemption is explicit rather than incidental.
+    const EXEMPT_FILES = new Set([
+      "client/src/lib/application-email.ts",
+      "client/src/components/Footer.tsx",
+      "client/src/pages/Contact.tsx",
+    ]);
 
     const stray: string[] = [];
     for (const { file, text } of sources) {

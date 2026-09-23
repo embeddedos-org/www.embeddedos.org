@@ -1,8 +1,23 @@
+/**
+ * The community destinations shown in the footer (every page) and on
+ * `/community`.
+ *
+ * Every href here must be reachable by a logged-out visitor. Three of these
+ * previously pointed into `embeddedos-org/www.embeddedos.org` — this
+ * repository, which is private — so `/wiki`, `/issues` and `/blob/master/
+ * AGENTS.md` answered 404 for the public on all 132 prerendered pages while
+ * looking correct to a maintainer who is signed in and a member of the
+ * organisation. They now point at the public EoS repository, which carries
+ * the same three things for the platform itself.
+ *
+ * tests/unit/navigation.test.ts pins the exact destinations and refuses any
+ * link back into this repository.
+ */
 export const COMMUNITY_LINKS = [
   {
     name: "Wiki",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org/wiki",
-    description: "Repository guides and project documentation",
+    href: "https://github.com/embeddedos-org/eos/wiki",
+    description: "Platform guides and project documentation",
   },
   {
     name: "Discussions",
@@ -16,7 +31,7 @@ export const COMMUNITY_LINKS = [
   },
   {
     name: "Issues",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org/issues",
+    href: "https://github.com/embeddedos-org/eos/issues",
     description: "Bug reports, feature requests, and tracked work",
   },
   {
@@ -26,7 +41,7 @@ export const COMMUNITY_LINKS = [
   },
   {
     name: "AGENTS.md",
-    href: "https://github.com/embeddedos-org/www.embeddedos.org/blob/master/AGENTS.md",
+    href: "https://github.com/embeddedos-org/eos/blob/master/AGENTS.md",
     description: "Repository-specific guidance for coding agents",
   },
 ] as const;

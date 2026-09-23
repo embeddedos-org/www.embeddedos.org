@@ -428,6 +428,8 @@ export function CadEvolutionScene({
       camera={{ position: [8.2, 6.4, 8.2], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
       onCreated={({ gl }) => {
+        // Decorative canvas: hide from assistive tech (F-22).
+        gl.domElement.setAttribute("aria-hidden", "true");
         // If the GPU context dies mid-session, fall back to the static
         // semantic view instead of a frozen canvas.
         gl.domElement.addEventListener("webglcontextlost", event => {

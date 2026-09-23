@@ -125,7 +125,7 @@ export default function Security() {
                 >
                   <p.icon className="w-5 h-5" style={{ color: p.color }} />
                 </div>
-                <h3 className="text-white font-semibold mb-2">{p.title}</h3>
+                <h2 className="text-white font-semibold mb-2">{p.title}</h2>
                 <p className="text-gray-400 text-sm">{p.desc}</p>
               </motion.div>
             ))}

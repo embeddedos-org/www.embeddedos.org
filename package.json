@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
-    "build": "pnpm build:client && pnpm prerender && pnpm sitemap:dist && pnpm build:server",
+    "build": "pnpm optimize:images && pnpm build:client && pnpm prerender && pnpm sitemap:dist && pnpm build:server",
     "build:client": "NODE_ENV=production vite build",
     "build:server": "NODE_ENV=production esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "prerender": "node scripts/prerender.mjs",
@@ -23,6 +23,13 @@
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "sync:stack": "node scripts/sync-stack-data.mjs",
     "audit:site": "node scripts/audit.mjs",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "seo:check": "node scripts/seo-audit.mjs --strict",
+    "seo:links": "node scripts/link-graph.mjs",
+    "seo:diff": "node scripts/seo-diff.mjs",
+    "seo:integrity": "node scripts/link-integrity.mjs",
+    "quality:check": "node scripts/quality-check.mjs",
+    "baseline": "node scripts/site-baseline.mjs --out docs/baseline/site-baseline.json",
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "test:unit": "vitest run tests/unit",
@@ -38,7 +45,8 @@
     "test:functional": "playwright test e2e/functional.spec.ts",
     "test:journeys": "playwright test e2e/journeys.spec.ts e2e/links-and-controls.spec.ts",
     "test:controls": "playwright test e2e/controls-interaction.spec.ts",
-    "test:links": "LINK_SWEEP=1 playwright test e2e/link-destinations.spec.ts",
+    "test:links": "playwright test e2e/link-destinations.spec.ts --workers=2 --retries=2",
+    "test:links:external": "playwright test e2e/external-links.spec.ts",
     "test:all": "pnpm check && pnpm lint && pnpm build && pnpm test && pnpm test:php && pnpm audit:site && pnpm audit:mobile && pnpm test:e2e:all",
     "test:php": "php tests/php/apply.test.php && php tests/php/contact.test.php",
     "test:e2e:all": "playwright test"
@@ -141,6 +149,9 @@
     "typescript-eslint": "^8",
     "vite": "^7.1.7",
     "vitest": "^3.2.7"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {

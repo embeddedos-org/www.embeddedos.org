@@ -12,6 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Suspense, lazy } from "react";
+import ViewportGate from "../components/ViewportGate";
 import { BOARD_COUNT } from "@/data/stack";
 const EBootCanvas = lazy(() =>
   import("../components/EoS3D").then(m => ({ default: m.EBootCanvas }))
@@ -195,7 +196,9 @@ export default function EBoot() {
                     </div>
                   }
                 >
-                  <EBootCanvas hovered={false} />
+                  <ViewportGate>
+                    <EBootCanvas hovered={false} />
+                  </ViewportGate>
                 </Suspense>
               </div>
               <div
@@ -429,6 +432,12 @@ export default function EBoot() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
               >
                 <ChevronRight size={15} /> EoS Kernel
+              </Link>
+              <Link
+                href="/product-eboot"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
+              >
+                eBoot engineering detail
               </Link>
             </div>
           </motion.div>

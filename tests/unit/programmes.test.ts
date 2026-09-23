@@ -136,3 +136,47 @@ describe("tracks", () => {
     expect(byTrack("marketing").length).toBeGreaterThan(0);
   });
 });
+
+describe("detail content for programmes", () => {
+  it("gives every programme substantial detail content", async () => {
+    // F-11: all nine programmes are planned. The page says so plainly; the
+    // detail sections make it worth a reader's time anyway — 500+ words
+    // of truthful content: why the programme exists, what it will involve,
+    // who it is for, and how to get involved.
+    const { PROGRAMME_DETAILS } =
+      await import("../../client/src/data/programme-details");
+    const slugs = new Set(PROGRAMMES.map(p => p.slug));
+    const missing = PROGRAMMES.filter(p => !PROGRAMME_DETAILS[p.slug]).map(
+      p => p.slug
+    );
+    expect(missing, "programmes with no detail content").toEqual([]);
+    for (const slug of Object.keys(PROGRAMME_DETAILS)) {
+      expect(slugs.has(slug), `detail content for unknown slug ${slug}`).toBe(
+        true
+      );
+    }
+  });
+
+  it("keeps every detail entry well-formed and substantial", async () => {
+    const { PROGRAMME_DETAILS } =
+      await import("../../client/src/data/programme-details");
+    for (const [slug, sections] of Object.entries(PROGRAMME_DETAILS)) {
+      // Four sections: why it exists, what it will involve, who it is for,
+      // how to get involved. What matters is the substance: 500+ words of it.
+      expect(sections.length, `${slug} section count`).toBeGreaterThanOrEqual(
+        4
+      );
+      let words = 0;
+      for (const s of sections) {
+        expect(s.heading.trim().length, `${slug} heading`).toBeGreaterThan(0);
+        expect(s.body.length, `${slug} / ${s.heading}`).toBeGreaterThan(0);
+        for (const p of s.body) {
+          expect(p.trim().length, `${slug} / ${s.heading}`).toBeGreaterThan(0);
+          expect(p, `${slug} / ${s.heading}`).not.toMatch(/\]\(|^#{1,6}\s/m);
+          words += p.split(/\s+/).filter(Boolean).length;
+        }
+      }
+      expect(words, `${slug} body words`).toBeGreaterThanOrEqual(500);
+    }
+  });
+});

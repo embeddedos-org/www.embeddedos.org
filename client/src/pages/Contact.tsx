@@ -12,6 +12,7 @@ import {
   Clock,
 } from "lucide-react";
 import {
+  CONTACT_EMAILS,
   FOUNDATION,
   SOCIAL_URLS,
   formatMailingAddress,
@@ -175,6 +176,17 @@ export default function Contact() {
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl font-bold text-white mb-6">Get in Touch</h2>
+          {/*
+            F-34: the topic cards below open a JavaScript form dialog. Without
+            JS they are inert, so no-JS visitors get a plain-HTML pointer to
+            the published mailbox (which is also prerendered further down).
+          */}
+          <noscript>
+            <p className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+              The topic form needs JavaScript. You can reach us directly by
+              email instead — see "Prefer email?" below.
+            </p>
+          </noscript>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {contacts.map((c, i) => (
               <motion.button
@@ -211,11 +223,39 @@ export default function Contact() {
         </div>
       </section>
 
+      {/*
+        A published, crawler-visible mailbox alongside the topic form. The form
+        above stays the primary path; this link is for reviewers, crawlers and
+        anyone whose mail client is the tool they trust — see F-03.
+      */}
+      <section className="py-4 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#F97316]/20">
+              <Mail className="w-5 h-5 text-[#F97316]" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-white font-medium mb-1">Prefer email?</h2>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                Write to us directly — the same people read this inbox as the
+                form above.
+              </p>
+            </div>
+            <a
+              href={`mailto:${CONTACT_EMAILS.contact}`}
+              className="text-[#F97316] font-semibold underline underline-offset-4 hover:no-underline whitespace-nowrap"
+            >
+              {CONTACT_EMAILS.contact}
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl font-bold text-white mb-6">
             Social & Community
-          </h2>
+          </h2>{" "}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {social.map((s, i) => (
               <motion.a
