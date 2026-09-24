@@ -1,993 +1,1318 @@
-import { useState, useRef, lazy, Suspense } from "react";
-import { motion, useInView } from "framer-motion";
-import { Link } from "wouter";
+/**
+ * Architecture — Interactive 3D architecture diagrams for every EmbeddedOS product.
+ * Each diagram uses a distinct visual mode (layered, radial, pipeline, tree, matrix)
+ * so no two diagrams look alike.
+ */
+import { lazy, Suspense, useState } from "react";
 import {
-  Heart,
-  Plane,
-  Car,
-  Bot,
-  Factory,
-  Leaf,
-  Building2,
-  Microscope,
-  Rocket,
-  Shield,
-  Wifi,
-  Zap,
-  Brain,
-  Globe,
-  ChevronRight,
-  ArrowRight,
-  ExternalLink,
-  Package,
-  Activity,
+  ECOSYSTEM,
+  ROLE_LABEL,
+  ROLE_ORDER,
+  componentsInRole,
+} from "@/data/ecosystem";
+import { motion } from "framer-motion";
+import {
   Layers,
+  Cpu,
+  Brain,
+  FileText,
+  Package,
+  Database,
+  Shield,
+  ChevronRight,
+  Heart,
+  ExternalLink,
+  CheckCircle,
+  ArrowRight,
+  Radio,
+  GitBranch,
+  Network,
+  DraftingCompass,
 } from "lucide-react";
+import { Link } from "wouter";
+import type { DiagramMode } from "../components/ArchitectureDiagram3D";
+import { moveTabFocus } from "@/lib/tablist";
+import { BOARD_COUNT } from "@/data/stack";
+import { ARCHITECTURE_STAGES } from "@/data/architecture";
 
 const ArchitectureDiagram3D = lazy(
   () => import("../components/ArchitectureDiagram3D")
 );
+const CadWalkthrough3D = lazy(() => import("../components/CadWalkthrough3D"));
 
-// eHealth365 sensor fusion block diagram
-const HEALTH_LAYERS = [
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      delay: i * 0.08,
+      ease: [0.23, 1, 0.32, 1] as const,
+    },
+  }),
+};
+
+// ── 1. Full EmbeddedOS Stack — MATRIX mode ───────────────────────────────────
+// Shows all products as a glowing node grid — no other diagram uses this
+const FULL_STACK_LAYERS = [
   {
-    label: "Cloud / Mobile App",
-    sublabels: ["iOS", "Android", "Web"],
+    label: "eServiceApps",
+    sublabels: ["eSocial", "eRide", "eWallet", "eTravel"],
+    color: "#F472B6",
+    y: 2.2,
+    width: 4.0,
+  },
+  {
+    label: "eOffice + eApps",
+    sublabels: ["60+ apps", "11 office tools"],
     color: "#34D399",
-    y: 1.6,
+    y: 1.5,
+    width: 3.8,
+  },
+  {
+    label: "EAI / ENI",
+    sublabels: ["Neural AI", "BCI", "eDB", "EIPC"],
+    color: "#A78BFA",
+    y: 0.8,
     width: 3.6,
   },
   {
-    label: "EAI Inference",
-    sublabels: ["Arrhythmia", "SpO₂", "HRV"],
-    color: "#A78BFA",
-    y: 0.9,
+    label: "EoS Kernel",
+    sublabels: ["RTOS", "SMP", "VFS", "IPC"],
+    color: "#F97316",
+    y: 0.1,
     width: 3.4,
   },
   {
-    label: "Signal Processing",
-    sublabels: ["IIR filter", "Pan-Tompkins"],
-    color: "#22D3EE",
-    y: 0.2,
-    width: 3.2,
-  },
-  {
-    label: "ADC / Amplifier",
-    sublabels: ["24-bit", "500 Hz"],
-    color: "#F97316",
-    y: -0.5,
-    width: 3.0,
-  },
-  {
-    label: "Sensors",
-    sublabels: ["ECG", "SpO₂", "PPG", "Temp"],
-    color: "#EF4444",
-    y: -1.2,
-    width: 2.8,
-  },
-];
-
-// eRadar360 sensor fusion block diagram
-const RADAR_LAYERS = [
-  {
-    label: "Decision Output",
-    sublabels: ["Object class", "Trajectory"],
-    color: "#22D3EE",
-    y: 1.6,
-    width: 3.6,
-  },
-  {
-    label: "Sensor Fusion",
-    sublabels: ["Kalman filter", "EKF"],
-    color: "#F97316",
-    y: 0.9,
-    width: 3.4,
-  },
-  {
-    label: "Perception AI",
-    sublabels: ["EAI INT4", "YOLO-nano"],
-    color: "#A78BFA",
-    y: 0.2,
-    width: 3.2,
-  },
-  {
-    label: "Signal Processing",
-    sublabels: ["FFT", "CFAR", "Doppler"],
+    label: "eBoot",
+    sublabels: ["Secure boot", "OTA", "TPM 2.0"],
     color: "#FBBF24",
-    y: -0.5,
-    width: 3.0,
-  },
-  {
-    label: "Sensor Array",
-    sublabels: ["77GHz FMCW", "LiDAR", "Camera"],
-    color: "#EF4444",
-    y: -1.2,
-    width: 2.8,
-  },
-];
-
-// eAerospace flight control block diagram
-const AERO_LAYERS = [
-  {
-    label: "Mission Computer",
-    sublabels: ["EoS SMP", "EAI autopilot"],
-    color: "#60A5FA",
-    y: 1.6,
-    width: 3.6,
-  },
-  {
-    label: "Flight Control",
-    sublabels: ["PID", "Kalman", "TECS"],
-    color: "#22D3EE",
-    y: 0.9,
-    width: 3.4,
-  },
-  {
-    label: "Sensor Fusion",
-    sublabels: ["IMU", "GPS", "Baro", "Mag"],
-    color: "#F97316",
-    y: 0.2,
+    y: -0.6,
     width: 3.2,
   },
   {
-    label: "Actuator Control",
-    sublabels: ["PWM", "CAN", "UAVCAN"],
-    color: "#A78BFA",
-    y: -0.5,
+    label: "eCAD Hardware",
+    sublabels: ["15 categories", "KiCad open designs"],
+    color: "#6B7280",
+    y: -1.3,
     width: 3.0,
+  },
+];
+
+// ── 2. EoS Kernel Architecture — LAYERED mode ────────────────────────────────
+// Classic horizontal slab stack — the canonical OS diagram
+const EOS_LAYERS = [
+  {
+    label: "Applications",
+    sublabels: ["eOffice", "eApps", "eServiceApps"],
+    color: "#34D399",
+    y: 1.8,
+    width: 3.8,
+  },
+  {
+    label: "Services Layer",
+    sublabels: ["ENI", "EAI", "EIPC", "eDB"],
+    color: "#22D3EE",
+    y: 1.1,
+    width: 3.6,
+  },
+  {
+    label: "EoS Kernel",
+    sublabels: ["Scheduler", "MM", "VFS", "IPC"],
+    color: "#F97316",
+    y: 0.4,
+    width: 3.4,
+  },
+  {
+    label: "HAL",
+    sublabels: ["GPIO", "SPI", "I2C", "UART", "USB", "CAN"],
+    color: "#A78BFA",
+    y: -0.3,
+    width: 3.2,
   },
   {
     label: "Hardware",
-    sublabels: ["Motors", "Servos", "ESC"],
+    sublabels: ["ARM Cortex-M/A", "RISC-V", "x86"],
     color: "#6B7280",
-    y: -1.2,
-    width: 2.8,
+    y: -1.0,
+    width: 3.0,
   },
 ];
 
-const HW_DIAGRAMS = [
+// ── 3. eBoot Secure Boot — PIPELINE mode ─────────────────────────────────────
+// Left-to-right flow perfectly represents a sequential boot chain
+const EBOOT_LAYERS = [
   {
-    id: "health",
-    title: "eHealth365 Sensor Pipeline",
-    subtitle: "ECG → ADC → AI → Cloud",
-    color: "#EF4444",
-    layers: HEALTH_LAYERS,
+    label: "ROM Bootrom",
+    sublabels: ["Immutable"],
+    color: "#6B7280",
+    y: 0,
+    width: 1.0 as number,
   },
   {
-    id: "radar",
-    title: "eRadar360 Sensor Fusion",
-    subtitle: "77GHz + LiDAR + Camera → AI",
-    color: "#22D3EE",
-    layers: RADAR_LAYERS,
-  },
-  {
-    id: "aero",
-    title: "eAerospace Flight Control",
-    subtitle: "Sensors → FCS → Mission Computer",
-    color: "#60A5FA",
-    layers: AERO_LAYERS,
-  },
-];
-
-const CATEGORIES = [
-  {
-    id: "health",
-    icon: Heart,
-    color: "#EF4444",
-    title: "eHealth365",
-    subtitle: "Wearable Health Platform",
-    status: "Design",
-    standard: "IEC 60601-1; FDA pathway",
-    products: [
-      "HEALTH-KEY ULTRA",
-      "HEALTH-BAND Neuro",
-      "HEALTH-RING",
-      "HEALTH-LAB",
-    ],
-    desc: "Four in-development health research designs spanning cardiovascular, biochemical, neural, and activity sensing goals. Physical and clinical validation are pending.",
-    specs: [
-      { label: "MCU", value: "nRF5340 + STM32H7" },
-      { label: "Connectivity", value: "BLE 5.3 LR" },
-      { label: "FDA Work", value: "Planned; not submitted" },
-      { label: "Sensors", value: "ECG, EEG, SpO₂, CGM" },
-    ],
-    href: "/health",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "radar",
-    icon: Car,
-    color: "#F97316",
-    title: "eRadar360 / Aegis One",
-    subtitle: "Automotive Sensing Concept",
-    status: "Design",
-    standard: "ISO 26262",
-    products: ["Front Radar", "Rear Radar", "Side Radars ×4", "Fusion ECU"],
-    desc: "Design-stage automotive sensing reference architecture for radar, camera, LiDAR, and V2X fusion. Detection performance and safety behavior are not yet validated.",
-    specs: [
-      { label: "Proposed Radar", value: "TI AWR2944 77 GHz" },
-      { label: "Range", value: "Design target; test pending" },
-      { label: "Latency", value: "Benchmark pending" },
-      { label: "Standard", value: "ISO 26262 target" },
-    ],
-    href: "/eradar360",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "aerospace",
-    icon: Plane,
-    color: "#22D3EE",
-    title: "eAerospace",
-    subtitle: "Aircraft, UAV & Space Concepts",
-    status: "Design",
-    standard: "DO-254 / ECSS",
-    products: ["Aircraft Components", "Avionics", "UAV / VTOL", "CubeSat"],
-    desc: "Concept aerospace reference designs spanning flight computers, avionics, UAV controllers, and CubeSat hardware. No flight testing or certification is claimed.",
-    specs: [
-      { label: "Proposed MCU", value: "STM32H7, LEON3FT" },
-      { label: "Proposed Bus", value: "ARINC-429, CAN FD" },
-      { label: "Targets", value: "DO-254, ECSS" },
-      { label: "PCB Target", value: "IPC Class 3" },
-    ],
-    href: "/aerospace",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "pam",
-    icon: Rocket,
-    color: "#F472B6",
-    title: "ePAM",
-    subtitle: "Personal Air Mobility",
-    status: "Design",
-    standard: "FAA / EASA",
-    products: ["Urban Drone (eVTOL)", "Space Shuttle", "Eco Car", "Combo Unit"],
-    desc: "Concept studies for four solar-hybrid personal-transport designs. Capacity, propulsion, altitude, and pricing are planning targets, not validated specifications or offers for sale.",
-    specs: [
-      { label: "Power Target", value: "Solar + H₂ hybrid" },
-      { label: "Altitude Target", value: "Up to 100 km" },
-      { label: "Capacity Target", value: "4–5 passengers" },
-      { label: "Price Estimate", value: "$28K – $9M planning range" },
-    ],
-    href: "/aerospace",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "robotics",
-    icon: Bot,
-    color: "#A78BFA",
-    title: "eRobotics",
-    subtitle: "Industrial Robots & AMR",
-    status: "Design",
-    standard: "ISO 10218-1",
-    products: ["Robotic Arms", "Welding Robots", "AMR / AGV", "Cobots"],
-    desc: "Industrial robotics portfolio covering servo-driven arms, autonomous mobile robots, warehouse delivery systems, and agricultural robots. EoS SMP on Cortex-A72.",
-    specs: [
-      { label: "MCU", value: "Cortex-A72 + M4" },
-      { label: "Control", value: "EtherCAT, PROFINET" },
-      { label: "Standard", value: "ISO 10218-1, 3691-4" },
-      { label: "Vision", value: "Stereo + ToF" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "industrial",
-    icon: Factory,
-    color: "#34D399",
-    title: "eIndustrial",
-    subtitle: "IIoT & Industrial Electronics",
-    status: "Design",
-    standard: "IEC 61010-1",
-    products: ["PLCs", "Gateways", "HMI Panels", "Edge AI Nodes"],
-    desc: "Industrial hardware for temperature, pressure, gas, and flow sensors. PLCs, Modbus gateways, HMI panels, and Edge AI nodes for IEC 61131-3 compliant automation.",
-    specs: [
-      { label: "Protocols", value: "Modbus, PROFIBUS, OPC-UA" },
-      { label: "Standard", value: "IEC 61010-1, 61131-3" },
-      { label: "Temp range", value: "-40°C to +85°C" },
-      { label: "Targets", value: "CE, UL, ATEX" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "medical",
-    icon: Microscope,
-    color: "#F59E0B",
-    title: "eMedical",
-    subtitle: "Diagnostic & Surgical Devices",
-    status: "Design",
-    standard: "IEC 60601-1",
-    products: ["ECG / EEG", "Ultrasound", "Surgical Robots", "Lab Equipment"],
-    desc: "Medical research design portfolio spanning diagnostic, surgical, patient-care, and laboratory concepts. IEC 60601-1 is a design target, not an achieved certification.",
-    specs: [
-      { label: "Standard", value: "IEC 60601-1, ISO 13485" },
-      { label: "FDA Path", value: "510(k) / PMA" },
-      { label: "Isolation", value: "BF / CF patient applied" },
-      { label: "EMC", value: "IEC 60601-1-2" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "energy",
-    icon: Leaf,
-    color: "#10B981",
-    title: "eEnergy",
-    subtitle: "Battery, Solar & Power Electronics",
-    status: "Design",
-    standard: "IEC 62619",
-    products: [
-      "BMS Controllers",
-      "Solar Inverters",
-      "DC-DC Converters",
-      "Smart Breakers",
-    ],
-    desc: "Energy hardware portfolio covering battery management systems, renewable energy controllers, and power electronics. EoS manages real-time power flow and safety cutoffs.",
-    specs: [
-      { label: "Standard", value: "IEC 62619, IEC 61730" },
-      { label: "Voltage", value: "12V – 1500V DC" },
-      { label: "Power", value: "Up to 250 kW" },
-      { label: "Targets", value: "UL 1973, CE" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "smartcity",
-    icon: Building2,
-    color: "#60A5FA",
-    title: "eSmartCity",
-    subtitle: "Urban Infrastructure & Utilities",
-    status: "Design",
-    standard: "IEC 62264",
-    products: [
-      "Traffic Controllers",
-      "Smart Meters",
-      "5G Gateways",
-      "Parking Systems",
-    ],
-    desc: "Smart city hardware for urban infrastructure, utilities, and telecommunications. EoS runs on traffic lights, smart meters, water/gas monitoring, and 5G IoT gateways.",
-    specs: [
-      { label: "Standard", value: "IEC 62264, IEC 62056" },
-      { label: "Comms", value: "5G, LoRaWAN, NB-IoT" },
-      { label: "Protocols", value: "DLMS/COSEM, MQTT" },
-      { label: "Targets", value: "FCC, CE, ETSI" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "defense",
-    icon: Shield,
-    color: "#6366F1",
-    title: "eDefense",
-    subtitle: "Tactical & Surveillance Systems",
-    status: "Design",
-    standard: "MIL-STD-810",
-    products: [
-      "EO/IR Cameras",
-      "Tactical Radios",
-      "Mesh Networks",
-      "Detection Sensors",
-    ],
-    desc: "Defense hardware portfolio covering surveillance systems, tactical communications, and protection equipment. All designed to MIL-STD-810 rugged standards.",
-    specs: [
-      { label: "Standard", value: "MIL-STD-810, 188, 461" },
-      { label: "Encryption", value: "AES-256, FIPS 140-3" },
-      { label: "Temp range", value: "-55°C to +125°C" },
-      { label: "Shock", value: "40g, 11ms half-sine" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "consumer",
-    icon: Wifi,
-    color: "#06B6D4",
-    title: "eConsumer",
-    subtitle: "Smart Home, Wearables & AR",
-    status: "Design",
-    standard: "Matter 1.3",
-    products: [
-      "Smart Speakers",
-      "AR Glasses",
-      "Smart Watches",
-      "Industrial AR Helmets",
-    ],
-    desc: "Consumer hardware portfolio covering smart home devices, personal wearables, and augmented reality devices. Matter 1.3 and BLE 5.3 connectivity.",
-    specs: [
-      { label: "Standard", value: "Matter 1.3, Zigbee" },
-      { label: "Comms", value: "BLE 5.3, ANT+, Wi-Fi 6" },
-      { label: "MCU", value: "nRF5340, ESP32-S3" },
-      { label: "Targets", value: "FCC, CE, Bluetooth SIG" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "electronics",
-    icon: Zap,
+    label: "Stage 2: eBoot",
+    sublabels: ["TPM 2.0"],
     color: "#FBBF24",
-    title: "eElectronics",
-    subtitle: "PCBs, FPGAs & AI Accelerators",
-    status: "Design",
-    standard: "IPC-2221",
-    products: ["PCB Designs", "FPGA Modules", "AI Accelerators", "RF Modules"],
-    desc: "Electronics and semiconductor hardware portfolio covering PCBs, embedded controllers, RF modules, FPGAs, AI accelerators, and emerging quantum technologies.",
-    specs: [
-      { label: "Standard", value: "IPC-2221, JEDEC" },
-      { label: "Layer count", value: "2–16 layer PCBs" },
-      { label: "RF", value: "Sub-GHz to 77 GHz" },
-      { label: "AI", value: "NPU, FPGA, ASIC" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+    y: 0,
+    width: 1.0 as number,
   },
   {
-    id: "mining",
-    icon: Activity,
-    color: "#F87171",
-    title: "eMining",
-    subtitle: "Autonomous Mining & Construction",
-    status: "Design",
-    standard: "IECEx / ATEX",
-    products: [
-      "Autonomous Haul Trucks",
-      "Mine Monitoring",
-      "Gas Detection",
-      "Construction Robots",
-    ],
-    desc: "Mining, heavy industry, and construction hardware portfolio covering autonomous mining equipment, industrial safety systems, and construction robots.",
-    specs: [
-      { label: "Standard", value: "ISO 17757, IECEx" },
-      { label: "Protection", value: "ATEX Zone 1 / 2" },
-      { label: "Comms", value: "LoRaWAN, 4G LTE, UWB" },
-      { label: "Sensors", value: "Gas, Vibration, GNSS" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+    label: "Stage 3: Verify",
+    sublabels: ["Ed25519"],
+    color: "#F97316",
+    y: 0,
+    width: 1.0 as number,
   },
   {
-    id: "cybersec",
-    icon: Globe,
-    color: "#14B8A6",
-    title: "eCybersecurity",
-    subtitle: "HSMs, Firewalls & Access Control",
-    status: "Design",
-    standard: "FIPS 140-3",
-    products: [
-      "Hardware Security Modules",
-      "Firewalls",
-      "Biometric Access",
-      "Perimeter Sensors",
-    ],
-    desc: "Cybersecurity reference designs for security appliances, physical security, and access control. FIPS 140-3 and CC EAL4+ are targets, not achieved certifications.",
-    specs: [
-      { label: "Standard", value: "FIPS 140-3, CC EAL4+" },
-      { label: "Crypto", value: "AES-256, RSA-4096, ECC" },
-      { label: "Biometrics", value: "Fingerprint, Iris, Face" },
-      { label: "Targets", value: "ISO 27001, FIPS 201-3" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+    label: "Stage 4: OTA",
+    sublabels: ["A/B slots"],
+    color: "#22D3EE",
+    y: 0,
+    width: 1.0 as number,
   },
   {
-    id: "future",
-    icon: Brain,
-    color: "#8B5CF6",
-    title: "Future Designs",
-    subtitle: "Donor-Sponsored Concepts",
-    status: "Concept",
-    standard: "Various",
-    products: [
-      "eVision (blind aid)",
-      "eHand (prosthetic)",
-      "eBCI-Lite (EEG)",
-      "eCubeSat-1U",
-    ],
-    desc: "10 concept-stage hardware products for health, accessibility, climate, and research. Each has a datasheet stub, BOM placeholder, and business plan for donor evaluation.",
-    specs: [
-      { label: "eVision", value: "Obstacle detection band" },
-      { label: "eHand", value: "6-DOF myoelectric prosthetic" },
-      { label: "eFarm", value: "Solar LoRaWAN soil sensor" },
-      { label: "eCubeSat", value: "1U CubeSat reference design" },
-    ],
-    href: "/donate",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+    label: "EoS Kernel",
+    sublabels: ["Handoff"],
+    color: "#34D399",
+    y: 0,
+    width: 1.0 as number,
   },
 ];
 
-const STATUS_COLORS: Record<string, string> = {
-  Design: "#FBBF24",
-  Concept: "#A78BFA",
-};
+// ── 4. ENI / EAI Neural Pipeline — RADIAL mode ───────────────────────────────
+// Hub-and-spoke shows the EAI inference engine at center with I/O nodes orbiting
+const ENI_LAYERS = [
+  {
+    label: "EAI Inference",
+    sublabels: ["INT4 LLM", "ReAct agents"],
+    color: "#F472B6",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Electrode Array",
+    sublabels: ["Configurable channels", "Research front ends"],
+    color: "#EF4444",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "ADC / Amplifier",
+    sublabels: ["Hardware-defined rate", "Front-end ADC"],
+    color: "#F97316",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "DSP / Spike Sort",
+    sublabels: ["Threshold detect", "PCA"],
+    color: "#22D3EE",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Motor Commands",
+    sublabels: ["Stimulation output"],
+    color: "#A78BFA",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "eHealth365 API",
+    sublabels: ["Biometric stream"],
+    color: "#34D399",
+    y: 0,
+    width: 1.0 as number,
+  },
+];
 
-function CategoryCard({
-  cat,
-  index,
-}: {
-  cat: (typeof CATEGORIES)[0];
-  index: number;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+// ── 5. eOffice Suite — TREE mode ─────────────────────────────────────────────
+// Top-down hierarchy: kernel → services → apps — shows dependency tree
+const EOFFICE_LAYERS = [
+  {
+    label: "EoS Kernel",
+    sublabels: ["Process isolation", "VFS"],
+    color: "#6B7280",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "EoS Services",
+    sublabels: ["EIPC", "eDB", "EAI"],
+    color: "#A78BFA",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Collab Layer",
+    sublabels: ["CRDT sync", "eBot AI"],
+    color: "#22D3EE",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "eDocs",
+    sublabels: ["Rich text", "LaTeX"],
+    color: "#34D399",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "eSheets",
+    sublabels: ["Formulas", "Charts"],
+    color: "#F97316",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "eSlides",
+    sublabels: ["Decks", "Embed"],
+    color: "#FBBF24",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "eDrive",
+    sublabels: ["S3", "eVault"],
+    color: "#F472B6",
+    y: 0,
+    width: 1.0 as number,
+  },
+];
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        delay: (index % 4) * 0.07,
-        duration: 0.5,
-        ease: [0.23, 1, 0.32, 1],
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="rounded-2xl border flex flex-col overflow-hidden transition-all duration-300"
-      style={{
-        background: hovered ? `${cat.color}08` : "rgba(255,255,255,0.03)",
-        borderColor: hovered ? `${cat.color}40` : "rgba(255,255,255,0.08)",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-      }}
-    >
-      {/* Header */}
-      <div className="p-5 pb-4 flex items-start gap-4">
-        <motion.div
-          animate={{ scale: hovered ? 1.1 : 1, rotate: hovered ? 5 : 0 }}
-          transition={{ duration: 0.3 }}
-          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: `${cat.color}20` }}
-        >
-          <cat.icon size={24} style={{ color: cat.color }} />
-        </motion.div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-white text-lg leading-tight">
-              {cat.title}
-            </h2>
-            <span
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              style={{
-                background: `${STATUS_COLORS[cat.status]}20`,
-                color: STATUS_COLORS[cat.status],
-              }}
-            >
-              {cat.status}
-            </span>
-          </div>
-          <div className="text-sm mt-0.5" style={{ color: cat.color }}>
-            {cat.subtitle}
-          </div>
-        </div>
-      </div>
+// ── 6. eDB Multi-Model Database — PIPELINE mode ──────────────────────────────
+// Left-to-right query path: API → SQL/Doc/KV → Storage
+const EDB_LAYERS = [
+  {
+    label: "Query API",
+    sublabels: ["REST / tRPC / WS"],
+    color: "#22D3EE",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "SQL Engine",
+    sublabels: ["B-tree", "WAL", "MVCC"],
+    color: "#34D399",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Document Store",
+    sublabels: ["JSON", "BSON", "CBOR"],
+    color: "#F97316",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Key-Value Cache",
+    sublabels: ["LRU", "AES-256"],
+    color: "#A78BFA",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Storage Engine",
+    sublabels: ["Flash", "NVMe", "SD"],
+    color: "#6B7280",
+    y: 0,
+    width: 1.0 as number,
+  },
+];
 
-      {/* Description */}
-      <div className="px-5 pb-4">
-        <p className="text-gray-400 text-sm leading-relaxed">{cat.desc}</p>
-      </div>
+// ── 7. eRadar360 Sensor Fusion — RADIAL mode ─────────────────────────────────
+// Hub = Kalman filter fusion, orbiting = individual sensor/processing nodes
+const RADAR_LAYERS = [
+  {
+    label: "Sensor Fusion EKF",
+    sublabels: ["Kalman filter"],
+    color: "#EF4444",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "77GHz FMCW Radar",
+    sublabels: ["Range + velocity"],
+    color: "#F97316",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "LiDAR",
+    sublabels: ["Point cloud 3D"],
+    color: "#FBBF24",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Camera",
+    sublabels: ["RGB + depth"],
+    color: "#22D3EE",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Perception AI",
+    sublabels: ["YOLO-nano INT4"],
+    color: "#A78BFA",
+    y: 0,
+    width: 1.0 as number,
+  },
+  {
+    label: "Decision Output",
+    sublabels: ["Object class", "Trajectory"],
+    color: "#34D399",
+    y: 0,
+    width: 1.0 as number,
+  },
+];
 
-      {/* Product list */}
-      <div className="px-5 pb-4 flex flex-wrap gap-1.5">
-        {cat.products.map(p => (
-          <span
-            key={p}
-            className="text-[11px] px-2 py-0.5 rounded-md font-mono"
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              color: "rgba(255,255,255,0.6)",
-            }}
-          >
-            {p}
-          </span>
-        ))}
-      </div>
+// ── Diagram registry ──────────────────────────────────────────────────────────
+type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
 
-      {/* Specs */}
-      <div className="px-5 pb-4 grid grid-cols-2 gap-2">
-        {cat.specs.map(s => (
-          <div
-            key={s.label}
-            className="rounded-lg p-2"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider">
-              {s.label}
-            </div>
-            <div className="text-xs font-semibold text-white mt-0.5">
-              {s.value}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Standard badge */}
-      <div className="px-5 pb-3">
-        <span className="text-[10px] font-mono" style={{ color: cat.color }}>
-          Target standards: {cat.standard}
-        </span>
-      </div>
-
-      {/* Footer actions */}
-      <div
-        className="mt-auto px-5 py-4 border-t flex items-center justify-between"
-        style={{ borderColor: "rgba(255,255,255,0.06)" }}
-      >
-        <Link href={cat.href}>
-          <motion.div
-            whileHover={{ x: 3 }}
-            className="flex items-center gap-1 text-sm font-semibold cursor-pointer"
-            style={{ color: cat.color }}
-          >
-            Learn more<span className="sr-only"> about {cat.title}</span>{" "}
-            <ArrowRight size={14} />
-          </motion.div>
-        </Link>
-        <a href={cat.ghref} target="_blank" rel="noopener noreferrer">
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className="flex items-center gap-1 text-xs text-gray-500 hover:text-white transition-colors cursor-pointer"
-          >
-            GitHub <ExternalLink size={11} />
-          </motion.div>
-        </a>
-      </div>
-    </motion.div>
-  );
+interface DiagramDef {
+  id: string;
+  icon: LucideIcon;
+  color: string;
+  mode: DiagramMode;
+  /** Renders the dedicated CAD walkthrough instead of the generic component. */
+  cadWalkthrough?: boolean;
+  title: string;
+  /** Short pill label for the diagram selector tabs (never truncated). */
+  tabLabel: string;
+  subtitle: string;
+  desc: string;
+  image: string;
+  whyMatters: string;
+  stats: { label: string; value: string }[];
+  layers: typeof FULL_STACK_LAYERS;
+  learnMore: string;
+  bgGradient: string;
 }
 
-export default function EcadHardware() {
-  const [filter, setFilter] = useState<"all" | "Design" | "Concept">("all");
+const DIAGRAMS: DiagramDef[] = [
+  // ── CAD walkthrough — the default tab ─────────────────────────────────────
+  // From a bare CAD drawing to a complete product: each of the seven
+  // architecture stages bolts tangible parts onto one sensor board.
+  // Rendered by CadWalkthrough3D (not the generic component below).
+  {
+    id: "cad-walkthrough",
+    tabLabel: "CAD Walkthrough",
+    icon: DraftingCompass,
+    color: "#38BDF8",
+    // Unused when cadWalkthrough is set; only satisfies the DiagramDef type.
+    mode: "matrix",
+    cadWalkthrough: true,
+    title: "CAD to Product Walkthrough",
+    subtitle: "CAD drawing → complete product",
+    desc: "One sensor board, built stage by stage: a bare CAD drawing gains sensor modules, secure-boot parts, the EoS SoC, IPC and storage, a display and app layer, an on-device AI accelerator, and finally actuator drivers — until it is a complete, powered product. Every step names the real architecture stage behind it, with maturity badges distinguishing available projects from research and plans.",
+    image: "/media/architecture-diagram-hero_72436b3f.jpg",
+    whyMatters:
+      "Newcomers can watch the platform become a product — and, just as importantly, see what is already built versus what is still research. That honesty is what makes the platform worth evaluating.",
+    stats: [
+      { label: "Architecture Stages", value: "7" },
+      { label: "Supported Boards", value: String(BOARD_COUNT) },
+      { label: "Maturity Levels", value: "5" },
+      { label: "Shipped Profile", value: "1" },
+    ],
+    layers: ARCHITECTURE_STAGES.map(s => ({
+      label: s.label,
+      sublabels: [...s.products],
+      color: s.color,
+      y: 0,
+      width: 3.6,
+    })),
+    learnMore: "/what-we-do",
+    bgGradient: "from-sky-500/10 via-transparent to-cyan-500/5",
+  },
+  {
+    id: "full-stack",
+    tabLabel: "Full Stack",
+    icon: Layers,
+    color: "#F97316",
+    mode: "matrix",
+    title: "Full EmbeddedOS Stack",
+    subtitle: "Hardware → OS → AI → Applications",
+    desc: "The complete EmbeddedOS ecosystem shown as an interconnected node matrix — from open KiCad hardware designs through the secure bootloader, real-time kernel, AI/neural services, and up to 60+ productivity and service applications.",
+    image: "/media/arch-eos-kernel_d7d1b4a5.jpg",
+    whyMatters:
+      "This unified stack means a single team can build a complete embedded product — from PCB design to shipping apps — without switching vendors or ecosystems. Every layer is MIT-licensed and open-source.",
+    stats: [
+      { label: "Supported Boards", value: String(BOARD_COUNT) },
+      { label: "HAL Peripherals", value: "33" },
+      { label: "App Ecosystem", value: "60+" },
+      { label: "Open Repos", value: "22+" },
+    ],
+    layers: FULL_STACK_LAYERS,
+    learnMore: "/what-we-do",
+    bgGradient: "from-orange-500/10 via-transparent to-pink-500/5",
+  },
+  {
+    id: "eos-kernel",
+    tabLabel: "EoS Kernel",
+    icon: Cpu,
+    color: "#F97316",
+    mode: "layered",
+    title: "EoS Kernel Architecture",
+    subtitle: "HAL → Kernel → Services → Applications",
+    desc: "The EoS kernel sits above the Hardware Abstraction Layer (HAL), providing deterministic fixed-priority preemptive scheduling, memory management, virtual filesystem, and IPC. Services like EAI, ENI, EIPC, and eDB run as isolated processes above the kernel.",
+    image: "/media/arch-eos-kernel_d7d1b4a5.jpg",
+    whyMatters:
+      "A real-time kernel with hard deadline guarantees is critical for medical devices, industrial controllers, and aerospace systems where a missed deadline can mean patient harm or equipment failure.",
+    stats: [
+      { label: "Board Definitions", value: String(BOARD_COUNT) },
+      { label: "HAL Drivers", value: "33" },
+      { label: "Form Factors", value: "41" },
+      { label: "Min RAM", value: "64KB" },
+    ],
+    layers: EOS_LAYERS,
+    learnMore: "/eos",
+    bgGradient: "from-orange-500/10 via-transparent to-amber-500/5",
+  },
+  {
+    id: "eboot",
+    tabLabel: "eBoot Chain",
+    icon: Shield,
+    color: "#FBBF24",
+    mode: "pipeline",
+    title: "eBoot Secure Boot Chain",
+    subtitle: "ROM → TPM → Ed25519 → OTA → EoS",
+    desc: "The 5-stage verified boot pipeline flows left to right: an immutable ROM bootstraps eBoot, which performs TPM 2.0 attestation, Ed25519 signature verification, A/B OTA slot selection, and hands off to the EoS kernel entry point.",
+    image: "/media/arch-eboot-chain_b9f999b5.jpg",
+    whyMatters:
+      "Secure boot prevents malicious firmware from running on medical implants, industrial PLCs, and connected vehicles — protecting both patients and critical infrastructure from supply-chain attacks.",
+    stats: [
+      { label: "Boot Stages", value: "5" },
+      { label: "Signature Algo", value: "Ed25519" },
+      { label: "A/B OTA Slots", value: "2" },
+      { label: "TPM Support", value: "2.0" },
+    ],
+    layers: EBOOT_LAYERS,
+    learnMore: "/eboot",
+    bgGradient: "from-yellow-500/10 via-transparent to-orange-500/5",
+  },
+  {
+    id: "eni-eai",
+    tabLabel: "Neural Pipeline",
+    icon: Brain,
+    color: "#F472B6",
+    mode: "radial",
+    title: "ENI / EAI Neural Pipeline",
+    subtitle: "Configurable neural-acquisition research with on-device AI",
+    desc: "The research architecture places EAI at the hub with configuration-specific electrode arrays, acquisition front ends, spike-sorting DSP, and experimental output streams. Channel count, sample rate, and resolution depend on the attached hardware.",
+    image: "/media/arch-eai-neural_4d7964d2.jpg",
+    whyMatters:
+      "On-device neural inference is being studied for brain-computer interface research. Prosthetic control and neurostimulation are research applications that require independent clinical validation and regulatory approval.",
+    stats: [
+      { label: "Channels", value: "Config-specific" },
+      { label: "Sample Rate", value: "Hardware-defined" },
+      { label: "ADC Resolution", value: "Front-end-defined" },
+      { label: "Inference", value: "INT4" },
+    ],
+    layers: ENI_LAYERS,
+    learnMore: "/eai",
+    bgGradient: "from-pink-500/10 via-transparent to-purple-500/5",
+  },
+  {
+    id: "eoffice",
+    tabLabel: "eOffice Suite",
+    icon: FileText,
+    color: "#34D399",
+    mode: "tree",
+    title: "eOffice Suite Architecture",
+    subtitle: "Kernel → Services → Collaboration → Apps",
+    desc: "The eOffice dependency tree shows how 11 productivity apps (eDocs, eSheets, eSlides, eMail, eDrive…) are built on a CRDT collaboration layer with eBot AI, backed by EoS services (EIPC, eDB, EAI) and the kernel's process isolation.",
+    image: "/media/arch-eoffice-suite_d63eacf5.jpg",
+    whyMatters:
+      "A full productivity suite running natively on embedded hardware means remote field workers, medical staff, and industrial operators can work offline without depending on cloud connectivity.",
+    stats: [
+      { label: "Apps in Suite", value: "11" },
+      { label: "Collaboration", value: "CRDT" },
+      { label: "AI Assistant", value: "eBot" },
+      { label: "Storage", value: "S3/Local" },
+    ],
+    layers: EOFFICE_LAYERS,
+    learnMore: "/eoffice",
+    bgGradient: "from-emerald-500/10 via-transparent to-cyan-500/5",
+  },
+  {
+    id: "edb",
+    tabLabel: "eDB",
+    icon: Database,
+    color: "#22D3EE",
+    mode: "pipeline",
+    title: "eDB Multi-Model Database",
+    subtitle: "Query API → SQL → Document → KV → Flash",
+    desc: "eDB's query pipeline flows from the unified REST/tRPC/WebSocket API through three storage engines (SQL with B-tree WAL, JSON/BSON document store, AES-256 key-value cache) down to the flash/NVMe storage layer — all in under 512KB flash.",
+    image: "/media/arch-eos-kernel_d7d1b4a5.jpg",
+    whyMatters:
+      "Embedded devices need a database that fits in flash memory, survives power loss, and encrypts sensitive patient or industrial data — without requiring a separate database server process.",
+    stats: [
+      { label: "Storage Models", value: "3" },
+      { label: "Encryption", value: "AES-256" },
+      { label: "Query APIs", value: "REST+WS" },
+      { label: "Min Flash", value: "512KB" },
+    ],
+    layers: EDB_LAYERS,
+    learnMore: "/product-edb",
+    bgGradient: "from-cyan-500/10 via-transparent to-blue-500/5",
+  },
+  {
+    id: "eradar360",
+    tabLabel: "eRadar360",
+    icon: Radio,
+    color: "#EF4444",
+    mode: "radial",
+    title: "eRadar360 Sensor Fusion",
+    subtitle: "77GHz FMCW + LiDAR + Camera → EKF → AI",
+    desc: "The Extended Kalman Filter fusion engine sits at the hub, with 77 GHz FMCW radar, LiDAR, and camera sensors orbiting as live data streams. YOLO-nano perception AI (EAI INT4) processes fused data for object classification and trajectory prediction.",
+    image: "/media/arch-eai-neural_4d7964d2.jpg",
+    whyMatters:
+      "Multi-sensor fusion running on a single embedded SoC dramatically reduces the cost and complexity of autonomous vehicle perception — making ADAS accessible to mid-range vehicles and agricultural robots.",
+    stats: [
+      { label: "Radar Freq", value: "77 GHz" },
+      { label: "Sensor Types", value: "3" },
+      { label: "AI Model", value: "YOLO-nano" },
+      { label: "Filter", value: "EKF" },
+    ],
+    layers: RADAR_LAYERS,
+    learnMore: "/ecad-hardware",
+    bgGradient: "from-red-500/10 via-transparent to-orange-500/5",
+  },
+];
 
-  const filtered =
-    filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
+// ── Mode descriptions ─────────────────────────────────────────────────────────
+const MODE_LABELS: Record<DiagramMode, string> = {
+  layered: "Layered Stack",
+  pipeline: "Pipeline Flow",
+  radial: "Radial Hub",
+  tree: "Dependency Tree",
+  matrix: "Node Matrix",
+};
+
+// ── Donor callout data ────────────────────────────────────────────────────────
+const DONOR_REASONS = [
+  {
+    icon: Shield,
+    color: "#34D399",
+    title: "Medical Device Safety",
+    desc: "EoS + eBoot + ENI power medical implants and health monitors. Your donation funds the security audits that keep patients safe.",
+  },
+  {
+    icon: Brain,
+    color: "#F472B6",
+    title: "Neural Interface Research",
+    desc: "The ENI/EAI pipeline could restore movement to paralyzed patients. Donations fund hardware bring-up on new neural recording platforms.",
+  },
+  {
+    icon: Cpu,
+    color: "#F97316",
+    title: "Open Hardware Freedom",
+    desc: "All 15 eCAD hardware categories are open KiCad designs. Donations fund new board designs and manufacturing test coverage.",
+  },
+  {
+    icon: FileText,
+    color: "#22D3EE",
+    title: "Education & Books",
+    desc: "14 technical books covering every layer of the stack — free forever. Donations fund authors, editors, and translation into 5 languages.",
+  },
+];
+
+export default function Architecture() {
+  const [active, setActive] = useState("cad-walkthrough");
+  const diagram = DIAGRAMS.find(d => d.id === active) ?? DIAGRAMS[0];
 
   return (
-    <div className="min-h-screen bg-[#050A14] text-white">
-      {/* Hero */}
-      <section className="relative pt-28 pb-16 px-6 overflow-hidden">
+    <div className="min-h-screen bg-[#0A0E1A] text-white">
+      {/* ── Hero ── */}
+      <section className="relative py-24 px-4 overflow-hidden">
         <img
           loading="lazy"
           decoding="async"
-          src="/media/product-ecad-hardware_f5806032.jpg"
+          src="/media/architecture-diagram-hero_72436b3f.jpg"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
-        />
-        <div className="absolute bottom-4 right-6 z-10 rounded-md border border-white/10 bg-[#050A14]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60">
-          Illustrative concept artwork
-        </div>
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
         />
         <div
-          className="absolute top-20 left-1/3 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{
-            background: "radial-gradient(circle, #F97316, transparent)",
-          }}
+          className={`absolute inset-0 bg-gradient-to-br ${diagram.bgGradient} transition-all duration-700`}
         />
-        <div
-          className="absolute top-40 right-1/3 w-80 h-80 rounded-full blur-3xl opacity-10"
-          style={{
-            background: "radial-gradient(circle, #22D3EE, transparent)",
-          }}
-        />
-
-        <div className="relative max-w-5xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
           >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
-              style={{
-                background: "rgba(249,115,22,0.1)",
-                borderColor: "rgba(249,115,22,0.3)",
-                color: "#F97316",
-              }}
-            >
-              <Package size={12} /> eCAD HARDWARE DESIGNS · MIT LICENSE
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-              Hardware{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #F97316, #FBBF24)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Design
-              </span>{" "}
-              Portfolio
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
+              <Layers className="w-4 h-4" /> ARCHITECTURE &amp; BLOCK DIAGRAMS
+            </div>
+            <h1 className="text-5xl sm:text-6xl font-bold mb-5 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight">
+              Inside EmbeddedOS
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              15 hardware design categories — from health wearables to aerospace
-              systems, industrial PLCs to personal air mobility concepts. The
-              repository includes a mix of design documents, KiCad sources,
-              BOMs, and datasheets; coverage varies by design.
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+              Eight distinct interactive 3D diagrams — each using a different
+              visual model to best represent its product's architecture. From a
+              CAD drawing that builds into a complete product, to layered OS
+              stacks, radial sensor fusion hubs, and dependency trees.
             </p>
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {(["all", "Design", "Concept"] as const).map(f => (
-                <motion.button
-                  key={f}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setFilter(f)}
-                  className="px-5 py-2 rounded-lg text-sm font-semibold border transition-all"
-                  style={{
-                    background:
-                      filter === f ? "rgba(249,115,22,0.2)" : "transparent",
-                    borderColor:
-                      filter === f ? "#F97316" : "rgba(255,255,255,0.15)",
-                    color: filter === f ? "#F97316" : "rgba(255,255,255,0.6)",
-                  }}
-                >
-                  {f === "all" ? "All Categories" : f}
-                  {f !== "all" && (
-                    <span className="ml-2 text-[10px] opacity-70">
-                      ({CATEGORIES.filter(c => c.status === f).length})
-                    </span>
-                  )}
-                </motion.button>
-              ))}
+            <div className="flex flex-wrap justify-center gap-3">
+              <a
+                href="#diagrams"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"
+                style={{ background: "#F97316", color: "#fff" }}
+              >
+                Explore Diagrams <ChevronRight className="w-4 h-4" />
+              </a>
+              <Link
+                href="/donate"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 text-white/70 hover:text-white text-sm font-medium transition-all duration-150"
+              >
+                <Heart className="w-4 h-4 text-pink-400" /> Support the
+                Foundation
+              </Link>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section
-        className="border-y py-8 px-6"
-        style={{
-          borderColor: "rgba(255,255,255,0.07)",
-          background: "rgba(255,255,255,0.02)",
-        }}
-      >
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
-          {[
-            { value: "15", label: "Design Categories", color: "#F97316" },
-            { value: "50+", label: "Design Entries", color: "#22D3EE" },
-            { value: "10", label: "Future Concepts", color: "#A78BFA" },
-          ].map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-              className="text-center"
-            >
-              <div className="text-3xl font-black" style={{ color: s.color }}>
-                {s.value}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Categories Grid */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {filtered.map((cat, i) => (
-              <CategoryCard key={cat.id} cat={cat} index={i} />
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Future Designs Spotlight */}
-      <section
-        className="py-16 px-6"
-        style={{
-          background: "rgba(139,92,246,0.04)",
-          borderTop: "1px solid rgba(139,92,246,0.15)",
-        }}
-      >
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-black mb-4">
-              Donor-Sponsored Future Designs
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              10 concept-stage hardware products for health, accessibility,
-              climate, and research. Each has a datasheet stub, BOM placeholder,
-              and one-page business plan for donor evaluation.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {[
-              {
-                icon: "👓",
-                name: "eVision",
-                desc: "Obstacle-detection band for blind users",
-                tier: "$5K",
-              },
-              {
-                icon: "🤖",
-                name: "eHand",
-                desc: "6-DOF myoelectric prosthetic hand",
-                tier: "$2K",
-              },
-              {
-                icon: "🧠",
-                name: "eBCI-Lite",
-                desc: "8-channel dry-electrode EEG headband",
-                tier: "$10K",
-              },
-              {
-                icon: "🌾",
-                name: "eFarm",
-                desc: "Solar LoRaWAN soil sensor mesh",
-                tier: "$1K",
-              },
-              {
-                icon: "💧",
-                name: "eHydro",
-                desc: "Water-quality monitoring buoy",
-                tier: "$3K",
-              },
-              {
-                icon: "🐝",
-                name: "eHive",
-                desc: "Acoustic beehive monitor",
-                tier: "$500",
-              },
-              {
-                icon: "🚙",
-                name: "eRover-Mini",
-                desc: "$400 autonomous research rover",
-                tier: "$2K",
-              },
-              {
-                icon: "🎓",
-                name: "eEdu-Kit",
-                desc: "Classroom STEM dev board + curriculum",
-                tier: "$1K",
-              },
-              {
-                icon: "⚡",
-                name: "eMeshGrid",
-                desc: "Off-grid micro-grid controller",
-                tier: "$25K",
-              },
-              {
-                icon: "🛰️",
-                name: "eCubeSat-1U",
-                desc: "1U CubeSat concept with research firmware",
-                tier: "$30K",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ y: -3, scale: 1.03 }}
-                className="rounded-xl border p-4 text-center cursor-pointer"
-                style={{
-                  background: "rgba(139,92,246,0.06)",
-                  borderColor: "rgba(139,92,246,0.2)",
-                }}
-              >
-                <div className="text-3xl mb-2">{item.icon}</div>
-                <div className="font-bold text-white text-sm">{item.name}</div>
-                <div className="text-[11px] text-gray-400 mt-1 leading-tight">
-                  {item.desc}
-                </div>
-                <div
-                  className="mt-2 text-[10px] font-semibold"
-                  style={{ color: "#A78BFA" }}
-                >
-                  Donor tier: {item.tier}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/donate">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2 mx-auto"
-                style={{
-                  background: "linear-gradient(135deg, #8B5CF6, #6366F1)",
-                }}
-              >
-                Sponsor a Future Design <ChevronRight size={18} />
-              </motion.button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Hardware Block Diagrams */}
-      <section className="py-16 px-6">
+      {/* ── Diagram selector + active diagram ── */}
+      <section className="py-4 px-4" id="diagrams">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-4">
-              <Layers className="w-4 h-4" /> BLOCK DIAGRAMS
-            </div>
-            <h2 className="text-3xl font-black text-white mb-3">
-              Illustrative Concept Architecture
-            </h2>
-            <p className="text-gray-400">
-              Interactive concept diagrams for proposed hardware pipelines; not
-              as-built schematics.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {HW_DIAGRAMS.map(d => (
-              <div key={d.id}>
-                <div className="mb-3">
-                  <div className="text-white font-bold text-sm">{d.title}</div>
-                  <div className="text-white/40 text-xs">{d.subtitle}</div>
-                </div>
-                <Suspense
-                  fallback={
-                    <div className="h-64 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
-                      Loading…
-                    </div>
+          {/* Selector tabs */}
+          <div
+            className="flex flex-wrap gap-2 justify-center mb-10"
+            role="tablist"
+            aria-label="Architecture diagrams"
+            onKeyDown={moveTabFocus}
+          >
+            {DIAGRAMS.map(d => {
+              const Icon = d.icon;
+              return (
+                <button
+                  key={d.id}
+                  role="tab"
+                  id={`diagram-tab-${d.id}`}
+                  aria-selected={active === d.id}
+                  aria-controls={`diagram-panel-${d.id}`}
+                  tabIndex={active === d.id ? 0 : -1}
+                  onClick={() => setActive(d.id)}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-200 ${
+                    active === d.id
+                      ? "text-white border-transparent"
+                      : "text-white/50 border-white/10 hover:border-white/20 hover:text-white/80"
+                  }`}
+                  style={
+                    active === d.id
+                      ? {
+                          background: d.color + "22",
+                          borderColor: d.color + "66",
+                          color: d.color,
+                        }
+                      : {}
                   }
                 >
-                  <ArchitectureDiagram3D layers={d.layers} height={260} />
-                </Suspense>
+                  <Icon className="w-4 h-4" style={{}} />
+                  <span>{d.tabLabel}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active diagram */}
+          {DIAGRAMS.map(d => {
+            const isActive = d.id === active;
+            return (
+              <div
+                key={d.id}
+                role="tabpanel"
+                id={`diagram-panel-${d.id}`}
+                aria-labelledby={`diagram-tab-${d.id}`}
+                hidden={!isActive}
+              >
+                {/* Top: 3D canvas + info panel */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
+                  {/* 3D Canvas */}
+                  <div>
+                    {isActive &&
+                      (d.cadWalkthrough ? (
+                        <Suspense
+                          fallback={
+                            <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
+                              Loading CAD walkthrough…
+                            </div>
+                          }
+                        >
+                          <CadWalkthrough3D height={400} />
+                        </Suspense>
+                      ) : (
+                        <Suspense
+                          fallback={
+                            <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
+                              Loading 3D diagram…
+                            </div>
+                          }
+                        >
+                          <ArchitectureDiagram3D
+                            layers={d.layers}
+                            mode={d.mode}
+                            height={400}
+                            accentColor={d.color}
+                          />
+                        </Suspense>
+                      ))}
+                    {/* Mode label */}
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-xs text-white/30">
+                        Visualization:
+                      </span>
+                      <span
+                        className="text-xs font-semibold px-2 py-0.5 rounded-full border"
+                        style={{
+                          color: d.color,
+                          borderColor: d.color + "40",
+                          background: d.color + "12",
+                        }}
+                      >
+                        {d.cadWalkthrough
+                          ? "CAD Walkthrough"
+                          : MODE_LABELS[d.mode]}
+                      </span>
+                      <span className="text-xs text-white/20">
+                        {d.cadWalkthrough
+                          ? "· Drag to orbit · Step through the build · Keyboard: stepper below"
+                          : "· Drag to rotate · Interactive"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Info panel */}
+                  <div>
+                    <div
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 border"
+                      style={{
+                        background: d.color + "18",
+                        borderColor: d.color + "44",
+                        color: d.color,
+                      }}
+                    >
+                      <d.icon className="w-3.5 h-3.5" />
+                      {d.subtitle}
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-3">
+                      {d.title}
+                    </h2>
+                    <p className="text-gray-400 leading-relaxed mb-5">
+                      {d.desc}
+                    </p>
+
+                    {/* Stats row */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                      {d.stats.map(s => (
+                        <div
+                          key={s.label}
+                          className="rounded-xl p-3 text-center border border-white/5"
+                          style={{ background: d.color + "0d" }}
+                        >
+                          <div
+                            className="font-bold text-lg"
+                            style={{ color: d.color }}
+                          >
+                            {s.value}
+                          </div>
+                          <div className="text-[11px] text-white/40 mt-0.5">
+                            {s.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Layer list */}
+                    <div className="space-y-1.5 mb-5 max-h-52 overflow-y-auto pr-1">
+                      {[...d.layers].reverse().map(layer => (
+                        <div
+                          key={layer.label}
+                          className="flex items-start gap-3 p-2.5 rounded-xl bg-white/4 border border-white/6 hover:border-white/12 transition-colors"
+                        >
+                          <div
+                            className="w-2.5 h-2.5 rounded-sm mt-1 flex-shrink-0"
+                            style={{ background: layer.color }}
+                          />
+                          <div>
+                            <div className="text-white text-xs font-semibold">
+                              {layer.label}
+                            </div>
+                            {layer.sublabels && (
+                              <div className="text-white/35 text-[10px] mt-0.5">
+                                {layer.sublabels.join(" · ")}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Learn more link */}
+                    <Link
+                      href={d.learnMore}
+                      className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:underline"
+                      style={{ color: d.color }}
+                    >
+                      Learn more about{" "}
+                      {d.title.split(" ").slice(0, 3).join(" ")}
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Bottom: illustration + "Why This Matters" */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
+                  <div className="rounded-2xl overflow-hidden border border-white/8 bg-white/3">
+                    <img
+                      src={d.image}
+                      alt={`${d.title} illustration`}
+                      className="w-full h-56 object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div
+                    className="rounded-2xl p-6 border"
+                    style={{
+                      background: d.color + "0a",
+                      borderColor: d.color + "30",
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <CheckCircle
+                        className="w-5 h-5"
+                        style={{ color: d.color }}
+                      />
+                      <span className="font-bold text-white text-base">
+                        Why This Matters
+                      </span>
+                    </div>
+                    <p className="text-white/70 leading-relaxed text-sm">
+                      {d.whyMatters}
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-white/8">
+                      <Link
+                        href="/donate"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-pink-400 hover:text-pink-300 transition-colors"
+                      >
+                        <Heart className="w-4 h-4" />
+                        Support this research
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── All diagrams grid ── */}
+      <section className="py-16 px-4 bg-[#080F1E]">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-3xl font-bold text-white mb-3">
+              All Architecture Diagrams
+            </h2>
+            <p className="text-white/50 text-sm max-w-xl mx-auto">
+              Each diagram uses a different 3D visualization mode to best
+              represent its product's structure. Click any card to open it in
+              the interactive viewer above.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {DIAGRAMS.map((d, i) => {
+              const Icon = d.icon;
+              return (
+                <motion.button
+                  key={d.id}
+                  onClick={() => {
+                    setActive(d.id);
+                    document
+                      .getElementById("diagrams")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className={`text-left p-5 rounded-2xl border transition-all duration-200 hover:scale-[1.02] ${
+                    active === d.id
+                      ? "border-white/20 bg-white/8"
+                      : "border-white/8 bg-white/4 hover:border-white/15"
+                  }`}
+                >
+                  {/* Color band header */}
+                  <div
+                    className="rounded-xl h-2 mb-4 w-full"
+                    style={{
+                      background: `linear-gradient(90deg, ${d.color}, ${d.color}44)`,
+                    }}
+                  />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: d.color + "20",
+                        border: `1px solid ${d.color}40`,
+                      }}
+                    >
+                      <Icon className="w-5 h-5" style={{ color: d.color }} />
+                    </div>
+                    <div>
+                      <div className="text-white font-semibold text-sm">
+                        {d.title}
+                      </div>
+                      <div className="text-white/40 text-xs">{d.subtitle}</div>
+                    </div>
+                  </div>
+                  {/* Mode badge */}
+                  <div className="mb-3">
+                    <span
+                      className="text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border"
+                      style={{
+                        color: d.color,
+                        borderColor: d.color + "40",
+                        background: d.color + "15",
+                      }}
+                    >
+                      {d.cadWalkthrough
+                        ? "CAD Walkthrough"
+                        : MODE_LABELS[d.mode]}
+                    </span>
+                  </div>
+                  {/* Layer chips */}
+                  <div className="flex flex-wrap gap-1">
+                    {d.layers.slice(0, 4).map(l => (
+                      <span
+                        key={l.label}
+                        className="px-1.5 py-0.5 rounded text-[10px] font-mono"
+                        style={{ background: l.color + "18", color: l.color }}
+                      >
+                        {l.label.split(" ")[0]}
+                      </span>
+                    ))}
+                    {d.layers.length > 4 && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono text-white/30 bg-white/5">
+                        +{d.layers.length - 4}
+                      </span>
+                    )}
+                  </div>
+                </motion.button>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-black mb-4">
-            Explore the Hardware Designs
-          </h2>
-          <p className="text-gray-400 mb-8">
-            The repository is MIT-licensed and includes a mix of design
-            documents, KiCad sources, BOMs, and datasheets. Artifact coverage
-            varies by design.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
-              target="_blank"
-              rel="noopener noreferrer"
+      {/* ── Visualization modes explainer ── */}
+      <section className="py-14 px-4">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-2xl font-bold text-white mb-3">
+              6 Visualization Modes
+            </h2>
+            <p className="text-white/40 text-sm max-w-xl mx-auto">
+              Each diagram type is chosen to match the product's actual
+              architecture pattern.
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                mode: "layered" as DiagramMode,
+                color: "#F97316",
+                icon: Layers,
+                title: "Layered Stack",
+                desc: "Horizontal slabs showing OS layers from hardware to apps. Best for kernel and platform architectures.",
+                used: "EoS Kernel",
+              },
+              {
+                mode: "pipeline" as DiagramMode,
+                color: "#FBBF24",
+                icon: ArrowRight,
+                title: "Pipeline Flow",
+                desc: "Left-to-right sequential stages with arrows. Best for boot chains and query processing paths.",
+                used: "eBoot, eDB",
+              },
+              {
+                mode: "radial" as DiagramMode,
+                color: "#F472B6",
+                icon: Radio,
+                title: "Radial Hub",
+                desc: "Central hub with orbiting nodes. Best for inference engines and sensor fusion systems.",
+                used: "ENI/EAI, eRadar360",
+              },
+              {
+                mode: "tree" as DiagramMode,
+                color: "#34D399",
+                icon: GitBranch,
+                title: "Dependency Tree",
+                desc: "Top-down hierarchy showing how components depend on each other. Best for app suites.",
+                used: "eOffice Suite",
+              },
+              {
+                mode: "matrix" as DiagramMode,
+                color: "#A78BFA",
+                icon: Package,
+                title: "Node Matrix",
+                desc: "3D grid of glowing nodes. Best for showing the full ecosystem of products at once.",
+                used: "Full Stack",
+              },
+              {
+                color: "#38BDF8",
+                icon: Network,
+                title: "System Map",
+                desc: "Seven architecture stages as one connected 3D map with maturity badges and documented links. Best for seeing how the whole platform fits together.",
+                used: "Reference architecture",
+              },
+            ].map((m, i) => {
+              const Icon = m.icon;
+              return (
+                <motion.div
+                  key={m.title}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={i}
+                  className="glass rounded-xl p-5 border border-white/5"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center"
+                      style={{ background: m.color + "20" }}
+                    >
+                      <Icon className="w-4 h-4" style={{ color: m.color }} />
+                    </div>
+                    <div>
+                      <div className="text-white text-sm font-bold">
+                        {m.title}
+                      </div>
+                      <div className="text-white/30 text-[10px]">
+                        Used for: {m.used}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-white/50 text-xs leading-relaxed">
+                    {m.desc}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Donor callout ── */}
+      <section className="py-16 px-4 bg-[#080F1E]">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-3xl font-bold text-white mb-3">
+              Why Donors Fund This Research
+            </h2>
+            <p className="text-white/50 text-sm max-w-xl mx-auto">
+              Every layer of the EmbeddedOS stack has real-world impact on
+              safety, health, and freedom.
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 gap-5 mb-10">
+            {DONOR_REASONS.map((r, i) => {
+              const Icon = r.icon;
+              return (
+                <motion.div
+                  key={r.title}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={i}
+                  className="glass rounded-xl p-6 border border-white/5 card-hover flex gap-4"
+                >
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: r.color + "20",
+                      border: `1px solid ${r.color}40`,
+                    }}
+                  >
+                    <Icon size={22} style={{ color: r.color }} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-base mb-1">
+                      {r.title}
+                    </h3>
+                    <p className="text-sm text-white/50 leading-relaxed">
+                      {r.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* CTA */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <Link
+              href="/donate"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-base text-white"
+              style={{
+                background: "linear-gradient(135deg, #F97316, #F59E0B)",
+              }}
             >
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2"
-                style={{
-                  background: "linear-gradient(135deg, #F97316, #EF4444)",
-                }}
-              >
-                View on GitHub <ExternalLink size={16} />
-              </motion.button>
-            </a>
-            <Link href="/getting-started">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold border flex items-center gap-2"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "white" }}
-              >
-                Get Started <ChevronRight size={16} />
-              </motion.button>
+              <Heart className="w-5 h-5 text-pink-200" />
+              Donate to the Foundation
             </Link>
+            <p className="text-white/30 text-xs mt-3">
+              501(c)(3) nonprofit · 0% platform fees · Tax-deductible
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Components, from the verified ecosystem graph ── */}
+      <section
+        className="py-16 px-4 border-t border-white/5"
+        id="components"
+        aria-labelledby="components-heading"
+      >
+        <div className="max-w-5xl mx-auto">
+          <h2
+            id="components-heading"
+            className="text-3xl font-bold text-white mb-3"
+          >
+            The components
+          </h2>
+          <p className="text-white/55 mb-3 max-w-3xl">
+            Every part of EmbeddedOS is a separate, independently versioned
+            repository. The grouping below follows the path a device takes at
+            runtime — hardware, boot, operating system, communication, on-device
+            AI, applications — with the development tooling that builds it last.
+          </p>
+          <p className="text-white/40 text-sm mb-10 max-w-3xl">
+            Each status is the word that component&rsquo;s own repository uses
+            to describe itself. Several are experimental or planned, and are
+            labelled as such rather than presented as finished.
+          </p>
+
+          {ROLE_ORDER.map(role => {
+            const items = componentsInRole(role);
+            if (items.length === 0) return null;
+            return (
+              <div key={role} className="mb-10">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-[#F97316] mb-4">
+                  {ROLE_LABEL[role]}
+                </h3>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {items.map(component => (
+                    <li
+                      key={component.id}
+                      className="rounded-2xl border border-white/8 p-5 bg-white/[0.02]"
+                    >
+                      <div className="flex items-baseline justify-between gap-3 mb-2">
+                        <h4 className="font-heading font-bold text-white text-lg">
+                          {component.name}
+                        </h4>
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-white/45 border border-white/12 rounded-full px-2 py-0.5 whitespace-nowrap">
+                          {component.maturity}
+                        </span>
+                      </div>
+                      <p className="text-white/60 text-sm leading-relaxed mb-4">
+                        {component.purpose}
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                        {component.sitePage && (
+                          <Link
+                            href={component.sitePage}
+                            className="text-[#F97316] hover:underline"
+                          >
+                            {component.name} on this site
+                          </Link>
+                        )}
+                        <a
+                          href={component.repository}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/60 hover:text-white hover:underline"
+                        >
+                          Source repository
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+
+          <p className="text-white/40 text-sm">
+            {ECOSYSTEM.length} components. Anything not listed here does not
+            exist as a repository yet.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Quick links ── */}
+      <section className="py-10 px-4 border-t border-white/5">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { label: "EoS Kernel", href: "/eos" },
+              { label: "eBoot", href: "/eboot" },
+              { label: "EAI / ENI", href: "/eai" },
+              { label: "eOffice", href: "/eoffice" },
+              { label: "eDB", href: "/product-edb" },
+              { label: "eCAD Hardware", href: "/ecad-hardware" },
+              { label: "API Docs", href: "/api-docs" },
+              { label: "GitHub", href: "https://github.com/embeddedos-org" },
+            ].map(link =>
+              link.href.startsWith("http") ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white/50 border border-white/8 hover:border-white/20 hover:text-white/80 transition-all"
+                >
+                  {link.label} <ExternalLink className="w-3 h-3" />
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white/50 border border-white/8 hover:border-white/20 hover:text-white/80 transition-all"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </div>
         </div>
       </section>

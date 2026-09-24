@@ -1,206 +1,858 @@
 /**
- * Regenerates shared/stack-data.json from the sibling EmbeddedOS repositories.
+ * Build-time prerenderer.
  *
- * RETIRED (2026-09-18): the eos-stack-manifest repository this pipeline reads
- * was renamed to the private embeddedos-stack repository, so there is no
- * longer a public manifest source to count from. shared/stack-data.ts is now
- * refreshed by hand from the live org API (see its header comment) and this
- * script exits 1 to say so, rather than failing on a "missing sibling repo"
- * that can no longer be cloned. Restore the pipeline if a public manifest
- * source returns; do not point CI at it — the manifest is private.
+ * The site is a client-rendered SPA, so the document served to any client that
+ * does not execute JavaScript — including the Google Ad Grants reviewer's
+ * crawler — contains nothing but `<div id="root"></div>`. This script renders
+ * every route in headless Chromium after the build and writes a real HTML
+ * document per route, each with its own <title>, meta description and canonical
+ * URL derived from the page's actual content.
  *
- * (Historical note, kept for context: the website used to state the stack's
- * shape from memory, and it drifted: the platform count read "52+" on four
- * pages while eos/boards held 83 definitions, and the kernel's timing was
- * quoted as "sub-1ms", "<=10us" and "sub-1us" on three different pages.)
- * The output is committed. The website builds from the committed JSON and never
- * reads the sibling repos, so CI and a fresh clone work without them. Run this
- * when the stack changes:
+ * React still boots normally on top of the snapshot: main.tsx uses createRoot
+ * (not hydrateRoot), so it discards the prerendered DOM and re-renders. The
+ * snapshot exists to be readable without JS and to paint sooner, not to hydrate.
  *
- *   pnpm sync:stack
- *
- * Deliberately absent: performance figures. No measured context-switch or
- * interrupt-latency number exists in the eos repository — its only benchmark
- * (tests/test_performance_benchmarks.c) times a host loop, not the kernel — so
- * there is nothing here to copy and the site must not assert one as fact.
+ * Run via `pnpm build` (build:client -> prerender) or standalone with
+ * `pnpm prerender` against an existing dist/public.
  */
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+import express from "express";
+// @playwright/test re-exports the browser launchers, so no extra dependency.
+import { chromium } from "@playwright/test";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
-const WORKSPACE = path.resolve(ROOT, "..");
-const MANIFEST_REPO = path.join(WORKSPACE, "eos-stack-manifest");
-const MANIFEST = path.join(MANIFEST_REPO, "manifest.json");
-const ROADMAP = path.join(MANIFEST_REPO, "docs", "roadmap.md");
-const BOARDS = path.join(WORKSPACE, "eos", "boards");
-// EoSim simulates a wider set than the kernel has board files for, so the two
-// counts are genuinely different and the site must not use one for the other.
-const SIM_PLATFORMS = path.join(WORKSPACE, "EoSim", "platforms");
-// Emitted as TypeScript rather than JSON so the data arrives typed without
-// turning on resolveJsonModule for the whole project.
-const OUT = path.join(ROOT, "shared", "stack-data.ts");
+const DIST = path.join(ROOT, "dist", "public");
+const APP_TSX = path.join(ROOT, "client", "src", "App.tsx");
+const ORIGIN = process.env.SITE_ORIGIN ?? "https://www.embeddedos.org";
+const PORT = Number(process.env.PRERENDER_PORT ?? 41234);
+const HOST = process.env.PRERENDER_HOST ?? "127.0.0.1";
 
-/** Fail loudly rather than emitting a file that silently drops a section. */
-function require_(p, what) {
-  if (!fs.existsSync(p)) {
-    console.error(
-      `[sync:stack] missing ${what}: ${p}\n` +
-        `  The eos-stack-manifest source was renamed to the private\n` +
-        `  embeddedos-stack repository (2026-09-18), so this pipeline is\n` +
-        `  retired: there is no public manifest to clone. shared/stack-data.ts\n` +
-        `  is refreshed by hand from the live org API — see its header comment.`
+export function formatHostForUrl(host) {
+  return host.includes(":") ? `[${host}]` : host;
+}
+
+const URL_HOST = formatHostForUrl(HOST);
+/**
+ * Prerendering 95 routes is the largest single cost in the verification gate —
+ * 119s of a 149s `pnpm build` at the old fixed default of 4, which is most of
+ * the reason the gate ran out of its budget before reaching the e2e and
+ * performance categories and reported both as SKIP.
+ *
+ * Scaled to the machine instead. Measured here, on 8 cores: 4 workers 119s,
+ * 6 workers 97s, 8 workers 74s, with 95/95 rendered and 0 thin every time —
+ * each route is an independent page render, so concurrency changes how long it
+ * takes and not what comes out.
+ *
+ * Clamped at both ends: never fewer than 2, so a single-core runner still makes
+ * progress, and never more than 8, because past that the browser's own threads
+ * start competing and the wall clock stops improving.
+ */
+const CONCURRENCY = Number(
+  process.env.PRERENDER_CONCURRENCY ??
+    Math.min(8, Math.max(2, os.availableParallelism?.() ?? os.cpus().length))
+);
+
+// <link rel="modulepreload"> hrefs present in the built shell. Anything beyond
+// this set was appended at runtime by Vite's async chunk loader and must not be
+// persisted into a snapshot.
+let buildEmittedPreloads = [];
+
+const FALLBACK_DESCRIPTION =
+  "EmbeddedOS is a 501(c)(3) nonprofit foundation building an open-source " +
+  "operating system for embedded devices, with free documentation, tools and " +
+  "education for engineers and students.";
+
+/**
+ * Strip JS/JSX comments from source before route scraping.
+ *
+ * discoverRoutes() and the route-preload sync test find routes with a regex
+ * over `<Route path="...">` literals. A commented-out route — or the standing
+ * instruction in App.tsx not to write a Route literal in a comment — would
+ * otherwise be scraped as a real route, and the build would try to prerender
+ * a page that does not exist. The scan is string-aware so `//` inside string
+ * literals (e.g. "https://…") is preserved; template-literal interpolations
+ * are treated as opaque, which is fine for the route-declaration region of
+ * App.tsx.
+ */
+export function stripComments(src) {
+  let out = "";
+  let i = 0;
+  const n = src.length;
+  while (i < n) {
+    const c = src[i];
+    if (c === '"' || c === "'" || c === "`") {
+      const quote = c;
+      out += c;
+      i++;
+      while (i < n) {
+        const d = src[i];
+        out += d;
+        i++;
+        if (d === "\\") {
+          if (i < n) {
+            out += src[i];
+            i++;
+          }
+        } else if (d === quote) {
+          break;
+        }
+      }
+      continue;
+    }
+    if (c === "/" && src[i + 1] === "/") {
+      while (i < n && src[i] !== "\n") i++;
+      continue;
+    }
+    if (c === "/" && src[i + 1] === "*") {
+      i += 2;
+      while (i < n && !(src[i] === "*" && src[i + 1] === "/")) i++;
+      i += 2;
+      continue;
+    }
+    out += c;
+    i++;
+  }
+  return out;
+}
+
+/** Read every literal `<Route path="...">` out of App.tsx. */
+export function discoverRoutes() {
+  const src = stripComments(fs.readFileSync(APP_TSX, "utf8"));
+  const found = [...src.matchAll(/<Route\s+path="([^"]+)"/g)].map(m => m[1]);
+  const routes = new Set(["/"]);
+  for (const r of found) {
+    // Skip parameterised/wildcard routes — they have no single static output.
+    if (!r.startsWith("/") || r.includes(":") || r.includes("*")) continue;
+    routes.add(r);
+  }
+  if (routes.size < 10) {
+    throw new Error(
+      `Only ${routes.size} routes discovered in App.tsx — the <Route path="..."> ` +
+        `pattern probably changed. Refusing to emit a near-empty prerender.`
     );
-    process.exit(1);
   }
-  return p;
+  return [...routes];
 }
 
 /**
- * Reads one scalar field from each board YAML. The board files are flat enough
- * that a line match is exact here, which keeps a YAML parser out of the
- * dependency tree for four fields.
+ * Serve dist/public, but always hand the *pristine* shell to navigations so a
+ * previous run's output is never re-rendered into itself.
  */
-function boardField(text, field) {
-  const m = text.match(new RegExp(`^\\s*${field}\\s*:\\s*(.+)$`, "m"));
-  return m ? m[1].trim().replace(/^["']|["']$/g, "") : null;
-}
-
-function readBoards(dir) {
-  const files = fs.readdirSync(dir).filter(f => f.endsWith(".yaml"));
-  const arch = new Set();
-  const family = new Set();
-  const vendor = new Set();
-
-  for (const f of files) {
-    const text = fs.readFileSync(path.join(dir, f), "utf8");
-    const a = boardField(text, "arch");
-    const fam = boardField(text, "family");
-    const v = boardField(text, "vendor");
-    if (a) arch.add(a);
-    if (fam) family.add(fam);
-    if (v) vendor.add(v);
-  }
-
-  return {
-    boards: files.length,
-    architectures: arch.size,
-    families: family.size,
-    vendors: vendor.size,
-    architectureList: [...arch].sort(),
-    vendorList: [...vendor].sort(),
-  };
+function startServer(shell) {
+  const app = express();
+  app.use(express.static(DIST, { index: false, redirect: false }));
+  app.use((_req, res) => res.type("html").send(shell));
+  return new Promise(resolve => {
+    const server = app.listen(PORT, HOST, () => resolve(server));
+  });
 }
 
 /**
- * Parses the eFab profile table. Each row is a release that bundles repos for
- * one use case, which is the only place the stack records what is shipped
- * versus planned.
+ * Wait for every same-DOM iframe (third-party embeds — currently only the
+ * Zeffy donation form on /donate) to fire its `load` event, so a slow embed
+ * does not get snapshotted mid-request.
+ *
+ * Donate.tsx has its own 6-second client-side timeout that shows a "could not
+ * load" fallback if `onLoad` hasn't fired yet — reasonable for a real visitor,
+ * who keeps that timer running and self-corrects the moment the iframe does
+ * load. A prerender snapshot has no such second chance: whatever is in the DOM
+ * when we serialise it ships as static HTML to every visitor and crawler
+ * (including an Ad Grants reviewer) until the next deploy. This is why one
+ * build shipped "The embedded donation form could not load" as the permanent,
+ * un-fixable-by-refresh state of the live page — the Zeffy iframe simply
+ * hadn't loaded by the time that build's snapshot was taken.
+ *
+ * Bounded well past the component's own 6s timeout (so a late `load` still
+ * arrives while we're waiting, which flips `embedFailed` back to false and
+ * self-heals the DOM before we capture it) but not unbounded: if the embed is
+ * genuinely unreachable from the build network, snapshotting proceeds anyway
+ * with a warning rather than hanging the whole build.
  */
-function readRoadmap(file) {
-  const rows = fs
-    .readFileSync(file, "utf8")
-    .split("\n")
-    .filter(l => /^\|/.test(l) && !/^\|\s*-+/.test(l))
-    .map(l =>
-      l
-        .split("|")
-        .slice(1, -1)
-        .map(c => c.trim().replace(/\*\*/g, "").replace(/`/g, ""))
-    )
-    .filter(c => c.length >= 5 && /^v?\d/.test(c[0]));
+async function waitForIframes(page, timeoutMs = 20_000) {
+  const hasIframes = (await page.locator("iframe[src]").count()) > 0;
+  if (!hasIframes) return;
 
-  return rows.map(([version, profile, repos, useCase, status]) => ({
-    version: version.replace(/^v/, ""),
-    profile,
-    repos: repos
-      .split(/\s*\+\s*/)
-      .map(r => r.trim())
-      .filter(Boolean),
-    useCase,
-    shipped: /shipped|✅/i.test(status),
-    status: status.replace(/[✅]/g, "").trim(),
-  }));
+  await page.evaluate(() => {
+    for (const frame of document.querySelectorAll("iframe[src]")) {
+      if (frame.dataset.prerenderWatched) continue;
+      frame.dataset.prerenderWatched = "1";
+      frame.addEventListener(
+        "load",
+        () => {
+          frame.dataset.prerenderLoaded = "1";
+        },
+        { once: true }
+      );
+    }
+  });
+
+  try {
+    await page.waitForFunction(
+      () =>
+        [...document.querySelectorAll("iframe[src]")].every(
+          f => f.dataset.prerenderLoaded === "1"
+        ),
+      { timeout: timeoutMs }
+    );
+  } catch {
+    console.warn(
+      `[prerender] an iframe did not report loaded within ${timeoutMs}ms — snapshotting as-is`
+    );
+  }
 }
 
-function main() {
-  require_(MANIFEST, "eos-stack-manifest/manifest.json");
-  require_(BOARDS, "eos/boards");
-  require_(ROADMAP, "eos-stack-manifest/docs/roadmap.md");
-
-  const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
-  const projects = Object.values(manifest.projects).map(p => ({
-    name: p.name,
-    repo: p.repo,
-    tier: p.tier,
-    type: p.type,
-    platform: p.platform,
-    language: p.language,
-    // The manifest descriptions carry unverified performance figures; the
-    // website states capability, not numbers, so only the first clause is kept.
-    description: String(p.description || "")
-      .split("—")
-      .slice(1)
-      .join("—")
-      .trim()
-      .split(/\.\s/)[0]
-      .trim(),
-  }));
-
-  const hardware = readBoards(BOARDS);
-  const roadmap = readRoadmap(ROADMAP);
-  const simulatedPlatforms = fs.existsSync(SIM_PLATFORMS)
-    ? fs.readdirSync(SIM_PLATFORMS).length
-    : null;
-
-  const data = {
-    source: {
-      manifest: "embeddedos-org/eos-stack-manifest",
-      manifestUpdated: manifest.lastUpdated,
-      boards: "embeddedos-org/eos (boards/*.yaml)",
+/** Wait for React to mount and for in-view animations to have played. */
+async function settle(page) {
+  await page.waitForFunction(
+    () => {
+      const root = document.getElementById("root");
+      return (
+        !!root && root.children.length > 0 && root.innerText.trim().length > 200
+      );
     },
-    totals: {
-      repositories: manifest.totalRepos,
-      projects: projects.length,
-      ...hardware,
-      simulatedPlatforms,
-    },
-    tiers: {
-      1: "Core OS",
-      2: "Platform Tools",
-      3: "Applications",
-      4: "Web & Docs",
-      5: "Meta",
-    },
-    projects,
-    roadmap,
-  };
-
-  const banner =
-    "/**\n" +
-    " * GENERATED FILE — do not edit by hand.\n" +
-    " *\n" +
-    " * Regenerate with `pnpm sync:stack`, which counts and copies from the sibling\n" +
-    " * EmbeddedOS repositories. Every figure here is derived from a source repo, so\n" +
-    " * the website cannot drift from the stack the way it did when these numbers\n" +
-    " * were written by hand.\n" +
-    " *\n" +
-    " * See scripts/sync-stack-data.mjs for what is deliberately not included.\n" +
-    " */\n\n";
-
-  fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  fs.writeFileSync(
-    OUT,
-    banner +
-      "export const STACK = " +
-      JSON.stringify(data, null, 2) +
-      " as const;\n\nexport type StackProject = (typeof STACK.projects)[number];\n" +
-      "export type RoadmapEntry = (typeof STACK.roadmap)[number];\n"
+    { timeout: 30_000 }
   );
 
+  // Give slow third-party embeds (the Zeffy donation iframe) a real chance to
+  // finish loading before anything below scrolls the page or reads its text.
+  await waitForIframes(page);
+
+  // framer-motion's whileInView sections and the count-up statistics only start
+  // once an IntersectionObserver reports them in view, so the whole page has to
+  // be scrolled before snapshotting.
+  //
+  // Measure with documentElement.scrollHeight, NOT body.scrollHeight: the body is
+  // far shorter than the document here, so a body-based loop stops after one step
+  // and never reaches the statistics band — which then snapshots as "0
+  // Repositories". Re-read the height every iteration too, since lazy-loaded
+  // sections grow the page as they mount.
+  const scrollPass = () =>
+    page.evaluate(async () => {
+      const pause = ms => new Promise(r => setTimeout(r, ms));
+      const docHeight = () =>
+        Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight,
+          document.documentElement.offsetHeight
+        );
+
+      let y = 0;
+      for (let guard = 0; y < docHeight() && guard < 300; guard++) {
+        window.scrollTo(0, y);
+        await pause(110);
+        y += Math.max(320, Math.floor(window.innerHeight * 0.75));
+      }
+      window.scrollTo(0, docHeight());
+      await pause(300);
+      window.scrollTo(0, 0);
+      await pause(300);
+    });
+
+  await scrollPass();
+
+  // Count-up statistics animate over ~1.5s, and only start once an
+  // IntersectionObserver reports the element in view. Text-stability alone is not
+  // enough: between the scroll pass and the observer firing, every counter still
+  // reads "0", which looks stable and bakes "0 Repositories" into the snapshot.
+  // So hold for a hard floor first, then require the text to settle.
+  await page.evaluate(async () => {
+    const pause = ms => new Promise(r => setTimeout(r, ms));
+    const read = () => document.getElementById("root")?.innerText ?? "";
+
+    await pause(2000);
+
+    let previous = read();
+    let stable = 0;
+    for (let i = 0; i < 30; i++) {
+      await pause(200);
+      const current = read();
+      stable = current === previous ? stable + 1 : 0;
+      previous = current;
+      if (stable >= 2) return;
+    }
+  });
+
+  // A counter renders a literal "0" until its IntersectionObserver fires. If any
+  // survived the pass above, the observer never reported them in view and the
+  // snapshot is about to bake "0 Books" into the homepage — which happened once
+  // in testing and is invisible until someone reads the served HTML.
+  //
+  // Scroll again rather than wait longer: waiting cannot help an observer that
+  // never fired. A counter that already ran keeps its value (`once: true`), so
+  // the second pass is wasted motion at worst, and it only runs on the pages
+  // where a bare "0" is still present.
+  const zeroCounters = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll("span")].some(
+        el => el.children.length === 0 && el.textContent?.trim() === "0"
+      )
+    );
+
+  if (await zeroCounters()) {
+    await scrollPass();
+    await page.evaluate(() => new Promise(r => setTimeout(r, 2000)));
+    if (await zeroCounters()) {
+      console.warn(
+        "[prerender] counters still read 0 after a second scroll pass"
+      );
+    }
+  }
+
+  // Vite's runtime chunk loader appends <link rel="modulepreload" as="script">
+  // for every async chunk it pulls in. Snapshotting after the lazy 3D sections
+  // have mounted would bake those into the static HTML, making every visitor
+  // eagerly preload three.js, CircuitHero and ParticleField — the exact payload
+  // the React.lazy boundaries exist to defer. Keep only the preloads the build
+  // itself emitted.
+  await page.evaluate(buildPreloads => {
+    for (const link of document.querySelectorAll('link[rel="modulepreload"]')) {
+      const href = link.getAttribute("href");
+      if (href && !buildPreloads.includes(href)) link.remove();
+    }
+  }, buildEmittedPreloads);
+}
+
+/**
+ * Strip residual inline opacity:0 / transform, then serialise the document —
+ * both inside one page.evaluate.
+ *
+ * The strip used to live in settle(), two async round-trips before the HTML was
+ * read. That window was enough for React to re-render and for framer-motion to
+ * re-apply `opacity: 0` to anything still sitting at its `initial` state, which
+ * is exactly what happens to the `md:hidden` mobile variants: they are
+ * display:none at the prerender viewport, so their whileInView trigger never
+ * fires and motion never advances them past `initial`. Five such elements
+ * shipped invisible on the homepage. Doing both in one evaluate closes the
+ * window by construction — nothing can run between the strip and the read.
+ */
+async function captureHtml(page) {
+  return page.evaluate(() => {
+    for (const el of document.querySelectorAll("[style]")) {
+      const style = el.getAttribute("style");
+      if (!style || !/opacity|transform/i.test(style)) continue;
+      const cleaned = style
+        .replace(/(^|;)\s*opacity\s*:\s*0(\.\d+)?\s*(?=;|$)/gi, "$1")
+        .replace(/(^|;)\s*transform\s*:\s*[^;]*(?=;|$)/gi, "$1")
+        .replace(/;{2,}/g, ";")
+        .replace(/^;|;$/g, "")
+        .trim();
+      if (cleaned) el.setAttribute("style", cleaned);
+      else el.removeAttribute("style");
+    }
+    // page.content() would be a second round-trip; serialise here instead.
+    // outerHTML omits the doctype, so put it back.
+    return `<!DOCTYPE html>${document.documentElement.outerHTML}`;
+  });
+}
+
+/** Derive per-page metadata from the rendered content. */
+async function extractMeta(page) {
+  return page.evaluate(() => {
+    const clean = s => (s ?? "").replace(/\s+/g, " ").trim();
+
+    const heading = clean(
+      document.querySelector("main h1")?.innerText ??
+        document.querySelector("h1")?.innerText
+    );
+
+    // Skip masthead boilerplate ("Effective date: …", "Filed May 27, 2026 …").
+    // Legal pages all open with the same line, which otherwise produces identical
+    // meta descriptions across /terms and /privacy and reads as duplicate content.
+    const isBoilerplate = text =>
+      /^(effective date|last updated|last revised|published|filed|version|copyright)\b/i.test(
+        text
+      ) || !/[.!?]/.test(text);
+
+    let description = "";
+    let fallback = "";
+    for (const p of document.querySelectorAll("main p, main li")) {
+      const text = clean(p.innerText);
+      if (text.length < 70) continue;
+      if (isBoilerplate(text)) {
+        fallback ||= text;
+        continue;
+      }
+      description = text;
+      break;
+    }
+
+    // The page's own representative image for og:image/twitter:image (F-13):
+    // the first image inside <main>. Decorative data-URIs are skipped.
+    const rawSrc = document
+      .querySelector("main img")
+      ?.getAttribute("src")
+      ?.trim();
+    const image = rawSrc && !rawSrc.startsWith("data:") ? rawSrc : "";
+
+    return { heading, description: description || fallback, image };
+  });
+}
+
+export function truncate(text, max) {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[,;:.\s]+$/, "")}…`;
+}
+
+export const escapeAttr = s =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+/**
+ * Per-route title overrides (F-05). Deliberate copy of TITLE_OVERRIDES in
+ * client/src/lib/page-meta.ts — the two tables must stay identical;
+ * tests/unit/page-meta.test.ts enforces it. (Restored: the deferred-stylesheet
+ * rework dropped these tables while keeping the references in applyMeta.)
+ */
+export const TITLE_OVERRIDES = {
+  "/": "Open-source embedded OS for every device | EmbeddedOS",
+};
+
+/**
+ * Per-route meta-description overrides (F-25). Deliberate copy of
+ * DESCRIPTION_OVERRIDES in client/src/lib/page-meta.ts — same contract.
+ */
+export const DESCRIPTION_OVERRIDES = {
+  "/":
+    "EmbeddedOS is a 501(c)(3) nonprofit building a free, open-source " +
+    "operating system for embedded devices — kernel, tools, docs and " +
+    "education, MIT licensed.",
+  "/donate":
+    "Support the EmbeddedOS Foundation's open-source embedded systems " +
+    "research and free education. 501(c)(3) nonprofit, EIN 41-4821627 — " +
+    "gifts are tax-deductible.",
+  "/projects":
+    "23 open-source repositories: the EoS real-time kernel, bootloader, " +
+    "IPC, build tools, AI, simulators, apps and hardware — all MIT " +
+    "licensed on GitHub.",
+  "/mission":
+    "Our mission: advance open-source embedded systems research, " +
+    "education and technology for the public benefit — free to read, " +
+    "audit, learn from and build on.",
+  "/about":
+    "The Embedded Operating Systems Research Foundation (EIN 41-4821627) " +
+    "is a 501(c)(3) public charity advancing open embedded systems.",
+  "/contact":
+    "Contact the EmbeddedOS Foundation: general inquiries, technical " +
+    "support, press, partnerships, careers and donations. Every topic " +
+    "reaches a person.",
+  "/books":
+    "Free technical books on embedded systems from the EmbeddedOS " +
+    "Foundation — full-length, openly licensed, including a kids edition.",
+  "/research":
+    "Open research into real-time operating systems, edge AI, health " +
+    "hardware, avionics and quantum control — published openly, never " +
+    "licensed.",
+  "/get-involved":
+    "Contribute to EmbeddedOS: code, docs, hardware testing, internships " +
+    "and community programmes. All work is public and MIT licensed.",
+  "/transparency":
+    "How the EmbeddedOS Foundation handles money and decisions: " +
+    "nonprofit disclosures, finances, governance and public records.",
+};
+
+/**
+ * Social preview image per section. Kept in step with SOCIAL_IMAGE_RULES in
+ * client/src/lib/page-meta.ts by tests/unit/page-meta.test.ts.
+ */
+export const SOCIAL_IMAGE_RULES = [
+  [
+    /^\/(architecture|flow|ecosystem|stacks)$/,
+    "/media/architecture-diagram-hero_72436b3f.jpg",
+  ],
+  [/^\/(eboot|product-eboot)$/, "/media/arch-eboot-chain_b9f999b5.jpg"],
+  [
+    /^\/(eos|product-eos|product-eos-platform)$/,
+    "/media/arch-eos-kernel_d7d1b4a5.jpg",
+  ],
+  [
+    /^\/(eai|eni|neural-link-ai|product-eai|product-eni|eai-edge)$/,
+    "/media/arch-eai-neural_4d7964d2.jpg",
+  ],
+  [
+    /^\/(eoffice|product-eoffice|eosuite)$/,
+    "/media/arch-eoffice-suite_d63eacf5.jpg",
+  ],
+  [
+    /^\/(eapps|product-eapps|eserviceapps|product-eserviceapps)$/,
+    "/media/product-eapps_89b01d4a.jpg",
+  ],
+  [/^\/(edb|product-edb)$/, "/media/product-edb_9cd0fe0e.jpg"],
+  [/^\/(eipc|product-eipc)$/, "/media/product-eipc-ipc_be829de0.jpg"],
+  [/^\/(eosim|product-eosim)$/, "/media/product-eosim-sim_78145da3.jpg"],
+  [
+    /^\/(eostudio|product-eostudio)$/,
+    "/media/product-eostudio-ide_2fc95a2d.jpg",
+  ],
+  [
+    /^\/(ecad-hardware|hardware-lab)$/,
+    "/media/product-ecad-hardware_f5806032.jpg",
+  ],
+  [
+    /^\/(community|get-involved|events|membership)$/,
+    "/media/community-illustration-eos_6f39c9db.jpg",
+  ],
+  [
+    /^\/(what-we-do|mission|about|organization|transparency)$/,
+    "/media/what-we-do-illustration_4c2ad2f7.jpg",
+  ],
+];
+
+export const DEFAULT_SOCIAL_IMAGE = "/media/hero-background_1bafea1c.jpg";
+
+export function socialImageFor(route) {
+  const match = SOCIAL_IMAGE_RULES.find(([pattern]) => pattern.test(route));
+  return `${ORIGIN}${match ? match[1] : DEFAULT_SOCIAL_IMAGE}`;
+}
+
+/**
+ * Put deferred stylesheets back the way the shell declares them.
+ *
+ * index.html loads the webfonts as `media="print" onload="this.media='all'"`:
+ * a print stylesheet does not block first paint, so the browser fetches it off
+ * the critical path and the onload switches it on once it has arrived. The
+ * snapshot is serialised from a live page, by which point onload has already
+ * run — so what every route wrote to disk was `media="all"` with the handler
+ * still attached, and every deployed page requested Google Fonts as a
+ * render-blocking stylesheet. The shell's own trick was undone by the
+ * prerender of it, on every route, since the day both landed (e13c116).
+ *
+ * String-level on purpose: doing it in the page would leave the same window
+ * that captureHtml() closes for the opacity strip, and this way the rule is
+ * testable without a browser. Only a stylesheet whose onload sets media to
+ * "all" is touched — that handler is the marker of a deferred sheet, and
+ * nothing else in the head carries one.
+ */
+export function restoreDeferredStylesheets(html) {
+  return html.replace(/<link\b[^>]*>/g, tag => {
+    if (!/\brel="stylesheet"/.test(tag)) return tag;
+    if (!/\bonload="[^"]*\bthis\.media\s*=\s*'all'[^"]*"/.test(tag)) return tag;
+    return /\bmedia="[^"]*"/.test(tag)
+      ? tag.replace(/\bmedia="[^"]*"/, 'media="print"')
+      : tag.replace(/^<link\b/, '<link media="print"');
+  });
+}
+
+/** Rewrite the head of a snapshot with route-specific title/description/canonical. */
+export function applyMeta(html, { route, heading, description, image }) {
+  const canonical = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
+
+  // Google truncates titles past roughly 70 characters, so budget the whole
+  // string — heading plus suffix — rather than only capping the heading. Long
+  // headings (the article pages) fall back to the shorter brand suffix.
+  const MAX_TITLE = 70;
+  const LONG_SUFFIX = " | EmbeddedOS Foundation";
+  const SHORT_SUFFIX = " | EmbeddedOS";
+
+  let title = "EmbeddedOS — The Operating System for Every Device";
+  if (TITLE_OVERRIDES[route]) {
+    title = TITLE_OVERRIDES[route];
+  } else if (heading) {
+    title =
+      heading.length + LONG_SUFFIX.length <= MAX_TITLE
+        ? heading + LONG_SUFFIX
+        : truncate(heading, MAX_TITLE - SHORT_SUFFIX.length) + SHORT_SUFFIX;
+  }
+
+  const desc = truncate(
+    DESCRIPTION_OVERRIDES[route] || description || FALLBACK_DESCRIPTION,
+    155
+  );
+
+  // Per-route social image (F-13): the page's own first <main> image,
+  // absolutised; the shell's generic hero image stays the fallback.
+  // Two sources for og:image, in priority order. The curated per-route table
+  // (SOCIAL_IMAGE_RULES) is authoritative where it matches, because a hand-picked
+  // image beats whatever happens to be the first <main> img. Where no rule
+  // matches, fall back to the scraped page image (F-13), then to the site
+  // default. socialImageFor() already absolutises and always returns a value.
+  const scraped =
+    image && !image.startsWith("http")
+      ? `${ORIGIN}${image.startsWith("/") ? "" : "/"}${image}`
+      : image || "";
+  const curated = SOCIAL_IMAGE_RULES.some(([re]) => re.test(route))
+    ? socialImageFor(route)
+    : "";
+  const absImage = curated || scraped || socialImageFor(route);
+
+  let out = html;
+  const set = (pattern, replacement) => {
+    if (pattern.test(out)) out = out.replace(pattern, replacement);
+  };
+
+  set(/<title>[\s\S]*?<\/title>/i, `<title>${escapeAttr(title)}</title>`);
+  set(
+    /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="description" content="${escapeAttr(desc)}" />`
+  );
+  set(
+    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
+    `<link rel="canonical" href="${escapeAttr(canonical)}" />`
+  );
+  set(
+    /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i,
+    `<meta property="og:url" content="${escapeAttr(canonical)}" />`
+  );
+  set(
+    /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i,
+    `<meta property="og:title" content="${escapeAttr(title)}" />`
+  );
+  set(
+    /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i,
+    `<meta property="og:description" content="${escapeAttr(desc)}" />`
+  );
+  // Twitter summary card tags mirror the og:* values (F-12). Patterns
+  // tolerate the tags being absent — applyRouteMeta creates them client-side
+  // only when the shell carries them, so a missing tag stays missing.
+  set(
+    /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="twitter:title" content="${escapeAttr(title)}" />`
+  );
+  set(
+    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="twitter:description" content="${escapeAttr(desc)}" />`
+  );
+  if (absImage) {
+    set(
+      /<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/i,
+      `<meta property="og:image" content="${escapeAttr(absImage)}" />`
+    );
+    set(
+      /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/?>/i,
+      `<meta name="twitter:image" content="${escapeAttr(absImage)}" />`
+    );
+  }
+
+  // F-24: WebSite entity on the homepage only. Deliberately no SearchAction:
+  // site search lives in a modal, there is no /search route, and a
+  // SearchAction pointing at a URL that does not exist is invalid markup.
+  if (route === "/") {
+    const websiteJson = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "EmbeddedOS",
+      url: `${ORIGIN}/`,
+    });
+    out = out.replace(
+      /<\/head>/i,
+      `<script type="application/ld+json">${websiteJson}</script>\n</head>`
+    );
+  }
+
+  return out;
+}
+
+// The exact heading text of the React ErrorBoundary fallback screen
+// (client/src/components/ErrorBoundary.tsx). A full-repo search shows this copy
+// appears nowhere else — not in docs, blog posts or any other page component —
+// so its presence in a snapshot means the route crashed into the boundary and
+// would otherwise be saved as a "successful" prerender of an error screen.
+export const ERROR_BOUNDARY_MARKER = "An unexpected error occurred.";
+
+/**
+ * True when a snapshot's HTML is the ErrorBoundary fallback screen rather than
+ * the route's real content.
+ */
+export function shippedErrorBoundary(html) {
+  return html.includes(ERROR_BOUNDARY_MARKER);
+}
+
+function writeSnapshot(route, html) {
+  const target =
+    route === "/"
+      ? path.join(DIST, "index.html")
+      : path.join(DIST, route, "index.html");
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, html, "utf8");
+  return target;
+}
+
+async function main() {
+  if (!fs.existsSync(path.join(DIST, "index.html"))) {
+    throw new Error(`No build found at ${DIST}. Run the client build first.`);
+  }
+
+  // The pristine SPA shell, captured before index.html is overwritten with the
+  // prerendered homepage. Cached as a dotfile so a standalone `pnpm prerender`
+  // re-run does not snapshot an already-prerendered page into itself, and so
+  // static servers (which ignore dotfiles by default) never expose it as a
+  // crawlable near-duplicate of the homepage.
+  const shellCache = path.join(DIST, ".app-shell.html");
+  const shell = fs.existsSync(shellCache)
+    ? fs.readFileSync(shellCache, "utf8")
+    : fs.readFileSync(path.join(DIST, "index.html"), "utf8");
+  fs.writeFileSync(shellCache, shell, "utf8");
+
+  buildEmittedPreloads = [
+    ...shell.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"/g),
+  ].map(m => m[1]);
+
+  const routes = discoverRoutes();
+  console.log(`[prerender] ${routes.length} routes -> ${DIST}`);
+
+  const server = await startServer(shell);
+  const browser = await chromium.launch({
+    args: ["--no-sandbox", "--disable-dev-shm-usage"],
+  });
+  const context = await browser.newContext({
+    viewport: { width: 1366, height: 900 },
+    // Snapshot the reduced-motion variant: less animation state to strip.
+    reducedMotion: "reduce",
+  });
+
+  // The API is not running during a static build; fail those calls instantly so
+  // react-query does not hold pages open through its retry backoff.
+  await context.route("**/api/**", r => r.abort());
+
+  const results = [];
+  const queue = [...routes];
+
+  const worker = async () => {
+    while (queue.length) {
+      const route = queue.shift();
+      const page = await context.newPage();
+      const errors = [];
+      page.on("pageerror", e => errors.push(String(e)));
+      try {
+        await page.goto(`http://${URL_HOST}:${PORT}${route}`, {
+          waitUntil: "domcontentloaded",
+          timeout: 45_000,
+        });
+        await settle(page);
+        const meta = await extractMeta(page);
+        const html = applyMeta(
+          restoreDeferredStylesheets(await captureHtml(page)),
+          { route, ...meta }
+        );
+        const target = writeSnapshot(route, html);
+        const textLength = await page.evaluate(
+          () => document.getElementById("root").innerText.trim().length
+        );
+        // A snapshot that baked in Donate.tsx's "embed failed to load"
+        // fallback is not a rendering failure — the route still produced
+        // valid, text-rich HTML — but it is a route that must not ship: it
+        // permanently tells every visitor and crawler the donation form is
+        // broken until the next deploy. waitForIframes() above exists to
+        // prevent this; this check exists so it fails loudly if it doesn't.
+        const degraded = html.includes(
+          "The embedded donation form could not load"
+        );
+        // A route that threw during render ships the React ErrorBoundary
+        // fallback screen instead of the route's content. Like the degraded
+        // case above, it renders "successfully" — so fail loudly here rather
+        // than shipping an error screen as a snapshot.
+        const errorBoundary = shippedErrorBoundary(html);
+        results.push({
+          route,
+          ok: true,
+          bytes: Buffer.byteLength(html),
+          textLength,
+          heading: meta.heading,
+          target,
+          errors,
+          degraded,
+          errorBoundary,
+        });
+      } catch (err) {
+        results.push({ route, ok: false, error: err.message, errors });
+      } finally {
+        await page.close();
+      }
+    }
+  };
+
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+  await browser.close();
+  server.close();
+
+  // Expose the NotFound snapshot at the conventional /404.html so the server (and
+  // most static hosts) can return it with a real 404 status.
+  const notFoundSnapshot = path.join(DIST, "404", "index.html");
+  if (fs.existsSync(notFoundSnapshot)) {
+    fs.copyFileSync(notFoundSnapshot, path.join(DIST, "404.html"));
+  }
+
+  const staleShell = path.join(DIST, "app-shell.html");
+  if (fs.existsSync(staleShell)) fs.rmSync(staleShell);
+
+  results.sort((a, b) => a.route.localeCompare(b.route));
+  const failed = results.filter(r => !r.ok);
+  const thin = results.filter(r => r.ok && r.textLength < 500);
+  const degraded = results.filter(r => r.ok && r.degraded);
+  const errorBoundaryRoutes = results.filter(r => r.ok && r.errorBoundary);
+
+  for (const r of results) {
+    if (!r.ok) console.log(`  FAIL  ${r.route.padEnd(38)} ${r.error}`);
+  }
+  for (const r of thin) {
+    console.log(
+      `  THIN  ${r.route.padEnd(38)} only ${r.textLength} chars of text`
+    );
+  }
+  for (const r of degraded) {
+    console.log(
+      `  DEGRADED  ${r.route.padEnd(34)} shipped the "embed failed to load" fallback`
+    );
+  }
+  for (const r of errorBoundaryRoutes) {
+    console.log(
+      `  ERROR-BOUNDARY  ${r.route.padEnd(30)} rendered the ErrorBoundary fallback`
+    );
+  }
+
+  const ok = results.filter(r => r.ok);
+  const avgText = ok.length
+    ? Math.round(ok.reduce((s, r) => s + r.textLength, 0) / ok.length)
+    : 0;
   console.log(
-    `[sync:stack] ${projects.length} projects · ${hardware.boards} boards · ` +
-      `${hardware.architectures} architectures · ${roadmap.length} roadmap entries -> ${path.relative(ROOT, OUT)}`
+    `[prerender] ${ok.length}/${results.length} rendered · avg ${avgText} chars of visible text · ` +
+      `${failed.length} failed · ${thin.length} thin · ${degraded.length} degraded · ` +
+      `${errorBoundaryRoutes.length} error-boundary`
   );
+
+  if (failed.length) {
+    console.error(`[prerender] ${failed.length} route(s) failed to render.`);
+    process.exitCode = 1;
+  }
+  if (errorBoundaryRoutes.length) {
+    for (const r of errorBoundaryRoutes) {
+      console.error(
+        `[prerender] Route ${r.route} rendered the ErrorBoundary fallback — failing the build.`
+      );
+    }
+    process.exitCode = 1;
+  }
+  if (thin.length) {
+    for (const r of thin) {
+      console.error(
+        `[prerender] Route ${r.route} is thin (only ${r.textLength} chars of visible text) — failing the build.`
+      );
+    }
+    process.exitCode = 1;
+  }
+  if (degraded.length) {
+    console.error(
+      `[prerender] ${degraded.length} route(s) shipped a degraded snapshot ` +
+        `(a third-party embed hadn't loaded when the page was captured). ` +
+        `Re-run pnpm prerender — a transient network hiccup at build time, ` +
+        `not a code change, is the usual cause.`
+    );
+    process.exitCode = 1;
+  }
 }
 
-main();
+// Only run when executed directly (`node scripts/prerender.mjs`), so unit tests
+// can import the helpers above without launching a browser.
+const invokedDirectly =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (invokedDirectly) {
+  await main();
+}

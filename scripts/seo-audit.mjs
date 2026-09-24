@@ -1,95 +1,514 @@
 /**
- * Every route the app declares must be reachable through the site's own
- * search. The search index (shared/site-index.ts) is hand-maintained next to
- * App.tsx, and nothing forced the two together — 38 real routes were missing
- * from the index with no test to say so.
+ * Static SEO audit over the prerendered build.
  *
- * `/404` is deliberately exempt: an error page must not be a search result.
- * The remaining gap is an explicit pending list below, one entry per route
- * still to index. Each entry carries an expiry date; once it passes, the
- * test fails until the route is indexed or the entry is renewed. Adding the
- * entries is a shared/site-index.ts change (title, path, tags) owned outside
- * this test — the list names exactly what is owed.
+ * Reads dist/public and reports the defect classes that are checkable without a
+ * network: metadata uniqueness and length, heading structure, landmarks,
+ * canonical agreement, structured-data validity, social metadata, the internal
+ * link graph, and sitemap agreement.
+ *
+ * Usage: node scripts/seo-audit.mjs [--json] [--strict]
+ *   --json    machine-readable report on stdout
+ *   --strict  exit 1 when any error-level finding is present
+ *
+ * Exemptions live in scripts/seo-allowlist.json. Each entry names a check and
+ * route plus a mandatory expiry date; expired or dateless entries fail the
+ * check rather than extending the exemption silently.
  */
-import { describe, expect, it } from "vitest";
-// @ts-expect-error - plain .mjs script, no type declarations
-import { discoverRoutes } from "../../scripts/prerender.mjs";
-import { PAGES } from "../../shared/site-index";
+import fs from "node:fs";
+import path from "node:path";
 
-/** Routes that exist but are not in the search index yet. */
-const PENDING: { path: string; expires: string }[] = [
-  { path: "/blog", expires: "2026-10-31" },
-  { path: "/publications", expires: "2026-10-31" },
-  { path: "/technical-reports", expires: "2026-10-31" },
-  { path: "/benchmarks", expires: "2026-10-31" },
-  { path: "/press-releases", expires: "2026-10-31" },
-  { path: "/newsletter", expires: "2026-10-31" },
-  { path: "/case-studies", expires: "2026-10-31" },
-  { path: "/member-stories", expires: "2026-10-31" },
-  { path: "/product-showcases", expires: "2026-10-31" },
-  { path: "/project-showcases", expires: "2026-10-31" },
-  { path: "/videos", expires: "2026-10-31" },
-  { path: "/podcast", expires: "2026-10-31" },
-  { path: "/webinars", expires: "2026-10-31" },
-  { path: "/white-papers", expires: "2026-10-31" },
-  { path: "/datasets", expires: "2026-10-31" },
-  { path: "/research/architecture", expires: "2026-10-31" },
-  { path: "/research/security", expires: "2026-10-31" },
-  { path: "/research/ai", expires: "2026-10-31" },
-  { path: "/research/embedded-systems", expires: "2026-10-31" },
-  { path: "/research/rtos", expires: "2026-10-31" },
-  { path: "/research/linux", expires: "2026-10-31" },
-  { path: "/research/hardware", expires: "2026-10-31" },
-  { path: "/research/networking", expires: "2026-10-31" },
-  { path: "/programmes", expires: "2026-10-31" },
-  { path: "/programmes/ambassador", expires: "2026-10-31" },
-  { path: "/programmes/university-program", expires: "2026-10-31" },
-  { path: "/programmes/community-meetups", expires: "2026-10-31" },
-  { path: "/programmes/conference-presence", expires: "2026-10-31" },
-  { path: "/programmes/member-marketing", expires: "2026-10-31" },
-  { path: "/programmes/partner-marketing", expires: "2026-10-31" },
-  { path: "/programmes/university-collaborations", expires: "2026-10-31" },
-  { path: "/programmes/industry-collaborations", expires: "2026-10-31" },
-  { path: "/programmes/grants", expires: "2026-10-31" },
-  { path: "/brand", expires: "2026-10-31" },
-  { path: "/press-kit", expires: "2026-10-31" },
-  { path: "/social", expires: "2026-10-31" },
-  { path: "/youtube", expires: "2026-10-31" },
-  { path: "/article-newsletter-issue-01", expires: "2026-10-31" },
-];
+const ROOT = path.resolve(import.meta.dirname, "..");
+const DIST = path.join(ROOT, "dist", "public");
+const ORIGIN = "https://www.embeddedos.org";
+const JSON_OUT = process.argv.includes("--json");
+const STRICT = process.argv.includes("--strict");
 
-const today = () => new Date().toISOString().slice(0, 10);
-const livePending = () => PENDING.filter(p => p.expires >= today());
+const TITLE_MAX = 70;
+const DESC_MIN = 70;
+const DESC_MAX = 160;
+const DESC_HARD_MAX = 250;
 
-describe("search index covers every route", () => {
-  it("indexes every discovered route", () => {
-    const routes: string[] = discoverRoutes();
-    expect(routes.length).toBeGreaterThan(90);
-    const indexed = new Set(PAGES.map(p => p.path));
-    const pending = new Set(livePending().map(p => p.path));
-    const missing = routes.filter(
-      r => r !== "/404" && !indexed.has(r) && !pending.has(r)
+function documents() {
+  const out = [];
+  const walk = dir => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name === "index.html") out.push(p);
+    }
+  };
+  walk(DIST);
+  return out;
+}
+
+function attr(tag, name) {
+  const m = tag.match(new RegExp(`\\b${name}=("([^"]*)"|'([^']*)')`, "i"));
+  return m ? (m[2] ?? m[3]) : null;
+}
+
+const decode = s =>
+  s
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ");
+
+const text = html =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+export function parseDocument(file) {
+  const html = fs.readFileSync(file, "utf8");
+  const rel = path.relative(DIST, file);
+  const route = "/" + rel.replace(/\/?index\.html$/, "");
+  const head = html.match(/<head>([\s\S]*?)<\/head>/i)?.[1] ?? "";
+  const body = html.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1] ?? "";
+  const metas = [...head.matchAll(/<meta\b[^>]*>/gi)].map(m => m[0]);
+  const metaBy = (key, value) =>
+    metas
+      .filter(t => (attr(t, key) || "").toLowerCase() === value)
+      .map(t => decode(attr(t, "content") ?? ""));
+  const links = [...head.matchAll(/<link\b[^>]*>/gi)].map(m => m[0]);
+
+  const ld = [];
+  for (const m of html.matchAll(
+    /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi
+  )) {
+    try {
+      ld.push({ ok: true, value: JSON.parse(m[1]) });
+    } catch (err) {
+      ld.push({ ok: false, error: err.message });
+    }
+  }
+
+  const headings = [
+    ...body.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/gi),
+  ].map(m => ({ level: Number(m[1]), text: decode(text(m[2])) }));
+
+  const anchors = [...body.matchAll(/<a\b[^>]*>/gi)].map(m => m[0]);
+  const hrefs = anchors.map(a => attr(a, "href")).filter(Boolean);
+  const images = [...body.matchAll(/<img\b[^>]*>/gi)].map(m => m[0]);
+
+  return {
+    route,
+    file: rel,
+    bytes: html.length,
+    title: decode(head.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? ""),
+    description: metaBy("name", "description"),
+    robots: metaBy("name", "robots"),
+    canonical: links
+      .filter(l => (attr(l, "rel") || "").toLowerCase() === "canonical")
+      .map(l => attr(l, "href")),
+    og: Object.fromEntries(
+      ["og:title", "og:description", "og:url", "og:image", "og:type"].map(k => [
+        k,
+        metaBy("property", k),
+      ])
+    ),
+    twitter: Object.fromEntries(
+      [
+        "twitter:card",
+        "twitter:title",
+        "twitter:description",
+        "twitter:image",
+      ].map(k => [k, metaBy("name", k)])
+    ),
+    ld,
+    headings,
+    h1: headings.filter(h => h.level === 1),
+    landmarks: {
+      main: (body.match(/<main\b/gi) || []).length,
+      nav: (body.match(/<nav\b/gi) || []).length,
+      footer: (body.match(/<footer\b/gi) || []).length,
+    },
+    lang: attr(html.match(/<html\b[^>]*>/i)?.[0] ?? "", "lang"),
+    internal: [
+      ...new Set(
+        hrefs
+          .filter(h => h.startsWith("/") && !h.startsWith("//"))
+          .map(h => h.split(/[?#]/)[0].replace(/\/$/, "") || "/")
+      ),
+    ],
+    httpLinks: hrefs.filter(h => /^http:\/\//i.test(h)),
+    weakAnchors: [
+      ...new Set(
+        [...body.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)]
+          .map(m =>
+            decode(m[1].replace(/<[^>]*>/g, ""))
+              .replace(/\s+/g, " ")
+              .trim()
+          )
+          .filter(t =>
+            /^(click here|here|read more|learn more|more|link|this page|go)$/i.test(
+              t
+            )
+          )
+      ),
+    ],
+    imagesWithoutAlt: images.filter(t => !/\balt=/i.test(t)).length,
+    imagesWithoutDimensions: images.filter(t => {
+      if (attr(t, "width") && attr(t, "height")) return false;
+      const cls = attr(t, "class") ?? "";
+      const outOfFlow = /\babsolute\b/.test(cls) && /\binset-0\b/.test(cls);
+      const fillsBox = /\bh-full\b/.test(cls);
+      const fixedHeight = /\bh-(\d+|\[[^\]]+\]|screen|px)\b/.test(cls);
+      return !outOfFlow && !fillsBox && !fixedHeight;
+    }).length,
+    imageCount: images.length,
+    contentLinks: [
+      ...new Set(
+        [
+          ...(body.match(/<main[\s\S]*?<\/main>/i)?.[0] ?? "").matchAll(
+            /<a\b[^>]*href="(\/[^"#?][^"]*|\/)"/g
+          ),
+        ].map(m => m[1].split(/[?#]/)[0].replace(/\/$/, "") || "/")
+      ),
+    ],
+    bodyTextLength: text(body).length,
+  };
+}
+
+function sitemapRoutes() {
+  const f = path.join(DIST, "sitemap.xml");
+  if (!fs.existsSync(f)) return null;
+  const xml = fs.readFileSync(f, "utf8");
+  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+    m => m[1].replace(ORIGIN, "").replace(/\/$/, "") || "/"
+  );
+}
+
+export function audit(docs, sitemap) {
+  const findings = [];
+  const add = (level, check, route, detail) =>
+    findings.push({ level, check, route, detail });
+
+  const byValue = (sel, check, level = "error") => {
+    const seen = new Map();
+    for (const d of docs) {
+      const v = sel(d);
+      if (!v) continue;
+      seen.set(v, [...(seen.get(v) ?? []), d.route]);
+    }
+    for (const [value, routes] of seen) {
+      if (routes.length > 1)
+        add(
+          level,
+          check,
+          routes.join(", "),
+          `${routes.length}x: ${value.slice(0, 80)}`
+        );
+    }
+  };
+
+  for (const d of docs) {
+    if (!d.title) add("error", "title-missing", d.route, "no <title>");
+    else if (d.title.length > TITLE_MAX)
+      add("warn", "title-long", d.route, `${d.title.length} chars`);
+
+    if (d.description.length === 0)
+      add("error", "description-missing", d.route, "no meta description");
+    if (d.description.length > 1)
+      add(
+        "error",
+        "description-duplicated-tag",
+        d.route,
+        `${d.description.length} tags`
+      );
+    const desc = d.description[0] ?? "";
+    if (desc && desc.length > DESC_HARD_MAX)
+      add("error", "description-too-long", d.route, `${desc.length} chars`);
+    else if (desc && desc.length > DESC_MAX)
+      add("warn", "description-long", d.route, `${desc.length} chars`);
+    if (desc && desc.length < DESC_MIN)
+      add("warn", "description-short", d.route, `${desc.length} chars`);
+
+    if (d.canonical.length === 0)
+      add("error", "canonical-missing", d.route, "no rel=canonical");
+    if (d.canonical.length > 1)
+      add("error", "canonical-multiple", d.route, `${d.canonical.length} tags`);
+    const expected = d.route === "/" ? `${ORIGIN}/` : `${ORIGIN}${d.route}`;
+    if (d.canonical[0] && d.canonical[0] !== expected)
+      add(
+        "error",
+        "canonical-mismatch",
+        d.route,
+        `${d.canonical[0]} != ${expected}`
+      );
+
+    if (d.h1.length === 0) add("error", "h1-missing", d.route, "no <h1>");
+    if (d.h1.length > 1)
+      add("error", "h1-multiple", d.route, `${d.h1.length} <h1>`);
+
+    let previous = 0;
+    for (const h of d.headings) {
+      if (previous && h.level > previous + 1)
+        add(
+          "error",
+          "heading-skip",
+          d.route,
+          `h${previous} -> h${h.level}: "${h.text.slice(0, 40)}"`
+        );
+      previous = h.level;
+    }
+
+    if (d.landmarks.main !== 1)
+      add("error", "landmark-main", d.route, `${d.landmarks.main} <main>`);
+    if (!d.lang) add("error", "lang-missing", d.route, "no lang on <html>");
+
+    for (const entry of d.ld)
+      if (!entry.ok) add("error", "jsonld-invalid", d.route, entry.error);
+
+    if (!d.og["og:title"][0]) add("warn", "og-title-missing", d.route, "");
+    if (!d.og["og:description"][0])
+      add("warn", "og-description-missing", d.route, "");
+    if (!d.og["og:image"][0]) add("error", "og-image-missing", d.route, "");
+    if (!d.og["og:url"][0]) add("warn", "og-url-missing", d.route, "");
+    if (!d.twitter["twitter:card"][0])
+      add("warn", "twitter-card-missing", d.route, "");
+    if (!d.twitter["twitter:title"][0])
+      add("warn", "twitter-title-missing", d.route, "");
+    if (!d.twitter["twitter:image"][0])
+      add("warn", "twitter-image-missing", d.route, "");
+
+    if (d.imagesWithoutAlt)
+      add("error", "img-alt-missing", d.route, `${d.imagesWithoutAlt} <img>`);
+    for (const u of d.httpLinks) add("warn", "http-link", d.route, u);
+    for (const t of d.weakAnchors)
+      add("warn", "weak-anchor", d.route, `link text is only "${t}"`);
+  }
+
+  byValue(d => d.title, "title-duplicate");
+  byValue(d => d.description[0], "description-duplicate");
+
+  const routes = new Set(docs.map(d => d.route));
+  const inbound = new Map([...routes].map(r => [r, 0]));
+  for (const d of docs)
+    for (const href of d.internal)
+      if (inbound.has(href) && href !== d.route)
+        inbound.set(href, inbound.get(href) + 1);
+
+  const EXEMPT = new Set(["/404"]);
+  for (const [route, count] of inbound)
+    if (count === 0 && !EXEMPT.has(route))
+      add("error", "orphan-page", route, "no inbound internal link");
+
+  for (const d of docs)
+    for (const href of d.internal)
+      if (
+        !routes.has(href) &&
+        !/\.(xml|txt|php|pdf|png|jpe?g|svg|ico|webmanifest|html|webp|avif)$/i.test(
+          href
+        ) &&
+        !href.startsWith("/media/") &&
+        !href.startsWith("/assets/") &&
+        !href.startsWith("/api/")
+      )
+        add("error", "internal-link-broken", d.route, href);
+
+  if (sitemap) {
+    const set = new Set(sitemap);
+    for (const loc of sitemap)
+      if (!routes.has(loc))
+        add("error", "sitemap-url-not-built", loc, "in sitemap, no page");
+    for (const d of docs)
+      if (!set.has(d.route) && !EXEMPT.has(d.route) && d.route !== "/404")
+        add("warn", "sitemap-missing-page", d.route, "built, not in sitemap");
+    if (new Set(sitemap).size !== sitemap.length)
+      add("error", "sitemap-duplicate", "-", "duplicate <loc> entries");
+  } else {
+    add("error", "sitemap-missing", "-", "dist/public/sitemap.xml absent");
+  }
+
+  const robotsPath = path.join(DIST, "robots.txt");
+  if (!fs.existsSync(robotsPath)) {
+    add("error", "robots-missing", "-", "dist/public/robots.txt absent");
+  } else {
+    const robots = fs.readFileSync(robotsPath, "utf8");
+    if (!/^sitemap:/im.test(robots))
+      add("warn", "robots-no-sitemap", "-", "robots.txt references no sitemap");
+    const disallowAll = /^disallow:\s*\/\s*$/im.test(robots);
+    if (disallowAll)
+      add(
+        "error",
+        "robots-disallow-all",
+        "-",
+        "robots.txt disallows everything"
+      );
+    const declared = robots.match(/^sitemap:\s*(\S+)/im)?.[1];
+    if (declared && sitemap && !declared.endsWith("/sitemap.xml"))
+      add("warn", "robots-sitemap-mismatch", "-", declared);
+  }
+
+  const contentIn = new Map([...routes].map(r => [r, 0]));
+  for (const d of docs)
+    for (const href of d.contentLinks ?? [])
+      if (contentIn.has(href) && href !== d.route)
+        contentIn.set(href, contentIn.get(href) + 1);
+  for (const [route, count] of contentIn)
+    if (count === 0 && !EXEMPT.has(route) && inbound.get(route) > 0)
+      add(
+        "info",
+        "chrome-only-page",
+        route,
+        "linked only from the header/footer, never from page content"
+      );
+
+  for (const d of docs)
+    if (d.imagesWithoutDimensions > 0)
+      add(
+        "info",
+        "img-no-dimensions",
+        d.route,
+        `${d.imagesWithoutDimensions} of ${d.imageCount} <img> can shift layout: no width/height and no fixed height`
+      );
+
+  return findings;
+}
+
+/**
+ * The explicit exemption list for `--strict`.
+ *
+ * Some error-level findings are known, accepted, and tracked elsewhere — the
+ * audit still reports them, but they must not fail the build while the fix
+ * lands. Every entry carries an expiry date; an expired entry fails the check
+ * instead of silently extending the exemption. Schema:
+ *
+ *   { "check": "orphan-page", "route": "/some-page", "reason": "…", "expires": "2026-10-31" }
+ *
+ * `route` may be "*" to exempt a check across all routes. Entries that match
+ * no finding are reported as warnings so the list stays tight.
+ */
+const ALLOWLIST_PATH = path.join(ROOT, "scripts", "seo-allowlist.json");
+
+export function loadAllowlist() {
+  if (!fs.existsSync(ALLOWLIST_PATH)) return [];
+  return JSON.parse(fs.readFileSync(ALLOWLIST_PATH, "utf8"));
+}
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const todayISO = (now = new Date()) => now.toISOString().slice(0, 10);
+
+export function applyAllowlist(findings, allowlist, now = new Date()) {
+  const today = todayISO(now);
+  const kept = [];
+  const matched = new Set();
+  const flagged = new Set();
+  const extra = [];
+  const flagOnce = finding => {
+    if (flagged.has(finding.check + finding.detail)) return;
+    flagged.add(finding.check + finding.detail);
+    extra.push(finding);
+  };
+  for (const f of findings) {
+    let exempted = false;
+    for (const entry of allowlist) {
+      if (!entry || typeof entry !== "object") continue;
+      if (!DATE_RE.test(entry.expires ?? "")) {
+        flagOnce({
+          level: "error",
+          check: "allowlist-invalid",
+          route: "-",
+          detail: `entry for check "${entry.check}" route "${entry.route}" has no valid expires date (YYYY-MM-DD)`,
+        });
+        continue;
+      }
+      if (entry.expires < today) {
+        flagOnce({
+          level: "error",
+          check: "allowlist-expired",
+          route: "-",
+          detail:
+            `exemption for check "${entry.check}" route "${entry.route}" ` +
+            `expired ${entry.expires}: fix the underlying issue or renew the entry`,
+        });
+        continue;
+      }
+      if (
+        f.check === entry.check &&
+        (entry.route === "*" || f.route === entry.route)
+      ) {
+        exempted = true;
+        matched.add(entry);
+      }
+    }
+    if (!exempted) kept.push(f);
+  }
+  for (const entry of allowlist) {
+    if (entry && typeof entry === "object" && !matched.has(entry))
+      extra.push({
+        level: "warn",
+        check: "allowlist-unused",
+        route: "-",
+        detail:
+          `exemption for check "${entry.check}" route "${entry.route}" ` +
+          `matched nothing — remove it`,
+      });
+  }
+  return [...kept, ...extra];
+}
+
+function main() {
+  const docs = documents().map(parseDocument);
+  const allowlist = loadAllowlist();
+  const findings = applyAllowlist(audit(docs, sitemapRoutes()), allowlist);
+  const errors = findings.filter(f => f.level === "error");
+  const warnings = findings.filter(f => f.level === "warn");
+  const infos = findings.filter(f => f.level === "info");
+
+  if (JSON_OUT) {
+    console.log(
+      JSON.stringify(
+        {
+          documents: docs.length,
+          findings,
+          allowlist: { entries: allowlist.length },
+        },
+        null,
+        1
+      )
     );
-    expect(
-      missing,
-      `routes with no search index entry and no pending entry:\n${missing.join("\n")}`
-    ).toEqual([]);
-  });
+  } else {
+    const group = list => {
+      const by = new Map();
+      for (const f of list) by.set(f.check, [...(by.get(f.check) ?? []), f]);
+      return [...by.entries()].sort((a, b) => b[1].length - a[1].length);
+    };
+    console.log(`[seo] ${docs.length} prerendered documents\n`);
+    for (const [label, list] of [
+      ["ERRORS", errors],
+      ["WARNINGS", warnings],
+      ["INFO", infos],
+    ]) {
+      if (!list.length) continue;
+      console.log(`${label} (${list.length}):`);
+      for (const [check, items] of group(list)) {
+        console.log(`  ${check.padEnd(28)} ${items.length}`);
+        for (const i of items.slice(0, 4))
+          console.log(`      ${i.route} ${i.detail}`.trimEnd());
+        if (items.length > 4) console.log(`      … ${items.length - 4} more`);
+      }
+      console.log("");
+    }
+    console.log(
+      `[seo] ${errors.length} errors, ${warnings.length} warnings, ${infos.length} info`
+    );
+  }
 
-  it("expires pending entries instead of carrying them forever", () => {
-    const expired = PENDING.filter(p => p.expires < today());
-    expect(
-      expired.map(p => p.path),
-      "pending search-index entries past their expiry — index the route or renew the entry"
-    ).toEqual([]);
-  });
+  if (STRICT && errors.length) process.exitCode = 1;
+}
 
-  it("drops pending entries once the route is indexed", () => {
-    const indexed = new Set(PAGES.map(p => p.path));
-    const stale = livePending().filter(p => indexed.has(p.path));
-    expect(
-      stale.map(p => p.path),
-      "pending entries for routes that are indexed now — remove them"
-    ).toEqual([]);
-  });
-});
+// Only run when executed directly (`node scripts/seo-audit.mjs`), so unit
+// tests can import the helpers above without auditing dist/public.
+const invokedDirectly =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) ===
+    path.resolve(ROOT, "scripts", "seo-audit.mjs");
+if (invokedDirectly) {
+  main();
+}

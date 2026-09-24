@@ -1,996 +1,1399 @@
-import { useState, useRef, lazy, Suspense } from "react";
-import { motion, useInView } from "framer-motion";
-import { Link } from "wouter";
-import {
-  Heart,
-  Plane,
-  Car,
-  Bot,
-  Factory,
-  Leaf,
-  Building2,
-  Microscope,
-  Rocket,
-  Shield,
-  Wifi,
-  Zap,
-  Brain,
-  Globe,
-  ChevronRight,
-  ArrowRight,
-  ExternalLink,
-  Package,
-  Activity,
-  Layers,
-} from "lucide-react";
+@import "tailwindcss";
+@import "tw-animate-css";
 
-const ArchitectureDiagram3D = lazy(
-  () => import("../components/ArchitectureDiagram3D")
-);
+@custom-variant dark (&:is(.dark *));
 
-// eHealth365 sensor fusion block diagram
-const HEALTH_LAYERS = [
-  {
-    label: "Cloud / Mobile App",
-    sublabels: ["iOS", "Android", "Web"],
-    color: "#34D399",
-    y: 1.6,
-    width: 3.6,
-  },
-  {
-    label: "EAI Inference",
-    sublabels: ["Arrhythmia", "SpO₂", "HRV"],
-    color: "#A78BFA",
-    y: 0.9,
-    width: 3.4,
-  },
-  {
-    label: "Signal Processing",
-    sublabels: ["IIR filter", "Pan-Tompkins"],
-    color: "#22D3EE",
-    y: 0.2,
-    width: 3.2,
-  },
-  {
-    label: "ADC / Amplifier",
-    sublabels: ["24-bit", "500 Hz"],
-    color: "#F97316",
-    y: -0.5,
-    width: 3.0,
-  },
-  {
-    label: "Sensors",
-    sublabels: ["ECG", "SpO₂", "PPG", "Temp"],
-    color: "#EF4444",
-    y: -1.2,
-    width: 2.8,
-  },
-];
+/* ============================================================
+   EMBEDDEDOS ENTERPRISE THEME
+   Deep Ocean Blue + Warm Amber-Orange
+   ============================================================ */
 
-// eRadar360 sensor fusion block diagram
-const RADAR_LAYERS = [
-  {
-    label: "Decision Output",
-    sublabels: ["Object class", "Trajectory"],
-    color: "#22D3EE",
-    y: 1.6,
-    width: 3.6,
-  },
-  {
-    label: "Sensor Fusion",
-    sublabels: ["Kalman filter", "EKF"],
-    color: "#F97316",
-    y: 0.9,
-    width: 3.4,
-  },
-  {
-    label: "Perception AI",
-    sublabels: ["EAI INT4", "YOLO-nano"],
-    color: "#A78BFA",
-    y: 0.2,
-    width: 3.2,
-  },
-  {
-    label: "Signal Processing",
-    sublabels: ["FFT", "CFAR", "Doppler"],
-    color: "#FBBF24",
-    y: -0.5,
-    width: 3.0,
-  },
-  {
-    label: "Sensor Array",
-    sublabels: ["77GHz FMCW", "LiDAR", "Camera"],
-    color: "#EF4444",
-    y: -1.2,
-    width: 2.8,
-  },
-];
+@theme inline {
+  /* Brand Colors */
+  --color-brand-navy: oklch(17.8% 0.055 248); /* #0B1D3A */
+  --color-brand-navy-light: oklch(22% 0.05 248); /* #0F2547 */
+  --color-brand-navy-mid: oklch(28% 0.06 248); /* #163060 */
+  --color-brand-amber: oklch(67% 0.19 50); /* #F97316 */
+  --color-brand-amber-light: oklch(74% 0.17 50); /* #FB923C */
+  --color-brand-amber-dark: oklch(58% 0.18 50); /* #EA580C */
+  --color-brand-teal: oklch(70% 0.14 195); /* #22D3EE */
+  --color-brand-green: oklch(70% 0.17 145); /* #34D399 */
+  --color-brand-purple: oklch(65% 0.18 290); /* #A78BFA */
 
-// eAerospace flight control block diagram
-const AERO_LAYERS = [
-  {
-    label: "Mission Computer",
-    sublabels: ["EoS SMP", "EAI autopilot"],
-    color: "#60A5FA",
-    y: 1.6,
-    width: 3.6,
-  },
-  {
-    label: "Flight Control",
-    sublabels: ["PID", "Kalman", "TECS"],
-    color: "#22D3EE",
-    y: 0.9,
-    width: 3.4,
-  },
-  {
-    label: "Sensor Fusion",
-    sublabels: ["IMU", "GPS", "Baro", "Mag"],
-    color: "#F97316",
-    y: 0.2,
-    width: 3.2,
-  },
-  {
-    label: "Actuator Control",
-    sublabels: ["PWM", "CAN", "UAVCAN"],
-    color: "#A78BFA",
-    y: -0.5,
-    width: 3.0,
-  },
-  {
-    label: "Hardware",
-    sublabels: ["Motors", "Servos", "ESC"],
-    color: "#6B7280",
-    y: -1.2,
-    width: 2.8,
-  },
-];
+  /* Semantic tokens */
+  --color-background: oklch(17.8% 0.055 248);
+  --color-foreground: oklch(97% 0.005 248);
+  --color-card: oklch(22% 0.05 248);
+  --color-card-foreground: oklch(97% 0.005 248);
+  --color-popover: oklch(22% 0.05 248);
+  --color-popover-foreground: oklch(97% 0.005 248);
+  --color-primary: oklch(67% 0.19 50);
+  --color-primary-foreground: oklch(10% 0.02 248);
+  --color-secondary: oklch(28% 0.06 248);
+  --color-secondary-foreground: oklch(97% 0.005 248);
+  --color-muted: oklch(28% 0.06 248);
+  --color-muted-foreground: oklch(65% 0.02 248);
+  --color-accent: oklch(67% 0.19 50);
+  --color-accent-foreground: oklch(10% 0.02 248);
+  --color-destructive: oklch(62% 0.22 25);
+  --color-border: oklch(32% 0.04 248);
+  --color-input: oklch(28% 0.06 248);
+  --color-ring: oklch(67% 0.19 50);
 
-const HW_DIAGRAMS = [
-  {
-    id: "health",
-    title: "eHealth365 Sensor Pipeline",
-    subtitle: "ECG → ADC → AI → Cloud",
-    color: "#EF4444",
-    layers: HEALTH_LAYERS,
-  },
-  {
-    id: "radar",
-    title: "eRadar360 Sensor Fusion",
-    subtitle: "77GHz + LiDAR + Camera → AI",
-    color: "#22D3EE",
-    layers: RADAR_LAYERS,
-  },
-  {
-    id: "aero",
-    title: "eAerospace Flight Control",
-    subtitle: "Sensors → FCS → Mission Computer",
-    color: "#60A5FA",
-    layers: AERO_LAYERS,
-  },
-];
+  /* Typography — Space Grotesk (headings) + DM Sans (body) per UI/UX Pro Max */
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-const CATEGORIES = [
-  {
-    id: "health",
-    icon: Heart,
-    color: "#EF4444",
-    title: "eHealth365",
-    subtitle: "Wearable Health Platform",
-    status: "Design",
-    standard: "IEC 60601-1; FDA pathway",
-    products: [
-      "HEALTH-KEY ULTRA",
-      "HEALTH-BAND Neuro",
-      "HEALTH-RING",
-      "HEALTH-LAB",
-    ],
-    desc: "Four in-development health research designs spanning cardiovascular, biochemical, neural, and activity sensing goals. Physical and clinical validation are pending.",
-    specs: [
-      { label: "MCU", value: "nRF5340 + STM32H7" },
-      { label: "Connectivity", value: "BLE 5.3 LR" },
-      { label: "FDA Work", value: "Planned; not submitted" },
-      { label: "Sensors", value: "ECG, EEG, SpO₂, CGM" },
-    ],
-    href: "/health",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "radar",
-    icon: Car,
-    color: "#F97316",
-    title: "eRadar360 / Aegis One",
-    subtitle: "Automotive Sensing Concept",
-    status: "Design",
-    standard: "ISO 26262",
-    products: ["Front Radar", "Rear Radar", "Side Radars ×4", "Fusion ECU"],
-    desc: "Design-stage automotive sensing reference architecture for radar, camera, LiDAR, and V2X fusion. Detection performance and safety behavior are not yet validated.",
-    specs: [
-      { label: "Proposed Radar", value: "TI AWR2944 77 GHz" },
-      { label: "Range", value: "Design target; test pending" },
-      { label: "Latency", value: "Benchmark pending" },
-      { label: "Standard", value: "ISO 26262 target" },
-    ],
-    href: "/eradar360",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "aerospace",
-    icon: Plane,
-    color: "#22D3EE",
-    title: "eAerospace",
-    subtitle: "Aircraft, UAV & Space Concepts",
-    status: "Design",
-    standard: "DO-254 / ECSS",
-    products: ["Aircraft Components", "Avionics", "UAV / VTOL", "CubeSat"],
-    desc: "Concept aerospace reference designs spanning flight computers, avionics, UAV controllers, and CubeSat hardware. No flight testing or certification is claimed.",
-    specs: [
-      { label: "Proposed MCU", value: "STM32H7, LEON3FT" },
-      { label: "Proposed Bus", value: "ARINC-429, CAN FD" },
-      { label: "Targets", value: "DO-254, ECSS" },
-      { label: "PCB Target", value: "IPC Class 3" },
-    ],
-    href: "/aerospace",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "pam",
-    icon: Rocket,
-    color: "#F472B6",
-    title: "ePAM",
-    subtitle: "Personal Air Mobility",
-    status: "Design",
-    standard: "FAA / EASA",
-    products: ["Urban Drone (eVTOL)", "Space Shuttle", "Eco Car", "Combo Unit"],
-    desc: "Concept studies for four solar-hybrid personal-transport designs. Capacity, propulsion, altitude, and pricing are planning targets, not validated specifications or offers for sale.",
-    specs: [
-      { label: "Power Target", value: "Solar + H₂ hybrid" },
-      { label: "Altitude Target", value: "Up to 100 km" },
-      { label: "Capacity Target", value: "4–5 passengers" },
-      { label: "Price Estimate", value: "$28K – $9M planning range" },
-    ],
-    href: "/aerospace",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "robotics",
-    icon: Bot,
-    color: "#A78BFA",
-    title: "eRobotics",
-    subtitle: "Industrial Robots & AMR",
-    status: "Design",
-    standard: "ISO 10218-1",
-    products: ["Robotic Arms", "Welding Robots", "AMR / AGV", "Cobots"],
-    desc: "Industrial robotics portfolio covering servo-driven arms, autonomous mobile robots, warehouse delivery systems, and agricultural robots. EoS SMP on Cortex-A72.",
-    specs: [
-      { label: "MCU", value: "Cortex-A72 + M4" },
-      { label: "Control", value: "EtherCAT, PROFINET" },
-      { label: "Standard", value: "ISO 10218-1, 3691-4" },
-      { label: "Vision", value: "Stereo + ToF" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "industrial",
-    icon: Factory,
-    color: "#34D399",
-    title: "eIndustrial",
-    subtitle: "IIoT & Industrial Electronics",
-    status: "Design",
-    standard: "IEC 61010-1",
-    products: ["PLCs", "Gateways", "HMI Panels", "Edge AI Nodes"],
-    desc: "Industrial hardware for temperature, pressure, gas, and flow sensors. PLCs, Modbus gateways, HMI panels, and Edge AI nodes for IEC 61131-3 compliant automation.",
-    specs: [
-      { label: "Protocols", value: "Modbus, PROFIBUS, OPC-UA" },
-      { label: "Standard", value: "IEC 61010-1, 61131-3" },
-      { label: "Temp range", value: "-40°C to +85°C" },
-      { label: "Targets", value: "CE, UL, ATEX" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "medical",
-    icon: Microscope,
-    color: "#F59E0B",
-    title: "eMedical",
-    subtitle: "Diagnostic & Surgical Devices",
-    status: "Design",
-    standard: "IEC 60601-1",
-    products: ["ECG / EEG", "Ultrasound", "Surgical Robots", "Lab Equipment"],
-    desc: "Medical research design portfolio spanning diagnostic, surgical, patient-care, and laboratory concepts. IEC 60601-1 is a design target, not an achieved certification.",
-    specs: [
-      { label: "Standard", value: "IEC 60601-1, ISO 13485" },
-      { label: "FDA Path", value: "510(k) / PMA" },
-      { label: "Isolation", value: "BF / CF patient applied" },
-      { label: "EMC", value: "IEC 60601-1-2" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "energy",
-    icon: Leaf,
-    color: "#10B981",
-    title: "eEnergy",
-    subtitle: "Battery, Solar & Power Electronics",
-    status: "Design",
-    standard: "IEC 62619",
-    products: [
-      "BMS Controllers",
-      "Solar Inverters",
-      "DC-DC Converters",
-      "Smart Breakers",
-    ],
-    desc: "Energy hardware portfolio covering battery management systems, renewable energy controllers, and power electronics. EoS manages real-time power flow and safety cutoffs.",
-    specs: [
-      { label: "Standard", value: "IEC 62619, IEC 61730" },
-      { label: "Voltage", value: "12V – 1500V DC" },
-      { label: "Power", value: "Up to 250 kW" },
-      { label: "Targets", value: "UL 1973, CE" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "smartcity",
-    icon: Building2,
-    color: "#60A5FA",
-    title: "eSmartCity",
-    subtitle: "Urban Infrastructure & Utilities",
-    status: "Design",
-    standard: "IEC 62264",
-    products: [
-      "Traffic Controllers",
-      "Smart Meters",
-      "5G Gateways",
-      "Parking Systems",
-    ],
-    desc: "Smart city hardware for urban infrastructure, utilities, and telecommunications. EoS runs on traffic lights, smart meters, water/gas monitoring, and 5G IoT gateways.",
-    specs: [
-      { label: "Standard", value: "IEC 62264, IEC 62056" },
-      { label: "Comms", value: "5G, LoRaWAN, NB-IoT" },
-      { label: "Protocols", value: "DLMS/COSEM, MQTT" },
-      { label: "Targets", value: "FCC, CE, ETSI" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "defense",
-    icon: Shield,
-    color: "#6366F1",
-    title: "eDefense",
-    subtitle: "Tactical & Surveillance Systems",
-    status: "Design",
-    standard: "MIL-STD-810",
-    products: [
-      "EO/IR Cameras",
-      "Tactical Radios",
-      "Mesh Networks",
-      "Detection Sensors",
-    ],
-    desc: "Defense hardware portfolio covering surveillance systems, tactical communications, and protection equipment. All designed to MIL-STD-810 rugged standards.",
-    specs: [
-      { label: "Standard", value: "MIL-STD-810, 188, 461" },
-      { label: "Encryption", value: "AES-256, FIPS 140-3" },
-      { label: "Temp range", value: "-55°C to +125°C" },
-      { label: "Shock", value: "40g, 11ms half-sine" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "consumer",
-    icon: Wifi,
-    color: "#06B6D4",
-    title: "eConsumer",
-    subtitle: "Smart Home, Wearables & AR",
-    status: "Design",
-    standard: "Matter 1.3",
-    products: [
-      "Smart Speakers",
-      "AR Glasses",
-      "Smart Watches",
-      "Industrial AR Helmets",
-    ],
-    desc: "Consumer hardware portfolio covering smart home devices, personal wearables, and augmented reality devices. Matter 1.3 and BLE 5.3 connectivity.",
-    specs: [
-      { label: "Standard", value: "Matter 1.3, Zigbee" },
-      { label: "Comms", value: "BLE 5.3, ANT+, Wi-Fi 6" },
-      { label: "MCU", value: "nRF5340, ESP32-S3" },
-      { label: "Targets", value: "FCC, CE, Bluetooth SIG" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "electronics",
-    icon: Zap,
-    color: "#FBBF24",
-    title: "eElectronics",
-    subtitle: "PCBs, FPGAs & AI Accelerators",
-    status: "Design",
-    standard: "IPC-2221",
-    products: ["PCB Designs", "FPGA Modules", "AI Accelerators", "RF Modules"],
-    desc: "Electronics and semiconductor hardware portfolio covering PCBs, embedded controllers, RF modules, FPGAs, AI accelerators, and emerging quantum technologies.",
-    specs: [
-      { label: "Standard", value: "IPC-2221, JEDEC" },
-      { label: "Layer count", value: "2–16 layer PCBs" },
-      { label: "RF", value: "Sub-GHz to 77 GHz" },
-      { label: "AI", value: "NPU, FPGA, ASIC" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "mining",
-    icon: Activity,
-    color: "#F87171",
-    title: "eMining",
-    subtitle: "Autonomous Mining & Construction",
-    status: "Design",
-    standard: "IECEx / ATEX",
-    products: [
-      "Autonomous Haul Trucks",
-      "Mine Monitoring",
-      "Gas Detection",
-      "Construction Robots",
-    ],
-    desc: "Mining, heavy industry, and construction hardware portfolio covering autonomous mining equipment, industrial safety systems, and construction robots.",
-    specs: [
-      { label: "Standard", value: "ISO 17757, IECEx" },
-      { label: "Protection", value: "ATEX Zone 1 / 2" },
-      { label: "Comms", value: "LoRaWAN, 4G LTE, UWB" },
-      { label: "Sensors", value: "Gas, Vibration, GNSS" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "cybersec",
-    icon: Globe,
-    color: "#14B8A6",
-    title: "eCybersecurity",
-    subtitle: "HSMs, Firewalls & Access Control",
-    status: "Design",
-    standard: "FIPS 140-3",
-    products: [
-      "Hardware Security Modules",
-      "Firewalls",
-      "Biometric Access",
-      "Perimeter Sensors",
-    ],
-    desc: "Cybersecurity reference designs for security appliances, physical security, and access control. FIPS 140-3 and CC EAL4+ are targets, not achieved certifications.",
-    specs: [
-      { label: "Standard", value: "FIPS 140-3, CC EAL4+" },
-      { label: "Crypto", value: "AES-256, RSA-4096, ECC" },
-      { label: "Biometrics", value: "Fingerprint, Iris, Face" },
-      { label: "Targets", value: "ISO 27001, FIPS 201-3" },
-    ],
-    href: "/ecad-hardware",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-  {
-    id: "future",
-    icon: Brain,
-    color: "#8B5CF6",
-    title: "Future Designs",
-    subtitle: "Donor-Sponsored Concepts",
-    status: "Concept",
-    standard: "Various",
-    products: [
-      "eVision (blind aid)",
-      "eHand (prosthetic)",
-      "eBCI-Lite (EEG)",
-      "eCubeSat-1U",
-    ],
-    desc: "10 concept-stage hardware products for health, accessibility, climate, and research. Each has a datasheet stub, BOM placeholder, and business plan for donor evaluation.",
-    specs: [
-      { label: "eVision", value: "Obstacle detection band" },
-      { label: "eHand", value: "6-DOF myoelectric prosthetic" },
-      { label: "eFarm", value: "Solar LoRaWAN soil sensor" },
-      { label: "eCubeSat", value: "1U CubeSat reference design" },
-    ],
-    href: "/donate",
-    ghref: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
-  },
-];
+  /* Radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 
-const STATUS_COLORS: Record<string, string> = {
-  Design: "#FBBF24",
-  Concept: "#A78BFA",
-};
+  /* Shadows */
+  --shadow-glow-amber: 0 0 30px oklch(67% 0.19 50 / 0.25);
+  --shadow-glow-teal: 0 0 30px oklch(70% 0.14 195 / 0.2);
+  --shadow-card: 0 4px 24px oklch(0% 0 0 / 0.4);
+  --shadow-nav: 0 2px 24px oklch(0% 0 0 / 0.5);
 
-function CategoryCard({
-  cat,
-  index,
-}: {
-  cat: (typeof CATEGORIES)[0];
-  index: number;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  /* 21st.dev layered shadow system */
+  --shadow-xs: 0 1px 2px oklch(0% 0 0 / 0.08);
+  --shadow-sm: 0 2px 8px oklch(0% 0 0 / 0.12), 0 1px 3px oklch(0% 0 0 / 0.08);
+  --shadow-md: 0 8px 24px oklch(0% 0 0 / 0.18), 0 2px 8px oklch(0% 0 0 / 0.1);
+  --shadow-lg:
+    0 20px 48px oklch(0% 0 0 / 0.28), 0 8px 16px oklch(0% 0 0 / 0.12);
+  --shadow-xl:
+    0 32px 56px oklch(0% 0 0 / 0.35), 0 12px 24px oklch(0% 0 0 / 0.15);
+  --shadow-card-hover:
+    0 20px 40px oklch(0% 0 0 / 0.4), 0 0 30px oklch(67% 0.19 50 / 0.12);
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        delay: (index % 4) * 0.07,
-        duration: 0.5,
-        ease: [0.23, 1, 0.32, 1],
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="rounded-2xl border flex flex-col overflow-hidden transition-all duration-300"
-      style={{
-        background: hovered ? `${cat.color}08` : "rgba(255,255,255,0.03)",
-        borderColor: hovered ? `${cat.color}40` : "rgba(255,255,255,0.08)",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-      }}
-    >
-      {/* Header */}
-      <div className="p-5 pb-4 flex items-start gap-4">
-        <motion.div
-          animate={{ scale: hovered ? 1.1 : 1, rotate: hovered ? 5 : 0 }}
-          transition={{ duration: 0.3 }}
-          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: `${cat.color}20` }}
-        >
-          <cat.icon size={24} style={{ color: cat.color }} />
-        </motion.div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-white text-lg leading-tight">
-              {cat.title}
-            </h2>
-            <span
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              style={{
-                background: `${STATUS_COLORS[cat.status]}20`,
-                color: STATUS_COLORS[cat.status],
-              }}
-            >
-              {cat.status}
-            </span>
-          </div>
-          <div className="text-sm mt-0.5" style={{ color: cat.color }}>
-            {cat.subtitle}
-          </div>
-        </div>
-      </div>
+  /* Easing tokens per UI/UX Pro Max */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-      {/* Description */}
-      <div className="px-5 pb-4">
-        <p className="text-gray-400 text-sm leading-relaxed">{cat.desc}</p>
-      </div>
+  /* Glassmorphism tokens */
+  --glass-bg: oklch(22% 0.05 248 / 0.75);
+  --glass-border: oklch(100% 0 0 / 0.08);
+  --glass-blur: blur(20px);
 
-      {/* Product list */}
-      <div className="px-5 pb-4 flex flex-wrap gap-1.5">
-        {cat.products.map(p => (
-          <span
-            key={p}
-            className="text-[11px] px-2 py-0.5 rounded-md font-mono"
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              color: "rgba(255,255,255,0.6)",
-            }}
-          >
-            {p}
-          </span>
-        ))}
-      </div>
+  /* ----------------------------------------------------------
+     Cinematic scale
+     ----------------------------------------------------------
+     A display type scale, a vertical rhythm and a reading measure,
+     defined once so pages stop hand-picking text-4xl/5xl/6xl triples
+     and landing on a different answer each time.
 
-      {/* Specs */}
-      <div className="px-5 pb-4 grid grid-cols-2 gap-2">
-        {cat.specs.map(s => (
-          <div
-            key={s.label}
-            className="rounded-lg p-2"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider">
-              {s.label}
-            </div>
-            <div className="text-xs font-semibold text-white mt-0.5">
-              {s.value}
-            </div>
-          </div>
-        ))}
-      </div>
+     The sizes are fluid rather than breakpoint-stepped: a headline
+     that reads as a statement at 1440px should not collapse to body
+     weight at 900px, and clamp() moves it continuously instead of
+     jumping at an arbitrary width. The upper bounds are set so the
+     hero headline fills its column at 1440 — which is what separates
+     this look from a large-ish heading. */
+  --text-display-1: clamp(2.75rem, 7vw, 6.25rem);
+  --text-display-2: clamp(2.25rem, 4.6vw, 3.75rem);
+  --text-display-3: clamp(1.75rem, 3vw, 2.5rem);
 
-      {/* Standard badge */}
-      <div className="px-5 pb-3">
-        <span className="text-[10px] font-mono" style={{ color: cat.color }}>
-          Target standards: {cat.standard}
-        </span>
-      </div>
+  /* Vertical rhythm. The whitespace is the design; sections that
+     breathe are most of what separates the reference sites from a
+     dense template. Tightened modestly (was 5rem/9vw/8.5rem) so the
+     ~270px inter-section bands stop making the page feel long. */
+  --space-section: clamp(3.5rem, 7vw, 6rem);
 
-      {/* Footer actions */}
-      <div
-        className="mt-auto px-5 py-4 border-t flex items-center justify-between"
-        style={{ borderColor: "rgba(255,255,255,0.06)" }}
-      >
-        <Link href={cat.href}>
-          <motion.div
-            whileHover={{ x: 3 }}
-            className="flex items-center gap-1 text-sm font-semibold cursor-pointer"
-            style={{ color: cat.color }}
-          >
-            Learn more<span className="sr-only"> about {cat.title}</span>{" "}
-            <ArrowRight size={14} />
-          </motion.div>
-        </Link>
-        <a href={cat.ghref} target="_blank" rel="noopener noreferrer">
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className="flex items-center gap-1 text-xs text-gray-500 hover:text-white transition-colors cursor-pointer"
-          >
-            GitHub <ExternalLink size={11} />
-          </motion.div>
-        </a>
-      </div>
-    </motion.div>
-  );
+  /* Reading measure. Long lines are the fastest way to make a page
+     feel like documentation rather than a statement. */
+  --measure: 56ch;
 }
 
-export default function EcadHardware() {
-  const [filter, setFilter] = useState<"all" | "Design" | "Concept">("all");
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 
-  const filtered =
-    filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-  return (
-    <div className="min-h-screen bg-[#050A14] text-white">
-      {/* Hero */}
-      <section className="relative pt-28 pb-16 px-6 overflow-hidden">
-        <img
-          loading="lazy"
-          decoding="async"
-          src="/media/product-ecad-hardware_f5806032.jpg"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
-        />
-        <div className="absolute bottom-4 right-6 z-10 rounded-md border border-white/10 bg-[#050A14]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60">
-          Illustrative concept artwork
-        </div>
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div
-          className="absolute top-20 left-1/3 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{
-            background: "radial-gradient(circle, #F97316, transparent)",
-          }}
-        />
-        <div
-          className="absolute top-40 right-1/3 w-80 h-80 rounded-full blur-3xl opacity-10"
-          style={{
-            background: "radial-gradient(circle, #22D3EE, transparent)",
-          }}
-        />
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-        <div className="relative max-w-5xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
-              style={{
-                background: "rgba(249,115,22,0.1)",
-                borderColor: "rgba(249,115,22,0.3)",
-                color: "#F97316",
-              }}
-            >
-              <Package size={12} /> eCAD HARDWARE DESIGNS · MIT LICENSE
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-              Hardware{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #F97316, #FBBF24)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Design
-              </span>{" "}
-              Portfolio
-            </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              15 hardware design categories — from health wearables to aerospace
-              systems, industrial PLCs to personal air mobility concepts. The
-              repository includes a mix of design documents, KiCad sources,
-              BOMs, and datasheets; coverage varies by design.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {(["all", "Design", "Concept"] as const).map(f => (
-                <motion.button
-                  key={f}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setFilter(f)}
-                  className="px-5 py-2 rounded-lg text-sm font-semibold border transition-all"
-                  style={{
-                    background:
-                      filter === f ? "rgba(249,115,22,0.2)" : "transparent",
-                    borderColor:
-                      filter === f ? "#F97316" : "rgba(255,255,255,0.15)",
-                    color: filter === f ? "#F97316" : "rgba(255,255,255,0.6)",
-                  }}
-                >
-                  {f === "all" ? "All Categories" : f}
-                  {f !== "all" && (
-                    <span className="ml-2 text-[10px] opacity-70">
-                      ({CATEGORIES.filter(c => c.status === f).length})
-                    </span>
-                  )}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-      {/* Stats */}
-      <section
-        className="border-y py-8 px-6"
-        style={{
-          borderColor: "rgba(255,255,255,0.07)",
-          background: "rgba(255,255,255,0.02)",
-        }}
-      >
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
-          {[
-            { value: "15", label: "Design Categories", color: "#F97316" },
-            { value: "50+", label: "Design Entries", color: "#22D3EE" },
-            { value: "10", label: "Future Concepts", color: "#A78BFA" },
-          ].map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-              className="text-center"
-            >
-              <div className="text-3xl font-black" style={{ color: s.color }}>
-                {s.value}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">{s.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
 
-      {/* Categories Grid */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {filtered.map((cat, i) => (
-              <CategoryCard key={cat.id} cat={cat} index={i} />
-            ))}
-          </motion.div>
-        </div>
-      </section>
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-mono);
+  }
 
-      {/* Future Designs Spotlight */}
-      <section
-        className="py-16 px-6"
-        style={{
-          background: "rgba(139,92,246,0.04)",
-          borderTop: "1px solid rgba(139,92,246,0.15)",
-        }}
-      >
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-black mb-4">
-              Donor-Sponsored Future Designs
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              10 concept-stage hardware products for health, accessibility,
-              climate, and research. Each has a datasheet stub, BOM placeholder,
-              and one-page business plan for donor evaluation.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {[
-              {
-                icon: "👓",
-                name: "eVision",
-                desc: "Obstacle-detection band for blind users",
-                tier: "$5K",
-              },
-              {
-                icon: "🤖",
-                name: "eHand",
-                desc: "6-DOF myoelectric prosthetic hand",
-                tier: "$2K",
-              },
-              {
-                icon: "🧠",
-                name: "eBCI-Lite",
-                desc: "8-channel dry-electrode EEG headband",
-                tier: "$10K",
-              },
-              {
-                icon: "🌾",
-                name: "eFarm",
-                desc: "Solar LoRaWAN soil sensor mesh",
-                tier: "$1K",
-              },
-              {
-                icon: "💧",
-                name: "eHydro",
-                desc: "Water-quality monitoring buoy",
-                tier: "$3K",
-              },
-              {
-                icon: "🐝",
-                name: "eHive",
-                desc: "Acoustic beehive monitor",
-                tier: "$500",
-              },
-              {
-                icon: "🚙",
-                name: "eRover-Mini",
-                desc: "$400 autonomous research rover",
-                tier: "$2K",
-              },
-              {
-                icon: "🎓",
-                name: "eEdu-Kit",
-                desc: "Classroom STEM dev board + curriculum",
-                tier: "$1K",
-              },
-              {
-                icon: "⚡",
-                name: "eMeshGrid",
-                desc: "Off-grid micro-grid controller",
-                tier: "$25K",
-              },
-              {
-                icon: "🛰️",
-                name: "eCubeSat-1U",
-                desc: "1U CubeSat concept with research firmware",
-                tier: "$30K",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ y: -3, scale: 1.03 }}
-                className="rounded-xl border p-4 text-center cursor-pointer"
-                style={{
-                  background: "rgba(139,92,246,0.06)",
-                  borderColor: "rgba(139,92,246,0.2)",
-                }}
-              >
-                <div className="text-3xl mb-2">{item.icon}</div>
-                <div className="font-bold text-white text-sm">{item.name}</div>
-                <div className="text-[11px] text-gray-400 mt-1 leading-tight">
-                  {item.desc}
-                </div>
-                <div
-                  className="mt-2 text-[10px] font-semibold"
-                  style={{ color: "#A78BFA" }}
-                >
-                  Donor tier: {item.tier}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/donate">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2 mx-auto"
-                style={{
-                  background: "linear-gradient(135deg, #8B5CF6, #6366F1)",
-                }}
-              >
-                Sponsor a Future Design <ChevronRight size={18} />
-              </motion.button>
-            </Link>
-          </div>
-        </div>
-      </section>
+  ::selection {
+    background: oklch(67% 0.19 50 / 0.3);
+    color: white;
+  }
 
-      {/* Hardware Block Diagrams */}
-      <section className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-4">
-              <Layers className="w-4 h-4" /> BLOCK DIAGRAMS
-            </div>
-            <h2 className="text-3xl font-black text-white mb-3">
-              Illustrative Concept Architecture
-            </h2>
-            <p className="text-gray-400">
-              Interactive concept diagrams for proposed hardware pipelines; not
-              as-built schematics.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {HW_DIAGRAMS.map(d => (
-              <div key={d.id}>
-                <div className="mb-3">
-                  <div className="text-white font-bold text-sm">{d.title}</div>
-                  <div className="text-white/40 text-xs">{d.subtitle}</div>
-                </div>
-                <Suspense
-                  fallback={
-                    <div className="h-64 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
-                      Loading…
-                    </div>
-                  }
-                >
-                  <ArchitectureDiagram3D layers={d.layers} height={260} />
-                </Suspense>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
 
-      {/* CTA */}
-      <section className="py-16 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-black mb-4">
-            Explore the Hardware Designs
-          </h2>
-          <p className="text-gray-400 mb-8">
-            The repository is MIT-licensed and includes a mix of design
-            documents, KiCad sources, BOMs, and datasheets. Artifact coverage
-            varies by design.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2"
-                style={{
-                  background: "linear-gradient(135deg, #F97316, #EF4444)",
-                }}
-              >
-                View on GitHub <ExternalLink size={16} />
-              </motion.button>
-            </a>
-            <Link href="/getting-started">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold border flex items-center gap-2"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "white" }}
-              >
-                Get Started <ChevronRight size={16} />
-              </motion.button>
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted-foreground);
+  }
+}
+
+/* ============================================================
+   COMPONENT UTILITIES
+   ============================================================ */
+
+@layer components {
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 40%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #22d3ee 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass morphism — upgraded with 21st.dev layered approach */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+  }
+
+  .glass-strong {
+    background: oklch(17.8% 0.055 248 / 0.95);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid oklch(100% 0 0 / 0.1);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .glass-card {
+    background: oklch(22% 0.05 248 / 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid oklch(100% 0 0 / 0.07);
+    box-shadow:
+      var(--shadow-sm),
+      inset 0 1px 0 oklch(100% 0 0 / 0.06);
+    transition:
+      box-shadow 0.25s var(--ease-out),
+      border-color 0.25s var(--ease-out),
+      transform 0.25s var(--ease-out);
+  }
+
+  .glass-card:hover {
+    border-color: oklch(100% 0 0 / 0.14);
+    box-shadow:
+      var(--shadow-lg),
+      inset 0 1px 0 oklch(100% 0 0 / 0.1);
+    transform: translateY(-3px);
+  }
+
+  /* Glow effects */
+  .glow-amber {
+    box-shadow: 0 0 30px oklch(67% 0.19 50 / 0.25);
+  }
+
+  .glow-teal {
+    box-shadow: 0 0 30px oklch(70% 0.14 195 / 0.2);
+  }
+
+  /* Section */
+  .section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+  }
+
+  /* ----------------------------------------------------------
+     Cinematic primitives
+     ----------------------------------------------------------
+     Built on the tokens above. These exist so a page can say what a
+     thing *is* — a display headline, a stage, a measure — instead of
+     restating the same six utilities and drifting from the last page
+     that did it. */
+
+  .display-1,
+  .display-2,
+  .display-3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  /* Leading tightens as size grows: 0.98 is right for a 100px headline
+     and unreadable at 28px, which is why these are not one class with a
+     size modifier. */
+  .display-1 {
+    font-size: var(--text-display-1);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .display-2 {
+    font-size: var(--text-display-2);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  .display-3 {
+    font-size: var(--text-display-3);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .section-cinematic {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+  }
+
+  .measure {
+    max-width: var(--measure);
+  }
+
+  /* Small caps label above a headline. Tracking is what makes it read as
+     a label rather than shouting. */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Hairline that fades out, for separating a stat row from what is
+     above it without drawing a full box. */
+  .rule {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      oklch(100% 0 0 / 0.14),
+      oklch(100% 0 0 / 0)
+    );
+  }
+
+  /* Sits between the hero's full-bleed 3D layer and its copy.
+
+     The scene is `absolute inset-0`, so its particles and connection lines
+     otherwise cross the headline — dots landing on letterforms, which is the
+     single thing most separating this hero from the ones it is modelled on.
+     Two stacked gradients: a vignette to hold the eye centre-frame, then a
+     left-weighted wash so the text column reads against near-solid ground
+     while the scene stays visible on the side the hero image is on.
+
+     Must be a real element rather than a ::before — a pseudo-element paints
+     as the section's first child, which would put it *under* the canvas. */
+  .hero-scrim {
+    background:
+      radial-gradient(
+        125% 85% at 50% 45%,
+        transparent 42%,
+        oklch(8% 0.02 248 / 0.5) 100%
+      ),
+      linear-gradient(
+        100deg,
+        var(--color-background) 0%,
+        var(--color-background) 34%,
+        oklch(17.8% 0.055 248 / 0.9) 52%,
+        oklch(17.8% 0.055 248 / 0.4) 72%,
+        transparent 92%
+      );
+  }
+
+  /* Below lg the grid stacks and the copy spans the full width, so a
+     left-weighted wash would leave particles sitting on the right half of
+     every line. Fade top-to-bottom instead. */
+  @media (max-width: 1023px) {
+    .hero-scrim {
+      background: linear-gradient(
+        180deg,
+        var(--color-background) 0%,
+        oklch(17.8% 0.055 248 / 0.88) 60%,
+        oklch(17.8% 0.055 248 / 0.45) 100%
+      );
+    }
+  }
+
+  /* Grid dot pattern */
+  .bg-grid {
+    background-image: radial-gradient(
+      oklch(50% 0.04 248 / 0.3) 1px,
+      transparent 1px
+    );
+    background-size: 32px 32px;
+  }
+
+  /* Noise texture */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  /* Card hover — upgraded */
+  .card-hover {
+    transition:
+      transform 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out),
+      border-color 0.25s var(--ease-out);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Button press feedback per UI/UX Pro Max */
+  .btn-press {
+    transition:
+      transform 0.16s var(--ease-out),
+      box-shadow 0.16s var(--ease-out);
+  }
+  .btn-press:active {
+    transform: scale(0.97);
+  }
+
+  /* Scroll-reveal base state (GSAP will animate from this) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.5s var(--ease-out);
+  }
+
+  /* Stagger children */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  .stagger-children.is-visible > * {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 0.45s var(--ease-out),
+      transform 0.45s var(--ease-out);
+  }
+  .stagger-children.is-visible > *:nth-child(1) {
+    transition-delay: 0ms;
+  }
+  .stagger-children.is-visible > *:nth-child(2) {
+    transition-delay: 60ms;
+  }
+  .stagger-children.is-visible > *:nth-child(3) {
+    transition-delay: 120ms;
+  }
+  .stagger-children.is-visible > *:nth-child(4) {
+    transition-delay: 180ms;
+  }
+  .stagger-children.is-visible > *:nth-child(5) {
+    transition-delay: 240ms;
+  }
+  .stagger-children.is-visible > *:nth-child(6) {
+    transition-delay: 300ms;
+  }
+  .stagger-children.is-visible > *:nth-child(7) {
+    transition-delay: 360ms;
+  }
+  .stagger-children.is-visible > *:nth-child(8) {
+    transition-delay: 420ms;
+  }
+
+  /* Animated underline */
+  .link-underline {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-brand-amber);
+    transition: width 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Badge */
+  .badge-amber {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    background: oklch(67% 0.19 50 / 0.15);
+    border: 1px solid oklch(67% 0.19 50 / 0.4);
+    border-radius: 9999px;
+    color: var(--color-brand-amber);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge-teal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    background: oklch(70% 0.14 195 / 0.15);
+    border: 1px solid oklch(70% 0.14 195 / 0.4);
+    border-radius: 9999px;
+    color: var(--color-brand-teal);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-border),
+      transparent
+    );
+  }
+
+  /* Code block */
+  .code-block {
+    background: oklch(14% 0.04 248);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    overflow-x: auto;
+  }
+
+  /* Stat number */
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--color-brand-amber);
+  }
+
+  /* Skip to content */
+  .skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-brand-amber);
+    color: white;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: top 0.2s;
+  }
+
+  .skip-to-content:focus {
+    top: 1rem;
+  }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-delayed {
+  animation: float 4s ease-in-out infinite 1.5s;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(100% 0 0 / 0.1) 50%,
+    transparent 100%
   );
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px oklch(67% 0.19 50 / 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 40px oklch(67% 0.19 50 / 0.45),
+      0 0 80px oklch(67% 0.19 50 / 0.15);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.5s var(--ease-out) both;
+}
+.animate-scale-in {
+  animation: scale-in 0.35s var(--ease-out) both;
+}
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-delayed,
+  .animate-pulse-ring,
+  .animate-shimmer,
+  .animate-slide-up-fade,
+  .animate-scale-in,
+  .animate-glow-pulse {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   VISUAL OVERHAUL — PHASE 2 ANIMATIONS & EFFECTS
+   ============================================================ */
+
+/* Scan-line overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    oklch(0% 0 0 / 0.03) 2px,
+    oklch(0% 0 0 / 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Data stream text effect */
+@keyframes data-stream {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.animate-data-stream {
+  animation: data-stream 3s ease-in-out infinite;
+}
+
+/* Glowing border pulse */
+@keyframes border-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 8px oklch(67% 0.19 50 / 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 24px oklch(67% 0.19 50 / 0.7),
+      0 0 48px oklch(67% 0.19 50 / 0.3);
+  }
+}
+.animate-border-glow {
+  animation: border-glow 2.5s ease-in-out infinite;
+}
+
+/* Signal trace animation */
+@keyframes signal-trace {
+  0% {
+    stroke-dashoffset: 1000;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+}
+.animate-signal {
+  animation: signal-trace 3s linear infinite;
+}
+
+/* Radar sweep */
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animate-radar {
+  animation: radar-sweep 4s linear infinite;
+}
+
+/* Typewriter cursor */
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.animate-cursor {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+/* Heartbeat */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.15);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.08);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Slide-in from left */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Glow pulse for health devices */
+@keyframes glow-pulse-red {
+  0%,
+  100% {
+    box-shadow: 0 0 12px #f85149aa;
+  }
+  50% {
+    box-shadow:
+      0 0 32px #f85149,
+      0 0 64px #f8514944;
+  }
+}
+@keyframes glow-pulse-amber {
+  0%,
+  100% {
+    box-shadow: 0 0 12px #f59e0baa;
+  }
+  50% {
+    box-shadow:
+      0 0 32px #f59e0b,
+      0 0 64px #f59e0b44;
+  }
+}
+@keyframes glow-pulse-purple {
+  0%,
+  100% {
+    box-shadow: 0 0 12px #a78bfaaa;
+  }
+  50% {
+    box-shadow:
+      0 0 32px #a78bfa,
+      0 0 64px #a78bfa44;
+  }
+}
+@keyframes glow-pulse-green {
+  0%,
+  100% {
+    box-shadow: 0 0 12px #34d399aa;
+  }
+  50% {
+    box-shadow:
+      0 0 32px #34d399,
+      0 0 64px #34d39944;
+  }
+}
+.animate-glow-red {
+  animation: glow-pulse-red 2s ease-in-out infinite;
+}
+.animate-glow-amber {
+  animation: glow-pulse-amber 2s ease-in-out infinite;
+}
+.animate-glow-purple {
+  animation: glow-pulse-purple 2s ease-in-out infinite;
+}
+.animate-glow-green {
+  animation: glow-pulse-green 2s ease-in-out infinite;
+}
+
+/* Particle drift */
+@keyframes particle-drift {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translateY(-30px) translateX(15px) scale(1.1);
+    opacity: 1;
+  }
+  66% {
+    transform: translateY(-15px) translateX(-10px) scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.6;
+  }
+}
+.animate-particle {
+  animation: particle-drift 6s ease-in-out infinite;
+}
+.animate-particle-2 {
+  animation: particle-drift 8s ease-in-out infinite 1s;
+}
+.animate-particle-3 {
+  animation: particle-drift 7s ease-in-out infinite 2.5s;
+}
+
+/* Marquee scroll */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Number ticker */
+@keyframes tick-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-tick-up {
+  animation: tick-up 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Product card tilt */
+.card-tilt {
+  transition:
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+.card-tilt:hover {
+  transform: perspective(800px) rotateX(-3deg) rotateY(4deg) translateY(-6px);
+  box-shadow:
+    0 24px 48px oklch(0% 0 0 / 0.5),
+    0 0 40px oklch(67% 0.19 50 / 0.15);
+}
+
+/* Neon text */
+.text-neon-amber {
+  color: #f97316;
+  text-shadow:
+    0 0 10px #f9731688,
+    0 0 30px #f9731644;
+}
+.text-neon-teal {
+  color: #22d3ee;
+  text-shadow:
+    0 0 10px #22d3ee88,
+    0 0 30px #22d3ee44;
+}
+.text-neon-purple {
+  color: #a78bfa;
+  text-shadow:
+    0 0 10px #a78bfa88,
+    0 0 30px #a78bfa44;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-data-stream,
+  .animate-border-glow,
+  .animate-signal,
+  .animate-radar,
+  .animate-cursor,
+  .animate-heartbeat,
+  .animate-slide-in-left,
+  .animate-glow-red,
+  .animate-glow-amber,
+  .animate-glow-purple,
+  .animate-glow-green,
+  .animate-particle,
+  .animate-particle-2,
+  .animate-particle-3,
+  .animate-marquee,
+  .animate-tick-up,
+  /* F-23: Tailwind built-ins used for ambient motion — loading spinners keep
+     their role="status" label, status dots and skeleton shimmer go static,
+     the scroll cue and OTP caret stop moving. Deliberately NOT killed here:
+     animate-in/out and accordion transitions are brief, user-initiated state
+     feedback, not ambient motion. */
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-caret-blink {
+    animation: none !important;
+  }
+  .card-tilt:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MICRO-INTERACTIONS & GLOBAL ANIMATION UPGRADES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Heartbeat animation for health icons */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.2);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+.animate-heartbeat {
+  animation: heartbeat 1.8s ease-in-out infinite;
+}
+
+/* Scan line sweep for terminal/code blocks */
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.06;
+  }
+  90% {
+    opacity: 0.06;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+.scan-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(34, 211, 238, 0.06) 50%,
+    transparent 60%
+  );
+  animation: scan-sweep 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Data stream text animation */
+@keyframes data-stream {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.data-stream-item {
+  animation: data-stream 0.2s ease-out forwards;
+}
+
+/* Glowing border pulse */
+@keyframes border-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(249, 115, 22, 0.15),
+      0 0 20px rgba(249, 115, 22, 0.08);
+  }
+}
+.border-glow-orange {
+  animation: border-glow 2.5s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Floating animation for hero elements */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.float-slow {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+@keyframes float-medium {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+}
+.float-medium {
+  animation: float-medium 3.5s ease-in-out infinite;
+}
+
+/* Neon text glow */
+.text-neon-cyan {
+  color: #22d3ee;
+  text-shadow:
+    0 0 10px rgba(34, 211, 238, 0.5),
+    0 0 30px rgba(34, 211, 238, 0.2);
+}
+.text-neon-orange {
+  color: #f97316;
+  text-shadow:
+    0 0 10px rgba(249, 115, 22, 0.5),
+    0 0 30px rgba(249, 115, 22, 0.2);
+}
+
+/* Card hover lift with glow */
+.card-hover-glow {
+  transition:
+    transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card-hover-glow:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(249, 115, 22, 0.06);
+}
+
+/* Button press feedback */
+button:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.1s ease-out;
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.text-gradient-animated {
+  background: linear-gradient(
+    135deg,
+    #f97316,
+    #f59e0b,
+    #22d3ee,
+    #a78bfa,
+    #f97316
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Teal badge */
+.badge-teal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  color: #22d3ee;
+}
+
+/* Scroll-triggered fade-in via intersection observer class */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger-children > *:nth-child(1) {
+  transition-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  transition-delay: 60ms;
+}
+.stagger-children > *:nth-child(3) {
+  transition-delay: 120ms;
+}
+.stagger-children > *:nth-child(4) {
+  transition-delay: 180ms;
+}
+.stagger-children > *:nth-child(5) {
+  transition-delay: 240ms;
+}
+.stagger-children > *:nth-child(6) {
+  transition-delay: 300ms;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-heartbeat,
+  .float-slow,
+  .float-medium,
+  .text-gradient-animated,
+  .shimmer,
+  .border-glow-orange,
+  .scan-line::after {
+    animation: none !important;
+  }
+  .card-hover-glow:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   MOBILE LEGIBILITY FLOOR
+
+   Google's Mobile-Friendly test (an Ad Grants requirement) flags copy under
+   roughly 12px as "text too small to read". The desktop design intentionally
+   uses 9-11px for badges, eyebrow labels and metadata, so rather than rewriting
+   ~100 utility usages this raises the floor on small screens only.
+
+   These rules are deliberately unlayered: unlayered CSS outranks Tailwind's
+   @layer utilities regardless of source order, so the floor wins without
+   !important.
+   ============================================================ */
+@media (max-width: 640px) {
+  .text-\[8px\],
+  .text-\[9px\],
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .badge-amber,
+  .badge-teal,
+  .badge-green,
+  .badge-purple {
+    font-size: 12px;
+  }
+
+  /* Touch-target floor. Scoped to links/buttons that are already flex containers
+     — i.e. deliberate action affordances with `items-center` — so inline prose
+     links inside paragraphs keep their natural line box and nothing reflows. */
+  a.inline-flex,
+  a:is(.flex),
+  button.inline-flex,
+  button:is(.flex) {
+    min-height: 32px;
+  }
+
+  /* Navigation and footer links are labels, not prose, so they can safely become
+     flex boxes to reach the 24px tap floor. Prose links inside <p> are excluded
+     by the selectors below and keep their natural inline line box. */
+  footer a[href],
+  nav a[href] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+
+  button {
+    min-height: 24px;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY FLOORS
+
+   Unlayered for the same reason as the block above: unlayered CSS outranks
+   Tailwind's @layer utilities regardless of source order.
+   ============================================================ */
+
+/* --- Reduced motion must not leave content invisible ------------------------
+   219 `whileInView` reveals across 84 components start at
+   `style="opacity: 0; transform: translateY(30px)"` and only animate in when the
+   IntersectionObserver fires. A visitor who asked for reduced motion should not
+   have to scroll to make text exist at all — measured 71 of 526 text nodes on
+   "/" left at opacity 0. The blocks further up only stop keyframe animations;
+   they cannot reach a framer-motion inline style, so this needs !important.
+
+   `:not([style*="opacity: 0."])` keeps deliberate partial opacities (0.5, 0.05)
+   untouched — the substring match would otherwise catch them too. */
+@media (prefers-reduced-motion: reduce) {
+  main [style*="opacity: 0"]:not([style*="opacity: 0."]) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --- Contrast floor: orange action surfaces --------------------------------
+   #F97316 carries white label text at 2.84:1, below the 4.5:1 WCAG 2.1 AA
+   threshold for body-size text, and axe flags it as `serious` on every page via
+   the navbar CTA. #C2410C (Tailwind orange-700) is the same hue at 5.09:1. */
+.bg-\[\#F97316\],
+.bg-orange-500 {
+  background-color: #c2410c;
+}
+
+.hover\:bg-\[\#EA580C\]:hover,
+.hover\:bg-orange-600:hover {
+  background-color: #9a3412;
+}
+
+/* --- Contrast floor: faded text --------------------------------------------
+   Over the site's near-black surfaces, white below roughly 50% alpha drops
+   under 4.5:1. text-white/20 and /30 sit at 51 and 76 of 255. */
+.text-white\/20,
+.text-white\/30 {
+  color: rgb(255 255 255 / 0.6);
+}
+
+.text-white\/40 {
+  color: rgb(255 255 255 / 0.65);
+}
+
+/* Tailwind's gray-500 (#6B7280) reaches only 3.66:1 on the site's near-black
+   surfaces. gray-400 is the same neutral at 6.94:1. Every surface here is dark,
+   so raising it globally cannot reduce contrast anywhere. */
+.text-gray-500 {
+  color: #9ca3af;
+}
+
+/* --- Focus indicator must appear instantly, not fade in --------------------
+   `@layer base`'s `:focus-visible` rule above sets a 2px outline, but many
+   interactive elements (nav triggers, health-device tabs, footer links) also
+   carry Tailwind's `transition-all`/`transition-colors` utilities for their
+   hover states. Those utilities live in Tailwind's `utilities` layer, which
+   always outranks `base` regardless of selector specificity or source order —
+   so on those elements the outline-width Tailwind's own layer order lets win
+   is the *utility's*, and it interpolates from 0 to the full 2px over the
+   utility's own duration instead of snapping in. A keyboard user tabbing at a
+   normal pace — and this site's own "focused elements are visibly indicated"
+   e2e check — can land on the very frame where the ring hasn't appeared yet.
+   Unlayered, like the floors above, so it outranks those utilities too. */
+:focus-visible {
+  transition-duration: 0s;
 }

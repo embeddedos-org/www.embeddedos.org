@@ -1,101 +1,182 @@
 /**
- * The preload registry in App.tsx carries a route path per code-split page, and
- * scripts/prerender.mjs discovers routes from the `Route path` literals in the
- * same file. Those are two hand-maintained lists over one set of routes.
+ * Performance budgets over the built output.
  *
- * If they drift, nothing throws: the route still renders, it just loses its
- * preload and silently goes back to ~300ms of blank <main>. That is invisible
- * in every other test, so it gets its own check here.
+ * These are regression guards, not aspirations: every number is set slightly
+ * above what the build currently produces, so an accidental re-introduction of
+ * the dev runtime, an unoptimised image, or an eager three.js preload fails the
+ * suite instead of quietly shipping.
  */
+import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
-// @ts-expect-error - plain .mjs script, no type declarations
-import { stripComments } from "../../scripts/prerender.mjs";
+import zlib from "node:zlib";
 
-const APP_TSX = path.resolve(__dirname, "../../client/src/App.tsx");
-// Route discovery scrapes `<Route path="…">` literals with a regex, so a
-// commented-out route would otherwise count as declared. Strip comments
-// first, with the same helper scripts/prerender.mjs uses.
-const source = stripComments(fs.readFileSync(APP_TSX, "utf8"));
+const DIST = path.resolve(import.meta.dirname, "../../dist/public");
+const ASSETS = path.join(DIST, "assets");
 
-/** Route paths declared as `Route path="..."` JSX literals. */
-function declaredRoutes(): string[] {
-  return [...source.matchAll(/<Route\s+path="([^"]+)"/g)].map(m => m[1]);
-}
+const brotli = (buf: Buffer) =>
+  zlib.brotliCompressSync(buf, {
+    params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11 },
+  }).length;
 
-/**
- * Route paths registered for preloading.
- *
- * Two forms count. `lazyPage("/x", ...)` registers its own path; the optional
- * third argument registers aliases, which is how one component can serve
- * several concrete URLs — the article page serves nine. An alias needs a
- * loader entry of its own because preloadRoute() keys the registry by exact
- * pathname, so omitting one costs that URL its synchronous hydration.
- *
- * Alias lists must be written inline. Passing a named const instead would
- * mean resolving an identifier by text, which is guesswork this test should
- * not be doing — so the convention is the literal.
- *
- * The generic parameter in `lazyPage<{ slug?: string }>(` is optional and must
- * not defeat the match.
- */
-function registeredRoutes(): string[] {
-  const direct = [
-    ...source.matchAll(/=\s*lazyPage(?:<[^>]*>)?\(\s*"([^"]+)"/g),
-  ].map(m => m[1]);
-  const aliasBlocks = [
-    ...source.matchAll(/lazyPage(?:<[^>]*>)?\([\s\S]*?\)\s*;/g),
-  ].map(m => m[0]);
-  const aliases: string[] = [];
-  for (const block of aliasBlocks) {
-    const arrays = [...block.matchAll(/\[([\s\S]*?)\]/g)].map(m => m[1]);
-    for (const arr of arrays) {
-      aliases.push(...[...arr.matchAll(/"(\/[^"]*)"/g)].map(m => m[1]));
+const read = (p: string) => fs.readFileSync(p);
+const assetsMatching = (re: RegExp) =>
+  fs.readdirSync(ASSETS).filter(f => re.test(f));
+const kb = (n: number) => Math.round(n / 1024);
+
+describe("html payload", () => {
+  it("the homepage document stays under 40 KB brotli", () => {
+    const size = brotli(read(path.join(DIST, "index.html")));
+    expect(size, `homepage html ${kb(size)} KB brotli`).toBeLessThan(40 * 1024);
+  });
+
+  it("no prerendered page exceeds 60 KB brotli", () => {
+    const oversized: string[] = [];
+    for (const f of fs.globSync("**/index.html", { cwd: DIST })) {
+      const size = brotli(read(path.join(DIST, f)));
+      if (size > 60 * 1024) oversized.push(`${f} = ${kb(size)} KB`);
     }
-  }
-  return [...new Set([...direct, ...aliases])];
-}
+    expect(oversized).toEqual([]);
+  });
 
-/** Route paths whose JSX body renders a component inside a Suspense boundary. */
-function codeSplitRouteBlocks(): string[] {
-  return [
-    ...source.matchAll(
-      // The component may take props: <ArticlePage slug="..." />.
-      /<Route\s+path="([^"]+)">\s*<Suspense\b[\s\S]*?>\s*<\w+(?:\s[^>]*?)?\s*\/>/g
-    ),
-  ].map(m => m[1]);
-}
+  it("the document carries no giant inline script (the Manus runtime regression)", () => {
+    for (const f of fs.globSync("**/index.html", { cwd: DIST })) {
+      const html = fs.readFileSync(path.join(DIST, f), "utf8");
+      for (const m of html.matchAll(
+        /<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g
+      )) {
+        expect(m[1].length, `inline script in ${f}`).toBeLessThan(8 * 1024);
+      }
+    }
+  });
+});
 
-describe("route preload registry", () => {
-  it("registers a loader for every code-split route", () => {
-    const missing = codeSplitRouteBlocks().filter(
-      r => !registeredRoutes().includes(r)
+describe("javascript budgets", () => {
+  it("the entry chunk stays under 160 KB brotli", () => {
+    const [entry] = assetsMatching(/^index-.*\.js$/);
+    const size = brotli(read(path.join(ASSETS, entry)));
+    expect(size, `${entry} = ${kb(size)} KB brotli`).toBeLessThan(160 * 1024);
+  });
+
+  it("the eagerly-preloaded critical path stays under 260 KB brotli", () => {
+    const critical = [
+      ...assetsMatching(/^index-.*\.js$/),
+      ...assetsMatching(/^vendor-.*\.js$/),
+      ...assetsMatching(/^index-.*\.css$/),
+    ];
+    const total = critical.reduce(
+      (sum, f) => sum + brotli(read(path.join(ASSETS, f))),
+      0
     );
+    const html = brotli(read(path.join(DIST, "index.html")));
     expect(
-      missing,
-      `routes rendered under Suspense with no lazyPage() entry`
-    ).toEqual([]);
+      total + html,
+      `critical path = ${kb(total + html)} KB brotli`
+    ).toBeLessThan(260 * 1024);
   });
 
-  it("registers no path that is not a real route", () => {
-    const declared = declaredRoutes();
-    const stray = registeredRoutes().filter(r => !declared.includes(r));
-    expect(stray, `lazyPage() paths with no matching Route literal`).toEqual(
-      []
+  it("does not preload three.js on every page", () => {
+    const html = fs.readFileSync(path.join(DIST, "index.html"), "utf8");
+    const preloads = [
+      ...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"/g),
+    ].map(m => m[1]);
+    expect(preloads.filter(p => /three/i.test(p))).toEqual([]);
+    expect(preloads.length).toBeLessThanOrEqual(4);
+  });
+
+  it("keeps three.js in an async chunk that only 3D pages pull in", () => {
+    const three = assetsMatching(/three/i);
+    expect(three.length).toBeGreaterThan(0);
+    const entry = fs.readFileSync(
+      path.join(ASSETS, assetsMatching(/^index-.*\.js$/)[0]),
+      "utf8"
     );
+    expect(entry).not.toContain("THREE.WebGLRenderer");
   });
 
-  it("registers each path exactly once", () => {
-    const seen = new Map<string, number>();
-    for (const r of registeredRoutes()) seen.set(r, (seen.get(r) ?? 0) + 1);
-    const dupes = [...seen.entries()].filter(([, n]) => n > 1).map(([r]) => r);
-    expect(dupes, "duplicate lazyPage() registrations").toEqual([]);
+  it("keeps the three.js chunk under 220 KB brotli", () => {
+    // The 3D chunk is the single largest asset the site ships; without a
+    // ceiling a dependency bump can silently double what the architecture
+    // and CAD pages download. Set slightly above the 193 KB the current
+    // build produces.
+    const three = assetsMatching(/three/i);
+    expect(three.length).toBeGreaterThan(0);
+    for (const f of three) {
+      const size = brotli(read(path.join(ASSETS, f)));
+      expect(size, `${f} = ${kb(size)} KB brotli`).toBeLessThan(220 * 1024);
+    }
+  });
+});
+
+describe("image budgets", () => {
+  const IMG_DIR = path.join(DIST, "media");
+
+  const imageFiles = () =>
+    fs
+      .readdirSync(IMG_DIR)
+      .filter(f => /\.(avif|gif|jpe?g|png|svg|webp)$/i.test(f));
+
+  it("no single image exceeds 260 KB", () => {
+    const oversized = imageFiles()
+      .map(f => [f, fs.statSync(path.join(IMG_DIR, f)).size] as const)
+      .filter(([, s]) => s > 260 * 1024)
+      .map(([f, s]) => `${f} = ${kb(s)} KB`);
+    expect(oversized).toEqual([]);
   });
 
-  it("still exposes the Route literals prerender.mjs scrapes", () => {
-    // Guards the inverse failure: a refactor that makes routes data-driven would
-    // leave prerender.mjs discovering nothing and ship an unprerendered site.
-    expect(declaredRoutes().length).toBeGreaterThanOrEqual(90);
+  it("the site logo is small enough for a 40px slot", () => {
+    const size = fs.statSync(
+      path.join(IMG_DIR, "embeddedos-logo-mark_bc053888.jpg")
+    ).size;
+    expect(size, `logo = ${kb(size)} KB`).toBeLessThan(20 * 1024);
+  });
+
+  it("the homepage image set stays under 800 KB", () => {
+    const homepageImages = [
+      "hero-background_1bafea1c.jpg",
+      "architecture-diagram-hero_72436b3f.jpg",
+      "community-illustration-eos_6f39c9db.jpg",
+      "what-we-do-illustration_4c2ad2f7.jpg",
+      "embeddedos-logo-mark_bc053888.jpg",
+    ];
+    const total = homepageImages.reduce(
+      (s, f) => s + fs.statSync(path.join(IMG_DIR, f)).size,
+      0
+    );
+    expect(total, `homepage images = ${kb(total)} KB`).toBeLessThan(800 * 1024);
+  });
+
+  it("defers below-the-fold images", () => {
+    const html = fs.readFileSync(path.join(DIST, "index.html"), "utf8");
+    const imgs = [...html.matchAll(/<img\b[^>]*>/g)].map(m => m[0]);
+    const belowFold = imgs.filter(t => !/loading="eager"/.test(t));
+    expect(belowFold.every(t => /loading="lazy"/.test(t))).toBe(true);
+  });
+});
+
+describe("css budget", () => {
+  it("stylesheet stays under 40 KB brotli", () => {
+    const [css] = assetsMatching(/^index-.*\.css$/);
+    const size = brotli(read(path.join(ASSETS, css)));
+    expect(size, `${css} = ${kb(size)} KB brotli`).toBeLessThan(40 * 1024);
+  });
+
+  it("keeps the webfont stylesheet off the critical path on every page", () => {
+    // index.html defers Google Fonts with media="print" + onload. The
+    // prerenderer snapshots a live DOM, where onload has already flipped that
+    // to media="all" — which is what every deployed route shipped, so the
+    // fonts CSS blocked first paint on all of them. Every snapshot must carry
+    // the deferred form the shell declares.
+    const blocking: string[] = [];
+    for (const f of fs.globSync("**/index.html", { cwd: DIST })) {
+      const html = fs.readFileSync(path.join(DIST, f), "utf8");
+      for (const m of html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)) {
+        const tag = m[0];
+        if (!/onload="[^"]*this\.media/.test(tag)) continue;
+        if (!/media="print"/.test(tag))
+          blocking.push(`${f}: ${tag.slice(0, 80)}`);
+      }
+    }
+    expect(blocking).toEqual([]);
   });
 });
