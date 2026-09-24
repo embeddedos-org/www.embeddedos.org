@@ -1,1 +1,230 @@
-import{r,j as e}from"./vendor-react-aOLDZyDv.js";import{O as y,e as f,X as S,M as T,T as F}from"./index-Bnl6CwMS.js";import{A as L,m as j}from"./vendor-motion-Q4tZCRqk.js";import{C as A}from"./circle-check-CO-pR54X.js";import{S as D}from"./send-Bm_o-zyv.js";const O="contact",N=o=>Array.from(o.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(l=>l.offsetParent!==null||l===document.activeElement),_={invalid:"Something in the form didn't validate. Check the fields and try again.",rate_limited:"You've sent several messages recently. Please wait a few minutes before sending another.",send_failed:"The message couldn't be delivered right now. Please try again in a moment.",network:"Couldn't reach the server. Check your connection and try again."},k=o=>({topic:o.topic??O,name:"",email:"",subject:o.subject??"",message:"",website:""});function q(){const[o,l]=r.useState(!1),[m,c]=r.useState("form"),[C,p]=r.useState("network"),[a,i]=r.useState(()=>k({})),g=r.useRef(null),w=r.useRef(null),d=r.useCallback(()=>{l(!1)},[]);r.useEffect(()=>{const t=s=>{const n=s.detail??{};i(k(n)),c("form"),l(!0)};return window.addEventListener(y,t),()=>window.removeEventListener(y,t)},[]),r.useEffect(()=>{const t=s=>{s.key==="Escape"&&d()};return window.addEventListener("keydown",t),()=>window.removeEventListener("keydown",t)},[d]),r.useEffect(()=>{if(!o)return;const t=g.current;if(!t)return;w.current=document.activeElement instanceof HTMLElement?document.activeElement:null,(N(t)[0]??t).focus();const s=n=>{if(n.key!=="Tab")return;const u=N(t);if(u.length===0){n.preventDefault();return}const x=u[0],h=u[u.length-1],b=document.activeElement;t.contains(b)?n.shiftKey&&b===x?(n.preventDefault(),h.focus()):!n.shiftKey&&b===h&&(n.preventDefault(),x.focus()):(n.preventDefault(),(n.shiftKey?h:x).focus())};return document.addEventListener("keydown",s,!0),()=>{document.removeEventListener("keydown",s,!0),w.current?.focus()}},[o]);const E=r.useCallback(async t=>{if(t.preventDefault(),a.website.trim()===""){c("submitting");try{const s=await fetch("/api/contact.php",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({topic:a.topic,name:a.name,email:a.email,subject:a.subject,message:a.message,website:a.website})}),n=await s.json().catch(()=>({}));if(s.ok&&n.ok){c("sent");return}p(n.error==="rate_limited"?"rate_limited":n.error==="invalid"?"invalid":"send_failed"),c("error")}catch{p("network"),c("error")}}},[a]),v=f.find(t=>t.key===a.topic)??f[0];return e.jsx(L,{children:o&&e.jsxs(e.Fragment,{children:[e.jsx(j.div,{initial:{opacity:0},animate:{opacity:1},exit:{opacity:0},transition:{duration:.2},className:"fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm",onClick:d,"aria-hidden":"true"},"contact-backdrop"),e.jsx(j.div,{initial:{opacity:0,scale:.92,y:24},animate:{opacity:1,scale:1,y:0},exit:{opacity:0,scale:.94,y:16},transition:{duration:.28,ease:[.23,1,.32,1]},className:"fixed inset-0 z-[201] flex items-center justify-center p-4 pointer-events-none",children:e.jsxs("div",{ref:g,tabIndex:-1,className:"relative w-full max-w-lg pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none max-h-[90vh] overflow-y-auto",style:{background:"linear-gradient(145deg, #0d1526 0%, #0a0f1e 100%)",border:"1px solid rgba(255,255,255,0.08)"},role:"dialog","aria-modal":"true","aria-labelledby":"contact-title",children:[e.jsx("div",{className:"h-1 w-full",style:{background:"linear-gradient(90deg, #F97316, #F59E0B, #34D399, #60A5FA)"}}),e.jsx("button",{onClick:d,className:"absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors","aria-label":"Close contact dialog",children:e.jsx(S,{size:16})}),e.jsx("div",{className:"p-6",children:m==="sent"?e.jsxs("div",{className:"text-center py-4",children:[e.jsx("div",{className:"w-12 h-12 rounded-xl bg-[#34D399]/15 border border-[#34D399]/30 flex items-center justify-center mx-auto mb-4",children:e.jsx(A,{size:24,className:"text-[#34D399]"})}),e.jsx("h2",{id:"contact-title",className:"font-heading font-extrabold text-white text-xl mb-2",children:"Message sent"}),e.jsxs("p",{className:"text-sm text-white/60 leading-relaxed mb-6",children:["Thank you — a person will read this and reply to"," ",a.email||"the address you provided",".",v.key==="security"?" Security reports are answered within 48 hours.":""]}),e.jsx("button",{onClick:d,className:"w-full px-4 py-3 rounded-xl border border-white/15 bg-white/10 hover:bg-white/15 text-sm font-semibold text-white transition-colors",children:"Close"})]}):e.jsxs(e.Fragment,{children:[e.jsxs("div",{className:"flex items-center gap-3 mb-4",children:[e.jsx("div",{className:"w-12 h-12 rounded-xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center flex-shrink-0",children:e.jsx(T,{size:24,className:"text-orange-400"})}),e.jsxs("div",{children:[e.jsx("h2",{id:"contact-title",className:"font-heading font-extrabold text-white text-xl",children:"Contact Us"}),e.jsx("p",{className:"text-xs text-white/50",children:"Replies come from a person, not a queue."})]})]}),m==="error"&&e.jsxs("div",{role:"alert",className:"flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-300 text-xs",children:[e.jsx(F,{size:14,className:"flex-shrink-0 mt-0.5"}),e.jsx("span",{children:_[C]})]}),e.jsxs("form",{onSubmit:E,className:"space-y-3",children:[e.jsxs("div",{children:[e.jsx("label",{htmlFor:"contact-topic",className:"block text-xs font-medium text-white/50 mb-1.5",children:"What is this about?"}),e.jsx("select",{id:"contact-topic",value:a.topic,onChange:t=>i(s=>({...s,topic:t.target.value})),className:"w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-orange-500/50",children:f.map(t=>e.jsx("option",{value:t.key,className:"bg-[#0d1526]",children:t.label},t.key))}),e.jsx("p",{className:"text-[11px] text-white/50 mt-1",children:v.description})]}),e.jsxs("div",{className:"grid grid-cols-1 sm:grid-cols-2 gap-3",children:[e.jsxs("div",{children:[e.jsx("label",{htmlFor:"contact-name",className:"block text-xs font-medium text-white/50 mb-1.5",children:"Name"}),e.jsx("input",{id:"contact-name",type:"text",required:!0,maxLength:120,value:a.name,onChange:t=>i(s=>({...s,name:t.target.value})),className:"w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50",placeholder:"Ada Lovelace"})]}),e.jsxs("div",{children:[e.jsx("label",{htmlFor:"contact-email",className:"block text-xs font-medium text-white/50 mb-1.5",children:"Your email"}),e.jsx("input",{id:"contact-email",type:"email",required:!0,maxLength:254,value:a.email,onChange:t=>i(s=>({...s,email:t.target.value})),className:"w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50",placeholder:"you@example.org"})]})]}),e.jsxs("div",{children:[e.jsxs("label",{htmlFor:"contact-subject",className:"block text-xs font-medium text-white/50 mb-1.5",children:["Subject"," ",e.jsx("span",{className:"text-white/50",children:"(optional)"})]}),e.jsx("input",{id:"contact-subject",type:"text",maxLength:200,value:a.subject,onChange:t=>i(s=>({...s,subject:t.target.value})),className:"w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50",placeholder:"A short summary"})]}),e.jsxs("div",{children:[e.jsx("label",{htmlFor:"contact-message",className:"block text-xs font-medium text-white/50 mb-1.5",children:"Message"}),e.jsx("textarea",{id:"contact-message",required:!0,minLength:10,maxLength:3e3,rows:4,value:a.message,onChange:t=>i(s=>({...s,message:t.target.value})),className:"w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50 resize-none",placeholder:"What would you like to tell us?"})]}),e.jsxs("div",{className:"absolute -left-[9999px] top-0","aria-hidden":"true",children:[e.jsx("label",{htmlFor:"contact-website",children:"Website"}),e.jsx("input",{id:"contact-website",type:"text",tabIndex:-1,autoComplete:"off",value:a.website,onChange:t=>i(s=>({...s,website:t.target.value}))})]}),e.jsxs("button",{type:"submit",disabled:m==="submitting",className:"flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20 hover:border-orange-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 text-sm font-bold text-white",children:[e.jsx(D,{size:14,className:"text-orange-400"}),m==="submitting"?"Sending…":"Send Message"]})]})]})})]})},"contact-modal")]})})}export{q as default};
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- maximum-scale blocks pinch-zoom; it fails accessibility audits and is not needed. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EmbeddedOS — The Operating System for Every Device</title>
+    <!--
+      Critical CSS: above-the-fold essentials inlined so first paint does
+      not wait for the deferred 45 KB stylesheet (F-07). Source of truth is
+      client/src/critical.css — copy it here verbatim when it changes.
+    -->
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body {
+        margin: 0;
+        background-color: #0b1d3a;
+        color: #eef2f7;
+        font-family:
+          "DM Sans",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        /* line-height, letter-spacing and margin are owned by the design system
+           (display-*, leading-*, mb-*) in the deferred stylesheet. They must not
+           be set here: this block is unlayered, and unlayered author styles beat
+           Tailwind's @layer utilities, so they would permanently override them. */
+      }
+      p {
+        margin: 0 0 1em;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      main {
+        display: block;
+      }
+      .skip-to-content {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        z-index: 9999;
+        padding: 0.75rem 1.5rem;
+        background: #f97316;
+        color: #fff;
+        border-radius: 0.5rem;
+        font-weight: 600;
+      }
+      .skip-to-content:focus {
+        top: 1rem;
+      }
+    </style>
+    <!-- Keep this count aligned with STACK.totals.boards in shared/stack-data.ts. -->
+    <meta
+      name="description"
+      content="EmbeddedOS — The open-source operating system for every device. 14 components, 83 board definitions, 300+ APIs."
+    />
+    <meta name="theme-color" content="#0B1D3A" />
+    <link rel="canonical" href="https://www.embeddedos.org/" />
+    <!--
+      Icons. The site previously declared none and shipped none, so /favicon.ico
+      answered 404 and tabs, bookmarks and home-screen shortcuts had no mark.
+      Generated from the navbar's own logo by scripts/generate-favicons.mjs, so
+      the tab icon cannot drift from the header.
+    -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.embeddedos.org/" />
+    <meta property="og:site_name" content="EmbeddedOS" />
+    <meta
+      property="og:title"
+      content="EmbeddedOS — The Operating System for Every Device"
+    />
+    <meta
+      property="og:description"
+      content="Open-source embedded OS powering IoT, edge AI, automotive, and industrial systems."
+    />
+    <meta
+      property="og:image"
+      content="https://www.embeddedos.org/media/hero-background_1bafea1c.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="EmbeddedOS — The Operating System for Every Device"
+    />
+    <meta
+      name="twitter:description"
+      content="Open-source embedded OS powering IoT, edge AI, automotive, and industrial systems."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.embeddedos.org/media/hero-background_1bafea1c.jpg"
+    />
+    <!--
+      Nonprofit identity as structured data. Google reads the mission, the legal
+      name and the tax ID from the page text either way, but only a reviewer
+      does; this states the same facts in a form the crawler parses directly.
+      Every value here is duplicated from client/src/data/foundation.ts — change
+      both, or neither. tests/unit/foundation-facts.test.ts fails if they drift.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "EmbeddedOS Research Foundation",
+        "alternateName": "EmbeddedOS",
+        "url": "https://www.embeddedos.org",
+        "inLanguage": "en",
+        "publisher": {
+          "@type": "NGO",
+          "name": "Embedded Operating Systems Research Foundation"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "NGO",
+        "name": "Embedded Operating Systems Research Foundation",
+        "alternateName": "EmbeddedOS Foundation",
+        "url": "https://www.embeddedos.org",
+        "logo": "https://www.embeddedos.org/media/embeddedos-logo-mark_bc053888.jpg",
+        "description": "A 501(c)(3) public charity advancing open-source embedded systems research, education and technology for the public benefit.",
+        "taxID": "41-4821627",
+        "nonprofitStatus": "Nonprofit501c3",
+        "foundingDate": "2018",
+        "areaServed": "Worldwide",
+        "email": "contact@embeddedos.org",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "2601 Cortez Dr, Unit 1104",
+          "addressLocality": "Santa Clara",
+          "addressRegion": "CA",
+          "postalCode": "95051",
+          "addressCountry": "US"
+        },
+        "sameAs": [
+          "https://github.com/embeddedos-org",
+          "https://x.com/EmbeddedOS_ORG",
+          "https://www.linkedin.com/company/embedded-operating-systems-research-foundation",
+          "https://www.youtube.com/@EmbeddedOS_ORG",
+          "https://www.instagram.com/embeddedos_org",
+          "https://www.facebook.com/profile.php?id=61588978691494",
+          "https://discord.gg/n6Kd9fwja"
+        ]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      F-28: preload the two woff2 files the above-fold hero text needs (latin
+      subsets): Space Grotesk for the h1, DM Sans for body. All three families
+      are variable fonts, so one file covers every weight — trimming the
+      unused 300/italic axes would not save bytes. These URLs are versioned by
+      Google; refresh them from the css2 response if the font request below
+      changes. A stale preload 404s harmlessly (the CSS still loads the font).
+    -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2"
+    />
+    <!-- Load webfonts without blocking first render. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
+    <script type="module" crossorigin src="/assets/index-DQH62YFQ.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-aOLDZyDv.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-motion-Q4tZCRqk.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-O1gSUIzR.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
