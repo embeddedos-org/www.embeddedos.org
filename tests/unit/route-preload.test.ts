@@ -10,9 +10,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+// @ts-expect-error - plain .mjs script, no type declarations
+import { stripComments } from "../../scripts/prerender.mjs";
 
 const APP_TSX = path.resolve(__dirname, "../../client/src/App.tsx");
-const source = fs.readFileSync(APP_TSX, "utf8");
+// Route discovery scrapes `<Route path="…">` literals with a regex, so a
+// commented-out route would otherwise count as declared. Strip comments
+// first, with the same helper scripts/prerender.mjs uses.
+const source = stripComments(fs.readFileSync(APP_TSX, "utf8"));
 
 /** Route paths declared as `Route path="..."` JSX literals. */
 function declaredRoutes(): string[] {

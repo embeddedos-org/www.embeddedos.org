@@ -1,662 +1,509 @@
-/**
- * ArchitectureDiagram3D — Multi-mode interactive 3D architecture diagram component.
- * Supports 5 distinct visual modes so each product diagram looks unique:
- *   "layered"  — stacked horizontal slabs (OS kernel, boot chain)
- *   "radial"   — hub-and-spoke orbiting nodes (neural pipeline, sensor fusion)
- *   "pipeline" — left-to-right flowing pipeline stages (eDB query path)
- *   "tree"     — top-down hierarchy tree (eOffice app suite)
- *   "matrix"   — 3D grid of nodes (full stack overview)
- */
-import React, { useRef, useState, useMemo, useEffect } from "react";
+import { useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, RoundedBox } from "@react-three/drei";
+import { Edges, Grid, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
-import { supportsWebGL } from "./HeroTechStack";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { ARCHITECTURE_STAGES } from "@/data/architecture";
 
-export type DiagramMode = "layered" | "radial" | "pipeline" | "tree" | "matrix";
+/**
+ * The 3D scene for the "CAD to ecosystem" hero.
+ *
+ * A blueprint-style CAD model of a circuit board starts as a bare outline and
+ * materializes stage by stage (secure boot, kernel, IPC, apps, AI, physical
+ * action) until it is the full EmbeddedOS ecosystem. `step` is the number of
+ * stages built (0 = pure CAD outline, 7 = complete ecosystem).
+ */
 
-export interface DiagramLayer {
-  label: string;
-  sublabels?: string[];
-  color: string;
-  y: number;
-  width?: number;
-  depth?: number;
+const PCB = { x: 6.4, y: 0.16, z: 4.6 };
+const DIE = { x: 2.8, y: 0.24, z: 2.8 };
+const DIE_TOP = 0.2 + DIE.y / 2;
+
+// ── Animated build wrapper ──────────────────────────────────────────────────
+// Lerps each stage's group scale toward 1 (built) or 0 (not yet built) without
+// touching React state, so the animation runs entirely on the render thread.
+function BuildPart({
+  index,
+  step,
+  progress,
+  children,
+}: {
+  index: number;
+  step: number;
+  progress: MutableRefObject<number[]>;
+  children: ReactNode;
+}) {
+  const group = useRef<THREE.Group>(null);
+  useFrame((_, delta) => {
+    const target = step > index ? 1 : 0;
+    const next = THREE.MathUtils.damp(
+      progress.current[index] ?? 0,
+      target,
+      5,
+      delta
+    );
+    progress.current[index] = next;
+    const g = group.current;
+    if (g) {
+      g.visible = next > 0.02;
+      g.scale.setScalar(Math.max(next, 0.0001));
+    }
+  });
+  return <group ref={group}>{children}</group>;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// LAYERED MODE — horizontal stacked slabs (default, used for kernel / boot)
-// ─────────────────────────────────────────────────────────────────────────────
-function LayeredBlock({
-  layer,
-  index,
+// ── Glowing material with an optional "just built" pulse ────────────────────
+function GlowMaterial({
+  color,
+  highlight,
+  metalness = 0.35,
+  roughness = 0.4,
 }: {
-  layer: DiagramLayer;
-  index: number;
+  color: string;
+  highlight: boolean;
+  metalness?: number;
+  roughness?: number;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = useState(false);
-  const w = layer.width ?? 3.6;
-  const d = layer.depth ?? 1.1;
-
-  useFrame(state => {
-    if (!meshRef.current) return;
-    const t = state.clock.elapsedTime;
-    meshRef.current.position.y =
-      layer.y + Math.sin(t * 0.55 + index * 0.85) * 0.035;
-    const target = hovered ? 1.05 : 1.0;
-    meshRef.current.scale.lerp(new THREE.Vector3(target, target, target), 0.1);
+  const ref = useRef<THREE.MeshStandardMaterial>(null);
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const t = clock.getElapsedTime();
+    ref.current.emissiveIntensity = highlight
+      ? 1.5 + Math.sin(t * 5) * 0.6
+      : 0.85;
   });
+  return (
+    <meshStandardMaterial
+      ref={ref}
+      color={color}
+      emissive={color}
+      emissiveIntensity={0.85}
+      metalness={metalness}
+      roughness={roughness}
+    />
+  );
+}
 
-  const color = new THREE.Color(layer.color);
-  const emissive = hovered
-    ? color.clone().multiplyScalar(0.4)
-    : color.clone().multiplyScalar(0.15);
-
+// ── Stage 0 — the bare CAD design: PCB, die, pins, sensor pucks ──────────────
+function CadBase() {
+  const pins = useMemo(() => {
+    const list: [number, number][] = [];
+    for (let i = 0; i < 9; i++) {
+      const z = -1.8 + i * 0.45;
+      list.push([-PCB.x / 2 - 0.18, z]);
+      list.push([PCB.x / 2 + 0.18, z]);
+    }
+    return list;
+  }, []);
+  const pucks: [number, number][] = [
+    [-2.55, -1.65],
+    [2.55, -1.65],
+    [-2.55, 1.65],
+    [2.55, 1.65],
+  ];
   return (
     <group>
-      <RoundedBox
-        ref={meshRef}
-        args={[w, 0.36, d]}
-        radius={0.055}
-        smoothness={4}
-        position={[0, layer.y, 0]}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
+      {/* PCB */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[PCB.x, PCB.y, PCB.z]} />
+        <meshStandardMaterial color="#0c1626" metalness={0.2} roughness={0.7} />
+        <Edges color="#38bdf8" />
+      </mesh>
+      {/* Die footprint */}
+      <mesh position={[0, 0.2, 0]}>
+        <boxGeometry args={[DIE.x, DIE.y, DIE.z]} />
+        <meshStandardMaterial color="#101d33" metalness={0.3} roughness={0.6} />
+        <Edges color="#7dd3fc" />
+      </mesh>
+      {/* Pins */}
+      {pins.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.02, z]}>
+          <boxGeometry args={[0.16, 0.1, 0.55]} />
+          <meshStandardMaterial
+            color="#8fa3bf"
+            metalness={0.85}
+            roughness={0.3}
+          />
+        </mesh>
+      ))}
+      {/* Sensor pucks */}
+      {pucks.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.16, z]}>
+          <cylinderGeometry args={[0.3, 0.3, 0.16, 24]} />
+          <meshStandardMaterial
+            color="#1e293b"
+            metalness={0.4}
+            roughness={0.5}
+          />
+          <Edges color="#38bdf8" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ── Stage 1 — secure boot: the enclave block + lock ring ────────────────────
+function SecureEnclave({ highlight }: { highlight: boolean }) {
+  const ring = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    if (ring.current) ring.current.rotation.z = clock.getElapsedTime() * 0.7;
+  });
+  return (
+    <group>
+      <mesh position={[-0.75, DIE_TOP + 0.28, -0.75]}>
+        <boxGeometry args={[0.95, 0.55, 0.95]} />
+        <GlowMaterial color="#fbbf24" highlight={highlight} />
+        <Edges color="#fde68a" />
+      </mesh>
+      <mesh
+        ref={ring}
+        position={[-0.75, DIE_TOP + 0.1, -0.75]}
+        rotation={[Math.PI / 2, 0, 0]}
       >
+        <torusGeometry args={[0.78, 0.03, 8, 48]} />
         <meshStandardMaterial
-          color={layer.color}
-          emissive={emissive}
-          emissiveIntensity={hovered ? 1.4 : 0.7}
-          metalness={0.35}
-          roughness={0.45}
-          transparent
-          opacity={0.9}
-        />
-      </RoundedBox>
-      {/* Glowing edge strip on top */}
-      <mesh position={[0, layer.y + 0.185, 0]}>
-        <boxGeometry args={[w * 0.96, 0.018, d * 0.96]} />
-        <meshBasicMaterial
-          color={layer.color}
-          transparent
-          opacity={hovered ? 0.9 : 0.5}
+          color="#fbbf24"
+          emissive="#fbbf24"
+          emissiveIntensity={1.4}
+          toneMapped={false}
         />
       </mesh>
     </group>
   );
 }
 
-function LayeredConnectors({ layers }: { layers: DiagramLayer[] }) {
-  const ref = useRef<THREE.Group>(null);
-  useFrame(state => {
-    if (!ref.current) return;
-    ref.current.children.forEach((c, i) => {
-      const mat = (c as THREE.Mesh).material as THREE.MeshBasicMaterial;
-      if (mat)
-        mat.opacity = 0.25 + 0.15 * Math.sin(state.clock.elapsedTime * 0.9 + i);
+// ── Stage 2 — EoS kernel: four CPU cores ─────────────────────────────────────
+function KernelCores({ highlight }: { highlight: boolean }) {
+  const offsets: [number, number][] = [
+    [-0.36, -0.36],
+    [0.36, -0.36],
+    [-0.36, 0.36],
+    [0.36, 0.36],
+  ];
+  return (
+    <group>
+      {offsets.map(([x, z], i) => (
+        <mesh key={i} position={[x, DIE_TOP + 0.16, z]}>
+          <boxGeometry args={[0.55, 0.32, 0.55]} />
+          <GlowMaterial color="#34d399" highlight={highlight} />
+          <Edges color="#a7f3d0" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ── Stage 3 — IPC / data: memory, traces, travelling data pulses ────────────
+function DataPulses() {
+  const group = useRef<THREE.Group>(null);
+  const paths = useMemo(
+    () => [
+      {
+        from: new THREE.Vector3(-0.75, DIE_TOP + 0.1, -0.75),
+        to: new THREE.Vector3(0, DIE_TOP + 0.1, 0.1),
+      },
+      {
+        from: new THREE.Vector3(0, DIE_TOP + 0.1, 0.1),
+        to: new THREE.Vector3(0, DIE_TOP + 0.1, 1.05),
+      },
+    ],
+    []
+  );
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime() * 0.45;
+    group.current?.children.forEach((child, i) => {
+      const seg = paths[i % paths.length];
+      child.position.lerpVectors(seg.from, seg.to, (t + i * 0.37) % 1);
     });
   });
-  const els: React.ReactElement[] = [];
-  for (let i = 0; i < layers.length - 1; i++) {
-    const a = layers[i],
-      b = layers[i + 1];
-    const midY = (a.y + b.y) / 2;
-    const h = Math.abs(b.y - a.y) - 0.36;
-    if (h <= 0) continue;
-    els.push(
-      <mesh key={i} position={[0, midY, 0]}>
-        <cylinderGeometry args={[0.012, 0.012, h, 6]} />
-        <meshBasicMaterial color="#22D3EE" transparent opacity={0.35} />
-      </mesh>
-    );
-  }
-  return <group ref={ref}>{els}</group>;
-}
-
-function LayeredScene({ layers }: { layers: DiagramLayer[] }) {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame(state => {
-    if (!groupRef.current) return;
-    groupRef.current.rotation.y =
-      Math.sin(state.clock.elapsedTime * 0.14) * 0.2;
-  });
   return (
-    <group ref={groupRef}>
-      <LayeredConnectors layers={layers} />
-      {layers.map((layer, i) => (
-        <LayeredBlock key={layer.label} layer={layer} index={i} />
-      ))}
-    </group>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RADIAL MODE — hub sphere + orbiting node spheres (neural pipeline)
-// ─────────────────────────────────────────────────────────────────────────────
-function RadialHub({ color }: { color: string }) {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame(state => {
-    if (!ref.current) return;
-    ref.current.rotation.y = state.clock.elapsedTime * 0.4;
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.25) * 0.15;
-  });
-  return (
-    <mesh ref={ref}>
-      <icosahedronGeometry args={[0.55, 2]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.5}
-        metalness={0.6}
-        roughness={0.2}
-        wireframe={false}
-        transparent
-        opacity={0.92}
-      />
-    </mesh>
-  );
-}
-
-function RadialNode({
-  layer,
-  angle,
-  radius,
-  index,
-}: {
-  layer: DiagramLayer;
-  angle: number;
-  radius: number;
-  index: number;
-}) {
-  const ref = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = useState(false);
-
-  useFrame(state => {
-    if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    const a = angle + t * (0.12 + index * 0.02);
-    ref.current.position.x = Math.cos(a) * radius;
-    ref.current.position.z = Math.sin(a) * radius;
-    ref.current.position.y = Math.sin(t * 0.5 + index) * 0.18;
-    ref.current.scale.setScalar(hovered ? 1.25 : 1.0);
-  });
-
-  return (
-    <group>
-      <mesh
-        ref={ref}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-      >
-        <sphereGeometry args={[0.28, 16, 16]} />
-        <meshStandardMaterial
-          color={layer.color}
-          emissive={layer.color}
-          emissiveIntensity={hovered ? 0.8 : 0.35}
-          metalness={0.4}
-          roughness={0.3}
-          transparent
-          opacity={0.9}
-        />
-      </mesh>
-    </group>
-  );
-}
-
-function RadialScene({ layers }: { layers: DiagramLayer[] }) {
-  const hubColor = layers[Math.floor(layers.length / 2)]?.color ?? "#F97316";
-  const radius = 1.9;
-  return (
-    <group>
-      <RadialHub color={hubColor} />
-      {layers.map((layer, i) => {
-        const angle = (i / layers.length) * Math.PI * 2;
-        return (
-          <RadialNode
-            key={layer.label}
-            layer={layer}
-            angle={angle}
-            radius={radius}
-            index={i}
+    <group ref={group}>
+      {[0, 1, 2, 3].map(i => (
+        <mesh key={i}>
+          <sphereGeometry args={[0.07, 12, 12]} />
+          <meshStandardMaterial
+            color="#cffafe"
+            emissive="#22d3ee"
+            emissiveIntensity={2.2}
+            toneMapped={false}
           />
-        );
-      })}
-    </group>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PIPELINE MODE — left-to-right flowing boxes with arrows (eDB, eIPC)
-// ─────────────────────────────────────────────────────────────────────────────
-function PipelineBox({
-  layer,
-  xPos,
-  index,
-}: {
-  layer: DiagramLayer;
-  xPos: number;
-  index: number;
-}) {
-  const ref = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = useState(false);
-
-  useFrame(state => {
-    if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    ref.current.position.y = Math.sin(t * 0.5 + index * 1.1) * 0.06;
-    ref.current.scale.setScalar(hovered ? 1.08 : 1.0);
-  });
-
-  return (
-    <group>
-      <RoundedBox
-        ref={ref}
-        args={[0.9, 0.55, 0.7]}
-        radius={0.07}
-        smoothness={4}
-        position={[xPos, 0, 0]}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-      >
-        <meshStandardMaterial
-          color={layer.color}
-          emissive={layer.color}
-          emissiveIntensity={hovered ? 0.7 : 0.3}
-          metalness={0.3}
-          roughness={0.5}
-          transparent
-          opacity={0.9}
-        />
-      </RoundedBox>
-      {/* Arrow connector to next */}
-      {index < 4 && (
-        <mesh position={[xPos + 0.72, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
-          <coneGeometry args={[0.07, 0.2, 8]} />
-          <meshBasicMaterial color={layer.color} transparent opacity={0.6} />
         </mesh>
-      )}
-    </group>
-  );
-}
-
-function PipelineScene({ layers }: { layers: DiagramLayer[] }) {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame(state => {
-    if (!groupRef.current) return;
-    groupRef.current.rotation.x =
-      Math.sin(state.clock.elapsedTime * 0.18) * 0.12;
-    groupRef.current.rotation.y =
-      Math.sin(state.clock.elapsedTime * 0.12) * 0.15;
-  });
-  const n = layers.length;
-  const spacing = 1.25;
-  const startX = -((n - 1) * spacing) / 2;
-  return (
-    <group ref={groupRef}>
-      {layers.map((layer, i) => (
-        <PipelineBox
-          key={layer.label}
-          layer={layer}
-          xPos={startX + i * spacing}
-          index={i}
-        />
       ))}
     </group>
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TREE MODE — top-down hierarchy (eOffice suite)
-// ─────────────────────────────────────────────────────────────────────────────
-function TreeNode({
-  color,
-  position,
-  size = 0.38,
-  index,
-}: {
-  color: string;
-  position: [number, number, number];
-  size?: number;
-  index: number;
-}) {
-  const ref = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = useState(false);
-
-  useFrame(state => {
-    if (!ref.current) return;
-    ref.current.position.y =
-      position[1] +
-      Math.sin(state.clock.elapsedTime * 0.5 + index * 0.7) * 0.05;
-    ref.current.scale.setScalar(hovered ? 1.2 : 1.0);
-  });
-
+function IpcTraces({ highlight }: { highlight: boolean }) {
   return (
-    <mesh
-      ref={ref}
-      position={position}
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-    >
-      <boxGeometry args={[size, size, size]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={hovered ? 0.7 : 0.3}
-        metalness={0.4}
-        roughness={0.4}
+    <group>
+      {/* memory block */}
+      <mesh position={[0, DIE_TOP + 0.15, 1.05]}>
+        <boxGeometry args={[1.7, 0.3, 0.55]} />
+        <GlowMaterial color="#22d3ee" highlight={highlight} />
+        <Edges color="#a5f3fc" />
+      </mesh>
+      {/* traces: enclave -> cores -> memory */}
+      <mesh
+        position={[-0.38, DIE_TOP + 0.02, -0.33]}
+        rotation={[0, Math.PI / 4, 0]}
+      >
+        <boxGeometry args={[0.08, 0.03, 1.15]} />
+        <meshStandardMaterial
+          color="#22d3ee"
+          emissive="#22d3ee"
+          emissiveIntensity={1.2}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh position={[0, DIE_TOP + 0.02, 0.58]}>
+        <boxGeometry args={[0.08, 0.03, 0.95]} />
+        <meshStandardMaterial
+          color="#22d3ee"
+          emissive="#22d3ee"
+          emissiveIntensity={1.2}
+          toneMapped={false}
+        />
+      </mesh>
+      <DataPulses />
+    </group>
+  );
+}
+
+// ── Stage 4 — applications: module blocks around the die ────────────────────
+function AppModules({ highlight }: { highlight: boolean }) {
+  const spots: [number, number][] = [
+    [-2.2, -1.5],
+    [2.2, -1.5],
+    [-2.2, 1.5],
+    [2.2, 1.5],
+  ];
+  return (
+    <group>
+      {spots.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.37, z]}>
+          <boxGeometry args={[1.0, 0.42, 1.0]} />
+          <GlowMaterial color="#f97316" highlight={highlight} />
+          <Edges color="#fdba74" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// Seeded PRNG (mulberry32) — geometry must be deterministic so prerendered
+// snapshots are stable frame-to-frame and run-to-run.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// ── Stage 5 — on-device AI: NPU block + neural particle swarm ────────────────
+function NpuSwarm() {
+  const ref = useRef<THREE.Points>(null);
+  const { positions } = useMemo(() => {
+    const rand = mulberry32(0xe05a1);
+    const count = 90;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const a = rand() * Math.PI * 2;
+      const r = 0.9 + rand() * 0.7;
+      positions[i * 3] = 0.78 + Math.cos(a) * r;
+      positions[i * 3 + 1] = DIE_TOP + 0.3 + (rand() - 0.5) * 0.9;
+      positions[i * 3 + 2] = 0.78 + Math.sin(a) * r;
+    }
+    return { positions };
+  }, []);
+  useFrame(({ clock }) => {
+    if (ref.current) ref.current.rotation.y = clock.getElapsedTime() * 0.9;
+  });
+  return (
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.05}
+        color="#c4b5fd"
         transparent
         opacity={0.9}
+        sizeAttenuation
       />
-    </mesh>
+    </points>
   );
 }
 
-function TreeEdge({
-  from,
-  to,
-  color,
-}: {
-  from: [number, number, number];
-  to: [number, number, number];
-  color: string;
-}) {
-  const midX = (from[0] + to[0]) / 2;
-  const midY = (from[1] + to[1]) / 2;
-  const midZ = (from[2] + to[2]) / 2;
-  const dx = to[0] - from[0];
-  const dy = to[1] - from[1];
-  const length = Math.sqrt(dx * dx + dy * dy);
-  const angle = Math.atan2(dx, dy);
+function NpuBlock({ highlight }: { highlight: boolean }) {
   return (
-    <mesh position={[midX, midY, midZ]} rotation={[0, 0, angle]}>
-      <cylinderGeometry args={[0.01, 0.01, length * 0.85, 4]} />
-      <meshBasicMaterial color={color} transparent opacity={0.35} />
-    </mesh>
-  );
-}
-
-function TreeScene({ layers }: { layers: DiagramLayer[] }) {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame(state => {
-    if (!groupRef.current) return;
-    groupRef.current.rotation.y =
-      Math.sin(state.clock.elapsedTime * 0.13) * 0.22;
-  });
-
-  // Build a 3-level tree: root → 2 branches → leaves
-  const root: [number, number, number] = [0, 1.6, 0];
-  const branches: [number, number, number][] = [
-    [-1.4, 0.3, 0],
-    [1.4, 0.3, 0],
-  ];
-  const leaves: [number, number, number][] = [
-    [-2.2, -1.1, 0],
-    [-1.0, -1.1, 0],
-    [0.6, -1.1, 0],
-    [2.0, -1.1, 0],
-    [0, -1.1, 0.8],
-  ];
-
-  const colors = layers.map(l => l.color);
-  const rootColor = colors[0] ?? "#F97316";
-  const branchColors = [colors[1] ?? "#22D3EE", colors[2] ?? "#A78BFA"];
-  const leafColors = colors.slice(2);
-
-  return (
-    <group ref={groupRef}>
-      {/* Edges */}
-      {branches.map((b, i) => (
-        <TreeEdge key={`rb${i}`} from={root} to={b} color={branchColors[i]} />
-      ))}
-      {leaves.map((l, i) => (
-        <TreeEdge
-          key={`bl${i}`}
-          from={branches[i < 2 ? 0 : 1]}
-          to={l}
-          color={leafColors[i] ?? "#6B7280"}
-        />
-      ))}
-      {/* Nodes */}
-      <TreeNode color={rootColor} position={root} size={0.48} index={0} />
-      {branches.map((b, i) => (
-        <TreeNode
-          key={i}
-          color={branchColors[i]}
-          position={b}
-          size={0.38}
-          index={i + 1}
-        />
-      ))}
-      {leaves.map((l, i) => (
-        <TreeNode
-          key={i}
-          color={leafColors[i] ?? "#6B7280"}
-          position={l}
-          size={0.28}
-          index={i + 3}
-        />
-      ))}
+    <group>
+      <mesh position={[0.78, DIE_TOP + 0.25, 0.78]}>
+        <boxGeometry args={[1.15, 0.5, 1.15]} />
+        <GlowMaterial color="#a78bfa" highlight={highlight} />
+        <Edges color="#ddd6fe" />
+      </mesh>
+      <NpuSwarm />
     </group>
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MATRIX MODE — 3D grid of glowing nodes (full stack overview)
-// ─────────────────────────────────────────────────────────────────────────────
-function MatrixNode({
-  color,
-  position,
-  index,
-}: {
-  color: string;
-  position: [number, number, number];
-  index: number;
-}) {
-  const ref = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = useState(false);
-
-  useFrame(state => {
-    if (!ref.current) return;
-    const t = state.clock.elapsedTime;
-    ref.current.position.y =
-      position[1] + Math.sin(t * 0.4 + index * 0.5) * 0.07;
-    const pulse = 0.9 + 0.1 * Math.sin(t * 1.2 + index * 0.8);
-    ref.current.scale.setScalar(hovered ? 1.3 : pulse);
-  });
-
+// ── Stage 6 — physical action: antennas, radiating beams, status LED ─────────
+function ActionArray({ highlight }: { highlight: boolean }) {
+  const corners: [number, number][] = [
+    [-2.9, -2.0],
+    [2.9, -2.0],
+    [-2.9, 2.0],
+    [2.9, 2.0],
+  ];
+  const beams: {
+    position: [number, number, number];
+    rotation: [number, number, number];
+  }[] = [
+    { position: [-1.9, 1.0, 0], rotation: [0, 0, 1.05] },
+    { position: [1.9, 1.0, 0], rotation: [0, 0, -1.05] },
+    { position: [0, 1.0, -1.7], rotation: [1.05, 0, 0] },
+    { position: [0, 1.0, 1.7], rotation: [-1.05, 0, 0] },
+    { position: [-1.35, 1.0, -1.2], rotation: [0.7, 0, 0.7] },
+    { position: [1.35, 1.0, 1.2], rotation: [-0.7, 0, -0.7] },
+  ];
   return (
-    <mesh
-      ref={ref}
-      position={position}
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-    >
-      <octahedronGeometry args={[0.18, 0]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={hovered ? 1.0 : 0.45}
-        metalness={0.5}
-        roughness={0.25}
-        transparent
-        opacity={0.88}
-      />
-    </mesh>
+    <group>
+      {corners.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.75, z]}>
+          <cylinderGeometry args={[0.05, 0.07, 1.3, 10]} />
+          <meshStandardMaterial
+            color="#94a3b8"
+            metalness={0.8}
+            roughness={0.3}
+          />
+        </mesh>
+      ))}
+      {beams.map((b, i) => (
+        <mesh key={i} position={b.position} rotation={b.rotation}>
+          <boxGeometry args={[0.05, 0.05, 1.7]} />
+          <meshStandardMaterial
+            color="#f472b6"
+            emissive="#f472b6"
+            emissiveIntensity={highlight ? 2 : 1.2}
+            toneMapped={false}
+            transparent
+            opacity={0.85}
+          />
+        </mesh>
+      ))}
+      {/* status LED: the ecosystem is alive */}
+      <mesh position={[2.9, 1.45, 2.0]}>
+        <sphereGeometry args={[0.1, 14, 14]} />
+        <meshStandardMaterial
+          color="#34d399"
+          emissive="#34d399"
+          emissiveIntensity={2.5}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
   );
 }
 
-function MatrixScene({ layers }: { layers: DiagramLayer[] }) {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame(state => {
-    if (!groupRef.current) return;
-    groupRef.current.rotation.y = state.clock.elapsedTime * 0.12;
-    groupRef.current.rotation.x =
-      Math.sin(state.clock.elapsedTime * 0.09) * 0.15;
-  });
-
-  // Build a 4×4 grid of nodes, cycling through layer colors
-  const nodes = useMemo(() => {
-    const pts: { pos: [number, number, number]; color: string; idx: number }[] =
-      [];
-    const cols = 4,
-      rows = 4;
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const idx = r * cols + c;
-        pts.push({
-          pos: [(c - 1.5) * 1.1, (r - 1.5) * 1.1, (Math.random() - 0.5) * 0.6],
-          color: layers[idx % layers.length]?.color ?? "#6B7280",
-          idx,
+// ── Full scene ──────────────────────────────────────────────────────────────
+export function CadEvolutionScene({
+  step,
+  progress,
+  reducedMotion,
+  visible,
+  onRendererUnavailable,
+}: {
+  step: number;
+  progress: MutableRefObject<number[]>;
+  reducedMotion: boolean;
+  /**
+   * When false the canvas stays mounted but the render loop is frozen via
+   * frameloop="never" — scrolling the hero offscreen must not tear down
+   * and re-create the WebGL context.
+   */
+  visible?: boolean;
+  onRendererUnavailable?: () => void;
+}) {
+  const activeIndex = Math.min(
+    Math.max(step - 1, 0),
+    ARCHITECTURE_STAGES.length - 1
+  );
+  return (
+    <Canvas
+      dpr={[1, 1.75]}
+      camera={{ position: [8.2, 6.4, 8.2], fov: 42 }}
+      frameloop={visible === false ? "never" : "always"}
+      gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+      onCreated={({ gl }) => {
+        // Decorative canvas: hide from assistive tech (F-22).
+        gl.domElement.setAttribute("aria-hidden", "true");
+        // If the GPU context dies mid-session, fall back to the static
+        // semantic view instead of a frozen canvas.
+        gl.domElement.addEventListener("webglcontextlost", event => {
+          event.preventDefault();
+          onRendererUnavailable?.();
         });
-      }
-    }
-    return pts;
-  }, [layers]);
-
-  return (
-    <group ref={groupRef}>
-      {nodes.map(n => (
-        <MatrixNode
-          key={n.idx}
-          color={n.color}
-          position={n.pos}
-          index={n.idx}
-        />
-      ))}
-    </group>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN COMPONENT
-// ─────────────────────────────────────────────────────────────────────────────
-interface ArchitectureDiagram3DProps {
-  layers: DiagramLayer[];
-  mode?: DiagramMode;
-  height?: number;
-  className?: string;
-  accentColor?: string;
-}
-
-export default function ArchitectureDiagram3D({
-  layers,
-  mode = "layered",
-  height = 320,
-  className = "",
-  accentColor,
-}: ArchitectureDiagram3DProps) {
-  const accent = accentColor ?? layers[0]?.color ?? "#F97316";
-
-  function SceneSwitch() {
-    switch (mode) {
-      case "radial":
-        return <RadialScene layers={layers} />;
-      case "pipeline":
-        return <PipelineScene layers={layers} />;
-      case "tree":
-        return <TreeScene layers={layers} />;
-      case "matrix":
-        return <MatrixScene layers={layers} />;
-      default:
-        return <LayeredScene layers={layers} />;
-    }
-  }
-
-  // Camera presets per mode
-  const camPos: [number, number, number] =
-    mode === "pipeline"
-      ? [0, 1.5, 6.5]
-      : mode === "tree"
-        ? [0, 0.5, 6.5]
-        : mode === "matrix"
-          ? [0, 0, 7.0]
-          : mode === "radial"
-            ? [0, 1.0, 6.0]
-            : [0, 0, 5.5];
-
-  const [webglReady, setWebglReady] = useState(false);
-  const reducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    setWebglReady(supportsWebGL());
-  }, []);
-
-  return (
-    <div
-      className={`relative w-full rounded-2xl overflow-hidden border border-white/8 ${className}`}
-      style={{ height, background: "#050A18" }}
+      }}
     >
-      {/* Layer legend overlay */}
-      <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none z-10 flex flex-wrap gap-x-3 gap-y-1 px-3 py-2"
-        style={{
-          background: "linear-gradient(to top, #050A18ee, transparent)",
-        }}
-      >
-        {layers.map(layer => (
-          <div key={layer.label} className="flex items-center gap-1.5">
-            <div
-              className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ background: layer.color }}
-            />
-            <span className="text-[9px] font-mono font-semibold tracking-wider text-white/55 uppercase">
-              {layer.label}
-            </span>
-          </div>
-        ))}
-      </div>
+      <fog attach="fog" args={["#0a1428", 16, 34]} />
+      <ambientLight intensity={0.55} />
+      <directionalLight position={[6, 10, 4]} intensity={1.3} />
+      <pointLight
+        position={[0, 4, 0]}
+        intensity={12}
+        color="#38bdf8"
+        distance={14}
+      />
 
-      {/* Mode badge */}
-      <div className="absolute top-2 right-3 z-10 pointer-events-none">
-        <span
-          className="text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border"
-          style={{
-            color: accent,
-            borderColor: accent + "40",
-            background: accent + "15",
-          }}
-        >
-          {mode}
-        </span>
-      </div>
+      <Grid
+        position={[0, -0.72, 0]}
+        args={[40, 40]}
+        cellSize={0.8}
+        cellThickness={0.6}
+        cellColor="#14304f"
+        sectionSize={4}
+        sectionThickness={1}
+        sectionColor="#1f4d7a"
+        fadeDistance={30}
+        fadeStrength={2.5}
+        infiniteGrid
+      />
 
-      {!webglReady ? (
-        <div className="absolute inset-0 flex items-end justify-center pb-10 px-4">
-          <p className="text-xs text-white/60 text-center max-w-sm">
-            This diagram renders in 3D where WebGL is available. The layers it
-            shows are listed below.
-          </p>
-        </div>
-      ) : (
-        <Canvas
-          camera={{ position: camPos, fov: 42 }}
-          gl={{ antialias: true, alpha: true }}
-          style={{ background: "transparent" }}
-          frameloop={reducedMotion ? "demand" : "always"}
-        >
-          <ambientLight intensity={0.35} />
-          <directionalLight
-            position={[3, 5, 3]}
-            intensity={0.9}
-            color="#ffffff"
-          />
-          <pointLight position={[-3, 2, 2]} intensity={0.6} color={accent} />
-          <pointLight position={[3, -2, 2]} intensity={0.35} color="#22D3EE" />
-          <React.Suspense fallback={null}>
-            <SceneSwitch />
-          </React.Suspense>
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            minPolarAngle={Math.PI / 5}
-            maxPolarAngle={Math.PI / 1.6}
-            autoRotate={mode !== "pipeline" && !reducedMotion}
-            autoRotateSpeed={0.5}
-          />
-        </Canvas>
-      )}
-    </div>
+      <group position={[0, 0.4, 0]}>
+        <CadBase />
+        <BuildPart index={1} step={step} progress={progress}>
+          <SecureEnclave highlight={activeIndex === 1} />
+        </BuildPart>
+        <BuildPart index={2} step={step} progress={progress}>
+          <KernelCores highlight={activeIndex === 2} />
+        </BuildPart>
+        <BuildPart index={3} step={step} progress={progress}>
+          <IpcTraces highlight={activeIndex === 3} />
+        </BuildPart>
+        <BuildPart index={4} step={step} progress={progress}>
+          <AppModules highlight={activeIndex === 4} />
+        </BuildPart>
+        <BuildPart index={5} step={step} progress={progress}>
+          <NpuBlock highlight={activeIndex === 5} />
+        </BuildPart>
+        <BuildPart index={6} step={step} progress={progress}>
+          <ActionArray highlight={activeIndex === 6} />
+        </BuildPart>
+      </group>
+
+      <OrbitControls
+        makeDefault
+        enablePan={false}
+        enableDamping
+        dampingFactor={0.08}
+        minDistance={6}
+        maxDistance={17}
+        minPolarAngle={Math.PI / 5.5}
+        maxPolarAngle={Math.PI / 2.1}
+        autoRotate={!reducedMotion}
+        autoRotateSpeed={0.55}
+      />
+    </Canvas>
   );
 }

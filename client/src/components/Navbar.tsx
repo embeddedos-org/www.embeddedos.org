@@ -817,7 +817,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileOpen(false)}
               aria-hidden="true"
             />
@@ -828,7 +828,10 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-80 glass-strong border-l border-white/10 overflow-y-auto lg:hidden"
+              // The drawer starts below the 64px site header (top-16) and sits
+              // under it in z-order, so its header row can never overlap the
+              // site header — the header's own toggle (now an X) closes it.
+              className="fixed top-16 right-0 bottom-0 z-40 w-80 glass-strong border-l border-white/10 overflow-y-auto lg:hidden"
               aria-label="Mobile navigation"
             >
               {/* Header */}

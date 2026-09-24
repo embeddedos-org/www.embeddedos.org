@@ -1,12 +1,18 @@
 /**
  * Regenerates shared/stack-data.json from the sibling EmbeddedOS repositories.
  *
- * The website used to state the stack's shape from memory, and it drifted: the
- * platform count read "52+" on four pages while eos/boards held 83 definitions,
- * and the kernel's timing was quoted as "sub-1ms", "<=10us" and "sub-1us" on
- * three different pages. Everything this script emits is counted or copied from
- * a source repository, so a number can only change when the source changes.
+ * RETIRED (2026-09-18): the eos-stack-manifest repository this pipeline reads
+ * was renamed to the private embeddedos-stack repository, so there is no
+ * longer a public manifest source to count from. shared/stack-data.ts is now
+ * refreshed by hand from the live org API (see its header comment) and this
+ * script exits 1 to say so, rather than failing on a "missing sibling repo"
+ * that can no longer be cloned. Restore the pipeline if a public manifest
+ * source returns; do not point CI at it — the manifest is private.
  *
+ * (Historical note, kept for context: the website used to state the stack's
+ * shape from memory, and it drifted: the platform count read "52+" on four
+ * pages while eos/boards held 83 definitions, and the kernel's timing was
+ * quoted as "sub-1ms", "<=10us" and "sub-1us" on three different pages.)
  * The output is committed. The website builds from the committed JSON and never
  * reads the sibling repos, so CI and a fresh clone work without them. Run this
  * when the stack changes:
@@ -39,8 +45,10 @@ function require_(p, what) {
   if (!fs.existsSync(p)) {
     console.error(
       `[sync:stack] missing ${what}: ${p}\n` +
-        `  This script reads the sibling repositories in ${WORKSPACE}.\n` +
-        `  Clone them, or leave shared/stack-data.json as committed.`
+        `  The eos-stack-manifest source was renamed to the private\n` +
+        `  embeddedos-stack repository (2026-09-18), so this pipeline is\n` +
+        `  retired: there is no public manifest to clone. shared/stack-data.ts\n` +
+        `  is refreshed by hand from the live org API — see its header comment.`
     );
     process.exit(1);
   }

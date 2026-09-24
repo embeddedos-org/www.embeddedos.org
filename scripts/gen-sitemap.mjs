@@ -10,7 +10,9 @@
  * the moment a route is added. Generating it removes that class of bug rather
  * than fixing one instance of it. The route list comes from the same
  * `discoverRoutes()` the prerenderer uses, so a page that is prerendered and a
- * page that is listed for crawlers cannot disagree.
+ * page that is listed for crawlers cannot disagree. discoverRoutes() strips
+ * JS/JSX comments before scraping, so a commented-out Route literal is not
+ * listed here either.
  *
  * The sitemap intentionally omits <lastmod>: the route set is generated from
  * discoverRoutes(), but the source file lives under source control and there

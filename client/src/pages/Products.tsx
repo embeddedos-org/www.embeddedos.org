@@ -857,7 +857,7 @@ export default function Products() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90 active:scale-95"
                 style={{ background: "#F97316", color: "#fff" }}
               >
-                Get Started Free <ArrowRight size={15} />
+                Get Started <ArrowRight size={15} />
               </Link>
               <Link
                 href="/docs"

@@ -411,11 +411,18 @@ export function CadEvolutionScene({
   step,
   progress,
   reducedMotion,
+  visible,
   onRendererUnavailable,
 }: {
   step: number;
   progress: MutableRefObject<number[]>;
   reducedMotion: boolean;
+  /**
+   * When false the canvas stays mounted but the render loop is frozen via
+   * frameloop="never" — scrolling the hero offscreen must not tear down
+   * and re-create the WebGL context.
+   */
+  visible?: boolean;
   onRendererUnavailable?: () => void;
 }) {
   const activeIndex = Math.min(
@@ -426,6 +433,7 @@ export function CadEvolutionScene({
     <Canvas
       dpr={[1, 1.75]}
       camera={{ position: [8.2, 6.4, 8.2], fov: 42 }}
+      frameloop={visible === false ? "never" : "always"}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
       onCreated={({ gl }) => {
         // Decorative canvas: hide from assistive tech (F-22).

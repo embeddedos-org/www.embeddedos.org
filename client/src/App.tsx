@@ -1,1315 +1,509 @@
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch, useLocation } from "wouter";
-import ErrorBoundary from "./components/ErrorBoundary";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import {
-  lazy,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-  type ComponentType,
-  type ReactNode,
-} from "react";
-import { applyRouteMeta, readHeading } from "./lib/page-meta";
-import { OPEN_CONTACT_EVENT } from "./lib/contact-form";
+import { useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Edges, Grid, OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
+import { ARCHITECTURE_STAGES } from "@/data/architecture";
 
-// --- Modal widget code-splitting (F-07) --------------------------------------
-// The four modal widgets (EBot, SearchModal, DonateModal, ContactFormModal)
-// were statically imported here, so their code — including EBot's knowledge
-// base — downloaded, parsed and compiled before first paint on every page,
-// though none is ever visible on load. They are now split into async chunks:
-//
-// - SearchModal / ContactFormModal: mounted on the FIRST open event only.
-//   ModalGate listens for the event from the entry chunk, loads the widget
-//   chunk, mounts it, then re-dispatches the event — the widget's own
-//   listener (attached in its mount effect, which runs before the gate's
-//   re-dispatch effect) opens it. No open event is ever lost.
-// - DonateModal / EBot: loaded when the browser is idle (requestIdleCallback
-//   with a setTimeout fallback). DonateModal opens only on the explicit
-//   manual trigger (`open-donate`) — it has no auto-show timer; EBot's chat
-//   FAB appears once idle rather than competing with first paint.
-const loadSearchModal = () => import("./components/SearchModal");
-const loadDonateModal = () => import("./components/DonateModal");
-const loadContactFormModal = () => import("./components/ContactFormModal");
-const loadEBot = () => import("./components/EBot");
+/**
+ * The 3D scene for the "CAD to ecosystem" hero.
+ *
+ * A blueprint-style CAD model of a circuit board starts as a bare outline and
+ * materializes stage by stage (secure boot, kernel, IPC, apps, AI, physical
+ * action) until it is the full EmbeddedOS ecosystem. `step` is the number of
+ * stages built (0 = pure CAD outline, 7 = complete ecosystem).
+ */
 
-const SearchModalLazy = lazy(loadSearchModal);
-const DonateModalLazy = lazy(loadDonateModal);
-const ContactFormModalLazy = lazy(loadContactFormModal);
-const EBotLazy = lazy(loadEBot);
+const PCB = { x: 6.4, y: 0.16, z: 4.6 };
+const DIE = { x: 2.8, y: 0.24, z: 2.8 };
+const DIE_TOP = 0.2 + DIE.y / 2;
 
-/** Mount a modal widget on its first open event; re-fire the event once mounted. */
-function ModalGate({
-  event,
-  load,
+// ── Animated build wrapper ──────────────────────────────────────────────────
+// Lerps each stage's group scale toward 1 (built) or 0 (not yet built) without
+// touching React state, so the animation runs entirely on the render thread.
+function BuildPart({
+  index,
+  step,
+  progress,
   children,
 }: {
-  event: string;
-  load: () => Promise<unknown>;
+  index: number;
+  step: number;
+  progress: MutableRefObject<number[]>;
   children: ReactNode;
 }) {
-  const [ready, setReady] = useState(false);
-  const pending = useRef<Event | null>(null);
-
-  useEffect(() => {
-    const onFirstOpen = (e: Event) => {
-      pending.current = e;
-      window.removeEventListener(event, onFirstOpen);
-      void load().then(
-        () => setReady(true),
-        () => {
-          // Chunk failed to load (offline?): re-arm so a later open retries
-          // instead of silently swallowing every future event.
-          pending.current = null;
-          window.addEventListener(event, onFirstOpen);
-        }
-      );
-    };
-    window.addEventListener(event, onFirstOpen);
-    return () => window.removeEventListener(event, onFirstOpen);
-  }, [event, load]);
-
-  // Child effects (where the widget attaches its own open listener) run
-  // before this parent effect, so the re-dispatched event always lands.
-  useEffect(() => {
-    if (!ready || !pending.current) return;
-    const e = pending.current;
-    pending.current = null;
-    const detail = (e as CustomEvent).detail;
-    window.dispatchEvent(
-      detail !== undefined
-        ? new CustomEvent(e.type, { detail })
-        : new Event(e.type)
+  const group = useRef<THREE.Group>(null);
+  useFrame((_, delta) => {
+    const target = step > index ? 1 : 0;
+    const next = THREE.MathUtils.damp(
+      progress.current[index] ?? 0,
+      target,
+      5,
+      delta
     );
-  }, [ready]);
-
-  if (!ready) return null;
-  return <Suspense fallback={null}>{children}</Suspense>;
-}
-
-/** Load a widget when the browser is idle, off the critical path. */
-function IdleGate({
-  load,
-  children,
-}: {
-  load: () => Promise<unknown>;
-  children: ReactNode;
-}) {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    const kick = () => {
-      void load().then(() => {
-        if (!cancelled) setReady(true);
-      });
-    };
-    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(kick, { timeout: 2500 });
-      return () => {
-        cancelled = true;
-        window.cancelIdleCallback(id);
-      };
+    progress.current[index] = next;
+    const g = group.current;
+    if (g) {
+      g.visible = next > 0.02;
+      g.scale.setScalar(Math.max(next, 0.0001));
     }
-    const t = setTimeout(kick, 1200);
-    return () => {
-      cancelled = true;
-      clearTimeout(t);
-    };
-  }, [load]);
-
-  if (!ready) return null;
-  return <Suspense fallback={null}>{children}</Suspense>;
+  });
+  return <group ref={group}>{children}</group>;
 }
 
-// Lazy-load all pages for code splitting
-// --- Route preloading -------------------------------------------------------
-// Every route below "/" is code-split. `pnpm prerender` writes real HTML for all
-// 92 routes, but React cannot keep that markup across a suspend: the prerenderer
-// snapshots a live browser, so the HTML carries none of the Suspense boundary
-// markers that hydration needs to recognise a server-rendered boundary. React
-// therefore swaps in <PageLoader /> until the chunk arrives — ~300ms of blank
-// <main> on every lazy route.
-//
-// Registering each loader against its route path lets the entry point await the
-// matching chunk *before* handing the DOM to React, so the prerendered markup
-// stays on screen until the real page is ready to replace it in one step.
-//
-// The path passed here must match the Route path literal below; the
-// route-preload sync test in tests/unit asserts that for every route.
-// (Do not write an angle-bracket Route path literal in this comment —
-//  scripts/prerender.mjs discovers routes by regex and would scrape it.)
-const pageLoaders: Record<string, () => Promise<unknown>> = {};
-const preloaded = new Map<string, ComponentType>();
+// ── Glowing material with an optional "just built" pulse ────────────────────
+function GlowMaterial({
+  color,
+  highlight,
+  metalness = 0.35,
+  roughness = 0.4,
+}: {
+  color: string;
+  highlight: boolean;
+  metalness?: number;
+  roughness?: number;
+}) {
+  const ref = useRef<THREE.MeshStandardMaterial>(null);
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const t = clock.getElapsedTime();
+    ref.current.emissiveIntensity = highlight
+      ? 1.5 + Math.sin(t * 5) * 0.6
+      : 0.85;
+  });
+  return (
+    <meshStandardMaterial
+      ref={ref}
+      color={color}
+      emissive={color}
+      emissiveIntensity={0.85}
+      metalness={metalness}
+      roughness={roughness}
+    />
+  );
+}
 
-// Route components are rendered without props, so the wrapper forwards none.
-function lazyPage<P extends object = Record<string, never>>(
-  path: string,
-  loader: () => Promise<{ default: ComponentType<P> }>,
-  /**
-   * Extra concrete paths served by this same component.
-   *
-   * preloadRoute() keys the registry by exact pathname, so a component mounted
-   * at several URLs needs a loader entry for each. Without them the
-   * /article-xxx pages would lose synchronous hydration and flash <PageLoader />
-   * over prerendered markup.
-   */
-  aliases: readonly string[] = []
-) {
-  const erased = loader as () => Promise<{ default: ComponentType }>;
-  pageLoaders[path] = erased;
-  for (const alias of aliases) pageLoaders[alias] = erased;
-  const Lazy = lazy(loader);
+// ── Stage 0 — the bare CAD design: PCB, die, pins, sensor pucks ──────────────
+function CadBase() {
+  const pins = useMemo(() => {
+    const list: [number, number][] = [];
+    for (let i = 0; i < 9; i++) {
+      const z = -1.8 + i * 0.45;
+      list.push([-PCB.x / 2 - 0.18, z]);
+      list.push([PCB.x / 2 + 0.18, z]);
+    }
+    return list;
+  }, []);
+  const pucks: [number, number][] = [
+    [-2.55, -1.65],
+    [2.55, -1.65],
+    [-2.55, 1.65],
+    [2.55, 1.65],
+  ];
+  return (
+    <group>
+      {/* PCB */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[PCB.x, PCB.y, PCB.z]} />
+        <meshStandardMaterial color="#0c1626" metalness={0.2} roughness={0.7} />
+        <Edges color="#38bdf8" />
+      </mesh>
+      {/* Die footprint */}
+      <mesh position={[0, 0.2, 0]}>
+        <boxGeometry args={[DIE.x, DIE.y, DIE.z]} />
+        <meshStandardMaterial color="#101d33" metalness={0.3} roughness={0.6} />
+        <Edges color="#7dd3fc" />
+      </mesh>
+      {/* Pins */}
+      {pins.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.02, z]}>
+          <boxGeometry args={[0.16, 0.1, 0.55]} />
+          <meshStandardMaterial
+            color="#8fa3bf"
+            metalness={0.85}
+            roughness={0.3}
+          />
+        </mesh>
+      ))}
+      {/* Sensor pucks */}
+      {pucks.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.16, z]}>
+          <cylinderGeometry args={[0.3, 0.3, 0.16, 24]} />
+          <meshStandardMaterial
+            color="#1e293b"
+            metalness={0.4}
+            roughness={0.5}
+          />
+          <Edges color="#38bdf8" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
 
-  // Awaiting the chunk is not enough on its own: React.lazy resolves through a
-  // promise, so it suspends for at least one tick even when the module is
-  // already in the registry — long enough for Suspense to swap the prerendered
-  // markup for <PageLoader />. When the entry point has already resolved this
-  // route, render the real component synchronously and skip Suspense entirely.
-  // Props are forwarded so one component can serve several routes — the
-  // article route passes a slug. Untyped before, which meant `<ArticlePage
-  // slug="..." />` failed to compile even though the component accepts it.
-  return function PreloadedPage(props: P) {
-    // preloaded is keyed by the pathname that was fetched, which for an alias
-    // is not this component's declared path. Check both.
-    const here =
-      typeof window !== "undefined" ? window.location.pathname : path;
-    const Ready = (preloaded.get(path) ?? preloaded.get(here)) as
-      ComponentType<P> | undefined;
-    return Ready ? <Ready {...props} /> : <Lazy {...props} />;
+// ── Stage 1 — secure boot: the enclave block + lock ring ────────────────────
+function SecureEnclave({ highlight }: { highlight: boolean }) {
+  const ring = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    if (ring.current) ring.current.rotation.z = clock.getElapsedTime() * 0.7;
+  });
+  return (
+    <group>
+      <mesh position={[-0.75, DIE_TOP + 0.28, -0.75]}>
+        <boxGeometry args={[0.95, 0.55, 0.95]} />
+        <GlowMaterial color="#fbbf24" highlight={highlight} />
+        <Edges color="#fde68a" />
+      </mesh>
+      <mesh
+        ref={ring}
+        position={[-0.75, DIE_TOP + 0.1, -0.75]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <torusGeometry args={[0.78, 0.03, 8, 48]} />
+        <meshStandardMaterial
+          color="#fbbf24"
+          emissive="#fbbf24"
+          emissiveIntensity={1.4}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+// ── Stage 2 — EoS kernel: four CPU cores ─────────────────────────────────────
+function KernelCores({ highlight }: { highlight: boolean }) {
+  const offsets: [number, number][] = [
+    [-0.36, -0.36],
+    [0.36, -0.36],
+    [-0.36, 0.36],
+    [0.36, 0.36],
+  ];
+  return (
+    <group>
+      {offsets.map(([x, z], i) => (
+        <mesh key={i} position={[x, DIE_TOP + 0.16, z]}>
+          <boxGeometry args={[0.55, 0.32, 0.55]} />
+          <GlowMaterial color="#34d399" highlight={highlight} />
+          <Edges color="#a7f3d0" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// ── Stage 3 — IPC / data: memory, traces, travelling data pulses ────────────
+function DataPulses() {
+  const group = useRef<THREE.Group>(null);
+  const paths = useMemo(
+    () => [
+      {
+        from: new THREE.Vector3(-0.75, DIE_TOP + 0.1, -0.75),
+        to: new THREE.Vector3(0, DIE_TOP + 0.1, 0.1),
+      },
+      {
+        from: new THREE.Vector3(0, DIE_TOP + 0.1, 0.1),
+        to: new THREE.Vector3(0, DIE_TOP + 0.1, 1.05),
+      },
+    ],
+    []
+  );
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime() * 0.45;
+    group.current?.children.forEach((child, i) => {
+      const seg = paths[i % paths.length];
+      child.position.lerpVectors(seg.from, seg.to, (t + i * 0.37) % 1);
+    });
+  });
+  return (
+    <group ref={group}>
+      {[0, 1, 2, 3].map(i => (
+        <mesh key={i}>
+          <sphereGeometry args={[0.07, 12, 12]} />
+          <meshStandardMaterial
+            color="#cffafe"
+            emissive="#22d3ee"
+            emissiveIntensity={2.2}
+            toneMapped={false}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function IpcTraces({ highlight }: { highlight: boolean }) {
+  return (
+    <group>
+      {/* memory block */}
+      <mesh position={[0, DIE_TOP + 0.15, 1.05]}>
+        <boxGeometry args={[1.7, 0.3, 0.55]} />
+        <GlowMaterial color="#22d3ee" highlight={highlight} />
+        <Edges color="#a5f3fc" />
+      </mesh>
+      {/* traces: enclave -> cores -> memory */}
+      <mesh
+        position={[-0.38, DIE_TOP + 0.02, -0.33]}
+        rotation={[0, Math.PI / 4, 0]}
+      >
+        <boxGeometry args={[0.08, 0.03, 1.15]} />
+        <meshStandardMaterial
+          color="#22d3ee"
+          emissive="#22d3ee"
+          emissiveIntensity={1.2}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh position={[0, DIE_TOP + 0.02, 0.58]}>
+        <boxGeometry args={[0.08, 0.03, 0.95]} />
+        <meshStandardMaterial
+          color="#22d3ee"
+          emissive="#22d3ee"
+          emissiveIntensity={1.2}
+          toneMapped={false}
+        />
+      </mesh>
+      <DataPulses />
+    </group>
+  );
+}
+
+// ── Stage 4 — applications: module blocks around the die ────────────────────
+function AppModules({ highlight }: { highlight: boolean }) {
+  const spots: [number, number][] = [
+    [-2.2, -1.5],
+    [2.2, -1.5],
+    [-2.2, 1.5],
+    [2.2, 1.5],
+  ];
+  return (
+    <group>
+      {spots.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.37, z]}>
+          <boxGeometry args={[1.0, 0.42, 1.0]} />
+          <GlowMaterial color="#f97316" highlight={highlight} />
+          <Edges color="#fdba74" />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+// Seeded PRNG (mulberry32) — geometry must be deterministic so prerendered
+// snapshots are stable frame-to-frame and run-to-run.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-/**
- * Load the chunk backing `pathname` and record its component so the first
- * render can mount it synchronously.
- */
-export async function preloadRoute(pathname: string): Promise<void> {
-  const key = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
-  const loader = pageLoaders[key];
-  if (!loader) return;
-  try {
-    const mod = (await loader()) as { default: ComponentType };
-    preloaded.set(key, mod.default);
-  } catch {
-    // A failed chunk must not block startup. Falling through leaves the route
-    // on its lazy path, where the error boundary reports it normally.
-  }
-}
-
-/** Every code-split route path. Exported for the sync test. */
-export const codeSplitRoutes = (): string[] => Object.keys(pageLoaders);
-
-const GettingStarted = lazyPage(
-  "/getting-started",
-  () => import("./pages/GettingStarted")
-);
-const Docs = lazyPage("/docs", () => import("./pages/Docs"));
-const Books = lazyPage("/books", () => import("./pages/Books"));
-const Flow = lazyPage("/flow", () => import("./pages/Flow"));
-const HardwareLab = lazyPage(
-  "/hardware-lab",
-  () => import("./pages/HardwareLab")
-);
-const Stacks = lazyPage("/stacks", () => import("./pages/Stacks"));
-const EApps = lazyPage("/eapps", () => import("./pages/EApps"));
-const Kids = lazyPage("/kids", () => import("./pages/Kids"));
-const GetInvolved = lazyPage(
-  "/get-involved",
-  () => import("./pages/GetInvolved")
-);
-const Health = lazyPage("/health", () => import("./pages/Health"));
-const Aerospace = lazyPage("/aerospace", () => import("./pages/Aerospace"));
-const Projects = lazyPage("/projects", () => import("./pages/Projects"));
-const About = lazyPage("/about", () => import("./pages/About"));
-const Mission = lazyPage("/mission", () => import("./pages/Mission"));
-const Transparency = lazyPage(
-  "/transparency",
-  () => import("./pages/Transparency")
-);
-const Industries = lazyPage("/industries", () => import("./pages/Industries"));
-const Donate = lazyPage("/donate", () => import("./pages/Donate"));
-const News = lazyPage("/news", () => import("./pages/News"));
-const Privacy = lazyPage("/privacy", () => import("./pages/Privacy"));
-const Terms = lazyPage("/terms", () => import("./pages/Terms"));
-const Membership = lazyPage("/membership", () => import("./pages/Membership"));
-const Demo = lazyPage("/demo", () => import("./pages/Demo"));
-const HealthCompare = lazyPage(
-  "/health-compare",
-  () => import("./pages/HealthCompare")
-);
-const Products = lazyPage("/products", () => import("./pages/Products"));
-const EoS = lazyPage("/eos", () => import("./pages/EoS"));
-const EBoot = lazyPage("/eboot", () => import("./pages/EBoot"));
-const EAI = lazyPage("/eai", () => import("./pages/EAI"));
-const EOffice = lazyPage("/eoffice", () => import("./pages/EOffice"));
-const EFlow = lazyPage("/eflow", () => import("./pages/EFlow"));
-const EBuildPage = lazyPage("/ebuild", () => import("./pages/EBuildPage"));
-const ApiDocs = lazyPage("/api-docs", () => import("./pages/ApiDocs"));
-const ERadar360 = lazyPage("/eradar360", () => import("./pages/ERadar360"));
-const EHealth365 = lazyPage("/ehealth365", () => import("./pages/EHealth365"));
-const Careers = lazyPage("/careers", () => import("./pages/Careers"));
-const FAQ = lazyPage("/faq", () => import("./pages/FAQ"));
-const Roadmap = lazyPage("/roadmap", () => import("./pages/Roadmap"));
-const Security = lazyPage("/security", () => import("./pages/Security"));
-const Internship = lazyPage("/internship", () => import("./pages/Internship"));
-const EcosystemPage = lazyPage("/ecosystem", () => import("./pages/Ecosystem"));
-const Research = lazyPage("/research", () => import("./pages/Research"));
-const Changelog = lazyPage("/changelog", () => import("./pages/Changelog"));
-const Partners = lazyPage("/partners", () => import("./pages/Partners"));
-const Vision = lazyPage("/vision", () => import("./pages/Vision"));
-const ContactPage = lazyPage("/contact", () => import("./pages/Contact"));
-const Events = lazyPage("/events", () => import("./pages/Events"));
-const LicensesPage = lazyPage("/licenses", () => import("./pages/Licenses"));
-const CodeOfConduct = lazyPage(
-  "/code-of-conduct",
-  () => import("./pages/CodeOfConduct")
-);
-const EDB = lazyPage("/edb", () => import("./pages/EDB"));
-const ENIPage = lazyPage("/eni", () => import("./pages/ENI"));
-const EoStudioPage = lazyPage("/eostudio", () => import("./pages/EoStudio"));
-const Organization = lazyPage(
-  "/organization",
-  () => import("./pages/Organization")
-);
-const CommunityPage = lazyPage("/community", () => import("./pages/Community"));
-const EIPCPage = lazyPage("/eipc", () => import("./pages/EIPC"));
-const EoSimProductPage = lazyPage(
-  "/eosim",
-  () => import("./pages/EoSimProduct")
-);
-const BuildingOSPage = lazyPage(
-  "/building-os",
-  () => import("./pages/BuildingOS")
-);
-const AIOSPage = lazyPage("/ai-os", () => import("./pages/AIOS"));
-const SponsorsPage = lazyPage("/sponsors", () => import("./pages/Sponsors"));
-const CertificationPage = lazyPage(
-  "/certification",
-  () => import("./pages/Certification")
-);
-const FutureResearchPage = lazyPage(
-  "/future-research",
-  () => import("./pages/FutureResearch")
-);
-const NeuralLinkAIPage = lazyPage(
-  "/neural-link-ai",
-  () => import("./pages/NeuralLinkAI")
-);
-const FundraisingPage = lazyPage(
-  "/fundraising",
-  () => import("./pages/Fundraising")
-);
-const EBrowserPage = lazyPage("/ebrowser", () => import("./pages/EBrowser"));
-const EServiceAppsPage = lazyPage(
-  "/eserviceapps",
-  () => import("./pages/EServiceApps")
-);
-const EAIEdgePage = lazyPage("/eai-edge", () => import("./pages/EAIEdge"));
-const EOSuitePage = lazyPage("/eosuite", () => import("./pages/EOSuite"));
-const ResourcesPage = lazyPage("/resources", () => import("./pages/Resources"));
-// One lazily-loaded component serves every article; the slug selects the
-// content. The /article-xxx paths (eight legacy entries plus later additions
-// such as the newsletter archive) are kept as explicit routes below so
-// existing links and search-engine results keep working.
-/**
- * Index pages for the content kinds that have something to list.
- *
- * One component, filtered by kind. Kinds with no content are deliberately not
- * routed: the repository standard forbids placeholders, and a /podcast page
- * saying "no episodes yet" is a placeholder with a URL. The full taxonomy,
- * including its empty categories, is published on /research instead.
- */
-// Every category index — content kinds and research areas alike — is the same
-// component behind a different path. The alias list is what lets the route
-// preloader warm any of them from the one chunk.
-const ContentIndexPage = lazyPage<{ path: string }>(
-  "/blog",
-  () => import("./pages/ContentIndex"),
-  [
-    "/publications",
-    "/technical-reports",
-    "/benchmarks",
-    "/press-releases",
-    "/newsletter",
-    "/case-studies",
-    "/member-stories",
-    "/product-showcases",
-    "/project-showcases",
-    "/videos",
-    "/podcast",
-    "/webinars",
-    "/white-papers",
-    "/datasets",
-    "/research/architecture",
-    "/research/security",
-    "/research/ai",
-    "/research/embedded-systems",
-    "/research/rtos",
-    "/research/linux",
-    "/research/hardware",
-    "/research/networking",
-  ]
-);
-
-const ProgrammeDetailPage = lazyPage<{ path: string }>(
-  "/programmes/ambassador",
-  () => import("./pages/ProgrammePage"),
-  [
-    "/programmes/university-program",
-    "/programmes/community-meetups",
-    "/programmes/conference-presence",
-    "/programmes/member-marketing",
-    "/programmes/partner-marketing",
-    "/programmes/university-collaborations",
-    "/programmes/industry-collaborations",
-    "/programmes/grants",
-  ]
-);
-
-const ProgrammesPage = lazyPage(
-  "/programmes",
-  () => import("./pages/Programmes")
-);
-const BrandAssetsPage = lazyPage("/brand", () => import("./pages/BrandAssets"));
-const PressKitPage = lazyPage("/press-kit", () => import("./pages/PressKit"));
-const SocialMediaPage = lazyPage(
-  "/social",
-  () => import("./pages/SocialMedia")
-);
-const YouTubeChannelPage = lazyPage(
-  "/youtube",
-  () => import("./pages/YouTubeChannel")
-);
-
-const ArticlePage = lazyPage<{ slug?: string }>(
-  "/article/:slug",
-  () => import("./pages/Article"),
-  [
-    "/article-eos-platform-launch",
-    "/article-eai-llm-bench",
-    "/article-eboot-secure-boot-deepdive",
-    "/article-edb-encryption-at-rest",
-    "/article-eni-1024-channel-pipeline",
-    "/article-eos-roadmap-2026",
-    "/article-eosim-hil-bridge",
-    "/article-foundation-membership-2026",
-    "/article-newsletter-issue-01",
-  ]
-);
-const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
-const Patents = lazyPage("/patents", () => import("./pages/Patents"));
-const ProductEoS = lazyPage("/product-eos", () => import("./pages/ProductEoS"));
-const ProductEoSPlatform = lazyPage(
-  "/product-eos-platform",
-  () => import("./pages/ProductEoSPlatform")
-);
-const ProductEBoot = lazyPage(
-  "/product-eboot",
-  () => import("./pages/ProductEBoot")
-);
-const ProductEAI = lazyPage("/product-eai", () => import("./pages/ProductEAI"));
-const ProductENI = lazyPage("/product-eni", () => import("./pages/ProductENI"));
-const ProductEIPC = lazyPage(
-  "/product-eipc",
-  () => import("./pages/ProductEIPC")
-);
-const ProductEDB = lazyPage("/product-edb", () => import("./pages/ProductEDB"));
-const ProductEBuild = lazyPage(
-  "/product-ebuild",
-  () => import("./pages/ProductEBuild")
-);
-const ProductEoSim = lazyPage(
-  "/product-eosim",
-  () => import("./pages/ProductEoSim")
-);
-const ProductEoStudio = lazyPage(
-  "/product-eostudio",
-  () => import("./pages/ProductEoStudio")
-);
-const ProductEOffice = lazyPage(
-  "/product-eoffice",
-  () => import("./pages/ProductEOffice")
-);
-const ProductEApps = lazyPage(
-  "/product-eapps",
-  () => import("./pages/ProductEApps")
-);
-const ProductEServiceApps = lazyPage(
-  "/product-eserviceapps",
-  () => import("./pages/ProductEServiceApps")
-);
-const WhatWeDo = lazyPage("/what-we-do", () => import("./pages/WhatWeDo"));
-const EcadHardware = lazyPage(
-  "/ecad-hardware",
-  () => import("./pages/EcadHardware")
-);
-const Architecture = lazyPage(
-  "/architecture",
-  () => import("./pages/Architecture")
-);
-const Quantum = lazyPage("/quantum", () => import("./pages/Quantum"));
-
-function PageLoader() {
+// ── Stage 5 — on-device AI: NPU block + neural particle swarm ────────────────
+function NpuSwarm() {
+  const ref = useRef<THREE.Points>(null);
+  const { positions } = useMemo(() => {
+    const rand = mulberry32(0xe05a1);
+    const count = 90;
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const a = rand() * Math.PI * 2;
+      const r = 0.9 + rand() * 0.7;
+      positions[i * 3] = 0.78 + Math.cos(a) * r;
+      positions[i * 3 + 1] = DIE_TOP + 0.3 + (rand() - 0.5) * 0.9;
+      positions[i * 3 + 2] = 0.78 + Math.sin(a) * r;
+    }
+    return { positions };
+  }, []);
+  useFrame(({ clock }) => {
+    if (ref.current) ref.current.rotation.y = clock.getElapsedTime() * 0.9;
+  });
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-[#F97316] border-t-transparent rounded-full animate-spin" />
-    </div>
+    <points ref={ref}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.05}
+        color="#c4b5fd"
+        transparent
+        opacity={0.9}
+        sizeAttenuation
+      />
+    </points>
   );
 }
 
-function Router() {
+function NpuBlock({ highlight }: { highlight: boolean }) {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/getting-started">
-        <Suspense fallback={<PageLoader />}>
-          <GettingStarted />
-        </Suspense>
-      </Route>
-      <Route path="/docs">
-        <Suspense fallback={<PageLoader />}>
-          <Docs />
-        </Suspense>
-      </Route>
-      <Route path="/books">
-        <Suspense fallback={<PageLoader />}>
-          <Books />
-        </Suspense>
-      </Route>
-      <Route path="/flow">
-        <Suspense fallback={<PageLoader />}>
-          <Flow />
-        </Suspense>
-      </Route>
-      <Route path="/hardware-lab">
-        <Suspense fallback={<PageLoader />}>
-          <HardwareLab />
-        </Suspense>
-      </Route>
-      <Route path="/stacks">
-        <Suspense fallback={<PageLoader />}>
-          <Stacks />
-        </Suspense>
-      </Route>
-      <Route path="/eapps">
-        <Suspense fallback={<PageLoader />}>
-          <EApps />
-        </Suspense>
-      </Route>
-      <Route path="/kids">
-        <Suspense fallback={<PageLoader />}>
-          <Kids />
-        </Suspense>
-      </Route>
-      <Route path="/get-involved">
-        <Suspense fallback={<PageLoader />}>
-          <GetInvolved />
-        </Suspense>
-      </Route>
-      <Route path="/health">
-        <Suspense fallback={<PageLoader />}>
-          <Health />
-        </Suspense>
-      </Route>
-      <Route path="/aerospace">
-        <Suspense fallback={<PageLoader />}>
-          <Aerospace />
-        </Suspense>
-      </Route>
-      <Route path="/projects">
-        <Suspense fallback={<PageLoader />}>
-          <Projects />
-        </Suspense>
-      </Route>
-      <Route path="/about">
-        <Suspense fallback={<PageLoader />}>
-          <About />
-        </Suspense>
-      </Route>
-      <Route path="/mission">
-        <Suspense fallback={<PageLoader />}>
-          <Mission />
-        </Suspense>
-      </Route>
-      <Route path="/transparency">
-        <Suspense fallback={<PageLoader />}>
-          <Transparency />
-        </Suspense>
-      </Route>
-      <Route path="/industries">
-        <Suspense fallback={<PageLoader />}>
-          <Industries />
-        </Suspense>
-      </Route>
-      <Route path="/donate">
-        <Suspense fallback={<PageLoader />}>
-          <Donate />
-        </Suspense>
-      </Route>
-      <Route path="/news">
-        <Suspense fallback={<PageLoader />}>
-          <News />
-        </Suspense>
-      </Route>
-      <Route path="/privacy">
-        <Suspense fallback={<PageLoader />}>
-          <Privacy />
-        </Suspense>
-      </Route>
-      <Route path="/terms">
-        <Suspense fallback={<PageLoader />}>
-          <Terms />
-        </Suspense>
-      </Route>
-      <Route path="/membership">
-        <Suspense fallback={<PageLoader />}>
-          <Membership />
-        </Suspense>
-      </Route>
-      <Route path="/demo">
-        <Suspense fallback={<PageLoader />}>
-          <Demo />
-        </Suspense>
-      </Route>
-      <Route path="/health-compare">
-        <Suspense fallback={<PageLoader />}>
-          <HealthCompare />
-        </Suspense>
-      </Route>
-      <Route path="/products">
-        <Suspense fallback={<PageLoader />}>
-          <Products />
-        </Suspense>
-      </Route>
-      <Route path="/eos">
-        <Suspense fallback={<PageLoader />}>
-          <EoS />
-        </Suspense>
-      </Route>
-      <Route path="/eboot">
-        <Suspense fallback={<PageLoader />}>
-          <EBoot />
-        </Suspense>
-      </Route>
-      <Route path="/eai">
-        <Suspense fallback={<PageLoader />}>
-          <EAI />
-        </Suspense>
-      </Route>
-      <Route path="/eoffice">
-        <Suspense fallback={<PageLoader />}>
-          <EOffice />
-        </Suspense>
-      </Route>
-      <Route path="/eflow">
-        <Suspense fallback={<PageLoader />}>
-          <EFlow />
-        </Suspense>
-      </Route>
-      <Route path="/ebuild">
-        <Suspense fallback={<PageLoader />}>
-          <EBuildPage />
-        </Suspense>
-      </Route>
-      <Route path="/api-docs">
-        <Suspense fallback={<PageLoader />}>
-          <ApiDocs />
-        </Suspense>
-      </Route>
-      <Route path="/eradar360">
-        <Suspense fallback={<PageLoader />}>
-          <ERadar360 />
-        </Suspense>
-      </Route>
-      <Route path="/ehealth365">
-        <Suspense fallback={<PageLoader />}>
-          <EHealth365 />
-        </Suspense>
-      </Route>
-      <Route path="/careers">
-        <Suspense fallback={<PageLoader />}>
-          <Careers />
-        </Suspense>
-      </Route>
-      <Route path="/faq">
-        <Suspense fallback={<PageLoader />}>
-          <FAQ />
-        </Suspense>
-      </Route>
-      <Route path="/roadmap">
-        <Suspense fallback={<PageLoader />}>
-          <Roadmap />
-        </Suspense>
-      </Route>
-      <Route path="/security">
-        <Suspense fallback={<PageLoader />}>
-          <Security />
-        </Suspense>
-      </Route>
-      <Route path="/internship">
-        <Suspense fallback={<PageLoader />}>
-          <Internship />
-        </Suspense>
-      </Route>
-      <Route path="/ecosystem">
-        <Suspense fallback={<PageLoader />}>
-          <EcosystemPage />
-        </Suspense>
-      </Route>
-      <Route path="/research">
-        <Suspense fallback={<PageLoader />}>
-          <Research />
-        </Suspense>
-      </Route>
-      <Route path="/changelog">
-        <Suspense fallback={<PageLoader />}>
-          <Changelog />
-        </Suspense>
-      </Route>
-      <Route path="/partners">
-        <Suspense fallback={<PageLoader />}>
-          <Partners />
-        </Suspense>
-      </Route>
-      <Route path="/vision">
-        <Suspense fallback={<PageLoader />}>
-          <Vision />
-        </Suspense>
-      </Route>
-      <Route path="/contact">
-        <Suspense fallback={<PageLoader />}>
-          <ContactPage />
-        </Suspense>
-      </Route>
-      <Route path="/events">
-        <Suspense fallback={<PageLoader />}>
-          <Events />
-        </Suspense>
-      </Route>
-      <Route path="/licenses">
-        <Suspense fallback={<PageLoader />}>
-          <LicensesPage />
-        </Suspense>
-      </Route>
-      <Route path="/code-of-conduct">
-        <Suspense fallback={<PageLoader />}>
-          <CodeOfConduct />
-        </Suspense>
-      </Route>
-      <Route path="/edb">
-        <Suspense fallback={<PageLoader />}>
-          <EDB />
-        </Suspense>
-      </Route>
-      <Route path="/eni">
-        <Suspense fallback={<PageLoader />}>
-          <ENIPage />
-        </Suspense>
-      </Route>
-      <Route path="/eostudio">
-        <Suspense fallback={<PageLoader />}>
-          <EoStudioPage />
-        </Suspense>
-      </Route>
-      <Route path="/organization">
-        <Suspense fallback={<PageLoader />}>
-          <Organization />
-        </Suspense>
-      </Route>
-      <Route path="/community">
-        <Suspense fallback={<PageLoader />}>
-          <CommunityPage />
-        </Suspense>
-      </Route>
-      <Route path="/eipc">
-        <Suspense fallback={<PageLoader />}>
-          <EIPCPage />
-        </Suspense>
-      </Route>
-      <Route path="/eosim">
-        <Suspense fallback={<PageLoader />}>
-          <EoSimProductPage />
-        </Suspense>
-      </Route>
-      <Route path="/building-os">
-        <Suspense fallback={<PageLoader />}>
-          <BuildingOSPage />
-        </Suspense>
-      </Route>
-      <Route path="/ai-os">
-        <Suspense fallback={<PageLoader />}>
-          <AIOSPage />
-        </Suspense>
-      </Route>
-      <Route path="/sponsors">
-        <Suspense fallback={<PageLoader />}>
-          <SponsorsPage />
-        </Suspense>
-      </Route>
-      <Route path="/certification">
-        <Suspense fallback={<PageLoader />}>
-          <CertificationPage />
-        </Suspense>
-      </Route>
-      <Route path="/future-research">
-        <Suspense fallback={<PageLoader />}>
-          <FutureResearchPage />
-        </Suspense>
-      </Route>
-      <Route path="/neural-link-ai">
-        <Suspense fallback={<PageLoader />}>
-          <NeuralLinkAIPage />
-        </Suspense>
-      </Route>
-      <Route path="/fundraising">
-        <Suspense fallback={<PageLoader />}>
-          <FundraisingPage />
-        </Suspense>
-      </Route>
-      <Route path="/ebrowser">
-        <Suspense fallback={<PageLoader />}>
-          <EBrowserPage />
-        </Suspense>
-      </Route>
-      <Route path="/eserviceapps">
-        <Suspense fallback={<PageLoader />}>
-          <EServiceAppsPage />
-        </Suspense>
-      </Route>
-      <Route path="/eai-edge">
-        <Suspense fallback={<PageLoader />}>
-          <EAIEdgePage />
-        </Suspense>
-      </Route>
-      <Route path="/eosuite">
-        <Suspense fallback={<PageLoader />}>
-          <EOSuitePage />
-        </Suspense>
-      </Route>
-      <Route path="/resources">
-        <Suspense fallback={<PageLoader />}>
-          <ResourcesPage />
-        </Suspense>
-      </Route>
-      <Route path="/blog">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/blog" />
-        </Suspense>
-      </Route>
-      <Route path="/publications">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/publications" />
-        </Suspense>
-      </Route>
-      <Route path="/technical-reports">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/technical-reports" />
-        </Suspense>
-      </Route>
-      <Route path="/benchmarks">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/benchmarks" />
-        </Suspense>
-      </Route>
-      <Route path="/press-releases">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/press-releases" />
-        </Suspense>
-      </Route>
-      <Route path="/newsletter">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/newsletter" />
-        </Suspense>
-      </Route>
-      <Route path="/case-studies">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/case-studies" />
-        </Suspense>
-      </Route>
-      <Route path="/member-stories">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/member-stories" />
-        </Suspense>
-      </Route>
-      <Route path="/product-showcases">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/product-showcases" />
-        </Suspense>
-      </Route>
-      <Route path="/project-showcases">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/project-showcases" />
-        </Suspense>
-      </Route>
-      <Route path="/videos">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/videos" />
-        </Suspense>
-      </Route>
-      <Route path="/podcast">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/podcast" />
-        </Suspense>
-      </Route>
-      <Route path="/webinars">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/webinars" />
-        </Suspense>
-      </Route>
-      <Route path="/white-papers">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/white-papers" />
-        </Suspense>
-      </Route>
-      <Route path="/datasets">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/datasets" />
-        </Suspense>
-      </Route>
-      <Route path="/research/architecture">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/architecture" />
-        </Suspense>
-      </Route>
-      <Route path="/research/security">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/security" />
-        </Suspense>
-      </Route>
-      <Route path="/research/ai">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/ai" />
-        </Suspense>
-      </Route>
-      <Route path="/research/embedded-systems">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/embedded-systems" />
-        </Suspense>
-      </Route>
-      <Route path="/research/rtos">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/rtos" />
-        </Suspense>
-      </Route>
-      <Route path="/research/linux">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/linux" />
-        </Suspense>
-      </Route>
-      <Route path="/research/hardware">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/hardware" />
-        </Suspense>
-      </Route>
-      <Route path="/research/networking">
-        <Suspense fallback={<PageLoader />}>
-          <ContentIndexPage path="/research/networking" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammesPage />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/ambassador">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/ambassador" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/university-program">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/university-program" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/community-meetups">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/community-meetups" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/conference-presence">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/conference-presence" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/member-marketing">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/member-marketing" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/partner-marketing">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/partner-marketing" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/university-collaborations">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/university-collaborations" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/industry-collaborations">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/industry-collaborations" />
-        </Suspense>
-      </Route>
-      <Route path="/programmes/grants">
-        <Suspense fallback={<PageLoader />}>
-          <ProgrammeDetailPage path="/programmes/grants" />
-        </Suspense>
-      </Route>
-      <Route path="/brand">
-        <Suspense fallback={<PageLoader />}>
-          <BrandAssetsPage />
-        </Suspense>
-      </Route>
-      <Route path="/press-kit">
-        <Suspense fallback={<PageLoader />}>
-          <PressKitPage />
-        </Suspense>
-      </Route>
-      <Route path="/social">
-        <Suspense fallback={<PageLoader />}>
-          <SocialMediaPage />
-        </Suspense>
-      </Route>
-      <Route path="/youtube">
-        <Suspense fallback={<PageLoader />}>
-          <YouTubeChannelPage />
-        </Suspense>
-      </Route>
-      <Route path="/article/:slug">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage />
-        </Suspense>
-      </Route>
-      <Route path="/article-eos-platform-launch">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="eos-platform-launch" />
-        </Suspense>
-      </Route>
-      <Route path="/article-eai-llm-bench">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="eai-llm-bench" />
-        </Suspense>
-      </Route>
-      <Route path="/article-eboot-secure-boot-deepdive">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="eboot-secure-boot-deepdive" />
-        </Suspense>
-      </Route>
-      <Route path="/article-edb-encryption-at-rest">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="edb-encryption-at-rest" />
-        </Suspense>
-      </Route>
-      <Route path="/article-eni-1024-channel-pipeline">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="eni-1024-channel-pipeline" />
-        </Suspense>
-      </Route>
-      <Route path="/article-eos-roadmap-2026">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="eos-roadmap-2026" />
-        </Suspense>
-      </Route>
-      <Route path="/article-eosim-hil-bridge">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="eosim-hil-bridge" />
-        </Suspense>
-      </Route>
-      <Route path="/article-foundation-membership-2026">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="foundation-membership-2026" />
-        </Suspense>
-      </Route>
-      <Route path="/article-newsletter-issue-01">
-        <Suspense fallback={<PageLoader />}>
-          <ArticlePage slug="newsletter-issue-01" />
-        </Suspense>
-      </Route>
-      <Route path="/downloads">
-        <Suspense fallback={<PageLoader />}>
-          <Downloads />
-        </Suspense>
-      </Route>
-      <Route path="/patents">
-        <Suspense fallback={<PageLoader />}>
-          <Patents />
-        </Suspense>
-      </Route>
-      <Route path="/product-eos">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEoS />
-        </Suspense>
-      </Route>
-      <Route path="/product-eos-platform">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEoSPlatform />
-        </Suspense>
-      </Route>
-      <Route path="/product-eboot">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEBoot />
-        </Suspense>
-      </Route>
-      <Route path="/product-eai">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEAI />
-        </Suspense>
-      </Route>
-      <Route path="/product-eni">
-        <Suspense fallback={<PageLoader />}>
-          <ProductENI />
-        </Suspense>
-      </Route>
-      <Route path="/product-eipc">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEIPC />
-        </Suspense>
-      </Route>
-      <Route path="/product-edb">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEDB />
-        </Suspense>
-      </Route>
-      <Route path="/product-ebuild">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEBuild />
-        </Suspense>
-      </Route>
-      <Route path="/product-eosim">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEoSim />
-        </Suspense>
-      </Route>
-      <Route path="/product-eostudio">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEoStudio />
-        </Suspense>
-      </Route>
-      <Route path="/product-eoffice">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEOffice />
-        </Suspense>
-      </Route>
-      <Route path="/product-eapps">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEApps />
-        </Suspense>
-      </Route>
-      <Route path="/product-eserviceapps">
-        <Suspense fallback={<PageLoader />}>
-          <ProductEServiceApps />
-        </Suspense>
-      </Route>
-      <Route path="/what-we-do">
-        <Suspense fallback={<PageLoader />}>
-          <WhatWeDo />
-        </Suspense>
-      </Route>
-      <Route path="/ecad-hardware">
-        <Suspense fallback={<PageLoader />}>
-          <EcadHardware />
-        </Suspense>
-      </Route>
-      <Route path="/architecture">
-        <Suspense fallback={<PageLoader />}>
-          <Architecture />
-        </Suspense>
-      </Route>
-      <Route path="/quantum">
-        <Suspense fallback={<PageLoader />}>
-          <Quantum />
-        </Suspense>
-      </Route>
-      <Route path="/404" component={NotFound} />
-      {/* Final fallback */}
-      <Route component={NotFound} />
-    </Switch>
+    <group>
+      <mesh position={[0.78, DIE_TOP + 0.25, 0.78]}>
+        <boxGeometry args={[1.15, 0.5, 1.15]} />
+        <GlowMaterial color="#a78bfa" highlight={highlight} />
+        <Edges color="#ddd6fe" />
+      </mesh>
+      <NpuSwarm />
+    </group>
   );
 }
 
-/**
- * Keeps <head> describing the page actually on screen.
- *
- * The landing route is skipped: its prerendered snapshot is already correct,
- * and rewriting it from the hydrated DOM would only risk disagreeing with what
- * the crawler was served.
- */
-/**
- * Puts a newly opened route at the top.
- *
- * wouter swaps the page component without touching the scroll position, and
- * nothing else did either, so following a link from the footer opened the next
- * page already scrolled down — the browser simply clamps the old offset to the
- * new document's height. Reading the footer of /architecture and clicking FAQ
- * landed the visitor at y=1950 of a page they had never seen the top of.
- *
- * The landing route is left alone so a reload, or a link straight to an
- * anchor, keeps whatever position the browser chose.
- */
-function ScrollToTop() {
-  const [location] = useLocation();
-  const isLanding = useRef(true);
+// ── Stage 6 — physical action: antennas, radiating beams, status LED ─────────
+function ActionArray({ highlight }: { highlight: boolean }) {
+  const corners: [number, number][] = [
+    [-2.9, -2.0],
+    [2.9, -2.0],
+    [-2.9, 2.0],
+    [2.9, 2.0],
+  ];
+  const beams: {
+    position: [number, number, number];
+    rotation: [number, number, number];
+  }[] = [
+    { position: [-1.9, 1.0, 0], rotation: [0, 0, 1.05] },
+    { position: [1.9, 1.0, 0], rotation: [0, 0, -1.05] },
+    { position: [0, 1.0, -1.7], rotation: [1.05, 0, 0] },
+    { position: [0, 1.0, 1.7], rotation: [-1.05, 0, 0] },
+    { position: [-1.35, 1.0, -1.2], rotation: [0.7, 0, 0.7] },
+    { position: [1.35, 1.0, 1.2], rotation: [-0.7, 0, -0.7] },
+  ];
+  return (
+    <group>
+      {corners.map(([x, z], i) => (
+        <mesh key={i} position={[x, 0.75, z]}>
+          <cylinderGeometry args={[0.05, 0.07, 1.3, 10]} />
+          <meshStandardMaterial
+            color="#94a3b8"
+            metalness={0.8}
+            roughness={0.3}
+          />
+        </mesh>
+      ))}
+      {beams.map((b, i) => (
+        <mesh key={i} position={b.position} rotation={b.rotation}>
+          <boxGeometry args={[0.05, 0.05, 1.7]} />
+          <meshStandardMaterial
+            color="#f472b6"
+            emissive="#f472b6"
+            emissiveIntensity={highlight ? 2 : 1.2}
+            toneMapped={false}
+            transparent
+            opacity={0.85}
+          />
+        </mesh>
+      ))}
+      {/* status LED: the ecosystem is alive */}
+      <mesh position={[2.9, 1.45, 2.0]}>
+        <sphereGeometry args={[0.1, 14, 14]} />
+        <meshStandardMaterial
+          color="#34d399"
+          emissive="#34d399"
+          emissiveIntensity={2.5}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
+  );
+}
 
+// ── Full scene ──────────────────────────────────────────────────────────────
+export function CadEvolutionScene({
+  step,
+  progress,
+  reducedMotion,
+  visible,
+  onRendererUnavailable,
+}: {
+  step: number;
+  progress: MutableRefObject<number[]>;
+  reducedMotion: boolean;
   /**
-   * A link to the route already open.
-   *
-   * wouter reports no location change, so the effect below never runs and the
-   * viewport stays where it was — from the footer, that means clicking
-   * "Architecture" while on /architecture does visibly nothing, which reads as
-   * a broken link rather than a no-op. Every other site answers that click by
-   * returning to the top, so do that.
+   * When false the canvas stays mounted but the render loop is frozen via
+   * frameloop="never" — scrolling the hero offscreen must not tear down
+   * and re-create the WebGL context.
    */
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      // Capture phase, deliberately: wouter's Link calls preventDefault, so by
-      // the time this event bubbles to the document it always looks cancelled
-      // and a bubble-phase listener can never tell a handled link from a
-      // suppressed one.
-      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
-
-      const anchor = (e.target as Element | null)?.closest?.("a[href]");
-      if (!anchor) return;
-
-      const href = anchor.getAttribute("href") ?? "";
-      // Only same-document links; a hash is the browser's job.
-      if (!href.startsWith("/") || href.includes("#")) return;
-      if (new URL(href, window.location.origin).pathname !== location) return;
-
-      // Let wouter finish first, then land at the top.
-      requestAnimationFrame(() =>
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" })
-      );
-    };
-
-    document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [location]);
-
-  useEffect(() => {
-    if (isLanding.current) {
-      isLanding.current = false;
-      return;
-    }
-
-    // index.css sets `scroll-behavior: smooth` for in-page anchor links, which
-    // is right there and wrong here: on a route change it animates the visitor
-    // back through a page they have already left, and on a long one that runs
-    // for most of a second. Arriving somewhere new should be instant.
-    const jump = (top: number) =>
-      window.scrollTo({ top, left: 0, behavior: "instant" });
-
-    // wouter's location carries no hash, so read the real one. An in-page
-    // target (/donate#donate-now) must win over the jump to the top, and on a
-    // lazy route it may not have rendered yet — hence the retry.
-    const hash = window.location.hash;
-    if (hash.length > 1) {
-      let cancelled = false;
-      let frames = 0;
-      const findTarget = () => {
-        if (cancelled) return;
-        const target = document.querySelector(hash);
-        if (target) {
-          jump(window.scrollY + target.getBoundingClientRect().top);
-          return;
-        }
-        if (frames++ > 90) {
-          jump(0);
-          return;
-        }
-        requestAnimationFrame(findTarget);
-      };
-      findTarget();
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    jump(0);
-  }, [location]);
-
-  return null;
-}
-
-function RouteMeta() {
-  const [location] = useLocation();
-  const isLanding = useRef(true);
-  const stampedHeading = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (isLanding.current) {
-      isLanding.current = false;
-      stampedHeading.current = readHeading();
-      return;
-    }
-
-    // React still has the outgoing page on screen when this effect runs, and a
-    // lazy route renders a Suspense fallback before its own <h1> exists.
-    // Waiting for the heading to *change* is what distinguishes "the new page
-    // is up" from "the old page has not gone yet" — testing only that some
-    // heading exists stamps the route we just left.
-    //
-    // Two routes may legitimately share a heading. Those fall through to the
-    // frame cap and stamp the identical title a beat later, which is correct,
-    // just not immediate.
-    let cancelled = false;
-    let frames = 0;
-    const stamp = () => {
-      if (cancelled) return;
-      const heading = readHeading();
-      if ((heading && heading !== stampedHeading.current) || frames++ > 90) {
-        applyRouteMeta(location);
-        stampedHeading.current = heading;
-        return;
-      }
-      requestAnimationFrame(stamp);
-    };
-    stamp();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [location]);
-
-  return null;
-}
-
-function App() {
+  visible?: boolean;
+  onRendererUnavailable?: () => void;
+}) {
+  const activeIndex = Math.min(
+    Math.max(step - 1, 0),
+    ARCHITECTURE_STAGES.length - 1
+  );
   return (
-    <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark">
-        <TooltipProvider>
-          <ScrollToTop />
-          <RouteMeta />
-          <Toaster />
-          <ModalGate event="open-search" load={loadSearchModal}>
-            <SearchModalLazy />
-          </ModalGate>
-          <IdleGate load={loadDonateModal}>
-            <DonateModalLazy />
-          </IdleGate>
-          <ModalGate event={OPEN_CONTACT_EVENT} load={loadContactFormModal}>
-            <ContactFormModalLazy />
-          </ModalGate>
-          <Navbar />
-          <main id="main-content" tabIndex={-1}>
-            <Router />
-          </main>
-          <Footer />
-          <IdleGate load={loadEBot}>
-            <EBotLazy />
-          </IdleGate>
-        </TooltipProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
+    <Canvas
+      dpr={[1, 1.75]}
+      camera={{ position: [8.2, 6.4, 8.2], fov: 42 }}
+      frameloop={visible === false ? "never" : "always"}
+      gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+      onCreated={({ gl }) => {
+        // Decorative canvas: hide from assistive tech (F-22).
+        gl.domElement.setAttribute("aria-hidden", "true");
+        // If the GPU context dies mid-session, fall back to the static
+        // semantic view instead of a frozen canvas.
+        gl.domElement.addEventListener("webglcontextlost", event => {
+          event.preventDefault();
+          onRendererUnavailable?.();
+        });
+      }}
+    >
+      <fog attach="fog" args={["#0a1428", 16, 34]} />
+      <ambientLight intensity={0.55} />
+      <directionalLight position={[6, 10, 4]} intensity={1.3} />
+      <pointLight
+        position={[0, 4, 0]}
+        intensity={12}
+        color="#38bdf8"
+        distance={14}
+      />
+
+      <Grid
+        position={[0, -0.72, 0]}
+        args={[40, 40]}
+        cellSize={0.8}
+        cellThickness={0.6}
+        cellColor="#14304f"
+        sectionSize={4}
+        sectionThickness={1}
+        sectionColor="#1f4d7a"
+        fadeDistance={30}
+        fadeStrength={2.5}
+        infiniteGrid
+      />
+
+      <group position={[0, 0.4, 0]}>
+        <CadBase />
+        <BuildPart index={1} step={step} progress={progress}>
+          <SecureEnclave highlight={activeIndex === 1} />
+        </BuildPart>
+        <BuildPart index={2} step={step} progress={progress}>
+          <KernelCores highlight={activeIndex === 2} />
+        </BuildPart>
+        <BuildPart index={3} step={step} progress={progress}>
+          <IpcTraces highlight={activeIndex === 3} />
+        </BuildPart>
+        <BuildPart index={4} step={step} progress={progress}>
+          <AppModules highlight={activeIndex === 4} />
+        </BuildPart>
+        <BuildPart index={5} step={step} progress={progress}>
+          <NpuBlock highlight={activeIndex === 5} />
+        </BuildPart>
+        <BuildPart index={6} step={step} progress={progress}>
+          <ActionArray highlight={activeIndex === 6} />
+        </BuildPart>
+      </group>
+
+      <OrbitControls
+        makeDefault
+        enablePan={false}
+        enableDamping
+        dampingFactor={0.08}
+        minDistance={6}
+        maxDistance={17}
+        minPolarAngle={Math.PI / 5.5}
+        maxPolarAngle={Math.PI / 2.1}
+        autoRotate={!reducedMotion}
+        autoRotateSpeed={0.55}
+      />
+    </Canvas>
   );
 }
-
-export default App;

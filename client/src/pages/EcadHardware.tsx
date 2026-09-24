@@ -751,10 +751,9 @@ export default function EcadHardware() {
           background: "rgba(255,255,255,0.02)",
         }}
       >
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
           {[
             { value: "15", label: "Design Categories", color: "#F97316" },
-            { value: "0", label: "Certifications Held", color: "#34D399" },
             { value: "50+", label: "Design Entries", color: "#22D3EE" },
             { value: "10", label: "Future Concepts", color: "#A78BFA" },
           ].map((s, i) => (

@@ -84,11 +84,11 @@ kind of duplication that quietly diverges.
 **Recommendation:** keep whichever lands first and delete the other in the
 rebase. There is no technical reason to prefer either.
 
-**Still open after the merge.** Both helpers are on the merged branch:
-`client/src/hooks/useReducedMotion.ts` (`useReducedMotion`, three importers)
-and `client/src/lib/reduced-motion.ts` (`usePrefersReducedMotion`, eight
-importers). Neither was removed in the merge, because the choice is the
-maintainer's and the removal touches eleven files that carry no SEO change.
+**Resolved 2026-09-24.** The lib helper (`usePrefersReducedMotion` in
+client/src/lib/reduced-motion.ts) won: the hooks/useReducedMotion.ts file
+was deleted along with the local copies in `CadEvolutionHero` and
+`HeroTechStack`, and all importers now use the lib hook. One helper, one
+shape.
 
 **Owner:** maintainer.
 

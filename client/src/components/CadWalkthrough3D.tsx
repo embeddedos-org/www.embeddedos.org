@@ -24,7 +24,7 @@ import {
 } from "react";
 import { Link } from "wouter";
 import { ArrowRight, Pause, Play } from "lucide-react";
-import { EAI_EDGE_PROFILE, type MaturityStatus } from "@/data/architecture";
+import { EAI_EDGE_PROFILE, MATURITY_TONES } from "@/data/architecture";
 import { supportsWebGL } from "./HeroTechStack";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 import {
@@ -34,15 +34,6 @@ import {
 } from "./cad-walkthrough-data";
 
 const CadScene = lazy(() => import("./CadWalkthroughScene"));
-
-const MATURITY_TONES: Record<MaturityStatus, string> = {
-  "Shipped profile": "border-emerald-400/40 bg-emerald-400/10 text-emerald-300",
-  "Available project": "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
-  "Experimental / Research":
-    "border-amber-400/40 bg-amber-400/10 text-amber-300",
-  Planned: "border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300",
-  "Design / Concept": "border-slate-400/40 bg-slate-400/10 text-slate-300",
-};
 
 // ── Static 2D fallback (SVG exploded view of the same 8 steps) ──────────────
 const SVG_W = 520;

@@ -234,7 +234,7 @@ export default function Kids() {
             href="/getting-started"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
           >
-            Get Started Free
+            Get Started
             <ArrowRight size={16} />
           </Link>
         </div>
