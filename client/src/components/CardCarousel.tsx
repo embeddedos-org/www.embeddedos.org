@@ -132,7 +132,7 @@ export default function CardCarousel({
       {pageCount > 1 && (
         <div className="mt-6 flex items-center justify-between">
           <p
-            className="text-sm text-white/40"
+            className="text-sm text-white/50"
             aria-live="polite"
             aria-atomic="true"
           >
