@@ -125,6 +125,9 @@ export default function CardCarousel({
       <div role="region" aria-roledescription="carousel" aria-label={label}>
         <div
           ref={trackRef}
+          tabIndex={0}
+          role="group"
+          aria-label={`${label} items`}
           className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {children}

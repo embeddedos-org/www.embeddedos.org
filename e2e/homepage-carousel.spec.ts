@@ -57,3 +57,19 @@ test("homepage product carousel pages with Next/Prev arrows", async ({
   await expect(indicator).toHaveText(firstPage);
   await expect.poll(() => trackScrollLeft(), { timeout: 5000 }).toBe(0);
 });
+
+test("homepage carousel scroll track is keyboard-focusable", async ({
+  page,
+}) => {
+  // Guards the axe "scrollable-region-focusable" gate: the overflow-x-auto
+  // track must be reachable by keyboard so users can scroll it.
+  await page.goto("/");
+
+  const region = page.getByRole("region", { name: "Product showcase" });
+  await region.scrollIntoViewIfNeeded();
+  const track = region.locator(":scope > div").first();
+
+  await expect(track).toHaveAttribute("tabindex", "0");
+  await track.focus();
+  await expect(track).toBeFocused();
+});
