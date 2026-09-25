@@ -25,7 +25,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { discoverRoutes } from "./prerender.mjs";
+import { discoverRoutes } from "./discover-routes.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DIST = path.join(ROOT, "dist", "public");
