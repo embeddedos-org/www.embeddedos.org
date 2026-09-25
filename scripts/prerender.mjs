@@ -25,7 +25,6 @@ import { chromium } from "@playwright/test";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DIST = path.join(ROOT, "dist", "public");
-const APP_TSX = path.join(ROOT, "client", "src", "App.tsx");
 const ORIGIN = process.env.SITE_ORIGIN ?? "https://www.embeddedos.org";
 const PORT = Number(process.env.PRERENDER_PORT ?? 41234);
 const HOST = process.env.PRERENDER_HOST ?? "127.0.0.1";
@@ -66,9 +65,10 @@ const FALLBACK_DESCRIPTION =
   "education for engineers and students.";
 
 // Route discovery lives in a dependency-free module (the deploy-drift CI
-// job runs without node_modules); re-exported here so existing
-// importers keep working.
-export { stripComments, discoverRoutes } from "./discover-routes.mjs";
+// job runs without node_modules); imported for local use and re-exported
+// so existing importers keep working.
+import { stripComments, discoverRoutes } from "./discover-routes.mjs";
+export { stripComments, discoverRoutes };
 
 /**
  * Serve dist/public, but always hand the *pristine* shell to navigations so a
