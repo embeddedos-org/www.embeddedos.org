@@ -85,6 +85,10 @@ jobs:
         with:
           name: build-output
           path: dist/public
+          # The drift check compares dotfiles too (.htaccess, .cpanel.yml,
+          # .app-shell.html): the artifact upload drops hidden files unless
+          # asked, which made origin/deploy look "unexpected".
+          include-hidden-files: true
           retention-days: 1
 
       # A production build must be reproducible and must not rewrite tracked
