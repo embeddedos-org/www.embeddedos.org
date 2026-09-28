@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import StructuredData from "@/components/StructuredData";
 import { ECOSYSTEM } from "@/data/ecosystem";
-import { ORIGIN } from "@/lib/page-meta";
+import { ORIGIN, canonicalFor } from "@/lib/page-meta";
 import { componentRouteFor, splitRelationship } from "@/lib/component-links";
 import {
   ArrowRight,
@@ -150,7 +150,9 @@ export default function ProductDetailPage({
   const component = ECOSYSTEM.find(
     c => c.repository.toLowerCase() === repoUrl.toLowerCase()
   );
-  const pageUrl = `${ORIGIN}${location}`;
+  // canonicalFor(), not a hand-built string: the breadcrumb's last item has to
+  // be the page's own canonical URL, and the two drifted apart once already.
+  const pageUrl = canonicalFor(location);
   const facts =
     component && location === `/product-${component.id}` ? component : null;
   const shownLang = facts?.language ?? lang;
@@ -165,7 +167,7 @@ export default function ProductDetailPage({
           "@type": "ListItem",
           position: 2,
           name: "Products",
-          item: `${ORIGIN}/products`,
+          item: canonicalFor("/products"),
         },
         { "@type": "ListItem", position: 3, name: shortName, item: pageUrl },
       ],
