@@ -73,7 +73,7 @@ export function formatMailingAddress(
  * linked by EIN: the Tax Exempt Organization Search takes its query through a
  * POST-backed form, so an EIN-bearing URL is not stable enough to publish.
  */
-export const IRS_LOOKUP_URL = "https://apps.irs.gov/app/eos/";
+export const IRS_LOOKUP_URL = "https://apps.irs.gov/app/eos";
 
 /**
  * The mission statement. Quoted verbatim on `/`, `/mission` and `/about`; edit
