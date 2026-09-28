@@ -95,7 +95,10 @@ function build() {
   const body = routes
     .map(route => {
       const { changefreq, priority } = ruleFor(route);
-      const loc = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
+      // Trailing slash so the sitemap lists the URL the server serves. Without
+      // it every entry but the root answers 301, and a sitemap of redirects is
+      // a crawl-budget cost with no upside.
+      const loc = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}/`;
       return [
         "  <url>",
         `    <loc>${loc}</loc>`,

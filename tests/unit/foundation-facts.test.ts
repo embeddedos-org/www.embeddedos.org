@@ -134,7 +134,13 @@ function sitemapPaths(): string[] {
     ...sitemap.matchAll(
       new RegExp(`<loc>${ORIGIN}([^<]*)</loc>`.replace(/\//g, "\\/"), "g")
     ),
-  ].map(m => m[1] || "/");
+    // The sitemap lists the served URL, which for a directory route ends in a
+    // slash (/about/). Routes are declared without it, so strip the trailing
+    // slash to compare like with like — but keep the root as "/".
+  ].map(m => {
+    const p = m[1] || "/";
+    return p !== "/" && p.endsWith("/") ? p.slice(0, -1) : p;
+  });
 }
 
 describe("the public business address", () => {

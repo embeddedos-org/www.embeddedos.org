@@ -124,11 +124,13 @@ describe("applyMeta", () => {
       heading: "Donate",
       description: "x".repeat(80),
     });
+    // Trailing slash: /donate is served as /donate/, so a canonical without it
+    // would point at a 301 away from this page.
     expect(attrOf(out, /<link rel="canonical" href="([^"]*)"/)).toBe(
-      "https://www.embeddedos.org/donate"
+      "https://www.embeddedos.org/donate/"
     );
     expect(attrOf(out, /<meta property="og:url" content="([^"]*)"/)).toBe(
-      "https://www.embeddedos.org/donate"
+      "https://www.embeddedos.org/donate/"
     );
   });
 

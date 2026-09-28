@@ -475,7 +475,11 @@ export function restoreDeferredStylesheets(html) {
 
 /** Rewrite the head of a snapshot with route-specific title/description/canonical. */
 export function applyMeta(html, { route, heading, description, image }) {
-  const canonical = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
+  // Trailing slash: this file writes <route>/index.html, so the server answers
+  // /about with 301 -> /about/. A canonical of /about would point at a
+  // redirect away from this very page. Kept identical to canonicalFor() in
+  // client/src/lib/page-meta.ts.
+  const canonical = route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}/`;
 
   // Google truncates titles past roughly 70 characters, so budget the whole
   // string — heading plus suffix — rather than only capping the heading. Long
