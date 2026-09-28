@@ -126,7 +126,14 @@ export function buildTitle(heading: string, route?: string): string {
 
 /** The absolute URL a route should declare as its canonical. */
 export function canonicalFor(route: string): string {
-  return route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}`;
+  // Trailing slash, because that is the URL the server actually serves.
+  // scripts/prerender.mjs writes every route to <route>/index.html, so Apache
+  // answers /about with 301 -> /about/. A canonical of /about therefore points
+  // at a redirect away from the page carrying it, which is the documented
+  // reason Google substitutes its own canonical. scripts/prerender.mjs and
+  // scripts/gen-sitemap.mjs derive the same shape; tests/unit/
+  // canonical-is-not-a-redirect.test.ts holds the three in agreement.
+  return route === "/" ? `${ORIGIN}/` : `${ORIGIN}${route}/`;
 }
 
 export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [

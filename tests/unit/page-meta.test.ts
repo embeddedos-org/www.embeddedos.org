@@ -175,9 +175,12 @@ describe("client and prerenderer agree on the canonical URL", () => {
     expect(canonicalFor(route)).toBe(canonicalFrom(rendered));
   });
 
-  it("gives the homepage a trailing slash and nothing else a double one", () => {
+  it("gives every route one trailing slash and never two", () => {
+    // Non-root routes are served as directories, so their canonical carries a
+    // trailing slash; the root carries exactly one, not two.
     expect(canonicalFor("/")).toBe("https://www.embeddedos.org/");
-    expect(canonicalFor("/eni")).toBe("https://www.embeddedos.org/eni");
+    expect(canonicalFor("/eni")).toBe("https://www.embeddedos.org/eni/");
+    expect(canonicalFor("/eni")).not.toMatch(/\/\/$/);
   });
 });
 

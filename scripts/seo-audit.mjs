@@ -232,7 +232,10 @@ export function audit(docs, sitemap) {
       add("error", "canonical-missing", d.route, "no rel=canonical");
     if (d.canonical.length > 1)
       add("error", "canonical-multiple", d.route, `${d.canonical.length} tags`);
-    const expected = d.route === "/" ? `${ORIGIN}/` : `${ORIGIN}${d.route}`;
+    // The served URL, matching canonicalFor() in client/src/lib/page-meta.ts:
+    // every non-root route is a directory, so its canonical carries a trailing
+    // slash. Without it this auditor would demand the redirecting form.
+    const expected = d.route === "/" ? `${ORIGIN}/` : `${ORIGIN}${d.route}/`;
     if (d.canonical[0] && d.canonical[0] !== expected)
       add(
         "error",

@@ -48,12 +48,6 @@ const ALLOWLIST: { url: string; reason: string }[] = [
       "Foundation', page id 61588978691494), verified 2026-09-19.",
   },
   {
-    url: "https://apps.irs.gov/app/eos/",
-    reason:
-      "The IRS serves HTTP 403 to unauthenticated bot traffic. This is the " +
-      "canonical IRS Tax Exempt Organization Search URL, verified 2026-09-19.",
-  },
-  {
     url: "https://x.com/EmbeddedOS_ORG",
     reason:
       "X serves HTTP 403 to unauthenticated bot traffic. This is the " +
