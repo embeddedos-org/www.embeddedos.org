@@ -185,7 +185,14 @@ if (!stripe_rate_limit_ok($ip, sys_get_temp_dir(), time())) {
 // account's environment editor), never in this file and never in git. Without
 // it the Stripe tab cannot work; answer 503 so the client shows its graceful
 // fallback instead of a spinner that never resolves.
+// getenv() misses the key under some PHP handlers (php-fpm with a
+// variables_order that omits 'S' populates $_SERVER but not the getenv
+// store, and vice versa), so check both. Either way the value comes from
+// the server environment — never from the request, never from a file.
 $secret = getenv('STRIPE_SECRET_KEY');
+if ((!is_string($secret) || $secret === '') && isset($_SERVER['STRIPE_SECRET_KEY'])) {
+    $secret = $_SERVER['STRIPE_SECRET_KEY'];
+}
 if (!is_string($secret) || $secret === '') {
     stripe_respond(503, ['ok' => false, 'error' => 'stripe_not_configured']);
 }
