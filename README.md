@@ -64,11 +64,13 @@ pnpm build
 pnpm start
 ```
 
-`pnpm build` runs three steps in order, and all three matter:
+`pnpm build` runs four steps in order, and all four matter:
 
-1. `build:client` — vite builds the SPA into `dist/public`
-2. `prerender` — headless Chromium renders all 95 routes to `<route>/index.html`
-3. `build:server` — esbuild bundles the API server to `dist/index.js`
+1. `optimize:images` — re-encodes images in `client/public` (WebP variants)
+2. `build:client` — vite builds the SPA into `dist/public`
+3. `prerender` — headless Chromium renders all 133 routes to `<route>/index.html`,
+   then `sitemap:dist` writes the sitemap for that exact build
+4. `build:server` — esbuild bundles the API server to `dist/index.js`
 
 Running `pnpm build:client` alone produces a build with **no prerendered
 pages**. Never deploy that; see [Deployment](#deployment).
@@ -79,8 +81,8 @@ pages**. Never deploy that; see [Deployment](#deployment).
 
 ```
 client/          React SPA
-  src/pages/     One component per route (97 <Route> declarations in App.tsx,
-                 95 of them static and therefore prerendered)
+  src/pages/     One component per route (134 <Route> declarations in App.tsx,
+                 133 of them static and therefore prerendered)
   src/components/  Shared UI; components/ui/ is shadcn/Radix primitives
   public/        Copied verbatim into dist/public — including .htaccess and .cpanel.yml
 server/          Express + tRPC API
@@ -144,7 +146,7 @@ one before it cannot:
   anchors resolves and each of the ~1,100 buttons carries an accessible name.
   It presses nothing.
 - `test:controls` **clicks** every one of the ~340 in-page controls across all
-  95 routes, plus the header and footer controls on a sample, and fails on any
+  133 routes, plus the header and footer controls on a sample, and fails on any
   uncaught exception or console error. A control can pass the first suite and
   still throw on click.
 - `test:links` clicks each of the ~320 unique internal links **from the bottom
