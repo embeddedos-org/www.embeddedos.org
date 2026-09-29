@@ -6,657 +6,657 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/about</loc>
+    <loc>https://www.embeddedos.org/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/aerospace</loc>
+    <loc>https://www.embeddedos.org/aerospace/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/ai-os</loc>
+    <loc>https://www.embeddedos.org/ai-os/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/api-docs</loc>
+    <loc>https://www.embeddedos.org/api-docs/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/architecture</loc>
+    <loc>https://www.embeddedos.org/architecture/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-eai-llm-bench</loc>
+    <loc>https://www.embeddedos.org/article-eai-llm-bench/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-eboot-secure-boot-deepdive</loc>
+    <loc>https://www.embeddedos.org/article-eboot-secure-boot-deepdive/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-edb-encryption-at-rest</loc>
+    <loc>https://www.embeddedos.org/article-edb-encryption-at-rest/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-eni-1024-channel-pipeline</loc>
+    <loc>https://www.embeddedos.org/article-eni-1024-channel-pipeline/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-eos-platform-launch</loc>
+    <loc>https://www.embeddedos.org/article-eos-platform-launch/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-eos-roadmap-2026</loc>
+    <loc>https://www.embeddedos.org/article-eos-roadmap-2026/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-eosim-hil-bridge</loc>
+    <loc>https://www.embeddedos.org/article-eosim-hil-bridge/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-foundation-membership-2026</loc>
+    <loc>https://www.embeddedos.org/article-foundation-membership-2026/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/article-newsletter-issue-01</loc>
+    <loc>https://www.embeddedos.org/article-newsletter-issue-01/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/benchmarks</loc>
+    <loc>https://www.embeddedos.org/benchmarks/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/blog</loc>
+    <loc>https://www.embeddedos.org/blog/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/books</loc>
+    <loc>https://www.embeddedos.org/books/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/brand</loc>
+    <loc>https://www.embeddedos.org/brand/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/building-os</loc>
+    <loc>https://www.embeddedos.org/building-os/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/careers</loc>
+    <loc>https://www.embeddedos.org/careers/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/case-studies</loc>
+    <loc>https://www.embeddedos.org/case-studies/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/certification</loc>
+    <loc>https://www.embeddedos.org/certification/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/changelog</loc>
+    <loc>https://www.embeddedos.org/changelog/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/code-of-conduct</loc>
+    <loc>https://www.embeddedos.org/code-of-conduct/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/community</loc>
+    <loc>https://www.embeddedos.org/community/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/contact</loc>
+    <loc>https://www.embeddedos.org/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/datasets</loc>
+    <loc>https://www.embeddedos.org/datasets/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/demo</loc>
+    <loc>https://www.embeddedos.org/demo/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/docs</loc>
+    <loc>https://www.embeddedos.org/docs/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/donate</loc>
+    <loc>https://www.embeddedos.org/donate/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/downloads</loc>
+    <loc>https://www.embeddedos.org/downloads/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eai</loc>
+    <loc>https://www.embeddedos.org/eai/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eai-edge</loc>
+    <loc>https://www.embeddedos.org/eai-edge/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eapps</loc>
+    <loc>https://www.embeddedos.org/eapps/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eboot</loc>
+    <loc>https://www.embeddedos.org/eboot/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/ebrowser</loc>
+    <loc>https://www.embeddedos.org/ebrowser/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/ebuild</loc>
+    <loc>https://www.embeddedos.org/ebuild/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/ecad-hardware</loc>
+    <loc>https://www.embeddedos.org/ecad-hardware/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/ecosystem</loc>
+    <loc>https://www.embeddedos.org/ecosystem/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/edb</loc>
+    <loc>https://www.embeddedos.org/edb/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eflow</loc>
+    <loc>https://www.embeddedos.org/eflow/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/ehealth365</loc>
+    <loc>https://www.embeddedos.org/ehealth365/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eipc</loc>
+    <loc>https://www.embeddedos.org/eipc/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eni</loc>
+    <loc>https://www.embeddedos.org/eni/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eoffice</loc>
+    <loc>https://www.embeddedos.org/eoffice/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eos</loc>
+    <loc>https://www.embeddedos.org/eos/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eosim</loc>
+    <loc>https://www.embeddedos.org/eosim/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eostudio</loc>
+    <loc>https://www.embeddedos.org/eostudio/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eosuite</loc>
+    <loc>https://www.embeddedos.org/eosuite/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eradar360</loc>
+    <loc>https://www.embeddedos.org/eradar360/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/eserviceapps</loc>
+    <loc>https://www.embeddedos.org/eserviceapps/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/events</loc>
+    <loc>https://www.embeddedos.org/events/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/faq</loc>
+    <loc>https://www.embeddedos.org/faq/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/flow</loc>
+    <loc>https://www.embeddedos.org/flow/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/fundraising</loc>
+    <loc>https://www.embeddedos.org/fundraising/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/future-research</loc>
+    <loc>https://www.embeddedos.org/future-research/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/get-involved</loc>
+    <loc>https://www.embeddedos.org/get-involved/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/getting-started</loc>
+    <loc>https://www.embeddedos.org/getting-started/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/hardware-lab</loc>
+    <loc>https://www.embeddedos.org/hardware-lab/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/health</loc>
+    <loc>https://www.embeddedos.org/health/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/health-compare</loc>
+    <loc>https://www.embeddedos.org/health-compare/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/industries</loc>
+    <loc>https://www.embeddedos.org/industries/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/internship</loc>
+    <loc>https://www.embeddedos.org/internship/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/kids</loc>
+    <loc>https://www.embeddedos.org/kids/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/licenses</loc>
+    <loc>https://www.embeddedos.org/licenses/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/member-stories</loc>
+    <loc>https://www.embeddedos.org/member-stories/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/membership</loc>
+    <loc>https://www.embeddedos.org/membership/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/mission</loc>
+    <loc>https://www.embeddedos.org/mission/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/neural-link-ai</loc>
+    <loc>https://www.embeddedos.org/neural-link-ai/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/news</loc>
+    <loc>https://www.embeddedos.org/news/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/newsletter</loc>
+    <loc>https://www.embeddedos.org/newsletter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/organization</loc>
+    <loc>https://www.embeddedos.org/organization/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/partners</loc>
+    <loc>https://www.embeddedos.org/partners/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/patents</loc>
+    <loc>https://www.embeddedos.org/patents/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/podcast</loc>
+    <loc>https://www.embeddedos.org/podcast/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/press-kit</loc>
+    <loc>https://www.embeddedos.org/press-kit/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/press-releases</loc>
+    <loc>https://www.embeddedos.org/press-releases/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/privacy</loc>
+    <loc>https://www.embeddedos.org/privacy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eai</loc>
+    <loc>https://www.embeddedos.org/product-eai/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eapps</loc>
+    <loc>https://www.embeddedos.org/product-eapps/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eboot</loc>
+    <loc>https://www.embeddedos.org/product-eboot/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-ebuild</loc>
+    <loc>https://www.embeddedos.org/product-ebuild/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-edb</loc>
+    <loc>https://www.embeddedos.org/product-edb/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eipc</loc>
+    <loc>https://www.embeddedos.org/product-eipc/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eni</loc>
+    <loc>https://www.embeddedos.org/product-eni/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eoffice</loc>
+    <loc>https://www.embeddedos.org/product-eoffice/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eos</loc>
+    <loc>https://www.embeddedos.org/product-eos/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eos-platform</loc>
+    <loc>https://www.embeddedos.org/product-eos-platform/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eosim</loc>
+    <loc>https://www.embeddedos.org/product-eosim/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eostudio</loc>
+    <loc>https://www.embeddedos.org/product-eostudio/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-eserviceapps</loc>
+    <loc>https://www.embeddedos.org/product-eserviceapps/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/product-showcases</loc>
+    <loc>https://www.embeddedos.org/product-showcases/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/products</loc>
+    <loc>https://www.embeddedos.org/products/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes</loc>
+    <loc>https://www.embeddedos.org/programmes/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/ambassador</loc>
+    <loc>https://www.embeddedos.org/programmes/ambassador/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/community-meetups</loc>
+    <loc>https://www.embeddedos.org/programmes/community-meetups/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/conference-presence</loc>
+    <loc>https://www.embeddedos.org/programmes/conference-presence/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/grants</loc>
+    <loc>https://www.embeddedos.org/programmes/grants/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/industry-collaborations</loc>
+    <loc>https://www.embeddedos.org/programmes/industry-collaborations/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/member-marketing</loc>
+    <loc>https://www.embeddedos.org/programmes/member-marketing/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/partner-marketing</loc>
+    <loc>https://www.embeddedos.org/programmes/partner-marketing/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/university-collaborations</loc>
+    <loc>https://www.embeddedos.org/programmes/university-collaborations/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/programmes/university-program</loc>
+    <loc>https://www.embeddedos.org/programmes/university-program/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/project-showcases</loc>
+    <loc>https://www.embeddedos.org/project-showcases/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/projects</loc>
+    <loc>https://www.embeddedos.org/projects/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/publications</loc>
+    <loc>https://www.embeddedos.org/publications/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/quantum</loc>
+    <loc>https://www.embeddedos.org/quantum/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research</loc>
+    <loc>https://www.embeddedos.org/research/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/ai</loc>
+    <loc>https://www.embeddedos.org/research/ai/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/architecture</loc>
+    <loc>https://www.embeddedos.org/research/architecture/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/embedded-systems</loc>
+    <loc>https://www.embeddedos.org/research/embedded-systems/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/hardware</loc>
+    <loc>https://www.embeddedos.org/research/hardware/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/linux</loc>
+    <loc>https://www.embeddedos.org/research/linux/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/networking</loc>
+    <loc>https://www.embeddedos.org/research/networking/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/rtos</loc>
+    <loc>https://www.embeddedos.org/research/rtos/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/research/security</loc>
+    <loc>https://www.embeddedos.org/research/security/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/resources</loc>
+    <loc>https://www.embeddedos.org/resources/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/roadmap</loc>
+    <loc>https://www.embeddedos.org/roadmap/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/security</loc>
+    <loc>https://www.embeddedos.org/security/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/social</loc>
+    <loc>https://www.embeddedos.org/social/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/sponsors</loc>
+    <loc>https://www.embeddedos.org/sponsors/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/stacks</loc>
+    <loc>https://www.embeddedos.org/stacks/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/technical-reports</loc>
+    <loc>https://www.embeddedos.org/technical-reports/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/terms</loc>
+    <loc>https://www.embeddedos.org/terms/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/transparency</loc>
+    <loc>https://www.embeddedos.org/transparency/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/videos</loc>
+    <loc>https://www.embeddedos.org/videos/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/vision</loc>
+    <loc>https://www.embeddedos.org/vision/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/webinars</loc>
+    <loc>https://www.embeddedos.org/webinars/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/what-we-do</loc>
+    <loc>https://www.embeddedos.org/what-we-do/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/white-papers</loc>
+    <loc>https://www.embeddedos.org/white-papers/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.embeddedos.org/youtube</loc>
+    <loc>https://www.embeddedos.org/youtube/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
