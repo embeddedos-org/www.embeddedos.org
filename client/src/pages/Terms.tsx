@@ -52,11 +52,11 @@ const SECTIONS = [
   },
   {
     title: "7. Donations",
-    content: `The donation flow uses a Zeffy-hosted donation form. Information and payment details entered there are submitted directly to Zeffy and any payment or anti-abuse providers identified in the form, under their applicable terms. The Foundation may receive donor contact details and transaction records made available by Zeffy, but this website does not receive or store full card or bank credentials. The Foundation is a 501(c)(3) organization but does not provide tax or legal advice; donors are responsible for determining how a contribution is treated in their circumstances. Contact the Foundation about donation or refund questions.`,
+    content: `The donation flow offers a Zeffy-hosted donation form, card payment via Stripe, and PayPal checkout. Information and payment details entered are submitted directly to the chosen processor (Zeffy, Stripe, or PayPal) and any payment or anti-abuse providers identified there, under their applicable terms. The Foundation may receive donor contact details and transaction records made available by the processor, but this website does not receive or store full card or bank credentials. The Foundation is a 501(c)(3) organization but does not provide tax or legal advice; donors are responsible for determining how a contribution is treated in their circumstances. Contact the Foundation about donation or refund questions.`,
   },
   {
     title: "8. Links to Third-Party Sites",
-    content: `This website contains links to third-party websites including GitHub, Zeffy, InterServer, and social media platforms. These links are provided for convenience only. The Foundation is not responsible for the content or privacy practices of third-party sites.`,
+    content: `This website contains links to third-party websites including GitHub, Zeffy, Stripe, PayPal, InterServer, and social media platforms. These links are provided for convenience only. The Foundation is not responsible for the content or privacy practices of third-party sites.`,
   },
   {
     title: "9. Governing Law",

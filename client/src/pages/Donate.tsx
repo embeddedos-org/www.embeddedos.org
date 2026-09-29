@@ -15,8 +15,20 @@ import {
   Award,
   Star,
   RefreshCw,
+  CreditCard,
+  Wallet,
 } from "lucide-react";
 import { openContactForm } from "@/lib/contact-form";
+import {
+  STRIPE_PUBLISHABLE_KEY,
+  STRIPE_INTENT_ENDPOINT,
+  PAYPAL_HOSTED_BUTTON_ID,
+  PAYPAL_DONATE_URL,
+  loadStripeJs,
+  type StripeInstance,
+  type StripeElements,
+  type StripePaymentElement,
+} from "@/lib/payments";
 const STATS = [
   { icon: Cpu, value: "22+", label: "Open-Source Repos", color: "#F97316" },
   {
@@ -77,10 +89,39 @@ const ZEFFY_URL =
 const ZEFFY_HOSTED_URL =
   "https://www.zeffy.com/en-US/donation-form/donate-to-change-lives-17596";
 
+type GivingMethod = "zeffy" | "card" | "paypal";
+
+/** Preset one-off amounts in cents. The card tab reuses these. */
+const AMOUNT_PRESETS = [1000, 2500, 5000, 10000];
+
+function formatUsd(cents: number): string {
+  return `$${(cents / 100).toLocaleString("en-US")}`;
+}
+
 export default function Donate() {
+  const [method, setMethod] = useState<GivingMethod>("zeffy");
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [embedFailed, setEmbedFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Card tab state.
+  const [amountCents, setAmountCents] = useState(2500);
+  const [customAmount, setCustomAmount] = useState("");
+  const [cardStatus, setCardStatus] = useState<
+    | "idle"
+    | "preparing"
+    | "ready"
+    | "confirming"
+    | "done"
+    | "error"
+    | "unavailable"
+  >("idle");
+  const [cardError, setCardError] = useState("");
+  const [confirmedAmount, setConfirmedAmount] = useState("");
+  const stripeElementRef = useRef<StripePaymentElement | null>(null);
+  const stripeElementsRef = useRef<StripeElements | null>(null);
+  const stripeRef = useRef<StripeInstance | null>(null);
+  const cardMountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // If onLoad has not fired by now the embed is blocked or unreachable.
@@ -89,6 +130,126 @@ export default function Donate() {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
+
+  // Tear down the Stripe element when leaving the card tab so a stale
+  // client_secret can never be confirmed twice.
+  useEffect(() => {
+    if (method !== "card" && stripeElementRef.current) {
+      stripeElementRef.current.unmount();
+      stripeElementRef.current = null;
+      stripeElementsRef.current = null;
+      setCardStatus("idle");
+      setCardError("");
+    }
+  }, [method]);
+
+  /** The amount the card tab will charge, in cents. */
+  function chosenAmountCents(): number {
+    const custom = customAmount.trim().replace(/[$,]/g, "");
+    if (custom !== "") {
+      const dollars = Number(custom);
+      if (Number.isFinite(dollars) && dollars > 0)
+        return Math.round(dollars * 100);
+      return NaN;
+    }
+    return amountCents;
+  }
+
+  /** Prepare the inline card form: load Stripe.js, create an intent, mount. */
+  async function prepareCardForm() {
+    const cents = chosenAmountCents();
+    if (!Number.isFinite(cents) || cents < 100) {
+      setCardError("Enter an amount of at least $1.");
+      setCardStatus("error");
+      return;
+    }
+    setCardStatus("preparing");
+    setCardError("");
+    const jsOk = await loadStripeJs();
+    if (!jsOk || !window.Stripe) {
+      setCardStatus("unavailable");
+      setCardError(
+        "The card form could not load (a blocker may be stopping Stripe). " +
+          "Zeffy or PayPal above work without it."
+      );
+      return;
+    }
+    let intent: {
+      ok?: boolean;
+      client_secret?: string;
+      amount_cents?: number;
+      error?: string;
+    };
+    try {
+      const res = await fetch(STRIPE_INTENT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount_cents: cents }),
+      });
+      intent = await res.json();
+    } catch {
+      setCardStatus("error");
+      setCardError(
+        "Could not reach the payment server. Check your connection and try again."
+      );
+      return;
+    }
+    if (!intent.ok || typeof intent.client_secret !== "string") {
+      if (intent.error === "stripe_not_configured") {
+        setCardStatus("unavailable");
+        setCardError(
+          "Card payments are not enabled yet. Please give with Zeffy or PayPal above."
+        );
+      } else {
+        setCardStatus("error");
+        setCardError(
+          "Could not start the card payment. Please try again or use Zeffy or PayPal."
+        );
+      }
+      return;
+    }
+    try {
+      const stripe = window.Stripe(STRIPE_PUBLISHABLE_KEY);
+      const elements = stripe.elements({
+        clientSecret: intent.client_secret,
+      });
+      const payment = elements.create("payment");
+      if (cardMountRef.current) payment.mount(cardMountRef.current);
+      stripeRef.current = stripe;
+      stripeElementsRef.current = elements;
+      stripeElementRef.current = payment;
+      payment.on("change", e => {
+        if (e.error?.message) setCardError(e.error.message);
+      });
+      setCardStatus("ready");
+    } catch {
+      setCardStatus("error");
+      setCardError(
+        "Could not render the card form. Please try again or use Zeffy or PayPal."
+      );
+    }
+  }
+
+  /** Confirm the payment with the mounted element. */
+  async function confirmCardPayment() {
+    if (!stripeRef.current || !stripeElementsRef.current) return;
+    setCardStatus("confirming");
+    setCardError("");
+    const { error } = await stripeRef.current.confirmPayment({
+      elements: stripeElementsRef.current,
+      confirmParams: {
+        return_url: "https://www.embeddedos.org/donate/#donate-now",
+      },
+      redirect: "if_required",
+    });
+    if (error?.message) {
+      setCardStatus("ready");
+      setCardError(error.message);
+      return;
+    }
+    setConfirmedAmount(formatUsd(chosenAmountCents()));
+    setCardStatus("done");
+  }
 
   return (
     <div className="min-h-screen bg-[#050510] text-white">
@@ -158,103 +319,331 @@ export default function Donate() {
       <section className="py-16" id="donate-now">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid lg:grid-cols-5 gap-10">
-            {/* Left: Zeffy iframe */}
+            {/* Left: giving methods */}
             <div className="lg:col-span-3">
               <div className="mb-4">
                 <h2 className="text-2xl font-bold text-white mb-1">
                   Make a Donation
                 </h2>
                 <p className="text-white/50 text-sm">
-                  Powered by{" "}
-                  <a
-                    href="https://www.zeffy.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-orange-400 underline underline-offset-2"
-                  >
-                    Zeffy
-                  </a>{" "}
-                  — 0% platform fees, all funds go directly to the Foundation.
+                  Three secure ways to give — every one reaches the Foundation.
+                  Zeffy charges 0% platform fees; card and PayPal gifts are
+                  subject to the processor's standard nonprofit fees.
                 </p>
               </div>
-              <div className="mb-4 p-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-xs text-yellow-300/80 flex items-start gap-2">
-                <span className="text-yellow-400 mt-0.5">ℹ</span>
-                <span>
-                  Zeffy may show an optional tip on the payment page (default
-                  17%). You can set it to 0% using the dropdown — it is
-                  completely optional and does not affect your donation amount.
-                </span>
-              </div>
+              {/* Method tabs */}
               <div
-                className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5"
-                style={{ minHeight: 820 }}
+                role="tablist"
+                aria-label="Donation methods"
+                className="grid grid-cols-3 gap-2 mb-4"
               >
-                {!iframeLoaded && !embedFailed && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
-                    <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
-                    <p className="text-white/40 text-sm">
-                      Loading donation form…
-                    </p>
-                  </div>
-                )}
-
-                {embedFailed && !iframeLoaded && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 px-6 text-center">
-                    <Heart className="w-8 h-8 text-orange-400" />
-                    <p className="text-white/70 text-base font-semibold">
-                      The embedded donation form could not load
-                    </p>
-                    <p className="text-white/40 text-sm max-w-md">
-                      A browser extension or network policy is most likely
-                      blocking it. You can still give securely on Zeffy's own
-                      page — 100% of your donation reaches the Foundation either
-                      way.
-                    </p>
+                {(
+                  [
+                    { key: "zeffy", label: "Zeffy · 0% fees", Icon: Heart },
+                    { key: "card", label: "Card", Icon: CreditCard },
+                    { key: "paypal", label: "PayPal", Icon: Wallet },
+                  ] as const
+                ).map(({ key, label, Icon }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    role="tab"
+                    aria-selected={method === key}
+                    onClick={() => setMethod(key)}
+                    className={`inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold border transition-all ${
+                      method === key
+                        ? "bg-[#F97316] border-[#F97316] text-white"
+                        : "bg-white/5 border-white/10 text-white/60 hover:text-white hover:border-white/25"
+                    }`}
+                  >
+                    <Icon size={15} />
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {method === "zeffy" && (
+                <>
+                  <p className="text-white/50 text-sm mb-4">
+                    Powered by{" "}
                     <a
-                      href={ZEFFY_HOSTED_URL}
+                      href="https://www.zeffy.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
+                      className="text-orange-400 underline underline-offset-2"
                     >
-                      <Heart size={16} />
-                      Donate on Zeffy
-                    </a>
+                      Zeffy
+                    </a>{" "}
+                    — 0% platform fees, all funds go directly to the Foundation.
+                  </p>
+                </>
+              )}
+              {method === "zeffy" && (
+                <>
+                  <div className="mb-4 p-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-xs text-yellow-300/80 flex items-start gap-2">
+                    <span className="text-yellow-400 mt-0.5">ℹ</span>
+                    <span>
+                      Zeffy may show an optional tip on the payment page
+                      (default 17%). You can set it to 0% using the dropdown —
+                      it is completely optional and does not affect your
+                      donation amount.
+                    </span>
                   </div>
-                )}
+                  <div
+                    className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5"
+                    style={{ minHeight: 820 }}
+                  >
+                    {!iframeLoaded && !embedFailed && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+                        <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
+                        <p className="text-white/40 text-sm">
+                          Loading donation form…
+                        </p>
+                      </div>
+                    )}
 
-                <iframe
-                  title="Donation form powered by Zeffy"
-                  src={ZEFFY_URL}
-                  allow="payment"
-                  onLoad={() => {
-                    setIframeLoaded(true);
-                    setEmbedFailed(false);
-                    if (timerRef.current) clearTimeout(timerRef.current);
-                  }}
-                  style={{
-                    overflow: "hidden",
-                    width: "100%",
-                    border: "none",
-                    display: "block",
-                    opacity: iframeLoaded ? 1 : 0,
-                    transition: "opacity 0.4s ease",
-                  }}
-                  height={820}
-                />
-                <noscript>
-                  <div className="p-8 text-center">
-                    <p className="text-white/70 mb-4">
-                      The donation form requires JavaScript.
-                    </p>
-                    <a
-                      href={ZEFFY_HOSTED_URL}
-                      className="text-[#F97316] font-bold underline"
-                    >
-                      Donate on Zeffy instead
-                    </a>
+                    {embedFailed && !iframeLoaded && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 px-6 text-center">
+                        <Heart className="w-8 h-8 text-orange-400" />
+                        <p className="text-white/70 text-base font-semibold">
+                          The embedded donation form could not load
+                        </p>
+                        <p className="text-white/40 text-sm max-w-md">
+                          A browser extension or network policy is most likely
+                          blocking it. You can still give securely on Zeffy's
+                          own page — 100% of your donation reaches the
+                          Foundation either way.
+                        </p>
+                        <a
+                          href={ZEFFY_HOSTED_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
+                        >
+                          <Heart size={16} />
+                          Donate on Zeffy
+                        </a>
+                      </div>
+                    )}
+
+                    <iframe
+                      title="Donation form powered by Zeffy"
+                      src={ZEFFY_URL}
+                      allow="payment"
+                      onLoad={() => {
+                        setIframeLoaded(true);
+                        setEmbedFailed(false);
+                        if (timerRef.current) clearTimeout(timerRef.current);
+                      }}
+                      style={{
+                        overflow: "hidden",
+                        width: "100%",
+                        border: "none",
+                        display: "block",
+                        opacity: iframeLoaded ? 1 : 0,
+                        transition: "opacity 0.4s ease",
+                      }}
+                      height={820}
+                    />
+                    <noscript>
+                      <div className="p-8 text-center">
+                        <p className="text-white/70 mb-4">
+                          The donation form requires JavaScript.
+                        </p>
+                        <a
+                          href={ZEFFY_HOSTED_URL}
+                          className="text-[#F97316] font-bold underline"
+                        >
+                          Donate on Zeffy instead
+                        </a>
+                      </div>
+                    </noscript>
                   </div>
-                </noscript>
-              </div>
+                </>
+              )}
+              {method === "card" && (
+                <div
+                  role="tabpanel"
+                  aria-label="Donate by card"
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6"
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <CreditCard size={16} className="text-orange-400" />
+                    <h3 className="text-white font-semibold">Donate by card</h3>
+                  </div>
+                  <p className="text-white/50 text-xs mb-5">
+                    Secure card payment via Stripe. Your card details go
+                    directly to Stripe — this site never sees or stores them.
+                  </p>
+                  {cardStatus === "done" ? (
+                    <div className="text-center py-8">
+                      <CheckCircle
+                        size={40}
+                        className="text-green-400 mx-auto mb-4"
+                      />
+                      <p className="text-white font-semibold text-lg mb-1">
+                        Thank you for your {confirmedAmount} gift!
+                      </p>
+                      <p className="text-white/50 text-sm">
+                        A receipt is on its way from Stripe. Your support keeps
+                        EmbeddedOS free and open.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-2">
+                        Amount (USD)
+                      </div>
+                      <div className="grid grid-cols-4 gap-2 mb-3">
+                        {AMOUNT_PRESETS.map(cents => (
+                          <button
+                            key={cents}
+                            type="button"
+                            onClick={() => {
+                              setAmountCents(cents);
+                              setCustomAmount("");
+                            }}
+                            className={`px-2 py-2 rounded-xl text-sm font-semibold border transition-all ${
+                              customAmount === "" && amountCents === cents
+                                ? "bg-[#F97316] border-[#F97316] text-white"
+                                : "bg-white/5 border-white/10 text-white/60 hover:text-white hover:border-white/25"
+                            }`}
+                          >
+                            {formatUsd(cents)}
+                          </button>
+                        ))}
+                      </div>
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        placeholder="Other amount, e.g. 75"
+                        value={customAmount}
+                        onChange={e => setCustomAmount(e.target.value)}
+                        aria-label="Custom amount in US dollars"
+                        className="w-full mb-4 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-[#F97316]/60"
+                      />
+                      {cardStatus !== "ready" &&
+                        cardStatus !== "confirming" && (
+                          <button
+                            type="button"
+                            onClick={prepareCardForm}
+                            disabled={cardStatus === "preparing"}
+                            className="w-full px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] disabled:opacity-50 text-white font-bold rounded-xl transition-all active:scale-95 mb-4"
+                          >
+                            {cardStatus === "preparing"
+                              ? "Preparing secure form…"
+                              : `Continue with ${formatUsd(
+                                  Number.isFinite(chosenAmountCents())
+                                    ? chosenAmountCents()
+                                    : amountCents
+                                )}`}
+                          </button>
+                        )}
+                      <div
+                        ref={cardMountRef}
+                        aria-label="Secure card details"
+                        className={
+                          cardStatus === "ready" || cardStatus === "confirming"
+                            ? "mb-4"
+                            : "hidden"
+                        }
+                      />
+                      {cardStatus === "ready" && (
+                        <button
+                          type="button"
+                          onClick={confirmCardPayment}
+                          className="w-full px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl transition-all active:scale-95 mb-4"
+                        >
+                          Donate {formatUsd(chosenAmountCents())} now
+                        </button>
+                      )}
+                      {cardStatus === "confirming" && (
+                        <p className="text-white/50 text-sm text-center mb-4">
+                          Confirming your payment…
+                        </p>
+                      )}
+                      {(cardStatus === "error" ||
+                        cardStatus === "unavailable") && (
+                        <p
+                          role="alert"
+                          className="text-sm text-center mb-4 text-yellow-300/90"
+                        >
+                          {cardError}
+                        </p>
+                      )}
+                      {cardError !== "" &&
+                        (cardStatus === "ready" ||
+                          cardStatus === "confirming") && (
+                          <p
+                            role="alert"
+                            className="text-sm text-center mb-4 text-red-300/90"
+                          >
+                            {cardError}
+                          </p>
+                        )}
+                      <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
+                        {/* Stripe wordmark, drawn as text: no external brand
+                            image to fetch, nothing to license. */}
+                        <span className="font-bold tracking-tight text-white/45">
+                          stripe
+                        </span>
+                        <span>· secured · PCI-DSS</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+              {method === "paypal" && (
+                <div
+                  role="tabpanel"
+                  aria-label="Donate with PayPal"
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center"
+                >
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Wallet size={16} className="text-orange-400" />
+                    <h3 className="text-white font-semibold">
+                      Donate with PayPal
+                    </h3>
+                  </div>
+                  <p className="text-white/50 text-xs mb-2">
+                    Embedded Operating Systems Research Foundation · Non-profit
+                    organization · PayPal Giving Fund ID WJLA5PCYU8V7S.
+                  </p>
+                  <p className="text-white/50 text-xs mb-6">
+                    You will complete your gift on paypal.com — this site never
+                    sees your payment details. PayPal's standard nonprofit fees
+                    apply.
+                  </p>
+                  {/* PayPal's own hosted-button form, verbatim fields. Opens
+                      PayPal in a new tab; nothing is iframed. */}
+                  <form action={PAYPAL_DONATE_URL} method="post" target="_top">
+                    <input
+                      type="hidden"
+                      name="hosted_button_id"
+                      value={PAYPAL_HOSTED_BUTTON_ID}
+                    />
+                    <button
+                      type="submit"
+                      title="Donate with PayPal"
+                      className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#FFC439] hover:bg-[#E0A800] text-[#003087] font-bold rounded-xl transition-all active:scale-95"
+                    >
+                      <Wallet size={18} />
+                      Donate with PayPal
+                    </button>
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      src="https://www.paypal.com/en_US/i/scr/pixel.gif"
+                      width={1}
+                      height={1}
+                      className="block mx-auto mt-2"
+                    />
+                  </form>
+                  <p className="text-white/30 text-xs mt-4">
+                    PayPal, the PayPal logo marks shown, and the yellow button
+                    style are trademarks of PayPal, Inc.
+                  </p>
+                </div>
+              )}
               <div className="mt-5 text-xs text-white/30 space-y-1">
                 <div className="font-medium text-white/50 mb-2">
                   Other ways to give
@@ -267,6 +656,26 @@ export default function Donate() {
                     className="text-orange-400 underline underline-offset-2"
                   >
                     contact Finance &amp; Governance
+                  </button>
+                </div>
+                <div>
+                  Card:{" "}
+                  <button
+                    type="button"
+                    onClick={() => setMethod("card")}
+                    className="text-orange-400 underline underline-offset-2"
+                  >
+                    pay by card via Stripe
+                  </button>
+                </div>
+                <div>
+                  PayPal:{" "}
+                  <button
+                    type="button"
+                    onClick={() => setMethod("paypal")}
+                    className="text-orange-400 underline underline-offset-2"
+                  >
+                    give with PayPal
                   </button>
                 </div>
                 <div>
@@ -310,8 +719,8 @@ export default function Donate() {
                       },
                       {
                         icon: Shield,
-                        label: "Zeffy Secure",
-                        sub: "PCI-DSS compliant",
+                        label: "Secure Checkout",
+                        sub: "PCI-DSS processors",
                       },
                     ].map(b => {
                       const Icon = b.icon;
@@ -331,7 +740,12 @@ export default function Donate() {
                   </div>
                   <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-xs text-green-300">
                     <Shield className="w-3.5 h-3.5 inline mr-1.5" />
-                    Donation processed on Zeffy · EIN 41-4821627
+                    {method === "zeffy" &&
+                      "Donation processed on Zeffy · EIN 41-4821627"}
+                    {method === "card" &&
+                      "Card processed by Stripe · EIN 41-4821627"}
+                    {method === "paypal" &&
+                      "Processed by PayPal · EIN 41-4821627"}
                   </div>
                 </CardContent>
               </Card>

@@ -427,6 +427,32 @@ test.describe("functioning donation process", () => {
     const res = await request.get(src!, { maxRedirects: 5 });
     expect(res.status(), "donation provider reachable").toBe(200);
   });
+
+  test("the donation page offers card and PayPal alternatives", async ({
+    page,
+  }) => {
+    await page.goto("/donate");
+    const tabs = page.locator('[role="tablist"] [role="tab"]');
+    await expect(tabs).toHaveCount(3);
+
+    // Card tab: amount presets render; the secure form prepares on demand
+    // (Stripe may be unreachable from CI — assert the UI, not the provider).
+    await tabs.nth(1).click();
+    for (const amount of ["$10", "$25", "$50", "$100"]) {
+      await expect(
+        page.locator('[role="tabpanel"]').getByText(amount, { exact: true })
+      ).toBeVisible();
+    }
+
+    // PayPal tab: hosted button posts to paypal.com with the Foundation's
+    // button id.
+    await tabs.nth(2).click();
+    const form = page.locator('[role="tabpanel"] form[action*="paypal.com"]');
+    await expect(form).toHaveCount(1);
+    await expect(
+      form.locator('input[name="hosted_button_id"]')
+    ).toHaveAttribute("value", "LWZFJG5G6C544");
+  });
 });
 
 test.describe("prohibited content", () => {

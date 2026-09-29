@@ -47,6 +47,32 @@ function offenders(pattern: RegExp): string[] {
     .map(({ file }) => file);
 }
 
+describe("no committed payment secrets", () => {
+  it("commits no Stripe secret, webhook secret, or PayPal credential", () => {
+    // The publishable key (pk_live_…) is public by design and lives in
+    // client/src/lib/payments.ts. Everything else — secret keys, webhook
+    // signing secrets, PayPal client secrets — must stay in the server
+    // environment (STRIPE_SECRET_KEY) and out of git.
+    const files = [
+      "client/src/lib/payments.ts",
+      "client/src/pages/Donate.tsx",
+      "client/public/api/stripe-intent.php",
+      "client/index.html",
+    ];
+    for (const file of files) {
+      const text = read(file);
+      expect(text, `${file} leaks a secret`).not.toMatch(
+        /sk_live_[A-Za-z0-9]+|sk_test_[A-Za-z0-9]+|whsec_[A-Za-z0-9]+|rk_live_[A-Za-z0-9]+/
+      );
+    }
+    // The PHP endpoint must read the secret from the environment, not a
+    // literal — a literal here is the leak this test exists to catch.
+    const php = read("client/public/api/stripe-intent.php");
+    expect(php).toContain("getenv('STRIPE_SECRET_KEY')");
+    expect(php).not.toMatch(/sk_live_[A-Za-z0-9]+/);
+  });
+});
+
 describe("critical public claim policy", () => {
   it("keeps retired false and unsupported strings out of public sources", () => {
     const retired = [
@@ -125,9 +151,16 @@ describe("critical public claim policy", () => {
       "does not currently load a browser analytics service"
     );
     expect(privacy).toContain("Zeffy-hosted donation form");
-    expect(privacy).not.toMatch(/\bStripe\b/);
+    // Stripe and PayPal are named donation processors (card tab + PayPal
+    // tab on /donate). What must never appear is a SECRET key or any other
+    // credential — the publishable key in client/src/lib/payments.ts is
+    // public by design.
+    expect(privacy).toContain("Stripe");
+    expect(privacy).toContain("PayPal");
+    expect(privacy).not.toMatch(/sk_live|sk_test|whsec_/);
     expect(terms).toContain("Zeffy-hosted donation form");
     expect(terms).toContain("does not provide tax or legal advice");
-    expect(terms).not.toMatch(/\bStripe\b/);
+    expect(terms).toContain("Stripe");
+    expect(terms).not.toMatch(/sk_live|sk_test|whsec_/);
   });
 });

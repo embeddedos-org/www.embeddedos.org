@@ -16,7 +16,7 @@ const SECTIONS = [
 
 • **Usage Data:** This site does not currently load a browser analytics service. Our hosting provider may retain standard web-server logs, such as request time, requested path, referrer, IP address, and user agent, for security and reliability.
 • **Contact Information:** If you contact us through the form at www.embeddedos.org/contact, we retain your email address and message content solely to respond to your inquiry.
-• **Donation Data:** The donation flow uses a Zeffy-hosted donation form. Information you enter in that form goes directly to Zeffy and any payment or anti-abuse providers identified there; it is not first collected by this website. The Foundation may receive the donor contact details and transaction records Zeffy makes available to us. We do not receive or store full card or bank credentials on our servers.
+• **Donation Data:** The donation flow offers three options: a Zeffy-hosted donation form, card payment via Stripe, and PayPal. Information you enter goes directly to the chosen processor (Zeffy, Stripe, or PayPal) and any payment or anti-abuse providers identified there; it is not first collected by this website. The Foundation may receive the donor contact details and transaction records the processor makes available to us. We do not receive or store full card or bank credentials on our servers.
 • **GitHub:** If you interact with our GitHub repositories, GitHub's privacy policy applies to that data.`,
   },
   {
@@ -45,6 +45,8 @@ You can disable cookies in your browser settings. Doing so will not prevent you 
     content: `This website integrates with the following third-party services:
 
 • **Zeffy** (hosted donation form and payment facilitation) — governed by Zeffy's Privacy Policy at zeffy.com/privacy-policy. Zeffy may identify additional payment and anti-abuse providers within its form.
+• **Stripe** (card payment processing) — governed by Stripe's Privacy Policy at stripe.com/privacy. Card details you enter go directly to Stripe; this website never sees them.
+• **PayPal** (PayPal checkout) — governed by PayPal's Privacy Policy at paypal.com/us/legalhub/privacy-full. Gifts are completed on paypal.com under PayPal's terms.
 • **GitHub** (source code hosting) — governed by GitHub's Privacy Policy at docs.github.com/en/site-policy/privacy-policies
 • **InterServer** (web hosting) — governed by InterServer's Privacy Policy at interserver.net/privacy-policy
 
@@ -52,7 +54,7 @@ We have no control over the data practices of these third parties.`,
   },
   {
     title: "5. Data Retention",
-    content: `We retain contact inquiry emails for up to 12 months. Hosting logs are retained according to InterServer's operational policies. Retention of donation records depends on Zeffy's practices and the Foundation's applicable accounting and legal obligations.`,
+    content: `We retain contact inquiry emails for up to 12 months. Hosting logs are retained according to InterServer's operational policies. Retention of donation records depends on the practices of the payment processor used (Zeffy, Stripe, or PayPal) and the Foundation's applicable accounting and legal obligations.`,
   },
   {
     title: "6. Your Rights",
