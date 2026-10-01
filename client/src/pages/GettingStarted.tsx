@@ -216,7 +216,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     intro:
       "ebuild creates an EoS project and `ebuild sim` builds it with the EoS kernel for QEMU's Arm Cortex-M3 machine, then boots it and shows the program's output. Every command and output on this page was run on Ubuntu 20.04 (WSL2) with Python 3.12, arm-none-eabi-gcc 9.2.1 and QEMU 4.2.1.",
     prereq:
-      "Linux or WSL2 (verified: Ubuntu 20.04). Python 3.9+, Git, the Arm GNU toolchain and QEMU. macOS should work with the same tools but has not been verified for this guide.",
+      "Linux or WSL2 (verified: Ubuntu 20.04). Python 3.10+, Git, the Arm GNU toolchain and QEMU. Ubuntu 20.04's own python3 is 3.8, which is too old, so step 2 fetches a current Python without root. macOS should work with the same tools but has not been verified for this guide.",
     time: "~10 minutes",
     steps: [
       {
@@ -225,9 +225,9 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
       {
         title: "Install ebuild and EoSim",
-        text: "ebuild is the EmbeddedOS build tool. EoSim provides the platform registry that `ebuild platforms list` reads. Neither is on PyPI yet, so install them from GitHub.",
-        code: `python3 -m venv .venv && . .venv/bin/activate\npip install "embeddedos-ebuild @ git+https://github.com/embeddedos-org/ebuild" \\\n            "embeddedos-eosim @ git+https://github.com/embeddedos-org/EoSim"\n\nebuild --version\n# ebuild, version 3.0.1`,
-        tip: "Once the first PyPI release is published, this becomes: pip install embeddedos-ebuild embeddedos-eosim. Do not run `pip install ebuild` — that name on PyPI belongs to an unrelated project.",
+        text: "ebuild is the EmbeddedOS build tool. EoSim provides the platform registry that `ebuild platforms list` reads. Neither is on PyPI yet, so install them from GitHub. uv supplies Python 3.12 for the virtual environment, with no root needed, so this works on Ubuntu 20.04 too.",
+        code: `curl -LsSf https://astral.sh/uv/install.sh | sh && source $HOME/.local/bin/env\nuv venv -p 3.12 .venv && . .venv/bin/activate\nuv pip install "embeddedos-ebuild @ git+https://github.com/embeddedos-org/ebuild" \\\n               "embeddedos-eosim @ git+https://github.com/embeddedos-org/EoSim"\n\nebuild --version\n# ebuild, version 3.0.1`,
+        tip: "Already on Python 3.10+ (Ubuntu 22.04 or later)? python3 -m venv .venv works in place of uv. With Ubuntu 20.04's python3 (3.8), the install fails with: requires a different Python: 3.8.10 not in '>=3.9'. Do not run `pip install ebuild`: that name on PyPI belongs to an unrelated project.",
       },
       {
         title: "Fetch the EoS Sources",
@@ -359,26 +359,30 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     title: "Hardware Engineer Workflow",
     color: "#A78BFA",
     intro:
-      "Start from a KiCad schematic. ebuild analyze identifies the MCU and peripherals and generates board, boot and build configuration. You then simulate application logic for that MCU family. The eCAD repository's validation gate (V0–V4) checks your product's design data and refuses to call anything a pass without evidence.",
+      "Start from a KiCad schematic. ebuild analyze identifies the MCU and peripherals and generates board, boot and build configuration, and you simulate application logic for that MCU family. The eCAD repository's V0–V4 validation gate checks a product's design data and refuses to call anything a pass without evidence. It is honest about the current state: the example product below does not pass yet.",
     prereq:
-      "Python 3.9+, ebuild (see the simulator path), and a .kicad_sch schematic.",
+      "The simulator path above (ebuild and its virtual environment, still active).",
     time: "~20 minutes",
     steps: [
       {
-        title: "Analyze Your Schematic",
-        text: "Shown here on the eRadar360 schematic from eCAD-Hardware-Products:",
-        code: `ebuild analyze --file eRadar360_CAD_Design/hardware/eradar360.kicad_sch\n\n# [info] MCU: STM32H7 (cortex-m7)\n# [info] Peripherals: 2 detected\n#   - usb: J1_usb\n#   - audio: J2_audio\n# [ok]   board: _generated/board.yaml\n# [ok]   boot: _generated/boot.yaml\n# [ok]   build: _generated/build.yaml\n# [ok]   eos_config: _generated/eos_product_config.h\n# [info] Validation: PASS (0 errors, 3 warnings)`,
-        tip: "Read the warnings. For this schematic, flash and RAM sizes are not in the design and have to be filled in.",
+        title: "Get the Designs and the Validator",
+        code: `git clone https://github.com/embeddedos-org/eCAD-Hardware-Products.git && cd eCAD-Hardware-Products\nuv pip install jsonschema pyyaml\npython tools/validate_products.py capabilities   # which external tools are available here`,
       },
       {
-        title: "Simulate Firmware for That MCU Family",
-        code: `ebuild init radar-fw --template rtos --target stm32h7\ncd radar-fw && ebuild sim`,
-        warn: "Simulation runs on QEMU's Cortex-M3. It checks kernel and application logic, not your board's peripherals or timing.",
+        title: "Analyze a Schematic",
+        text: "From inside eCAD-Hardware-Products, on the eRadar360 schematic:",
+        code: `ebuild analyze --file eRadar360_CAD_Design/hardware/eradar360.kicad_sch\n\n# [info] MCU: STM32H7 (cortex-m7)\n# [info] Peripherals: 2 detected\n#   - usb: J1_usb\n#   - audio: J2_audio\n# [ok]   board: _generated/board.yaml\n# [ok]   boot: _generated/boot.yaml\n# [ok]   build: _generated/build.yaml\n# [ok]   eos_config: _generated/eos_product_config.h\n# [info] Validation: PASS (0 errors, 3 warnings)`,
+        tip: "Read the warnings: for this schematic, flash and RAM sizes are not in the design and have to be filled in.",
       },
       {
         title: "Validate the Product's Design Data",
-        text: "eCAD-Hardware-Products runs schema, sanity, invariant, golden and corner checks (V0–V4) per product. Anything it could not execute is reported as BLOCKED, not as a pass.",
-        code: `git clone https://github.com/embeddedos-org/eCAD-Hardware-Products.git && cd eCAD-Hardware-Products\npip install jsonschema pyyaml\npython tools/validate_products.py capabilities          # which external tools are available\npython tools/validate_products.py validate --product <id> --output out/`,
+        text: "V0 schema, V1 sanity, V2 invariants, V3 golden and V4 corner checks. Anything that could not be executed is reported as BLOCKED, never as a pass. eRadar360 currently fails V0 and is blocked at V1–V4:",
+        code: `python tools/validate_products.py validate --product eRadar360_CAD_Design:hardware --output out/\n\n# V0 FAIL     v0.canonical-bom, v0.datasheet-contract\n# V1 BLOCKED  v1.simulation-execution: SIMULATION_MODEL_MISSING\n# V2 BLOCKED  v2.cad-invariants: REQUIRED_INPUT_MISSING\n# V3 BLOCKED  v3.golden-cases: GOLDEN_EVIDENCE_MISSING\n# V4 BLOCKED  v4.corners-cases: CORNERS_EVIDENCE_MISSING`,
+      },
+      {
+        title: "Simulate Firmware for That MCU Family",
+        code: `cd .. && ebuild init radar-fw --template rtos --target stm32h7\ncd radar-fw && ebuild sim`,
+        warn: "Simulation runs on QEMU's Cortex-M3: it checks kernel and application logic, not your board's peripherals or timing.",
       },
     ],
     nextSteps: [

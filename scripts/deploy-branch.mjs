@@ -60,6 +60,28 @@ if (!fs.existsSync(path.join(DIST, "index.html"))) {
   die(`No build found at ${DIST}. Run "pnpm build" first.`);
 }
 
+// dist/ must have been built from the commit being published, from a clean
+// tree. scripts/build-stamp.mjs (the last step of "pnpm build") records both.
+const STAMP = path.join(ROOT, "dist", "build-stamp.json");
+if (!fs.existsSync(STAMP)) {
+  die(
+    `${STAMP} is missing, so nothing says which commit dist/ was built from. Run "pnpm build".`
+  );
+}
+const stamp = JSON.parse(fs.readFileSync(STAMP, "utf8"));
+const head = git(["rev-parse", "HEAD"]);
+if (stamp.commit !== head) {
+  die(
+    `dist/ was built from ${stamp.commit.slice(0, 8)}, but HEAD is ${head.slice(0, 8)}. ` +
+      `Publishing it would label an old build as this commit. Run "pnpm build" again.`
+  );
+}
+if (stamp.dirty) {
+  die(
+    "dist/ was built from a tree with uncommitted changes, so no commit describes it. Commit or stash, then rebuild."
+  );
+}
+
 // A prerendered build is the whole point of this branch; a bare SPA shell would
 // deploy a site with no crawlable content and no per-route <title>.
 const routeDirs = fs
