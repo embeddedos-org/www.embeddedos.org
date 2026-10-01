@@ -13,7 +13,7 @@
  *
  * Sharded one test per source route so the ~380 clicks run in parallel.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import fs from "node:fs";
 import path from "node:path";
 

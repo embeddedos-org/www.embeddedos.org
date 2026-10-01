@@ -17,7 +17,7 @@
  * already driven by the navigation and modal tests in regression.spec.ts. They
  * are exercised here on a small sample instead.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import fs from "node:fs";
 import path from "node:path";
 

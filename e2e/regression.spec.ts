@@ -4,7 +4,7 @@
  * Each test names the bug it prevents from coming back. If any of these fail,
  * a specific, previously-shipped defect has returned.
  */
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from "./fixtures";
 
 test.describe("build output regressions", () => {
   test("the 367 KB Manus dev runtime is not inlined into the document", async ({

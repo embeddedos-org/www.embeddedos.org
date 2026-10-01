@@ -9,7 +9,7 @@
  * Not covered here (require the public URL): PageSpeed Insights score, Google's
  * Mobile-Friendly Test, and domain-ownership verification in Google Ads.
  */
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from "./fixtures";
 
 const PUBLIC_BUSINESS_ADDRESS =
   "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
