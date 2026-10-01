@@ -8,7 +8,7 @@
  * target. The webServer in playwright.config.ts serves the production build,
  * so this measures what actually ships.
  */
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from "./fixtures";
 
 // Generous on purpose: local serving plus a cold headless browser. A real
 // regression shows up as tens of seconds, not a few hundred milliseconds.

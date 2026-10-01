@@ -13,6 +13,7 @@ import {
   Award,
 } from "lucide-react";
 import { openContactForm } from "@/lib/contact-form";
+import { REPO_COUNT } from "@/data/stack";
 
 const tiers: Array<{
   id: string;
@@ -44,7 +45,7 @@ const tiers: Array<{
     description:
       "Join the EmbeddedOS community. Access all open-source repositories, documentation, and community forums.",
     benefits: [
-      "Access to all 23 open-source repositories",
+      `Access to all ${REPO_COUNT} open-source repositories`,
       "Community forum participation",
       "GitHub Discussions access",
       "Newsletter updates",

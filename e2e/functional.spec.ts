@@ -4,7 +4,7 @@
  * Navigation, client-side routing, the donation surface, footer wiring, images,
  * and the metadata a search engine reads.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test.describe("navigation", () => {
   test("the header exposes the primary menus", async ({ page }) => {

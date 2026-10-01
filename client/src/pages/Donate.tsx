@@ -29,8 +29,14 @@ import {
   type StripeElements,
   type StripePaymentElement,
 } from "@/lib/payments";
+import { REPO_COUNT } from "@/data/stack";
 const STATS = [
-  { icon: Cpu, value: "22+", label: "Open-Source Repos", color: "#F97316" },
+  {
+    icon: Cpu,
+    value: String(REPO_COUNT),
+    label: "Open-Source Repos",
+    color: "#F97316",
+  },
   {
     icon: BookOpen,
     value: "14",

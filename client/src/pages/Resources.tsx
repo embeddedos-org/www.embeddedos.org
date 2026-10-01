@@ -9,7 +9,7 @@ import {
   Globe,
 } from "lucide-react";
 import { Link } from "wouter";
-import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import { BOARD_COUNT, REPO_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 
 const sections = [
   {
@@ -56,7 +56,7 @@ const sections = [
     items: [
       {
         name: "GitHub — embeddedos-org",
-        desc: "All 23 public repositories: kernel, drivers, apps, tools.",
+        desc: `All ${REPO_COUNT} public repositories: kernel, drivers, apps, tools.`,
         link: "https://github.com/embeddedos-org",
         external: true,
       },

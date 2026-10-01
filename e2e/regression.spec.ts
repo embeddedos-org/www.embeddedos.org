@@ -4,7 +4,8 @@
  * Each test names the bug it prevents from coming back. If any of these fail,
  * a specific, previously-shipped defect has returned.
  */
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from "./fixtures";
+import { STACK } from "../shared/stack-data";
 
 test.describe("build output regressions", () => {
   test("the 367 KB Manus dev runtime is not inlined into the document", async ({
@@ -46,10 +47,21 @@ test.describe("prerender regressions", () => {
       .replace(/<script[\s\S]*?<\/script>/g, "");
     const text = body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
-    expect(text).toContain("22 Repositories");
+    // shared/stack-data.ts is the count's source of truth, pinned against the
+    // live org by tests/integration/stack-claims.test.ts.
+    const repos = STACK.totals.repositories;
+    expect(text).toContain(`${repos} Repositories`);
     expect(text).toContain("14 Books");
     expect(text).not.toMatch(/\b0 Repositories\b/);
     expect(text).not.toMatch(/\b0 \+ Platforms\b/);
+
+    // The homepage once said "23 Repositories" in its stats and "22 Repos" in
+    // the badge beside them. Every repo figure must be the one count.
+    const stated = [...text.matchAll(/\b(\d+)\+? Repo(?:s|sitories)\b/g)].map(
+      m => Number(m[1])
+    );
+    expect(stated.length).toBeGreaterThan(1);
+    expect(new Set(stated)).toEqual(new Set([repos]));
   });
 
   test("every route serves its own snapshot, not the homepage", async ({
@@ -394,6 +406,9 @@ test.describe("metadata regressions", () => {
    * and og:* tags, but nothing updated them once wouter swapped the page.
    * From the second page onward the tab, the history entry and — worst —
    * <link rel="canonical"> still described whichever page was landed on first.
+   *
+   * Canonicals end in a slash: that is the URL the host serves (97818d45,
+   * canonicalFor() in client/src/lib/page-meta.ts). The bare form 301s.
    */
   test("a client-side navigation restamps title, canonical and og:url", async ({
     page,
@@ -403,7 +418,7 @@ test.describe("metadata regressions", () => {
 
     const canonicalHref = () =>
       page.locator('link[rel="canonical"]').getAttribute("href");
-    expect(await canonicalHref()).toBe("https://www.embeddedos.org/eni");
+    expect(await canonicalHref()).toBe("https://www.embeddedos.org/eni/");
 
     await page.locator('footer a[href="/getting-started"]').first().click();
     await expect(page).toHaveURL(/\/getting-started$/);
@@ -412,11 +427,11 @@ test.describe("metadata regressions", () => {
     // rather than assuming the swap is synchronous.
     await expect(page).toHaveTitle(/Start Building/);
     expect(await canonicalHref()).toBe(
-      "https://www.embeddedos.org/getting-started"
+      "https://www.embeddedos.org/getting-started/"
     );
     expect(
       await page.locator('meta[property="og:url"]').getAttribute("content")
-    ).toBe("https://www.embeddedos.org/getting-started");
+    ).toBe("https://www.embeddedos.org/getting-started/");
 
     const description = await page
       .locator('meta[name="description"]')
@@ -432,7 +447,7 @@ test.describe("metadata regressions", () => {
     await page.goto("/product-eos-platform");
     expect(
       await page.locator('link[rel="canonical"]').getAttribute("href")
-    ).toBe("https://www.embeddedos.org/product-eos-platform");
+    ).toBe("https://www.embeddedos.org/product-eos-platform/");
   });
 });
 
@@ -745,7 +760,7 @@ test.describe("donation prompt regressions", () => {
    * fires deterministically or it does not.
    */
 
-  /** Past AUTO_SHOW_DELAY_MS with margin, without spending it. */
+  /** Past the retired 20s AUTO_SHOW_DELAY_MS with margin, without spending it. */
   const PAST_THE_DELAY = "00:30";
 
   const prompt = (p: Page) =>
@@ -795,13 +810,15 @@ test.describe("donation prompt regressions", () => {
     await expect(page.locator("#fullName")).toBeVisible();
   });
 
-  test("does not auto-open on /donate, but still does elsewhere", async ({
+  test("never auto-opens, on /donate or elsewhere, yet still opens on request", async ({
     page,
     context,
   }) => {
-    // Both halves matter. Asserting only that /donate stays clear would pass
-    // just as well if the prompt stopped working entirely, so /about proves
-    // the timer still fires.
+    // The 20s auto-show was removed on purpose in 89988992: Ad Grants
+    // reviewers treat an unprompted pop-up as a rejection reason. This used to
+    // assert that /about still auto-opened, which is the behaviour that commit
+    // retired. Both halves still matter: "no prompt" would pass just as well
+    // if the modal never mounted, so /about must still open it on a click.
     const donatePage = page;
     const controlPage = await context.newPage();
 
@@ -823,8 +840,14 @@ test.describe("donation prompt regressions", () => {
       controlPage.clock.fastForward(PAST_THE_DELAY),
     ]);
 
-    await expect(prompt(controlPage)).toBeVisible();
     await expect(prompt(donatePage)).toHaveCount(0);
+    await expect(prompt(controlPage)).toHaveCount(0);
+
+    await controlPage
+      .locator("header button", { hasText: "Donate" })
+      .first()
+      .click();
+    await expect(prompt(controlPage)).toBeVisible();
 
     await controlPage.close();
   });

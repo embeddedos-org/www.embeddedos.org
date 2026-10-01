@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { SIM_PLATFORM_COUNT } from "@/data/stack";
+import { REPO_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 import {
   ArrowRight,
   Github,
@@ -225,7 +225,7 @@ const REPO_GROUPS = [
 ];
 
 const STATS = [
-  { value: "22", label: "Repositories" },
+  { value: String(REPO_COUNT), label: "Repositories" },
   { value: "60+", label: "Applications" },
   { value: "4", label: "Health Devices" },
   { value: "2", label: "Aircraft Models" },
@@ -246,9 +246,9 @@ export default function Projects() {
               All <span className="text-gradient">Projects</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
-              23 open-source repositories spanning embedded OS, AI, health
-              devices, aerospace, and developer tools. Everything is open.
-              Everything is connected.
+              {REPO_COUNT} open-source repositories spanning embedded OS, AI,
+              health devices, aerospace, and developer tools. Everything is
+              open. Everything is connected.
             </p>
             <a
               href="https://github.com/embeddedos-org"
@@ -368,8 +368,8 @@ export default function Projects() {
             Star the Repos
           </h2>
           <p className="text-white/50 mb-6">
-            Every star helps EmbeddedOS grow. Join 22 repos and help build the
-            OS for every device.
+            Every star helps EmbeddedOS grow. Join {REPO_COUNT} repos and help
+            build the OS for every device.
           </p>
           <a
             href="https://github.com/embeddedos-org"

@@ -14,6 +14,10 @@ import fs from "node:fs";
 import net from "node:net";
 import path from "node:path";
 
+// Same override as tests/integration/server.test.ts: some WSL2 hosts cannot
+// reach their own loopback, so the suite can bind to an interface address.
+const HOST = process.env.IT_HOST ?? "127.0.0.1";
+
 const ROOT = path.resolve(import.meta.dirname, "../..");
 const DIST = path.join(ROOT, "dist", "public");
 const NOT_FOUND = path.join(DIST, "404.html");
@@ -25,7 +29,7 @@ const notFoundHtml = () =>
 function freePort(): Promise<number> {
   return new Promise((resolve, reject) => {
     const s = net.createServer();
-    s.listen(0, "127.0.0.1", () => {
+    s.listen(0, HOST, () => {
       const addr = s.address();
       const port = typeof addr === "object" && addr ? addr.port : 0;
       s.close(() => (port ? resolve(port) : reject(new Error("no port"))));
@@ -69,7 +73,7 @@ describe("the production server answers unknown paths with the 404 page", () => 
       env: { ...process.env, NODE_ENV: "production", PORT: String(port) },
       stdio: ["ignore", "pipe", "pipe"],
     });
-    base = `http://127.0.0.1:${port}`;
+    base = `http://${HOST}:${port}`;
     await new Promise<void>((resolve, reject) => {
       const timer = setTimeout(
         () => reject(new Error("production server did not start in time")),

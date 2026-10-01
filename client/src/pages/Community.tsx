@@ -15,7 +15,7 @@ import {
 import { Link } from "wouter";
 import { COMMUNITY_LINKS } from "@/data/community";
 import { SOCIAL_URLS } from "@/data/foundation";
-import { BOARD_COUNT } from "@/data/stack";
+import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 
 const ways = [
   {
@@ -69,7 +69,7 @@ const ways = [
 ];
 
 const stats = [
-  { value: "22+", label: "Open Repositories" },
+  { value: String(REPO_COUNT), label: "Open Repositories" },
   { value: String(BOARD_COUNT), label: "Supported Boards" },
   { value: "300+", label: "Public APIs" },
   { value: "14", label: "Books Published" },

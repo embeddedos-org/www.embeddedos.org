@@ -27,7 +27,7 @@
  * Absolute links back to www.embeddedos.org are checked too, but without
  * network: they must name a route the prerender actually emitted.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import fs from "node:fs";
 import path from "node:path";
 

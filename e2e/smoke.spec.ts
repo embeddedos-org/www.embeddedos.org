@@ -4,7 +4,7 @@
  * Runs on both desktop and mobile projects. If any of these fail, nothing else
  * is worth running.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 const CRITICAL_ROUTES = ["/", "/about", "/donate", "/contact", "/get-involved"];
 

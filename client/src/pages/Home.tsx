@@ -852,7 +852,7 @@ export default function Home() {
             className="text-center mb-12"
           >
             <div className="badge-amber mb-4 inline-flex">
-              22 Repos · 60+ Apps
+              {REPO_COUNT} Repos · 60+ Apps
             </div>
             <h2 id="products-heading" className="display-2 text-white mb-4">
               The Complete Embedded Ecosystem
@@ -929,7 +929,7 @@ export default function Home() {
                 href="/projects"
                 className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl transition-all duration-150 border border-white/10"
               >
-                All 22 Projects
+                All Projects
                 <ChevronRight size={16} />
               </Link>
               <Link

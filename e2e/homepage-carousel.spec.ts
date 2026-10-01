@@ -10,7 +10,7 @@
  *   pnpm exec playwright test --config <config> tests/e2e/homepage-carousel.spec.ts
  * or move it under e2e/ to join the default suite.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test("homepage product carousel pages with Next/Prev arrows", async ({
   page,

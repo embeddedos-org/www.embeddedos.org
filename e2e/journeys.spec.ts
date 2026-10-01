@@ -4,7 +4,7 @@
  * These are deliberately multi-step: they fail if any link in the chain breaks,
  * which is what the Ad Grants reviewer will actually experience.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 test.describe("donor journey", () => {
   test("lands on the homepage, understands the mission, and reaches the donation form", async ({

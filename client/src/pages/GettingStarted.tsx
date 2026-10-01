@@ -45,7 +45,7 @@ const ECOSYSTEM = [
     id: "ebuild",
     name: "ebuild",
     role: "Build Tool",
-    desc: "Compiles, links, analyzes CAD, and flashes firmware. The single CLI for the entire EoS lifecycle.",
+    desc: "Creates, builds and simulates EoS projects, analyzes KiCad schematics, and drives flash tools.",
     color: "#F97316",
     icon: Wrench,
   },
@@ -53,7 +53,7 @@ const ECOSYSTEM = [
     id: "eosim",
     name: "EoSim",
     role: "Simulator",
-    desc: `Runs your firmware in-browser on ${SIM_PLATFORM_COUNT} virtual platforms. No hardware required — ever.`,
+    desc: `Registry of ${SIM_PLATFORM_COUNT} platform descriptors and simulation engines. Cortex-M apps run on QEMU through ebuild sim.`,
     color: "#22D3EE",
     icon: Monitor,
   },
@@ -120,30 +120,30 @@ const PATHS: {
   {
     id: "nosim",
     icon: Play,
-    label: "No Hardware, No Install",
-    sublabel: "Run in browser — 60 seconds",
+    label: "Just Looking",
+    sublabel: "Illustrative browser demo",
     color: "#34D399",
-    badge: "Fastest",
   },
   {
     id: "sim",
     icon: Monitor,
     label: "Simulator on My Computer",
-    sublabel: "Full EoSim CLI + ebuild",
+    sublabel: "ebuild sim on QEMU — verified",
     color: "#22D3EE",
+    badge: "Start here",
   },
   {
     id: "esp32",
     icon: Wifi,
     label: "I Have an ESP32",
-    sublabel: "Flash EoS to $5 board",
+    sublabel: "Status: not ready yet",
     color: "#F97316",
   },
   {
     id: "stm32",
     icon: Cpu,
     label: "I Have an STM32",
-    sublabel: "Nucleo / Discovery board",
+    sublabel: "Simulate now; images next",
     color: "#22D3EE",
   },
   {
@@ -157,7 +157,7 @@ const PATHS: {
     id: "hardware-design",
     icon: PenTool,
     label: "I'm a Hardware Engineer",
-    sublabel: "CAD → ebuild → simulate → flash",
+    sublabel: "KiCad → analyze → simulate → validate",
     color: "#A78BFA",
   },
 ];
@@ -183,347 +183,216 @@ interface PathContent {
 
 const PATH_CONTENT: Record<Path, PathContent> = {
   nosim: {
-    title: "Run EoS in Your Browser — No Install",
+    title: "See an EoS Program in Your Browser",
     color: "#34D399",
     intro:
-      "EoSim runs entirely in your browser using WebAssembly. You can write, compile, and simulate firmware on a virtual STM32, ESP32, or Raspberry Pi Pico without installing anything. This is the fastest way to understand what EmbeddedOS is.",
-    prereq:
-      "A modern browser (Chrome 90+, Firefox 88+, Safari 15+). That is it.",
-    time: "~5 minutes",
+      'The /demo page is an interactive, illustrative visualisation of what a small EoS program does: GPIO pins toggle and a console prints. It runs in JavaScript in your browser. It does not compile or execute EoS. To run the real EoS kernel with no hardware, use the "Simulator on My Computer" path, which runs it under QEMU.',
+    prereq: "A modern browser. Nothing to install.",
+    time: "~2 minutes",
     steps: [
       {
-        title: "Open the EoSim Demo",
-        text: "Navigate to the EoSim demo page. You will see a virtual board with GPIO pins, a code editor, and a UART output console. No login required.",
+        title: "Open the Demo",
+        text: "Go to /demo. Pick a board and one of the example programs, then press Run.",
         substeps: [
-          "Click 'Demo' in the top navigation, or go directly to /demo",
-          "The simulator loads a virtual STM32F4 board by default",
+          "The board view and console are animated by the page itself",
+          "Use it to see the shape of an EoS program: tasks, delays, GPIO, UART output",
         ],
+        warn: "This is a visualisation, not an emulator. Nothing you see on /demo has been compiled or executed.",
       },
       {
-        title: "Choose a Board",
-        text: `EoSim supports ${SIM_PLATFORM_COUNT} virtual platforms. For your first run, keep the default STM32F4 Discovery. You can switch to ESP32 or Raspberry Pi Pico using the board selector.`,
-        substeps: [
-          "STM32F4 — ARM Cortex-M4, 168MHz, 1MB flash",
-          "ESP32 — Xtensa LX6, 240MHz, Wi-Fi + BT",
-          "RPi Pico — RP2040, dual-core ARM Cortex-M0+",
-        ],
-      },
-      {
-        title: "Select a Program",
-        text: "Three example programs are pre-loaded:",
-        substeps: [
-          "LED Blink — Toggles GPIO PA5 every 500ms. The simplest possible EoS program.",
-          "UART Echo — Reads from UART1 and echoes back. Demonstrates the EoS UART HAL.",
-          "GPIO Scanner — Reads all GPIO pins and prints their state every 100ms.",
-        ],
-      },
-      {
-        title: "Click Run",
-        text: "Press the green Run button. The simulator compiles the program, loads it onto the virtual board, and starts execution. You will see UART output appear in the console within 1-2 seconds.",
-        tip: "The GPIO pins on the right side of the board light up in real time as the program toggles them.",
-      },
-      {
-        title: "Interact with the Simulation",
-        substeps: [
-          "Click any GPIO pin to toggle it manually — the program will read the new state",
-          "The UART console shows all output from the virtual board",
-          "Click Reset to restart the simulation from the beginning",
-          "Click Stop to pause execution at any point",
-        ],
-      },
-      {
-        title: "What You Just Ran — The Source Code",
-        text: "The LED Blink program is a complete EoS application:",
-        code: `#include "eos/hal/gpio.h"\n#include "eos/kernel/task.h"\n\n// EoS task — runs on the RTOS scheduler\nvoid led_task(void *arg) {\n    eos_gpio_init(GPIO_PA5, GPIO_OUTPUT);\n    while (1) {\n        eos_gpio_toggle(GPIO_PA5);   // Toggle LED\n        eos_task_delay_ms(500);      // Wait 500ms\n    }\n}\n\nint main(void) {\n    eos_kernel_init();\n    eos_task_create(led_task, "led", 512, NULL, 1);\n    eos_kernel_start();  // Never returns\n}`,
-      },
-      {
-        title: "Next: Install ebuild Locally",
-        text: "When you are ready to go deeper, install ebuild and EoSim on your computer for full CLI access and the ability to flash real hardware.",
-        code: `pip install embeddedos-ebuild embeddedos-eosim\nebuild init my-first-project --template rtos --target stm32f4\ncd my-first-project && ebuild sim`,
+        title: "Run the Real Thing",
+        text: 'To boot the actual EoS kernel and your own code without hardware, follow "Simulator on My Computer". It takes about 10 minutes on Linux or WSL2.',
+        code: `ebuild init my-blink --template rtos --target stm32f4\ncd my-blink && ebuild sim`,
       },
     ],
     nextSteps: [
-      { label: "Install ebuild locally", href: "/getting-started" },
+      { label: "Open the demo", href: "/demo" },
       { label: "Read the EoS Kernel docs", href: "/eos" },
-      { label: "Browse 60+ eApps", href: "/eapps" },
     ],
   },
   sim: {
-    title: "Full Simulator on Your Computer",
+    title: "Run EoS on a Simulated Board (QEMU)",
     color: "#22D3EE",
     intro:
-      "EoSim + ebuild give you a complete EmbeddedOS development environment on your laptop. Write firmware, compile it, simulate it on a virtual board, and debug it — all without any physical hardware. This is how most EoS contributors develop.",
+      "ebuild creates an EoS project and `ebuild sim` builds it with the EoS kernel for QEMU's Arm Cortex-M3 machine, then boots it and shows the program's output. Every command and output on this page was run on Ubuntu 20.04 (WSL2) with Python 3.12, arm-none-eabi-gcc 9.2.1 and QEMU 4.2.1.",
     prereq:
-      "Python 3.10+, Git, 2GB disk space. Windows 10+, macOS 12+, or Ubuntu 20.04+.",
-    time: "~15 minutes",
+      "Linux or WSL2 (verified: Ubuntu 20.04). Python 3.9+, Git, the Arm GNU toolchain and QEMU. macOS should work with the same tools but has not been verified for this guide.",
+    time: "~10 minutes",
     steps: [
       {
+        title: "Install the Toolchain and QEMU",
+        code: `sudo apt install git python3-venv gcc-arm-none-eabi qemu-system-arm`,
+      },
+      {
         title: "Install ebuild and EoSim",
-        text: "ebuild is the EmbeddedOS build tool. It handles project creation, compilation, simulation, flashing, and monitoring. EoSim is the hardware simulator that ebuild uses internally.",
-        code: `pip install embeddedos-ebuild embeddedos-eosim\n\nebuild --version\n# ebuild v2.1.0 (EmbeddedOS Build Tool)\n\neosim --version\n# EoSim v1.4.0 — ${SIM_PLATFORM_COUNT} platforms available`,
-        tip: "On Windows, run these commands in PowerShell as Administrator. On macOS/Linux, you may need pip3.",
+        text: "ebuild is the EmbeddedOS build tool. EoSim provides the platform registry that `ebuild platforms list` reads. Neither is on PyPI yet, so install them from GitHub.",
+        code: `python3 -m venv .venv && . .venv/bin/activate\npip install "embeddedos-ebuild @ git+https://github.com/embeddedos-org/ebuild" \\\n            "embeddedos-eosim @ git+https://github.com/embeddedos-org/EoSim"\n\nebuild --version\n# ebuild, version 3.0.1`,
+        tip: "Once the first PyPI release is published, this becomes: pip install embeddedos-ebuild embeddedos-eosim. Do not run `pip install ebuild` — that name on PyPI belongs to an unrelated project.",
+      },
+      {
+        title: "Fetch the EoS Sources",
+        text: "ebuild builds your application against the EoS kernel and bootloader sources. It keeps them in ~/.ebuild/repos.",
+        code: `ebuild setup\n# [ok]   eos: ~/.ebuild/repos/eos\n# [ok]   eboot: ~/.ebuild/repos/eboot\n# [ok] Setup complete. Repos are ready.\n\nebuild doctor     # checks compilers, cmake, ninja and the repos`,
       },
       {
         title: "Create Your First Project",
-        text: "ebuild init creates a complete EoS project with the correct directory structure, CMakeLists.txt, linker scripts, and startup code for your target board.",
-        code: `ebuild init my-blink --template rtos --target stm32f4\ncd my-blink\n\n# Project structure:\n# my-blink/\n#   src/main.c          <- Your application code\n#   src/tasks/          <- RTOS task files\n#   include/            <- Header files\n#   CMakeLists.txt      <- Build configuration\n#   ebuild.toml         <- Project metadata\n#   .eosim/             <- Simulation config`,
+        code: `ebuild init my-blink --template rtos --target stm32f4\ncd my-blink\n\n# my-blink/\n#   src/main.c          <- your application\n#   tests/test_main.c   <- unit test target\n#   build.yaml          <- ebuild build configuration\n#   eos.yaml            <- EoS project configuration (board, kind)\n#   README.md`,
+        tip: "`ebuild init` is the guide's name for `ebuild new`. The rtos template maps to `ebuild new --template rtos-app`.",
       },
       {
-        title: "Understand the Project Structure",
-        substeps: [
-          "src/main.c — Entry point. Initialises the kernel and creates tasks.",
-          "src/tasks/ — Each RTOS task lives in its own file. Tasks run concurrently.",
-          "include/ — Shared header files. EoS HAL headers are auto-included.",
-          "ebuild.toml — Declares the target board, EoS version, and dependencies.",
-          "CMakeLists.txt — Auto-generated. Do not edit manually — ebuild manages it.",
-          ".eosim/ — Simulation configuration: virtual peripherals, pin mapping, clock speed.",
-        ],
+        title: "The Generated main.c",
+        text: "The rtos template is a producer/consumer program. It uses an EoS queue, a mutex and two tasks:",
+        code: `static void producer_task(void *arg) {\n    uint32_t seq = 0;\n    while (1) {\n        message_t msg = { .id = seq++, .value = (int32_t)(seq * 10) };\n        eos_queue_send(g_queue, &msg, EOS_WAIT_FOREVER);\n        eos_task_delay_ms(500);\n    }\n}\n\nstatic void consumer_task(void *arg) {\n    message_t msg;\n    while (1) {\n        if (eos_queue_receive(g_queue, &msg, EOS_WAIT_FOREVER) == EOS_KERN_OK)\n            printf("[consumer] id=%lu value=%ld\\n", msg.id, msg.value);\n    }\n}`,
       },
       {
-        title: "The Default main.c",
-        text: "The template generates a working LED blink program. Open src/main.c:",
-        code: `#include "eos/hal/gpio.h"\n#include "eos/kernel/task.h"\n#include "eos/kernel/uart.h"\n\nvoid led_task(void *arg) {\n    eos_gpio_init(GPIO_PA5, GPIO_OUTPUT);\n    uint32_t tick = 0;\n    while (1) {\n        eos_gpio_toggle(GPIO_PA5);\n        eos_uart_printf(UART1, "[app] LED toggled, tick=%lu\\n", tick++);\n        eos_task_delay_ms(500);\n    }\n}\n\nint main(void) {\n    eos_kernel_init();\n    eos_task_create(led_task, "led", 1024, NULL, 1);\n    eos_kernel_start();\n    return 0;\n}`,
+        title: "Simulate It",
+        text: "ebuild sim compiles your sources and the EoS kernel for QEMU's lm3s6965evb (Cortex-M3), boots the image and prints its output. The kernel's SysTick and PendSV scheduling are real. The board's peripherals are not modelled.",
+        code: `ebuild sim --timeout 4\n\n# Building stm32f4 application for qemu_cortex_m3 (lm3s6965evb)...\n# [ok] Image: .../my-blink/_build/sim/firmware.elf\n# Running on lm3s6965evb (timeout 4s)...\n# [my-blink] Starting kernel...\n# [consumer] id=0 value=10\n# [consumer] id=1 value=20\n# ...\n# [consumer] id=8 value=90\n# [ok] Simulation ran: 10 line(s) of output, stopped after 4s`,
+        tip: "For CI, assert on output: ebuild sim --expect 'id=3 value=40'. It exits non-zero if the text never appears, if the guest exits with an error, or if the image prints nothing.",
       },
       {
-        title: "Build the Firmware",
-        code: `ebuild build\n\n# [ebuild] Configuring for stm32f4...\n# [ebuild] Compiling src/main.c\n# [ebuild] Linking firmware.elf\n# [ebuild] Binary: build/firmware.bin (45,232 bytes)\n# [ebuild] Build complete in 3.2s`,
-        tip: "ebuild build --jobs 8 uses 8 parallel compile threads for faster builds.",
-      },
-      {
-        title: "Simulate on a Virtual Board",
-        code: `ebuild sim\n\n# [EoSim] Loading firmware.elf on stm32f4...\n# [EoSim] CPU: ARM Cortex-M4 @ 168MHz (virtual)\n# [EoSim] Starting simulation...\n# [app] EmbeddedOS v2.5.0 starting...\n# [app] LED toggled, tick=0\n# [app] LED toggled, tick=1\n\n# Press Ctrl+C to stop`,
-        tip: "Add --gui to open the graphical simulator with pin state visualization: ebuild sim --gui",
-      },
-      {
-        title: "Switch to a Different Board",
-        text: `EoSim supports ${SIM_PLATFORM_COUNT} platforms. Switch targets without changing your source code.`,
-        code: `ebuild sim --platform esp32\nebuild sim --platform raspi-pico\n\n# List all available platforms\nebuild platforms list\n# stm32f4, stm32h7, esp32, esp32s3, raspi4,\n# raspi-pico, nrf52840, imxrt1062, ...`,
+        title: "Which Boards Can Be Simulated",
+        text: "ebuild sim runs Arm Cortex-M targets: stm32f4, stm32h7, stm32l4, nrf52, nrf52840, rp2040 and raspi-pico, all on the same QEMU Cortex-M3 machine. Other boards, such as esp32, are refused with a message instead of being faked.",
+        code: `ebuild platforms list\n# 149 EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
       },
       {
         title: "Debug with GDB",
-        code: `# Terminal 1: Start simulation with GDB server\nebuild sim --gdb\n# [EoSim] GDB server listening on :3333\n\n# Terminal 2: Connect GDB\narm-none-eabi-gdb build/firmware.elf\n(gdb) target remote :3333\n(gdb) break led_task\n(gdb) continue\n# Breakpoint 1, led_task () at src/main.c:8`,
+        text: "Run the image under QEMU's GDB stub yourself. ebuild does not wrap this step yet.",
+        code: `qemu-system-arm -M lm3s6965evb -nographic -semihosting \\\n  -kernel _build/sim/firmware.elf -gdb unix:/tmp/eos.sock,server,nowait -S &\n\ngdb-multiarch _build/sim/firmware.elf \\\n  -ex "target remote /tmp/eos.sock" -ex "break consumer_task" -ex continue\n# Breakpoint 1, consumer_task (arg=0x0) at src/main.c:39`,
       },
     ],
     nextSteps: [
       { label: "EoS Kernel deep dive", href: "/eos" },
-      { label: "Try eFlow visual editor", href: "/flow" },
-      { label: "Flash to ESP32", href: "/getting-started" },
+      { label: "Hardware engineer workflow", href: "/getting-started" },
     ],
   },
   esp32: {
-    title: "Flash EoS to Your ESP32",
+    title: "ESP32: Not Ready Yet",
     color: "#F97316",
     intro:
-      "The ESP32 is the most popular EoS target. At $5-$10, it gives you Wi-Fi, Bluetooth, two cores, and 520KB of RAM. This guide takes you from an out-of-the-box ESP32 to a running EoS application in under 30 minutes.",
+      "ESP32 support is not usable end to end today, and this page will not pretend otherwise. You can create an ESP32 project. Building it needs the Xtensa toolchain, which ebuild does not bundle. ebuild sim cannot run ESP32 code. Producing a flashable MCU image from an ebuild project is tracked in ebuild#171.",
     prereq:
-      "ESP32 DevKit board ($5-$10), USB-A to Micro-USB cable, Python 3.10+.",
-    time: "~25 minutes",
+      "If you want to help: an ESP32 DevKit, the xtensa-esp32-elf toolchain and esptool.",
+    time: "—",
     steps: [
       {
-        title: "Install ebuild",
-        text: "ebuild bundles the Xtensa GCC toolchain and esptool.py — no separate ESP-IDF install needed.",
-        code: `pip install embeddedos-ebuild\n\nebuild --version\n# ebuild v2.1.0\n\nebuild platforms list | grep esp32\n# esp32, esp32s2, esp32s3, esp32c3, esp32h2`,
+        title: "What Works Today",
+        code: `ebuild init my-esp32-app --template rtos --target esp32   # creates the project\nebuild doctor\n#  warn  xtensa-esp32-elf   not installed — no esp32 builds`,
       },
       {
-        title: "Connect Your ESP32 and Find the Port",
-        code: `# Linux/macOS\nls /dev/tty* | grep -i usb\n# /dev/ttyUSB0  (Linux)\n# /dev/cu.usbserial-0001  (macOS)\n\n# Windows: check Device Manager\n# Look for "Silicon Labs CP210x" or "CH340"`,
-        tip: "If the port does not appear, install the CP2102 or CH340 USB driver for your OS.",
-      },
-      {
-        title: "Create an ESP32 Project",
-        code: `ebuild init my-esp32-app --template rtos --target esp32\ncd my-esp32-app\n\n# Configures: dual-core FreeRTOS, Wi-Fi stack,\n# UART0 for serial output, GPIO2 as built-in LED`,
-      },
-      {
-        title: "Build",
-        code: `ebuild build\n\n# [ebuild] Configuring for esp32 (Xtensa LX6, 240MHz)...\n# [ebuild] Linking firmware.elf\n# [ebuild] Binary: build/firmware.bin (312,448 bytes)\n# [ebuild] Build complete in 4.1s`,
-      },
-      {
-        title: "Simulate Before Flashing",
-        text: "Always simulate first to catch bugs before writing to hardware.",
-        code: `ebuild sim --platform esp32\n\n# [EoSim] Loading on virtual ESP32...\n# [app] EmbeddedOS v2.5.0 starting...\n# [app] LED toggled, tick=0`,
-      },
-      {
-        title: "Flash to Your ESP32",
-        code: `ebuild flash\n# or: ebuild flash --port /dev/ttyUSB0\n\n# [ebuild] Detected ESP32 on /dev/ttyUSB0\n# [ebuild] Erasing flash...\n# [ebuild] Writing firmware.bin (312,448 bytes)...\n# [ebuild] Verifying... OK\n# [ebuild] Flash complete. Resetting device.`,
-        warn: "Hold the BOOT button on your ESP32 while the flash command starts if it fails to connect automatically.",
-      },
-      {
-        title: "Monitor Serial Output",
-        code: `ebuild monitor --baud 115200\n\n# [app] EmbeddedOS v2.5.0 starting...\n# [app] CPU: ESP32 Xtensa LX6 @ 240MHz\n# [app] Free heap: 298,432 bytes\n# [app] LED toggled, tick=0\n\n# Press Ctrl+] to exit`,
-      },
-      {
-        title: "Enable Wi-Fi",
-        code: `# In ebuild.toml:\n[features]\nwifi = true\n\n# In your code:\n#include "eos/net/wifi.h"\n\nvoid wifi_task(void *arg) {\n    eos_wifi_init();\n    eos_wifi_connect("MyNetwork", "password");\n    eos_uart_printf(UART0, "IP: %s\\n",\n        eos_wifi_get_ip());\n}`,
-        tip: "See the EoS networking docs for MQTT, HTTP client, WebSocket, and mDNS examples.",
-      },
-    ],
-    nextSteps: [
-      { label: "EoS Wi-Fi + networking", href: "/docs" },
-      { label: "Add EAI edge AI", href: "/eai" },
-      { label: "Build an eApp for ESP32", href: "/eapps" },
-    ],
-  },
-  stm32: {
-    title: "Flash EoS to Your STM32",
-    color: "#22D3EE",
-    intro:
-      "STM32 boards are the most common target for professional embedded development. The Nucleo-F446RE ($15) has an on-board ST-Link debugger, making flashing as simple as plugging in a USB cable.",
-    prereq: "STM32 Nucleo or Discovery board, USB cable, Python 3.10+.",
-    time: "~30 minutes",
-    steps: [
-      {
-        title: "Install ebuild and OpenOCD",
-        code: `pip install embeddedos-ebuild\n\n# Install OpenOCD for ST-Link\n# Ubuntu: sudo apt install openocd\n# macOS:  brew install openocd\n# Windows: download from openocd.org`,
-      },
-      {
-        title: "Create an STM32 Project",
-        code: `ebuild init my-stm32-app --template rtos --target stm32f4\n# or: --target stm32h7  (higher performance)\n# or: --target stm32l4  (ultra-low power)\n\ncd my-stm32-app`,
-      },
-      {
-        title: "The Unified EoS HAL",
-        text: "EoS provides a unified HAL that works identically across all STM32 families. Write once, run on any STM32.",
-        code: `// GPIO\neos_gpio_init(GPIO_PA5, GPIO_OUTPUT);\neos_gpio_toggle(GPIO_PA5);\n\n// UART\neos_uart_init(UART2, 115200);\neos_uart_printf(UART2, "Hello EoS!\\n");\n\n// SPI\neos_spi_init(SPI1, SPI_MODE0, 8000000);\neos_spi_transfer(SPI1, tx_buf, rx_buf, 16);\n\n// I2C\neos_i2c_init(I2C1, 400000);\neos_i2c_write(I2C1, 0x68, reg, data, len);`,
-      },
-      {
-        title: "Build",
-        code: `ebuild build --jobs 8\n\n# Size report:\n#   .text (flash): 44,128 bytes / 1,048,576 (4.2%)\n#   .data (RAM):    1,024 bytes / 196,608 (0.5%)\n# [ebuild] Build complete in 2.8s`,
-      },
-      {
-        title: "Flash via ST-Link",
-        code: `ebuild flash\n\n# [ebuild] Detected ST-Link v2.1\n# [ebuild] Target: STM32F446RE\n# [ebuild] Writing firmware.bin...\n# [ebuild] Verify: OK\n# [ebuild] Flash complete.`,
-        tip: "You can also drag-and-drop firmware.bin onto the NUCLEO drive that appears in your file manager.",
-      },
-      {
-        title: "Monitor UART Output",
-        code: `ebuild monitor --baud 115200\n\n# [app] EmbeddedOS v2.5.0 starting...\n# [app] CPU: STM32F446RE ARM Cortex-M4 @ 168MHz\n# [app] LED toggled, tick=0`,
-      },
-      {
-        title: "Debug with GDB + OpenOCD",
-        code: `# Terminal 1: Start OpenOCD\nopenocd -f interface/stlink.cfg -f target/stm32f4x.cfg\n\n# Terminal 2: Connect GDB\narm-none-eabi-gdb build/firmware.elf\n(gdb) target extended-remote :3333\n(gdb) monitor reset halt\n(gdb) break main\n(gdb) continue`,
-      },
-      {
-        title: "Use eFlow for Faster Development",
-        text: "Once your hardware is working, try eFlow — the visual block editor that generates C code for you.",
+        title: "What Does Not Work Yet",
         substeps: [
-          "ebuild eflow open — launches the eFlow editor in your browser",
-          "Drag a GPIO Output block onto the canvas",
-          "Connect it to a Timer block (500ms period)",
-          "Click Generate — eFlow writes the C code and adds it to your project",
-          "ebuild build && ebuild flash — deploy the generated code",
+          "ebuild build does not yet cross-compile a board image (ebuild#171)",
+          "ebuild sim --platform esp32 is refused; there is no ESP32 simulation target",
+          "ebuild flash <image> --tool esptool calls esptool, but the maintainers have not verified it on hardware",
         ],
       },
     ],
     nextSteps: [
-      { label: "EoS HAL reference", href: "/docs" },
-      { label: "Try eFlow visual editor", href: "/flow" },
-      { label: "Add EAI on STM32H7", href: "/eai" },
+      {
+        label: "Track ESP32 / MCU image support",
+        href: "https://github.com/embeddedos-org/ebuild/issues/171",
+      },
+      { label: "Simulate a Cortex-M board instead", href: "/getting-started" },
     ],
   },
-  apps: {
-    title: "Build Cross-Platform eApps",
-    color: "#F59E0B",
+  stm32: {
+    title: "STM32: Simulate Now, Hardware Images Next",
+    color: "#22D3EE",
     intro:
-      "eApps are C applications built with LVGL (Light and Versatile Graphics Library). They run natively on embedded displays, on your desktop (via SDL2), in a browser (via WebAssembly), and on Android/iOS (via Flutter wrapper). The same source code runs everywhere.",
-    prereq: "Git, CMake 3.20+, GCC or Clang, SDL2 development libraries.",
-    time: "~20 minutes",
+      "The EoS kernel cross-compiles for Cortex-M4 (STM32F4), and its Cortex-M scheduler is exercised in CI on QEMU. What is missing is an `ebuild build` that turns your project into a flashable STM32 image. Today it builds a host binary, and it does not say so (ebuild#171). Until that lands, simulate with ebuild sim and treat flashing as experimental.",
+    prereq:
+      "An STM32 Nucleo or Discovery board and OpenOCD, for when hardware images land.",
+    time: "—",
     steps: [
       {
-        title: "Install SDL2 (Desktop Preview)",
-        code: `# Ubuntu / Debian\nsudo apt install libsdl2-dev cmake ninja-build\n\n# macOS\nbrew install sdl2 cmake ninja\n\n# Windows (MSYS2)\npacman -S mingw-w64-x86_64-SDL2 cmake ninja`,
+        title: "Simulate Your STM32 Application",
+        code: `ebuild init my-stm32-app --template rtos --target stm32f4\ncd my-stm32-app && ebuild sim`,
       },
       {
-        title: "Clone the eApps Repository",
-        code: `git clone https://github.com/embeddedos-org/eApps.git\ncd eApps\n\n# apps/          <- 60+ individual apps\n# apps/snake/    <- Snake game\n# apps/ecalc/    <- Scientific calculator\n# apps/ewriter/  <- Word processor\n# lib/lvgl/      <- LVGL graphics library\n# ports/         <- Platform backends (SDL2, ESP32, web)`,
+        title: "Build the EoS Kernel for Cortex-M4",
+        text: "This is the same build CI runs. It produces the EoS libraries for an STM32F4-class core.",
+        code: `git clone https://github.com/embeddedos-org/eos.git && cd eos\ncmake -B build/arm -DCMAKE_TOOLCHAIN_FILE=toolchains/arm-cortex-m4.cmake -DEOS_BUILD_TESTS=OFF\ncmake --build build/arm -j`,
       },
       {
-        title: "Build All Apps for Desktop",
-        code: `cmake -B build -G Ninja \\\n  -DEAPPS_PORT=sdl2 \\\n  -DCMAKE_BUILD_TYPE=Release\n\ncmake --build build --parallel\n# Builds all 60+ apps in ~2 minutes`,
-      },
-      {
-        title: "Run the Built-in Apps",
-        code: `./build/apps/snake/snake       # Snake game\n./build/apps/ecalc/ecalc       # Calculator\n./build/apps/ewriter/ewriter   # Word processor\n./build/apps/esheet/esheet     # Spreadsheet\n./build/eapps_launcher         # All apps launcher`,
-        tip: "Each app opens in a 480x320 window by default, matching common embedded display sizes.",
-      },
-      {
-        title: "Create Your Own App",
-        code: `cd eApps\nebuild eapp new my-sensor-dashboard\n\n# Creates:\n# apps/my-sensor-dashboard/\n#   main.c      <- App entry point\n#   ui.c / ui.h <- LVGL UI code`,
-      },
-      {
-        title: "Write Your First LVGL UI",
-        code: `#include "lvgl/lvgl.h"\n\nvoid app_main(void) {\n    lv_obj_t *scr = lv_scr_act();\n    lv_obj_set_style_bg_color(scr,\n        lv_color_hex(0x0A1628), LV_PART_MAIN);\n\n    lv_obj_t *label = lv_label_create(scr);\n    lv_label_set_text(label, "Hello EmbeddedOS!");\n    lv_obj_center(label);\n\n    lv_obj_t *btn = lv_btn_create(scr);\n    lv_obj_set_size(btn, 120, 40);\n    lv_obj_align(btn, LV_ALIGN_BOTTOM_MID, 0, -20);\n}`,
-      },
-      {
-        title: "Build for WebAssembly",
-        code: `# Install Emscripten\ngit clone https://github.com/emscripten-core/emsdk.git\ncd emsdk && ./emsdk install latest && ./emsdk activate latest\nsource ./emsdk_env.sh\n\n# Build for web\ncmake -B build-web -G Ninja \\\n  -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake \\\n  -DEAPPS_PORT=emscripten\ncmake --build build-web\n\npython3 -m http.server 8080 --directory build-web`,
-      },
-      {
-        title: "Deploy to an Embedded Display",
-        code: `# Build for ILI9341 display on ESP32\nebuild build --target esp32 \\\n  --display ili9341 --touch xpt2046\n\nebuild flash --port /dev/ttyUSB0`,
+        title: "Flashing (Experimental)",
+        text: "ebuild flash drives OpenOCD, pyOCD, st-flash, nrfjprog or esptool for an image you already have. The maintainers have not verified it on hardware for this guide.",
+        code: `ebuild flash firmware.bin --tool openocd --target stm32f4\nebuild monitor --baud 115200`,
       },
     ],
     nextSteps: [
-      { label: "LVGL widget reference", href: "/docs" },
-      { label: "eOffice Suite source code", href: "/eoffice" },
-      { label: "Deploy to ESP32 display", href: "/getting-started" },
+      {
+        label: "Track STM32 image support",
+        href: "https://github.com/embeddedos-org/ebuild/issues/171",
+      },
+      { label: "EoS Kernel docs", href: "/eos" },
+    ],
+  },
+  apps: {
+    title: "Build eApps (C + LVGL)",
+    color: "#F59E0B",
+    intro:
+      "eApps is a collection of C applications on the LVGL graphics library. The native build of the app libraries was verified for this guide on Ubuntu 20.04. Running the apps on a desktop window needs SDL2. That step has not yet been re-verified for this guide.",
+    prereq:
+      "Git, CMake 3.16+, GCC or Clang. SDL2 (libsdl2-dev) to run apps on a desktop.",
+    time: "~10 minutes",
+    steps: [
+      {
+        title: "Clone and Build",
+        code: `git clone --recursive https://github.com/embeddedos-org/eApps.git\ncd eApps\ncmake -B build -DCMAKE_BUILD_TYPE=Release\ncmake --build build -j`,
+      },
+      {
+        title: "Desktop Executables (needs SDL2)",
+        text: "With SDL2 installed, standalone executables per app are built when you ask for them. Without SDL2, CMake prints: Skipping eapps_port: SDL2 not found.",
+        code: `sudo apt install libsdl2-dev\ncmake -B build -DEAPPS_BUILD_STANDALONE=ON\ncmake --build build -j`,
+      },
+    ],
+    nextSteps: [
+      {
+        label: "eApps on GitHub",
+        href: "https://github.com/embeddedos-org/eApps",
+      },
+      { label: "eOffice Suite", href: "/eoffice" },
     ],
   },
   "hardware-design": {
     title: "Hardware Engineer Workflow",
     color: "#A78BFA",
     intro:
-      "If you are designing hardware for EmbeddedOS, ebuild has a dedicated CAD analysis pipeline. Import your KiCad or Altium schematic, ebuild extracts the component list and pin assignments, generates a board support package (BSP), and lets you simulate the entire firmware stack before your PCB arrives from the fab.",
-    prereq: "KiCad 7+ or Altium Designer, Python 3.10+, ebuild.",
-    time: "~45 minutes",
+      "Start from a KiCad schematic. ebuild analyze identifies the MCU and peripherals and generates board, boot and build configuration. You then simulate application logic for that MCU family. The eCAD repository's validation gate (V0–V4) checks your product's design data and refuses to call anything a pass without evidence.",
+    prereq:
+      "Python 3.9+, ebuild (see the simulator path), and a .kicad_sch schematic.",
+    time: "~20 minutes",
     steps: [
       {
-        title: "Install ebuild with CAD Support",
-        code: `pip install "embeddedos-ebuild[cad]"\n\n# Installs: KiCad Python API, Altium parser,\n# component database connector, BSP generator\n\nebuild cad --version\n# ebuild CAD module v1.2.0`,
+        title: "Analyze Your Schematic",
+        text: "Shown here on the eRadar360 schematic from eCAD-Hardware-Products:",
+        code: `ebuild analyze --file eRadar360_CAD_Design/hardware/eradar360.kicad_sch\n\n# [info] MCU: STM32H7 (cortex-m7)\n# [info] Peripherals: 2 detected\n#   - usb: J1_usb\n#   - audio: J2_audio\n# [ok]   board: _generated/board.yaml\n# [ok]   boot: _generated/boot.yaml\n# [ok]   build: _generated/build.yaml\n# [ok]   eos_config: _generated/eos_product_config.h\n# [info] Validation: PASS (0 errors, 3 warnings)`,
+        tip: "Read the warnings. For this schematic, flash and RAM sizes are not in the design and have to be filled in.",
       },
       {
-        title: "Export Your Schematic",
-        text: "ebuild reads KiCad .kicad_sch files directly. For Altium, export as Altium ASCII Schematic (.SchDoc) first.",
-        code: `# KiCad CLI export:\nkicad-cli sch export netlist \\\n  --format kicad my-board.kicad_pro \\\n  -o my-board.kicad_sch`,
+        title: "Simulate Firmware for That MCU Family",
+        code: `ebuild init radar-fw --template rtos --target stm32h7\ncd radar-fw && ebuild sim`,
+        warn: "Simulation runs on QEMU's Cortex-M3. It checks kernel and application logic, not your board's peripherals or timing.",
       },
       {
-        title: "Run CAD Analysis",
-        text: "ebuild cad analyze reads your schematic and produces a detailed report: MCU identification, peripheral mapping, power rail analysis, and EoS compatibility check.",
-        code: `ebuild cad analyze my-board.kicad_sch\n\n# [CAD] MCU detected: STM32H743ZIT6\n# [CAD] Core: ARM Cortex-M7 @ 480MHz\n# [CAD] Peripherals found:\n#   UART1 (PA9/PA10) -> USB-UART bridge\n#   SPI2 (PB13-15)  -> W25Q128 NOR flash\n#   I2C1 (PB6/PB7)  -> BME280 sensor\n#   ADC1 (PA0)      -> Analog input\n# [CAD] EoS compatibility: FULL`,
-      },
-      {
-        title: "Generate the Board Support Package",
-        text: "ebuild cad generate creates a complete BSP: pin definitions, clock configuration, peripheral init code, and linker scripts — all derived from your schematic.",
-        code: `ebuild cad generate my-board.kicad_sch \\\n  --output bsp/ --name my-board\n\n# Generated:\n# bsp/my-board/\n#   pins.h        <- Pin definitions from schematic\n#   clocks.c      <- Clock tree configuration\n#   peripherals.c <- Peripheral init (UART, SPI, I2C)\n#   linker.ld     <- Memory map from chip datasheet\n#   ebuild.toml   <- Project configuration\n\n# Example from pins.h:\n# #define UART_TX  GPIO_PA9\n# #define FLASH_CS GPIO_PB12`,
-      },
-      {
-        title: "Create a Project Using Your BSP",
-        code: `ebuild init my-board-firmware \\\n  --template rtos \\\n  --bsp bsp/my-board\n\ncd my-board-firmware\n# Pre-configured for your exact hardware.\n# All pin names match your schematic labels.`,
-      },
-      {
-        title: "Simulate the Full Hardware Stack",
-        text: "EoSim can simulate your custom board using the BSP. Virtual peripherals match your real schematic.",
-        code: `ebuild sim --bsp bsp/my-board\n\n# [EoSim] Loading custom BSP: my-board\n# [EoSim] MCU: STM32H743ZIT6 @ 480MHz (virtual)\n# [EoSim] Virtual peripherals:\n#   BME280 (I2C1 0x76): temp=23.4C, hum=61%\n#   W25Q128 (SPI2): 16MB NOR flash\n# [app] BME280 init OK\n# [app] Temp: 23.4C, Humidity: 61.2%`,
-        tip: "Inject virtual sensor data: eosim inject --peripheral bme280 --temp 35.0",
-      },
-      {
-        title: "Run Static Analysis",
-        code: `ebuild analyze\n\n# [analyze] Stack depth analysis...\n#   led_task: max stack 312 bytes (limit 1024) OK\n#   sensor_task: max stack 488 bytes OK\n# [analyze] Memory overlap check... OK\n# [analyze] MISRA C:2012 compliance...\n#   2 advisory violations (non-blocking)\n# [analyze] Overall: PASS`,
-      },
-      {
-        title: "When Your PCB Arrives: Flash and Verify",
-        code: `# Connect JTAG/SWD debugger\nebuild flash --interface jlink\n\n# [ebuild] Detected J-Link v10.1\n# [ebuild] Writing 180,224 bytes... OK\n# [ebuild] Flash complete.\n\nebuild monitor --baud 115200\n# [app] EmbeddedOS v2.5.0 starting...\n# [app] BME280 init OK\n# [app] Temp: 22.8C, Humidity: 59.4%`,
-        tip: "Because you simulated with the same BSP, the firmware should work on first boot with no changes needed.",
+        title: "Validate the Product's Design Data",
+        text: "eCAD-Hardware-Products runs schema, sanity, invariant, golden and corner checks (V0–V4) per product. Anything it could not execute is reported as BLOCKED, not as a pass.",
+        code: `git clone https://github.com/embeddedos-org/eCAD-Hardware-Products.git && cd eCAD-Hardware-Products\npip install jsonschema pyyaml\npython tools/validate_products.py capabilities          # which external tools are available\npython tools/validate_products.py validate --product <id> --output out/`,
       },
     ],
     nextSteps: [
-      { label: "ebuild CAD reference", href: "/flow" },
-      { label: "HEALTH device CAD files", href: "/hardware-lab" },
-      { label: "Add EAI to your design", href: "/eai" },
+      {
+        label: "eCAD-Hardware-Products",
+        href: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+      },
+      { label: "Hardware lab", href: "/hardware-lab" },
     ],
   },
 };
 
 export default function GettingStarted() {
-  const [activePath, setActivePath] = useState<Path>("nosim");
+  const [activePath, setActivePath] = useState<Path>("sim");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const copyCode = async (code: string, key: string) => {
@@ -577,8 +446,8 @@ export default function GettingStarted() {
             custom={2}
             className="text-white/60 text-xl max-w-2xl mx-auto mb-4 leading-relaxed"
           >
-            No hardware required to get started. Choose your path below and go
-            from zero to running firmware in minutes.
+            No hardware required to get started. Every command on the simulator
+            path was run as written before it was published.
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -591,8 +460,8 @@ export default function GettingStarted() {
               border: "1px solid rgba(52,211,153,0.2)",
             }}
           >
-            <CheckCircle2 size={14} /> You can simulate {SIM_PLATFORM_COUNT}{" "}
-            platforms in your browser — no install, no hardware needed
+            <CheckCircle2 size={14} /> Boot the real EoS kernel on QEMU with
+            ebuild sim — no hardware needed
           </motion.div>
         </div>
       </section>
@@ -927,19 +796,36 @@ export default function GettingStarted() {
                     What's Next
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {content.nextSteps.map(ns => (
-                      <Link
-                        key={ns.label}
-                        href={ns.href}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white/70 hover:text-white transition-all"
-                        style={{
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                        }}
-                      >
-                        {ns.label} <ArrowRight size={13} />
-                      </Link>
-                    ))}
+                    {content.nextSteps.map(ns => {
+                      const className =
+                        "inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white/70 hover:text-white transition-all";
+                      const style = {
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                      };
+                      // wouter's Link routes client-side; GitHub links must be plain anchors.
+                      return ns.href.startsWith("http") ? (
+                        <a
+                          key={ns.label}
+                          href={ns.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={className}
+                          style={style}
+                        >
+                          {ns.label} <ArrowRight size={13} />
+                        </a>
+                      ) : (
+                        <Link
+                          key={ns.label}
+                          href={ns.href}
+                          className={className}
+                          style={style}
+                        >
+                          {ns.label} <ArrowRight size={13} />
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

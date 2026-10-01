@@ -10,7 +10,7 @@
  * would turn a green suite red for a reason that is not ours. They are swept
  * separately before a deploy.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import fs from "node:fs";
 import path from "node:path";
 

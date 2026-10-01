@@ -13,7 +13,7 @@
  *
  * Sharded one test per source route so the ~380 clicks run in parallel.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -96,6 +96,27 @@ for (const [route, hrefs] of ROUTES) {
     const openedScrolled: string[] = [];
 
     for (const href of hrefs) {
+      // The fixtures register routes, which turns on Playwright's request
+      // interception, and with interception on Playwright aborts any request
+      // whose URL ends in "/favicon.ico" — top-level navigations included
+      // (playwright-core FrameManager.requestStarted:
+      // `if (request._isFavicon) route?.abort("aborted")`). The click on
+      // /brand's Favicon link then goes nowhere, for a reason that is the
+      // harness and not the site: the same link navigates normally without a
+      // route. So that one target is checked for what a click would reach.
+      if (href.endsWith("/favicon.ico")) {
+        const res = await page.request.get(href);
+        if (
+          res.status() !== 200 ||
+          !/^image\//.test(res.headers()["content-type"] ?? "")
+        ) {
+          wrongDestination.push(
+            `${href} -> ${res.status()} ${res.headers()["content-type"]}`
+          );
+        }
+        continue;
+      }
+
       await page.goto(route, { waitUntil: "domcontentloaded" });
 
       // Sections animate in on mount. A link clicked mid-animation is still
