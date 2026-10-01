@@ -19,6 +19,19 @@ import { test as base } from "@playwright/test";
 const GOOGLE_TAG_HOSTS =
   /^https?:\/\/([a-z0-9-]+\.)*(googletagmanager\.com|google-analytics\.com|googleadservices\.com|doubleclick\.net|googlesyndication\.com)\//;
 
+/**
+ * /donate embeds Zeffy's donation form. Inside that cross-origin frame Zeffy
+ * runs its own Amplitude, Clarity, Sprig, Stripe, hCaptcha and reCAPTCHA, and
+ * when Amplitude cannot reach api2.amplitude.com it logs "Amplitude Logger
+ * [Error]: Failed to fetch" to the console — an error from Zeffy's code, in
+ * Zeffy's frame, that failed the /donate controls sweep whenever the runner's
+ * network hiccupped. None of it is ours to fix, so the embed is answered with
+ * a placeholder document. The <iframe> and its src are still our markup and
+ * still asserted; that Zeffy itself is live is checked over HTTP by
+ * acceptance-adgrants.spec.ts, which this route does not affect.
+ */
+const ZEFFY_EMBED = /^https:\/\/www\.zeffy\.com\/[^?#]*\/embed\//;
+
 export const test = base.extend({
   context: async ({ context }, use) => {
     await context.route(GOOGLE_TAG_HOSTS, route =>
@@ -26,6 +39,13 @@ export const test = base.extend({
         status: 200,
         contentType: "application/javascript",
         body: "",
+      })
+    );
+    await context.route(ZEFFY_EMBED, route =>
+      route.fulfill({
+        status: 200,
+        contentType: "text/html",
+        body: "<!doctype html><title>Zeffy donation form (e2e placeholder)</title>",
       })
     );
     await use(context);
