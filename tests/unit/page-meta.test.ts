@@ -9,6 +9,8 @@
  * cases below fail.
  */
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 // @ts-expect-error - plain .mjs script, no type declarations
 import {
   applyMeta,
@@ -27,6 +29,9 @@ import {
   DEFAULT_TITLE,
   TITLE_OVERRIDES,
   DESCRIPTION_OVERRIDES,
+  GOOGLE_ADS_ID,
+  GOOGLE_ADS_PAGE_VIEW_LABEL,
+  trackPageViewConversion,
 } from "../../client/src/lib/page-meta";
 
 const SHELL = `<!doctype html><html lang="en"><head>
@@ -225,6 +230,40 @@ describe("client and prerenderer agree on the social image", () => {
       expect(socialImageFor(route)).toMatch(
         /^https:\/\/www\.embeddedos\.org\/media\/[\w.-]+\.(jpg|png|webp)$/
       );
+  });
+});
+
+describe("Google Ads conversion tracking", () => {
+  it("pins the account and conversion label to the values Google issued", () => {
+    expect(GOOGLE_ADS_ID).toBe("AW-18484485270");
+    expect(GOOGLE_ADS_PAGE_VIEW_LABEL).toBe(
+      "AW-18484485270/UwZ-CNmDoowdEJa5i-5E"
+    );
+  });
+
+  it("fires the page-view conversion through the injected gtag", () => {
+    const calls: unknown[][] = [];
+    trackPageViewConversion((...args: unknown[]) => {
+      calls.push(args);
+    });
+    expect(calls).toEqual([
+      ["event", "conversion", { send_to: GOOGLE_ADS_PAGE_VIEW_LABEL }],
+    ]);
+  });
+
+  it("is a silent no-op when gtag is unavailable", () => {
+    expect(() => trackPageViewConversion(undefined)).not.toThrow();
+  });
+
+  it("declares the tag in the shell head", () => {
+    const shell = readFileSync(
+      join(__dirname, "../../client/index.html"),
+      "utf-8"
+    );
+    expect(shell).toContain(
+      "www.googletagmanager.com/gtag/js?id=AW-18484485270"
+    );
+    expect(shell).toContain("AW-18484485270/UwZ-CNmDoowdEJa5i-5E");
   });
 });
 

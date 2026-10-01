@@ -218,6 +218,32 @@
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
       />
     </noscript>
+    <!--
+      Google tag (gtag.js) for Google Ads measurement, account AW-18484485270.
+      Loaded async so it never blocks first paint. The account ID is pinned by
+      tests/unit/public-claims-policy.test.ts — changing it means updating the
+      test, the privacy disclosure, and this block together.
+    -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=AW-18484485270"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "AW-18484485270");
+    </script>
+    <!-- Event snippet for Page view conversion: every page load on this site
+      counts toward the goal, so this ships in the shell (and therefore in
+      every prerendered snapshot) rather than on one page. -->
+    <script>
+      gtag("event", "conversion", {
+        send_to: "AW-18484485270/UwZ-CNmDoowdEJa5i-5E",
+      });
+    </script>
   </head>
 
   <body>

@@ -144,12 +144,16 @@ describe("critical public claim policy", () => {
     const privacy = read("client/src/pages/Privacy.tsx");
     const terms = read("client/src/pages/Terms.tsx");
 
-    expect(index).not.toMatch(
-      /googletagmanager|G-VTNZKL95DQ|\bgtag\s*\(|VITE_ANALYTICS|\/umami/i
+    // The Google Ads tag (AW-18484485270) is the one deliberate,
+    // disclosed exception to the no-trackers rule: Google's own notice
+    // requires it for Ads measurement, and the privacy page names it.
+    expect(index).toContain(
+      "www.googletagmanager.com/gtag/js?id=AW-18484485270"
     );
-    expect(privacy).toContain(
-      "does not currently load a browser analytics service"
-    );
+    expect(index).toContain("AW-18484485270/UwZ-CNmDoowdEJa5i-5E");
+    expect(index).not.toMatch(/G-VTNZKL95DQ|VITE_ANALYTICS|\/umami/i);
+    expect(privacy).toContain("Google Ads tag (gtag.js)");
+    expect(privacy).toContain("AW-18484485270");
     expect(privacy).toContain("Zeffy-hosted donation form");
     // Stripe and PayPal are named donation processors (card tab + PayPal
     // tab on /donate). What must never appear is a SECRET key or any other
