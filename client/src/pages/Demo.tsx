@@ -237,21 +237,23 @@ const PROGRAMS = [
     id: "blink",
     name: "LED Blink",
     desc: "Toggles an output pin at 1 Hz",
-    code: `// EoS LED Blink — runs on every supported board
-#include <eos/gpio.h>
-#include <eos/time.h>
+    code: `// EoS LED Blink — written against the real EoS HAL (eos/hal.h)
+#include <eos/hal.h>
+#include <stdio.h>
 
 int main(void) {
-    eos_gpio_set_mode(PIN_0, GPIO_OUTPUT);
-    eos_log("EoSim: LED blink started");
+    eos_hal_init();
+    eos_gpio_config_t led = { .pin = 0, .mode = EOS_GPIO_OUTPUT };
+    eos_gpio_init(&led);
+    printf("LED blink started\\n");
 
     while (1) {
-        eos_gpio_write(PIN_0, GPIO_HIGH);
-        eos_log("PIN_0 → HIGH");
+        eos_gpio_write(0, true);
+        printf("PIN_0 -> HIGH\\n");
         eos_delay_ms(500);
 
-        eos_gpio_write(PIN_0, GPIO_LOW);
-        eos_log("PIN_0 → LOW");
+        eos_gpio_write(0, false);
+        printf("PIN_0 -> LOW\\n");
         eos_delay_ms(500);
     }
 }`,
@@ -283,21 +285,22 @@ int main(void) {
     id: "uart",
     name: "UART Echo",
     desc: "Sends periodic messages over UART0",
-    code: `// EoS UART Echo — UART0 at 115200 baud
-#include <eos/uart.h>
-#include <eos/time.h>
+    code: `// EoS UART heartbeat — UART0 at 115200 baud, real EoS HAL
+#include <eos/hal.h>
+#include <stdio.h>
+#include <string.h>
 
 int main(void) {
-    eos_uart_init(UART0, 115200);
-    eos_log("UART0 initialized at 115200 baud");
+    eos_hal_init();
+    eos_uart_config_t uart = { .port = 0, .baudrate = 115200, .data_bits = 8 };
+    eos_uart_init(&uart);
     uint32_t counter = 0;
 
     while (1) {
         char buf[64];
-        snprintf(buf, sizeof(buf),
-            "EoS heartbeat #%u\\r\\n", counter++);
-        eos_uart_write(UART0, buf, strlen(buf));
-        eos_log("TX: %s", buf);
+        int n = snprintf(buf, sizeof(buf),
+            "EoS heartbeat #%lu\\r\\n", (unsigned long)counter++);
+        eos_uart_write(0, (const uint8_t *)buf, (size_t)n);
         eos_delay_ms(1000);
     }
 }`,
@@ -325,24 +328,25 @@ int main(void) {
     id: "gpio-scan",
     name: "GPIO Scanner",
     desc: "Cycles through all output pins sequentially",
-    code: `// EoS GPIO Scanner — knight-rider pattern
-#include <eos/gpio.h>
-#include <eos/time.h>
+    code: `// EoS GPIO Scanner — knight-rider pattern, real EoS HAL
+#include <eos/hal.h>
+#include <stdio.h>
 
 #define PIN_COUNT 8
 
 int main(void) {
-    for (int i = 0; i < PIN_COUNT; i++)
-        eos_gpio_set_mode(i, GPIO_OUTPUT);
-
-    eos_log("GPIO scanner started");
+    eos_hal_init();
+    for (uint16_t i = 0; i < PIN_COUNT; i++) {
+        eos_gpio_config_t cfg = { .pin = i, .mode = EOS_GPIO_OUTPUT };
+        eos_gpio_init(&cfg);
+    }
     int active = 0;
 
     while (1) {
         for (int i = 0; i < PIN_COUNT; i++)
-            eos_gpio_write(i, i == active ? GPIO_HIGH : GPIO_LOW);
+            eos_gpio_write((uint16_t)i, i == active);
 
-        eos_log("Active pin: %d → HIGH", active);
+        printf("Active pin: %d -> HIGH\\n", active);
         active = (active + 1) % PIN_COUNT;
         eos_delay_ms(200);
     }
@@ -507,7 +511,7 @@ export default function Demo() {
                 color: "#22D3EE",
               }}
             >
-              <Cpu size={12} /> EoSim — In-Browser Board Simulator
+              <Cpu size={12} /> Interactive Board Visualisation
             </span>
           </motion.div>
           <motion.h1
@@ -517,8 +521,8 @@ export default function Demo() {
             custom={1}
             className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
           >
-            Simulate{" "}
-            <span style={{ color: "#22D3EE" }}>{BOARD_COUNT} Boards</span>
+            See an EoS Program{" "}
+            <span style={{ color: "#22D3EE" }}>Run</span>
             <br />
             Without Hardware
           </motion.h1>
@@ -529,9 +533,10 @@ export default function Demo() {
             custom={2}
             className="text-white/60 text-lg max-w-2xl mx-auto mb-6"
           >
-            Run real EoS firmware code in your browser. Toggle GPIO pins, watch
-            UART output, and test your programs on STM32, ESP32, Raspberry Pi
-            Pico, and more — no hardware required.
+            An illustrative, in-browser visualisation of small EoS programs:
+            toggle GPIO pins and watch console output. It does not compile or
+            execute EoS. To boot the real kernel without hardware, use
+            ebuild sim on QEMU (see Getting Started).
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -1049,13 +1054,13 @@ export default function Demo() {
                 icon: <Cpu size={20} />,
                 color: "#22D3EE",
                 title: `${BOARD_COUNT} Supported Boards`,
-                desc: "STM32, ESP32, Raspberry Pi Pico, RISC-V, nRF52, i.MX RT, and more — all simulated in-browser.",
+                desc: "STM32, ESP32, Raspberry Pi Pico, RISC-V, nRF52, i.MX RT and more, shown as board views. This is a visualisation, not an emulator.",
               },
               {
                 icon: <Zap size={20} />,
                 color: "#F97316",
-                title: "Real EoS API Surface",
-                desc: "Programs use the same eos/gpio.h, eos/uart.h, and eos/time.h headers as production firmware.",
+                title: "Real Kernel on QEMU",
+                desc: "For real execution, ebuild sim builds your code with the EoS kernel and boots it on QEMU's Cortex-M3 machine.",
               },
               {
                 icon: <Activity size={20} />,
