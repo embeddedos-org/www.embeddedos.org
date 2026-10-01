@@ -5,6 +5,7 @@
  * a specific, previously-shipped defect has returned.
  */
 import { test, expect, type Page } from "./fixtures";
+import { STACK } from "../shared/stack-data";
 
 test.describe("build output regressions", () => {
   test("the 367 KB Manus dev runtime is not inlined into the document", async ({
@@ -46,10 +47,21 @@ test.describe("prerender regressions", () => {
       .replace(/<script[\s\S]*?<\/script>/g, "");
     const text = body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
-    expect(text).toContain("22 Repositories");
+    // shared/stack-data.ts is the count's source of truth, pinned against the
+    // live org by tests/integration/stack-claims.test.ts.
+    const repos = STACK.totals.repositories;
+    expect(text).toContain(`${repos} Repositories`);
     expect(text).toContain("14 Books");
     expect(text).not.toMatch(/\b0 Repositories\b/);
     expect(text).not.toMatch(/\b0 \+ Platforms\b/);
+
+    // The homepage once said "23 Repositories" in its stats and "22 Repos" in
+    // the badge beside them. Every repo figure must be the one count.
+    const stated = [...text.matchAll(/\b(\d+)\+? Repo(?:s|sitories)\b/g)].map(
+      m => Number(m[1])
+    );
+    expect(stated.length).toBeGreaterThan(1);
+    expect(new Set(stated)).toEqual(new Set([repos]));
   });
 
   test("every route serves its own snapshot, not the homepage", async ({

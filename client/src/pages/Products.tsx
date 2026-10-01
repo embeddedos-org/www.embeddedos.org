@@ -28,7 +28,12 @@ import {
   Star,
   Check,
 } from "lucide-react";
-import { BOARD_COUNT, FAMILY_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import {
+  BOARD_COUNT,
+  FAMILY_COUNT,
+  REPO_COUNT,
+  SIM_PLATFORM_COUNT,
+} from "@/data/stack";
 
 // ─── Animation helpers ────────────────────────────────────────────────────────
 
@@ -455,7 +460,7 @@ export default function Products() {
             className="flex flex-wrap justify-center gap-8 mb-10"
           >
             {[
-              { value: "22", label: "Repositories" },
+              { value: String(REPO_COUNT), label: "Repositories" },
               { value: "60+", label: "Applications" },
               { value: String(BOARD_COUNT), label: "Supported Boards" },
               { value: "4", label: "Health Devices" },
