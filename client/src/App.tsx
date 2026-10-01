@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import {
   lazy,
   Suspense,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -26,13 +27,15 @@ import { OPEN_CONTACT_EVENT } from "./lib/contact-form";
 //
 // - SearchModal / ContactFormModal: mounted on the FIRST open event only.
 //   ModalGate listens for the event from the entry chunk, loads the widget
-//   chunk, mounts it, then re-dispatches the event — the widget's own
-//   listener (attached in its mount effect, which runs before the gate's
-//   re-dispatch effect) opens it. No open event is ever lost.
-// - DonateModal / EBot: loaded when the browser is idle (requestIdleCallback
-//   with a setTimeout fallback). DonateModal opens only on the explicit
-//   manual trigger (`open-donate`) — it has no auto-show timer; EBot's chat
-//   FAB appears once idle rather than competing with first paint.
+//   chunk, mounts it, then re-dispatches the event so the widget's own
+//   listener opens it. No open event is ever lost.
+// - DonateModal: also a ModalGate (`open-donate`), preloaded when the browser
+//   is idle. It opens only on that explicit trigger — there is no auto-show
+//   timer — and a Donate click that lands before the idle preload is held and
+//   replayed rather than dropped.
+// - EBot: loaded when the browser is idle (requestIdleCallback with a
+//   setTimeout fallback); its chat FAB appears once idle rather than
+//   competing with first paint.
 const loadSearchModal = () => import("./components/SearchModal");
 const loadDonateModal = () => import("./components/DonateModal");
 const loadContactFormModal = () => import("./components/ContactFormModal");
@@ -43,53 +46,88 @@ const DonateModalLazy = lazy(loadDonateModal);
 const ContactFormModalLazy = lazy(loadContactFormModal);
 const EBotLazy = lazy(loadEBot);
 
+/** Run `fn` when the browser is idle; returns a canceller. */
+function whenIdle(fn: () => void): () => void {
+  if ("requestIdleCallback" in window) {
+    const id = window.requestIdleCallback(fn, { timeout: 2500 });
+    return () => window.cancelIdleCallback(id);
+  }
+  const t = setTimeout(fn, 1200);
+  return () => clearTimeout(t);
+}
+
+function OnMounted({ run }: { run: () => void }) {
+  useEffect(run, [run]);
+  return null;
+}
+
 /** Mount a modal widget on its first open event; re-fire the event once mounted. */
 function ModalGate({
   event,
   load,
+  preloadWhenIdle = false,
   children,
 }: {
   event: string;
   load: () => Promise<unknown>;
+  preloadWhenIdle?: boolean;
   children: ReactNode;
 }) {
   const [ready, setReady] = useState(false);
+  const mounted = useRef(false);
   const pending = useRef<Event | null>(null);
 
   useEffect(() => {
-    const onFirstOpen = (e: Event) => {
-      pending.current = e;
-      window.removeEventListener(event, onFirstOpen);
-      void load().then(
-        () => setReady(true),
+    let cancelled = false;
+    // A failed chunk (offline?) leaves the listener armed, so a later open
+    // retries instead of every future event being swallowed.
+    const start = () =>
+      load().then(
         () => {
-          // Chunk failed to load (offline?): re-arm so a later open retries
-          // instead of silently swallowing every future event.
-          pending.current = null;
-          window.addEventListener(event, onFirstOpen);
-        }
+          if (!cancelled) setReady(true);
+        },
+        () => {}
       );
+    const onOpen = (e: Event) => {
+      if (mounted.current) return;
+      pending.current = e;
+      void start();
     };
-    window.addEventListener(event, onFirstOpen);
-    return () => window.removeEventListener(event, onFirstOpen);
-  }, [event, load]);
+    window.addEventListener(event, onOpen);
+    const cancelIdle = preloadWhenIdle ? whenIdle(() => void start()) : null;
+    return () => {
+      cancelled = true;
+      window.removeEventListener(event, onOpen);
+      cancelIdle?.();
+    };
+  }, [event, load, preloadWhenIdle]);
 
-  // Child effects (where the widget attaches its own open listener) run
-  // before this parent effect, so the re-dispatched event always lands.
-  useEffect(() => {
-    if (!ready || !pending.current) return;
+  // Replay from inside the Suspense boundary, not from an effect on `ready`.
+  // A lazy() child suspends on its first render even when its chunk is
+  // already loaded, so an effect here ran against the fallback — before the
+  // widget had attached its listener — and the first open was dropped. This
+  // sibling commits together with the widget and its effect runs after the
+  // widget's, so the listener is guaranteed to be there.
+  const replay = useCallback(() => {
+    mounted.current = true;
     const e = pending.current;
     pending.current = null;
+    if (!e) return;
     const detail = (e as CustomEvent).detail;
     window.dispatchEvent(
       detail !== undefined
         ? new CustomEvent(e.type, { detail })
         : new Event(e.type)
     );
-  }, [ready]);
+  }, []);
 
   if (!ready) return null;
-  return <Suspense fallback={null}>{children}</Suspense>;
+  return (
+    <Suspense fallback={null}>
+      {children}
+      <OnMounted run={replay} />
+    </Suspense>
+  );
 }
 
 /** Load a widget when the browser is idle, off the critical path. */
@@ -104,22 +142,14 @@ function IdleGate({
 
   useEffect(() => {
     let cancelled = false;
-    const kick = () => {
+    const cancelIdle = whenIdle(() => {
       void load().then(() => {
         if (!cancelled) setReady(true);
       });
-    };
-    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(kick, { timeout: 2500 });
-      return () => {
-        cancelled = true;
-        window.cancelIdleCallback(id);
-      };
-    }
-    const t = setTimeout(kick, 1200);
+    });
     return () => {
       cancelled = true;
-      clearTimeout(t);
+      cancelIdle();
     };
   }, [load]);
 
@@ -1296,9 +1326,9 @@ function App() {
           <ModalGate event="open-search" load={loadSearchModal}>
             <SearchModalLazy />
           </ModalGate>
-          <IdleGate load={loadDonateModal}>
+          <ModalGate event="open-donate" load={loadDonateModal} preloadWhenIdle>
             <DonateModalLazy />
-          </IdleGate>
+          </ModalGate>
           <ModalGate event={OPEN_CONTACT_EVENT} load={loadContactFormModal}>
             <ContactFormModalLazy />
           </ModalGate>
