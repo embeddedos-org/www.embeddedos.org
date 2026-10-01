@@ -648,6 +648,18 @@ async function main() {
   // react-query does not hold pages open through its retry backoff.
   await context.route("**/api/**", r => r.abort());
 
+  // The shell's Google Ads tag must not run here. When it did, gtag.js
+  // injected a <script src="googleads.g.doubleclick.net/pagead/
+  // viewthroughconversion/…?url=<this build host>&auid=…"> and captureHtml()
+  // serialised it, so every visitor's browser re-sent a conversion hit
+  // recorded on the build machine, on all 133 snapshots. The tag in
+  // client/index.html is static markup and survives the snapshot either way;
+  // it runs in the visitor's browser, not this one.
+  await context.route(
+    /^https?:\/\/([a-z0-9-]+\.)*(googletagmanager\.com|google-analytics\.com|googleadservices\.com|doubleclick\.net)\//,
+    r => r.abort()
+  );
+
   const results = [];
   const queue = [...routes];
 

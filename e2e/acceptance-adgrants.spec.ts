@@ -10,6 +10,10 @@
  * Mobile-Friendly Test, and domain-ownership verification in Google Ads.
  */
 import { test, expect, type Page } from "./fixtures";
+import fs from "node:fs";
+import path from "node:path";
+
+const DIST = path.resolve("dist/public");
 
 const PUBLIC_BUSINESS_ADDRESS =
   "2601 Cortez Dr, Unit 1104, Santa Clara, CA 95051, United States";
@@ -456,18 +460,65 @@ test.describe("functioning donation process", () => {
 });
 
 test.describe("prohibited content", () => {
+  /**
+   * The Ad Grants rule is about ad *display*: a grantee's site may not carry
+   * AdSense or other third-party ad units. Conversion measurement is a
+   * different thing, and Google requires it of grantees.
+   *
+   * This used to ban the substring "pagead" outright, which cannot tell the
+   * two apart: AdSense serves from pagead2.googlesyndication.com/pagead/…, but
+   * the disclosed Google Ads tag (AW-18484485270 — see client/index.html,
+   * the Privacy page and tests/unit/public-claims-policy.test.ts) also uses
+   * /pagead/ paths for its own conversion pixel. So these assertions name ad
+   * display code exactly, and pin the one measurement tag to its account.
+   */
+  const AD_DISPLAY_MARKERS = [
+    "adsbygoogle", // AdSense ad-unit markup and loader
+    "googlesyndication.com", // AdSense / AdMob ad serving
+    "ca-pub-", // an AdSense publisher ID
+    "securepubads.g.doubleclick.net", // Google Ad Manager (GPT) ad serving
+    "googletag.pubads", // GPT ad slots
+    "amazon-adsystem.com", // Amazon ad and affiliate units
+  ];
+
   test("no advertising or affiliate scripts anywhere in the build", async ({
     page,
   }) => {
+    const files = fs.globSync("**/*.html", { cwd: DIST });
+    expect(files.length).toBeGreaterThan(40);
+
+    for (const file of files) {
+      const html = fs.readFileSync(path.join(DIST, file), "utf8");
+      for (const banned of AD_DISPLAY_MARKERS) {
+        expect(html, `${file} must not contain ${banned}`).not.toContain(
+          banned
+        );
+      }
+
+      // The build may load exactly one third-party script: the gtag loader
+      // for the disclosed account. Anything else Google's tag injects at
+      // runtime must not be baked into the static HTML — the prerenderer once
+      // shipped a conversion pixel recorded on the build machine to every page.
+      const external = [
+        ...html.matchAll(/<script\b[^>]*\bsrc="(https?:\/\/[^"]+)"/g),
+      ].map(m => m[1]);
+      expect(external, `${file} third-party scripts`).toEqual([
+        "https://www.googletagmanager.com/gtag/js?id=AW-18484485270",
+      ]);
+
+      const accounts = new Set(
+        [...html.matchAll(/gtag\(\s*"config",\s*"([^"]+)"/g)].map(m => m[1])
+      );
+      expect([...accounts], `${file} gtag accounts`).toEqual([
+        "AW-18484485270",
+      ]);
+    }
+
+    // And the live document, after hydration, still carries no ad display code.
     await page.goto("/");
-    const html = await page.content();
-    for (const banned of [
-      "adsbygoogle",
-      "pagead",
-      "doubleclick",
-      "amazon-adsystem",
-    ]) {
-      expect(html, `must not contain ${banned}`).not.toContain(banned);
+    const live = await page.content();
+    for (const banned of AD_DISPLAY_MARKERS) {
+      expect(live, `live / must not contain ${banned}`).not.toContain(banned);
     }
   });
 
