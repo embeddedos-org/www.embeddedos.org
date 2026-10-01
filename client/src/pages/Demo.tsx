@@ -521,8 +521,7 @@ export default function Demo() {
             custom={1}
             className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
           >
-            See an EoS Program{" "}
-            <span style={{ color: "#22D3EE" }}>Run</span>
+            See an EoS Program <span style={{ color: "#22D3EE" }}>Run</span>
             <br />
             Without Hardware
           </motion.h1>
@@ -535,8 +534,8 @@ export default function Demo() {
           >
             An illustrative, in-browser visualisation of small EoS programs:
             toggle GPIO pins and watch console output. It does not compile or
-            execute EoS. To boot the real kernel without hardware, use
-            ebuild sim on QEMU (see Getting Started).
+            execute EoS. To boot the real kernel without hardware, use ebuild
+            sim on QEMU (see Getting Started).
           </motion.p>
           <motion.div
             variants={fadeUp}

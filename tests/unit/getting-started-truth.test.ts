@@ -5,8 +5,14 @@ import { describe, expect, it } from "vitest";
 // The getting-started guide must only show commands that exist and were run.
 // Each forbidden string below was on the page and was false when checked on
 // 2026-10-01 against ebuild 3.0.1 / EoSim 3.0.1 / eos master.
-const page = readFileSync(resolve(__dirname, "../../client/src/pages/GettingStarted.tsx"), "utf8");
-const demo = readFileSync(resolve(__dirname, "../../client/src/pages/Demo.tsx"), "utf8");
+const page = readFileSync(
+  resolve(__dirname, "../../client/src/pages/GettingStarted.tsx"),
+  "utf8"
+);
+const demo = readFileSync(
+  resolve(__dirname, "../../client/src/pages/Demo.tsx"),
+  "utf8"
+);
 
 describe("getting-started guide truth", () => {
   it.each([
@@ -22,19 +28,34 @@ describe("getting-started guide truth", () => {
     ["ebuild v2.1.0", "ebuild reports 'ebuild, version 3.0.1'"],
     ["EoSim v1.4.0", "EoSim is 3.0.1"],
     ["EmbeddedOS v2.5.0 starting", "invented boot banner"],
-    ["bundles the Xtensa GCC toolchain", "ebuild does not bundle any toolchain"],
-    ["runs entirely in your browser using WebAssembly", "/demo is a JavaScript visualisation"],
-  ])("does not claim %s", (needle) => {
+    [
+      "bundles the Xtensa GCC toolchain",
+      "ebuild does not bundle any toolchain",
+    ],
+    [
+      "runs entirely in your browser using WebAssembly",
+      "/demo is a JavaScript visualisation",
+    ],
+  ])("does not claim %s", needle => {
     expect(page).not.toContain(needle);
   });
 
   it("installs from GitHub until a PyPI release exists", () => {
-    expect(page).toContain('"embeddedos-ebuild @ git+https://github.com/embeddedos-org/ebuild"');
-    expect(page).not.toMatch(/\npip install embeddedos-ebuild embeddedos-eosim\\n/);
+    expect(page).toContain(
+      '"embeddedos-ebuild @ git+https://github.com/embeddedos-org/ebuild"'
+    );
+    expect(page).not.toMatch(
+      /\npip install embeddedos-ebuild embeddedos-eosim\\n/
+    );
   });
 
   it("documents the verified simulator path", () => {
-    for (const cmd of ["ebuild setup", "ebuild init my-blink --template rtos --target stm32f4", "ebuild sim", "ebuild platforms list"]) {
+    for (const cmd of [
+      "ebuild setup",
+      "ebuild init my-blink --template rtos --target stm32f4",
+      "ebuild sim",
+      "ebuild platforms list",
+    ]) {
       expect(page).toContain(cmd);
     }
   });

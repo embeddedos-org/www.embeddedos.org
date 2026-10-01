@@ -186,7 +186,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     title: "See an EoS Program in Your Browser",
     color: "#34D399",
     intro:
-      "The /demo page is an interactive, illustrative visualisation of what a small EoS program does: GPIO pins toggle and a console prints. It runs in JavaScript in your browser. It does not compile or execute EoS. To run the real EoS kernel with no hardware, use the \"Simulator on My Computer\" path, which runs it under QEMU.",
+      'The /demo page is an interactive, illustrative visualisation of what a small EoS program does: GPIO pins toggle and a console prints. It runs in JavaScript in your browser. It does not compile or execute EoS. To run the real EoS kernel with no hardware, use the "Simulator on My Computer" path, which runs it under QEMU.',
     prereq: "A modern browser. Nothing to install.",
     time: "~2 minutes",
     steps: [
@@ -201,7 +201,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
       {
         title: "Run the Real Thing",
-        text: "To boot the actual EoS kernel and your own code without hardware, follow \"Simulator on My Computer\". It takes about 10 minutes on Linux or WSL2.",
+        text: 'To boot the actual EoS kernel and your own code without hardware, follow "Simulator on My Computer". It takes about 10 minutes on Linux or WSL2.',
         code: `ebuild init my-blink --template rtos --target stm32f4\ncd my-blink && ebuild sim`,
       },
     ],
@@ -271,7 +271,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     color: "#F97316",
     intro:
       "ESP32 support is not usable end to end today, and this page will not pretend otherwise. You can create an ESP32 project. Building it needs the Xtensa toolchain, which ebuild does not bundle. ebuild sim cannot run ESP32 code. Producing a flashable MCU image from an ebuild project is tracked in ebuild#171.",
-    prereq: "If you want to help: an ESP32 DevKit, the xtensa-esp32-elf toolchain and esptool.",
+    prereq:
+      "If you want to help: an ESP32 DevKit, the xtensa-esp32-elf toolchain and esptool.",
     time: "—",
     steps: [
       {
@@ -288,7 +289,10 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
     ],
     nextSteps: [
-      { label: "Track ESP32 / MCU image support", href: "https://github.com/embeddedos-org/ebuild/issues/171" },
+      {
+        label: "Track ESP32 / MCU image support",
+        href: "https://github.com/embeddedos-org/ebuild/issues/171",
+      },
       { label: "Simulate a Cortex-M board instead", href: "/getting-started" },
     ],
   },
@@ -297,7 +301,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     color: "#22D3EE",
     intro:
       "The EoS kernel cross-compiles for Cortex-M4 (STM32F4), and its Cortex-M scheduler is exercised in CI on QEMU. What is missing is an `ebuild build` that turns your project into a flashable STM32 image. Today it builds a host binary, and it does not say so (ebuild#171). Until that lands, simulate with ebuild sim and treat flashing as experimental.",
-    prereq: "An STM32 Nucleo or Discovery board and OpenOCD, for when hardware images land.",
+    prereq:
+      "An STM32 Nucleo or Discovery board and OpenOCD, for when hardware images land.",
     time: "—",
     steps: [
       {
@@ -316,7 +321,10 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
     ],
     nextSteps: [
-      { label: "Track STM32 image support", href: "https://github.com/embeddedos-org/ebuild/issues/171" },
+      {
+        label: "Track STM32 image support",
+        href: "https://github.com/embeddedos-org/ebuild/issues/171",
+      },
       { label: "EoS Kernel docs", href: "/eos" },
     ],
   },
@@ -325,7 +333,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     color: "#F59E0B",
     intro:
       "eApps is a collection of C applications on the LVGL graphics library. The native build of the app libraries was verified for this guide on Ubuntu 20.04. Running the apps on a desktop window needs SDL2. That step has not yet been re-verified for this guide.",
-    prereq: "Git, CMake 3.16+, GCC or Clang. SDL2 (libsdl2-dev) to run apps on a desktop.",
+    prereq:
+      "Git, CMake 3.16+, GCC or Clang. SDL2 (libsdl2-dev) to run apps on a desktop.",
     time: "~10 minutes",
     steps: [
       {
@@ -339,7 +348,10 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
     ],
     nextSteps: [
-      { label: "eApps on GitHub", href: "https://github.com/embeddedos-org/eApps" },
+      {
+        label: "eApps on GitHub",
+        href: "https://github.com/embeddedos-org/eApps",
+      },
       { label: "eOffice Suite", href: "/eoffice" },
     ],
   },
@@ -348,7 +360,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
     color: "#A78BFA",
     intro:
       "Start from a KiCad schematic. ebuild analyze identifies the MCU and peripherals and generates board, boot and build configuration. You then simulate application logic for that MCU family. The eCAD repository's validation gate (V0–V4) checks your product's design data and refuses to call anything a pass without evidence.",
-    prereq: "Python 3.9+, ebuild (see the simulator path), and a .kicad_sch schematic.",
+    prereq:
+      "Python 3.9+, ebuild (see the simulator path), and a .kicad_sch schematic.",
     time: "~20 minutes",
     steps: [
       {
@@ -369,7 +382,10 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
     ],
     nextSteps: [
-      { label: "eCAD-Hardware-Products", href: "https://github.com/embeddedos-org/eCAD-Hardware-Products" },
+      {
+        label: "eCAD-Hardware-Products",
+        href: "https://github.com/embeddedos-org/eCAD-Hardware-Products",
+      },
       { label: "Hardware lab", href: "/hardware-lab" },
     ],
   },
@@ -430,8 +446,8 @@ export default function GettingStarted() {
             custom={2}
             className="text-white/60 text-xl max-w-2xl mx-auto mb-4 leading-relaxed"
           >
-            No hardware required to get started. Every command on the
-            simulator path was run as written before it was published.
+            No hardware required to get started. Every command on the simulator
+            path was run as written before it was published.
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -800,7 +816,12 @@ export default function GettingStarted() {
                           {ns.label} <ArrowRight size={13} />
                         </a>
                       ) : (
-                        <Link key={ns.label} href={ns.href} className={className} style={style}>
+                        <Link
+                          key={ns.label}
+                          href={ns.href}
+                          className={className}
+                          style={style}
+                        >
                           {ns.label} <ArrowRight size={13} />
                         </Link>
                       );
