@@ -69,38 +69,37 @@ export type AIChatBoxProps = {
  * - Loading states
  * - Uses global theme colors from index.css
  *
+ * This component is fully presentational: it takes `messages` and an
+ * `onSendMessage` handler as props and makes no network calls itself. On this
+ * site the production deployment is static (no `/api/trpc`), so chat answers
+ * must be produced in the browser (see `shared/ebot-knowledge.ts`) — there is
+ * no `ai.chat` tRPC procedure.
+ *
  * @example
  * ```tsx
  * const ChatPage = () => {
  *   const [messages, setMessages] = useState<Message[]>([
  *     { role: "system", content: "You are a helpful assistant." }
  *   ]);
+ *   const [isLoading, setIsLoading] = useState(false);
  *
- *   const chatMutation = trpc.ai.chat.useMutation({
- *     onSuccess: (response) => {
- *       // Assuming your tRPC endpoint returns the AI response as a string
- *       setMessages(prev => [...prev, {
- *         role: "assistant",
- *         content: response
- *       }]);
- *     },
- *     onError: (error) => {
- *       console.error("Chat error:", error);
- *       // Optionally show error message to user
- *     }
- *   });
- *
- *   const handleSend = (content: string) => {
+ *   const handleSend = async (content: string) => {
  *     const newMessages = [...messages, { role: "user", content }];
  *     setMessages(newMessages);
- *     chatMutation.mutate({ messages: newMessages });
+ *     setIsLoading(true);
+ *     try {
+ *       const reply = await answerInBrowser(newMessages); // no network
+ *       setMessages(prev => [...prev, { role: "assistant", content: reply }]);
+ *     } finally {
+ *       setIsLoading(false);
+ *     }
  *   };
  *
  *   return (
  *     <AIChatBox
  *       messages={messages}
  *       onSendMessage={handleSend}
- *       isLoading={chatMutation.isPending}
+ *       isLoading={isLoading}
  *       suggestedPrompts={[
  *         "Explain quantum computing",
  *         "Write a hello world in Python"
