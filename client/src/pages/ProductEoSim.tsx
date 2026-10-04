@@ -51,6 +51,12 @@ export default function ProductEoSim() {
           desc: "The HIL bridge connects EoSim's virtual peripherals to real hardware. Simulate the firmware logic while driving real sensors, actuators, or communication buses — the best of both worlds.",
           code: "# HIL bridge: virtual firmware + real I2C sensor\neosim run firmware.elf --platform stm32f4 \\\n    --hil i2c1:/dev/i2c-1 \\\n    --hil uart2:/dev/ttyUSB0",
         },
+        {
+          step: 6,
+          title: "Drive Simulations from AI Agents (MCP)",
+          desc: "EoSim exposes a Model Context Protocol server so AI coding agents can drive simulations directly — list platforms, flash firmware, launch sims, and read console output to verify against ground truth instead of hallucinating. JSON-RPC 2.0 over stdio, no extra dependencies.",
+          code: "# Start the MCP server (from an MCP client config)\npython -m eosim.mcp\n\n# Tools: list_platforms · sim_flash · sim_launch · console_tail\n#\n# list_platforms({arch: \"arm\"})          → discover targets\n# sim_flash({platform, firmware})          → stage image (dry-run by default)\n# sim_launch({platform, firmware, dry_run: false}) → boot, get session_id\n# console_tail({session_id, lines: 50})    → read boot output and faults",
+        },
       ]}
       usageExamples={[
         {
@@ -107,6 +113,10 @@ export default function ProductEoSim() {
         {
           name: "Headless Mode",
           desc: "Run without GUI for CI pipelines. JSON test result output for automation.",
+        },
+        {
+          name: "MCP Server for AI Agents",
+          desc: "Model Context Protocol server (python -m eosim.mcp): list_platforms, sim_flash, sim_launch, console_tail — agents drive sims and verify against ground truth.",
         },
         {
           name: "Multi-Board Simulation",
