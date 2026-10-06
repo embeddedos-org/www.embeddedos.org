@@ -185,11 +185,11 @@ test.describe("navigation regressions", () => {
     const trigger = page.getByRole("button", { name: /Community/i }).first();
     await trigger.click();
 
-    const item = page.locator('a[href="/mission"]').first();
+    const item = page.locator('header a[href="/get-involved"]').first();
     await expect(item).toBeVisible();
     await item.click();
 
-    await expect(page).toHaveURL(/\/mission$/);
+    await expect(page).toHaveURL(/\/get-involved$/);
     await expect(
       page.locator('[data-state="open"]'),
       "dropdown must not stay open over the page it navigated to"
@@ -206,8 +206,8 @@ test.describe("navigation regressions", () => {
       .getByRole("button", { name: /Community/i })
       .first()
       .click();
-    await page.locator('a[href="/mission"]').first().click();
-    await expect(page).toHaveURL(/\/mission$/);
+    await page.locator('header a[href="/get-involved"]').first().click();
+    await expect(page).toHaveURL(/\/get-involved$/);
 
     // If the panel were still covering the route, this heading would be
     // obscured and a click at its position would hit the overlay instead.

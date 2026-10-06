@@ -406,7 +406,11 @@ test.describe("motion preferences", () => {
       () =>
         [...document.querySelectorAll("main *")].filter(el => {
           const s = getComputedStyle(el);
-          return s.opacity === "0" && (el.textContent ?? "").trim().length > 40;
+          return (
+            s.opacity === "0" &&
+            s.visibility !== "hidden" &&
+            (el.textContent ?? "").trim().length > 40
+          );
         }).length
     );
     expect(hidden, "text left invisible under reduced motion").toBe(0);
@@ -445,11 +449,11 @@ test.describe("design system", () => {
     });
 
     expect(wide, "the homepage must have an h1").not.toBeNull();
-    // Default h1 sizing is ~32px; the old hand-picked triple topped out at 60.
+    // Default h1 sizing is ~32px and the story's chapter headings reach ~52px.
     expect(
       wide!.size,
       "hero headline is not on the display scale"
-    ).toBeGreaterThan(72);
+    ).toBeGreaterThan(56);
     // Tight leading is what makes a headline read as one block rather than
     // three stacked sentences; body leading is ~1.6.
     expect(
@@ -482,12 +486,14 @@ test.describe("design system", () => {
     await page.waitForTimeout(600);
 
     const layering = await page.evaluate(() => {
-      const scrim = document.querySelector(".hero-scrim");
+      const scrim = document.querySelector(".hs .scrim");
       if (!scrim) return { present: false };
 
       const section = scrim.parentElement!;
       const kids = [...section.children];
-      const canvasHost = kids.find(k => k.querySelector("canvas"));
+      const canvasHost = kids.find(
+        k => k.matches("canvas") || k.querySelector("canvas")
+      );
 
       const s = getComputedStyle(scrim);
       return {
@@ -503,7 +509,7 @@ test.describe("design system", () => {
       };
     });
 
-    expect(layering.present, ".hero-scrim is missing").toBe(true);
+    expect(layering.present, "the hero scrim is missing").toBe(true);
     expect(layering.covers, "scrim does not cover the hero").toBe(true);
     expect(layering.clickThrough, "scrim would swallow hero clicks").toBe(true);
     expect(layering.painted, "scrim paints nothing").toBe(true);
@@ -515,9 +521,9 @@ test.describe("design system", () => {
   test("the scrim switches to its stacked-layout variant below lg", async ({
     page,
   }) => {
-    // The @media (max-width: 1023px) branch exists because the hero grid
-    // stacks there: a left-weighted wash would leave particles sitting on the
-    // right half of every line. Nothing exercised that branch.
+    // The @media (max-width: 760px) branch exists because the story's cards
+    // stack at the bottom there: a left-weighted wash would leave the 3D model
+    // sitting behind the right half of every line. Nothing exercised that branch.
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const read = async (width: number) => {
@@ -525,13 +531,13 @@ test.describe("design system", () => {
       await page.waitForTimeout(300);
       return page.evaluate(
         () =>
-          getComputedStyle(document.querySelector(".hero-scrim")!)
+          getComputedStyle(document.querySelector(".hs .scrim")!)
             .backgroundImage
       );
     };
 
-    const stacked = await read(1023);
-    const side = await read(1024);
+    const stacked = await read(760);
+    const side = await read(761);
 
     expect(stacked, "no scrim painted in the stacked layout").not.toBe("none");
     expect(side, "no scrim painted in the side-by-side layout").not.toBe(
@@ -548,7 +554,7 @@ test.describe("design system", () => {
     await page.waitForTimeout(400);
 
     const measured = await page.evaluate(() => {
-      const p = document.querySelector("section .measure");
+      const p = document.querySelector("#hero-heading ~ p");
       if (!p) return null;
       const fontSize = parseFloat(getComputedStyle(p).fontSize);
       return {
@@ -558,7 +564,7 @@ test.describe("design system", () => {
       };
     });
 
-    expect(measured, "no .measure element in the hero").not.toBeNull();
+    expect(measured, "no body copy under the hero headline").not.toBeNull();
     // Unbounded, this column would run to ~800px at 1920. The cap is 56ch.
     expect(
       measured!.approxChars,

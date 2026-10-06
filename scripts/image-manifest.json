@@ -93,6 +93,10 @@
     "hero-background_1bafea1c-768w.jpg": {
       "sha256": "a0ae430ef46eb14c5b3b980713bc0517e8ad83b315d8bc7e8fea7c01ef3170cf",
       "webpSha256": "fd1196a6b636e50f89865ff3779dcd4db41e4e2262b19d006bf8081455a032f9"
+    },
+    "home-story-poster.jpg": {
+      "sha256": "81bfc0d8765af4fb976bb48047acd43fa82ee541cc1cca30b7d745492fe5b01c",
+      "webpSha256": "24f82853c8dfa01a7f067bf383d85fa29f0fb0bbc73254e4320afbf1567d7f34"
     }
   }
 }
