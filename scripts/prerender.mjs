@@ -643,6 +643,9 @@ async function main() {
     // Snapshot the reduced-motion variant: less animation state to strip.
     reducedMotion: "reduce",
   });
+  await context.addInitScript(() => {
+    window.__EOS_PRERENDER__ = true;
+  });
 
   // The API is not running during a static build; fail those calls instantly so
   // react-query does not hold pages open through its retry backoff.

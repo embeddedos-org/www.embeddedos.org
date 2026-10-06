@@ -13,10 +13,9 @@ const VITE_CONFIG = readSource("vite.config.ts");
 
 describe("architecture visualization loading", () => {
   it("keeps the semantic wrapper eager and the Three.js canvas lazy", () => {
-    // The page code-splits the whole hero; the hero code-splits the 3D scene.
-    expect(HOME).toMatch(
-      /lazy\(\s*\(\)\s*=>\s*import\("\.\.\/components\/CadEvolutionHero"\)/
-    );
+    // The page code-splits its 3D story; the hero code-splits the 3D scene.
+    expect(HOME).toMatch(/import\("\.\.\/home3d\/story"\)/);
+    expect(HOME).not.toMatch(/from ["']three["']/);
     expect(HERO).toMatch(
       /lazy\(\s*\(\)\s*=>\s*import\("\.\/CadEvolutionScene"\)/
     );
