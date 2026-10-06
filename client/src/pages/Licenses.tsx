@@ -18,7 +18,7 @@ const licenses = [
     name: "lwIP",
     license: "BSD 3-Clause",
     desc: "lwIP is used for the EoS networking stack (TCP/IP, UDP, DHCP, DNS, TLS).",
-    href: "https://savannah.nongnu.org/projects/lwip/",
+    href: "https://github.com/lwip-tcpip/lwip",
   },
   {
     name: "mbedTLS",
