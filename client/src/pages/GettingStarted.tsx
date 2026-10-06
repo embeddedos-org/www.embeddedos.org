@@ -233,6 +233,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
         title: "Fetch the EoS Sources",
         text: "ebuild builds your application against the EoS kernel and bootloader sources. It keeps them in ~/.ebuild/repos.",
         code: `ebuild setup\n# [ok]   eos: ~/.ebuild/repos/eos\n# [ok]   eboot: ~/.ebuild/repos/eboot\n# [ok] Setup complete. Repos are ready.\n\nebuild doctor     # checks compilers, cmake, ninja and the repos`,
+        tip: "Ran ebuild setup on this machine before? It never pulls an existing clone, so run `ebuild repos update` to bring eos and eboot up to date. An older eos checkout makes `ebuild sim` stop with: sim.yaml not found.",
       },
       {
         title: "Create Your First Project",
