@@ -25,23 +25,23 @@ only — no generated KB output or running server is committed here.
   API; it ran under the installed `mcp` 2.x only via its
   `MCPServer`-fallback import — incidental, not guaranteed.
 - **llms.txt:** generated as part of the capture output contract
-  (page tree + book + llms.txt manifest); the engine also *discovers*
+  (page tree + book + llms.txt manifest); the engine also _discovers_
   from llms.txt/sitemap.
 - **Skills:** ships a bundled `docharvest` SKILL.md — the Ross
   Markdown-skill pattern the org's skills catalog is standardizing on.
 
 ## Why not adopt as-is
 
-1. **Wrong ingest direction.** The tool captures *hosted docs sites*
+1. **Wrong ingest direction.** The tool captures _hosted docs sites_
    via URL. The org's KB source of truth is 26 git repos of Markdown —
    no capture needed, and capture has no story for the private repos
-   (eVera, embeddedos-stack). We need a *local-markdown* ingest, not a
+   (eVera, embeddedos-stack). We need a _local-markdown_ ingest, not a
    crawler.
 2. **Wrong server shape.** The org's KB design (agent-fabric plan) is
    the Espressif two-server pattern — a docs-MCP plus a tools-MCP with
    in-repo `server.py`/`ingest.py`/BM25 and `mcp.json` auto-registration
    (esp-bist pattern). docharvest's server is a generic
-   doc-*harvesting* server (download/search/diff), not an org-scoped
+   doc-_harvesting_ server (download/search/diff), not an org-scoped
    knowledge server.
 
 ## Integration design (adopted parts)

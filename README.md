@@ -224,6 +224,15 @@ files reach `dist/public` and that the rules inside them are still correct.
 
 ### Deploying
 
+The one-command path — build, publish to the `deploy` branch, push:
+
+```bash
+./deploy.sh                     # full pipeline, pushes to origin
+./deploy.sh --no-push           # stop after committing to deploy, for review
+```
+
+Or the manual steps, which `./deploy.sh` chains for you:
+
 ```bash
 export PATH="$HOME/.local/node/bin:$PATH"
 
