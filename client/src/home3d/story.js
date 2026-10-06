@@ -228,24 +228,24 @@ function mountStory(HS) {
     var CARDTO = [
       null,
       0.28,
+      0.84,
+      0.28,
+      0.84,
+      0.84,
+      0.84,
       0.28,
       0.28,
+      0.84,
+      0.84,
+      0.84,
       0.28,
       0.28,
+      0.84,
       0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
-      0.28,
+      0.84,
+      0.84,
+      0.84,
+      0.84,
       0.26,
       0.26,
       0.26,
@@ -254,6 +254,10 @@ function mountStory(HS) {
       null,
     ];
     S.cardTo = CARDTO;
+    var HOLD =
+      window.IO_LITE && window.matchMedia
+        ? window.matchMedia("(max-width: 760px)")
+        : null;
     var N = NAMES.length;
     var LAST = N - 1;
     var TOTAL = String(LAST).padStart(2, "0");
@@ -474,8 +478,17 @@ function mountStory(HS) {
     function update() {
       var T = (S.target = computeT());
       cards.forEach(function (c, i) {
-        var to = CARDTO[i] == null ? 0.84 : CARDTO[i];
-        var inA = i === 0 ? 1 : sm((T - (i - 0.06)) / 0.14);
+        var to = CARDTO[i] == null || (HOLD && HOLD.matches) ? 0.84 : CARDTO[i];
+        var inA =
+          i === 0
+            ? 1
+            : sm(
+                (T -
+                  (i -
+                    0.06 +
+                    (i === LAST && HOLD && HOLD.matches ? 0.45 : 0))) /
+                  0.14
+              );
         var outA = i === LAST && to >= 0.84 ? 1 : 1 - sm((T - (i + to)) / 0.12);
         var o = Math.max(0, Math.min(inA, outA));
         if (c._o !== o) {
@@ -2437,6 +2450,37 @@ function mountStory(HS) {
       const scrims = [...document.querySelectorAll(".scrim")];
       let sideS = 1,
         sideApplied = 2;
+      const LIFT = !!window.IO_LITE;
+      let liftS = -1,
+        liftApplied = -1,
+        liftTop = 1e9,
+        liftEl = null,
+        liftGen = -1;
+      function liftTarget(h) {
+        if (!LIFT || stageW > 760) return h * 0.15;
+        let best = 0,
+          el = null;
+        for (const c of CARD_EL)
+          if ((c._o || 0) > best) {
+            best = c._o;
+            el = c;
+          }
+        if (!el) {
+          liftEl = null;
+          return Math.max(0, (barBottom - 26) / 2);
+        }
+        if (el !== liftEl || liftGen !== layoutGen) {
+          liftEl = el;
+          liftGen = layoutGen;
+          liftTop =
+            el.getBoundingClientRect().top -
+            stage.getBoundingClientRect().top -
+            (1 - (el._o || 0)) * 16;
+        }
+        const top = barBottom - 26,
+          bottom = Math.min(h, liftTop - 10);
+        return Math.max(0, Math.min(h * 0.36, h / 2 - (top + bottom) / 2));
+      }
       function sideTarget() {
         let best = 0,
           side = 1;
@@ -2453,8 +2497,14 @@ function mountStory(HS) {
         return side;
       }
       function applyView(w, h, force) {
-        if (!force && Math.abs(sideS - sideApplied) < 2e-3) return;
+        if (
+          !force &&
+          Math.abs(sideS - sideApplied) < 2e-3 &&
+          Math.abs(liftS - liftApplied) < 0.5
+        )
+          return;
         sideApplied = sideS;
+        liftApplied = liftS;
         if (root.classList.contains("clean")) camera.clearViewOffset();
         else if (w > 1100)
           camera.setViewOffset(
@@ -2469,7 +2519,7 @@ function mountStory(HS) {
           camera.setViewOffset(w, h, -w * 0.13 * sideS, 0, w, h);
         else if (w > 760)
           camera.setViewOffset(w, h, -w * 0.08 * sideS, 0, w, h);
-        else camera.setViewOffset(w, h, 0, h * 0.15, w, h);
+        else camera.setViewOffset(w, h, 0, liftS < 0 ? h * 0.15 : liftS, w, h);
         camera.updateProjectionMatrix();
         if (scrims.length > 1 && w > 760) {
           scrims[0].style.opacity = ((1 + sideS) / 2).toFixed(3);
@@ -2522,6 +2572,7 @@ function mountStory(HS) {
               y > stageH - 26
             )
               o = 0;
+            else if (LIFT && stageW <= 760 && liftEl && y > liftTop - 18) o = 0;
           }
           if (o <= 0.01) {
             if (L.o !== 0) {
@@ -2692,6 +2743,8 @@ function mountStory(HS) {
       }
       S.relayout = resize;
       new ResizeObserverT(resize).observe(stage);
+      if (document.fonts && document.fonts.ready)
+        document.fonts.ready.then(() => layoutGen++);
       resize();
       let running = !document.hidden,
         visible = true,
@@ -2854,6 +2907,11 @@ function mountStory(HS) {
             return;
           sideS +=
             (sideTarget() - sideS) * (S.capture ? 1 : 1 - Math.exp(-dt * 6));
+          const lt = liftTarget(stageH);
+          liftS =
+            liftS < 0 || S.capture
+              ? lt
+              : liftS + (lt - liftS) * (1 - Math.exp(-dt * 5));
           applyView(stageW, stageH, false);
           if (story.camera) story.camera(Ts, time, dt);
           else cameraAt(Ts, time);
@@ -19763,14 +19821,18 @@ function mountStory(HS) {
       }
       function finalePose(time, u, out) {
         const th = angleOf(N - 1) - 0.6 - u * 0.5 - time * 0.02;
-        const r = lerp(38, 37, u) * (PORTRAIT ? 1.35 : 1);
+        const r = lerp(38, 37, u) * (PORTRAIT ? (LITE ? 1.12 : 1.35) : 1);
         out.c.set(
           Math.cos(th) * r,
-          lerp(21, 27, u) * (PORTRAIT ? 1.25 : 1),
+          lerp(21, 27, u) * (PORTRAIT ? (LITE ? 1.05 : 1.25) : 1),
           Math.sin(th) * r
         );
         const k = PORTRAIT ? 0 : 1.5;
-        out.t.set(-Math.sin(th) * k, PORTRAIT ? -7.5 : -0.6, Math.cos(th) * k);
+        out.t.set(
+          -Math.sin(th) * k,
+          PORTRAIT ? (LITE ? -1.2 : -7.5) : -0.6,
+          Math.cos(th) * k
+        );
         out.fov = 37;
         return out;
       }
