@@ -136,6 +136,12 @@ for (const [route, hrefs] of ROUTES) {
       const matches = page.locator(`main a[href="${href}"]`);
       if ((await matches.count()) === 0) continue;
       const { index, panel } = await matches.evaluateAll(links => {
+        const free = links.findIndex(
+          el =>
+            !el.closest('[role="tabpanel"][hidden]') &&
+            !el.closest(".hs .stage")
+        );
+        if (free >= 0) return { index: free, panel: "" };
         const shown = links.findIndex(
           el => !el.closest('[role="tabpanel"][hidden]')
         );
@@ -167,7 +173,9 @@ for (const [route, hrefs] of ROUTES) {
       await link.evaluate(el => {
         const r = el.getBoundingClientRect();
         window.scrollTo({
-          top: window.scrollY + r.top - window.innerHeight / 2 + r.height / 2,
+          top: el.closest(".hs .stage")
+            ? 0
+            : window.scrollY + r.top - window.innerHeight / 2 + r.height / 2,
           left: 0,
           behavior: "instant",
         });

@@ -133,10 +133,7 @@ describe("image budgets", () => {
 
   it("the homepage image set stays under 800 KB", () => {
     const homepageImages = [
-      "hero-background_1bafea1c.jpg",
-      "architecture-diagram-hero_72436b3f.jpg",
-      "community-illustration-eos_6f39c9db.jpg",
-      "what-we-do-illustration_4c2ad2f7.jpg",
+      "home-story-poster.jpg",
       "embeddedos-logo-mark_bc053888.jpg",
     ];
     const total = homepageImages.reduce(
