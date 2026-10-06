@@ -70,6 +70,39 @@ test.describe("homepage 3D story", () => {
     await expect(page.locator("#hero-heading")).toBeVisible();
   });
 
+  for (const { name, width, height, chapters } of [
+    { name: "phone", width: 390, height: 664, chapters: [2, 5, 8, 13] },
+    { name: "desktop", width: 1440, height: 900, chapters: [2, 5] },
+  ]) {
+    test(`on a ${name} a chapter's card stays up past its middle`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto("/");
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () =>
+              (window as { IO?: { bounds?: number[] } }).IO?.bounds?.length ?? 0
+          )
+        )
+        .toBeGreaterThan(20);
+      for (const i of chapters) {
+        await page.evaluate(i => {
+          const b = (window as unknown as { IO: { bounds: number[] } }).IO
+            .bounds;
+          window.scrollTo({
+            top: b[i] + (b[i + 1] - b[i]) * 0.7,
+            behavior: "instant",
+          });
+        }, i);
+        const card = page.locator(".hs article.card").nth(i);
+        await expect(card).toHaveCSS("opacity", "1");
+        await expect(card.locator("h2")).toBeVisible();
+      }
+    });
+  }
+
   test("a board-map part opens its details", async ({ page }) => {
     await page.goto("/");
     const map = page.locator("#board-map");
