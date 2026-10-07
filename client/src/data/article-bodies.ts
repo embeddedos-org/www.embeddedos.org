@@ -212,6 +212,27 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
     ],
   },
+  "this-week-in-embeddedos-2026-10-07": {
+    lede: "Zephyr Developer Summit opens in Prague, onsemi rewrites its $7B Synaptics bid for edge-AI silicon, and Apple readies a Thread/Matter home hub — the week's signal for EmbeddedOS.",
+    sections: [
+      {
+        heading: "Zephyr Developer Summit, Day 1 (Prague)",
+        text: "The Maintainers Forum ran Oct 6 ahead of the main summit (Oct 7–9): 40+ sessions and 45+ speakers across functional safety, CRA readiness, and automotive/space/industrial tracks. Today the summit announced the first-ever Zephyr Community Awards. Also this week: MCP is now a Linux Foundation project, giving Zephyr shared governance with the agent protocol — directly relevant to the org's Agent fabric work.",
+      },
+      {
+        heading: "Synaptics bidding war",
+        text: "A competing bid forced onsemi to rewrite its $7B Synaptics deal — $1.3B less, all cash. The prize is Synaptics' Astra edge-AI MCU platform (Cortex-M52 + Ethos-U55, Zephyr RTOS): exactly the silicon class eos targets. The commercial benchmark for Zephyr on edge-AI silicon keeps getting more serious.",
+      },
+      {
+        heading: "Watch: Apple Oct 13",
+        text: "Apple is expected to announce a smart-home hub alongside LG-built Thread/Matter accessories. If Thread becomes the default, the Thread Border Router story becomes table stakes — one to watch for eNet.",
+      },
+      {
+        heading: "In the org",
+        text: "Kartikey's www audit wave (#77–#80) is in progress; review-only today. Issue #77 is linked to Aswin's #26 (Grants rework) — scope stays put, no expansion. All review findings ship in the daily reports.",
+      },
+    ],
+  },
 };
 
 /** The body for a slug, or undefined when the item is a link-out. */
