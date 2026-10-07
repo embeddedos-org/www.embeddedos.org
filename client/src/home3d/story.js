@@ -475,8 +475,7 @@ function mountStory(HS) {
       });
     }
     var lastCh = -1;
-    function update() {
-      var T = (S.target = computeT());
+    function paint(T) {
       cards.forEach(function (c, i) {
         var to = CARDTO[i] == null || (HOLD && HOLD.matches) ? 0.84 : CARDTO[i];
         var inA =
@@ -508,6 +507,11 @@ function mountStory(HS) {
       });
       kinetic(T);
       spotFallback(T);
+    }
+    S.paint = paint;
+    function update() {
+      var T = (S.target = computeT());
+      if (!S.follow) paint(T);
       var ch = Math.min(LAST, Math.floor(T + 0.02));
       S.chapter = ch;
       if (ch !== lastCh) {
@@ -2787,6 +2791,8 @@ function mountStory(HS) {
         climbedAt = -1e9;
       function giveUp() {
         alive = false;
+        S.follow = false;
+        if (S.paint) S.paint(S.target);
         root.classList.remove("gl-ready");
         root.classList.add("no-gl");
         try {
@@ -2913,6 +2919,7 @@ function mountStory(HS) {
               ? lt
               : liftS + (lt - liftS) * (1 - Math.exp(-dt * 5));
           applyView(stageW, stageH, false);
+          if (S.follow && S.paint) S.paint(Ts);
           if (story.camera) story.camera(Ts, time, dt);
           else cameraAt(Ts, time);
           story.update(Ts, time, dt, easeOut(powerOn));
@@ -2922,6 +2929,7 @@ function mountStory(HS) {
           if (SPOTS.length) updateSpots(Ts, time);
           if (!ready) {
             ready = true;
+            S.follow = !!window.IO_LITE;
             root.classList.remove("no-gl");
             root.classList.add("gl-ready");
           }
@@ -19211,7 +19219,7 @@ function mountStory(HS) {
       );
       const poolMat = new THREE.MeshBasicMaterial({
         map: poolTex,
-        color: HDR(16772303, 0.7),
+        color: HDR(16772303, window.IO_LITE ? 1.6 : 0.7),
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -19495,7 +19503,9 @@ function mountStory(HS) {
         }
         _lift.copy(FIN_LIFT).multiplyScalar(fin);
         for (const L of liftMats) L.m.emissive.copy(L.e).add(_lift);
-        renderer.toneMappingExposure = 1 + 0.45 * fin;
+        renderer.toneMappingExposure = LITE
+          ? 1.42 + 0.13 * Math.min(1, fin)
+          : 1 + 0.45 * fin;
       }
       const _inv = new THREE.Matrix4(),
         _rel = new THREE.Matrix4();
@@ -19981,6 +19991,7 @@ function mountStory(HS) {
           );
         if (T >= FIN)
           return finalePose(time, easeInOutSine(range(T, FIN, FIN + 0.8)), res);
+        if (LITE && T >= RB0) return finalePose(time, 0, res);
         if (T >= RB0) {
           const k = Math.min(RBN - 1, Math.floor(T - RB0)),
             p2 = T - RB0 - k;
@@ -20011,12 +20022,14 @@ function mountStory(HS) {
         const B =
           j + 1 < N
             ? devicePose(j + 1, devs[j + 1].frameSpec.yaw0, pb)
-            : robotPose(0, 0, pb);
+            : LITE
+              ? finalePose(time, 0, pb)
+              : robotPose(0, 0, pb);
         return blend(
           A,
           B,
           easeInOut(range(p, 0.8, 1)),
-          j + 1 < N ? 2.4 : 1.2,
+          j + 1 < N ? 2.4 : LITE ? 0 : 1.2,
           res,
           j + 1 < N ? 3.2 : 0
         );
@@ -20326,8 +20339,14 @@ function mountStory(HS) {
         fillSpot.angle = Math.atan((reach + 1) / FILL_D);
         fillSpot.intensity = 0.5 * (1 - fin);
         rim.intensity = lerp(LOW ? 1.1 : 0.3, 1.6, fin);
-        fill.intensity = lerp(LOW ? 0.3 : LITE ? 1.2 : 0.04, 2.1, fin);
-        scene.environmentIntensity = lerp(0.95, 2.6, fin);
+        fill.intensity = lerp(
+          LOW ? 0.3 : LITE ? 2 : 0.04,
+          LITE ? 2.6 : 2.1,
+          fin
+        );
+        scene.environmentIntensity = LITE
+          ? lerp(1.9, 3.2, fin)
+          : lerp(0.95, 2.6, fin);
       }
       const _sa = new THREE.Vector3();
       function stepAside(d, j) {
@@ -20355,7 +20374,9 @@ function mountStory(HS) {
       function update(T, time, dt) {
         grain.uniforms.uTime.value = time;
         beamMat.uniforms.uTime.value = time;
-        const fin = sr(T, FIN - 0.2, FIN + 0.3);
+        const fin = LITE
+          ? sr(T, RB0 - 0.1, FIN + 0.3)
+          : sr(T, FIN - 0.2, FIN + 0.3);
         const cur = T - 1;
         const ow = orbitWeight();
         const focusJ =
@@ -20390,14 +20411,14 @@ function mountStory(HS) {
             if (d.edgeMat) d.edgeMat.opacity = 0;
             return;
           }
-          const a = p <= 0 ? 0 : easeInOut(range(p, 0.02, 0.46));
+          const a = p <= 0 ? 0 : easeInOut(range(p, 0.02, LITE ? 0.2 : 0.46));
           poseDevice(d, fin > 0.5 ? 1 : a);
           d.spin.rotation.y = -0.4 + 0.8 * easeInOutSine(range(p, 0.02, 0.95));
           const x =
             sr(p, 0.5, 0.56) *
             (1 - sr(p, 0.72, 0.78)) *
             (1 - fin) *
-            (LITE ? 0.35 : 1);
+            (LITE ? 0 : 1);
           if (x > 1e-3 || d.xrayOn) {
             d.xrayOn = x > 1e-3;
             d.xrayMats.forEach(m => {
@@ -20442,8 +20463,8 @@ function mountStory(HS) {
           const hero = sr(p, 0.4, 0.5) * (1 - sr(p, 0.82, 0.92));
           for (const fn of d.anims) fn(p, time, dt, { a, x, hero, fin });
         });
-        const rk = T < RB0 ? -1 : T >= FIN ? RBN : Math.floor(T - RB0),
-          rp = T < RB0 ? 0 : T >= FIN ? T - FIN : T - RB0 - rk;
+        const rk = T < RB0 ? -1 : T >= FIN || LITE ? RBN : Math.floor(T - RB0),
+          rp = T < RB0 ? 0 : T >= FIN ? T - FIN : LITE ? 0 : T - RB0 - rk;
         const robotOn = T > RB0 - 0.3;
         robot.root.visible = robot.stage.visible = robotOn;
         hubShadow.visible = !robotOn;
@@ -20454,7 +20475,7 @@ function mountStory(HS) {
           .setScalar(0)
           .add(HDR(16486972, 2.5 + 1.5 * Math.sin(time * 3)));
         let reachR = null;
-        if (T < 0.8 || T >= FIN) focus.set(0, 0.6, 0);
+        if (T < 0.8 || T >= FIN || (LITE && T >= RB0)) focus.set(0, 0.6, 0);
         else if (T < 1)
           focus
             .set(0, 0.6, 0)
@@ -20521,9 +20542,9 @@ function mountStory(HS) {
         beamMat.uniforms.uOpacity.value = 0.6 * (1 - sr(T, 0.7, 0.95));
         poolMat.opacity = fin;
         pools.visible = fin > 0.01;
-        spotBeamMat.uniforms.uO.value = 0.42 * fin;
+        spotBeamMat.uniforms.uO.value = (LITE ? 0.55 : 0.42) * fin;
         spotBeams.visible = fin > 0.01;
-        liftDesigns(LITE ? Math.max(0.6, fin) : fin);
+        liftDesigns(LITE ? Math.max(1.15, 1.7 * fin) : fin);
         pedRingMat.uniforms.uCur.value =
           T < 0.9 || T >= RB0 || fin > 0.5 ? -5 : cur;
         const sc = robot.scan;
