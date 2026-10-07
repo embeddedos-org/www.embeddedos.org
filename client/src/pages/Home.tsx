@@ -2357,209 +2357,11 @@ export default function Home() {
             {" "}
             <button
               type="button"
-              data-i="1"
-              aria-label="eHealth365"
-              style={{ "--c": "#EF4444" } as CSSProperties}
-            >
-              <span>eHealth365</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="2"
-              aria-label="eosHealth"
-              style={{ "--c": "#FB7185" } as CSSProperties}
-            >
-              <span>eosHealth</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="3"
-              aria-label="eMedical"
-              style={{ "--c": "#F472B6" } as CSSProperties}
-            >
-              <span>eMedical</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="4"
-              aria-label="eRadar360"
-              style={{ "--c": "#F97316" } as CSSProperties}
-            >
-              <span>eRadar360</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="5"
-              aria-label="eTransport"
+              data-i="25"
+              aria-label="Every industry"
               style={{ "--c": "#38BDF8" } as CSSProperties}
             >
-              <span>eTransport</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="6"
-              aria-label="ePAM"
-              style={{ "--c": "#2DD4BF" } as CSSProperties}
-            >
-              <span>ePAM</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="7"
-              aria-label="eAerospace"
-              style={{ "--c": "#22D3EE" } as CSSProperties}
-            >
-              <span>eAerospace</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="8"
-              aria-label="eRobotics"
-              style={{ "--c": "#A78BFA" } as CSSProperties}
-            >
-              <span>eRobotics</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="9"
-              aria-label="eAgriTech"
-              style={{ "--c": "#10B981" } as CSSProperties}
-            >
-              <span>eAgriTech</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="10"
-              aria-label="eFrontier"
-              style={{ "--c": "#C084FC" } as CSSProperties}
-            >
-              <span>eFrontier</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="11"
-              aria-label="eIndustrial"
-              style={{ "--c": "#34D399" } as CSSProperties}
-            >
-              <span>eIndustrial</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="12"
-              aria-label="eEnergy"
-              style={{ "--c": "#F59E0B" } as CSSProperties}
-            >
-              <span>eEnergy</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="13"
-              aria-label="eSmartCity"
-              style={{ "--c": "#60A5FA" } as CSSProperties}
-            >
-              <span>eSmartCity</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="14"
-              aria-label="eMining"
-              style={{ "--c": "#A8A29E" } as CSSProperties}
-            >
-              <span>eMining</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="15"
-              aria-label="eEdgeAI"
-              style={{ "--c": "#818CF8" } as CSSProperties}
-            >
-              <span>eEdgeAI</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="16"
-              aria-label="eElectronics"
-              style={{ "--c": "#FBBF24" } as CSSProperties}
-            >
-              <span>eElectronics</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="17"
-              aria-label="eConsumer"
-              style={{ "--c": "#8B5CF6" } as CSSProperties}
-            >
-              <span>eConsumer</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="18"
-              aria-label="eCybersecurity"
-              style={{ "--c": "#06B6D4" } as CSSProperties}
-            >
-              <span>eCybersecurity</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="19"
-              aria-label="eDefense"
-              style={{ "--c": "#9CA3AF" } as CSSProperties}
-            >
-              <span>eDefense</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="20"
-              aria-label="Robot · wake"
-              style={{ "--c": "#34D399" } as CSSProperties}
-            >
-              <span>Robot · wake</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="21"
-              aria-label="Robot · see"
-              style={{ "--c": "#34D399" } as CSSProperties}
-            >
-              <span>Robot · see</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="22"
-              aria-label="Robot · walk"
-              style={{ "--c": "#34D399" } as CSSProperties}
-            >
-              <span>Robot · walk</span>
-              <i />
-            </button>{" "}
-            <button
-              type="button"
-              data-i="23"
-              aria-label="Robot · hands"
-              style={{ "--c": "#34D399" } as CSSProperties}
-            >
-              <span>Robot · hands</span>
+              <span>Every industry</span>
               <i />
             </button>{" "}
             <button
@@ -2573,11 +2375,209 @@ export default function Home() {
             </button>{" "}
             <button
               type="button"
-              data-i="25"
-              aria-label="Every industry"
+              data-i="23"
+              aria-label="Robot · hands"
+              style={{ "--c": "#34D399" } as CSSProperties}
+            >
+              <span>Robot · hands</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="22"
+              aria-label="Robot · walk"
+              style={{ "--c": "#34D399" } as CSSProperties}
+            >
+              <span>Robot · walk</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="21"
+              aria-label="Robot · see"
+              style={{ "--c": "#34D399" } as CSSProperties}
+            >
+              <span>Robot · see</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="20"
+              aria-label="Robot · wake"
+              style={{ "--c": "#34D399" } as CSSProperties}
+            >
+              <span>Robot · wake</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="19"
+              aria-label="eDefense"
+              style={{ "--c": "#9CA3AF" } as CSSProperties}
+            >
+              <span>eDefense</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="18"
+              aria-label="eCybersecurity"
+              style={{ "--c": "#06B6D4" } as CSSProperties}
+            >
+              <span>eCybersecurity</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="17"
+              aria-label="eConsumer"
+              style={{ "--c": "#8B5CF6" } as CSSProperties}
+            >
+              <span>eConsumer</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="16"
+              aria-label="eElectronics"
+              style={{ "--c": "#FBBF24" } as CSSProperties}
+            >
+              <span>eElectronics</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="15"
+              aria-label="eEdgeAI"
+              style={{ "--c": "#818CF8" } as CSSProperties}
+            >
+              <span>eEdgeAI</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="14"
+              aria-label="eMining"
+              style={{ "--c": "#A8A29E" } as CSSProperties}
+            >
+              <span>eMining</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="13"
+              aria-label="eSmartCity"
+              style={{ "--c": "#60A5FA" } as CSSProperties}
+            >
+              <span>eSmartCity</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="12"
+              aria-label="eEnergy"
+              style={{ "--c": "#F59E0B" } as CSSProperties}
+            >
+              <span>eEnergy</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="11"
+              aria-label="eIndustrial"
+              style={{ "--c": "#34D399" } as CSSProperties}
+            >
+              <span>eIndustrial</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="10"
+              aria-label="eFrontier"
+              style={{ "--c": "#C084FC" } as CSSProperties}
+            >
+              <span>eFrontier</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="9"
+              aria-label="eAgriTech"
+              style={{ "--c": "#10B981" } as CSSProperties}
+            >
+              <span>eAgriTech</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="8"
+              aria-label="eRobotics"
+              style={{ "--c": "#A78BFA" } as CSSProperties}
+            >
+              <span>eRobotics</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="7"
+              aria-label="eAerospace"
+              style={{ "--c": "#22D3EE" } as CSSProperties}
+            >
+              <span>eAerospace</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="6"
+              aria-label="ePAM"
+              style={{ "--c": "#2DD4BF" } as CSSProperties}
+            >
+              <span>ePAM</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="5"
+              aria-label="eTransport"
               style={{ "--c": "#38BDF8" } as CSSProperties}
             >
-              <span>Every industry</span>
+              <span>eTransport</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="4"
+              aria-label="eRadar360"
+              style={{ "--c": "#F97316" } as CSSProperties}
+            >
+              <span>eRadar360</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="3"
+              aria-label="eMedical"
+              style={{ "--c": "#F472B6" } as CSSProperties}
+            >
+              <span>eMedical</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="2"
+              aria-label="eosHealth"
+              style={{ "--c": "#FB7185" } as CSSProperties}
+            >
+              <span>eosHealth</span>
+              <i />
+            </button>{" "}
+            <button
+              type="button"
+              data-i="1"
+              aria-label="eHealth365"
+              style={{ "--c": "#EF4444" } as CSSProperties}
+            >
+              <span>eHealth365</span>
               <i />
             </button>{" "}
           </nav>{" "}
