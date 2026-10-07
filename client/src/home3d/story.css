@@ -606,7 +606,8 @@
   }
 }
 .hs.gl-ready .loading,
-.hs.no-gl .loading {
+.hs.no-gl .loading,
+.hs.gl-wait .loading {
   opacity: 0;
   pointer-events: none;
 }
