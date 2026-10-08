@@ -3927,9 +3927,9 @@ export default function Home() {
           data-reveal=""
         >
           {" "}
-          <div className="hp-wrap">
+          <div className="hp-wrap hp-ix-wrap">
             {" "}
-            <div className="hp-head center">
+            <div className="hp-head hp-ix-head">
               {" "}
               <span className="hp-badge" data-fade="">
                 <svg
@@ -3955,406 +3955,143 @@ export default function Home() {
                 Every component you need to build, deploy and manage embedded
                 systems, each described as it stands in its repository today.
               </p>{" "}
-            </div>{" "}
-            <div className="hp-grid g4" data-stagger="" data-grid="">
-              {" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#F97316" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <rect width="16" height="16" x="4" y="4" rx="2" />
-                      <rect width="6" height="6" x="9" y="9" rx="1" />
-                      <path d="M15 2v2" />
-                      <path d="M15 20v2" />
-                      <path d="M2 15h2" />
-                      <path d="M2 9h2" />
-                      <path d="M20 15h2" />
-                      <path d="M20 9h2" />
-                      <path d="M9 2v2" />
-                      <path d="M9 20v2" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"EoS kernel "}
-                    <span className="hp-pill s-work">Working</span>
-                  </h3>
-                  <p>
-                    Real-time kernel with priority scheduling, sync and queues;
-                    tested on hosts.
-                  </p>
-                </div>
+              <div className="hp-ix-links" data-fade="">
+                {" "}
+                <Link className="hp-btn ghost" href="/projects">
+                  {"All Projects "}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </Link>{" "}
+                <Link className="hp-btn ghost" href="/eapps">
+                  {"All Apps "}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </Link>{" "}
               </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#22D3EE" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eBoot "}
-                    <span className="hp-pill s-work">Working</span>
-                  </h3>
+            </div>{" "}
+            <div className="hp-ix">
+              {" "}
+              <h3 className="hp-ix-k" data-fade="">
+                <span>On the device</span>
+                <span>9 repositories</span>
+              </h3>{" "}
+              <ul className="hp-ix-list" data-stagger="">
+                {" "}
+                <li style={{ "--c": "#22D3EE" } as CSSProperties}>
+                  <b>eBoot</b>
+                  <span className="hp-st s-work">Working</span>
                   <p>
                     Signed two-stage boot with A/B slots and recovery; not yet
                     booted on hardware.
                   </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#A78BFA" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eIPC "}
-                    <span className="hp-pill s-code">Prototype</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#F97316" } as CSSProperties}>
+                  <b>EoS kernel</b>
+                  <span className="hp-st s-work">Working</span>
+                  <p>
+                    Real-time kernel with priority scheduling, sync and queues;
+                    tested on hosts.
+                  </p>
+                </li>{" "}
+                <li style={{ "--c": "#A78BFA" } as CSSProperties}>
+                  <b>eIPC</b>
+                  <span className="hp-st s-code">Prototype</span>
                   <p>
                     Authenticated messages between processes and devices; Go
                     core and a C SDK.
                   </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#34D399" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
-                      <path d="M8.5 2h7" />
-                      <path d="M7 16h10" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eAI "}
-                    <span className="hp-pill s-docs">Framework</span>
-                  </h3>
-                  <p>
-                    The on-device AI layer; its model runtimes are placeholders
-                    today.
-                  </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#60A5FA" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
-                      <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
-                      <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
-                      <path d="M17.599 6.5a3 3 0 0 0 .399-1.375" />
-                      <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
-                      <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
-                      <path d="M19.938 10.5a4 4 0 0 1 .585.396" />
-                      <path d="M6 18a4 4 0 0 1-1.967-.516" />
-                      <path d="M19.967 17.484A4 4 0 0 1 18 18" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eosllm "}
-                    <span className="hp-pill s-work">Working</span>
-                  </h3>
-                  <p>
-                    Runs language models on the device with three real back
-                    ends; 160 tests.
-                  </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#22D3EE" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <ellipse cx="12" cy="5" rx="9" ry="3" />
-                      <path d="M3 5V19A9 3 0 0 0 21 19V5" />
-                      <path d="M3 12A9 3 0 0 0 21 12" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eDB "}
-                    <span className="hp-pill s-code">Prototype</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#22D3EE" } as CSSProperties}>
+                  <b>eDB</b>
+                  <span className="hp-st s-code">Prototype</span>
                   <p>
                     Multi-model data store: five models, 38 endpoints, 42
                     passing tests.
                   </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#A78BFA" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                      <path d="M2 12h20" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eBrowser "}
-                    <span className="hp-pill s-code">Engine</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#60A5FA" } as CSSProperties}>
+                  <b>eosllm</b>
+                  <span className="hp-st s-work">Working</span>
+                  <p>
+                    Runs language models on the device with three real back
+                    ends; 160 tests.
+                  </p>
+                </li>{" "}
+                <li style={{ "--c": "#34D399" } as CSSProperties}>
+                  <b>eAI</b>
+                  <span className="hp-st s-docs">Framework</span>
+                  <p>
+                    The on-device AI layer; its model runtimes are placeholders
+                    today.
+                  </p>
+                </li>{" "}
+                <li style={{ "--c": "#A78BFA" } as CSSProperties}>
+                  <b>eBrowser</b>
+                  <span className="hp-st s-code">Engine</span>
                   <p>
                     Browser engine for embedded displays; JavaScript and the
                     sandbox are planned.
                   </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#34D399" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                      <path d="M10 9H8" />
-                      <path d="M16 13H8" />
-                      <path d="M16 17H8" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eOffice "}
-                    <span className="hp-pill s-code">Prototype</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#34D399" } as CSSProperties}>
+                  <b>eOffice</b>
+                  <span className="hp-st s-code">Prototype</span>
                   <p>11 office apps with 741 tests.</p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#F97316" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
-                      <path d="M12 22V12" />
-                      <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7" />
-                      <path d="m7.5 4.27 9 5.15" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"eApps "}
-                    <span className="hp-pill s-code">Catalogue</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#F97316" } as CSSProperties}>
+                  <b>eApps</b>
+                  <span className="hp-st s-code">Catalogue</span>
                   <p>124 catalogue entries; many apps are templates.</p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#FBBF24" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"ebuild "}
-                    <span className="hp-pill s-work">Working</span>
-                  </h3>
+                </li>{" "}
+              </ul>{" "}
+              <h3 className="hp-ix-k" data-fade="">
+                <span>To build and test it</span>
+                <span>3 repositories</span>
+              </h3>{" "}
+              <ul className="hp-ix-list" data-stagger="">
+                {" "}
+                <li style={{ "--c": "#FBBF24" } as CSSProperties}>
+                  <b>ebuild</b>
+                  <span className="hp-st s-work">Working</span>
                   <p>
                     One CLI to create, build, flash and simulate; knows 171
                     MCUs, 826 tests.
                   </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#F472B6" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"EoStudio "}
-                    <span className="hp-pill s-docs">7 of 13</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#F472B6" } as CSSProperties}>
+                  <b>EoStudio</b>
+                  <span className="hp-st s-docs">7 of 13</span>
                   <p>
                     Design studio and IDE: 7 of its 13 editors are real; 40 code
                     generators.
                   </p>
-                </div>
-              </div>{" "}
-              <div className="hp-cell">
-                <div
-                  className="hp-card"
-                  style={{ "--c": "#60A5FA" } as CSSProperties}
-                >
-                  <span className="hp-ic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
-                      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
-                      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
-                    </svg>
-                  </span>
-                  <h3>
-                    {"EoSim "}
-                    <span className="hp-pill s-work">Working</span>
-                  </h3>
+                </li>{" "}
+                <li style={{ "--c": "#60A5FA" } as CSSProperties}>
+                  <b>EoSim</b>
+                  <span className="hp-st s-work">Working</span>
                   <p>Simulator with 153 platforms and 2,117 passing tests.</p>
-                </div>
-              </div>{" "}
-            </div>{" "}
-            <div
-              className="hp-actions center"
-              style={{ marginTop: "32px" }}
-              data-fade=""
-            >
-              {" "}
-              <Link className="hp-btn ghost" href="/projects">
-                {"All Projects "}
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </Link>{" "}
-              <Link className="hp-btn ghost" href="/eapps">
-                {"All Apps "}
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </Link>{" "}
+                </li>{" "}
+              </ul>{" "}
             </div>{" "}
           </div>{" "}
         </section>{" "}
