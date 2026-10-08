@@ -431,6 +431,7 @@ const ArticlePage = lazyPage<{ slug?: string }>(
     "/article-eosim-hil-bridge",
     "/article-foundation-membership-2026",
     "/article-newsletter-issue-01",
+    "/article-this-week-in-embeddedos-2026-10-07",
   ]
 );
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
@@ -1065,6 +1066,11 @@ function Router() {
       <Route path="/article-newsletter-issue-01">
         <Suspense fallback={<PageLoader />}>
           <ArticlePage slug="newsletter-issue-01" />
+        </Suspense>
+      </Route>
+      <Route path="/article-this-week-in-embeddedos-2026-10-07">
+        <Suspense fallback={<PageLoader />}>
+          <ArticlePage slug="this-week-in-embeddedos-2026-10-07" />
         </Suspense>
       </Route>
       <Route path="/downloads">

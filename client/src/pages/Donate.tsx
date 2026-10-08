@@ -30,6 +30,9 @@ import {
   type StripePaymentElement,
 } from "@/lib/payments";
 import { REPO_COUNT } from "@/data/stack";
+
+type PrerenderWindow = Window & { __EOS_PRERENDER__?: boolean };
+
 const STATS = [
   {
     icon: Cpu,
@@ -130,6 +133,7 @@ export default function Donate() {
   const cardMountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if ((window as PrerenderWindow).__EOS_PRERENDER__) return;
     // If onLoad has not fired by now the embed is blocked or unreachable.
     timerRef.current = setTimeout(() => setEmbedFailed(true), 6000);
     return () => {

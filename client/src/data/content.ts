@@ -424,6 +424,17 @@ export const CONTENT: readonly ContentItem[] = [
     href: "/article-eos-platform-launch",
     tags: ["eos-platform", "Release", "1.0"],
   },
+  {
+    slug: "this-week-in-embeddedos-2026-10-07",
+    kind: "newsletter",
+    date: "2026-10-07",
+    badge: "Digest",
+    title: "This week in EmbeddedOS — 2026-10-07",
+    summary:
+      "Zephyr Developer Summit Day 1 from Prague (40+ sessions, the first Community Awards, MCP now an LF project), the Synaptics/onsemi bidding war over edge-AI silicon, and the Apple Oct-13 home-hub event to watch.",
+    href: "/article-this-week-in-embeddedos-2026-10-07",
+    tags: ["Digest", "Newsletter", "Zephyr", "Edge AI"],
+  },
 ];
 
 /** Newest first, ties broken by title so the order is total and stable. */
