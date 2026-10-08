@@ -60,6 +60,15 @@ describe("getting-started guide truth", () => {
     }
   });
 
+  it("shows the platform count ebuild prints today, and where gate verdicts live", () => {
+    // `ebuild platforms list` printed 153 on 2026-10-08 (EoSim b34572c added
+    // four board defs); 149 was stale.
+    expect(page).toContain("153 EoSim platforms");
+    expect(page).not.toContain("149 EoSim platforms");
+    // validate prints a JSON summary; the V0..V4 lines come from the receipt.
+    expect(page).toContain("eRadar360_CAD_Design__hardware/receipt.json");
+  });
+
   it("does not call the demo an emulator or reference headers that do not exist", () => {
     expect(demo).not.toContain("all simulated in-browser");
     expect(demo).not.toContain("Run real EoS firmware code in your browser");
