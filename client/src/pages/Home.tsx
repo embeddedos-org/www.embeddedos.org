@@ -4315,7 +4315,7 @@ export default function Home() {
                     {"EoSim "}
                     <span className="hp-pill s-work">Working</span>
                   </h3>
-                  <p>Simulator with 149 platforms and 2,099 passing tests.</p>
+                  <p>Simulator with 153 platforms and 2,117 passing tests.</p>
                 </div>
               </div>{" "}
             </div>{" "}

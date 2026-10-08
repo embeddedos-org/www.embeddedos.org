@@ -254,7 +254,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       {
         title: "Which Boards Can Be Simulated",
         text: "ebuild sim runs Arm Cortex-M targets: stm32f4, stm32h7, stm32l4, nrf52, nrf52840, rp2040 and raspi-pico, all on the same QEMU Cortex-M3 machine. Other boards, such as esp32, are refused with a message instead of being faked.",
-        code: `ebuild platforms list\n# 149 EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
+        code: `ebuild platforms list\n# 153 EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
       },
       {
         title: "Debug with GDB",
@@ -377,8 +377,8 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       },
       {
         title: "Validate the Product's Design Data",
-        text: "V0 schema, V1 sanity, V2 invariants, V3 golden and V4 corner checks. Anything that could not be executed is reported as BLOCKED, never as a pass. eRadar360 currently fails V0 and is blocked at V1–V4:",
-        code: `python tools/validate_products.py validate --product eRadar360_CAD_Design:hardware --output out/\n\n# V0 FAIL     v0.canonical-bom, v0.datasheet-contract\n# V1 BLOCKED  v1.simulation-execution: SIMULATION_MODEL_MISSING\n# V2 BLOCKED  v2.cad-invariants: REQUIRED_INPUT_MISSING\n# V3 BLOCKED  v3.golden-cases: GOLDEN_EVIDENCE_MISSING\n# V4 BLOCKED  v4.corners-cases: CORNERS_EVIDENCE_MISSING`,
+        text: "V0 schema, V1 sanity, V2 invariants, V3 golden and V4 corner checks. Anything that could not be executed is reported as BLOCKED, never as a pass. eRadar360 currently fails V0 (canonical BOM and datasheet contract) and is blocked at V1–V4 (no simulation model, CAD inputs, golden or corner evidence yet):",
+        code: `python tools/validate_products.py validate --product eRadar360_CAD_Design:hardware --output out/\n# prints a JSON summary; its verdict_counts are FAIL 1, everything else 0\n# bundle: out/bundle.json\n\n# the per-gate verdicts are in the product's receipt:\npython -c "import json; [print(g['gate'], g['verdict']) for g in json.load(open('out/products/eRadar360_CAD_Design__hardware/receipt.json'))['gates']]"\n# V0 FAIL\n# V1 BLOCKED\n# V2 BLOCKED\n# V3 BLOCKED\n# V4 BLOCKED`,
       },
       {
         title: "Simulate Firmware for That MCU Family",
