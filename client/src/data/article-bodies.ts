@@ -233,6 +233,31 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
     ],
   },
+  "this-week-in-embeddedos-2026-10-08": {
+    lede: "Zephyr Developer Summit day 2 digs into functional safety and CRA readiness, the org lands a ~45-issue audit-fix merge wave, four new boards join the platform roster, ESP-IDF v6.1 brings ESP32-P4 Wi-Fi back — and two MCP CVEs turn protocol warnings into patch notes.",
+    sections: [
+      {
+        heading: "Zephyr Developer Summit, Day 2 (Prague)",
+        text: "Day 2 centered on functional safety and CRA readiness — the two tracks the eos-aero safety work exists for. The assessor's view of evidence formats is the takeaway: a hazard log should show the reasoning that closed each hazard, not just the list of what could go wrong. CRA's 24h/72h/14d reporting duties (live since September 11) framed the embedded sessions; aerospace products are in scope.",
+      },
+      {
+        heading: "The merge wave",
+        text: "Roughly 45 audit findings landed across the org in two waves — Kartikey's fix PRs merged on eBoot, ebuild, eAI, eNI, EoSim, eDB, eApps, eBrowser, eos-health, www, and .github, closing the issues with them. The loop reviewed the open remainder (ebuild#179, eosllm#18) and is building on post-merge master everywhere.",
+      },
+      {
+        heading: "Four new boards",
+        text: "DEBIX M8391-01 (MediaTek Genio 720, 9-TOPS NPU850, industrial temperature range) for mid-tier NPU vision; Arduino VENTUNO Q (Qualcomm Dragonwing IQ-8275 plus STM32H5F5 — the dual-brain pattern in hardware, with ROS 2); NXP FRDM-IMXRT1186 (dual GbE TSN plus EtherCAT-capable Ethernet, the deterministic-comms reference); and the Upbeat Bluemag Pi (SiFive E3+E2 RISC-V flight controller with onboard AI, demoing at CEATEC next week). All four have EoSim platform definitions as of today.",
+      },
+      {
+        heading: "ESP-IDF v6.1: P4 Wi-Fi lives, ECDSA-SBv2 dies",
+        text: "Espressif's v6.1 release unblocks ESP32-P4 Wi-Fi (the blocker since July is closed) and fixes the LP-SPI MISO bug — but it disables ECDSA Secure Boot V2 on the H2, C5, and P4 for a security vulnerability in the ECDSA secure-boot flow, details pending in the chip errata. eBoot's threat model and eFirmware's bring-up baseline both carry the watch item: do not provision new devices against that flow.",
+      },
+      {
+        heading: "MCP security: from warnings to CVEs",
+        text: "Two disclosures this week convert the MCP protocol warnings into patch-level evidence: CVE-2026-105697 (CVSS 9.9) — Langflow's MCP server config executed user-typed commands via bash with no allowlist — and CVE-2026-104120 (SSRF in mcp-server-fetch). The org's answer is the hostile-protocol posture now documented across eSec, eIPC, eosllm, and eVera: tool-registration command allowlists, pinned versions, credential isolation, and no intra-network trust.",
+      },
+    ],
+  },
 };
 
 /** The body for a slug, or undefined when the item is a link-out. */

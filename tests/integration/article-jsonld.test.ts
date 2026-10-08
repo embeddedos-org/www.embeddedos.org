@@ -51,7 +51,7 @@ describe("built article pages", () => {
     // Eight legacy articles plus later additions (the newsletter archive).
     // Every built article page is asserted below; the count pins the set so
     // a silently dropped page cannot hide behind a passing loop.
-    expect(files.length, "expected the prerendered article pages").toBe(10);
+    expect(files.length, "expected the prerendered article pages").toBe(11);
   });
 
   it.each(articleHtmlFiles())(
