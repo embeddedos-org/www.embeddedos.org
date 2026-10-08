@@ -19533,7 +19533,7 @@ function mountStory(HS) {
         _lift.copy(FIN_LIFT).multiplyScalar(fin);
         for (const L of liftMats) L.m.emissive.copy(L.e).add(_lift);
         renderer.toneMappingExposure = LITE
-          ? 1.42 + 0.13 * Math.min(1, fin)
+          ? 1.15 + 0.13 * Math.min(1, fin)
           : 1 + 0.45 * fin;
       }
       const _inv = new THREE.Matrix4(),
@@ -20350,7 +20350,7 @@ function mountStory(HS) {
           0.28,
           fin
         );
-        keySpot.intensity = lerp(2.35, 3.1, fin);
+        keySpot.intensity = lerp(2.35, LITE ? 6 : 3.1, fin);
         rimSpot.position
           .copy(f)
           .addScaledVector(rigD, -7.5)
@@ -20369,12 +20369,12 @@ function mountStory(HS) {
         fillSpot.intensity = 0.5 * (1 - fin);
         rim.intensity = lerp(LOW ? 1.1 : 0.3, 1.6, fin);
         fill.intensity = lerp(
-          LOW ? 0.3 : LITE ? 2 : 0.04,
+          LOW ? 0.3 : LITE ? 2.4 : 0.04,
           LITE ? 2.6 : 2.1,
           fin
         );
         scene.environmentIntensity = LITE
-          ? lerp(1.9, 3.2, fin)
+          ? lerp(2.6, 3.2, fin)
           : lerp(0.95, 2.6, fin);
       }
       const _sa = new THREE.Vector3();
@@ -20573,7 +20573,7 @@ function mountStory(HS) {
         pools.visible = fin > 0.01;
         spotBeamMat.uniforms.uO.value = (LITE ? 0.55 : 0.42) * fin;
         spotBeams.visible = fin > 0.01;
-        liftDesigns(LITE ? Math.max(1.15, 1.7 * fin) : fin);
+        liftDesigns(LITE ? Math.max(0.1, fin) : fin);
         pedRingMat.uniforms.uCur.value =
           T < 0.9 || T >= RB0 || fin > 0.5 ? -5 : cur;
         const sc = robot.scan;
