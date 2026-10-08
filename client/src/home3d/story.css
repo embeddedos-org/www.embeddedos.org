@@ -3281,13 +3281,6 @@
     font-size: 0.75rem;
   }
 }
-.hs .rail button[data-i="20"],
-.hs .rail button[data-i="21"],
-.hs .rail button[data-i="22"],
-.hs .rail button[data-i="23"],
-.hs .rail button[data-i="24"] {
-  display: none;
-}
 .hs .card.compact .lead,
 .hs .card.compact .pills,
 .hs .card.compact .hint {

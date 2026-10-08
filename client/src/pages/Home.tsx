@@ -488,6 +488,365 @@ export default function Home() {
             </div>{" "}
             <div
               className="kw"
+              data-t0="19.950"
+              data-t1="21.020"
+              data-x0="34"
+              data-x1="-40"
+              data-a="0.07"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "9%",
+                  "--ym": "11%",
+                } as CSSProperties
+              }
+            >
+              FULL BODY
+            </div>{" "}
+            <div
+              className="ribbon"
+              aria-hidden="true"
+              data-t0="20.040"
+              data-t1="20.970"
+              data-dir="-1"
+              data-speed="40"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "calc(100% - 74px)",
+                  "--ymb": "calc(var(--bar-h) + 34px)",
+                } as CSSProperties
+              }
+            >
+              <div className="rb-track">
+                <span className="rb s-head">Full-body robot</span>
+                <span className="rb s-docs">eServo-200 ×26</span>
+                <span className="rb s-docs">eActuator-50 ×4</span>
+                <span className="rb s-docs">eGripper-3F ×2</span>
+                <span className="rb s-docs">eVision-4K</span>
+                <span className="rb s-docs">eLiDAR-360</span>
+                <span className="rb s-code">robot profile</span>
+                <span className="rb s-part">eBoot</span>
+                <span className="rb s-code">init service</span>
+                <span className="rb s-head">Full-body robot</span>
+                <span className="rb s-docs">eServo-200 ×26</span>
+                <span className="rb s-docs">eActuator-50 ×4</span>
+                <span className="rb s-docs">eGripper-3F ×2</span>
+                <span className="rb s-docs">eVision-4K</span>
+                <span className="rb s-docs">eLiDAR-360</span>
+                <span className="rb s-code">robot profile</span>
+                <span className="rb s-part">eBoot</span>
+                <span className="rb s-code">init service</span>
+                <span className="rb s-head">Full-body robot</span>
+                <span className="rb s-docs">eServo-200 ×26</span>
+                <span className="rb s-docs">eActuator-50 ×4</span>
+                <span className="rb s-docs">eGripper-3F ×2</span>
+                <span className="rb s-docs">eVision-4K</span>
+                <span className="rb s-docs">eLiDAR-360</span>
+                <span className="rb s-code">robot profile</span>
+                <span className="rb s-part">eBoot</span>
+                <span className="rb s-code">init service</span>
+                <span className="rb s-head">Full-body robot</span>
+                <span className="rb s-docs">eServo-200 ×26</span>
+                <span className="rb s-docs">eActuator-50 ×4</span>
+                <span className="rb s-docs">eGripper-3F ×2</span>
+                <span className="rb s-docs">eVision-4K</span>
+                <span className="rb s-docs">eLiDAR-360</span>
+                <span className="rb s-code">robot profile</span>
+                <span className="rb s-part">eBoot</span>
+                <span className="rb s-code">init service</span>
+              </div>
+            </div>{" "}
+            <div
+              className="kw"
+              data-t0="20.950"
+              data-t1="22.020"
+              data-x0="34"
+              data-x1="-40"
+              data-a="0.07"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "9%",
+                  "--ym": "11%",
+                } as CSSProperties
+              }
+            >
+              SEE
+            </div>{" "}
+            <div
+              className="ribbon"
+              aria-hidden="true"
+              data-t0="21.040"
+              data-t1="21.970"
+              data-dir="1"
+              data-speed="40"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "calc(100% - 74px)",
+                  "--ymb": "calc(var(--bar-h) + 34px)",
+                } as CSSProperties
+              }
+            >
+              <div className="rb-track">
+                <span className="rb s-head">Perception</span>
+                <span className="rb s-docs">camera HAL</span>
+                <span className="rb s-docs">radar/LiDAR HAL</span>
+                <span className="rb s-docs">Ethernet HAL</span>
+                <span className="rb s-code">sensor service</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-head">Perception</span>
+                <span className="rb s-docs">camera HAL</span>
+                <span className="rb s-docs">radar/LiDAR HAL</span>
+                <span className="rb s-docs">Ethernet HAL</span>
+                <span className="rb s-code">sensor service</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-head">Perception</span>
+                <span className="rb s-docs">camera HAL</span>
+                <span className="rb s-docs">radar/LiDAR HAL</span>
+                <span className="rb s-docs">Ethernet HAL</span>
+                <span className="rb s-code">sensor service</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-head">Perception</span>
+                <span className="rb s-docs">camera HAL</span>
+                <span className="rb s-docs">radar/LiDAR HAL</span>
+                <span className="rb s-docs">Ethernet HAL</span>
+                <span className="rb s-code">sensor service</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-head">Perception</span>
+                <span className="rb s-docs">camera HAL</span>
+                <span className="rb s-docs">radar/LiDAR HAL</span>
+                <span className="rb s-docs">Ethernet HAL</span>
+                <span className="rb s-code">sensor service</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-head">Perception</span>
+                <span className="rb s-docs">camera HAL</span>
+                <span className="rb s-docs">radar/LiDAR HAL</span>
+                <span className="rb s-docs">Ethernet HAL</span>
+                <span className="rb s-code">sensor service</span>
+                <span className="rb s-part">eAI</span>
+              </div>
+            </div>{" "}
+            <div
+              className="kw"
+              data-t0="21.950"
+              data-t1="23.020"
+              data-x0="34"
+              data-x1="-40"
+              data-a="0.07"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "9%",
+                  "--ym": "11%",
+                } as CSSProperties
+              }
+            >
+              WALK
+            </div>{" "}
+            <div
+              className="ribbon"
+              aria-hidden="true"
+              data-t0="22.040"
+              data-t1="22.970"
+              data-dir="-1"
+              data-speed="40"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "calc(100% - 74px)",
+                  "--ymb": "calc(var(--bar-h) + 34px)",
+                } as CSSProperties
+              }
+            >
+              <div className="rb-track">
+                <span className="rb s-head">Real time</span>
+                <span className="rb s-code">priority scheduler</span>
+                <span className="rb s-code">PI mutexes</span>
+                <span className="rb s-code">message queues</span>
+                <span className="rb s-code">software timers</span>
+                <span className="rb s-code">motor service</span>
+                <span className="rb s-docs">IMU HAL</span>
+                <span className="rb s-none">EtherCAT</span>
+                <span className="rb s-head">Real time</span>
+                <span className="rb s-code">priority scheduler</span>
+                <span className="rb s-code">PI mutexes</span>
+                <span className="rb s-code">message queues</span>
+                <span className="rb s-code">software timers</span>
+                <span className="rb s-code">motor service</span>
+                <span className="rb s-docs">IMU HAL</span>
+                <span className="rb s-none">EtherCAT</span>
+                <span className="rb s-head">Real time</span>
+                <span className="rb s-code">priority scheduler</span>
+                <span className="rb s-code">PI mutexes</span>
+                <span className="rb s-code">message queues</span>
+                <span className="rb s-code">software timers</span>
+                <span className="rb s-code">motor service</span>
+                <span className="rb s-docs">IMU HAL</span>
+                <span className="rb s-none">EtherCAT</span>
+                <span className="rb s-head">Real time</span>
+                <span className="rb s-code">priority scheduler</span>
+                <span className="rb s-code">PI mutexes</span>
+                <span className="rb s-code">message queues</span>
+                <span className="rb s-code">software timers</span>
+                <span className="rb s-code">motor service</span>
+                <span className="rb s-docs">IMU HAL</span>
+                <span className="rb s-none">EtherCAT</span>
+                <span className="rb s-head">Real time</span>
+                <span className="rb s-code">priority scheduler</span>
+                <span className="rb s-code">PI mutexes</span>
+                <span className="rb s-code">message queues</span>
+                <span className="rb s-code">software timers</span>
+                <span className="rb s-code">motor service</span>
+                <span className="rb s-docs">IMU HAL</span>
+                <span className="rb s-none">EtherCAT</span>
+              </div>
+            </div>{" "}
+            <div
+              className="kw"
+              data-t0="22.950"
+              data-t1="24.020"
+              data-x0="34"
+              data-x1="-40"
+              data-a="0.07"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "9%",
+                  "--ym": "11%",
+                } as CSSProperties
+              }
+            >
+              GRASP
+            </div>{" "}
+            <div
+              className="ribbon"
+              aria-hidden="true"
+              data-t0="23.040"
+              data-t1="23.970"
+              data-dir="1"
+              data-speed="40"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "calc(100% - 74px)",
+                  "--ymb": "calc(var(--bar-h) + 34px)",
+                } as CSSProperties
+              }
+            >
+              <div className="rb-track">
+                <span className="rb s-head">Hands</span>
+                <span className="rb s-docs">eGripper-3F</span>
+                <span className="rb s-part">UART HAL</span>
+                <span className="rb s-code">motor trajectories</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-part">eIPC</span>
+                <span className="rb s-head">Hands</span>
+                <span className="rb s-docs">eGripper-3F</span>
+                <span className="rb s-part">UART HAL</span>
+                <span className="rb s-code">motor trajectories</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-part">eIPC</span>
+                <span className="rb s-head">Hands</span>
+                <span className="rb s-docs">eGripper-3F</span>
+                <span className="rb s-part">UART HAL</span>
+                <span className="rb s-code">motor trajectories</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-part">eIPC</span>
+                <span className="rb s-head">Hands</span>
+                <span className="rb s-docs">eGripper-3F</span>
+                <span className="rb s-part">UART HAL</span>
+                <span className="rb s-code">motor trajectories</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-part">eIPC</span>
+                <span className="rb s-head">Hands</span>
+                <span className="rb s-docs">eGripper-3F</span>
+                <span className="rb s-part">UART HAL</span>
+                <span className="rb s-code">motor trajectories</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-part">eIPC</span>
+                <span className="rb s-head">Hands</span>
+                <span className="rb s-docs">eGripper-3F</span>
+                <span className="rb s-part">UART HAL</span>
+                <span className="rb s-code">motor trajectories</span>
+                <span className="rb s-part">eAI</span>
+                <span className="rb s-part">eIPC</span>
+              </div>
+            </div>{" "}
+            <div
+              className="kw"
+              data-t0="23.950"
+              data-t1="25.020"
+              data-x0="34"
+              data-x1="-40"
+              data-a="0.07"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "9%",
+                  "--ym": "11%",
+                } as CSSProperties
+              }
+            >
+              STOP · UPDATE
+            </div>{" "}
+            <div
+              className="ribbon"
+              aria-hidden="true"
+              data-t0="24.040"
+              data-t1="24.970"
+              data-dir="-1"
+              data-speed="40"
+              style={
+                {
+                  "--c": "#34D399",
+                  "--y": "calc(100% - 74px)",
+                  "--ymb": "calc(var(--bar-h) + 34px)",
+                } as CSSProperties
+              }
+            >
+              <div className="rb-track">
+                <span className="rb s-head">Safety</span>
+                <span className="rb s-code">e-stop call</span>
+                <span className="rb s-code">watchdog</span>
+                <span className="rb s-part">OTA A/B</span>
+                <span className="rb s-part">eBoot rollback</span>
+                <span className="rb s-code">Ed25519 verify</span>
+                <span className="rb s-head">Safety</span>
+                <span className="rb s-code">e-stop call</span>
+                <span className="rb s-code">watchdog</span>
+                <span className="rb s-part">OTA A/B</span>
+                <span className="rb s-part">eBoot rollback</span>
+                <span className="rb s-code">Ed25519 verify</span>
+                <span className="rb s-head">Safety</span>
+                <span className="rb s-code">e-stop call</span>
+                <span className="rb s-code">watchdog</span>
+                <span className="rb s-part">OTA A/B</span>
+                <span className="rb s-part">eBoot rollback</span>
+                <span className="rb s-code">Ed25519 verify</span>
+                <span className="rb s-head">Safety</span>
+                <span className="rb s-code">e-stop call</span>
+                <span className="rb s-code">watchdog</span>
+                <span className="rb s-part">OTA A/B</span>
+                <span className="rb s-part">eBoot rollback</span>
+                <span className="rb s-code">Ed25519 verify</span>
+                <span className="rb s-head">Safety</span>
+                <span className="rb s-code">e-stop call</span>
+                <span className="rb s-code">watchdog</span>
+                <span className="rb s-part">OTA A/B</span>
+                <span className="rb s-part">eBoot rollback</span>
+                <span className="rb s-code">Ed25519 verify</span>
+                <span className="rb s-head">Safety</span>
+                <span className="rb s-code">e-stop call</span>
+                <span className="rb s-code">watchdog</span>
+                <span className="rb s-part">OTA A/B</span>
+                <span className="rb s-part">eBoot rollback</span>
+                <span className="rb s-code">Ed25519 verify</span>
+              </div>
+            </div>{" "}
+            <div
+              className="kw"
               data-t0="24.950"
               data-t1="26.000"
               data-x0="30"
@@ -1434,36 +1793,221 @@ export default function Home() {
               className="card"
               style={{ "--c": "#34D399" } as CSSProperties}
               inert
-            />{" "}
+            >
+              {" "}
+              <span className="eyebrow">20 · Full-body robot</span>{" "}
+              <h2>The board docks, and a body wakes up</h2>{" "}
+              <p className="lead">
+                At the centre of the hall stands a full-body robot built only
+                from eRobotics designs: eServo-200 drives in its 26 rotary
+                joints, eActuator-50 push rods at the ankles, eGripper-3F hands,
+                eVision-4K eyes and an eLiDAR-360 crown. The core board docks
+                behind the chest window, and EoS brings the body up.
+              </p>{" "}
+              <p className="fact">
+                <span>Concept · assembled from eRobotics datasheets</span>Every
+                part is an eRobotics design; the body itself is not a datasheet
+                product
+              </p>{" "}
+              <div className="pills">
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-concept)" } as CSSProperties}
+                >
+                  Concept · built from eRobotics parts
+                </span>
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-available)" } as CSSProperties}
+                >
+                  EoS profile: robot
+                </span>
+              </div>{" "}
+              <span className="hint">
+                <span className="h-fine">
+                  Drag to walk around the robot · hover a part for details
+                </span>
+                <span className="h-touch">
+                  Swipe sideways to walk around it · tap a part for details
+                </span>
+              </span>{" "}
+            </article>{" "}
             <article
               className="card"
               style={{ "--c": "#34D399" } as CSSProperties}
               data-side="right"
               inert
-            />{" "}
+            >
+              {" "}
+              <span className="eyebrow">21 · Full-body robot</span>{" "}
+              <h2>Two eyes for depth, one laser for the room</h2>{" "}
+              <p className="lead">
+                eVision-4K gives the head 4K stereo cameras with depth over
+                Gigabit Ethernet. The eLiDAR-360 crown sweeps the whole hall:
+                360°, 100 m of range and 0.1° resolution. EoS would turn both
+                into data the rest of the body can use.
+              </p>{" "}
+              <p className="fact">
+                <span>From robot_components/product_datasheet.md</span>
+                eVision-4K: 4K stereo + depth, GbE · eLiDAR-360: 100 m, 0.1°,
+                Ethernet
+              </p>{" "}
+              <div className="pills">
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-concept)" } as CSSProperties}
+                >
+                  Concept · built from eRobotics parts
+                </span>
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-available)" } as CSSProperties}
+                >
+                  EoS profile: robot
+                </span>
+              </div>{" "}
+              <span className="hint">
+                <span className="h-fine">
+                  Drag to walk around the robot · hover a part for details
+                </span>
+                <span className="h-touch">
+                  Swipe sideways to walk around it · tap a part for details
+                </span>
+              </span>{" "}
+            </article>{" "}
             <article
               className="card"
               style={{ "--c": "#34D399" } as CSSProperties}
               inert
-            />{" "}
+            >
+              {" "}
+              <span className="eyebrow">22 · Full-body robot</span>{" "}
+              <h2>Walking is a real-time job</h2>{" "}
+              <p className="lead">
+                Every step means reading the IMU and the 23-bit joint encoders,
+                then updating every drive on time. Each eServo-200 closes its
+                own 20 kHz current loop; EoS would run the joint loops and keep
+                the balance task ahead of everything else.
+              </p>{" "}
+              <p className="fact">
+                <span>From robot_components/product_datasheet.md</span>
+                eServo-200: 200 W at 48 V, EtherCAT CoE (CiA 402), ±0.01°
+                position accuracy
+              </p>{" "}
+              <div className="pills">
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-concept)" } as CSSProperties}
+                >
+                  Concept · built from eRobotics parts
+                </span>
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-available)" } as CSSProperties}
+                >
+                  EoS profile: robot
+                </span>
+              </div>{" "}
+              <span className="hint">
+                <span className="h-fine">
+                  Drag to walk around the robot · hover a part for details
+                </span>
+                <span className="h-touch">
+                  Swipe sideways to walk around it · tap a part for details
+                </span>
+              </span>{" "}
+            </article>{" "}
             <article
               className="card"
               style={{ "--c": "#34D399" } as CSSProperties}
               data-side="right"
               inert
-            />{" "}
+            >
+              {" "}
+              <span className="eyebrow">23 · Full-body robot</span>{" "}
+              <h2>Hands that pick, check and place</h2>{" "}
+              <p className="lead">
+                Each hand is an eGripper-3F: three adaptive fingers, an 80 mm
+                span and 50 N of grip, on RS-485. The robot picks up a part,
+                lifts it to its eyes to check it, then places it in a tray.
+              </p>{" "}
+              <p className="fact">
+                <span>From robot_components/product_datasheet.md</span>
+                eGripper-3F: 3-finger adaptive gripper · 80 mm span · 50 N ·
+                RS-485
+              </p>{" "}
+              <div className="pills">
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-concept)" } as CSSProperties}
+                >
+                  Concept · built from eRobotics parts
+                </span>
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-available)" } as CSSProperties}
+                >
+                  EoS profile: robot
+                </span>
+              </div>{" "}
+              <span className="hint">
+                <span className="h-fine">
+                  Drag to walk around the robot · hover a part for details
+                </span>
+                <span className="h-touch">
+                  Swipe sideways to walk around it · tap a part for details
+                </span>
+              </span>{" "}
+            </article>{" "}
             <article
               className="card"
               style={{ "--c": "#34D399" } as CSSProperties}
               inert
-            />{" "}
+            >
+              {" "}
+              <span className="eyebrow">24 · Full-body robot</span>{" "}
+              <h2>Stops in one call, updates over the air</h2>{" "}
+              <p className="lead">
+                An emergency stop has to beat every other task. EoS's motor
+                service stops a motor in one call, and the scheduler runs that
+                task first. Afterwards, new firmware arrives over the air into
+                the spare A/B slot, and eBoot checks its signature before
+                switching.
+              </p>{" "}
+              <p className="fact">
+                <span>From eos services/motor and services/ota</span>
+                eos_motor_ctrl_emergency_stop() · A/B slots with SHA-256 checks
+              </p>{" "}
+              <div className="pills">
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-concept)" } as CSSProperties}
+                >
+                  Concept · built from eRobotics parts
+                </span>
+                <span
+                  className="pill"
+                  style={{ "--t": "var(--tone-available)" } as CSSProperties}
+                >
+                  EoS profile: robot
+                </span>
+              </div>{" "}
+              <span className="hint">
+                <span className="h-fine">
+                  Drag to walk around the robot · hover a part for details
+                </span>
+                <span className="h-touch">
+                  Swipe sideways to walk around it · tap a part for details
+                </span>
+              </span>{" "}
+            </article>{" "}
             <article
               className="card"
               style={{ "--c": "#38BDF8" } as CSSProperties}
               inert
             >
               {" "}
-              <span className="eyebrow">20 · Every industry</span>{" "}
+              <span className="eyebrow">25 · Every industry</span>{" "}
               <h2>Eighteen domains, one open collection</h2>{" "}
               <p className="lead">
                 Every design in this hall, and every part of the robot at its
@@ -2334,6 +2878,481 @@ export default function Home() {
               </div>{" "}
               <p className="src">eos · products/ai_edge.h</p>{" "}
             </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-board"
+              data-side="right"
+              style={{ "--c": "#34D399" } as CSSProperties}
+              inert
+              aria-label="The same board, docked in the chest"
+            >
+              {" "}
+              <span className="spot-k">EoS · robot profile</span>{" "}
+              <h3>The same board, docked in the chest</h3>{" "}
+              <div className="chips">
+                <span className="s-code">Profile in eos</span>
+                <span className="s-info">Concept body</span>
+              </div>{" "}
+              <p className="what">
+                The core board that toured the hall docks behind the chest
+                window. It would boot EoS built with the robot product profile:
+                15 features, including motor control and sensors.
+              </p>{" "}
+              <dl className="facts">
+                <div>
+                  <dt>Features</dt>
+                  <dd>
+                    <span data-count="15">15</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Joints</dt>
+                  <dd>
+                    <span data-count="30">30</span>
+                  </dd>
+                </div>
+              </dl>{" "}
+              <div className="chips items">
+                <span className="s-info">GPIO</span>
+                <span className="s-info">UART</span>
+                <span className="s-info">SPI</span>
+                <span className="s-info">I2C</span>
+                <span className="s-info">timer</span>
+                <span className="s-docs">ADC</span>
+                <span className="s-docs">PWM</span>
+                <span className="s-docs">wifi</span>
+                <span className="s-docs">BLE</span>
+                <span className="s-docs">camera</span>
+                <span className="s-docs">motor</span>
+                <span className="s-docs">IMU</span>
+                <span className="s-code">net</span>
+                <span className="s-code">sensor</span>
+                <span className="s-code">motor ctrl</span>
+              </div>{" "}
+              <p className="src">eos · products/robot.h</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-boot"
+              style={{ "--c": "#34D399" } as CSSProperties}
+              inert
+              aria-label="EoS wakes the body"
+            >
+              {" "}
+              <span className="spot-k">EoS · boot order</span>{" "}
+              <h3>EoS wakes the body</h3>{" "}
+              <div className="chips">
+                <span className="s-code">Kernel + init · working code</span>
+                <span className="s-part">eBoot · host-tested</span>
+              </div>{" "}
+              <p className="what">
+                Power-on follows the same chain as the Chain of Trust story;
+                then EoS brings the body up from the inside out, joint by joint.
+              </p>{" "}
+              <div className="how">
+                <span>Boot, step by step</span>
+                <ol>
+                  <li>
+                    eBoot's stage-0 checks stage-1, which verifies the
+                    Ed25519-signed EoS image (host-tested; not yet booted on
+                    hardware).
+                  </li>
+                  <li>
+                    The kernel starts its priority scheduler, and the init
+                    service starts each service in dependency order, with
+                    restart policies and a watchdog.
+                  </li>
+                  <li>
+                    In this concept, sensors come up before motors, so every
+                    joint knows where it is before it may move.
+                  </li>
+                </ol>
+              </div>{" "}
+              <div className="chips items">
+                <span className="s-part">eBoot</span>
+                <span className="s-code">kernel scheduler</span>
+                <span className="s-code">init service</span>
+                <span className="s-code">sensor service</span>
+                <span className="s-code">motor service</span>
+              </div>{" "}
+              <p className="src">eBoot · eos kernel/ · services/init</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-eyes"
+              style={{ "--c": "#22D3EE" } as CSSProperties}
+              inert
+              aria-label="Stereo eyes with depth"
+            >
+              {" "}
+              <span className="spot-k">eRobotics · eVision-4K</span>{" "}
+              <h3>Stereo eyes with depth</h3>{" "}
+              <div className="chips">
+                <span className="s-info">Design stage</span>
+              </div>{" "}
+              <p className="what">
+                Two 4K cameras, a hand's width apart, see depth the way people
+                do. The datasheet lists 4K stereo plus depth over Gigabit
+                Ethernet.
+              </p>{" "}
+              <div className="how">
+                <span>How EoS would see</span>
+                <ol>
+                  <li>
+                    EoS would read the cameras through its camera HAL class, a
+                    stub today.
+                  </li>
+                  <li>
+                    Frames would go to eAI for detection; eAI's default build
+                    returns stub inference.
+                  </li>
+                </ol>
+              </div>{" "}
+              <dl className="facts">
+                <div>
+                  <dt>Output</dt>
+                  <dd>
+                    4K<small>stereo + depth</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Link</dt>
+                  <dd>GbE</dd>
+                </div>
+              </dl>{" "}
+              <div className="chips items">
+                <span className="s-docs">camera HAL</span>
+                <span className="s-docs">Ethernet HAL</span>
+                <span className="s-part">eAI</span>
+              </div>{" "}
+              <p className="src">eRobotics_CAD_Design/robot_components</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-lidar"
+              data-side="right"
+              style={{ "--c": "#5EEAD4" } as CSSProperties}
+              inert
+              aria-label="A full turn of laser range"
+            >
+              {" "}
+              <span className="spot-k">eRobotics · eLiDAR-360</span>{" "}
+              <h3>A full turn of laser range</h3>{" "}
+              <div className="chips">
+                <span className="s-info">Design stage</span>
+              </div>{" "}
+              <p className="what">
+                The crown sweeps the hall. Every dot is a simulated return from
+                the floor, the pedestals and the designs standing on them.
+              </p>{" "}
+              <div className="how">
+                <span>How EoS would map the room</span>
+                <ol>
+                  <li>
+                    EoS would take the point cloud over Ethernet; the
+                    radar/LiDAR HAL class is a stub today.
+                  </li>
+                  <li>
+                    The sensor service (working code) filters and calibrates up
+                    to 16 sensors, so a full point cloud would need its own
+                    path.
+                  </li>
+                </ol>
+              </div>{" "}
+              <dl className="facts">
+                <div>
+                  <dt>Range</dt>
+                  <dd>
+                    <span data-count="100">100</span>
+                    <small>m</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Resolution</dt>
+                  <dd>
+                    <span data-count="0.1" data-dec="1">
+                      0.1
+                    </span>
+                    <small>°</small>
+                  </dd>
+                </div>
+              </dl>{" "}
+              <div className="chips items">
+                <span className="s-docs">radar/LiDAR HAL</span>
+                <span className="s-code">sensor service</span>
+                <span className="s-part">sockets (host builds)</span>
+              </div>{" "}
+              <p className="src">eRobotics_CAD_Design/robot_components</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-drives"
+              data-side="right"
+              style={{ "--c": "#A78BFA" } as CSSProperties}
+              inert
+              aria-label="A servo drive in every joint"
+            >
+              {" "}
+              <span className="spot-k">eRobotics · eServo-200</span>{" "}
+              <h3>A servo drive in every joint</h3>{" "}
+              <div className="chips">
+                <span className="s-info">Design stage</span>
+              </div>{" "}
+              <p className="what">
+                Each rotary joint is an eServo-200 EtherCAT drive whose own
+                STM32G474 closes a 20 kHz current loop. Two eActuator-50 push
+                rods move each ankle.
+              </p>{" "}
+              <div className="how">
+                <span>How EoS would drive the joints</span>
+                <ol>
+                  <li>
+                    EoS's motor service (working code) runs PID speed and
+                    position loops and trajectories for each motor.
+                  </li>
+                  <li>
+                    It tracks 8 motors per image today, so a 30-joint body needs
+                    that limit raised or one EoS controller per limb.
+                  </li>
+                  <li>EtherCAT itself is not in EoS yet.</li>
+                </ol>
+              </div>{" "}
+              <dl className="facts">
+                <div>
+                  <dt>Drives</dt>
+                  <dd>
+                    <span data-count="26">26</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Encoders</dt>
+                  <dd>
+                    <span data-count="23">23</span>
+                    <small>bit</small>
+                  </dd>
+                </div>
+              </dl>{" "}
+              <div className="chips items">
+                <span className="s-code">motor service</span>
+                <span className="s-docs">motor HAL</span>
+                <span className="s-none">EtherCAT</span>
+              </div>{" "}
+              <p className="src">robot_components · eos services/motor</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-balance"
+              style={{ "--c": "#FBBF24" } as CSSProperties}
+              inert
+              aria-label="Balance is a deadline"
+            >
+              {" "}
+              <span className="spot-k">EoS · real time</span>{" "}
+              <h3>Balance is a deadline</h3>{" "}
+              <div className="chips">
+                <span className="s-code">Kernel · working code</span>
+                <span className="s-docs">IMU HAL · stub</span>
+              </div>{" "}
+              <p className="what">
+                The amber ring is the centre of mass; the green outline is the
+                support polygon under the feet. Keep one inside the other on
+                every cycle, and the robot stays up.
+              </p>{" "}
+              <div className="how">
+                <span>How EoS would keep it upright</span>
+                <ol>
+                  <li>
+                    The kernel's priority scheduler would run the balance task
+                    first, and priority-inheritance mutexes stop a slower task
+                    from blocking it.
+                  </li>
+                  <li>
+                    Message queues would carry joint targets from the planner to
+                    the motor task, paced by software timers.
+                  </li>
+                  <li>
+                    The IMU HAL class is a stub today; the kernel and the sensor
+                    service are working code.
+                  </li>
+                </ol>
+              </div>{" "}
+              <div className="chips items">
+                <span className="s-code">priority scheduler</span>
+                <span className="s-code">PI mutexes</span>
+                <span className="s-code">message queues</span>
+                <span className="s-code">software timers</span>
+                <span className="s-docs">IMU HAL</span>
+              </div>{" "}
+              <p className="src">eos kernel/src/task.c · sync.c · ipc.c</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-grip"
+              data-side="right"
+              style={{ "--c": "#A78BFA" } as CSSProperties}
+              inert
+              aria-label="Three fingers that adapt"
+            >
+              {" "}
+              <span className="spot-k">eRobotics · eGripper-3F</span>{" "}
+              <h3>Three fingers that adapt</h3>{" "}
+              <div className="chips">
+                <span className="s-info">Design stage</span>
+              </div>{" "}
+              <p className="what">
+                Two fingers and an opposed thumb close around the part with up
+                to 50 N and report back over RS-485.
+              </p>{" "}
+              <div className="how">
+                <span>How EoS would grip</span>
+                <ol>
+                  <li>
+                    EoS would talk to the gripper over a UART-based RS-485 link;
+                    the UART driver is register code for STM32F4 only.
+                  </li>
+                  <li>
+                    The reach itself is a motor-service trajectory for each arm
+                    joint (working code).
+                  </li>
+                </ol>
+              </div>{" "}
+              <dl className="facts">
+                <div>
+                  <dt>Span</dt>
+                  <dd>
+                    <span data-count="80">80</span>
+                    <small>mm</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Grip</dt>
+                  <dd>
+                    <span data-count="50">50</span>
+                    <small>N</small>
+                  </dd>
+                </div>
+              </dl>{" "}
+              <div className="chips items">
+                <span className="s-part">UART HAL</span>
+                <span className="s-code">motor trajectories</span>
+              </div>{" "}
+              <p className="src">eRobotics_CAD_Design/robot_components</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-check"
+              style={{ "--c": "#22D3EE" } as CSSProperties}
+              inert
+              aria-label="Eyes guide the hand"
+            >
+              {" "}
+              <span className="spot-k">EoS + eAI</span>{" "}
+              <h3>Eyes guide the hand</h3>{" "}
+              <div className="chips">
+                <span className="s-part">eAI · stub inference</span>
+              </div>{" "}
+              <p className="what">
+                Before placing the part, the robot lifts it to its eyes and
+                checks it with stereo depth.
+              </p>{" "}
+              <div className="how">
+                <span>What it would take</span>
+                <ol>
+                  <li>
+                    Recognising the part is a job for eAI, the planned on-device
+                    AI layer; its default build returns stub inference today.
+                  </li>
+                  <li>
+                    The eNI → eIPC → eAI pipeline described in the docs is not
+                    wired up in code yet.
+                  </li>
+                </ol>
+              </div>{" "}
+              <div className="chips items">
+                <span className="s-part">eAI runtime</span>
+                <span className="s-part">eIPC</span>
+                <span className="s-docs">camera HAL</span>
+              </div>{" "}
+              <p className="src">eAI · eIPC</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-stop"
+              data-side="right"
+              style={{ "--c": "#EF4444" } as CSSProperties}
+              inert
+              aria-label="Stop in one call"
+            >
+              {" "}
+              <span className="spot-k">EoS · motor service</span>{" "}
+              <h3>Stop in one call</h3>{" "}
+              <div className="chips">
+                <span className="s-code">e-stop · working code</span>
+              </div>{" "}
+              <p className="what">
+                An emergency stop zeroes a motor's target speed, PID output and
+                integrators in a single call, and every light on the body turns
+                red.
+              </p>{" "}
+              <div className="how">
+                <span>How EoS would stop it</span>
+                <ol>
+                  <li>
+                    eos_motor_ctrl_emergency_stop() is working code; a full-body
+                    stop would call it for every joint, then hold position.
+                  </li>
+                  <li>
+                    The eArm-7 datasheet targets ISO 10218-1 and IEC 62061 SIL 2
+                    for the arm; a whole humanoid would need its own safety
+                    case.
+                  </li>
+                </ol>
+              </div>{" "}
+              <div className="chips items">
+                <span className="s-code">e-stop call</span>
+                <span className="s-none">functional-safety case</span>
+              </div>{" "}
+              <p className="src">eos services/motor/src/motor_ctrl.c</p>{" "}
+            </article>{" "}
+            <article
+              className="spot"
+              data-spot="rbt-ota"
+              style={{ "--c": "#34D399" } as CSSProperties}
+              inert
+              aria-label="Update without a cable"
+            >
+              {" "}
+              <span className="spot-k">EoS · OTA + eBoot</span>{" "}
+              <h3>Update without a cable</h3>{" "}
+              <div className="chips">
+                <span className="s-part">OTA · partial</span>
+                <span className="s-part">eBoot · host-tested</span>
+              </div>{" "}
+              <p className="what">
+                New firmware drops into the spare A/B slot. eBoot verifies its
+                Ed25519 signature and version before switching, and can roll
+                back.
+              </p>{" "}
+              <div className="how">
+                <span>How the update would land</span>
+                <ol>
+                  <li>
+                    The EoS OTA service is an A/B state machine with SHA-256
+                    checks; today it hashes chunks but does not write flash.
+                  </li>
+                  <li>
+                    eBoot's slot selection, signature checks and anti-rollback
+                    are host-tested and have not run on hardware yet.
+                  </li>
+                </ol>
+              </div>{" "}
+              <div className="chips items">
+                <span className="s-part">OTA service</span>
+                <span className="s-part">eBoot A/B + rollback</span>
+                <span className="s-code">Ed25519 verify</span>
+              </div>{" "}
+              <p className="src">eos services/ota · eBoot</p>{" "}
+            </article>{" "}
           </div>{" "}
           <div className="legend" id="legend" aria-hidden="true">
             <span className="l-code">
@@ -2614,11 +3633,11 @@ export default function Home() {
           <div id="ch-econsumer" style={{ height: "28vh" }} />{" "}
           <div id="ch-ecybersec" style={{ height: "28vh" }} />{" "}
           <div id="ch-edefense" style={{ height: "28vh" }} />{" "}
-          <div id="ch-rbt-wake" style={{ height: "0vh" }} />{" "}
-          <div id="ch-rbt-see" style={{ height: "0vh" }} />{" "}
-          <div id="ch-rbt-walk" style={{ height: "0vh" }} />{" "}
-          <div id="ch-rbt-hands" style={{ height: "0vh" }} />{" "}
-          <div id="ch-rbt-safe" style={{ height: "0vh" }} />{" "}
+          <div id="ch-rbt-wake" style={{ height: "70vh" }} />{" "}
+          <div id="ch-rbt-see" style={{ height: "70vh" }} />{" "}
+          <div id="ch-rbt-walk" style={{ height: "70vh" }} />{" "}
+          <div id="ch-rbt-hands" style={{ height: "70vh" }} />{" "}
+          <div id="ch-rbt-safe" style={{ height: "70vh" }} />{" "}
           <div id="ch-every" style={{ height: "140vh" }} />{" "}
         </div>{" "}
       </div>

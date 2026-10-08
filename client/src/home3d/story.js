@@ -149,6 +149,86 @@ function mountStory(HS) {
       anchor: "eedgeai:board",
       color: "#34D399",
     },
+    {
+      id: "rbt-board",
+      ch: 20,
+      a: 0.31,
+      b: 0.54,
+      anchor: "robot:chestA",
+      color: "#34D399",
+    },
+    {
+      id: "rbt-boot",
+      ch: 20,
+      a: 0.56,
+      b: 0.79,
+      anchor: "robot:waistA",
+      color: "#34D399",
+    },
+    {
+      id: "rbt-eyes",
+      ch: 21,
+      a: 0.31,
+      b: 0.54,
+      anchor: "robot:eyes",
+      color: "#22D3EE",
+    },
+    {
+      id: "rbt-lidar",
+      ch: 21,
+      a: 0.56,
+      b: 0.79,
+      anchor: "robot:lidar",
+      color: "#5EEAD4",
+    },
+    {
+      id: "rbt-drives",
+      ch: 22,
+      a: 0.31,
+      b: 0.54,
+      anchor: "robot:kneeR",
+      color: "#A78BFA",
+    },
+    {
+      id: "rbt-balance",
+      ch: 22,
+      a: 0.56,
+      b: 0.79,
+      anchor: "robot:imu",
+      color: "#FBBF24",
+    },
+    {
+      id: "rbt-grip",
+      ch: 23,
+      a: 0.31,
+      b: 0.54,
+      anchor: "robot:gripR",
+      color: "#A78BFA",
+    },
+    {
+      id: "rbt-check",
+      ch: 23,
+      a: 0.56,
+      b: 0.79,
+      anchor: "robot:eyes",
+      color: "#22D3EE",
+    },
+    {
+      id: "rbt-stop",
+      ch: 24,
+      a: 0.31,
+      b: 0.54,
+      anchor: "robot:chestA",
+      color: "#EF4444",
+    },
+    {
+      id: "rbt-ota",
+      ch: 24,
+      a: 0.56,
+      b: 0.79,
+      anchor: "robot:chestA",
+      color: "#34D399",
+    },
   ];
   (function () {
     var S = (window.IO = {
@@ -20020,7 +20100,6 @@ function mountStory(HS) {
           );
         if (T >= FIN)
           return finalePose(time, easeInOutSine(range(T, FIN, FIN + 0.8)), res);
-        if (LITE && T >= RB0) return finalePose(time, 0, res);
         if (T >= RB0) {
           const k = Math.min(RBN - 1, Math.floor(T - RB0)),
             p2 = T - RB0 - k;
@@ -20051,14 +20130,12 @@ function mountStory(HS) {
         const B =
           j + 1 < N
             ? devicePose(j + 1, devs[j + 1].frameSpec.yaw0, pb)
-            : LITE
-              ? finalePose(time, 0, pb)
-              : robotPose(0, 0, pb);
+            : robotPose(0, 0, pb);
         return blend(
           A,
           B,
           easeInOut(range(p, 0.8, 1)),
-          j + 1 < N ? 2.4 : LITE ? 0 : 1.2,
+          j + 1 < N ? 2.4 : 1.2,
           res,
           j + 1 < N ? 3.2 : 0
         );
@@ -20403,9 +20480,7 @@ function mountStory(HS) {
       function update(T, time, dt) {
         grain.uniforms.uTime.value = time;
         beamMat.uniforms.uTime.value = time;
-        const fin = LITE
-          ? sr(T, RB0 - 0.1, FIN + 0.3)
-          : sr(T, FIN - 0.2, FIN + 0.3);
+        const fin = sr(T, FIN - 0.2, FIN + 0.3);
         const cur = T - 1;
         const ow = orbitWeight();
         const focusJ =
@@ -20492,8 +20567,8 @@ function mountStory(HS) {
           const hero = sr(p, 0.4, 0.5) * (1 - sr(p, 0.82, 0.92));
           for (const fn of d.anims) fn(p, time, dt, { a, x, hero, fin });
         });
-        const rk = T < RB0 ? -1 : T >= FIN || LITE ? RBN : Math.floor(T - RB0),
-          rp = T < RB0 ? 0 : T >= FIN ? T - FIN : LITE ? 0 : T - RB0 - rk;
+        const rk = T < RB0 ? -1 : T >= FIN ? RBN : Math.floor(T - RB0),
+          rp = T < RB0 ? 0 : T >= FIN ? T - FIN : T - RB0 - rk;
         const robotOn = T > RB0 - 0.3;
         robot.root.visible = robot.stage.visible = robotOn;
         hubShadow.visible = !robotOn;
@@ -20504,7 +20579,7 @@ function mountStory(HS) {
           .setScalar(0)
           .add(HDR(16486972, 2.5 + 1.5 * Math.sin(time * 3)));
         let reachR = null;
-        if (T < 0.8 || T >= FIN || (LITE && T >= RB0)) focus.set(0, 0.6, 0);
+        if (T < 0.8 || T >= FIN) focus.set(0, 0.6, 0);
         else if (T < 1)
           focus
             .set(0, 0.6, 0)
