@@ -301,15 +301,21 @@ function BookCover({
       </div>
     );
   }
+  const cover = `/media/book-cover-${repo.toLowerCase()}`;
   return (
-    <img
-      loading="lazy"
-      decoding="async"
-      src={`https://raw.githubusercontent.com/embeddedos-org/${repo}/master/docs/book/cover.png`}
-      alt={title}
-      className="w-full h-full object-cover"
-      onError={() => setFailed(true)}
-    />
+    <picture>
+      <source srcSet={`${cover}.webp`} type="image/webp" />
+      <img
+        loading="lazy"
+        decoding="async"
+        src={`${cover}.jpg`}
+        width={240}
+        height={360}
+        alt={title}
+        className="w-full h-full object-cover"
+        onError={() => setFailed(true)}
+      />
+    </picture>
   );
 }
 

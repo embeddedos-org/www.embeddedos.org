@@ -97,6 +97,54 @@
     "home-story-poster.jpg": {
       "sha256": "81bfc0d8765af4fb976bb48047acd43fa82ee541cc1cca30b7d745492fe5b01c",
       "webpSha256": "24f82853c8dfa01a7f067bf383d85fa29f0fb0bbc73254e4320afbf1567d7f34"
+    },
+    "book-cover-eai.jpg": {
+      "sha256": "57b2f7380c11ac83549d7589c72b6fa5583a067ffd426d7533a993f792743055",
+      "webpSha256": "7f3e896ee1505c16309e6d7a823ea69193fe2a463583e63e89c8999c84b50db3"
+    },
+    "book-cover-eapps.jpg": {
+      "sha256": "1d1c4c87eaf85f310892bbc2a1cf9e22f6d77393d9b13379b4e3afc2939a90bd",
+      "webpSha256": "29aba4289c11f30df1363c8d0abdc9d0fc557d3898c089211e0c5f71ff0b7355"
+    },
+    "book-cover-eboot.jpg": {
+      "sha256": "b6ad734395dbf0b36443cfa8e47829d1e37004ba64f8eba082c2c3ac5af3d40f",
+      "webpSha256": "2e56f5af472f6eb9b298e177c05b1602620500be0e02bf0fdd82be3859de0087"
+    },
+    "book-cover-ebrowser.jpg": {
+      "sha256": "5aa70477b6c2b751eb51bb1b8e00e35a41b2e05c4ac3564d552c11981d50d7a4",
+      "webpSha256": "1c4d60f12adb8a0ac3689670ee1329f15eb66bc68b358936a2b1794e56de64e7"
+    },
+    "book-cover-ebuild.jpg": {
+      "sha256": "af55297fb88ba45c3e5bf8eb73d0c3bf86c2a8f6f1df1235072a783bbe4b3bf3",
+      "webpSha256": "e307dc8ec8ae7933d86825c81b238ae40b0c84d3d7fe2171890f2dc51ad9ffd0"
+    },
+    "book-cover-edb.jpg": {
+      "sha256": "c3373463ce278cf3f96f4f2c7ef1807b7f5471f067548c5d355d763a9b14b8a9",
+      "webpSha256": "4f1dcb74b8f6b779a7eed471631fab232052bc013695f84c94c3a824e4b67942"
+    },
+    "book-cover-eipc.jpg": {
+      "sha256": "3e8dede8ed581dcb1b66cd2183662bc0d8af7b1a245aabc9bd1911442afc13db",
+      "webpSha256": "28f07814fd334f0ddf8fae9e9e8cac21dc04806f6d14e31ec41934277e6c3dc9"
+    },
+    "book-cover-eni.jpg": {
+      "sha256": "5be2ce1af41f087b763aa88c1865a2353bbb1a619cffedd090fa74b3c464721a",
+      "webpSha256": "aa8fd85e88f199060ea994683bad8c3b0929b4a9c21e91bd6665520e2bab82e3"
+    },
+    "book-cover-eoffice.jpg": {
+      "sha256": "5ff9d85f67912f0f7b5c9bdbf7e61b732661723b54117140d5daf5c9545bc785",
+      "webpSha256": "5673c00b682b86d252341552a7d6c0c2f0ffb478dbebf8bed883ec5016bb4d8b"
+    },
+    "book-cover-eos.jpg": {
+      "sha256": "539344c53d5ba143fe18feee5cc5dada922833a864087c74330cd09c36a04cee",
+      "webpSha256": "089084e973223da6489761e7f47bf57f89d91e87941117bc8711365ad8a8f45f"
+    },
+    "book-cover-eosim.jpg": {
+      "sha256": "088f0aac4e5b15a3800b7cd271f7299c489ee829296d1f607beba5694098b5ca",
+      "webpSha256": "a2ba675b685a5e0abe447dcd7c11f80499acce614179d0049163742495a67ce8"
+    },
+    "book-cover-eostudio.jpg": {
+      "sha256": "aa09c2031440596ef02d98907601ff49dcdd70058abbe0b403449adf945cb791",
+      "webpSha256": "5557503e7b73e6be23c07af8a0dad0597618ecb07ba024072835a3bfedb16365"
     }
   }
 }
