@@ -525,7 +525,7 @@ export default function Home() {
               <Link className="eyebrow" href="/mission">
                 Foundation · 501(c)(3) · MIT License
               </Link>{" "}
-              <h1 id="hero-heading" data-split="">
+              <h1 id="hero-heading">
                 Open-source embedded systems for intelligent physical devices
               </h1>{" "}
               <p className="lead">

@@ -356,7 +356,8 @@ function mountStory(HS) {
     S.splitWords = splitWords;
     var reduceType = S.reduce;
     cards.forEach(function (c) {
-      if (!reduceType)
+      var heroStatic = window.IO_LITE && c.classList.contains("hero-card");
+      if (!reduceType && !heroStatic)
         c._words = [].concat.apply(
           [],
           [].slice.call(c.querySelectorAll("h1, h2")).map(splitWords)
@@ -2007,6 +2008,33 @@ function mountStory(HS) {
         return true;
       }
     }
+    function engaged() {
+      root.classList.add("gl-wait");
+      return new Promise(go => {
+        const evs = ["scroll", "wheel", "pointerdown", "touchstart", "keydown"];
+        let timer = 0;
+        const fire = () => {
+          evs.forEach(e => removeEventListener(e, fire, true));
+          clearTimeout(timer);
+          root.classList.remove("gl-wait");
+          if (stage.isConnected) go();
+        };
+        evs.forEach(e =>
+          addEventListener(e, fire, { capture: true, passive: true })
+        );
+        const arm = () => {
+          timer = setTimeout(
+            () =>
+              window.requestIdleCallback
+                ? requestIdleCallback(fire, { timeout: 2e3 })
+                : fire(),
+            6e3
+          );
+        };
+        if (document.readyState === "complete") arm();
+        else addEventListener("load", arm, { once: true });
+      });
+    }
     let THREE,
       EffectComposer,
       RenderPass,
@@ -2020,6 +2048,7 @@ function mountStory(HS) {
     if (softwareOnly()) fail(new Error("no hardware graphics acceleration"));
     else
       try {
+        if (window.IO_LITE && !S.capture) await engaged();
         const mods = await Promise.all([
           import("three"),
           import("three/addons/postprocessing/EffectComposer.js"),

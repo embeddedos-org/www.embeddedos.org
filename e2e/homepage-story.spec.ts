@@ -70,6 +70,58 @@ test.describe("homepage 3D story", () => {
     await expect(page.locator("#hero-heading")).toBeVisible();
   });
 
+  for (const { name, engage } of [
+    { name: "after a scroll", engage: true },
+    { name: "with no input at all", engage: false },
+  ]) {
+    test(`if the 3D code cannot download, the still image stays (${name})`, async ({
+      page,
+    }) => {
+      await page.addInitScript(() => {
+        const proto = HTMLCanvasElement.prototype as unknown as {
+          getContext: (
+            type: string,
+            opts?: { failIfMajorPerformanceCaveat?: boolean }
+          ) => unknown;
+        };
+        const real = proto.getContext;
+        proto.getContext = function (this: unknown, type, opts) {
+          if (type.startsWith("webgl") && opts?.failIfMajorPerformanceCaveat) {
+            return {
+              getExtension: (n: string) =>
+                n === "WEBGL_debug_renderer_info"
+                  ? { UNMASKED_RENDERER_WEBGL: 0x9246 }
+                  : null,
+              getParameter: () => "ANGLE (Hardware GPU)",
+              RENDERER: 0x1f01,
+            };
+          }
+          return real.call(this, type, opts);
+        };
+      });
+      let blocked = 0;
+      await page.route(/\/three\.module[^/]*\.js(\?|$)/, route => {
+        blocked++;
+        return route.abort("failed");
+      });
+      const errors: string[] = [];
+      page.on("pageerror", e => errors.push(e.message));
+
+      await page.goto("/");
+      if (engage) await page.mouse.wheel(0, 300);
+
+      await expect(page.locator(".hs")).toHaveClass(/\bno-gl\b/, {
+        timeout: 15_000,
+      });
+      expect(blocked).toBeGreaterThan(0);
+      await expect(page.locator(".hs")).not.toHaveClass(/\bgl-wait\b/);
+      await expect(page.locator(".hs .poster")).toBeVisible();
+      await expect(page.locator(".hs .loading")).toHaveCSS("opacity", "0");
+      await expect(page.locator("#hero-heading")).toBeVisible();
+      expect(errors).toEqual([]);
+    });
+  }
+
   for (const { name, width, height, chapters } of [
     { name: "phone", width: 390, height: 664, chapters: [2, 5, 8, 13] },
     { name: "desktop", width: 1440, height: 900, chapters: [2, 5] },
