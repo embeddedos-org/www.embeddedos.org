@@ -1,12 +1,10 @@
 import { Link } from "wouter";
 import {
   ArrowRight,
-  BadgeCheck,
   Building2,
   ExternalLink,
   FileCheck2,
   GraduationCap,
-  Scale,
 } from "lucide-react";
 
 const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
@@ -14,10 +12,14 @@ const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
 export const STATS = [
   { value: "322", label: "board records", color: "#F97316" },
   { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
-  { value: "724", label: "openly licensed files mirrored", color: "#5EE08E" },
   {
-    value: "230",
-    label: "boards with redistributable files",
+    value: "583",
+    label: "openly licensed CAD files mirrored",
+    color: "#5EE08E",
+  },
+  {
+    value: "232",
+    label: "boards with their CAD files mirrored",
     color: "#A78BFA",
   },
 ] as const;
@@ -25,15 +27,15 @@ export const STATS = [
 export const RULES = [
   {
     title: "The licence allows it",
-    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 92 boards keep their official link and digest, and nothing else.",
+    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 88 boards keep their official link and digest, and nothing else.",
   },
   {
     title: "The bytes are the verified bytes",
     body: "A file is copied only when its SHA-256 equals the digest the database recorded when it was retrieved, so the mirror can never hold something other than what was checked.",
   },
   {
-    title: "The bytes are a design file",
-    body: "Each file is identified from its content. Eagle, KiCad and Altium sources, Gerber and drill files, STEP, STL and DXF models are CAD; schematic PDFs and BOMs are documents. A web page or JSON is refused.",
+    title: "The bytes are CAD",
+    body: "Each file is identified from its content: Eagle, KiCad and Altium sources, Gerber and drill files, STEP, STL and DXF models. Schematic PDFs, BOMs and datasheets stay as links, and a web page or JSON is refused.",
   },
 ] as const;
 
@@ -198,6 +200,149 @@ export const GALLERY: ReadonlyArray<{
     ],
   },
 ];
+
+export const LICENCE_TERMS = [
+  {
+    licence: "CC BY-SA",
+    boards: 212,
+    asks: "Credit the maker, and share your changed design under the same licence.",
+  },
+  {
+    licence: "CC BY 4.0",
+    boards: 12,
+    asks: "Credit the maker.",
+  },
+  {
+    licence: "MIT, BSD or Apache-2.0",
+    boards: 7,
+    asks: "Keep the licence text with every copy. Each of these boards' ATTRIBUTION.md carries it, verbatim.",
+  },
+  {
+    licence: "Raspberry Pi's grant in 0BSD wording",
+    boards: 1,
+    asks: "Nothing: use, copy, modify and distribute the Pico designs for any purpose.",
+  },
+] as const;
+
+export const USAGE = [
+  {
+    title: "Find a board",
+    body: "Every board has one record: the exact board, revision and MCU, each format marked true, false or unknown, and the licence. Ask the database by format, licence or vendor.",
+    code: [
+      "python3 tools/devboard_cad/query.py with-formats step",
+      "python3 tools/devboard_cad/query.py commercial-reuse",
+    ],
+    file: "open-hardware-terminal-query",
+    width: 1500,
+    height: 673,
+    alt: "Terminal output of the database query for boards with a verified STEP model, 25 matched, and 234 records that allow commercial reuse",
+    caption:
+      "25 boards have a verified STEP model, and 234 records allow commercial reuse.",
+  },
+  {
+    title: "Fetch one board, not the whole mirror",
+    body: "A partial clone downloads only the folder you name. The SparkFun IoT RedBoard RP2350 took 10 seconds and 5.3 MB, against 678 MB for every board, and shasum gives the same SHA-256 as its ATTRIBUTION.md.",
+    code: [
+      "git clone --filter=blob:none --sparse --depth 1 https://github.com/embeddedos-org/eCAD-Hardware-Products.git",
+      "cd eCAD-Hardware-Products",
+      "git sparse-checkout set --no-cone /boards/cad/sparkfun/iot-redboard-rp2350/",
+      "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/*",
+    ],
+    file: "open-hardware-terminal-fetch",
+    width: 1600,
+    height: 810,
+    alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, 3.6 MB of files, with SHA-256 digests and its CC BY-SA 4.0 licence",
+    caption:
+      "Recorded on the pull request branch before the mirror reached master, which is why it names a branch and a fork.",
+  },
+  {
+    title: "Open the design in KiCad",
+    body: "The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. The Eagle .brd and .sch files, 414 of the 583, go through KiCad's EAGLE importer.",
+    code: [],
+    file: "open-hardware-kicad-redboard-rp2350",
+    width: 1596,
+    height: 1400,
+    alt: "KiCad PCB of the SparkFun IoT RedBoard RP2350 rendered from the mirrored file, with routed copper, pads and header pins",
+    caption:
+      "SparkFun_IoT_RedBoard-RP2350.kicad_pcb, rendered from the mirrored file.",
+  },
+  {
+    title: "Send the Gerbers to a board house",
+    body: "A Gerber archive is what a fab asks for: copper, solder mask, silkscreen and paste for each side, the board outline and the Excellon drill file. Upload the zip as it is. Here the open-source whats-that-gerber library names each layer of the SparkFun Edge archive.",
+    code: [
+      "cd boards/cad/sparkfun/edge/cad",
+      "unzip -Z1 SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers.zip | xargs node gerber-layers.mjs",
+    ],
+    file: "open-hardware-terminal-gerber",
+    width: 1500,
+    height: 706,
+    alt: "Terminal output naming the ten layers of the SparkFun Edge Gerber archive: copper, silkscreen, solder paste and solder mask for each side, the outline and the drill file",
+    caption:
+      "Ten files, ten layers. The rendered board is in the Gerber section below.",
+  },
+  {
+    title: "Design the enclosure around the STEP model",
+    body: "Import the STEP into FreeCAD, Fusion or SolidWorks and model the case around it. Measured from the geometry with OpenCASCADE, the BeagleBone AI-64 is 102.5 × 82.6 × 36.6 mm with its heatsink and connectors, and the PocketBeagle is 56.4 × 35.0 mm.",
+    code: [
+      "cd boards/cad",
+      'for f in beagleboard/{beaglebone-ai-64,pocketbeagle}/cad/*.st*p; do node measure-step.mjs "$f"; done',
+    ],
+    file: "open-hardware-terminal-step",
+    width: 1600,
+    height: 380,
+    alt: "Terminal output of four STEP models measured with OpenCASCADE: BeagleBone AI-64 102.5 by 82.6 by 36.6 mm, PocketBeagle, SparkFun Artemis and the Qwiic directional pad",
+    caption:
+      "Overall size in millimetres, from each manufacturer's own STEP file.",
+  },
+  {
+    title: "Keep the credit and the licence",
+    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence and every file's official source and SHA-256. The 88 boards without a confirmed redistribution licence are linked, never copied.",
+    code: [],
+    file: "open-hardware-attribution",
+    width: 1440,
+    height: 1000,
+    alt: "GitHub view of the Feather RP2040 ATTRIBUTION.md listing licence, sources and SHA-256 digests",
+    caption: "boards/cad/adafruit/feather-rp2040/ATTRIBUTION.md",
+  },
+] as const;
+
+export const HELPER_SCRIPTS = [
+  {
+    name: "gerber-layers.mjs",
+    code: [
+      'import { createRequire } from "node:module";',
+      "const require = createRequire(import.meta.url);",
+      'const whatsThatGerber = require("whats-that-gerber");',
+      "const names = process.argv.slice(2);",
+      "const types = whatsThatGerber(names);",
+      "for (const n of names) {",
+      "  const t = types[n];",
+      '  console.log(`${n.padEnd(42)} ${t.side ?? "-"} ${t.type ?? "unknown"}`);',
+      "}",
+    ],
+  },
+  {
+    name: "measure-step.mjs",
+    code: [
+      'import { createRequire } from "node:module";',
+      'import { readFileSync } from "node:fs";',
+      "const require = createRequire(import.meta.url);",
+      'const occt = await require("occt-import-js")();',
+      "for (const path of process.argv.slice(2)) {",
+      "  const r = occt.ReadStepFile(new Uint8Array(readFileSync(path)), null);",
+      "  const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];",
+      "  let tris = 0;",
+      "  for (const m of r.meshes) {",
+      "    const p = m.attributes.position.array;",
+      "    for (let i = 0; i < p.length; i += 3) for (let k = 0; k < 3; k++) { lo[k] = Math.min(lo[k], p[i + k]); hi[k] = Math.max(hi[k], p[i + k]); }",
+      "    tris += m.index.array.length / 3;",
+      "  }",
+      "  const d = hi.map((h, k) => (h - lo[k]).toFixed(1));",
+      '  console.log(`${path.split("/").pop()}: ${r.success ? "ok" : "failed"}, ${r.meshes.length} parts, ${tris} triangles, ${d.join(" x ")} mm`);',
+      "}",
+    ],
+  },
+] as const;
 
 export const VALIDATION = [
   {
@@ -378,9 +523,9 @@ export default function OpenHardware() {
           </h2>
           <p className="text-gray-300 max-w-3xl mb-10 leading-relaxed">
             The database records where each board's files live and a SHA-256 of
-            the bytes that were checked. The mirror keeps 724 of those files,
-            578 CAD files and 146 documents, 779 MB from 230 boards, and copies
-            a file only when all three of these hold.
+            the bytes that were checked. The mirror keeps 583 of those files,
+            every one a CAD file, 678 MB from 232 boards, and copies a file only
+            when all three of these hold.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             {RULES.map((r, i) => (
@@ -398,31 +543,130 @@ export default function OpenHardware() {
               </div>
             ))}
           </div>
-          <div className="grid lg:grid-cols-2 gap-6">
-            <figure className="rounded-2xl overflow-hidden border border-white/10">
-              <Picture
-                file="open-hardware-terminal-query"
-                width={1500}
-                height={673}
-                alt="Terminal output of the database query for boards with a verified STEP model, 25 matched"
+          <figure className="rounded-2xl overflow-hidden border border-white/10 max-w-4xl">
+            <Picture
+              file="open-hardware-terminal-mirror"
+              width={1400}
+              height={508}
+              alt="Terminal output of mirror.py check reporting 583 CAD files for 232 boards and 0 problems, 36 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md"
+            />
+            <figcaption className="text-sm text-gray-400 px-4 py-3">
+              The check CI runs: every redistributable CAD file present, every
+              digest matching, nothing else in the folder.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section
+        id="how-to-use"
+        className="py-16 px-6 border-t border-white/[0.06]"
+      >
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-black mb-4">How to use the files</h2>
+          <p className="text-gray-300 max-w-3xl mb-8 leading-relaxed">
+            Six steps from a board record to a board you can build, each shown
+            with a real file and its real output. The commands need Git, Python
+            3 and, for the last two, Node.js.
+          </p>
+          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#0b1220]">
+            <video
+              controls
+              playsInline
+              preload="none"
+              poster="/media/open-hardware-howto-poster.jpg"
+              width={1600}
+              height={900}
+              className="w-full h-auto block"
+            >
+              <source src="/media/open-hardware-howto.mp4" type="video/mp4" />
+              <track
+                kind="captions"
+                src="/media/open-hardware-howto.vtt"
+                srcLang="en"
+                label="English"
+                default
               />
-              <figcaption className="text-sm text-gray-400 px-4 py-3">
-                Querying the database: boards with a verified STEP model.
-              </figcaption>
-            </figure>
-            <figure className="rounded-2xl overflow-hidden border border-white/10">
-              <Picture
-                file="open-hardware-terminal-mirror"
-                width={1500}
-                height={541}
-                alt="Terminal output of mirror.py check reporting 724 files for 230 boards and 0 problems, and 26 passing tests"
-              />
-              <figcaption className="text-sm text-gray-400 px-4 py-3">
-                The check CI runs: every redistributable file present, every
-                digest matching.
-              </figcaption>
-            </figure>
+            </video>
           </div>
+          <p className="text-sm text-gray-400 mt-3 mb-12">
+            A 45-second how-to, without sound, captioned.
+          </p>
+          <ol className="grid gap-12">
+            {USAGE.map((u, i) => (
+              <li
+                key={u.title}
+                className="grid lg:grid-cols-2 gap-6 items-start"
+              >
+                <div className="min-w-0">
+                  <div className="text-sm font-bold text-orange-400 mb-1">
+                    Step {i + 1}
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{u.title}</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed mb-4">
+                    {u.body}
+                  </p>
+                  {u.code.length > 0 && (
+                    <pre
+                      tabIndex={0}
+                      className="text-xs leading-relaxed text-sky-200 bg-[#0b1220] border border-white/10 rounded-xl p-4 overflow-x-auto"
+                    >
+                      <code>{u.code.join("\n")}</code>
+                    </pre>
+                  )}
+                  {i === USAGE.length - 1 && (
+                    <dl className="grid gap-3 text-sm">
+                      {LICENCE_TERMS.map(l => (
+                        <div
+                          key={l.licence}
+                          className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
+                        >
+                          <dt className="font-semibold text-emerald-300">
+                            {l.licence} · {l.boards} boards
+                          </dt>
+                          <dd className="text-gray-300 mt-1">{l.asks}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                </div>
+                <figure className="rounded-2xl overflow-hidden border border-white/10 min-w-0">
+                  <Picture
+                    file={u.file}
+                    width={u.width}
+                    height={u.height}
+                    alt={u.alt}
+                  />
+                  <figcaption className="text-sm text-gray-400 px-4 py-3 break-words">
+                    {u.caption}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ol>
+          <details className="mt-12 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+            <summary className="cursor-pointer font-semibold">
+              The two helper scripts used in steps 4 and 5
+            </summary>
+            <p className="text-sm text-gray-300 mt-3 mb-4 leading-relaxed">
+              Both run on Node.js after{" "}
+              <code className="text-sky-200">
+                npm install whats-that-gerber occt-import-js
+              </code>
+              . Neither changes a file.
+            </p>
+            {HELPER_SCRIPTS.map(s => (
+              <div key={s.name} className="mb-4">
+                <div className="text-sm font-semibold mb-2">{s.name}</div>
+                <pre
+                  tabIndex={0}
+                  className="text-xs leading-relaxed text-sky-200 bg-[#0b1220] border border-white/10 rounded-xl p-4 overflow-x-auto"
+                >
+                  <code>{s.code.join("\n")}</code>
+                </pre>
+              </div>
+            ))}
+          </details>
         </div>
       </section>
 
@@ -509,50 +753,6 @@ export default function OpenHardware() {
       </section>
 
       <section className="py-16 px-6 border-t border-white/[0.06]">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <h2 className="text-3xl font-black mb-3 flex items-center gap-3">
-              <Scale size={26} className="text-emerald-300" /> Licences travel
-              with the files
-            </h2>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              The renders on this page are of the manufacturers' published
-              files, not our designs. Each board's folder carries an
-              ATTRIBUTION.md naming the manufacturer, the licence and, for every
-              file, its official source and SHA-256. The licences in the mirror
-              are CC BY-SA, CC BY, MIT and Apache-2.0.
-            </p>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li className="flex gap-2">
-                <BadgeCheck
-                  size={16}
-                  className="text-emerald-300 shrink-0 mt-0.5"
-                />
-                Files are copied unmodified, so they can be checked against the
-                manufacturer's own.
-              </li>
-              <li className="flex gap-2">
-                <BadgeCheck
-                  size={16}
-                  className="text-emerald-300 shrink-0 mt-0.5"
-                />
-                92 boards without a confirmed redistribution licence are linked,
-                never copied.
-              </li>
-            </ul>
-          </div>
-          <figure className="rounded-2xl overflow-hidden border border-white/10">
-            <Picture
-              file="open-hardware-attribution"
-              width={1440}
-              height={1000}
-              alt="GitHub view of the Feather RP2040 ATTRIBUTION.md listing licence, sources and SHA-256 digests"
-            />
-          </figure>
-        </div>
-      </section>
-
-      <section className="py-16 px-6 border-t border-white/[0.06]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-black mb-8">
             Work with us on open hardware
@@ -591,7 +791,7 @@ export default function OpenHardware() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold bg-orange-500 text-black hover:bg-orange-400"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold bg-orange-500 hover:bg-orange-600 text-white"
             >
               Talk to us <ArrowRight size={16} />
             </Link>

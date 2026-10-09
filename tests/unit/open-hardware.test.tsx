@@ -3,10 +3,10 @@
 /**
  * /open-hardware is built from real artefacts, so its promises are about
  * files: every image it names ships as an optimized JPEG with a WebP sibling,
- * the walkthrough video ships with its poster and captions, and the captions
- * never run past the video. The render checks hold the accessibility side:
- * alt text and intrinsic size on every image, and a captions track that does
- * not load the video until it is played.
+ * both videos ship with a poster and captions, and the captions never run past
+ * their video. The render checks hold the accessibility side: alt text and
+ * intrinsic size on every image, and captions tracks that do not load a video
+ * until it is played. The licence counts must add up to the mirrored boards.
  */
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen } from "@testing-library/react";
@@ -32,18 +32,23 @@ vi.mock("wouter", () => ({
 
 import OpenHardware, {
   GALLERY,
+  LICENCE_TERMS,
+  STATS,
+  USAGE,
   VALIDATION,
 } from "../../client/src/pages/OpenHardware";
 
 const media = path.resolve(__dirname, "../../client/public/media");
-const VIDEO_SECONDS = 68.8;
+const VIDEOS = [
+  { name: "open-hardware-tour", seconds: 68.8, cues: 13 },
+  { name: "open-hardware-howto", seconds: 45.3, cues: 8 },
+];
 
 const pageImages = [
+  "open-hardware-terminal-mirror",
+  ...USAGE.map(u => u.file),
   ...GALLERY.flatMap(g => g.shots.map(s => s.file)),
   ...VALIDATION.map(v => v.file),
-  "open-hardware-terminal-query",
-  "open-hardware-terminal-mirror",
-  "open-hardware-attribution",
 ];
 
 afterEach(() => {
@@ -60,27 +65,31 @@ describe("open hardware media", () => {
     expect(missing).toEqual([]);
   });
 
-  it("ships the video with its poster and captions", () => {
-    for (const file of [
-      "open-hardware-tour.mp4",
-      "open-hardware-tour-poster.jpg",
-      "open-hardware-tour.vtt",
-    ]) {
-      expect(existsSync(path.join(media, file)), file).toBe(true);
+  it("ships each video with its poster and captions", () => {
+    for (const { name } of VIDEOS) {
+      for (const file of [`${name}.mp4`, `${name}-poster.jpg`, `${name}.vtt`]) {
+        expect(existsSync(path.join(media, file)), file).toBe(true);
+      }
     }
   });
 
-  it("keeps the captions inside the video", () => {
-    const vtt = readFileSync(
-      path.join(media, "open-hardware-tour.vtt"),
-      "utf8"
+  it("keeps each video's captions inside the video", () => {
+    for (const { name, seconds, cues } of VIDEOS) {
+      const vtt = readFileSync(path.join(media, `${name}.vtt`), "utf8");
+      expect(vtt.startsWith("WEBVTT"), name).toBe(true);
+      const ends = [...vtt.matchAll(/--> (\d\d):(\d\d):(\d\d\.\d{3})/g)].map(
+        m => Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3])
+      );
+      expect(ends.length, name).toBe(cues);
+      expect(Math.max(...ends), name).toBeLessThanOrEqual(seconds);
+    }
+  });
+
+  it("counts every mirrored board under exactly one licence", () => {
+    const boards = STATS.find(s => s.label.startsWith("boards with"));
+    expect(LICENCE_TERMS.reduce((n, l) => n + l.boards, 0)).toBe(
+      Number(boards?.value)
     );
-    expect(vtt.startsWith("WEBVTT")).toBe(true);
-    const ends = [...vtt.matchAll(/--> (\d\d):(\d\d):(\d\d\.\d{3})/g)].map(
-      m => Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3])
-    );
-    expect(ends.length).toBe(13);
-    expect(Math.max(...ends)).toBeLessThanOrEqual(VIDEO_SECONDS);
   });
 
   it("names a real design file and a licence for every rendered board", () => {
@@ -111,12 +120,27 @@ describe("open hardware page", () => {
       expect(Number(img.getAttribute("height"))).toBeGreaterThan(0);
     }
 
-    const video = container.querySelector("video");
-    expect(video?.getAttribute("preload")).toBe("none");
-    expect(video?.getAttribute("poster")).toBe(
-      "/media/open-hardware-tour-poster.jpg"
+    const videos = [...container.querySelectorAll("video")];
+    expect(videos.map(v => v.getAttribute("poster"))).toEqual(
+      VIDEOS.map(v => `/media/${v.name}-poster.jpg`)
     );
-    expect(video?.querySelector('track[kind="captions"]')).not.toBeNull();
+    for (const video of videos) {
+      expect(video.getAttribute("preload")).toBe("none");
+      expect(video.querySelector('track[kind="captions"]')).not.toBeNull();
+    }
+  });
+
+  it("numbers the six usage steps in order", () => {
+    render(<OpenHardware />);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "How to use the files" })
+    ).toBeInTheDocument();
+    expect(USAGE.length).toBe(6);
+    for (const step of USAGE) {
+      expect(
+        screen.getByRole("heading", { level: 3, name: step.title })
+      ).toBeInTheDocument();
+    }
   });
 
   it("gives every gallery group a second-level heading", () => {
