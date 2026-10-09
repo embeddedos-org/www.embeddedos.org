@@ -263,11 +263,11 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
     sections: [
       {
         heading: "Billing split: eVera back, stack still queued",
-        text: "eVera's Actions billing is restored — 9/9 Test jobs green — so the day-one #52 fix (tools that accepted parameters and ignored them: screenshot region, weather units, broker action, the \"rest\" routing bug) landed with tests and CI verification. embeddedos-stack is still 0-step killed, so its improvements land docs-only and CI-unverified per standing policy, including a new legacy-CPE rule for the KEV gate: D-Link DAP-1360 CVE-2026-95675 (9.8, device retired 2020) means unpatchable hardware routes to isolation recommendations, never a blocked build.",
+        text: 'eVera\'s Actions billing is restored — 9/9 Test jobs green — so the day-one #52 fix (tools that accepted parameters and ignored them: screenshot region, weather units, broker action, the "rest" routing bug) landed with tests and CI verification. embeddedos-stack is still 0-step killed, so its improvements land docs-only and CI-unverified per standing policy, including a new legacy-CPE rule for the KEV gate: D-Link DAP-1360 CVE-2026-95675 (9.8, device retired 2020) means unpatchable hardware routes to isolation recommendations, never a blocked build.',
       },
       {
         heading: "eCAD: the generator defect",
-        text: "The KiCad export generator was emitting 4 stray \";\" comment lines per board — a parser-visible defect in generated files. Fixed at the generator and normalized across 70 files (431 lines stripped, verified no \";\" outside string literals), with a never-again unit test scanning every .kicad_pcb/.kicad_sch on every run. The 139 other KiCad files in the org and the vendor mirror lane were verified clean and untouched.",
+        text: 'The KiCad export generator was emitting 4 stray ";" comment lines per board — a parser-visible defect in generated files. Fixed at the generator and normalized across 70 files (431 lines stripped, verified no ";" outside string literals), with a never-again unit test scanning every .kicad_pcb/.kicad_sch on every run. The 139 other KiCad files in the org and the vendor mirror lane were verified clean and untouched.',
       },
       {
         heading: "MCP security week: six classes, named controls",
