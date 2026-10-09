@@ -14,9 +14,9 @@ const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
 export const STATS = [
   { value: "322", label: "board records", color: "#F97316" },
   { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
-  { value: "685", label: "openly licensed files mirrored", color: "#5EE08E" },
+  { value: "724", label: "openly licensed files mirrored", color: "#5EE08E" },
   {
-    value: "220",
+    value: "230",
     label: "boards with redistributable files",
     color: "#A78BFA",
   },
@@ -25,7 +25,7 @@ export const STATS = [
 export const RULES = [
   {
     title: "The licence allows it",
-    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 102 boards keep their official link and digest, and nothing else.",
+    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 92 boards keep their official link and digest, and nothing else.",
   },
   {
     title: "The bytes are the verified bytes",
@@ -89,7 +89,7 @@ export const GALLERY: ReadonlyArray<{
   {
     heading: "Eagle boards",
     intro:
-      "389 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
+      "414 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
     shots: [
       {
         file: "open-hardware-eagle-feather-rp2040",
@@ -378,8 +378,8 @@ export default function OpenHardware() {
           </h2>
           <p className="text-gray-300 max-w-3xl mb-10 leading-relaxed">
             The database records where each board's files live and a SHA-256 of
-            the bytes that were checked. The mirror keeps 685 of those files,
-            544 CAD files and 141 documents, 742 MB from 220 boards, and copies
+            the bytes that were checked. The mirror keeps 724 of those files,
+            578 CAD files and 146 documents, 779 MB from 230 boards, and copies
             a file only when all three of these hold.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
@@ -415,7 +415,7 @@ export default function OpenHardware() {
                 file="open-hardware-terminal-mirror"
                 width={1500}
                 height={541}
-                alt="Terminal output of mirror.py check reporting 685 files for 220 boards and 0 problems, and 24 passing tests"
+                alt="Terminal output of mirror.py check reporting 724 files for 230 boards and 0 problems, and 26 passing tests"
               />
               <figcaption className="text-sm text-gray-400 px-4 py-3">
                 The check CI runs: every redistributable file present, every
@@ -536,8 +536,8 @@ export default function OpenHardware() {
                   size={16}
                   className="text-emerald-300 shrink-0 mt-0.5"
                 />
-                102 boards without a confirmed redistribution licence are
-                linked, never copied.
+                92 boards without a confirmed redistribution licence are linked,
+                never copied.
               </li>
             </ul>
           </div>
@@ -596,7 +596,7 @@ export default function OpenHardware() {
               Talk to us <ArrowRight size={16} />
             </Link>
             <a
-              href={`${REPO}/tree/master/boards/cad`}
+              href={`${REPO}/tree/master/boards`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"

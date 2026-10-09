@@ -718,7 +718,7 @@ export default function EcadHardware() {
               href="/open-hardware"
               className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-lg text-sm font-semibold border border-emerald-400/30 bg-emerald-400/10 text-emerald-300 hover:border-emerald-400/60"
             >
-              See 685 real board design files, rendered and verified{" "}
+              See 724 real board design files, rendered and verified{" "}
               <ArrowRight size={14} />
             </Link>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
