@@ -1585,6 +1585,27 @@ export const PAGES: SearchEntry[] = [
     ],
   },
   {
+    title: "Open Hardware — Verified Development-Board Design Files",
+    path: "/open-hardware",
+    tags: [
+      "open hardware",
+      "cad",
+      "kicad",
+      "eagle",
+      "gerber",
+      "step",
+      "pcb",
+      "schematic",
+      "development boards",
+      "licence",
+      "validation",
+      "ngspice",
+      "verilog",
+      "universities",
+      "partnerships",
+    ],
+  },
+  {
     title: "Architecture — 3D Block Diagrams & System Design",
     path: "/architecture",
     tags: [

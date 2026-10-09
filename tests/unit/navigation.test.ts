@@ -140,6 +140,7 @@ const HUB_MEMBERS: Array<{ hub: string; members: string[] }> = [
       "/eni",
       "/eai-edge",
       "/ecad-hardware",
+      "/open-hardware",
       "/aerospace",
       "/health",
       "/health-compare",

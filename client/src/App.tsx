@@ -433,6 +433,7 @@ const ArticlePage = lazyPage<{ slug?: string }>(
     "/article-newsletter-issue-01",
     "/article-this-week-in-embeddedos-2026-10-07",
     "/article-this-week-in-embeddedos-2026-10-08",
+    "/article-this-week-in-embeddedos-2026-10-09",
   ]
 );
 const Downloads = lazyPage("/downloads", () => import("./pages/Downloads"));
@@ -481,6 +482,10 @@ const WhatWeDo = lazyPage("/what-we-do", () => import("./pages/WhatWeDo"));
 const EcadHardware = lazyPage(
   "/ecad-hardware",
   () => import("./pages/EcadHardware")
+);
+const OpenHardware = lazyPage(
+  "/open-hardware",
+  () => import("./pages/OpenHardware")
 );
 const Architecture = lazyPage(
   "/architecture",
@@ -1079,6 +1084,11 @@ function Router() {
           <ArticlePage slug="this-week-in-embeddedos-2026-10-08" />
         </Suspense>
       </Route>
+      <Route path="/article-this-week-in-embeddedos-2026-10-09">
+        <Suspense fallback={<PageLoader />}>
+          <ArticlePage slug="this-week-in-embeddedos-2026-10-09" />
+        </Suspense>
+      </Route>
       <Route path="/downloads">
         <Suspense fallback={<PageLoader />}>
           <Downloads />
@@ -1162,6 +1172,11 @@ function Router() {
       <Route path="/ecad-hardware">
         <Suspense fallback={<PageLoader />}>
           <EcadHardware />
+        </Suspense>
+      </Route>
+      <Route path="/open-hardware">
+        <Suspense fallback={<PageLoader />}>
+          <OpenHardware />
         </Suspense>
       </Route>
       <Route path="/architecture">

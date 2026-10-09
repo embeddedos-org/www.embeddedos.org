@@ -1,0 +1,53 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.400
+Open hardware you can verify: board design files from 29 hardware ecosystems, checked from the bytes, mirrored with their licences.
+
+2
+00:00:04.400 --> 00:00:10.300
+332 development boards, one record each. Every format is true, false or unknown, and true needs bytes that were retrieved.
+
+3
+00:00:10.300 --> 00:00:16.200
+4,015 openly licensed CAD files from 253 boards, in the repository: each board's whole design, byte for byte from the manufacturer. 1,387 design sources, 2,140 Gerber and drill files, 488 3D models. 0 problems in mirror.py check.
+
+4
+00:00:16.200 --> 00:00:21.600
+KiCad PCB: SparkFun IoT RedBoard RP2350, rendered from the vendor's file. CC BY-SA 4.0.
+
+5
+00:00:21.600 --> 00:00:26.500
+KiCad schematic: SparkFun Thing Plus ESP32-S3. CC BY-SA 4.0.
+
+6
+00:00:26.500 --> 00:00:31.400
+Eagle board files drawn layer by layer: Adafruit Feather RP2040 and SparkFun RedBoard Turbo. CC BY-SA.
+
+7
+00:00:31.400 --> 00:00:36.300
+Gerber fabrication set: SparkFun Edge, ten layers, top and bottom. CC BY-SA 4.0.
+
+8
+00:00:36.300 --> 00:00:41.700
+STEP model: BeagleBone AI-64, 163,393 triangles. CC BY 4.0.
+
+9
+00:00:41.700 --> 00:00:46.100
+STEP model: M5Stack Stamp-S3, tessellated with OpenCASCADE. MIT.
+
+10
+00:00:46.100 --> 00:00:50.500
+25 boards with a verified 3D model: PocketBeagle, BeagleBone AI-64, BeagleBone AI, Artemis, Pico Vision, Stamp-S3.
+
+11
+00:00:50.500 --> 00:00:57.900
+Our own designs, checked by simulation: a robotic joint in MuJoCo, a 48 V servo supply in ngspice, a UART in Icarus Verilog.
+
+12
+00:00:57.900 --> 00:01:02.300
+Licences travel with the files: an ATTRIBUTION.md for every board, a source link and digest for every file.
+
+13
+00:01:02.300 --> 00:01:08.800
+Use it in a course, a lab or a product. Universities: course labs, research, student projects. Companies: reference designs, joint grant proposals.
