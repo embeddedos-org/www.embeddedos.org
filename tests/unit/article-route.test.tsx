@@ -28,8 +28,14 @@ const SLUGS = Object.keys(ARTICLE_BODIES);
 
 describe("every article renders", () => {
   it("has bodies to test", () => {
-    // Without this the parameterised suite below is empty and green.
-    expect(SLUGS.length).toBe(10);
+    // The parameterised suite below renders every article-routed CONTENT
+    // entry. This guard fails if the suite would be empty or a body is
+    // missing, without a hardcoded count to bump on every new article.
+    const articleRoutes = CONTENT.filter(item =>
+      item.href.startsWith("/article-")
+    );
+    expect(SLUGS.length).toBeGreaterThan(0);
+    expect(SLUGS.length).toBe(articleRoutes.length);
   });
 
   it.each(SLUGS)("%s renders title, lede and all sections", slug => {
