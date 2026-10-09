@@ -446,6 +446,17 @@ export const CONTENT: readonly ContentItem[] = [
     href: "/article-this-week-in-embeddedos-2026-10-08",
     tags: ["Digest", "Newsletter", "Zephyr", "Security"],
   },
+  {
+    slug: "this-week-in-embeddedos-2026-10-09",
+    kind: "newsletter",
+    date: "2026-10-09",
+    badge: "Digest",
+    title: "This week in EmbeddedOS — 2026-10-09",
+    summary:
+      "eVera CI restored (fail-closed #52 fix), eCAD KiCad generator fix across 70 files, MCP six-class taxonomy, silicon week (Sapphire RV64, ESP32-S31, DAL-A SBC, S100P), device-CVE series.",
+    href: "/article-this-week-in-embeddedos-2026-10-09",
+    tags: ["Digest", "Newsletter", "Security", "Hardware"],
+  },
 ];
 
 /** Newest first, ties broken by title so the order is total and stable. */

@@ -258,6 +258,35 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
     ],
   },
+  "this-week-in-embeddedos-2026-10-09": {
+    lede: "The billing split resolves: eVera's CI is restored and ships a fail-closed parameter fix, while embeddedos-stack keeps landing docs-only. eCAD normalizes 70 KiCad files after a generator defect, MCP security gets a six-class taxonomy, and the silicon roster grows — Sapphire RV64, ESP32-S31, a DAL-A credit card, and the S100P.",
+    sections: [
+      {
+        heading: "Billing split: eVera back, stack still queued",
+        text: "eVera's Actions billing is restored — 9/9 Test jobs green — so the day-one #52 fix (tools that accepted parameters and ignored them: screenshot region, weather units, broker action, the \"rest\" routing bug) landed with tests and CI verification. embeddedos-stack is still 0-step killed, so its improvements land docs-only and CI-unverified per standing policy, including a new legacy-CPE rule for the KEV gate: D-Link DAP-1360 CVE-2026-95675 (9.8, device retired 2020) means unpatchable hardware routes to isolation recommendations, never a blocked build.",
+      },
+      {
+        heading: "eCAD: the generator defect",
+        text: "The KiCad export generator was emitting 4 stray \";\" comment lines per board — a parser-visible defect in generated files. Fixed at the generator and normalized across 70 files (431 lines stripped, verified no \";\" outside string literals), with a never-again unit test scanning every .kicad_pcb/.kicad_sch on every run. The 139 other KiCad files in the org and the vendor mirror lane were verified clean and untouched.",
+      },
+      {
+        heading: "MCP security week: six classes, named controls",
+        text: "The Enterprise MCP Guide's six attack classes (prompt injection, tool description poisoning, OAuth token theft, excessive tool permissions, shadow MCP servers, tool impersonation) are now mapped to controls across eSec, eIPC, eVera, and eosllm — fail-closed defaults, allowlists, no intra-network trust. Context: ClawSecure's Vol 2 counts 68 CVEs in a month, and the Mohiuddin protocol-pivoting research shows the same MCP flaw class at Google, JPMorgan, and two governments. The threat model is no longer theoretical.",
+      },
+      {
+        heading: "Silicon week",
+        text: "Four additions to the tracking roster: Efinix Sapphire (RISC-V RV64, 2.5W) as the low-power FPGA+CPU reference; ESP32-S31 preview support in eos board definitions and eFirmware's v6.1-rc1 bring-up notes; the Northrop Grumman Italia + DDC-I Deos credit-card A53 SBC — full DO-178C/DO-254 DAL-A artifacts, FACE-conformant — as the named commercial benchmark for the eos-aero safety case; and the D-Robotics S100P (6xA78AE plus lockstep R52+) as the dual-brain safety reference in silicon.",
+      },
+      {
+        heading: "The device-CVE series keeps score",
+        text: "The monthly \"Open-Source Device CVEs\" series is now the org's standing input to the KEV/CRA workflow. This week's datapoints: Moxa's CVE-2026-86326 (10.0, unauthenticated root on EDR-810) as fail-closed evidence in eBoot's threat model, and the JPEG decoder bad-picture fix (GHSA-v6r2-f6p2-88cj) logged for the camera-adjacent firmware watch list.",
+      },
+      {
+        heading: "In the org",
+        text: "EoStudio's coverage ratchet (#36) closed — both gates at 35 with CI green. ebuild gains an `ebuild test` command (ctest-to-pytest auto-detect, fail-closed exit codes). eNet documents the hardware bridge surface (mcp2serial/mcp2mqtt/modbus-mcp/probe-rs/xds110); eOffice states its offline-first guarantees; eFlow gets its llms.txt; the open-hardware lane moves in step — Kartikey's /open-hardware PR #92 passed the full acceptance review (self-hosted images, WebP siblings, caption tracks, search-index entry, green CI) and the eCAD KiCad work above keeps its evidence current.",
+      },
+    ],
+  },
 };
 
 /** The body for a slug, or undefined when the item is a link-out. */
