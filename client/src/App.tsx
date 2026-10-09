@@ -482,6 +482,10 @@ const EcadHardware = lazyPage(
   "/ecad-hardware",
   () => import("./pages/EcadHardware")
 );
+const OpenHardware = lazyPage(
+  "/open-hardware",
+  () => import("./pages/OpenHardware")
+);
 const Architecture = lazyPage(
   "/architecture",
   () => import("./pages/Architecture")
@@ -1162,6 +1166,11 @@ function Router() {
       <Route path="/ecad-hardware">
         <Suspense fallback={<PageLoader />}>
           <EcadHardware />
+        </Suspense>
+      </Route>
+      <Route path="/open-hardware">
+        <Suspense fallback={<PageLoader />}>
+          <OpenHardware />
         </Suspense>
       </Route>
       <Route path="/architecture">
