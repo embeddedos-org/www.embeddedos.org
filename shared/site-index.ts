@@ -1304,7 +1304,15 @@ export const PAGES: SearchEntry[] = [
   {
     title: "Article: This week in EmbeddedOS — 2026-10-08",
     path: "/article-this-week-in-embeddedos-2026-10-08",
-    tags: ["weekly", "digest", "embeddedos", "news", "zephyr", "security", "article"],
+    tags: [
+      "weekly",
+      "digest",
+      "embeddedos",
+      "news",
+      "zephyr",
+      "security",
+      "article",
+    ],
   },
   {
     title: "Downloads",

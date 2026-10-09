@@ -29,7 +29,7 @@ const SLUGS = Object.keys(ARTICLE_BODIES);
 describe("every article renders", () => {
   it("has bodies to test", () => {
     // Without this the parameterised suite below is empty and green.
-    expect(SLUGS.length).toBe(10);
+    expect(SLUGS.length).toBe(11);
   });
 
   it.each(SLUGS)("%s renders title, lede and all sections", slug => {
