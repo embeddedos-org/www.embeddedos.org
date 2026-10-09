@@ -13,7 +13,7 @@ export const STATS = [
   { value: "322", label: "board records", color: "#F97316" },
   { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
   {
-    value: "583",
+    value: "3,706",
     label: "openly licensed CAD files mirrored",
     color: "#5EE08E",
   },
@@ -30,12 +30,12 @@ export const RULES = [
     body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 88 boards keep their official link and digest, and nothing else.",
   },
   {
-    title: "The bytes are the verified bytes",
-    body: "A file is copied only when its SHA-256 equals the digest the database recorded when it was retrieved, so the mirror can never hold something other than what was checked.",
+    title: "The bytes are the manufacturer's bytes",
+    body: "Each board's whole design is copied: every CAD file at the commit of the manufacturer's repository its record pins. Each file must match the git blob ID at that commit, or the SHA-256 the database recorded, so the mirror holds the manufacturer's file exactly.",
   },
   {
     title: "The bytes are CAD",
-    body: "Each file is identified from its content: Eagle, KiCad and Altium sources, Gerber and drill files, STEP, STL and DXF models. Schematic PDFs, BOMs and datasheets stay as links, and a web page or JSON is refused.",
+    body: "Each file is identified from its content: Eagle, KiCad, Altium, OrCAD, Allegro and PADS sources, Gerber and drill files, STEP, STL and other 3D models. Archives are unpacked to their CAD files. PDFs, BOMs, readmes and anything else are left out.",
   },
 ] as const;
 
@@ -91,7 +91,7 @@ export const GALLERY: ReadonlyArray<{
   {
     heading: "Eagle boards",
     intro:
-      "414 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
+      "679 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
     shots: [
       {
         file: "open-hardware-eagle-feather-rp2040",
@@ -241,23 +241,23 @@ export const USAGE = [
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: "A partial clone downloads only the folder you name. The SparkFun IoT RedBoard RP2350 took 10 seconds and 5.3 MB, against 678 MB for every board, and shasum gives the same SHA-256 as its ATTRIBUTION.md.",
+    body: "A partial clone downloads only the folder you name. The SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 9 seconds and 101 MB, against 3.96 GB for every board, and shasum gives the same SHA-256 as its ATTRIBUTION.md.",
     code: [
       "git clone --filter=blob:none --sparse --depth 1 https://github.com/embeddedos-org/eCAD-Hardware-Products.git",
       "cd eCAD-Hardware-Products",
       "git sparse-checkout set --no-cone /boards/cad/sparkfun/iot-redboard-rp2350/",
-      "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/*",
+      "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/Hardware/*.kicad_sch",
     ],
     file: "open-hardware-terminal-fetch",
     width: 1600,
-    height: 810,
-    alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, 3.6 MB of files, with SHA-256 digests and its CC BY-SA 4.0 licence",
+    height: 950,
+    alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, 84 MB of files, listing its KiCad project and four schematic sheets with SHA-256 digests and its CC BY-SA 4.0 licence",
     caption:
       "Recorded on the pull request branch before the mirror reached master, which is why it names a branch and a fork.",
   },
   {
     title: "Open the design in KiCad",
-    body: "The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. The Eagle .brd and .sch files, 414 of the 583, go through KiCad's EAGLE importer.",
+    body: "The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. Its folder holds the whole project: the project file, the PCB, the root sheet and its three sub-sheets. The Eagle .brd and .sch files, 679 of the 3,706, go through KiCad's EAGLE importer.",
     code: [],
     file: "open-hardware-kicad-redboard-rp2350",
     width: 1596,
@@ -268,15 +268,15 @@ export const USAGE = [
   },
   {
     title: "Send the Gerbers to a board house",
-    body: "A Gerber archive is what a fab asks for: copper, solder mask, silkscreen and paste for each side, the board outline and the Excellon drill file. Upload the zip as it is. Here the open-source whats-that-gerber library names each layer of the SparkFun Edge archive.",
+    body: "A Gerber set is what a fab asks for: copper, solder mask, silkscreen and paste for each side, the board outline and the Excellon drill file. Zip the folder and upload it. Here the open-source whats-that-gerber library names each layer of the SparkFun Edge set.",
     code: [
-      "cd boards/cad/sparkfun/edge/cad",
-      "unzip -Z1 SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers.zip | xargs node gerber-layers.mjs",
+      "cd boards/cad/sparkfun/edge/cad/Hardware/SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers",
+      "ls | xargs node gerber-layers.mjs",
     ],
     file: "open-hardware-terminal-gerber",
     width: 1500,
-    height: 706,
-    alt: "Terminal output naming the ten layers of the SparkFun Edge Gerber archive: copper, silkscreen, solder paste and solder mask for each side, the outline and the drill file",
+    height: 805,
+    alt: "Terminal output listing the SparkFun Edge design folder and naming the ten layers of its Gerber set: copper, silkscreen, solder paste and solder mask for each side, the outline and the drill file",
     caption:
       "Ten files, ten layers. The rendered board is in the Gerber section below.",
   },
@@ -285,18 +285,18 @@ export const USAGE = [
     body: "Import the STEP into FreeCAD, Fusion or SolidWorks and model the case around it. Measured from the geometry with OpenCASCADE, the BeagleBone AI-64 is 102.5 × 82.6 × 36.6 mm with its heatsink and connectors, and the PocketBeagle is 56.4 × 35.0 mm.",
     code: [
       "cd boards/cad",
-      'for f in beagleboard/{beaglebone-ai-64,pocketbeagle}/cad/*.st*p; do node measure-step.mjs "$f"; done',
+      'for f in beagleboard/beaglebone-ai-64/cad/hw/*.stp beagleboard/pocketbeagle/cad/models/*.step; do node measure-step.mjs "$f"; done',
     ],
     file: "open-hardware-terminal-step",
     width: 1600,
-    height: 380,
-    alt: "Terminal output of four STEP models measured with OpenCASCADE: BeagleBone AI-64 102.5 by 82.6 by 36.6 mm, PocketBeagle, SparkFun Artemis and the Qwiic directional pad",
+    height: 350,
+    alt: "Terminal output of three STEP models measured with OpenCASCADE: BeagleBone AI-64 102.5 by 82.6 by 36.6 mm, PocketBeagle 56.4 by 35.0 mm and the SparkFun Artemis module",
     caption:
       "Overall size in millimetres, from each manufacturer's own STEP file.",
   },
   {
     title: "Keep the credit and the licence",
-    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence and every file's official source and SHA-256. The 88 boards without a confirmed redistribution licence are linked, never copied.",
+    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The 88 boards without a confirmed redistribution licence are linked, never copied.",
     code: [],
     file: "open-hardware-attribution",
     width: 1440,
@@ -522,10 +522,10 @@ export default function OpenHardware() {
             How a file gets into the mirror
           </h2>
           <p className="text-gray-300 max-w-3xl mb-10 leading-relaxed">
-            The database records where each board's files live and a SHA-256 of
-            the bytes that were checked. The mirror keeps 583 of those files,
-            every one a CAD file, 678 MB from 232 boards, and copies a file only
-            when all three of these hold.
+            The database records where each board's files live and the commit of
+            the manufacturer's repository they come from. The mirror keeps each
+            board's whole design, 3,706 CAD files and 3.96 GB from 232 boards,
+            and copies a file only when all three of these hold.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             {RULES.map((r, i) => (
@@ -547,8 +547,8 @@ export default function OpenHardware() {
             <Picture
               file="open-hardware-terminal-mirror"
               width={1400}
-              height={508}
-              alt="Terminal output of mirror.py check reporting 583 CAD files for 232 boards and 0 problems, 36 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md"
+              height={640}
+              alt="Terminal output of mirror.py check reporting 3706 CAD files for 232 boards and 0 problems, 52 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md"
             />
             <figcaption className="text-sm text-gray-400 px-4 py-3">
               The check CI runs: every redistributable CAD file present, every

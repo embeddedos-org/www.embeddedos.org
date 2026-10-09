@@ -10,7 +10,7 @@ Open hardware you can verify: board design files from 29 hardware ecosystems, ch
 
 3
 00:00:10.300 --> 00:00:16.200
-583 openly licensed CAD files from 232 boards, in the repository: Eagle, KiCad, Altium, Gerber, drill, STEP, STL and DXF. 0 problems in mirror.py check.
+3,706 openly licensed CAD files from 232 boards, in the repository: each board's whole design, byte for byte from the manufacturer. 1,299 design sources, 1,920 Gerber and drill files, 487 3D models. 0 problems in mirror.py check.
 
 4
 00:00:16.200 --> 00:00:21.600

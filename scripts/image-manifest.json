@@ -175,8 +175,8 @@
       "webpSha256": "21b233f3f4c641e009fd40904c18401749c33d59f96f3f2176475f3f72b3d254"
     },
     "open-hardware-attribution.jpg": {
-      "sha256": "7c4540a80406f9d7ef8823f0cb741b2de0b835e2b1e8f69e9c85e08fdead38f3",
-      "webpSha256": "c35b8f9d65fb40ae5cc36393fb5de9371f489b434f8e98c6357410ae32e1137a"
+      "sha256": "b1ad830ec07d78c5147c1e82e85510778e9dfdfeee770af031a80f018921237d",
+      "webpSha256": "6373a33c591e12b415b05a42aa51a6f7611c1ee87633f7ea04a5888baf3be194"
     },
     "open-hardware-eagle-feather-rp2040.jpg": {
       "sha256": "59e700260064477850e828fa1e580360679aeb7b39b67b28ad222d0626894fdb",
@@ -215,8 +215,8 @@
       "webpSha256": "eb05dd658849a9a08b3f169c98ed9f8a12e181de18641f809c469532806f89e2"
     },
     "open-hardware-terminal-mirror.jpg": {
-      "sha256": "656926c6c798435c86b6fc3d0da965ca95cd48c157b441568e07b880c34cebb3",
-      "webpSha256": "fcbe5da52a98661b703232a720983d09175728931243562cb73d3de8456c2969"
+      "sha256": "957163d04616c3424900cec9b69885e090b0e7a5cb92e68426609674ba24b0cc",
+      "webpSha256": "254ee8ee45992a35394458e48bdcc7f79e5cf84b6ea08f05aec3380308cd11aa"
     },
     "open-hardware-terminal-query.jpg": {
       "sha256": "9fe534eebc2fc62c85d4dc1d64048f312aaa2508f77240b8d4b26dadc17db6cd",
@@ -231,16 +231,16 @@
       "webpSha256": "d63458b39910def34cbfb35880cb250fd7a80cb928a47e0e2900a4cfe03c88a2"
     },
     "open-hardware-terminal-fetch.jpg": {
-      "sha256": "aa37ca8e38deaa83ff5571771f7115210c1268c2af49b622721937c784b68b87",
-      "webpSha256": "5da76f20a1a3a71fb659a139d6fd30b8411ec4e36d8e250eea1adaaf8ea8dbd6"
+      "sha256": "f1c0f24b9148221745d92da6686f286abeadc9bec3eab241f98faa12cb06729a",
+      "webpSha256": "d99421106aa531ecf2f8d1a8658eb9dcc849d3f6f7a44db85054ef642601bbdf"
     },
     "open-hardware-terminal-gerber.jpg": {
-      "sha256": "779b267bd70d2164b882cfd962fb7ef58b5feab2aa2c8665c457709a58312882",
-      "webpSha256": "791e3f0ee58efca56736ddcab13ba0517875818897c753869e7cd0f79ece68c7"
+      "sha256": "bd75306a5244ad67282044f905d30daf53df00214770a12457d7ff4bc68f0377",
+      "webpSha256": "f45d4e07d1ce7f51b0119265f9b21f738d1e914efe7bb5fc288402378f645313"
     },
     "open-hardware-terminal-step.jpg": {
-      "sha256": "0078207902c0c4c3cd1cdae2f1afb1f65b1503ddda8d1711fb272fc69c1bcf5d",
-      "webpSha256": "d7fe69bd2c329337ccfaaa03d1e1c525d8469f393a3cca2f58c3f8a5f66c5250"
+      "sha256": "df43ac9c344e856b34c29728d3d60a0dc6012df580d1828c3e021141f478f321",
+      "webpSha256": "cceb92368038f8ba83f7961c6d092ae91fe64768ec00cde72753cfdf87100504"
     }
   }
 }

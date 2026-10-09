@@ -10,15 +10,15 @@ Step 1, find a board. Query the 322 records by format, licence or vendor: 25 boa
 
 3
 00:00:09.800 --> 00:00:16.200
-Step 2, fetch one board. A sparse clone of the SparkFun IoT RedBoard RP2350 takes 10 seconds and 5.3 MB instead of 678 MB, and shasum matches its ATTRIBUTION.md.
+Step 2, fetch one board. A sparse clone of the SparkFun IoT RedBoard RP2350, its whole KiCad project in 33 files, takes 9 seconds and 101 MB instead of 3.96 GB, and shasum matches its ATTRIBUTION.md.
 
 4
 00:00:16.200 --> 00:00:22.100
-Step 3, open the design in KiCad. The RedBoard files are KiCad 8 projects, and Eagle files import into KiCad as well.
+Step 3, open the design in KiCad. The RedBoard's folder is its whole KiCad 8 project: project file, PCB, root sheet and three sub-sheets.
 
 5
 00:00:22.100 --> 00:00:28.000
-Step 4, send the Gerbers to a board house. The SparkFun Edge archive holds copper, solder mask, silkscreen and paste for each side, the outline and the drill file.
+Step 4, send the Gerbers to a board house. The SparkFun Edge Gerber set holds copper, solder mask, silkscreen and paste for each side, the outline and the drill file: zip the folder and upload it.
 
 6
 00:00:28.000 --> 00:00:33.400
@@ -30,4 +30,4 @@ Step 6, keep the credit and the licence. CC BY-SA, 212 boards: credit and share 
 
 8
 00:00:39.800 --> 00:00:45.300
-583 CAD files from 232 boards, every one credited. embeddedos.org/open-hardware.
+3,706 CAD files from 232 boards, every one credited. embeddedos.org/open-hardware.
