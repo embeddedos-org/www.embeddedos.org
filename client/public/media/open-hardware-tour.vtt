@@ -6,11 +6,11 @@ Open hardware you can verify: board design files from 29 hardware ecosystems, ch
 
 2
 00:00:04.400 --> 00:00:10.300
-322 development boards, one record each. Every format is true, false or unknown, and true needs bytes that were retrieved.
+332 development boards, one record each. Every format is true, false or unknown, and true needs bytes that were retrieved.
 
 3
 00:00:10.300 --> 00:00:16.200
-3,706 openly licensed CAD files from 232 boards, in the repository: each board's whole design, byte for byte from the manufacturer. 1,299 design sources, 1,920 Gerber and drill files, 487 3D models. 0 problems in mirror.py check.
+4,015 openly licensed CAD files from 253 boards, in the repository: each board's whole design, byte for byte from the manufacturer. 1,387 design sources, 2,140 Gerber and drill files, 488 3D models. 0 problems in mirror.py check.
 
 4
 00:00:16.200 --> 00:00:21.600

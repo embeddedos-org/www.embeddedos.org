@@ -10,15 +10,15 @@ import {
 const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
 
 export const STATS = [
-  { value: "322", label: "board records", color: "#F97316" },
+  { value: "332", label: "board records", color: "#F97316" },
   { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
   {
-    value: "3,706",
+    value: "4,015",
     label: "openly licensed CAD files mirrored",
     color: "#5EE08E",
   },
   {
-    value: "232",
+    value: "253",
     label: "boards with their CAD files mirrored",
     color: "#A78BFA",
   },
@@ -27,7 +27,7 @@ export const STATS = [
 export const RULES = [
   {
     title: "The licence allows it",
-    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 88 boards keep their official link and digest, and nothing else.",
+    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 77 boards keep their official link and digest, and nothing else.",
   },
   {
     title: "The bytes are the manufacturer's bytes",
@@ -91,7 +91,7 @@ export const GALLERY: ReadonlyArray<{
   {
     heading: "Eagle boards",
     intro:
-      "679 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
+      "748 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
     shots: [
       {
         file: "open-hardware-eagle-feather-rp2040",
@@ -204,12 +204,12 @@ export const GALLERY: ReadonlyArray<{
 export const LICENCE_TERMS = [
   {
     licence: "CC BY-SA",
-    boards: 212,
+    boards: 224,
     asks: "Credit the maker, and share your changed design under the same licence.",
   },
   {
     licence: "CC BY 4.0",
-    boards: 12,
+    boards: 21,
     asks: "Credit the maker.",
   },
   {
@@ -235,13 +235,13 @@ export const USAGE = [
     file: "open-hardware-terminal-query",
     width: 1500,
     height: 673,
-    alt: "Terminal output of the database query for boards with a verified STEP model, 25 matched, and 234 records that allow commercial reuse",
+    alt: "Terminal output of the database query for boards with a verified STEP model, 25 matched, and 255 records that allow commercial reuse",
     caption:
-      "25 boards have a verified STEP model, and 234 records allow commercial reuse.",
+      "25 boards have a verified STEP model, and 255 records allow commercial reuse.",
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: "A partial clone downloads only the folder you name. The SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 9 seconds and 101 MB, against 3.96 GB for every board, and shasum gives the same SHA-256 as its ATTRIBUTION.md.",
+    body: "A partial clone downloads only the folder you name. The SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 9 seconds and 101 MB, against 4.35 GB for every board, and shasum gives the same SHA-256 as its ATTRIBUTION.md.",
     code: [
       "git clone --filter=blob:none --sparse --depth 1 https://github.com/embeddedos-org/eCAD-Hardware-Products.git",
       "cd eCAD-Hardware-Products",
@@ -257,7 +257,7 @@ export const USAGE = [
   },
   {
     title: "Open the design in KiCad",
-    body: "The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. Its folder holds the whole project: the project file, the PCB, the root sheet and its three sub-sheets. The Eagle .brd and .sch files, 679 of the 3,706, go through KiCad's EAGLE importer.",
+    body: "The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. Its folder holds the whole project: the project file, the PCB, the root sheet and its three sub-sheets. The Eagle .brd and .sch files, 748 of the 4,015, go through KiCad's EAGLE importer.",
     code: [],
     file: "open-hardware-kicad-redboard-rp2350",
     width: 1596,
@@ -296,7 +296,7 @@ export const USAGE = [
   },
   {
     title: "Keep the credit and the licence",
-    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The 88 boards without a confirmed redistribution licence are linked, never copied.",
+    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The 77 boards without a confirmed redistribution licence are linked, never copied.",
     code: [],
     file: "open-hardware-attribution",
     width: 1440,
@@ -524,7 +524,7 @@ export default function OpenHardware() {
           <p className="text-gray-300 max-w-3xl mb-10 leading-relaxed">
             The database records where each board's files live and the commit of
             the manufacturer's repository they come from. The mirror keeps each
-            board's whole design, 3,706 CAD files and 3.96 GB from 232 boards,
+            board's whole design, 4,015 CAD files and 4.35 GB from 253 boards,
             and copies a file only when all three of these hold.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
@@ -548,7 +548,7 @@ export default function OpenHardware() {
               file="open-hardware-terminal-mirror"
               width={1400}
               height={640}
-              alt="Terminal output of mirror.py check reporting 3706 CAD files for 232 boards and 0 problems, 52 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md"
+              alt="Terminal output of mirror.py check reporting 4015 CAD files for 253 boards and 0 problems, 54 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md"
             />
             <figcaption className="text-sm text-gray-400 px-4 py-3">
               The check CI runs: every redistributable CAD file present, every

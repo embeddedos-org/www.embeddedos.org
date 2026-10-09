@@ -18,7 +18,7 @@
   "/ebrowser": "An embedded browser engine written in C with LVGL rendering and mbedTLS, with a configurable feature set for constrained devices.",
   "/ebuild": "The EmbeddedOS build tool. Describe a project in one build.yaml and ebuild resolves the toolchain graph and drives the backend.",
   "/ecad-hardware": "15 hardware design categories from health wearables to aerospace. A mix of design documents, KiCad sources, BOMs and datasheets; coverage varies.",
-  "/open-hardware": "3,706 openly licensed CAD files from 232 development boards, each board's whole design checked from the bytes, with a how-to and our designs validated.",
+  "/open-hardware": "4,015 openly licensed CAD files from 253 development boards, each board's whole design checked from the bytes, with a how-to and our designs validated.",
   "/eflow": "A visual block programming environment for EmbeddedOS. Connect GPIO, timer, AI and protocol blocks, and eFlow generates C code.",
   "/eni": "An in-development neural acquisition and processing framework. Channel count and sample rate depend on the acquisition hardware.",
   "/eoffice": "An eleven-application office suite that runs natively on EmbeddedOS devices, sharing one storage backend and UI framework.",

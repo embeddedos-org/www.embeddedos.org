@@ -237,7 +237,7 @@ const products = [
     color: "#5EE08E",
     name: "Open Hardware",
     tagline: "Verified Design Files",
-    metrics: ["3,706 CAD files", "232 boards", "Rendered"],
+    metrics: ["4,015 CAD files", "253 boards", "Rendered"],
     href: "/open-hardware",
   },
   {

@@ -6,11 +6,11 @@ From a board record to a board you can build: six steps with the real files.
 
 2
 00:00:04.400 --> 00:00:09.800
-Step 1, find a board. Query the 322 records by format, licence or vendor: 25 boards have a verified STEP model, 234 records allow commercial reuse.
+Step 1, find a board. Query the 332 records by format, licence or vendor: 25 boards have a verified STEP model, 255 records allow commercial reuse.
 
 3
 00:00:09.800 --> 00:00:16.200
-Step 2, fetch one board. A sparse clone of the SparkFun IoT RedBoard RP2350, its whole KiCad project in 33 files, takes 9 seconds and 101 MB instead of 3.96 GB, and shasum matches its ATTRIBUTION.md.
+Step 2, fetch one board. A sparse clone of the SparkFun IoT RedBoard RP2350, its whole KiCad project in 33 files, takes 9 seconds and 101 MB instead of 4.35 GB, and shasum matches its ATTRIBUTION.md.
 
 4
 00:00:16.200 --> 00:00:22.100
@@ -26,8 +26,8 @@ Step 5, design the enclosure around the STEP model. The BeagleBone AI-64 measure
 
 7
 00:00:33.400 --> 00:00:39.800
-Step 6, keep the credit and the licence. CC BY-SA, 212 boards: credit and share alike. CC BY 4.0, 12 boards: credit. MIT, BSD and Apache-2.0, 7 boards: keep the licence text. One grant in 0BSD wording: no conditions.
+Step 6, keep the credit and the licence. CC BY-SA, 224 boards: credit and share alike. CC BY 4.0, 21 boards: credit. MIT, BSD and Apache-2.0, 7 boards: keep the licence text. One grant in 0BSD wording: no conditions.
 
 8
 00:00:39.800 --> 00:00:45.300
-3,706 CAD files from 232 boards, every one credited. embeddedos.org/open-hardware.
+4,015 CAD files from 253 boards, every one credited. embeddedos.org/open-hardware.
