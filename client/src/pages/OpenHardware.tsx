@@ -622,7 +622,8 @@ export default function OpenHardware() {
                           className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
                         >
                           <dt className="font-semibold text-emerald-300">
-                            {l.licence} · {l.boards} boards
+                            {l.licence} · {l.boards}{" "}
+                            {l.boards === 1 ? "board" : "boards"}
                           </dt>
                           <dd className="text-gray-300 mt-1">{l.asks}</dd>
                         </div>
