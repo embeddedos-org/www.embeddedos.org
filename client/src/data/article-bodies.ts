@@ -292,7 +292,7 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
     sections: [
       {
         heading: "Fast lane: five reds, all fixed",
-        text: "The day started with five failing default-branch builds. ebuild had a ruff F811: a new `ebuild test` click command silently shadowed the established golden-path `test` command — fixed by merging the two, extending the original with pytest auto-detection and a `--runner` choice. EoSim failed on a schema enum (`riscv` vs `riscv64`) plus a perf-test flake tamed with best-of-3. eDB\u2019s nightly ruff, eBrowser\u2019s illegal JSX comment between attributes (plus a missing `initReactI18next` in the WebView test mock), and the www digest\u2019s missing `<Route>` all went green the same way: diagnose from the job log, fix forward, verify.",
+        text: "The day started with five failing default-branch builds. ebuild had a ruff F811: a new `ebuild test` click command silently shadowed the established golden-path `test` command — fixed by merging the two, extending the original with pytest auto-detection and a `--runner` choice. EoSim failed on a schema enum (`riscv` vs `riscv64`) plus a perf-test flake tamed with best-of-3. eDB\u2019s nightly ruff, eBrowser\u2019s illegal JSX comment between attributes (plus a missing `initReactI18next` in the WebView test mock), and the www digest\u2019s missing Route registration all went green the same way: diagnose from the job log, fix forward, verify.",
       },
       {
         heading: "ESP-IDF v6.1 is final; S31 carries an errata",
