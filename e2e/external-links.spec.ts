@@ -17,6 +17,15 @@
  * traffic, and hard-failing on a throttled CI runner would red the build
  * for no real reason.
  *
+ * GitHub file pages: github.com answers a scripted request for a file page
+ * (/<owner>/<repo>/blob/<ref>/<path>) with its HTTP 503 "Unicorn!" page,
+ * while it serves the same file at /<owner>/<repo>/raw/<ref>/<path>, and the
+ * repository and its folders, normally (seen from CI runners and a desktop,
+ * 2026-10-10, with githubstatus.com reporting all systems operational). That
+ * 503 says nothing about the file, so the file is checked at its /raw/ URL:
+ * 200 is a warning like a throttled 429, and anything else, such as the 404
+ * of a deleted file, is a dead link.
+ *
  * Bot-blocked allowlist: a few legitimate destinations refuse unauthenticated
  * bot traffic while working fine for human visitors. Those exact URLs are
  * listed in ALLOWLIST with the evidence for keeping them, and are skipped by
@@ -105,6 +114,32 @@ const URLS = externalUrls();
 const ROUTES = knownRoutes();
 const ALLOWED = new Set(ALLOWLIST.map(a => a.url));
 
+const USER_AGENT =
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
+
+/** The /raw/ URL of a github.com file page, or null for any other URL. */
+function githubRawUrl(url: string): string | null {
+  const m = url.match(
+    /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^?#]+)/
+  );
+  return m ? `https://github.com/${m[1]}/${m[2]}/raw/${m[3]}` : null;
+}
+
+/** One GET, redirects followed: the final status, or "connection failed". */
+async function fetchStatus(url: string): Promise<number | string> {
+  try {
+    const res = await fetch(url, {
+      redirect: "follow",
+      signal: AbortSignal.timeout(30_000),
+      headers: { "User-Agent": USER_AGENT },
+    });
+    await res.arrayBuffer().catch(() => undefined);
+    return res.status;
+  } catch {
+    return "connection failed";
+  }
+}
+
 test("the build exposes outbound links to check", () => {
   expect(URLS.length).toBeGreaterThan(50);
 });
@@ -148,10 +183,7 @@ async function checkOutbound() {
           const res = await fetch(url, {
             redirect: "follow",
             signal: AbortSignal.timeout(30_000),
-            headers: {
-              "User-Agent":
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
-            },
+            headers: { "User-Agent": USER_AGENT },
           });
           // Drain the body so the socket can be reused/closed cleanly.
           await res.arrayBuffer().catch(() => undefined);
@@ -172,6 +204,16 @@ async function checkOutbound() {
           status = "connection failed";
           break;
         }
+      }
+      const raw = status === 503 ? githubRawUrl(url) : null;
+      if (raw) {
+        const rawStatus = await fetchStatus(raw);
+        if (rawStatus === 200) {
+          warnings.push(`${url} -> 503 (GitHub file page; ${raw} -> 200)`);
+        } else {
+          failures.push(`${url} -> 503, and ${raw} -> ${rawStatus}`);
+        }
+        continue;
       }
       if (typeof status === "number" && status === 429) {
         warnings.push(`${url} -> 429 (throttled through all retries)`);
