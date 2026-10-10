@@ -287,6 +287,35 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
     ],
   },
+  "this-week-in-embeddedos-2026-10-10": {
+    lede: "Five reds fixed before the walk began, ESP-IDF v6.1 declared final with an S31 errata to carry, the MCP threat taxonomy gets its CVEs, and four new boards join the intake queue.",
+    sections: [
+      {
+        heading: "Fast lane: five reds, all fixed",
+        text: 'The day started with five failing default-branch builds. ebuild had a ruff F811: a new `ebuild test` click command silently shadowed the established golden-path `test` command — fixed by merging the two, extending the original with pytest auto-detection and a `--runner` choice. EoSim failed on a schema enum (`riscv` vs `riscv64`) plus a perf-test flake tamed with best-of-3. eDB\u2019s nightly ruff, eBrowser\u2019s illegal JSX comment between attributes (plus a missing `initReactI18next` in the WebView test mock), and the www digest\u2019s missing `<Route>` all went green the same way: diagnose from the job log, fix forward, verify.',
+      },
+      {
+        heading: "ESP-IDF v6.1 is final; S31 carries an errata",
+        text: 'The v6.1 tag has shipped, so the "rc1" framing in the bring-up docs is corrected everywhere it appeared. More important is the new S31 errata both eos and eFirmware now record: on v6.1.0, dual-core S31 bring-up hits a layout-sensitive "Cache access error" (MCAUSE 0x19, Espressif #18948) — the parked core leaves branch prediction enabled while the other core accesses flash. The workaround (disable branch prediction on the parked core) rides with every EoS dual-core S31 build until Espressif ships the fix.',
+      },
+      {
+        heading: "The MCP taxonomy gets its CVEs",
+        text: 'The hostile-protocol hardening work is no longer theoretical. Langflow CVE-2026-105697 (CVSS 9.9): the MCP server config executed user-typed commands via `bash -c` with no allowlist — a config file became arbitrary OS command execution. The ClawSecure report cracked Linear, Notion, and Dropbox Dash with the same flaw class. eSec, eIPC, and eVera all carry the citations now, and eVera\u2019s tool-use policy gains a numbered rule from it: no executable commands from configuration — an unlisted executable in a server config is denied before any process spawns.',
+      },
+      {
+        heading: "Silicon week: TSN, C5, and the intake queue",
+        text: 'NXP\u2019s FRDM-IMXRT1186 is the week\u2019s standout: a crossover MCU (800 MHz Cortex-M7 + 300 MHz Cortex-M33) with dual Gigabit Ethernet TSN switching and dual Fast Ethernet for EtherCAT/TSN — the affordable deterministic-networking reference, now anchoring the eNet TSN lane and the eos-aero silicon shortlist. Nordic\u2019s nRF54LC10A (TrustZone + secure boot + tamper detection) partially closes the standing nRF54 gap at the low-cost end. LILYGO\u2019s T-Dongle-C5 and M5Stack\u2019s ToughC5 put ESP32-C5\u2019s dual-band Wi-Fi 6 in a dongle and a weatherproof controller respectively; Nuvoton\u2019s "Chili Pro" brings dual A35 + M4 industrial AI to 45x45 mm. All four enter the eCAD devboard database as `incomplete` intake records — identity recorded, availability untouched, per the tri-state contract. The eAI silicon roster adds CVITEK\u2019s CV1842H-P.',
+      },
+      {
+        heading: "Agent fabric: skills go first-party",
+        text: 'SKILL.md is now a first-party Google format (Gemini Workspace rollout Oct 5, app Oct 13) — the org\u2019s Agent Skills catalog bet is validated by the platform vendors. EoStudio documents the catalog contract (frontmatter, scripts/, references/, fail-closed discipline) with `eostudio-kicad` as the reference implementation, and eFlow ships a JSON Schema for dataflow definitions with a validate-before-run rule: agents generating flows validate against the schema before emitting, and the interpreter\u2019s `load()` is the semantic second layer.',
+      },
+      {
+        heading: "In the org",
+        text: 'eDB\u2019s #88 coverage drive adds the ebot sanitizer suite (models + PromptSanitizer at 100%) and ratchets the gate 70 to 75 — CI-faithful unit coverage is 86.19%. eNI\u2019s quantize-validation suite lifts coverage to 93.40%. eOffice decides CRDTs over OT for future realtime sync (no central ordering authority — local-first stays intact). eBrowser documents the anti-fingerprinting ladder the privacy doc had listed as future. eApps gets the WAMR-on-EoS integration architecture. Reviews posted on eCAD #52 (the 393 MB, 316-file mirror wave) and eos #192 (rsasuresh\u2019s PR-template fix); www #92 stays open. The billing split holds: eVera green and shipping, embeddedos-stack still queued on docs-only.',
+      },
+    ],
+  },
 };
 
 /** The body for a slug, or undefined when the item is a link-out. */

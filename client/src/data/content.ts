@@ -457,6 +457,17 @@ export const CONTENT: readonly ContentItem[] = [
     href: "/article-this-week-in-embeddedos-2026-10-09",
     tags: ["Digest", "Newsletter", "Security", "Hardware"],
   },
+  {
+    slug: "this-week-in-embeddedos-2026-10-10",
+    kind: "newsletter",
+    date: "2026-10-10",
+    badge: "Digest",
+    title: "This week in EmbeddedOS \u2014 2026-10-10",
+    summary:
+      "Five reds fixed, ESP-IDF v6.1 final with an S31 errata, the MCP taxonomy gets its CVEs, four new boards in the intake queue, and SKILL.md goes first-party at Google.",
+    href: "/article-this-week-in-embeddedos-2026-10-10",
+    tags: ["Digest", "Newsletter", "Security", "Hardware"],
+  },
 ];
 
 /** Newest first, ties broken by title so the order is total and stable. */
