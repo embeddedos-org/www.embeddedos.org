@@ -292,7 +292,7 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
     sections: [
       {
         heading: "Fast lane: five reds, all fixed",
-        text: 'The day started with five failing default-branch builds. ebuild had a ruff F811: a new `ebuild test` click command silently shadowed the established golden-path `test` command — fixed by merging the two, extending the original with pytest auto-detection and a `--runner` choice. EoSim failed on a schema enum (`riscv` vs `riscv64`) plus a perf-test flake tamed with best-of-3. eDB\u2019s nightly ruff, eBrowser\u2019s illegal JSX comment between attributes (plus a missing `initReactI18next` in the WebView test mock), and the www digest\u2019s missing `<Route>` all went green the same way: diagnose from the job log, fix forward, verify.',
+        text: "The day started with five failing default-branch builds. ebuild had a ruff F811: a new `ebuild test` click command silently shadowed the established golden-path `test` command — fixed by merging the two, extending the original with pytest auto-detection and a `--runner` choice. EoSim failed on a schema enum (`riscv` vs `riscv64`) plus a perf-test flake tamed with best-of-3. eDB\u2019s nightly ruff, eBrowser\u2019s illegal JSX comment between attributes (plus a missing `initReactI18next` in the WebView test mock), and the www digest\u2019s missing `<Route>` all went green the same way: diagnose from the job log, fix forward, verify.",
       },
       {
         heading: "ESP-IDF v6.1 is final; S31 carries an errata",
@@ -300,7 +300,7 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
       {
         heading: "The MCP taxonomy gets its CVEs",
-        text: 'The hostile-protocol hardening work is no longer theoretical. Langflow CVE-2026-105697 (CVSS 9.9): the MCP server config executed user-typed commands via `bash -c` with no allowlist — a config file became arbitrary OS command execution. The ClawSecure report cracked Linear, Notion, and Dropbox Dash with the same flaw class. eSec, eIPC, and eVera all carry the citations now, and eVera\u2019s tool-use policy gains a numbered rule from it: no executable commands from configuration — an unlisted executable in a server config is denied before any process spawns.',
+        text: "The hostile-protocol hardening work is no longer theoretical. Langflow CVE-2026-105697 (CVSS 9.9): the MCP server config executed user-typed commands via `bash -c` with no allowlist — a config file became arbitrary OS command execution. The ClawSecure report cracked Linear, Notion, and Dropbox Dash with the same flaw class. eSec, eIPC, and eVera all carry the citations now, and eVera\u2019s tool-use policy gains a numbered rule from it: no executable commands from configuration — an unlisted executable in a server config is denied before any process spawns.",
       },
       {
         heading: "Silicon week: TSN, C5, and the intake queue",
@@ -308,11 +308,11 @@ export const ARTICLE_BODIES: Record<string, ArticleBody> = {
       },
       {
         heading: "Agent fabric: skills go first-party",
-        text: 'SKILL.md is now a first-party Google format (Gemini Workspace rollout Oct 5, app Oct 13) — the org\u2019s Agent Skills catalog bet is validated by the platform vendors. EoStudio documents the catalog contract (frontmatter, scripts/, references/, fail-closed discipline) with `eostudio-kicad` as the reference implementation, and eFlow ships a JSON Schema for dataflow definitions with a validate-before-run rule: agents generating flows validate against the schema before emitting, and the interpreter\u2019s `load()` is the semantic second layer.',
+        text: "SKILL.md is now a first-party Google format (Gemini Workspace rollout Oct 5, app Oct 13) — the org\u2019s Agent Skills catalog bet is validated by the platform vendors. EoStudio documents the catalog contract (frontmatter, scripts/, references/, fail-closed discipline) with `eostudio-kicad` as the reference implementation, and eFlow ships a JSON Schema for dataflow definitions with a validate-before-run rule: agents generating flows validate against the schema before emitting, and the interpreter\u2019s `load()` is the semantic second layer.",
       },
       {
         heading: "In the org",
-        text: 'eDB\u2019s #88 coverage drive adds the ebot sanitizer suite (models + PromptSanitizer at 100%) and ratchets the gate 70 to 75 — CI-faithful unit coverage is 86.19%. eNI\u2019s quantize-validation suite lifts coverage to 93.40%. eOffice decides CRDTs over OT for future realtime sync (no central ordering authority — local-first stays intact). eBrowser documents the anti-fingerprinting ladder the privacy doc had listed as future. eApps gets the WAMR-on-EoS integration architecture. Reviews posted on eCAD #52 (the 393 MB, 316-file mirror wave) and eos #192 (rsasuresh\u2019s PR-template fix); www #92 stays open. The billing split holds: eVera green and shipping, embeddedos-stack still queued on docs-only.',
+        text: "eDB\u2019s #88 coverage drive adds the ebot sanitizer suite (models + PromptSanitizer at 100%) and ratchets the gate 70 to 75 — CI-faithful unit coverage is 86.19%. eNI\u2019s quantize-validation suite lifts coverage to 93.40%. eOffice decides CRDTs over OT for future realtime sync (no central ordering authority — local-first stays intact). eBrowser documents the anti-fingerprinting ladder the privacy doc had listed as future. eApps gets the WAMR-on-EoS integration architecture. Reviews posted on eCAD #52 (the 393 MB, 316-file mirror wave) and eos #192 (rsasuresh\u2019s PR-template fix); www #92 stays open. The billing split holds: eVera green and shipping, embeddedos-stack still queued on docs-only.",
       },
     ],
   },
