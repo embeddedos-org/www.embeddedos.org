@@ -10,7 +10,7 @@ import {
 const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
 
 export const STATS = [
-  { value: "332", label: "board records", color: "#F97316" },
+  { value: "336", label: "board records", color: "#F97316" },
   { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
   {
     value: "4,022",
@@ -27,7 +27,7 @@ export const STATS = [
 export const RULES = [
   {
     title: "The licence allows it",
-    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 76 boards keep their official link and digest, and nothing else.",
+    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 80 boards keep their official link and digest, and nothing else.",
   },
   {
     title: "The bytes are the manufacturer's bytes",
@@ -296,7 +296,7 @@ export const USAGE = [
   },
   {
     title: "Keep the credit and the licence",
-    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The 76 boards without a confirmed redistribution licence are linked, never copied.",
+    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The 80 boards without a confirmed redistribution licence are linked, never copied.",
     code: [],
     file: "open-hardware-attribution",
     width: 1440,
