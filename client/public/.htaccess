@@ -56,6 +56,12 @@ ErrorDocument 404 /404.html
 # Verified 2026-09-18 that the live chain serves brotli for text assets; if
 # response headers ever stop showing content-encoding, re-check here first.
 
+# Captions for /open-hardware: a <track> is only used when the file arrives as
+# text/vtt, so the type is declared rather than left to the server's defaults.
+<IfModule mod_mime.c>
+  AddType text/vtt .vtt
+</IfModule>
+
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
   AddOutputFilterByType DEFLATE application/javascript application/json

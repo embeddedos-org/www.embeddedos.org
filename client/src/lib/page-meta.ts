@@ -169,6 +169,7 @@ export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [
     /^\/(ecad-hardware|hardware-lab)$/,
     "/media/product-ecad-hardware_f5806032.jpg",
   ],
+  [/^\/open-hardware$/, "/media/open-hardware-tour-poster.jpg"],
   [
     /^\/(community|get-involved|events|membership)$/,
     "/media/community-illustration-eos_6f39c9db.jpg",
