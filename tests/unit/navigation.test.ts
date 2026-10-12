@@ -148,6 +148,7 @@ const HUB_MEMBERS: Array<{ hub: string; members: string[] }> = [
       "/ehealth365",
       "/eradar360",
       "/youtube",
+      "/eos-boards",
     ],
   },
   {

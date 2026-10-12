@@ -256,6 +256,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.embeddedos.org/eos-boards/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.embeddedos.org/eosim/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -110,6 +110,28 @@ export const PAGES: SearchEntry[] = [
     ],
   },
   {
+    title: "EmbeddedOS Development Boards — Original KiCad Designs",
+    path: "/eos-boards",
+    tags: [
+      "development boards",
+      "boards",
+      "hardware",
+      "kicad",
+      "pcb",
+      "rp2350",
+      "esp32-s3",
+      "pocketbeagle",
+      "compute module 5",
+      "cm5",
+      "debug probe",
+      "drc",
+      "erc",
+      "licensing",
+      "universities",
+      "partnerships",
+    ],
+  },
+  {
     title: "Technology Stacks",
     path: "/stacks",
     tags: [

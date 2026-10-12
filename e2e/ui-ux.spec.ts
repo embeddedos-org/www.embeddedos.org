@@ -54,6 +54,7 @@ const PAGES = [
   "/press-kit", // press kit
   "/social", // social accounts
   "/youtube", // channel page
+  "/eos-boards",
 ];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
@@ -151,7 +152,13 @@ test.describe("responsive layout", () => {
       // /careers carries the only real form on the site — a two-column grid of
       // inputs and three comboboxes, which is the layout most likely to burst
       // its container on a narrow screen, and it was not in this sample.
-      for (const route of ["/", "/about", "/donate", "/careers"]) {
+      for (const route of [
+        "/",
+        "/about",
+        "/donate",
+        "/careers",
+        "/eos-boards",
+      ]) {
         await page.goto(route);
         await page.waitForTimeout(400);
         const overflow = await page.evaluate(

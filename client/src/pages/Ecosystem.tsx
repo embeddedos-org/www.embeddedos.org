@@ -226,6 +226,14 @@ const products = [
   },
   {
     icon: CircuitBoard,
+    color: "#FB923C",
+    name: "Development Boards",
+    tagline: "Original EoS Board Designs",
+    metrics: ["KiCad designs", "ERC + DRC checked"],
+    href: "/eos-boards",
+  },
+  {
+    icon: CircuitBoard,
     color: "#F472B6",
     name: "eCAD Hardware",
     tagline: "Open Hardware Designs",
