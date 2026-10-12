@@ -7,14 +7,18 @@ import path from "node:path";
 import sharp from "sharp";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import EosBoards from "../../client/src/pages/EosBoards";
+import EosBoards, {
+  BOARD_PULL_REQUESTS,
+} from "../../client/src/pages/EosBoards";
 import {
   BOARD_LICENSOR,
   BOARD_STATUS,
   EOS_BOARDS,
   boardFolderUrl,
   boardImage,
+  boardThumb,
   boardTurntable,
+  pullRequestUrl,
 } from "../../client/src/data/eos-boards";
 import { readDescription } from "../../client/src/lib/page-meta";
 
@@ -76,11 +80,14 @@ describe("board manifest", () => {
     }
   });
 
-  it("ships every render as a JPEG with a WebP sibling, and each turntable with its poster", () => {
+  it("ships every render and index thumbnail as a JPEG with a WebP sibling, and each turntable with its poster", () => {
     const missing = EOS_BOARDS.flatMap(board => [
-      ...(["iso", "top", "bottom"] as const).flatMap(view =>
-        [".jpg", ".webp"].map(ext => `${boardImage(board.slug, view)}${ext}`)
-      ),
+      ...[
+        ...(["iso", "top", "bottom"] as const).map(view =>
+          boardImage(board.slug, view)
+        ),
+        boardThumb(board.slug),
+      ].flatMap(base => [".jpg", ".webp"].map(ext => `${base}${ext}`)),
       boardTurntable(board.slug).video,
       boardTurntable(board.slug).poster,
     ]).filter(url => !existsSync(fileOf(url)));
@@ -91,6 +98,7 @@ describe("board manifest", () => {
     const wrong: string[] = [];
     for (const board of EOS_BOARDS) {
       const files = [
+        [`${boardThumb(board.slug)}.jpg`, board.media.thumb],
         [`${boardImage(board.slug, "iso")}.jpg`, board.media.iso],
         [`${boardImage(board.slug, "top")}.jpg`, board.media.plan],
         [`${boardImage(board.slug, "bottom")}.jpg`, board.media.plan],
@@ -122,6 +130,9 @@ describe("board page", () => {
       expect(text).toContain(board.mainChip);
       expect(text).toContain(`${board.sizeMm[0]} × ${board.sizeMm[1]} mm`);
       expect(text).toContain(`${board.layers} (${board.stackup})`);
+      expect(text).toContain(
+        `KiCad ${board.checks.kicad}, commit ${board.checks.commit}.`
+      );
       for (const [label, value] of [
         ["ERC violations", board.checks.ercViolations],
         ["DRC errors", board.checks.drcErrors],
@@ -199,28 +210,88 @@ describe("board page", () => {
       ).toBeInTheDocument();
   });
 
-  it("links each board to its folder in the eCAD repository, in a new tab", () => {
+  it("links each board to its folder on its own pull request's branch, in a new tab", () => {
     const { container } = render(<EosBoards />);
+    const catalogue = ["eos-cm4-base", "eos-motion-wing", "eos-esp32-devkit"];
     for (const board of EOS_BOARDS) {
-      const link = container.querySelector(
-        `a[href="${boardFolderUrl(board.slug)}"]`
+      const href = boardFolderUrl(board);
+      const branch = catalogue.includes(board.slug)
+        ? "feat/eos-catalogue-boards"
+        : "feat/eos-dev-boards";
+      expect(href).toBe(
+        `https://github.com/Kartikey1306/eCAD-Hardware-Products/tree/${branch}/boards/eos/${board.slug}`
       );
+      const link = container.querySelector(`a[href="${href}"]`);
       expect(link, board.slug).not.toBeNull();
       expect(link?.getAttribute("target")).toBe("_blank");
       expect(link?.getAttribute("rel")).toBe("noopener noreferrer");
+    }
+    for (const slug of catalogue)
+      expect(EOS_BOARDS.map(b => b.slug)).toContain(slug);
+  });
+
+  it("links every pull request the boards come from, once each", () => {
+    const { container } = render(<EosBoards />);
+    expect(BOARD_PULL_REQUESTS).toEqual([54, 57]);
+    for (const pullRequest of BOARD_PULL_REQUESTS)
+      expect(
+        container.querySelectorAll(`a[href="${pullRequestUrl(pullRequest)}"]`)
+          .length,
+        `#${pullRequest}`
+      ).toBe(1);
+  });
+
+  it("indexes every board at the top, in manifest order, each card jumping to its board", () => {
+    render(<EosBoards />);
+    const index = screen.getByRole("navigation", {
+      name: "Boards on this page",
+    });
+    const cards = within(index).getAllByRole("link");
+    expect(cards.map(a => a.getAttribute("href"))).toEqual(
+      EOS_BOARDS.map(b => `#${b.slug}`)
+    );
+    EOS_BOARDS.forEach((board, i) => {
+      expect(cards[i]).toHaveTextContent(board.name);
+      expect(cards[i]).toHaveTextContent(board.category);
+      expect(cards[i].style.flexDirection).toBe("column");
+      expect(document.getElementById(board.slug)?.tagName).toBe("ARTICLE");
+    });
+  });
+
+  it("keeps each board's features, open items and third-party list collapsed until asked for", () => {
+    render(<EosBoards />);
+    for (const board of EOS_BOARDS) {
+      const article = document.getElementById(board.slug) as HTMLElement;
+      const details = article.querySelectorAll("details");
+      expect(details.length, board.slug).toBe(1);
+      expect(details[0].hasAttribute("open"), board.slug).toBe(false);
+      const hidden = pageText(details[0]);
+      for (const item of [
+        ...board.features,
+        ...board.notYetDone,
+        ...board.thirdParty,
+      ])
+        expect(hidden).toContain(item);
+      expect(pageText(article)).toContain(`Status: ${BOARD_STATUS}.`);
+      expect(details[0].textContent).not.toContain(BOARD_STATUS);
     }
   });
 
   it("gives every render alt text and its intrinsic size, and loads it lazily", () => {
     const { container } = render(<EosBoards />);
+    const index = screen.getByRole("navigation", {
+      name: "Boards on this page",
+    });
     const images = [...container.querySelectorAll("img")];
-    expect(images.length).toBe(EOS_BOARDS.length * 3);
+    expect(images.length).toBe(EOS_BOARDS.length * 4);
     for (const img of images) {
-      expect(img.getAttribute("alt")?.length ?? 0).toBeGreaterThan(30);
+      if (index.contains(img)) expect(img.getAttribute("alt")).toBe("");
+      else expect(img.getAttribute("alt")?.length ?? 0).toBeGreaterThan(30);
       expect(Number(img.getAttribute("width"))).toBeGreaterThan(0);
       expect(Number(img.getAttribute("height"))).toBeGreaterThan(0);
       expect(img.getAttribute("loading")).toBe("lazy");
     }
+    expect(index.querySelectorAll("img").length).toBe(EOS_BOARDS.length);
   });
 
   it("ships each turntable muted, labelled, with a poster, and loads nothing until it plays", () => {

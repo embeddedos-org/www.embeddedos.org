@@ -11,13 +11,14 @@ import {
 } from "lucide-react";
 import {
   BOARD_LICENSOR,
-  BOARD_SOURCE,
   BOARD_STATUS,
   EOS_BOARDS,
   boardFolderUrl,
   boardImage,
   boardMailto,
+  boardThumb,
   boardTurntable,
+  pullRequestUrl,
   type BoardView,
   type EosBoard,
   type PixelSize,
@@ -91,6 +92,12 @@ function imageAlt(board: EosBoard, view: BoardView): string {
     return `Perspective render of the ${board.name} from its KiCad 3D model: ${board.looks}`;
   return `${VIEW_LABEL[view]} side of the ${board.name}, rendered from its KiCad 3D model`;
 }
+
+export const BOARD_PULL_REQUESTS = EOS_BOARDS.map(
+  board => board.source.pullRequest
+)
+  .filter((pullRequest, i, all) => all.indexOf(pullRequest) === i)
+  .sort((a, b) => a - b);
 
 function Picture({
   src,
@@ -202,12 +209,9 @@ function BoardSection({ board }: { board: EosBoard }) {
           <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0b1220]">
             <Turntable board={board} />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {(["iso", "top", "bottom"] as const).map(view => (
-              <figure
-                key={view}
-                className={`min-w-0 ${view === "iso" ? "col-span-2 sm:col-span-1" : ""}`}
-              >
+              <figure key={view} className="min-w-0">
                 <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-white/10 bg-[#0b1220]">
                   <Picture
                     src={boardImage(board.slug, view)}
@@ -242,8 +246,8 @@ function BoardSection({ board }: { board: EosBoard }) {
             <span>Status: {BOARD_STATUS}.</span>
           </p>
 
-          <dl className="grid sm:grid-cols-3 gap-4 mb-8 text-sm">
-            <div className="sm:col-span-3">
+          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8 text-sm">
+            <div className="col-span-2 sm:col-span-3">
               <dt className="text-gray-400">Main chip</dt>
               <dd className="font-semibold text-white">{board.mainChip}</dd>
             </div>
@@ -261,22 +265,8 @@ function BoardSection({ board }: { board: EosBoard }) {
             </div>
           </dl>
 
-          <h3 className="text-lg font-bold mb-3">Key features</h3>
-          <ul className="space-y-2 text-sm text-gray-300 mb-8">
-            {board.features.map(feature => (
-              <li key={feature} className="flex gap-2">
-                <CircuitBoard
-                  size={14}
-                  className="shrink-0 mt-1 text-orange-400"
-                  aria-hidden="true"
-                />
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
-
           <h3 className="text-lg font-bold mb-3">Checks, as recorded</h3>
-          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+          <dl className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
             <CheckTile label="ERC violations" value={checks.ercViolations} />
             <CheckTile label="DRC errors" value={checks.drcErrors} />
             <CheckTile label="Unconnected" value={checks.unconnectedItems} />
@@ -300,45 +290,74 @@ function BoardSection({ board }: { board: EosBoard }) {
               {checks.warningNote}
             </p>
           )}
-          <p className="text-xs text-gray-400 mb-8">
+          <p className="text-xs text-gray-400 mb-6">
             From build-report.json and drc.json in the board's folder, KiCad{" "}
-            {checks.kicad}, commit {BOARD_SOURCE.commit}.
+            {checks.kicad}, commit {checks.commit}.
           </p>
 
-          <h3 className="text-lg font-bold mb-3">Not done yet</h3>
-          <ul className="space-y-2 text-sm text-gray-300 mb-8">
-            {[
-              "This board has not been manufactured, powered or tested on the bench.",
-              ...board.notYetDone,
-            ].map(item => (
-              <li key={item} className="flex gap-2">
-                <TriangleAlert
-                  size={14}
-                  className="shrink-0 mt-1 text-amber-300"
-                  aria-hidden="true"
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <details className="group mb-6 rounded-xl border border-white/10 bg-white/[0.02]">
+            <summary className="cursor-pointer select-none px-4 py-3 font-semibold text-white">
+              Key features, what is not done yet, and third-party material
+            </summary>
+            <div className="px-4 pb-2 pt-2">
+              <h3 className="text-lg font-bold mb-3">Key features</h3>
+              <ul className="space-y-2 text-sm text-gray-300 mb-8">
+                {board.features.map(feature => (
+                  <li key={feature} className="flex gap-2">
+                    <CircuitBoard
+                      size={14}
+                      className="shrink-0 mt-1 text-orange-400"
+                      aria-hidden="true"
+                    />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
 
-          <h3 className="text-lg font-bold mb-3">
-            Third-party material, under its own licence
-          </h3>
-          <ul className="list-disc pl-5 space-y-1 text-xs text-gray-400 mb-8">
-            {board.thirdParty.map(item => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+              <h3 className="text-lg font-bold mb-3">Not done yet</h3>
+              <ul className="space-y-2 text-sm text-gray-300 mb-8">
+                {[
+                  "This board has not been manufactured, powered or tested on the bench.",
+                  ...board.notYetDone,
+                ].map(item => (
+                  <li key={item} className="flex gap-2">
+                    <TriangleAlert
+                      size={14}
+                      className="shrink-0 mt-1 text-amber-300"
+                      aria-hidden="true"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
 
-          <a
-            href={boardFolderUrl(board.slug)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"
-          >
-            {board.name} files on GitHub <ExternalLink size={16} />
-          </a>
+              <h3 className="text-lg font-bold mb-3">
+                Third-party material, under its own licence
+              </h3>
+              <ul className="list-disc pl-5 space-y-1 text-xs text-gray-400 mb-4">
+                {board.thirdParty.map(item => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </details>
+
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a
+              href={boardFolderUrl(board)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"
+            >
+              {board.name} files on GitHub <ExternalLink size={16} />
+            </a>
+            <a
+              href="#boards"
+              className="text-sm text-gray-300 underline underline-offset-2 hover:text-white"
+            >
+              All boards
+            </a>
+          </div>
         </div>
       </div>
     </article>
@@ -380,15 +399,37 @@ export default function EosBoards() {
               powered.
             </span>
           </p>
-          <nav aria-label="Boards on this page">
-            <ul className="flex flex-wrap gap-2">
+          <nav
+            id="boards"
+            aria-label="Boards on this page"
+            className="scroll-mt-24"
+          >
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {EOS_BOARDS.map(board => (
-                <li key={board.slug}>
+                <li key={board.slug} className="min-w-0">
                   <a
                     href={`#${board.slug}`}
-                    className="inline-flex px-3 py-1.5 rounded-lg text-sm border border-white/15 text-white hover:border-white/30"
+                    style={{ display: "flex", flexDirection: "column" }}
+                    className="h-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] hover:border-orange-400/50"
                   >
-                    {board.name}
+                    <span className="relative block aspect-[3/2] w-full overflow-hidden bg-[#0b1220]">
+                      <Picture
+                        src={boardThumb(board.slug)}
+                        size={board.media.thumb}
+                        alt=""
+                      />
+                    </span>
+                    <span className="block px-3 py-2.5">
+                      <span className="block text-xs text-orange-300">
+                        {board.category}
+                      </span>
+                      <span className="block font-bold text-white leading-snug">
+                        {board.name}
+                      </span>
+                      <span className="block text-xs text-gray-400 mt-0.5">
+                        {formatSize(board.sizeMm)} · {board.layers} layers
+                      </span>
+                    </span>
                   </a>
                 </li>
               ))}
@@ -521,15 +562,20 @@ export default function EosBoards() {
               </div>
             ))}
           </div>
-          <a
-            href={BOARD_SOURCE.pullRequest}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"
-          >
-            All the board files, in eCAD pull request #54{" "}
-            <ExternalLink size={16} />
-          </a>
+          <div className="flex flex-wrap gap-3">
+            {BOARD_PULL_REQUESTS.map(pullRequest => (
+              <a
+                key={pullRequest}
+                href={pullRequestUrl(pullRequest)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"
+              >
+                Board files in eCAD pull request #{pullRequest}{" "}
+                <ExternalLink size={16} />
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     </div>

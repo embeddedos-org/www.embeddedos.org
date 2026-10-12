@@ -375,9 +375,12 @@ migrate).
   facts from the board's `README.md` and its check counts from
   `build-report.json` and `drc.json` in eCAD-Hardware-Products. Put its media
   in `client/public/media/`: `board-<slug>-iso.jpg`, `-top.jpg` and
-  `-bottom.jpg` from the board's renders, `board-<slug>-turntable.mp4` (H.264,
-  no audio) and `board-<slug>-turntable-poster.jpg` (the video's first frame).
-  Then run `pnpm optimize:images` for the WebP siblings and the manifest.
+  `-bottom.jpg` from the board's renders, `board-<slug>-thumb.jpg` (the iso
+  render at 480 px, for the index), `board-<slug>-turntable.mp4` (H.264, no
+  audio) and `board-<slug>-turntable-poster.jpg` (the video's first frame).
+  Set `source` to the entry in `BOARD_SOURCES` for the pull request whose
+  branch holds the board, and `checks.commit` to the commit its counts come
+  from. Then run `pnpm optimize:images` for the WebP siblings and the manifest.
   `tests/unit/eos-boards.test.tsx` fails if a file is missing or a declared
   pixel size is wrong.
 

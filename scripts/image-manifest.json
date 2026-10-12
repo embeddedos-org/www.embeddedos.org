@@ -22,21 +22,65 @@
       "sha256": "8bd0a9eb33908ed99be9ce52d039ca3c72a0b54a8ed8125634e7a3690920574a",
       "webpSha256": "fffa70760373824a9c489584eb9301fbfa8fe9d13aa5498710ca741f7825e95b"
     },
+    "board-eos-cm4-base-bottom.jpg": {
+      "sha256": "3dbf4a208baa5db962bc9c0f99a853fb39616dd587e2628842deeb8574d0f65f",
+      "webpSha256": "5c841d532db4925f21feb68b0b8f53e22231980694febe60f98d57e7f1afb87e"
+    },
+    "board-eos-cm4-base-iso.jpg": {
+      "sha256": "60b3769fd83641f7556f7438c2f2fa6d544970c823d0ce406179a360b18b9fe5",
+      "webpSha256": "0c6ca4c56161e40b89ae5c7320b9e9e1320f01549d8342fe231e162f5e377a66"
+    },
+    "board-eos-cm4-base-thumb.jpg": {
+      "sha256": "e94b193e0155cd20bbec99f4848ef6e493a8047369b014187502ced4d82eadc2",
+      "webpSha256": "69d8f32e0fd5650d4dcc7a3238ce80afb7732d0b53174763e3f67f3104e82881"
+    },
+    "board-eos-cm4-base-top.jpg": {
+      "sha256": "ba8af176e14c407ed180c9b09d7f4e11aada8f8a16343495296241da7b86262b",
+      "webpSha256": "dd5370af21901f95f642ee6c17d505bd1fbfe0c3089ba8f956cc8f1ddb1d21db"
+    },
+    "board-eos-cm4-base-turntable-poster.jpg": {
+      "sha256": "4164ce5c81cd8fc6788c39a9a00c2ea4ba45fe7916c6c28f1bdf375596c6e43a",
+      "webpSha256": "c6d2a109b6bfd5ea6132cd0dd3da8ea560fdf276c27fda73be7356be90b41b57"
+    },
     "board-eos-cm5-base-bottom.jpg": {
-      "sha256": "dca8b712b346c67c6310639070c49e7d15589fa539aad84291a10724939a9a23",
-      "webpSha256": "454d25b083d1781de8992767cf79358052dc30d8cbcb56a7b5aa82fe5b28c81e"
+      "sha256": "9e5b2b6ead9cfa4e5104521cad6e3fce73a62e5f91e3637f1544fff7b7dd44c5",
+      "webpSha256": "8d85898575c57ec6d7a316105ee9ebedacc0ced0ad3213e7a72cc987a3f636d1"
     },
     "board-eos-cm5-base-iso.jpg": {
-      "sha256": "91c00c87bded62f3292ac96693f2e4de24e19e7e32071e83d53e01fd7ffcba81",
-      "webpSha256": "efd2f8e64c28b95820483f3664caabd2488b3b41780ee600107f40c2968fd9e0"
+      "sha256": "ef74dc2648c7f9da355c1e89fa472fe13f51f376ffed1f48f043dc22a03854e1",
+      "webpSha256": "fbd4388a50c85519e95642d234c7857854c6b24908ea278fb7e8ec806e860249"
+    },
+    "board-eos-cm5-base-thumb.jpg": {
+      "sha256": "ae2a96e784732985ef27bd186f7764117b62f73174e93ce32eaa8b377adcac2a",
+      "webpSha256": "2127e7df67c56cbdb85981eaae80937cac62878224a2e690a5be82b1d24c9fc2"
     },
     "board-eos-cm5-base-top.jpg": {
-      "sha256": "4fe87ff9bc98e77098df428262e71c4c517c8005e0cf7fb61f5ae8b834822895",
-      "webpSha256": "a5ec761b2f8b5298ee008d7a18eece09ccca8b6bf1bd11efad524fe6d77f1870"
+      "sha256": "fa69de324cacbbf16577e22bab88f5a1a2bd273b7e314f637c016e7372d8700c",
+      "webpSha256": "8090006f8a4c45fbab2168a3cc9a9a7a691f5828bc8cf7df992b2fc72d99556a"
     },
     "board-eos-cm5-base-turntable-poster.jpg": {
-      "sha256": "a384cebcaaaf5a15535c7ac4c837eacde1dfa372d6f84899401b7bf09912fb5a",
-      "webpSha256": "976886e627cb263fba5c2febc864d53ce137c26db1efefd2685a36873618c1db"
+      "sha256": "228ef9202400529852ed6728dbe7978653668fa19158a9884e11a67e88b8305a",
+      "webpSha256": "92434ef2d85afbc9e55a444c1e53fe590222e700c77ddbc766b766bc35895a7a"
+    },
+    "board-eos-esp32-devkit-bottom.jpg": {
+      "sha256": "5f548d1de136485aaa0c2e2145d0642b1b5e7b55207a6b8c9a0ad138e1a50334",
+      "webpSha256": "2f39489b1cb5ee30f7fd19e722051977501763e4066a05c6882ab466a3042da9"
+    },
+    "board-eos-esp32-devkit-iso.jpg": {
+      "sha256": "b13508260908b73d2c99f76a1cbc42393a053502e802d17bc3aaf0bc77860b64",
+      "webpSha256": "5208413c3c2e7db8df9beb8dbd0360eb724192c971aa560227df8021d28f4156"
+    },
+    "board-eos-esp32-devkit-thumb.jpg": {
+      "sha256": "38d8ed22bf1ac4b628112c102bae9b043ae4811809255fb9d02a74e2122bb868",
+      "webpSha256": "d72f6baa8ccf5057a63a2f3336e5fa9803eef1cfc6dcfcfd87c99ef935d8a49f"
+    },
+    "board-eos-esp32-devkit-top.jpg": {
+      "sha256": "da50aa0cfd331173ee33ca478ad78dd72558f2f271dc5d775278e58dd98f4fa7",
+      "webpSha256": "d37faa109605d7e9532da76c922158c6af7af5ce7969726df80c34d677be23ae"
+    },
+    "board-eos-esp32-devkit-turntable-poster.jpg": {
+      "sha256": "9fc8e1e5794db500cd4a0bf2000552d18b0031eefecfc3801cbc60212615c4ab",
+      "webpSha256": "fafc7f4b0171e84e29aef6c8ab5f2464488b14e6be73b36475317ac2eb695a4e"
     },
     "board-eos-learn-rp2350-bottom.jpg": {
       "sha256": "822e2beaea29c6b597942c0f1527c7d16e4daee702d6d7772aeedc180a3566d4",
@@ -46,6 +90,10 @@
       "sha256": "d4bbdc45a006e7644910b9579a88edeb546a700443241c1607a2e96940570954",
       "webpSha256": "3fc1df2d274c1ed9f0d39a0150a1834b67144428221ac43176fb28213c7b38ef"
     },
+    "board-eos-learn-rp2350-thumb.jpg": {
+      "sha256": "4da53a7b0121d3f6df061f406457e2af18e619f3f8a1e55c9f786378a5beba71",
+      "webpSha256": "039fc77ffb90a49e1a2dba8c7df88795259a2800280c7d598f2e07e6545e5f3a"
+    },
     "board-eos-learn-rp2350-top.jpg": {
       "sha256": "f1c595cb4145fd1cbccf93b6706993578e2f36e58c4513d1dd09398c72414dcb",
       "webpSha256": "f0285ecb9b7452ad0985f2645abea9e900b803bb46d974abd37956a2c5a128c3"
@@ -54,6 +102,26 @@
       "sha256": "186c26e83e9c02f2ce91d05fcfaf90fa453f06a9344aa7c0f878ee0d357677c7",
       "webpSha256": "47a2dd595ad839867b2a88d91e4f3bff7e38d93beaa15519693343af47fb3104"
     },
+    "board-eos-motion-wing-bottom.jpg": {
+      "sha256": "2de469e5fa86cf35b21e5533d514ffce01c52611b261c63eed19fe51101fef88",
+      "webpSha256": "e2ef1fe0c208ada0a0c08d0ecf4d5547c2a20f6703556a7cf4574ab2a8fe5092"
+    },
+    "board-eos-motion-wing-iso.jpg": {
+      "sha256": "49ee2ffa54d0794cce12016d31ecca03771916ee73da673d0e3a141a52f85899",
+      "webpSha256": "66bcbac27c55586b810d9e6af50f4b4e693efa58e814cb6a9f05639848774b57"
+    },
+    "board-eos-motion-wing-thumb.jpg": {
+      "sha256": "b789e62bf22faf8646aa824788943d6887829f425802b2023da8248564ad25ed",
+      "webpSha256": "1669e48c66b1049015ca7e438e819b950ca9b77e74171d2746e990a162caef2a"
+    },
+    "board-eos-motion-wing-top.jpg": {
+      "sha256": "3c20b33c287b103f71de13ba65589e9c5bc8e85116dc938e9c06303bb7dda68f",
+      "webpSha256": "cfeae46f8c3e1e852d9f4f40026096fb6667165b27841798cc4683fe3b874726"
+    },
+    "board-eos-motion-wing-turntable-poster.jpg": {
+      "sha256": "ba0693585ee07e63de43bd8ef4adcb1254659311ab6a010f072c0b5e7823b292",
+      "webpSha256": "5feae8364105b39701a6022453ff8658c6a4cff1b1f584b7d79ec005eca85685"
+    },
     "board-eos-probe-s3-bottom.jpg": {
       "sha256": "2fa8026edf521d09debb2d75ed4e255372c5166feed67e16d0b9ce8a28fc5184",
       "webpSha256": "16d4928fa18b6b357f2cb72516eb81d71826e59a4a7c0bac5dc395afeafc4089"
@@ -61,6 +129,10 @@
     "board-eos-probe-s3-iso.jpg": {
       "sha256": "c410ffb509af66d42398ad431a4923dbc871b891fdbd7994807a5660b99f99c5",
       "webpSha256": "369750811a37fb6b088da127b4a033f205d0a377174df7b158860ebd2457af7a"
+    },
+    "board-eos-probe-s3-thumb.jpg": {
+      "sha256": "bfdf515d89f6a79fa6a322a1588b0155560a0ef12dfd4b34e8f06660822b7c60",
+      "webpSha256": "1e9c1c4d41e97c746e8957ff9497a9b62a4f7077863cd85b10f84df59aacd807"
     },
     "board-eos-probe-s3-top.jpg": {
       "sha256": "a5edd38edd673dd9e539391a96059362979c9d56520b0265621e5d6f2078ccd4",
@@ -77,6 +149,10 @@
     "board-eos-sense-cape-iso.jpg": {
       "sha256": "1ba57deb18e8fd78985e28c744fa92e3438e534ea2f1c84e17090a34b37b0ac2",
       "webpSha256": "0d297194d50f3d960d4ee97fdb88e29c22214dcb473426843f23e1c828d37d9a"
+    },
+    "board-eos-sense-cape-thumb.jpg": {
+      "sha256": "7ce80edfff58b9b4722f1a40de2363b8e4eec871c070346de26ffda7b63eb78b",
+      "webpSha256": "0a21195ae5c47e5236d70654383624922bcf8fe62fe096dfa4e896cd24de0e49"
     },
     "board-eos-sense-cape-top.jpg": {
       "sha256": "ca2d599876d78860a81a7fac0bb5e32588ab595ccc55b49de34342931f6c8f00",
