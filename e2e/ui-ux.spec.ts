@@ -55,6 +55,7 @@ const PAGES = [
   "/social", // social accounts
   "/youtube", // channel page
   "/eos-boards",
+  "/book",
 ];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
@@ -158,6 +159,8 @@ test.describe("responsive layout", () => {
         "/donate",
         "/careers",
         "/eos-boards",
+        "/contact",
+        "/book",
       ]) {
         await page.goto(route);
         await page.waitForTimeout(400);
@@ -224,6 +227,35 @@ test.describe("responsive layout", () => {
 });
 
 test.describe("keyboard operability", () => {
+  test("the /book topic cards are radios a keyboard can choose, with a visible focus ring", async ({
+    page,
+  }) => {
+    await page.goto("/book", { waitUntil: "networkidle" });
+    const first = page.getByRole("radio", { name: /Platform demo/ });
+    await first.focus();
+    await page.keyboard.press("Space");
+    await expect(first).toBeChecked();
+    await page.keyboard.press("ArrowDown");
+    const second = page.getByRole("radio", { name: /Partnership or OEM/ });
+    await expect(second).toBeChecked();
+    await expect(second).toBeFocused();
+    await expect(
+      page
+        .getByRole("list", { name: "Booking progress" })
+        .locator('[aria-current="step"]')
+    ).toContainText("Pick a time");
+    const ring = await second.evaluate(input => {
+      const card = input.nextElementSibling as HTMLElement;
+      const style = getComputedStyle(card);
+      return {
+        style: style.outlineStyle,
+        width: parseFloat(style.outlineWidth),
+      };
+    });
+    expect(ring.style).toBe("solid");
+    expect(ring.width).toBeGreaterThanOrEqual(2);
+  });
+
   test("primary navigation is reachable by keyboard", async ({ page }) => {
     await page.goto("/");
     const reached: string[] = [];

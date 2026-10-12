@@ -110,6 +110,25 @@ export const PAGES: SearchEntry[] = [
     ],
   },
   {
+    title: "Book a Call — Talk to the EmbeddedOS Team",
+    path: "/book",
+    tags: [
+      "book",
+      "booking",
+      "call",
+      "meeting",
+      "calendly",
+      "demo",
+      "partnership",
+      "oem",
+      "research",
+      "university",
+      "education",
+      "boards",
+      "contact",
+    ],
+  },
+  {
     title: "EmbeddedOS Development Boards — Original KiCad Designs",
     path: "/eos-boards",
     tags: [

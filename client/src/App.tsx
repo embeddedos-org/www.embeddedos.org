@@ -248,6 +248,7 @@ const HardwareLab = lazyPage(
   () => import("./pages/HardwareLab")
 );
 const EosBoards = lazyPage("/eos-boards", () => import("./pages/EosBoards"));
+const Book = lazyPage("/book", () => import("./pages/Book"));
 const Stacks = lazyPage("/stacks", () => import("./pages/Stacks"));
 const EApps = lazyPage("/eapps", () => import("./pages/EApps"));
 const Kids = lazyPage("/kids", () => import("./pages/Kids"));
@@ -535,6 +536,11 @@ function Router() {
       <Route path="/eos-boards">
         <Suspense fallback={<PageLoader />}>
           <EosBoards />
+        </Suspense>
+      </Route>
+      <Route path="/book">
+        <Suspense fallback={<PageLoader />}>
+          <Book />
         </Suspense>
       </Route>
       <Route path="/stacks">

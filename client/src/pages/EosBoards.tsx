@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  CalendarDays,
   CircleCheck,
   CircuitBoard,
   ExternalLink,
@@ -24,6 +25,7 @@ import {
   type PixelSize,
 } from "@/data/eos-boards";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import BookingTeaser from "@/components/BookingTeaser";
 
 export const CHECK_TERMS = [
   {
@@ -561,6 +563,21 @@ export default function EosBoards() {
                 </a>
               </div>
             ))}
+          </div>
+          <div id="book-a-meeting" className="scroll-mt-24 mb-10 min-w-0">
+            <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+              <CalendarDays
+                size={20}
+                className="text-orange-400"
+                aria-hidden="true"
+              />
+              Book a call
+            </h3>
+            <BookingTeaser
+              href="/book"
+              title="Talk to us about a board"
+              line="Choose EoS boards and hardware on the booking page and pick a time."
+            />
           </div>
           <div className="flex flex-wrap gap-3">
             {BOARD_PULL_REQUESTS.map(pullRequest => (

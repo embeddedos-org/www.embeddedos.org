@@ -312,6 +312,62 @@ migrate).
 
 ---
 
+## Booking
+
+`/book` is the booking page, linked as "Book a call" in the header. `/contact`
+and `/eos-boards` each carry a compact card that links to it. The page is
+`client/src/pages/Book.tsx`: pick a topic, pick a time in the embedded Calendly
+calendar (`client/src/components/BookingCalendar.tsx`), then see the confirmed
+state. Topics, durations, the "what to expect" list and the FAQ are in
+`client/src/data/booking.ts`.
+
+- **The event URL is one constant:** `CALENDLY_EVENT_URL` in
+  `client/src/data/foundation.ts`. While it is `null`, choosing a topic offers
+  to arrange the call by email through the contact form, and nothing loads from
+  Calendly. Set it to the event's public scheduling link,
+  `https://calendly.com/<user>/<event>`; any other value keeps the email
+  fallback. Once it is set, Calendly's `widget.js` and `widget.css` load when
+  the calendar nears the viewport. A plain link to the scheduling page sits under
+  the calendar in case the script is blocked.
+- **The topic is prefilled** as `a1`, the answer to the event's first custom
+  question (Calendly Help Center, "How to pre-fill invitee information in your
+  Calendly link",
+  https://calendly.com/help/how-to-pre-fill-invitee-information-in-your-calendly-link).
+  In Calendly, give the event a first question such as "What would you like to
+  talk about?", or the topic is not recorded. Each card shows
+  `BOOKING_MINUTES` (30), which must match the event's duration.
+- **The calendar is themed** with Calendly's `background_color`, `text_color`
+  and `primary_color` parameters, set from the brand navy and orange
+  (`CALENDLY_THEME` in `client/src/lib/booking.ts`, tested against
+  `client/src/index.css`), and `hide_gdpr_banner=1`. Calendly applies the colours
+  only on its paid plans ("If you're on a paid plan, you can update your embed's
+  look and feel", https://calendly.com/help/how-to-customize-your-embed). On a
+  free plan the calendar stays white inside the dark card. Hiding the cookie
+  banner leaves cookie consent to this site, as that article notes.
+- **CSP:** `client/public/.htaccess` allows `https://assets.calendly.com` in
+  `script-src` and `style-src`, and `https://calendly.com` in `frame-src`.
+- **Notifications:** Calendly emails the event's host. As well, when a visitor
+  books, the page forwards Calendly's `calendly.event_scheduled` message
+  (from `https://calendly.com` only) to `client/public/api/booking.php`, which
+  mails kartikeydheer@embeddedos.org and srikanth@embeddedos.org with the subject
+  "New meeting booked via embeddedos.org". The addresses are `BOOKING_INBOXES`
+  in that file, on the server only. The request carries only the scheduled
+  event's and the invitee's API URIs and the page path; the endpoint refuses
+  other origins, malformed URIs and more than 5 requests an hour from one
+  address. It does not check the URIs with Calendly, so the email says to
+  confirm the booking in Calendly.
+- **On Calendly's side,** so that Srikanth also gets Calendly's own booking
+  emails, make the event a Collective event type and add him as a co-host. In
+  Calendly: open the Scheduling page, open the event type's settings, expand
+  **Hosts**, enter his name or email, select **+ Add co-host**, then **Save
+  changes** (Calendly Help Center, "How to manage shared event types",
+  https://calendly.com/help/how-to-manage-shared-event-types). That article
+  lists shared event types for the Professional, Standard, Standard Plus,
+  Teams, Teams Plus and Enterprise plans. A Collective event offers only times
+  when every host is free. Calendly's notifications article documents no other
+  way to add a recipient to the host's booking email
+  (https://calendly.com/help/calendly-scheduling-notifications).
+
 ## Notes for contributors
 
 - **Do not render `<Navbar />` or `<Footer />` inside a page.** `App.tsx`

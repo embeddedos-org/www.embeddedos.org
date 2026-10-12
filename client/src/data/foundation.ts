@@ -382,3 +382,5 @@ export const SOCIAL_URLS = {
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
   discord: "https://discord.gg/n6Kd9fwja",
 } as const;
+
+export const CALENDLY_EVENT_URL: string | null = null;

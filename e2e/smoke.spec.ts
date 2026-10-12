@@ -6,7 +6,14 @@
  */
 import { test, expect } from "./fixtures";
 
-const CRITICAL_ROUTES = ["/", "/about", "/donate", "/contact", "/get-involved"];
+const CRITICAL_ROUTES = [
+  "/",
+  "/about",
+  "/donate",
+  "/contact",
+  "/get-involved",
+  "/book",
+];
 
 /**
  * Routes whose `load` event is gated on third-party iframes.

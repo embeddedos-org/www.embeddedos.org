@@ -36,6 +36,7 @@ const aboutSource = read("client/src/pages/About.tsx");
 const donateSource = read("client/src/pages/Donate.tsx");
 const missionSource = read("client/src/pages/Mission.tsx");
 const foundationSource = read("client/src/data/foundation.ts");
+const contactSource = read("client/src/pages/Contact.tsx");
 
 /** Internal routes the router serves, excluding the catch-all 404. */
 const routes = [
@@ -156,6 +157,7 @@ const HUB_MEMBERS: Array<{ hub: string; members: string[] }> = [
     members: ["/what-we-do", "/industries", "/patents", "/careers"],
   },
   { hub: "/donate", members: ["/membership", "/sponsors"] },
+  { hub: "/contact", members: ["/book"] },
   { hub: "/mission", members: ["/industries"] },
 ];
 
@@ -167,6 +169,7 @@ const HUB_SOURCES: Record<string, string> = {
   "/about": aboutSource,
   "/donate": donateSource,
   "/mission": missionSource,
+  "/contact": contactSource,
 };
 
 /** Every route covered through a hub rather than a literal footer link. */
