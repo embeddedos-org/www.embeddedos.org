@@ -191,7 +191,7 @@ export default function BookingCalendar({
 
   const pageLink = (
     <a
-      href={base}
+      href={frameUrl ?? base}
       target="_blank"
       rel="noopener noreferrer"
       className="inline-flex items-center gap-1.5 font-semibold text-brand-amber-light underline underline-offset-2 break-words"

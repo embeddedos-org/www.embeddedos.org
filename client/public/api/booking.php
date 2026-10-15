@@ -91,28 +91,44 @@ function booking_headers(string $inbox): string
 function rate_limit_ok(string $ip, string $dir, int $now): bool
 {
     if ($ip === '') {
-        return true;
+        return false;
     }
     $file = $dir . '/eos-booking-' . hash('sha256', $ip) . '.json';
 
-    $seen = [];
-    if (is_readable($file)) {
-        $decoded = json_decode((string) @file_get_contents($file), true);
-        if (is_array($decoded)) {
-            $seen = array_values(array_filter(
-                $decoded,
-                static fn($t): bool => is_int($t) && $t > $now - RATE_LIMIT_WINDOW
-            ));
-        }
-    }
-
-    if (count($seen) >= RATE_LIMIT_MAX) {
+    $handle = @fopen($file, 'c+');
+    if ($handle === false) {
         return false;
     }
-
-    $seen[] = $now;
-    @file_put_contents($file, json_encode($seen), LOCK_EX);
-    return true;
+    try {
+        if (!flock($handle, LOCK_EX)) {
+            return false;
+        }
+        $raw = stream_get_contents($handle);
+        if ($raw === false) {
+            return false;
+        }
+        $decoded = $raw === '' ? [] : json_decode($raw, true);
+        if (!is_array($decoded)) {
+            return false;
+        }
+        $seen = array_values(array_filter(
+            $decoded,
+            static fn($t): bool => is_int($t) && $t > $now - RATE_LIMIT_WINDOW
+        ));
+        if (count($seen) >= RATE_LIMIT_MAX) {
+            return false;
+        }
+        $seen[] = $now;
+        $encoded = json_encode($seen);
+        return $encoded !== false
+            && rewind($handle)
+            && ftruncate($handle, 0)
+            && fwrite($handle, $encoded) === strlen($encoded)
+            && fflush($handle);
+    } finally {
+        flock($handle, LOCK_UN);
+        fclose($handle);
+    }
 }
 
 if (PHP_SAPI === 'cli') {
@@ -140,7 +156,7 @@ if (!same_origin_ok((string) ($_SERVER['HTTP_ORIGIN'] ?? ''))) {
     respond(403, ['ok' => false, 'error' => 'forbidden_origin']);
 }
 
-$raw = file_get_contents('php://input');
+$raw = file_get_contents('php://input', false, null, 0, MAX_BODY_BYTES + 1);
 if ($raw === false || strlen($raw) > MAX_BODY_BYTES) {
     respond(413, ['ok' => false, 'error' => 'too_large']);
 }

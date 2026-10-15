@@ -210,16 +210,14 @@ describe("board page", () => {
       ).toBeInTheDocument();
   });
 
-  it("links each board to its folder on its own pull request's branch, in a new tab", () => {
+  it("links all 15 merged boards to upstream master, in a new tab", () => {
     const { container } = render(<EosBoards />);
+    expect(EOS_BOARDS).toHaveLength(15);
     const catalogue = ["eos-cm4-base", "eos-motion-wing", "eos-esp32-devkit"];
     for (const board of EOS_BOARDS) {
       const href = boardFolderUrl(board);
-      const branch = catalogue.includes(board.slug)
-        ? "feat/eos-catalogue-boards"
-        : "feat/eos-dev-boards";
       expect(href).toBe(
-        `https://github.com/Kartikey1306/eCAD-Hardware-Products/tree/${branch}/boards/eos/${board.slug}`
+        `https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/boards/eos/${board.slug}`
       );
       const link = container.querySelector(`a[href="${href}"]`);
       expect(link, board.slug).not.toBeNull();
@@ -232,7 +230,7 @@ describe("board page", () => {
 
   it("links every pull request the boards come from, once each", () => {
     const { container } = render(<EosBoards />);
-    expect(BOARD_PULL_REQUESTS).toEqual([54, 57]);
+    expect(BOARD_PULL_REQUESTS).toEqual([60]);
     for (const pullRequest of BOARD_PULL_REQUESTS)
       expect(
         container.querySelectorAll(`a[href="${pullRequestUrl(pullRequest)}"]`)

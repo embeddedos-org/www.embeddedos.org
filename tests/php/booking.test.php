@@ -167,7 +167,53 @@ check(
     'the store holds no readable address',
     !str_contains(implode(' ', @scandir($dir) ?: []), '203.0.113')
 );
-check('an unknown address is not blocked', rate_limit_ok('', $dir, $now));
+check('an unknown address is refused', !rate_limit_ok('', $dir, $now));
+check('an unavailable store fails closed', !rate_limit_ok('203.0.113.9', "$dir/missing", $now));
+$corrupt = $dir . '/eos-booking-' . hash('sha256', '203.0.113.10') . '.json';
+file_put_contents($corrupt, '{broken');
+check('an unreadable count fails closed', !rate_limit_ok('203.0.113.10', $dir, $now));
+
+// Hold the store lock until every process is about to enter the limiter. A
+// read-before-lock implementation lets them all see the same empty count.
+$concurrentIp = '203.0.113.11';
+$counter = $dir . '/eos-booking-' . hash('sha256', $concurrentIp) . '.json';
+file_put_contents($counter, '[]');
+$lock = fopen($counter, 'r+');
+flock($lock, LOCK_EX);
+$workers = [];
+for ($i = 0; $i < RATE_LIMIT_MAX + 3; $i++) {
+    $code = 'require ' . var_export(realpath(__DIR__ . '/../../client/public/api/booking.php'), true) . ';'
+        . 'file_put_contents(' . var_export("$dir/ready-$i", true) . ', "ready");'
+        . 'echo rate_limit_ok(' . var_export($concurrentIp, true) . ', '
+        . var_export($dir, true) . ", $now) ? '1' : '0';";
+    $pipes = [];
+    $process = proc_open([PHP_BINARY, '-r', $code], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    check("concurrent worker $i starts", is_resource($process));
+    if (is_resource($process)) {
+        $workers[] = [$process, $pipes];
+    }
+}
+$deadline = microtime(true) + 10;
+while (count(glob("$dir/ready-*") ?: []) < count($workers) && microtime(true) < $deadline) {
+    usleep(10000);
+}
+equals('all concurrent workers reached the limiter', count($workers), count(glob("$dir/ready-*") ?: []));
+usleep(100000);
+flock($lock, LOCK_UN);
+fclose($lock);
+$concurrentAllowed = 0;
+foreach ($workers as [$process, $pipes]) {
+    $output = stream_get_contents($pipes[1]);
+    $errors = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    equals('concurrent worker exits successfully', 0, proc_close($process));
+    equals('concurrent worker reports no errors', '', $errors);
+    check('concurrent worker returns a decision', $output === '0' || $output === '1');
+    $concurrentAllowed += $output === '1' ? 1 : 0;
+}
+equals('concurrent calls admit exactly the limit', RATE_LIMIT_MAX, $concurrentAllowed);
+equals('every admitted concurrent call is persisted', RATE_LIMIT_MAX, count(json_decode(file_get_contents($counter), true)));
 array_map('unlink', glob("$dir/*") ?: []);
 @rmdir($dir);
 

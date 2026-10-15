@@ -84,10 +84,7 @@ export function bookingFrameUrl(
   eventUrl: string,
   topic: string | null
 ): string {
-  const params: [string, string][] = [
-    ...Object.entries(CALENDLY_THEME),
-    ["hide_gdpr_banner", "1"],
-  ];
+  const params: [string, string][] = [...Object.entries(CALENDLY_THEME)];
   if (topic) params.push(["a1", topic]);
   const query = params
     .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)

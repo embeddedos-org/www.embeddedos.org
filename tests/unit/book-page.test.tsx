@@ -221,7 +221,6 @@ describe("the calendar URL", () => {
       background_color: "0b1d3a",
       text_color: "ffffff",
       primary_color: "f97316",
-      hide_gdpr_banner: "1",
       a1: "Research collaboration",
     });
   });
@@ -301,6 +300,14 @@ describe("the topic picker", () => {
     expect(
       new URL(widget(container)?.dataset.url ?? "").searchParams.get("a1")
     ).toBe("EoS boards and hardware");
+    expect(
+      screen.getByRole("link", {
+        name: /open the booking page on calendly.com/,
+      })
+    ).toHaveAttribute(
+      "href",
+      bookingFrameUrl(EVENT_URL, "EoS boards and hardware")
+    );
   });
 
   it("without an event URL, offers to arrange the chosen call by email", () => {

@@ -10,9 +10,48 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID  | Task             | Owner | Mode | Status | Depends on |
-| --- | ---------------- | ----- | ---- | ------ | ---------- |
-| —   | No active tasks. | —     | —    | —      | —          |
+| ID         | Task                                             | Owner    | Mode           | Status      | Depends on                  |
+| ---------- | ------------------------------------------------ | -------- | -------------- | ----------- | --------------------------- |
+| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | in-progress | Calendly account connection |
+
+Acceptance criteria from the handoff:
+
+- "add batch 2's 8 boards to `/eos-boards` (it shows 7), with links to master."
+- "the privacy page must mention Calendly before launch."
+- The owner asked to create the Calendly event. Create the 30-minute team event,
+  with topic as the first custom question, using the connected account; retain
+  email fallback until its real URL and host configuration are verified.
+
+Verification: type check, lint, format, build, Vitest and security, SEO and
+sitemap; smoke, accessibility and functional suites with one worker; inspect
+desktop/mobile previews; independent review before publication.
+
+Progress on 2026-10-15: the catalogue now contains all 15 merged boards, with
+master links, pinned check results and optimized media. Calendly processing is
+disclosed in Privacy. The booking notice limiter now locks the whole
+read/check/write operation and fails closed; the external booking link preserves
+the chosen topic. Independent review cleared both fixes and verified the board
+checks and media against upstream commit `28ec996`.
+
+| Verification                                          | Result                                                                                                          |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Type check and format                                 | PASS                                                                                                            |
+| ESLint                                                | PASS, 0 errors and 22 existing warnings                                                                         |
+| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages                                              |
+| Full Vitest                                           | PASS, 1,076 passed and 8 skipped                                                                                |
+| Security suite                                        | PASS, 21 tests                                                                                                  |
+| Native PHP 8.4.26                                     | PASS, 268 assertions, including simultaneous booking notices                                                    |
+| Limiter regression mutation                           | Original code rejected: 8 admissions and 1 stored timestamp instead of 5                                        |
+| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                   |
+| Playwright smoke, accessibility and functional suites | PASS, 118 tests, one worker, desktop and mobile                                                                 |
+| Visual checks                                         | PASS for catalogue images, topic selection and email fallback at 1440 px and 375 px; no overflow or page errors |
+
+The real Calendly event is still unconfigured (`CALENDLY_EVENT_URL = null`). The
+owner authorized creating it, but the Calendly connection is not available in
+this session. Event hosts, availability, first custom question, video link and
+delivery to both inboxes remain unverified. No deployment or real notification
+delivery was performed. Publication remains pending those checks. The parallel
+review workers stopped when the workspace reported exhausted credits.
 
 ## Completed
 

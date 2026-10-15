@@ -406,7 +406,9 @@ describe("once the event URL is set", () => {
     expect(calendlyScript()).toBe(null);
     expect(screen.queryByText("fallback")).toBe(null);
     expect(
-      container.querySelector(`a[href="${PAGE_URL}"][target="_blank"]`)
+      container.querySelector(
+        `a[href="${bookingFrameUrl(PAGE_URL, null)}"][target="_blank"]`
+      )
     ).not.toBe(null);
 
     reveal();
@@ -444,7 +446,9 @@ describe("once the event URL is set", () => {
     });
     expect(container.querySelector('[data-booking="failed"]')).not.toBe(null);
     expect(screen.getByText("fallback")).toBeInTheDocument();
-    expect(container.querySelector(`a[href="${PAGE_URL}"]`)).not.toBe(null);
+    expect(
+      container.querySelector(`a[href="${bookingFrameUrl(PAGE_URL, null)}"]`)
+    ).not.toBe(null);
     expect(container.querySelector(".calendly-inline-widget")).toBe(null);
   });
 
