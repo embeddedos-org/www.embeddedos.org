@@ -34,6 +34,7 @@ import OpenHardware, {
   GALLERY,
   LICENCE_TERMS,
   STATS,
+  STATS_AS_OF,
   USAGE,
   VALIDATION,
 } from "../../client/src/pages/OpenHardware";
@@ -95,7 +96,8 @@ describe("open hardware media", () => {
   it("names a real design file and a licence for every rendered board", () => {
     for (const shot of GALLERY.flatMap(g => g.shots)) {
       expect(shot.source, shot.board).toMatch(
-        /\.(kicad_pcb|kicad_sch|brd|zip|stp|step)$/
+        // a design file, or a Gerber folder (the mirror unpacks Gerber zips)
+        /(\.(kicad_pcb|kicad_sch|brd|stp|step)|-Gerbers\/)$/
       );
       expect(shot.licence, shot.board).toMatch(/^(CC BY|MIT|Apache)/);
     }
@@ -150,5 +152,21 @@ describe("open hardware page", () => {
         screen.getByRole("heading", { level: 2, name: group.heading })
       ).toBeInTheDocument();
     }
+  });
+});
+
+describe("open hardware figures are dated", () => {
+  it("names the eCAD commit and date the figures were counted on", () => {
+    expect(STATS_AS_OF.commit).toMatch(/^[0-9a-f]{40}$/);
+    expect(STATS_AS_OF.date).toMatch(/^\d{1,2} [A-Z][a-z]+ \d{4}$/);
+  });
+
+  it("names the Gerber folder the mirror holds, not the old zip", () => {
+    const source = readFileSync(
+      path.resolve(__dirname, "../../client/src/pages/OpenHardware.tsx"),
+      "utf8"
+    );
+    expect(source).not.toContain("Apollo3-Gerbers.zip");
+    expect(source).toContain('"SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers/"');
   });
 });

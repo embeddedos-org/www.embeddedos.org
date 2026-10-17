@@ -9,6 +9,13 @@ import {
 
 const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
 
+// The figures move as boards are mirrored: the page says which eCAD-Hardware-Products commit they
+// were counted on. Refresh both when the figures change.
+export const STATS_AS_OF = {
+  date: "18 October 2026",
+  commit: "0e543f053ef95a91999240781ddd651768790ced",
+} as const;
+
 export const STATS = [
   { value: "336", label: "board records", color: "#F97316" },
   { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
@@ -124,7 +131,7 @@ export const GALLERY: ReadonlyArray<{
         height: 1400,
         alt: "Top side of the SparkFun Edge 2 rendered from its Gerber files, with the camera connector and TensorFlow silkscreen",
         board: "SparkFun Edge, top",
-        source: "SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers.zip",
+        source: "SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers/",
         licence: "CC BY-SA 4.0",
       },
       {
@@ -133,7 +140,7 @@ export const GALLERY: ReadonlyArray<{
         height: 1400,
         alt: "Bottom side of the SparkFun Edge 2 rendered from its Gerber files",
         board: "SparkFun Edge, bottom",
-        source: "SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers.zip",
+        source: "SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers/",
         licence: "CC BY-SA 4.0",
       },
     ],
@@ -514,6 +521,19 @@ export default function OpenHardware() {
             </div>
           ))}
         </dl>
+        <p className="max-w-6xl mx-auto mt-5 text-center text-xs text-gray-400">
+          Figures as of {STATS_AS_OF.date}, counted on eCAD-Hardware-Products
+          master{" "}
+          <a
+            href={`${REPO}/tree/${STATS_AS_OF.commit}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono underline hover:text-white"
+          >
+            {STATS_AS_OF.commit.slice(0, 7)}
+          </a>
+          .
+        </p>
       </section>
 
       <section className="py-16 px-6">
