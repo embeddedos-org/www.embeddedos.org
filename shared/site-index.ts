@@ -1328,6 +1328,19 @@ export const PAGES: SearchEntry[] = [
     ],
   },
   {
+    title: "Article: This week in EmbeddedOS — 2026-10-10",
+    path: "/article-this-week-in-embeddedos-2026-10-10",
+    tags: [
+      "weekly",
+      "digest",
+      "embeddedos",
+      "news",
+      "security",
+      "hardware",
+      "article",
+    ],
+  },
+  {
     title: "Downloads",
     path: "/downloads",
     tags: [
