@@ -2,7 +2,7 @@
 
 import "@testing-library/jest-dom/vitest";
 import { act, cleanup, render, screen, within } from "@testing-library/react";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -14,10 +14,12 @@ import {
   BOARD_LICENSOR,
   BOARD_STATUS,
   EOS_BOARDS,
+  boardCadUrl,
   boardFolderUrl,
   boardImage,
   boardThumb,
   boardTurntable,
+  boardLicenceUrl,
   pullRequestUrl,
 } from "../../client/src/data/eos-boards";
 import { readDescription } from "../../client/src/lib/page-meta";
@@ -117,6 +119,36 @@ describe("board manifest", () => {
 });
 
 describe("board page", () => {
+  it("offers each board’s native CAD files and its named full licence", () => {
+    render(<EosBoards />);
+    for (const board of EOS_BOARDS) {
+      const article = document.getElementById(board.slug) as HTMLElement;
+      for (const [kind, label, root] of [
+        ["schematic", "Schematic (.kicad_sch)", "(kicad_sch"],
+        ["pcb", "PCB layout (.kicad_pcb)", "(kicad_pcb"],
+      ] as const) {
+        const link = within(article).getByRole("link", {
+          name: `${label} for ${board.name}`,
+        });
+        const url = boardCadUrl(board, kind);
+        expect(link).toHaveAttribute("href", url);
+        expect(link).toHaveAttribute("download");
+        const cad = readFileSync(fileOf(url), "utf8");
+        expect(cad.trimStart().startsWith(root), board.slug).toBe(true);
+        expect(cad, board.slug).toContain(BOARD_LICENSOR.name);
+        expect(cad, board.slug).toMatch(/All rights reserved/);
+      }
+      const licence = within(article).getByRole("link", {
+        name: "this board’s full licence",
+      });
+      expect(licence).toHaveAttribute("href", boardLicenceUrl(board));
+      const terms = readFileSync(fileOf(boardLicenceUrl(board)), "utf8");
+      expect(terms).toContain(board.name);
+      expect(terms).toContain(BOARD_LICENSOR.name);
+      expect(terms).toContain("1. Permission is needed.");
+    }
+  });
+
   it("states each board's status, chip, size, layers and recorded checks", () => {
     render(<EosBoards />);
     for (const board of EOS_BOARDS) {

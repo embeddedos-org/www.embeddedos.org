@@ -301,10 +301,23 @@ export function audit(docs, sitemap) {
     if (count === 0 && !EXEMPT.has(route))
       add("error", "orphan-page", route, "no inbound internal link");
 
+  // A link to a file the build ships, such as a board's native KiCad file, is
+  // not a missing page. Only a regular file inside dist/public counts: a bare
+  // directory, or an href whose ".." segments climb out of the published tree,
+  // is still broken.
+  const shipsFile = href => {
+    const file = path.resolve(DIST, `.${href}`);
+    return (
+      file.startsWith(DIST + path.sep) &&
+      fs.statSync(file, { throwIfNoEntry: false })?.isFile() === true
+    );
+  };
+
   for (const d of docs)
     for (const href of d.internal)
       if (
         !routes.has(href) &&
+        !shipsFile(href) &&
         !/\.(xml|txt|php|pdf|png|jpe?g|svg|ico|webmanifest|html|webp|avif)$/i.test(
           href
         ) &&

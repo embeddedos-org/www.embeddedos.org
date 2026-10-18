@@ -3,6 +3,7 @@ import {
   CalendarDays,
   CircleCheck,
   CircuitBoard,
+  Download,
   ExternalLink,
   GraduationCap,
   Handshake,
@@ -14,8 +15,10 @@ import {
   BOARD_LICENSOR,
   BOARD_STATUS,
   EOS_BOARDS,
+  boardCadUrl,
   boardFolderUrl,
   boardImage,
+  boardLicenceUrl,
   boardMailto,
   boardThumb,
   boardTurntable,
@@ -344,6 +347,34 @@ function BoardSection({ board }: { board: EosBoard }) {
             </div>
           </details>
 
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            {(["schematic", "pcb"] as const).map(kind => (
+              <a
+                key={kind}
+                href={boardCadUrl(board, kind)}
+                download
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-orange-400/30 text-orange-200 hover:bg-orange-400/10"
+              >
+                <Download size={16} aria-hidden="true" />
+                {kind === "schematic"
+                  ? "Schematic (.kicad_sch)"
+                  : "PCB layout (.kicad_pcb)"}
+                {/* Fifteen boards repeat these labels; a links list needs the board. */}{" "}
+                <span className="sr-only">for {board.name}</span>
+              </a>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mb-5 leading-relaxed">
+            Native KiCad files from commit {checks.commit}, for viewing under{" "}
+            <a
+              href={boardLicenceUrl(board)}
+              className="text-orange-300 underline underline-offset-2"
+            >
+              this board’s full licence
+            </a>
+            . Keep the licence with any permitted copies. The GitHub folder
+            includes the project settings and supporting files.
+          </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <a
               href={boardFolderUrl(board)}
@@ -484,6 +515,53 @@ export default function EosBoards() {
               each board's folder.
             </li>
           </ul>
+        </div>
+      </section>
+
+      <section aria-labelledby="process-heading" className="px-6 pb-14">
+        <div className="max-w-6xl mx-auto">
+          <h2
+            id="process-heading"
+            className="text-2xl md:text-3xl font-black mb-3"
+          >
+            From circuit to board
+          </h2>
+          <p className="text-gray-300 max-w-3xl mb-6 leading-relaxed">
+            The schematic describes what connects. The PCB file places those
+            parts and draws the copper connections. Each board below includes
+            both files, its recorded checks and views rendered from the PCB.
+          </p>
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              [
+                "Define the circuit",
+                "Component datasheets set pin assignments, supply limits and component values. Published dimensions and pinouts guide the connectors. Each board identifies its sources and any third-party material.",
+              ],
+              [
+                "Place and route",
+                "Parts receive physical footprints. Copper tracks, vias and planes connect the schematic’s nets, with critical signals and supply connections laid first.",
+              ],
+              [
+                "Check the CAD",
+                "KiCad checks the schematic, physical clearances, missing connections and agreement between the two files. The results below belong to a specific saved revision.",
+              ],
+              [
+                "Inspect the views",
+                "Perspective, top, bottom and rotating views come from that board’s CAD. Missing component models can leave empty areas in a render; the PCB file still records the fitted footprints.",
+              ],
+            ].map(([title, body], index) => (
+              <li
+                key={title}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+              >
+                <span className="text-sm font-bold text-orange-300">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-bold text-white mt-2 mb-2">{title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{body}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

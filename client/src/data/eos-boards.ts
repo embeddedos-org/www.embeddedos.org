@@ -888,6 +888,18 @@ export function boardFolderUrl(board: EosBoard): string {
   return `${BOARD_REPO}/tree/${board.source.ref}/${BOARD_FOLDER}/${board.slug}`;
 }
 
+export function boardCadUrl(
+  board: EosBoard,
+  kind: "schematic" | "pcb"
+): string {
+  const extension = kind === "schematic" ? "kicad_sch" : "kicad_pcb";
+  return `/cad/${board.slug}/${board.slug}.${extension}`;
+}
+
+export function boardLicenceUrl(board: EosBoard): string {
+  return `/board-licences/${board.slug}.txt`;
+}
+
 export function pullRequestUrl(pullRequest: number): string {
   return `https://github.com/embeddedos-org/eCAD-Hardware-Products/pull/${pullRequest}`;
 }

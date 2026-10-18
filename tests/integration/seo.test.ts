@@ -8,6 +8,8 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+// @ts-expect-error - plain .mjs script, no type declarations
+import { audit, parseDocument } from "../../scripts/seo-audit.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "../..");
 const DIST = path.join(ROOT, "dist", "public");
@@ -127,6 +129,30 @@ describe("social and structured metadata", () => {
 });
 
 describe("links and sitemap", () => {
+  it("accepts shipped CAD files while rejecting missing files and bare directories", () => {
+    const doc = parseDocument(path.join(DIST, "eos-boards", "index.html"));
+    const directory = "/cad/eos-ra2e1-board";
+    const missing = `${directory}/missing.kicad_pcb`;
+    // Resolves to the repository's own package.json, which exists on disk
+    // but is not part of the published site.
+    const outside = "/../../package.json";
+    doc.internal = [
+      `${directory}/eos-ra2e1-board.kicad_sch`,
+      `${directory}/eos-ra2e1-board.kicad_pcb`,
+      missing,
+      directory,
+      outside,
+    ];
+    const broken = audit([doc], null).filter(
+      (f: Finding) => f.check === "internal-link-broken"
+    );
+    expect(broken.map((f: Finding) => f.detail)).toEqual([
+      missing,
+      directory,
+      outside,
+    ]);
+  });
+
   it.each([
     "internal-link-broken",
     "img-alt-missing",
