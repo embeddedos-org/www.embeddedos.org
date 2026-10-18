@@ -148,7 +148,7 @@ export const GALLERY: ReadonlyArray<{
   {
     heading: "3D models",
     intro:
-      "25 boards have a verified STEP model. Each of these was tessellated with OpenCASCADE and lit in three.js, in the colours its manufacturer gave it.",
+      "25 boards have a verified STEP model. Each of these was tessellated with OpenCASCADE and lit in three.js. The shapes and positions are the manufacturer's model; the shading colours are the renderer's and can differ from the colours in the file.",
     shots: [
       {
         file: "open-hardware-3d-beaglebone-ai-64",

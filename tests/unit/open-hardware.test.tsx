@@ -161,6 +161,15 @@ describe("open hardware figures are dated", () => {
     expect(STATS_AS_OF.date).toMatch(/^\d{1,2} [A-Z][a-z]+ \d{4}$/);
   });
 
+  it("does not claim the 3D renders use the STEP files' own colours", () => {
+    // An independent re-render of the BeagleBone AI-64 STEP showed its
+    // connectors in the file's colours, not the page's; only shapes are claimed.
+    const intro = GALLERY.find(g => g.intro.includes("STEP model"))?.intro;
+    expect(intro).toBeDefined();
+    expect(intro).not.toMatch(/colours its manufacturer gave/);
+    expect(intro).toMatch(/shading colours are the renderer's/);
+  });
+
   it("names the Gerber folder the mirror holds, not the old zip", () => {
     const source = readFileSync(
       path.resolve(__dirname, "../../client/src/pages/OpenHardware.tsx"),
