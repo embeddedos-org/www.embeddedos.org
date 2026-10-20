@@ -445,8 +445,12 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
 ## Licence
 
 MIT, except the EmbeddedOS development-board renders and turntable videos in
-`client/public/media/board-*`. Those are Copyright (c) 2026 Kartikeydheer
-Srivastava, all rights reserved, and are published here for viewing under each
-board's `LICENSE.txt` in eCAD-Hardware-Products; see `/eos-boards`.
+`client/public/media/board-*`, the boards' native KiCad files in
+`client/public/cad/`, and the board licences in `client/public/board-licences/`
+(each board's `LICENSE.txt`, unchanged). Those are Copyright (c) 2026
+Kartikeydheer Srivastava, all rights reserved, and are published here for
+viewing under each board's `LICENSE.txt` in eCAD-Hardware-Products; see
+`/eos-boards`. Third-party material in a board keeps its own licence, as that
+board's licence lists.
 
 See [SECURITY.md](./SECURITY.md) for the vulnerability disclosure policy.
