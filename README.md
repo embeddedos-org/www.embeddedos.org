@@ -428,19 +428,26 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
   clip the section.
 - Payload budgets are enforced in `tests/performance/budgets.test.ts`; adding a
   large eager import will fail the suite rather than quietly regress the site.
-- **A new board on `/eos-boards` is one manifest entry plus its media.** Add
-  the board to `EOS_BOARDS` in `client/src/data/eos-boards.ts`, copying its
-  facts from the board's `README.md` and its check counts from
-  `build-report.json` and `drc.json` in eCAD-Hardware-Products. Put its media
-  in `client/public/media/`: `board-<slug>-iso.jpg`, `-top.jpg` and
-  `-bottom.jpg` from the board's renders, `board-<slug>-thumb.jpg` (the iso
-  render at 480 px, for the index), `board-<slug>-turntable.mp4` (H.264, no
-  audio) and `board-<slug>-turntable-poster.jpg` (the video's first frame).
+- **A new board on `/eos-boards` is one manifest entry plus its media, its
+  two KiCad files and its licence.** Add the board to `EOS_BOARDS` in
+  `client/src/data/eos-boards.ts`, copying its facts from the board's
+  `README.md` and its check counts from `build-report.json` and `drc.json` in
+  eCAD-Hardware-Products. Put its media in `client/public/media/`:
+  `board-<slug>-iso.jpg`, `-top.jpg` and `-bottom.jpg` from the board's
+  renders, `board-<slug>-thumb.jpg` (the iso render at 480 px, for the index),
+  `board-<slug>-turntable.mp4` (H.264, no audio) and
+  `board-<slug>-turntable-poster.jpg` (the video's first frame). Copy, unchanged
+  and from the commit in `checks.commit`, its native files
+  `boards/eos/<slug>/hardware/<slug>.kicad_sch` and `<slug>.kicad_pcb` to
+  `client/public/cad/<slug>/`, and its `boards/eos/<slug>/LICENSE.txt` to
+  `client/public/board-licences/<slug>.txt` (`git show <commit>:<path>` in
+  eCAD-Hardware-Products gives the exact bytes).
   Set `source` to the entry in `BOARD_SOURCES` for the pull request whose
   branch holds the board, and `checks.commit` to the commit its counts come
   from. Then run `pnpm optimize:images` for the WebP siblings and the manifest.
-  `tests/unit/eos-boards.test.tsx` fails if a file is missing or a declared
-  pixel size is wrong.
+  `tests/unit/eos-boards.test.tsx` fails if a media, KiCad or licence file is
+  missing, a declared pixel size is wrong, or a KiCad file or licence does not
+  carry the owner's name and terms.
 
 ---
 

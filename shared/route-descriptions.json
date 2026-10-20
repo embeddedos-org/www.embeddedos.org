@@ -8,7 +8,7 @@
   "/article-eos-platform-launch": "eos-platform 1.0 brings stable APIs, a unified package manifest and reproducible builds across every EoS profile.",
   "/article-eos-roadmap-2026": "Three RTOS research targets for 2026: a tickless scheduler, RT-IPC primitives across security domains, and formal verification.",
   "/article-foundation-membership-2026": "The 2026 membership cycle opens with three new working groups and a refreshed governance model for Foundation members.",
-  "/book": "A 30-minute video call with the EmbeddedOS team: pick a topic, then a time, and book it on this page. Free, and easy to reschedule.",
+  "/book": "A 30-minute video call with the EmbeddedOS team: choose a topic, then settle on a time that suits you. Free, with no commitment.",
   "/careers": "Open roles and internships at the EmbeddedOS Foundation for embedded engineers, AI researchers and open-source contributors.",
   "/changelog": "Release notes for the EmbeddedOS platform — what changed in each version across the kernel, bootloader and developer tooling.",
   "/community": "How the EmbeddedOS community works: contributing code, docs and hardware designs, plus where discussion and support happen.",
