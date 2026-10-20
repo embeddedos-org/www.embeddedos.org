@@ -133,15 +133,23 @@ describe("links and sitemap", () => {
     const doc = parseDocument(path.join(DIST, "eos-boards", "index.html"));
     const directory = "/cad/eos-ra2e1-board";
     const missing = `${directory}/missing.kicad_pcb`;
-    // Resolves to the repository's own package.json, which exists on disk
-    // but is not part of the published site.
+    // A browser clamps ".." at the site root, so this asks for
+    // /package.json, which the site does not publish (the repository's own
+    // package.json is two directories above dist/public).
     const outside = "/../../package.json";
+    // Clamped the same way, this asks for /public/cad/..., which does not
+    // exist, although dist/public/cad/... does.
+    const climbsBackIn = `/../public${directory}/eos-ra2e1-board.kicad_pcb`;
+    // ...and this asks for /cad/..., which does.
+    const clampedToReal = `/..${directory}/eos-ra2e1-board.kicad_sch`;
     doc.internal = [
       `${directory}/eos-ra2e1-board.kicad_sch`,
       `${directory}/eos-ra2e1-board.kicad_pcb`,
+      clampedToReal,
       missing,
       directory,
       outside,
+      climbsBackIn,
     ];
     const broken = audit([doc], null).filter(
       (f: Finding) => f.check === "internal-link-broken"
@@ -150,6 +158,7 @@ describe("links and sitemap", () => {
       missing,
       directory,
       outside,
+      climbsBackIn,
     ]);
   });
 

@@ -302,11 +302,13 @@ export function audit(docs, sitemap) {
       add("error", "orphan-page", route, "no inbound internal link");
 
   // A link to a file the build ships, such as a board's native KiCad file, is
-  // not a missing page. Only a regular file inside dist/public counts: a bare
-  // directory, or an href whose ".." segments climb out of the published tree,
+  // not a missing page. Only a regular file inside dist/public counts, at the
+  // path a browser would request: ".." segments are resolved the way a URL
+  // resolves them, clamped at the site root, so "/../public/cad/x" means
+  // "/public/cad/x", not dist/public/cad/x. A bare directory or a missing file
   // is still broken.
   const shipsFile = href => {
-    const file = path.resolve(DIST, `.${href}`);
+    const file = path.join(DIST, new URL(href, ORIGIN).pathname);
     return (
       file.startsWith(DIST + path.sep) &&
       fs.statSync(file, { throwIfNoEntry: false })?.isFile() === true
