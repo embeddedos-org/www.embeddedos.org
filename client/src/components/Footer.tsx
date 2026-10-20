@@ -294,7 +294,7 @@ export default function Footer() {
             <p className="text-xs text-white/60 mb-2 max-w-xs leading-relaxed">
               {FOUNDATION.legalName}
               <br />
-              {FOUNDATION.softwareLicense} ·{" "}
+              {FOUNDATION.softwareLicense} (software) ·{" "}
               <a
                 href={FOUNDATION.website}
                 target="_blank"
@@ -404,8 +404,15 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="hover:text-white/50 transition-colors"
               >
-                {FOUNDATION.softwareLicense}
+                {FOUNDATION.softwareLicense} (software)
               </a>
+              <span className="mx-1.5 text-white/15">·</span>
+              <Link
+                href="/eos-boards#licence"
+                className="hover:text-white/50 transition-colors"
+              >
+                EoS board designs: all rights reserved
+              </Link>
               <span className="mx-1.5 text-white/15">·</span>
               {FOUNDATION.taxStatus}
               <span className="mx-1.5 text-white/15">·</span>
