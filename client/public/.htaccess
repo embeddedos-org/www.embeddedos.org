@@ -156,8 +156,9 @@ ErrorDocument 404 /404.html
 #   script from googleads.g.doubleclick.net, and conversions redirect to
 #   the visitor's country domain (www.google.co.in was observed), and
 #   ad.doubleclick.net/ccm also loads as an image beacon.
-# - Calendly (the "Book a meeting" calendar on /contact and /eos-boards,
-#   client/src/components/BookingCalendar.tsx): script-src and style-src add
+# - Calendly (the booking calendar on /book,
+#   client/src/components/BookingCalendar.tsx; /contact and /eos-boards
+#   only link to /book): script-src and style-src add
 #   assets.calendly.com for widget.js and widget.css, which load only when
 #   the calendar scrolls into view and only once CALENDLY_EVENT_URL is set;
 #   frame-src adds calendly.com for the scheduling page's iframe. Nothing

@@ -454,9 +454,9 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
   `client/public/cad/<slug>/`, and its `boards/eos/<slug>/LICENSE.txt` to
   `client/public/board-licences/<slug>.txt` (`git show <commit>:<path>` in
   eCAD-Hardware-Products gives the exact bytes).
-  Set `source` to the entry in `BOARD_SOURCES` for the pull request whose
-  branch holds the board, and `checks.commit` to the commit its counts come
-  from. Then run `pnpm optimize:images` for the WebP siblings and the manifest.
+  Set `source` to `BOARD_SOURCES.merged`: the page lists only boards merged on
+  eCAD-Hardware-Products master. Set `checks.commit` to the commit its counts
+  come from. Then run `pnpm optimize:images` for the WebP siblings and the manifest.
   `tests/unit/eos-boards.test.tsx` fails if a media, KiCad or licence file is
   missing, a declared pixel size is wrong, or a KiCad file or licence does not
   carry the owner's name and terms.
