@@ -10,9 +10,9 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID         | Task                                             | Owner    | Mode           | Status      | Depends on                  |
-| ---------- | ------------------------------------------------ | -------- | -------------- | ----------- | --------------------------- |
-| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | in-progress | Calendly account connection |
+| ID         | Task                                             | Owner    | Mode           | Status | Depends on                                        |
+| ---------- | ------------------------------------------------ | -------- | -------------- | ------ | ------------------------------------------------- |
+| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | review | Independent review; Calendly event is a follow-up |
 
 Acceptance criteria from the handoff:
 
@@ -31,27 +31,38 @@ master links, pinned check results and optimized media. Calendly processing is
 disclosed in Privacy. The booking notice limiter now locks the whole
 read/check/write operation and fails closed; the external booking link preserves
 the chosen topic. Independent review cleared both fixes and verified the board
-checks and media against upstream commit `28ec996`.
+checks and media against upstream commit `28ec996`. A mutation back to the old
+limiter was rejected: 8 admissions and 1 stored timestamp instead of 5.
 
-| Verification                                          | Result                                                                                                          |
-| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Type check and format                                 | PASS                                                                                                            |
-| ESLint                                                | PASS, 0 errors and 22 existing warnings                                                                         |
-| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages                                              |
-| Full Vitest                                           | PASS, 1,076 passed and 8 skipped                                                                                |
-| Security suite                                        | PASS, 21 tests                                                                                                  |
-| Native PHP 8.4.26                                     | PASS, 268 assertions, including simultaneous booking notices                                                    |
-| Limiter regression mutation                           | Original code rejected: 8 admissions and 1 stored timestamp instead of 5                                        |
-| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                   |
-| Playwright smoke, accessibility and functional suites | PASS, 118 tests, one worker, desktop and mobile                                                                 |
-| Visual checks                                         | PASS for catalogue images, topic selection and email fallback at 1440 px and 375 px; no overflow or page errors |
+Owner's decision on 2026-10-20: open the pull request now, with `/book` on its
+contact-form fallback. `CALENDLY_EVENT_URL` stays `null` and no booking URL is
+invented; the Calendly event comes later, in a follow-up, once Calendly access
+exists. Until then the email fallback is the page's only booking path.
 
-The real Calendly event is still unconfigured (`CALENDLY_EVENT_URL = null`). The
-owner authorized creating it, but the Calendly connection is not available in
-this session. Event hosts, availability, first custom question, video link and
-delivery to both inboxes remain unverified. No deployment or real notification
-delivery was performed. Publication remains pending those checks. The parallel
-review workers stopped when the workspace reported exhausted credits.
+Progress on 2026-10-20: each board offers its native KiCad schematic and PCB and
+its full licence, byte-identical to eCAD-Hardware-Products master (`6ac37a17`).
+The README's licence section names those files as all rights reserved
+(`50b84a6a`). Without an event URL, `/book` now promises only what the fallback
+does and keeps the topic's own case (`24eda785`).
+
+| Verification at `24eda785` (2026-10-20)          | Result                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| Type check and format                            | PASS                                                                                                   |
+| ESLint                                           | PASS, 0 errors and 22 existing warnings                                                                |
+| Production build                                 | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build         |
+| Full Vitest (includes the security suite)        | PASS, 1,081 passed and 8 skipped                                                                       |
+| SEO and sitemap                                  | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                          |
+| Playwright functional suite                      | PASS, 14 tests, one worker                                                                             |
+| Playwright `/book` smoke, axe and keyboard tests | PASS, 6 tests, one worker, desktop and mobile                                                          |
+| Playwright smoke and accessibility suites        | PASS at `6ac37a17`: 16 and 88 tests, one worker                                                        |
+| Native PHP 8.4.26                                | PASS at `6ac37a17`: 268 assertions; `booking.php` unchanged since                                      |
+| Board files                                      | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`           |
+| Visual checks                                    | PASS for the catalogue, downloads and email fallback at 1440 px and 375 px; no overflow or page errors |
+
+The real Calendly event is still unconfigured (`CALENDLY_EVENT_URL = null`).
+Event hosts, availability, first custom question, video link and delivery to
+both inboxes remain unverified. No deployment or real notification delivery was
+performed.
 
 ## Completed
 
