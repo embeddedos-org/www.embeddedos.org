@@ -217,5 +217,99 @@ equals('every admitted concurrent call is persisted', RATE_LIMIT_MAX, count(json
 array_map('unlink', glob("$dir/*") ?: []);
 @rmdir($dir);
 
+// ── The switch: off until the Calendly event exists ────────────────────────
+// handle_booking() is the whole request path; the mailer and the body reader
+// are passed in, so these calls record mail instead of sending it.
+
+equals('booking notices are off until the Calendly event exists', false, BOOKING_NOTICES_ENABLED);
+
+$site      = 'https://www.embeddedos.org';
+$switchDir = sys_get_temp_dir() . '/eos-booking-switch-' . bin2hex(random_bytes(4));
+@mkdir($switchDir);
+$sent  = [];
+$reads = 0;
+$send  = static function (string $to, string $subject, string $text, string $headers) use (&$sent): bool {
+    $sent[] = [$to, $subject, $text, $headers];
+    return true;
+};
+$bodyOf = static function (string $body) use (&$reads): callable {
+    return static function () use ($body, &$reads): string {
+        $reads++;
+        return $body;
+    };
+};
+$valid = (string) json_encode(valid_booking());
+
+foreach (['POST', 'GET'] as $method) {
+    $sent  = [];
+    $reads = 0;
+    [$status, $payload] = handle_booking(false, $method, $site, $bodyOf($valid), '203.0.113.30', $switchDir, $now, $send);
+    equals("switch off, $method: answers 503", 503, $status);
+    equals("switch off, $method: says why", ['ok' => false, 'error' => 'booking_notices_disabled'], $payload);
+    equals("switch off, $method: sends no mail", [], $sent);
+    equals("switch off, $method: does not read the body", 0, $reads);
+}
+equals('switch off: the rate-limit store is not touched', [], glob("$switchDir/*") ?: []);
+
+$sent  = [];
+$reads = 0;
+equals(
+    'switch on: a well-formed notice from the site is accepted',
+    [200, ['ok' => true]],
+    handle_booking(true, 'POST', $site, $bodyOf($valid), '203.0.113.31', $switchDir, $now, $send)
+);
+equals('switch on: one mail to each inbox', BOOKING_INBOXES, array_column($sent, 0));
+foreach ($sent as [$to, $subject, $text, $headers]) {
+    equals("switch on: $to gets the fixed subject", BOOKING_SUBJECT, $subject);
+    equals("switch on: $to gets the fixed headers", booking_headers($to), $headers);
+    check("switch on: $to's notice names the event", str_contains($text, 'Scheduled event: ' . EVENT));
+    check("switch on: $to's notice says it is unverified", str_contains($text, 'not checked against'));
+}
+
+$refusals = [
+    'a GET'                  => ['GET', $site, $valid, 405, 'method_not_allowed', false],
+    'no Origin header'       => ['POST', '', $valid, 403, 'forbidden_origin', false],
+    'another origin'         => ['POST', 'https://evil.example', $valid, 403, 'forbidden_origin', false],
+    'an oversized body'      => ['POST', $site, str_repeat('x', MAX_BODY_BYTES + 1), 413, 'too_large', true],
+    'malformed JSON'         => ['POST', $site, '{', 400, 'malformed_json', true],
+    'an invalid notice'      => ['POST', $site, (string) json_encode(valid_booking(['page' => '//x'])), 422, 'invalid', true],
+];
+$ipNumber = 32;
+foreach ($refusals as $why => [$method, $origin, $body, $code, $error, $bodyRead]) {
+    $sent  = [];
+    $reads = 0;
+    [$status, $payload] = handle_booking(true, $method, $origin, $bodyOf($body), '203.0.113.' . $ipNumber++, $switchDir, $now, $send);
+    equals("switch on, $why: answers $code", $code, $status);
+    equals("switch on, $why: says $error", $error, $payload['error'] ?? null);
+    equals("switch on, $why: sends no mail", [], $sent);
+    equals("switch on, $why: " . ($bodyRead ? 'reads' : 'does not read') . ' the body', $bodyRead ? 1 : 0, $reads);
+}
+
+$sent = [];
+[$status] = handle_booking(true, 'POST', $site, static fn() => false, '203.0.113.40', $switchDir, $now, $send);
+equals('switch on: an unreadable body answers 413', 413, $status);
+
+$sent     = [];
+$statuses = [];
+for ($i = 0; $i < RATE_LIMIT_MAX + 1; $i++) {
+    $statuses[] = handle_booking(true, 'POST', $site, $bodyOf($valid), '203.0.113.41', $switchDir, $now, $send)[0];
+}
+equals(
+    'switch on: one address gets RATE_LIMIT_MAX notices, then 429',
+    array_merge(array_fill(0, RATE_LIMIT_MAX, 200), [429]),
+    $statuses
+);
+equals('switch on: only the admitted notices are mailed', RATE_LIMIT_MAX * count(BOOKING_INBOXES), count($sent));
+
+$failing = static fn(string $to, string $subject, string $text, string $headers): bool => false;
+equals(
+    'switch on: a mail the server refuses answers 502',
+    [502, ['ok' => false, 'error' => 'send_failed']],
+    handle_booking(true, 'POST', $site, $bodyOf($valid), '203.0.113.42', $switchDir, $now, $failing)
+);
+
+array_map('unlink', glob("$switchDir/*") ?: []);
+@rmdir($switchDir);
+
 echo "\n  php: $passed passed" . ($failed > 0 ? ", $failed failed" : '') . "\n\n";
 exit($failed > 0 ? 1 : 0);

@@ -2,6 +2,17 @@
 
 declare(strict_types=1);
 
+/*
+ * Off until the team's Calendly event exists. While it is false, every request
+ * gets 503 and nothing is mailed: with CALENDLY_EVENT_URL null the site never
+ * calls this endpoint, so anything that does is not a real booking. Turn it on
+ * in the same change that sets CALENDLY_EVENT_URL (README, "Booking"). Even
+ * then the endpoint checks only the Origin header, the shape of the Calendly
+ * identifiers and a per-address rate limit; it cannot confirm a booking with
+ * Calendly, which is why each notice says to check Calendly first.
+ */
+const BOOKING_NOTICES_ENABLED = false;
+
 const BOOKING_INBOXES = [
     'kartikeydheer@embeddedos.org',
     'srikanth@embeddedos.org',
@@ -131,61 +142,92 @@ function rate_limit_ok(string $ip, string $dir, int $now): bool
     }
 }
 
+/**
+ * Decide one request and return [HTTP status, JSON payload]. The request's
+ * parts, the clock and the mailer come in as arguments, so the tests can run
+ * every path, with the switch on or off, without sending mail. $readBody is
+ * called only once the method and Origin have passed; $send is called once per
+ * inbox and returns whether the mail was accepted.
+ */
+function handle_booking(
+    bool $enabled,
+    string $method,
+    string $origin,
+    callable $readBody,
+    string $ip,
+    string $limitDir,
+    int $now,
+    callable $send
+): array {
+    if (!$enabled) {
+        return [503, ['ok' => false, 'error' => 'booking_notices_disabled']];
+    }
+
+    if ($method !== 'POST') {
+        return [405, ['ok' => false, 'error' => 'method_not_allowed']];
+    }
+
+    if (!same_origin_ok($origin)) {
+        return [403, ['ok' => false, 'error' => 'forbidden_origin']];
+    }
+
+    $raw = $readBody();
+    if (!is_string($raw) || strlen($raw) > MAX_BODY_BYTES) {
+        return [413, ['ok' => false, 'error' => 'too_large']];
+    }
+
+    $payload = json_decode($raw, true);
+    if (!is_array($payload)) {
+        return [400, ['ok' => false, 'error' => 'malformed_json']];
+    }
+
+    if (!rate_limit_ok($ip, $limitDir, $now)) {
+        return [429, ['ok' => false, 'error' => 'rate_limited']];
+    }
+
+    [$booking, $errors] = validate_booking($payload);
+    if ($errors !== []) {
+        return [422, ['ok' => false, 'error' => 'invalid', 'fields' => $errors]];
+    }
+
+    $text   = booking_text($booking, gmdate('Y-m-d H:i', $now) . ' UTC');
+    $failed = 0;
+    foreach (BOOKING_INBOXES as $inbox) {
+        if (!$send($inbox, BOOKING_SUBJECT, $text, booking_headers($inbox))) {
+            $failed++;
+        }
+    }
+
+    if ($failed > 0) {
+        return [502, ['ok' => false, 'error' => 'send_failed']];
+    }
+
+    return [200, ['ok' => true]];
+}
+
 if (PHP_SAPI === 'cli') {
     return;
 }
 
-function respond(int $status, array $payload): void
-{
-    http_response_code($status);
-    header('Content-Type: application/json; charset=utf-8');
-    header('Cache-Control: no-store');
-    header('X-Content-Type-Options: nosniff');
-    echo json_encode($payload, JSON_UNESCAPED_SLASHES);
-    exit;
-}
-
 ini_set('display_errors', '0');
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+[$status, $payload] = handle_booking(
+    BOOKING_NOTICES_ENABLED,
+    (string) ($_SERVER['REQUEST_METHOD'] ?? ''),
+    (string) ($_SERVER['HTTP_ORIGIN'] ?? ''),
+    static fn() => file_get_contents('php://input', false, null, 0, MAX_BODY_BYTES + 1),
+    (string) ($_SERVER['REMOTE_ADDR'] ?? ''),
+    sys_get_temp_dir(),
+    time(),
+    static fn(string $to, string $subject, string $text, string $headers): bool
+        => @mail($to, $subject, $text, $headers)
+);
+
+http_response_code($status);
+if ($status === 405) {
     header('Allow: POST');
-    respond(405, ['ok' => false, 'error' => 'method_not_allowed']);
 }
-
-if (!same_origin_ok((string) ($_SERVER['HTTP_ORIGIN'] ?? ''))) {
-    respond(403, ['ok' => false, 'error' => 'forbidden_origin']);
-}
-
-$raw = file_get_contents('php://input', false, null, 0, MAX_BODY_BYTES + 1);
-if ($raw === false || strlen($raw) > MAX_BODY_BYTES) {
-    respond(413, ['ok' => false, 'error' => 'too_large']);
-}
-
-$payload = json_decode((string) $raw, true);
-if (!is_array($payload)) {
-    respond(400, ['ok' => false, 'error' => 'malformed_json']);
-}
-
-$ip = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
-if (!rate_limit_ok($ip, sys_get_temp_dir(), time())) {
-    respond(429, ['ok' => false, 'error' => 'rate_limited']);
-}
-
-[$booking, $errors] = validate_booking($payload);
-if ($errors !== []) {
-    respond(422, ['ok' => false, 'error' => 'invalid', 'fields' => $errors]);
-}
-
-$text   = booking_text($booking, gmdate('Y-m-d H:i') . ' UTC');
-$failed = 0;
-foreach (BOOKING_INBOXES as $inbox) {
-    if (!@mail($inbox, BOOKING_SUBJECT, $text, booking_headers($inbox))) {
-        $failed++;
-    }
-}
-
-if ($failed > 0) {
-    respond(502, ['ok' => false, 'error' => 'send_failed']);
-}
-
-respond(200, ['ok' => true]);
+header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store');
+header('X-Content-Type-Options: nosniff');
+echo json_encode($payload, JSON_UNESCAPED_SLASHES);

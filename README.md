@@ -341,23 +341,35 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
 - **The calendar is themed** with Calendly's `background_color`, `text_color`
   and `primary_color` parameters, set from the brand navy and orange
   (`CALENDLY_THEME` in `client/src/lib/booking.ts`, tested against
-  `client/src/index.css`), and `hide_gdpr_banner=1`. Calendly applies the colours
-  only on its paid plans ("If you're on a paid plan, you can update your embed's
-  look and feel", https://calendly.com/help/how-to-customize-your-embed). On a
-  free plan the calendar stays white inside the dark card. Hiding the cookie
-  banner leaves cookie consent to this site, as that article notes.
+  `client/src/index.css`). The frame URL carries only those three colours and
+  the `a1` topic; it does not hide Calendly's cookie banner, so Calendly shows
+  its own cookie preferences for the visitor's region, as the Privacy page
+  says. Calendly applies the colours only on its paid plans ("If you're on a
+  paid plan, you can update your embed's look and feel",
+  https://calendly.com/help/how-to-customize-your-embed). On a free plan the
+  calendar stays white inside the dark card.
 - **CSP:** `client/public/.htaccess` allows `https://assets.calendly.com` in
   `script-src` and `style-src`, and `https://calendly.com` in `frame-src`.
 - **Notifications:** Calendly emails the event's host. As well, when a visitor
-  books, the page forwards Calendly's `calendly.event_scheduled` message
-  (from `https://calendly.com` only) to `client/public/api/booking.php`, which
-  mails kartikeydheer@embeddedos.org and srikanth@embeddedos.org with the subject
-  "New meeting booked via embeddedos.org". The addresses are `BOOKING_INBOXES`
-  in that file, on the server only. The request carries only the scheduled
-  event's and the invitee's API URIs and the page path; the endpoint refuses
-  other origins, malformed URIs and more than 5 requests an hour from one
-  address. It does not check the URIs with Calendly, so the email says to
-  confirm the booking in Calendly.
+  books in the embedded calendar, the page takes the event and invitee
+  identifiers from Calendly's `calendly.event_scheduled` message (accepted
+  from `https://calendly.com` only) and posts them, with the page path, to
+  `client/public/api/booking.php`, which mails kartikeydheer@embeddedos.org and
+  srikanth@embeddedos.org with the subject "New meeting booked via
+  embeddedos.org". The addresses are `BOOKING_INBOXES` in that file, on the
+  server only.
+- **`booking.php` is off until the Calendly event exists.**
+  `BOOKING_NOTICES_ENABLED` in that file is `false`; while it is, every request
+  gets HTTP 503 with `{"ok":false,"error":"booking_notices_disabled"}` and no
+  mail is sent. Set it to `true` in the same change that sets
+  `CALENDLY_EVENT_URL`, and not before. Even when it is on, the endpoint checks
+  only that the request carries the site's `Origin` header, that the event and
+  invitee identifiers have the shape of Calendly's API URIs (the invitee
+  belonging to that event), that the page is a plain site path, and that one
+  address sends at most 5 requests an hour. Any client outside a browser can
+  set the `Origin` header, and there is no Calendly signature to verify, so the
+  endpoint cannot confirm that a booking exists: each email says it is not
+  checked against Calendly and to confirm the booking there.
 - **On Calendly's side,** so that Srikanth also gets Calendly's own booking
   emails, make the event a Collective event type and add him as a co-host. In
   Calendly: open the Scheduling page, open the event type's settings, expand
