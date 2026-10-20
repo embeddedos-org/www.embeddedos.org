@@ -43,21 +43,23 @@ Progress on 2026-10-20: each board offers its native KiCad schematic and PCB and
 its full licence, byte-identical to eCAD-Hardware-Products master (`6ac37a17`).
 The README's licence section names those files as all rights reserved
 (`50b84a6a`). Without an event URL, `/book` now promises only what the fallback
-does and keeps the topic's own case (`24eda785`).
+does and keeps the topic's own case (`24eda785`). Review round 3 (`b34afe7c` to
+`9eb25678`): the footer, Terms of Use §3 (effective date now 20 October 2026),
+`/get-involved`, `/ecad-hardware` and `/about` carve the EoS boards out of their
+MIT and open-hardware statements, and `booking.php` is off by default (503, no
+mail) until the Calendly event exists.
 
-| Verification at `24eda785` (2026-10-20)          | Result                                                                                                 |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| Type check and format                            | PASS                                                                                                   |
-| ESLint                                           | PASS, 0 errors and 22 existing warnings                                                                |
-| Production build                                 | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build         |
-| Full Vitest (includes the security suite)        | PASS, 1,081 passed and 8 skipped                                                                       |
-| SEO and sitemap                                  | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                          |
-| Playwright functional suite                      | PASS, 14 tests, one worker                                                                             |
-| Playwright `/book` smoke, axe and keyboard tests | PASS, 6 tests, one worker, desktop and mobile                                                          |
-| Playwright smoke and accessibility suites        | PASS at `6ac37a17`: 16 and 88 tests, one worker                                                        |
-| Native PHP 8.4.26                                | PASS at `6ac37a17`: 268 assertions; `booking.php` unchanged since                                      |
-| Board files                                      | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`           |
-| Visual checks                                    | PASS for the catalogue, downloads and email fallback at 1440 px and 375 px; no overflow or page errors |
+| Verification at `9eb25678` (2026-10-20)               | Result                                                                                                         |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Type check, lint and format                           | PASS; ESLint 0 errors and 22 existing warnings                                                                 |
+| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build                 |
+| Full Vitest                                           | PASS, 1,093 passed and 8 skipped                                                                               |
+| Security suite                                        | PASS, 21 tests                                                                                                 |
+| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                  |
+| Playwright smoke, accessibility and functional suites | PASS, 16, 88 and 14 tests, one worker, Google hosts blocked                                                    |
+| Native PHP 8.4.26                                     | PASS, 316 assertions (booking 149, including the off switch)                                                   |
+| Board files                                           | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`                   |
+| Visual checks                                         | PASS for the catalogue, downloads, email fallback and footer at 1440 px and 375 px; no overflow or page errors |
 
 The real Calendly event is still unconfigured (`CALENDLY_EVENT_URL = null`).
 Event hosts, availability, first custom question, video link and delivery to
