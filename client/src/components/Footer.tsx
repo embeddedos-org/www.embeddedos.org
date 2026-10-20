@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { Link } from "wouter";
 import {
   Github,
@@ -237,6 +238,20 @@ function FooterLink({
   );
 }
 
+/**
+ * The footer's board-licence link, clicked on /eos-boards itself. wouter does
+ * not scroll to a hash on the path already open, so the click would only change
+ * the URL; scroll to the section instead. Its scroll-mt clears the fixed navbar.
+ */
+function toBoardLicence(event: MouseEvent<HTMLAnchorElement>) {
+  if (window.location.pathname !== "/eos-boards") return;
+  const target = document.getElementById("licence");
+  if (!target) return;
+  event.preventDefault();
+  window.history.pushState(null, "", "/eos-boards#licence");
+  target.scrollIntoView({ block: "start" });
+}
+
 export default function Footer() {
   return (
     <footer
@@ -409,6 +424,7 @@ export default function Footer() {
               <span className="mx-1.5 text-white/15">·</span>
               <Link
                 href="/eos-boards#licence"
+                onClick={toBoardLicence}
                 className="hover:text-white/50 transition-colors"
               >
                 EoS board designs: all rights reserved

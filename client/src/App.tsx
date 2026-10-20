@@ -1287,7 +1287,14 @@ function ScrollToTop() {
         if (cancelled) return;
         const target = document.querySelector(hash);
         if (target) {
-          jump(window.scrollY + target.getBoundingClientRect().top);
+          // Honour the target's scroll-margin-top (scroll-mt-*), which clears
+          // the fixed navbar; it is 0 for targets that set none.
+          const margin = parseFloat(getComputedStyle(target).scrollMarginTop);
+          jump(
+            window.scrollY +
+              target.getBoundingClientRect().top -
+              (Number.isFinite(margin) ? margin : 0)
+          );
           return;
         }
         if (frames++ > 90) {

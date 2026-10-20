@@ -475,7 +475,7 @@ export default function EosBoards() {
       <section
         id="licence"
         aria-labelledby="licence-heading"
-        className="px-6 pb-14"
+        className="scroll-mt-24 px-6 pb-14"
       >
         <div className="max-w-6xl mx-auto rounded-2xl border border-orange-400/30 bg-orange-500/[0.06] p-6 md:p-8">
           <h2
