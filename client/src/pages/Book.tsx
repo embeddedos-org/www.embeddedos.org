@@ -14,15 +14,21 @@ import {
 import BookingCalendar from "@/components/BookingCalendar";
 import {
   BOOKING_EXPECT,
+  BOOKING_EXPECT_BY_EMAIL,
   BOOKING_FAQ,
+  BOOKING_FAQ_BY_EMAIL,
   BOOKING_MINUTES,
+  BOOKING_TIME_ZONE_NOTE,
+  BOOKING_TIME_ZONE_NOTE_BY_EMAIL,
   BOOKING_TOPICS,
   type BookingTopic,
 } from "@/data/booking";
+import { CALENDLY_EVENT_URL } from "@/data/foundation";
 import {
   BOOKING_STEPS,
   INITIAL_BOOKING,
   bookingReducer,
+  calendlyEventUrl,
   type BookingStep,
 } from "@/lib/booking";
 import { openContactForm } from "@/lib/contact-form";
@@ -296,6 +302,11 @@ export default function Book() {
   const [state, dispatch] = useReducer(bookingReducer, INITIAL_BOOKING);
   const topic = BOOKING_TOPICS.find(t => t.key === state.topic) ?? null;
   const current = BOOKING_STEPS[stepIndex(state.step)];
+  // The test BookingCalendar applies: without a valid event URL there is no
+  // calendar, only the email fallback, and Calendly sends no confirmation.
+  const hasCalendar = calendlyEventUrl(CALENDLY_EVENT_URL) !== null;
+  const expectations = hasCalendar ? BOOKING_EXPECT : BOOKING_EXPECT_BY_EMAIL;
+  const questions = hasCalendar ? BOOKING_FAQ : BOOKING_FAQ_BY_EMAIL;
 
   return (
     <div className="min-h-screen bg-background text-white">
@@ -410,7 +421,7 @@ export default function Book() {
                                 </p>
                                 <p className="text-sm leading-relaxed text-gray-300">
                                   Send us a few times that suit you and we will
-                                  set up your {topic.title.toLowerCase()} call.
+                                  set up your “{topic.title}” call.
                                 </p>
                               </div>
                               <button
@@ -440,7 +451,9 @@ export default function Book() {
                             aria-hidden="true"
                           />
                           <p className="text-gray-300">
-                            Choose a topic above and the calendar opens here.
+                            {hasCalendar
+                              ? "Choose a topic above and the calendar opens here."
+                              : "Choose a topic above to arrange the call by email."}
                           </p>
                         </div>
                       )}
@@ -456,7 +469,7 @@ export default function Book() {
                   What to expect
                 </h2>
                 <ul className="space-y-3 text-sm text-gray-300">
-                  {BOOKING_EXPECT.map(item => (
+                  {expectations.map(item => (
                     <li key={item} className="flex gap-2">
                       <ArrowRight
                         size={14}
@@ -478,9 +491,9 @@ export default function Book() {
                   Your time zone
                 </h2>
                 <p className="text-sm leading-relaxed text-gray-300">
-                  Times are shown in the time zone your browser reports, and the
-                  calendar lets you change it. The confirmation email gives the
-                  time in your zone.
+                  {hasCalendar
+                    ? BOOKING_TIME_ZONE_NOTE
+                    : BOOKING_TIME_ZONE_NOTE_BY_EMAIL}
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
@@ -488,7 +501,7 @@ export default function Book() {
                   Questions
                 </h2>
                 <div className="divide-y divide-white/10">
-                  {BOOKING_FAQ.map(item => (
+                  {questions.map(item => (
                     <details key={item.question} className="group py-3">
                       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-amber [&::-webkit-details-marker]:hidden">
                         {item.question}

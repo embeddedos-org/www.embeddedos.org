@@ -324,7 +324,9 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
 - **The event URL is one constant:** `CALENDLY_EVENT_URL` in
   `client/src/data/foundation.ts`. While it is `null`, choosing a topic offers
   to arrange the call by email through the contact form, and nothing loads from
-  Calendly. Set it to the event's public scheduling link,
+  Calendly. The page then shows the `_BY_EMAIL` versions of the "what to expect"
+  list, the time-zone note and the FAQ, which promise an email reply and no
+  Calendly confirmation. Set it to the event's public scheduling link,
   `https://calendly.com/<user>/<event>`; any other value keeps the email
   fallback. Once it is set, Calendly's `widget.js` and `widget.css` load when
   the calendar nears the viewport. A plain link to the scheduling page sits under

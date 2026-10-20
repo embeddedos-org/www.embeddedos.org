@@ -61,22 +61,47 @@ export const BOOKING_TOPICS: readonly BookingTopic[] = [
   },
 ];
 
-export const BOOKING_EXPECT = [
-  `A ${BOOKING_MINUTES}-minute video call, with a link in your confirmation email.`,
+/*
+ * /book has two modes. With a Calendly event URL set, the visitor books in the
+ * embedded calendar and Calendly sends a confirmation email. Without one, the
+ * page offers the contact form instead: nothing is booked and Calendly sends
+ * nothing, so the "by email" copy promises only an email reply.
+ */
+const EXPECT_EITHER_WAY = [
   "Bring your use case, board or question; we come ready to go through it with you.",
   "You leave with next steps: a repository to start from, a person to follow up with, or both.",
 ] as const;
 
+export const BOOKING_EXPECT = [
+  `A ${BOOKING_MINUTES}-minute video call, with a link in your confirmation email.`,
+  ...EXPECT_EITHER_WAY,
+] as const;
+
+export const BOOKING_EXPECT_BY_EMAIL = [
+  `A ${BOOKING_MINUTES}-minute call, at a time we agree with you by email.`,
+  ...EXPECT_EITHER_WAY,
+] as const;
+
+export const BOOKING_TIME_ZONE_NOTE =
+  "Times are shown in the time zone your browser reports, and the calendar lets you change it. The confirmation email gives the time in your zone.";
+
+export const BOOKING_TIME_ZONE_NOTE_BY_EMAIL =
+  "When you suggest times, say which time zone they are in.";
+
+const FAQ_LENGTH = {
+  question: "How long is the call?",
+  answer: `${BOOKING_MINUTES} minutes. If the topic needs longer, we will arrange a follow-up.`,
+} as const;
+
+const FAQ_FREE = {
+  question: "Is it free?",
+  answer:
+    "Yes. There is no charge for the call, and booking does not commit you to anything.",
+} as const;
+
 export const BOOKING_FAQ = [
-  {
-    question: "How long is the call?",
-    answer: `${BOOKING_MINUTES} minutes. If the topic needs longer, we will arrange a follow-up.`,
-  },
-  {
-    question: "Is it free?",
-    answer:
-      "Yes. There is no charge for the call, and booking does not commit you to anything.",
-  },
+  FAQ_LENGTH,
+  FAQ_FREE,
   {
     question: "Can I reschedule or cancel?",
     answer:
@@ -86,5 +111,19 @@ export const BOOKING_FAQ = [
     question: "Who will be there?",
     answer:
       "One or two people from the EmbeddedOS team, chosen for your topic. Your confirmation names your host.",
+  },
+] as const;
+
+export const BOOKING_FAQ_BY_EMAIL = [
+  FAQ_LENGTH,
+  FAQ_FREE,
+  {
+    question: "Can I reschedule or cancel?",
+    answer: "Yes. Reply to our email about the call to move or cancel it.",
+  },
+  {
+    question: "Who will be there?",
+    answer:
+      "One or two people from the EmbeddedOS team, chosen for your topic.",
   },
 ] as const;

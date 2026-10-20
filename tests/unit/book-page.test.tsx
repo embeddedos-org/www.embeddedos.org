@@ -326,6 +326,17 @@ describe("the topic picker", () => {
     });
     window.removeEventListener(OPEN_CONTACT_EVENT, opened);
   });
+
+  it("names the chosen topic in the email fallback in its own case", () => {
+    render(<Book />);
+    fireEvent.click(radio("EoS boards and hardware"));
+    expect(
+      screen.getByText(
+        "Send us a few times that suit you and we will set up your “EoS boards and hardware” call."
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/eos boards and hardware/)).toBe(null);
+  });
 });
 
 describe("the confirmed state", () => {
@@ -415,5 +426,48 @@ describe("the rest of the page", () => {
       "Who will be there?",
     ]);
     expect(container.querySelector("details[open]")).toBe(null);
+  });
+
+  it("without an event URL, promises an email reply and no Calendly confirmation", () => {
+    const { container } = render(<Book />);
+    expect(
+      screen.getByText("Choose a topic above to arrange the call by email.")
+    ).toBeInTheDocument();
+    fireEvent.click(radio("EoS boards and hardware"));
+    expect(
+      screen.getByText(
+        "A 30-minute call, at a time we agree with you by email."
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Reply to our email about the call to move or cancel it.",
+        {
+          exact: false,
+        }
+      )
+    ).toBeInTheDocument();
+    const text = container.textContent ?? "";
+    expect(text).not.toMatch(/confirmation/i);
+    expect(text).not.toMatch(/calendly/i);
+    expect(text).not.toMatch(/calendar lets you/i);
+  });
+
+  it("with an event URL, describes the calendar and Calendly's confirmation", () => {
+    calendly.url = EVENT_URL;
+    render(<Book />);
+    expect(
+      screen.getByText("Choose a topic above and the calendar opens here.")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "A 30-minute video call, with a link in your confirmation email."
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Yes. Calendly's confirmation email has links to reschedule or cancel the booking."
+      )
+    ).toBeInTheDocument();
   });
 });
