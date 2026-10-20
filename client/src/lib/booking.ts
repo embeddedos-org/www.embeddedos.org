@@ -1,4 +1,5 @@
 import { BRAND_COLORS } from "@/data/brand";
+import { CALENDLY_EVENT_URL } from "@/data/foundation";
 
 export const CALENDLY_ORIGIN = "https://calendly.com";
 export const CALENDLY_SCRIPT =
@@ -150,3 +151,23 @@ export const BOOKING_STEPS: readonly { step: BookingStep; label: string }[] = [
   { step: "time", label: "Pick a time" },
   { step: "confirmed", label: "Confirmed" },
 ];
+
+/** The same steps while there is no calendar: the time is agreed by email. */
+export const BOOKING_STEPS_BY_EMAIL: readonly {
+  step: BookingStep;
+  label: string;
+}[] = [
+  { step: "topic", label: "Choose a topic" },
+  { step: "time", label: "Suggest times" },
+  { step: "confirmed", label: "Confirmed by email" },
+];
+
+/**
+ * True once CALENDLY_EVENT_URL is a valid event link, the test
+ * BookingCalendar applies before it embeds anything. Until then /book offers
+ * the contact form instead, so no copy may promise picking a time or a
+ * Calendly confirmation.
+ */
+export function bookingCalendarReady(): boolean {
+  return calendlyEventUrl(CALENDLY_EVENT_URL) !== null;
+}

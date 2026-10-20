@@ -29,6 +29,7 @@ import {
 } from "@/data/eos-boards";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 import BookingTeaser from "@/components/BookingTeaser";
+import { bookingCalendarReady } from "@/lib/booking";
 
 export const CHECK_TERMS = [
   {
@@ -654,7 +655,11 @@ export default function EosBoards() {
             <BookingTeaser
               href="/book"
               title="Talk to us about a board"
-              line="Choose EoS boards and hardware on the booking page and pick a time."
+              line={
+                bookingCalendarReady()
+                  ? "Choose EoS boards and hardware on the booking page and pick a time."
+                  : "Choose EoS boards and hardware on the booking page and arrange a time by email."
+              }
             />
           </div>
           <div className="flex flex-wrap gap-3">

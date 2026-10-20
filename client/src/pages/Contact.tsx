@@ -21,6 +21,7 @@ import {
 } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
 import BookingTeaser from "@/components/BookingTeaser";
+import { bookingCalendarReady } from "@/lib/booking";
 
 /**
  * The topics shown on this page, in display order, with the icon/colour this
@@ -276,7 +277,11 @@ export default function Contact() {
           <BookingTeaser
             href="/book"
             title="Book a call with the team"
-            line="Pick a topic and a time on our booking page."
+            line={
+              bookingCalendarReady()
+                ? "Pick a topic and a time on our booking page."
+                : "Pick a topic on our booking page and arrange a time by email."
+            }
           />
         </div>
       </section>

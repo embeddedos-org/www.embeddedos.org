@@ -337,11 +337,19 @@ describe("before the event URL is set", () => {
   });
 
   it.each([
-    ["/contact", Contact],
-    ["/eos-boards", EosBoards],
+    [
+      "/contact",
+      Contact,
+      "Pick a topic on our booking page and arrange a time by email.",
+    ],
+    [
+      "/eos-boards",
+      EosBoards,
+      "Choose EoS boards and hardware on the booking page and arrange a time by email.",
+    ],
   ] as const)(
     "%s shows a compact card linking to /book, and embeds no calendar",
-    (_route, Page) => {
+    (_route, Page, line) => {
       mockIntersectionObserver()();
       const { container } = render(<Page />);
       expect(
@@ -349,6 +357,8 @@ describe("before the event URL is set", () => {
       ).toBeInTheDocument();
       const teaser = container.querySelector('[data-booking="teaser"]');
       expect(teaser).not.toBe(null);
+      expect(teaser?.textContent).toContain(line);
+      expect(teaser?.textContent).not.toMatch(/pick a time/i);
       expect(teaser?.querySelector('a[href="/book"]')?.textContent).toMatch(
         /Book a call/
       );

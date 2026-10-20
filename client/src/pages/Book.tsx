@@ -23,12 +23,12 @@ import {
   BOOKING_TOPICS,
   type BookingTopic,
 } from "@/data/booking";
-import { CALENDLY_EVENT_URL } from "@/data/foundation";
 import {
   BOOKING_STEPS,
+  BOOKING_STEPS_BY_EMAIL,
   INITIAL_BOOKING,
+  bookingCalendarReady,
   bookingReducer,
-  calendlyEventUrl,
   type BookingStep,
 } from "@/lib/booking";
 import { openContactForm } from "@/lib/contact-form";
@@ -110,14 +110,20 @@ function HeroTraces() {
   );
 }
 
-function Stepper({ step }: { step: BookingStep }) {
+function Stepper({
+  step,
+  steps,
+}: {
+  step: BookingStep;
+  steps: typeof BOOKING_STEPS;
+}) {
   const current = stepIndex(step);
   return (
     <ol
       aria-label="Booking progress"
       className="grid grid-cols-3 gap-2 sm:gap-4"
     >
-      {BOOKING_STEPS.map((s, i) => {
+      {steps.map((s, i) => {
         const done = i < current || step === "confirmed";
         const active = i === current;
         return (
@@ -301,10 +307,11 @@ function Confirmed({
 export default function Book() {
   const [state, dispatch] = useReducer(bookingReducer, INITIAL_BOOKING);
   const topic = BOOKING_TOPICS.find(t => t.key === state.topic) ?? null;
-  const current = BOOKING_STEPS[stepIndex(state.step)];
-  // The test BookingCalendar applies: without a valid event URL there is no
-  // calendar, only the email fallback, and Calendly sends no confirmation.
-  const hasCalendar = calendlyEventUrl(CALENDLY_EVENT_URL) !== null;
+  // Without a valid event URL there is no calendar, only the email fallback,
+  // and Calendly sends no confirmation.
+  const hasCalendar = bookingCalendarReady();
+  const steps = hasCalendar ? BOOKING_STEPS : BOOKING_STEPS_BY_EMAIL;
+  const current = steps[stepIndex(state.step)];
   const expectations = hasCalendar ? BOOKING_EXPECT : BOOKING_EXPECT_BY_EMAIL;
   const questions = hasCalendar ? BOOKING_FAQ : BOOKING_FAQ_BY_EMAIL;
 
@@ -336,9 +343,9 @@ export default function Book() {
       <div className="px-6 pb-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 rounded-2xl border border-white/10 bg-white/[0.02] p-4 sm:p-5">
-            <Stepper step={state.step} />
+            <Stepper step={state.step} steps={steps} />
             <p role="status" className="sr-only">
-              Step {stepIndex(state.step) + 1} of {BOOKING_STEPS.length}:{" "}
+              Step {stepIndex(state.step) + 1} of {steps.length}:{" "}
               {current.label}
             </p>
           </div>
@@ -353,7 +360,9 @@ export default function Book() {
                   What would you like to talk about?
                 </h2>
                 <p className="mb-5 text-sm text-gray-300">
-                  Pick one; it goes into the booking so the right people join.
+                  {hasCalendar
+                    ? "Pick one; it goes into the booking so the right people join."
+                    : "Pick one; it goes into the subject of your email so the right people join."}
                 </p>
                 <fieldset>
                   <legend className="sr-only">Topic of the call</legend>
@@ -389,7 +398,7 @@ export default function Book() {
                       id="time-heading"
                       className="font-heading text-2xl font-bold mb-5"
                     >
-                      Pick a time
+                      {hasCalendar ? "Pick a time" : "Suggest a few times"}
                     </h2>
                     <div className="rounded-2xl border border-brand-amber/25 bg-brand-navy-light p-3 sm:p-4 shadow-glow-amber">
                       <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-sm">

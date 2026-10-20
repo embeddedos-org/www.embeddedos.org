@@ -453,6 +453,30 @@ describe("the rest of the page", () => {
     expect(text).not.toMatch(/calendar lets you/i);
   });
 
+  it("without an event URL, asks for times by email instead of picking one", () => {
+    const { container } = render(<Book />);
+    fireEvent.click(radio("EoS boards and hardware"));
+    const steps = screen
+      .getByRole("list", { name: "Booking progress" })
+      .querySelectorAll("li");
+    expect([...steps].map(li => li.textContent)).toEqual([
+      "Choose a topic (done)",
+      "2Suggest times",
+      "3Confirmed by email",
+    ]);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Suggest a few times" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Pick one; it goes into the subject of your email so the right people join."
+      )
+    ).toBeInTheDocument();
+    const text = container.textContent ?? "";
+    expect(text).not.toMatch(/pick a time/i);
+    expect(text).not.toMatch(/into the booking/i);
+  });
+
   it("with an event URL, describes the calendar and Calendly's confirmation", () => {
     calendly.url = EVENT_URL;
     render(<Book />);

@@ -239,11 +239,14 @@ test.describe("keyboard operability", () => {
     const second = page.getByRole("radio", { name: /Partnership or OEM/ });
     await expect(second).toBeChecked();
     await expect(second).toBeFocused();
+    // Step 2 reads "Pick a time" once CALENDLY_EVENT_URL is set, and
+    // "Suggest times" while /book offers the contact form instead; the unit
+    // tests pin each mode's labels.
     await expect(
       page
         .getByRole("list", { name: "Booking progress" })
         .locator('[aria-current="step"]')
-    ).toContainText("Pick a time");
+    ).toContainText(/Pick a time|Suggest times/);
     const ring = await second.evaluate(input => {
       const card = input.nextElementSibling as HTMLElement;
       const style = getComputedStyle(card);

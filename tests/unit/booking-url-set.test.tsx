@@ -84,16 +84,40 @@ describe("once CALENDLY_EVENT_URL is set", () => {
   });
 
   it.each([
-    ["/contact", Contact],
-    ["/eos-boards", EosBoards],
+    ["/contact", Contact, "Pick a topic and a time on our booking page."],
+    [
+      "/eos-boards",
+      EosBoards,
+      "Choose EoS boards and hardware on the booking page and pick a time.",
+    ],
   ] as const)(
-    "%s still links to /book rather than embedding",
-    (_route, Page) => {
+    "%s still links to /book rather than embedding, and offers a time there",
+    (_route, Page, line) => {
       const { container } = render(<Page />);
       expect(container.querySelector(".calendly-inline-widget")).toBe(null);
-      expect(
-        container.querySelector('[data-booking="teaser"] a[href="/book"]')
-      ).not.toBe(null);
+      const teaser = container.querySelector('[data-booking="teaser"]');
+      expect(teaser?.querySelector('a[href="/book"]')).not.toBe(null);
+      expect(teaser?.textContent).toContain(line);
     }
   );
+
+  it("/book's stepper and headings describe picking a time in the calendar", () => {
+    render(<Book />);
+    const steps = screen
+      .getByRole("list", { name: "Booking progress" })
+      .querySelectorAll("li");
+    expect([...steps].map(li => li.textContent)).toEqual([
+      "1Choose a topic",
+      "2Pick a time",
+      "3Confirmed",
+    ]);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Pick a time" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Pick one; it goes into the booking so the right people join."
+      )
+    ).toBeInTheDocument();
+  });
 });
