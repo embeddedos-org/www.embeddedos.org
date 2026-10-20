@@ -218,7 +218,7 @@ export const OUT_OF_SCOPE = [
   {
     claim: "We do not sell software, licences or access.",
     detail:
-      "Every Foundation repository is MIT licensed. There is no paid tier, no " +
+      "All Foundation software is MIT licensed. There is no paid tier, no " +
       "commercial edition and no feature withheld from the free release.",
   },
   {

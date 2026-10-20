@@ -34,20 +34,46 @@ const PINNED: readonly (readonly [string, string])[] = [
   ],
   [
     "client/src/pages/EcadHardware.tsx",
-    "eCAD HARDWARE DESIGNS · MIT LICENSE, EXCEPT EoS BOARDS",
+    "eCAD HARDWARE DESIGNS · MIT LICENSE, EXCEPT EoS BOARDS AND MIRRORED DESIGNS",
   ],
   [
     "client/src/pages/EcadHardware.tsx",
-    "The repository is MIT-licensed, except the original EoS development boards, which are all rights reserved.",
+    "The repository is MIT-licensed, except the original EoS development boards, which are all rights reserved, and the manufacturer designs mirrored under boards/cad, which keep their manufacturers' licences.",
+  ],
+  [
+    "client/src/pages/Home.tsx",
+    "The repository is published under the MIT licence, except the original EoS development boards, which are all rights reserved, and the manufacturer designs mirrored under boards/cad, which keep their manufacturers' licences.",
+  ],
+  [
+    "client/src/pages/Home.tsx",
+    "Foundation · 501(c)(3) · MIT License (software)",
+  ],
+  [
+    "client/src/pages/Home.tsx",
+    "Open Source · 501(c)(3) · MIT License (software)",
+  ],
+  ["client/src/data/foundation.ts", "All Foundation software is MIT licensed."],
+  [
+    "client/src/pages/WhatWeDo.tsx",
+    "FOUNDATION · 501(C)(3) · MIT LICENSE (SOFTWARE)",
+  ],
+  [
+    "client/src/pages/Membership.tsx",
+    "501(c)(3) · Tax-deductible donations · MIT License (software) · No vendor",
+  ],
+  [
+    "client/src/pages/Transparency.tsx",
+    "All Foundation software is released under the ${FOUNDATION.softwareLicense}.",
+  ],
+  [
+    "client/src/pages/GettingStarted.tsx",
+    "All EmbeddedOS software repositories, MIT licensed, in one list.",
   ],
   [
     "client/src/pages/About.tsx",
     "published openly under MIT license, except the original EoS development boards, which are all rights reserved.",
   ],
-  [
-    "client/src/pages/About.tsx",
-    "MIT License (all repositories, except the EoS board designs)",
-  ],
+  ["client/src/pages/About.tsx", "MIT License (all Foundation software)"],
 ];
 
 /** Blanket claims that would cover the EoS boards unless they name them. */
@@ -56,6 +82,24 @@ const BLANKET = [
   /hardware designs · MIT license/i,
   /MIT License \(all repositories/i,
   /every design decision[^."]{0,80}MIT license/i,
+  /repository is (published under the )?MIT/i,
+];
+
+/**
+ * Repository-wide or unscoped MIT claims. eCAD-Hardware-Products is one of the
+ * Foundation's repositories and holds the boards, so these must say "software"
+ * instead (25 repositories, "23 of them MIT licensed", as the home page says).
+ */
+const UNSCOPED = [
+  /every (foundation )?repository is/i,
+  /all (embeddedos |foundation )?repositories(,| are) MIT/i,
+  /· MIT License(?! \(software\))(?!, except)/i,
+];
+
+/** Left as written, each with its reason. */
+const EXEMPT: readonly (readonly [string, string])[] = [
+  // A dated news item (2026-01-01) about the 22 repositories as they were then.
+  ["client/src/data/content.ts", "All repositories are MIT-licensed"],
 ];
 
 describe("licence statements leave the EoS development boards out", () => {
@@ -87,5 +131,22 @@ describe("licence statements leave the EoS development boards out", () => {
         }
     }
     expect(unqualified).toEqual([]);
+  });
+
+  it("no page makes a repository-wide or unscoped MIT claim", () => {
+    const files = globSync("client/src/**/*.{ts,tsx}", { cwd: ROOT });
+    const unscoped: string[] = [];
+    for (const file of files) {
+      const text = collapsed(file);
+      for (const claim of UNSCOPED)
+        for (const m of text.matchAll(new RegExp(claim, "gi"))) {
+          const sentence = text.slice(m.index, m.index + 120);
+          const exempt = EXEMPT.some(
+            ([f, snippet]) => f === file && sentence.includes(snippet)
+          );
+          if (!exempt) unscoped.push(`${file}: ${sentence.slice(0, 80)}`);
+        }
+    }
+    expect(unscoped).toEqual([]);
   });
 });

@@ -694,7 +694,7 @@ export default function EcadHardware() {
               }}
             >
               <Package size={12} /> eCAD HARDWARE DESIGNS · MIT LICENSE, EXCEPT
-              EoS BOARDS
+              EoS BOARDS AND MIRRORED DESIGNS
             </span>
             <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
               Hardware{" "}
@@ -959,9 +959,10 @@ export default function EcadHardware() {
           </h2>
           <p className="text-gray-400 mb-8">
             The repository is MIT-licensed, except the original EoS development
-            boards, which are all rights reserved. It includes a mix of design
-            documents, KiCad sources, BOMs, and datasheets. Artifact coverage
-            varies by design.
+            boards, which are all rights reserved, and the manufacturer designs
+            mirrored under boards/cad, which keep their manufacturers' licences.
+            It includes a mix of design documents, KiCad sources, BOMs, and
+            datasheets. Artifact coverage varies by design.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a

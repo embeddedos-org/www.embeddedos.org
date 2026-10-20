@@ -352,7 +352,7 @@ export default function About() {
                   Software License
                 </div>
                 <div className="text-white">
-                  MIT License (all repositories, except the EoS board designs)
+                  MIT License (all Foundation software)
                 </div>
               </div>
               <div>

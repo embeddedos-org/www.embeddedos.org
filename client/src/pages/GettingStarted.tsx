@@ -875,7 +875,7 @@ export default function GettingStarted() {
               {
                 href: "/downloads",
                 label: "Every repository and install command",
-                desc: "All EmbeddedOS repositories, MIT licensed, in one list.",
+                desc: "All EmbeddedOS software repositories, MIT licensed, in one list.",
               },
               {
                 href: "/stacks",
