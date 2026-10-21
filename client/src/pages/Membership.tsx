@@ -200,7 +200,7 @@ export default function Membership() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-background to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0d] via-background to-background" />
         <div className="container relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

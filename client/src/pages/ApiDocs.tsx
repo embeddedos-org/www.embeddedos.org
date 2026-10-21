@@ -2539,7 +2539,7 @@ export default function ApiDocs() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
       <section className="relative pt-28 pb-12 px-4 border-b border-white/5">
         <div className="absolute inset-0 bg-gradient-to-br from-[#22D3EE]/5 via-transparent to-[#A78BFA]/5" />

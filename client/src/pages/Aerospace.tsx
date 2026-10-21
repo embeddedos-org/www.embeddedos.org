@@ -218,14 +218,14 @@ function FlightSimChart({ color }: { color: string }) {
 
       // Edge fades
       const fadeL = ctx.createLinearGradient(0, 0, w * 0.1, 0);
-      fadeL.addColorStop(0, "rgba(8,15,30,1)");
-      fadeL.addColorStop(1, "rgba(8,15,30,0)");
+      fadeL.addColorStop(0, "rgba(0,0,0,1)");
+      fadeL.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = fadeL;
       ctx.fillRect(0, 0, w * 0.1, h);
 
       const fadeR = ctx.createLinearGradient(w * 0.9, 0, w, 0);
-      fadeR.addColorStop(0, "rgba(8,15,30,0)");
-      fadeR.addColorStop(1, "rgba(8,15,30,1)");
+      fadeR.addColorStop(0, "rgba(0,0,0,0)");
+      fadeR.addColorStop(1, "rgba(0,0,0,1)");
       ctx.fillStyle = fadeR;
       ctx.fillRect(w * 0.9, 0, w * 0.1, h);
 
@@ -330,7 +330,7 @@ function VehicleCard({
       </div>
 
       {/* Telemetry gauges */}
-      <div className="px-4 py-3 bg-[#060a14] border-b border-white/5">
+      <div className="px-4 py-3 bg-[#000000] border-b border-white/5">
         <div className="grid grid-cols-3 gap-2">
           {vehicle.telemetry.slice(0, 3).map(t => (
             <TelemetryGauge
@@ -440,7 +440,7 @@ export default function Aerospace() {
       </section>
 
       {/* Stats bar */}
-      <section className="py-10 bg-[#080F1E]">
+      <section className="py-10 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {[
@@ -464,7 +464,7 @@ export default function Aerospace() {
       </section>
 
       {/* Vehicles with 3D */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -543,7 +543,7 @@ export default function Aerospace() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}

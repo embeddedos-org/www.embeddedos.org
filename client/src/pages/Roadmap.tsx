@@ -304,7 +304,7 @@ export default function Roadmap() {
 
                     {/* Card */}
                     <div
-                      className="rounded-2xl overflow-hidden border border-white/[0.07] bg-[#080F1E]/80 backdrop-blur-sm"
+                      className="rounded-2xl overflow-hidden border border-white/[0.07] bg-[#000000]/80 backdrop-blur-sm"
                       style={{
                         boxShadow: `0 0 0 1px ${phase.color}10, 0 8px 32px ${phase.color}06`,
                       }}
@@ -434,7 +434,7 @@ export default function Roadmap() {
               background: "linear-gradient(135deg, #22D3EE, #A855F7, #34D399)",
             }}
           >
-            <div className="rounded-3xl bg-[#080F1E] px-8 py-12 text-center">
+            <div className="rounded-3xl bg-[#000000] px-8 py-12 text-center">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#22D3EE]/10 border border-[#22D3EE]/20 text-[#22D3EE] text-xs font-bold mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] animate-pulse" />
                 Open Source · Community Driven

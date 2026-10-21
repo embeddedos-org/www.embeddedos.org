@@ -80,7 +80,7 @@ export default function Article({ slug: slugProp }: { slug?: string }) {
   // so beats rendering an empty article shell that looks like a broken post.
   if (!item || !body) {
     return (
-      <div className="min-h-screen bg-[#0A0E1A] text-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#000000] text-white flex items-center justify-center px-4">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-3">Article not found</h1>
           <p className="text-gray-400 mb-6">
@@ -101,7 +101,7 @@ export default function Article({ slug: slugProp }: { slug?: string }) {
   const color = BADGE_COLOR[badge] ?? DEFAULT_BADGE_COLOR;
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <ArticleJsonLd item={item} />
       <section className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent" />

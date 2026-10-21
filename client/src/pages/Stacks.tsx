@@ -124,7 +124,7 @@ export default function Stacks() {
       </section>
 
       {/* Stacks Grid */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {STACKS.map((stack, i) => {
@@ -163,7 +163,7 @@ export default function Stacks() {
                         key={layer}
                         className="text-[11px] px-3 py-1.5 rounded-lg text-white/70 border border-white/5"
                         style={{
-                          background: `oklch(22% 0.05 248 / ${0.3 + li * 0.1})`,
+                          background: `oklch(15.1% 0.004 286 / ${0.3 + li * 0.1})`,
                           borderLeftColor: stack.color,
                           borderLeftWidth: 2,
                         }}

@@ -133,7 +133,7 @@ export default function GetInvolved() {
       </section>
 
       {/* Ways to contribute */}
-      <section className="section-cinematic bg-[#080F1E]">
+      <section className="section-cinematic bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -244,7 +244,7 @@ export default function GetInvolved() {
       </section>
 
       {/* Values */}
-      <section className="py-16 bg-[#080F1E] text-center">
+      <section className="py-16 bg-[#000000] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <Users size={32} className="text-[#F97316] mx-auto mb-4" />
           <h2 className="font-heading font-bold text-white text-2xl mb-4">

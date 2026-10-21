@@ -315,10 +315,10 @@ export default function HealthCompare() {
     : ROWS;
 
   return (
-    <div className="min-h-screen bg-[#080F1E]">
+    <div className="min-h-screen bg-[#000000]">
       {/* Hero */}
       <section className="relative py-14 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D] to-[#000000]" />
         {/* Animated glows */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/6 w-72 h-72 bg-[#F85149]/6 rounded-full blur-[90px]" />

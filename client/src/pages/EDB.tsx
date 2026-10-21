@@ -106,7 +106,7 @@ export default function EDB() {
   const active = queryTypes.find(q => q.id === activeQuery)!;
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <section className="relative py-24 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-cyan-500/5" />
         <div className="max-w-5xl mx-auto relative z-10">
@@ -169,7 +169,7 @@ export default function EDB() {
             key={activeQuery}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#0D1117] border border-white/10 rounded-xl p-6"
+            className="bg-[#0B0B0D] border border-white/10 rounded-xl p-6"
           >
             <pre className="text-sm font-mono text-gray-300 overflow-x-auto whitespace-pre-wrap">
               {active.example}

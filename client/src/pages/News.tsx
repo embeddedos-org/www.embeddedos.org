@@ -100,7 +100,7 @@ export default function News() {
     <div className="min-h-screen pt-16">
       {/* Hero */}
       <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 to-[#000000]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-teal mb-4 inline-flex">Latest News</div>
@@ -232,7 +232,7 @@ export default function News() {
       </section>
 
       {/* Follow */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}

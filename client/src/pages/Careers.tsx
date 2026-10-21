@@ -1519,7 +1519,7 @@ export default function Careers() {
       </section>
 
       {/* Values */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-6xl mx-auto px-4">
           {/*
             This section had no heading of any kind, so its four cards were h3s
@@ -1686,7 +1686,7 @@ export default function Careers() {
       </section>
 
       {/* Internship Types */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div
             initial="hidden"
@@ -1851,7 +1851,7 @@ export default function Careers() {
       </section>
 
       {/* Benefits */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div
             initial="hidden"
@@ -1947,7 +1947,7 @@ export default function Careers() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <motion.div
             initial="hidden"

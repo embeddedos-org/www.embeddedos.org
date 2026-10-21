@@ -262,9 +262,9 @@ export default function Donate() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050510] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-20 bg-gradient-to-br from-[#0a0520] via-[#050510] to-[#020818]">
+      <section className="relative overflow-hidden pt-32 pb-20 bg-gradient-to-br from-[#0a0520] via-[#000000] to-[#020818]">
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -302,7 +302,7 @@ export default function Donate() {
       </section>
 
       {/* Stats bar */}
-      <section className="py-10 bg-[#080820] border-y border-white/5">
+      <section className="py-10 bg-[#0B0B0D] border-y border-white/5">
         <div className="max-w-4xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6">
           {STATS.map(s => {
             const Icon = s.icon;
@@ -820,7 +820,7 @@ export default function Donate() {
       </section>
 
       {/* Why donate */}
-      <section className="py-20 bg-gradient-to-b from-[#050510] to-[#080820]">
+      <section className="py-20 bg-gradient-to-b from-[#000000] to-[#0B0B0D]">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Why Support EmbeddedOS?

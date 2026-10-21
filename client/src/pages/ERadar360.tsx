@@ -161,7 +161,7 @@ function AlertDemo() {
   };
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#0D1117] p-5">
+    <div className="rounded-2xl border border-white/10 bg-[#0B0B0D] p-5">
       <div className="flex items-center justify-between mb-4">
         <span className="text-xs font-bold text-white/40 uppercase tracking-widest">
           Simulated Alert Feed
@@ -321,7 +321,7 @@ export default function ERadar360() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
       <section
         ref={heroRef}
@@ -393,7 +393,7 @@ export default function ERadar360() {
                   href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRadar360_CAD_Design"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-[#22D3EE] text-[#0A0E1A] hover:bg-[#22D3EE]/90 transition-colors"
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-[#22D3EE] text-[#000000] hover:bg-[#22D3EE]/90 transition-colors"
                 >
                   View CAD Files <ExternalLink size={14} />
                 </a>
@@ -414,7 +414,7 @@ export default function ERadar360() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col items-center gap-6"
           >
-            <div className="rounded-3xl border border-[#22D3EE]/20 bg-[#0D1117] p-8 w-full max-w-sm">
+            <div className="rounded-3xl border border-[#22D3EE]/20 bg-[#0B0B0D] p-8 w-full max-w-sm">
               <div className="text-center mb-4">
                 <span className="text-xs font-bold text-[#22D3EE]/60 uppercase tracking-widest">
                   Illustrative Radar Simulation
@@ -487,7 +487,7 @@ export default function ERadar360() {
       {/* Alert Demo */}
       {/* overflow-hidden: the cards below slide in from x:±20, which puts the
           right-hand one 4px past the viewport on a phone until it settles. */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117] overflow-hidden">
+      <section className="py-20 border-t border-white/5 bg-[#0B0B0D] overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <motion.div
@@ -608,7 +608,7 @@ export default function ERadar360() {
       </section>
 
       {/* Certifications */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117]">
+      <section className="py-20 border-t border-white/5 bg-[#0B0B0D]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -663,7 +663,7 @@ export default function ERadar360() {
                 href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRadar360_CAD_Design"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-[#22D3EE] text-[#0A0E1A] hover:bg-[#22D3EE]/90 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-[#22D3EE] text-[#000000] hover:bg-[#22D3EE]/90 transition-colors"
               >
                 View on GitHub <ExternalLink size={14} />
               </a>

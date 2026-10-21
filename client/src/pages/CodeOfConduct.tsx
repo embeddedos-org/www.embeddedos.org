@@ -32,7 +32,7 @@ const spaces = [
 
 export default function CodeOfConduct() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <section className="relative py-24 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-orange-500/5" />
         <div className="max-w-4xl mx-auto text-center relative z-10">

@@ -456,10 +456,10 @@ export default function Quantum() {
   const vendor = vendors.find(v => v.id === activeVendor) ?? vendors[0];
 
   return (
-    <div className="min-h-screen bg-[#050510] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* ── Hero ── */}
       <section className="relative overflow-hidden min-h-[90vh] flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-950/40 via-[#050510] to-indigo-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-950/40 via-[#000000] to-indigo-950/30" />
         <QuantumCanvas />
 
         {/* Grid overlay */}
@@ -554,7 +554,7 @@ export default function Quantum() {
       </section>
 
       {/* ── Vendor Ecosystem ── */}
-      <section className="py-24 bg-gradient-to-b from-[#050510] to-[#080820]">
+      <section className="py-24 bg-gradient-to-b from-[#000000] to-[#0B0B0D]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/30 mb-4">
@@ -697,7 +697,7 @@ export default function Quantum() {
       </section>
 
       {/* ── Kernel Features ── */}
-      <section className="py-24 bg-[#080820]">
+      <section className="py-24 bg-[#0B0B0D]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30 mb-4">
@@ -745,7 +745,7 @@ export default function Quantum() {
       </section>
 
       {/* ── Hardware Comparison Table ── */}
-      <section className="py-24 bg-gradient-to-b from-[#080820] to-[#050510]">
+      <section className="py-24 bg-gradient-to-b from-[#0B0B0D] to-[#000000]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 mb-4">
@@ -822,7 +822,7 @@ export default function Quantum() {
       </section>
 
       {/* ── Quantum Paradigms ── */}
-      <section className="py-24 bg-[#050510]">
+      <section className="py-24 bg-[#000000]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="bg-green-500/20 text-green-300 border-green-500/30 mb-4">
@@ -898,7 +898,7 @@ export default function Quantum() {
       </section>
 
       {/* ── Simulation Software ── */}
-      <section className="py-24 bg-[#080820]">
+      <section className="py-24 bg-[#0B0B0D]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30 mb-4">
@@ -1087,7 +1087,7 @@ export default function Quantum() {
       </section>
 
       {/* ── Roadmap ── */}
-      <section className="py-24 bg-gradient-to-b from-[#050510] to-[#080820]">
+      <section className="py-24 bg-gradient-to-b from-[#000000] to-[#0B0B0D]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30 mb-4">
@@ -1184,7 +1184,7 @@ export default function Quantum() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-24 bg-[#080820]">
+      <section className="py-24 bg-[#0B0B0D]">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <Atom className="w-12 h-12 text-purple-400 mx-auto mb-6" />

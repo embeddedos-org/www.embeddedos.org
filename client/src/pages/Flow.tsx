@@ -194,7 +194,7 @@ export default function Flow() {
       </section>
 
       {/* Build Timeline */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -224,7 +224,7 @@ export default function Flow() {
                   custom={i}
                   className="sm:pl-16 relative"
                 >
-                  <div className="absolute left-0 top-3 w-12 h-12 rounded-full bg-[#0B1D3A] border-2 border-[#F97316]/50 flex items-center justify-center text-xs font-bold text-[#F97316] hidden sm:flex">
+                  <div className="absolute left-0 top-3 w-12 h-12 rounded-full bg-[#000000] border-2 border-[#F97316]/50 flex items-center justify-center text-xs font-bold text-[#F97316] hidden sm:flex">
                     {step.step}
                   </div>
                   <div className="glass rounded-xl p-4 border border-white/5">
@@ -291,7 +291,7 @@ export default function Flow() {
       </section>
 
       {/* CI/CD Pipeline */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}

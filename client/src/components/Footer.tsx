@@ -242,7 +242,7 @@ export default function Footer() {
     <footer
       className="relative border-t border-white/[0.06] overflow-hidden"
       style={{
-        background: "linear-gradient(180deg, #080F1E 0%, #020617 100%)",
+        background: "linear-gradient(180deg, #000000 0%, #020617 100%)",
       }}
       role="contentinfo"
     >

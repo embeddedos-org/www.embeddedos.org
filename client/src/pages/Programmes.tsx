@@ -78,7 +78,7 @@ export default function Programmes() {
   return (
     <div className="min-h-screen pt-16">
       <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 to-[#000000]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <div className="badge-teal mb-4 inline-flex">Foundation</div>
           <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">

@@ -218,7 +218,7 @@ export default function EApps() {
       </section>
 
       {/* Featured Applications */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -390,7 +390,7 @@ export default function EApps() {
       </section>
 
       {/* Stats */}
-      <section className="py-10 bg-[#080F1E]">
+      <section className="py-10 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {STATS.map(s => (
@@ -469,7 +469,7 @@ export default function EApps() {
       </section>
 
       {/* CI/CD Note */}
-      <section className="py-12 bg-[#080F1E]">
+      <section className="py-12 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}

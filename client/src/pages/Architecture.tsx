@@ -624,7 +624,7 @@ export default function Architecture() {
   const diagram = DIAGRAMS.find(d => d.id === active) ?? DIAGRAMS[0];
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* ── Hero ── */}
       <section className="relative py-24 px-4 overflow-hidden">
         <img
@@ -911,7 +911,7 @@ export default function Architecture() {
       </section>
 
       {/* ── All diagrams grid ── */}
-      <section className="py-16 px-4 bg-[#080F1E]">
+      <section className="py-16 px-4 bg-[#000000]">
         <div className="max-w-6xl mx-auto">
           <motion.div
             variants={fadeUp}
@@ -1120,7 +1120,7 @@ export default function Architecture() {
       </section>
 
       {/* ── Donor callout ── */}
-      <section className="py-16 px-4 bg-[#080F1E]">
+      <section className="py-16 px-4 bg-[#000000]">
         <div className="max-w-5xl mx-auto">
           <motion.div
             variants={fadeUp}

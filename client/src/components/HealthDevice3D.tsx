@@ -35,7 +35,7 @@ function KeyUltraModel({ hovered }: { hovered: boolean }) {
         position={[0, 0.35, 0.2]}
       >
         <meshStandardMaterial
-          color="#0a0f1e"
+          color="#000000"
           emissive="#22D3EE"
           emissiveIntensity={0.4}
         />
@@ -101,7 +101,7 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
         position={[0, 0, 0.24]}
       >
         <meshStandardMaterial
-          color="#0a0f1e"
+          color="#000000"
           emissive="#A78BFA"
           emissiveIntensity={0.5}
         />
@@ -133,7 +133,7 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
         smoothness={4}
         position={[0, 1.1, 0]}
       >
-        <meshStandardMaterial color="#1e2540" metalness={0.5} roughness={0.4} />
+        <meshStandardMaterial color="#232326" metalness={0.5} roughness={0.4} />
       </RoundedBox>
       <RoundedBox
         args={[1.3, 0.55, 0.25]}
@@ -141,7 +141,7 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
         smoothness={4}
         position={[0, -1.1, 0]}
       >
-        <meshStandardMaterial color="#1e2540" metalness={0.5} roughness={0.4} />
+        <meshStandardMaterial color="#232326" metalness={0.5} roughness={0.4} />
       </RoundedBox>
     </group>
   );
@@ -218,7 +218,7 @@ function LabModel({ hovered }: { hovered: boolean }) {
         position={[-0.3, 0.1, 0.28]}
       >
         <meshStandardMaterial
-          color="#0a0f1e"
+          color="#000000"
           emissive="#60A5FA"
           emissiveIntensity={0.5}
         />
@@ -357,15 +357,15 @@ export function BiometricWaveform({
 
       // Fade left edge
       const grad = ctx.createLinearGradient(0, 0, w * 0.15, 0);
-      grad.addColorStop(0, "rgba(10,15,30,1)");
-      grad.addColorStop(1, "rgba(10,15,30,0)");
+      grad.addColorStop(0, "rgba(0,0,0,1)");
+      grad.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w * 0.15, h);
 
       // Fade right edge
       const grad2 = ctx.createLinearGradient(w * 0.85, 0, w, 0);
-      grad2.addColorStop(0, "rgba(10,15,30,0)");
-      grad2.addColorStop(1, "rgba(10,15,30,1)");
+      grad2.addColorStop(0, "rgba(0,0,0,0)");
+      grad2.addColorStop(1, "rgba(0,0,0,1)");
       ctx.fillStyle = grad2;
       ctx.fillRect(w * 0.85, 0, w * 0.15, h);
 
@@ -404,14 +404,14 @@ export function BiometricWaveform({
       ctx.stroke();
 
       const grad = ctx.createLinearGradient(0, 0, w * 0.15, 0);
-      grad.addColorStop(0, "rgba(10,15,30,1)");
-      grad.addColorStop(1, "rgba(10,15,30,0)");
+      grad.addColorStop(0, "rgba(0,0,0,1)");
+      grad.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w * 0.15, h);
 
       const grad2 = ctx.createLinearGradient(w * 0.85, 0, w, 0);
-      grad2.addColorStop(0, "rgba(10,15,30,0)");
-      grad2.addColorStop(1, "rgba(10,15,30,1)");
+      grad2.addColorStop(0, "rgba(0,0,0,0)");
+      grad2.addColorStop(1, "rgba(0,0,0,1)");
       ctx.fillStyle = grad2;
       ctx.fillRect(w * 0.85, 0, w * 0.15, h);
 

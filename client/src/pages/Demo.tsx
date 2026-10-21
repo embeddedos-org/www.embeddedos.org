@@ -492,10 +492,10 @@ export default function Demo() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080F1E]">
+    <div className="min-h-screen bg-[#000000]">
       {/* Hero */}
       <section className="relative py-14 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D] to-[#000000]" />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}
@@ -549,7 +549,7 @@ export default function Demo() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "#22D3EE", color: "#080F1E" }}
+              style={{ background: "#22D3EE", color: "#000000" }}
             >
               <Github size={15} /> View EoSim on GitHub
             </a>
@@ -670,7 +670,7 @@ export default function Demo() {
                     className="px-3 py-2 rounded-lg text-sm font-semibold transition-all"
                     style={
                       boardIdx === i
-                        ? { background: b.color, color: "#080F1E" }
+                        ? { background: b.color, color: "#000000" }
                         : {
                             background: "rgba(255,255,255,0.05)",
                             color: "rgba(255,255,255,0.5)",
@@ -883,7 +883,7 @@ export default function Demo() {
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95 disabled:opacity-40"
                   style={{
                     background: running ? "rgba(34,211,238,0.1)" : "#22D3EE",
-                    color: running ? "#22D3EE" : "#080F1E",
+                    color: running ? "#22D3EE" : "#000000",
                   }}
                 >
                   <Play size={16} /> {running ? "Running…" : "Run"}
@@ -926,7 +926,7 @@ export default function Demo() {
                 custom={0}
                 className="rounded-2xl border overflow-hidden"
                 style={{
-                  background: "#0D1117",
+                  background: "#0B0B0D",
                   borderColor: "rgba(255,255,255,0.08)",
                 }}
               >

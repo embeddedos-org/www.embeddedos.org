@@ -220,14 +220,14 @@ function BiometricWaveform({
       ctx.stroke();
 
       const grad = ctx.createLinearGradient(0, 0, w * 0.15, 0);
-      grad.addColorStop(0, "rgba(10,15,30,1)");
-      grad.addColorStop(1, "rgba(10,15,30,0)");
+      grad.addColorStop(0, "rgba(0,0,0,1)");
+      grad.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w * 0.15, h);
 
       const grad2 = ctx.createLinearGradient(w * 0.85, 0, w, 0);
-      grad2.addColorStop(0, "rgba(10,15,30,0)");
-      grad2.addColorStop(1, "rgba(10,15,30,1)");
+      grad2.addColorStop(0, "rgba(0,0,0,0)");
+      grad2.addColorStop(1, "rgba(0,0,0,1)");
       ctx.fillStyle = grad2;
       ctx.fillRect(w * 0.85, 0, w * 0.15, h);
 
@@ -276,7 +276,7 @@ function DeviceCard({
       onMouseLeave={() => setHovered(false)}
     >
       {/* 3D Device Render */}
-      <div className="h-44 w-full relative bg-gradient-to-b from-[#0a0f1e] to-[#060a14]">
+      <div className="h-44 w-full relative bg-gradient-to-b from-[#000000] to-[#000000]">
         <Suspense
           fallback={
             <div className="w-full h-full flex items-center justify-center">
@@ -299,7 +299,7 @@ function DeviceCard({
       </div>
 
       {/* Biometric Waveform */}
-      <div className="px-4 py-2 bg-[#060a14] border-b border-white/5">
+      <div className="px-4 py-2 bg-[#000000] border-b border-white/5">
         <div className="text-[9px] text-white/30 uppercase tracking-widest mb-1">
           {device.waveLabel}
         </div>
@@ -469,7 +469,7 @@ export default function Health() {
       </section>
 
       {/* Stats */}
-      <section className="py-10 bg-[#080F1E]">
+      <section className="py-10 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {STATS.map(s => (
@@ -554,7 +554,7 @@ export default function Health() {
       </section>
 
       {/* Health Hub App */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -626,7 +626,7 @@ export default function Health() {
                     href="https://github.com/embeddedos-org/eos-health"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#34D399] hover:bg-[#10B981] text-[#0a0f1e] font-bold rounded-xl text-sm transition-all active:scale-95"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#34D399] hover:bg-[#10B981] text-[#000000] font-bold rounded-xl text-sm transition-all active:scale-95"
                   >
                     View Health Repo <ArrowRight size={14} />
                   </a>

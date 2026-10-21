@@ -228,7 +228,7 @@ export default function Docs() {
       </section>
 
       {/* Doc Sections */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
           {DOC_SECTIONS.map((section, si) => (
             <motion.div
@@ -382,7 +382,7 @@ export default function Docs() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#080F1E] text-center">
+      <section className="py-16 bg-[#000000] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <h2 className="font-heading font-bold text-white text-2xl mb-4">
             Ready to Start Building?

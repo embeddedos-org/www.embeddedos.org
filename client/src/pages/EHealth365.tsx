@@ -40,7 +40,7 @@ function BiometricWave({
     .join(" ");
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#0D1117] p-4">
+    <div className="rounded-2xl border border-white/10 bg-[#0B0B0D] p-4">
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
           {label}
@@ -136,7 +136,7 @@ function DeviceCard3D({
       style={
         {
           transformStyle: "preserve-3d",
-          background: hovered ? `${color}08` : "#0D1117",
+          background: hovered ? `${color}08` : "#0B0B0D",
           borderColor: hovered ? `${color}40` : "rgba(255,255,255,0.08)",
           boxShadow: hovered ? `0 20px 60px ${color}20` : "none",
         } as React.CSSProperties
@@ -314,7 +314,7 @@ export default function EHealth365() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         <div
@@ -491,7 +491,7 @@ export default function EHealth365() {
       </section>
 
       {/* Coverage Matrix */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117]">
+      <section className="py-20 border-t border-white/5 bg-[#0B0B0D]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -640,7 +640,7 @@ export default function EHealth365() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117]">
+      <section className="py-20 border-t border-white/5 bg-[#0B0B0D]">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

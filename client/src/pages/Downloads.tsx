@@ -229,7 +229,7 @@ export default function Downloads() {
   return (
     <div className="min-h-screen pt-16 bg-[#050B18]">
       {/* Hero */}
-      <section className="section-padding bg-gradient-to-b from-[#080F1E] to-[#050B18]">
+      <section className="section-padding bg-gradient-to-b from-[#000000] to-[#050B18]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}
@@ -364,7 +364,7 @@ export default function Downloads() {
       </section>
 
       {/* Install Instructions */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}

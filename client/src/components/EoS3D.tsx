@@ -37,7 +37,7 @@ function KernelCore({ hovered }: { hovered: boolean }) {
       <mesh ref={coreRef}>
         <icosahedronGeometry args={[0.6, 2]} />
         <meshStandardMaterial
-          color="#0a1628"
+          color="#0b0b0d"
           emissive="#22D3EE"
           emissiveIntensity={0.8}
           metalness={0.9}
@@ -293,7 +293,7 @@ function EOfficeApps({ hovered }: { hovered: boolean }) {
       <mesh>
         <sphereGeometry args={[0.35, 32, 32]} />
         <meshStandardMaterial
-          color="#0a1628"
+          color="#0b0b0d"
           emissive="#F97316"
           emissiveIntensity={0.5}
           metalness={0.9}

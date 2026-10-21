@@ -191,7 +191,7 @@ export default function EBot() {
         style={{ display: open ? "none" : "flex" }}
       >
         <Bot className="w-6 h-6" />
-        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-[#0a0f1e] animate-pulse" />
+        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-[#000000] animate-pulse" />
       </motion.button>
 
       {/* Chat Window */}

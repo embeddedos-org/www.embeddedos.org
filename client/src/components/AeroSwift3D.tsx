@@ -37,7 +37,7 @@ function Rotor({
         >
           <boxGeometry args={[0.7, 0.025, 0.12]} />
           <meshStandardMaterial
-            color="#1e2540"
+            color="#232326"
             metalness={0.8}
             roughness={0.2}
             transparent
@@ -80,7 +80,7 @@ function AeroSwiftPersonal() {
       <mesh position={[0, 0, 0.9]}>
         <boxGeometry args={[1.8, 0.06, 1.2]} />
         <meshStandardMaterial
-          color="#1e2540"
+          color="#232326"
           metalness={0.8}
           roughness={0.15}
         />
@@ -88,7 +88,7 @@ function AeroSwiftPersonal() {
       <mesh position={[0, 0, -0.9]}>
         <boxGeometry args={[1.8, 0.06, 1.2]} />
         <meshStandardMaterial
-          color="#1e2540"
+          color="#232326"
           metalness={0.8}
           roughness={0.15}
         />
@@ -97,7 +97,7 @@ function AeroSwiftPersonal() {
       <mesh position={[-1.2, 0.25, 0]}>
         <boxGeometry args={[0.5, 0.5, 0.06]} />
         <meshStandardMaterial
-          color="#1e2540"
+          color="#232326"
           metalness={0.8}
           roughness={0.15}
         />

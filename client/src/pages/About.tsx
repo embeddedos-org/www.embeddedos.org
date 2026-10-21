@@ -115,7 +115,7 @@ export default function About() {
     <div className="min-h-screen pt-16">
       {/* Hero */}
       <section className="section-cinematic bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 to-[#000000]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <div className="badge-amber mb-4 inline-flex">
@@ -225,7 +225,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="section-cinematic bg-[#080F1E]">
+      <section className="section-cinematic bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -317,7 +317,7 @@ export default function About() {
       </section>
 
       {/* Legal */}
-      <section className="section-cinematic bg-[#080F1E]">
+      <section className="section-cinematic bg-[#000000]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -490,7 +490,7 @@ export default function About() {
         are not footer columns, so this section is their way in — see
         tests/unit/navigation.test.ts.
       */}
-      <section className="section-cinematic bg-[#080F1E]">
+      <section className="section-cinematic bg-[#000000]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="font-heading font-bold text-white text-2xl mb-2">
             The Foundation

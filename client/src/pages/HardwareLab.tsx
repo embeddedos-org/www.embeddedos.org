@@ -181,7 +181,7 @@ function FamilyCard({
       className="group rounded-3xl border p-6 transition-all duration-300"
       style={
         {
-          background: hovered ? `${color}06` : "#0D1117",
+          background: hovered ? `${color}06` : "#0B0B0D",
           borderColor: hovered ? `${color}40` : "rgba(255,255,255,0.08)",
           boxShadow: hovered ? `0 20px 60px ${color}15` : "none",
         } as React.CSSProperties
@@ -469,7 +469,7 @@ export default function HardwareLab() {
       </section>
 
       {/* Features */}
-      <section className="py-12 bg-[#080F1E]">
+      <section className="py-12 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {FEATURES.map((f, i) => {
@@ -590,7 +590,7 @@ export default function HardwareLab() {
               href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#0B1D3A] font-bold rounded-xl transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#000000] font-bold rounded-xl transition-all active:scale-95"
             >
               Browse All 18 Families on GitHub <ExternalLink size={16} />
             </a>
@@ -599,7 +599,7 @@ export default function HardwareLab() {
       </section>
 
       {/* EoSim CTA */}
-      <section className="section-padding bg-[#080F1E]">
+      <section className="section-padding bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div
             variants={fadeUp}
@@ -620,7 +620,7 @@ export default function HardwareLab() {
             </p>
             <Link
               href="/flow"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#0B1D3A] font-bold rounded-xl transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#000000] font-bold rounded-xl transition-all active:scale-95"
             >
               Try EoSim
               <ChevronRight size={16} />

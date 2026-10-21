@@ -335,10 +335,10 @@ export default function Books() {
   }
 
   return (
-    <div className="min-h-screen bg-[#080F1E]">
+    <div className="min-h-screen bg-[#000000]">
       {/* Hero */}
       <section className="relative py-20 sm:py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D] to-[#000000]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}
@@ -510,7 +510,7 @@ export default function Books() {
       </section>
 
       {/* Filter Tabs */}
-      <div className="sticky top-16 z-10 bg-[#080F1E]/95 backdrop-blur-sm border-b border-white/5 py-3">
+      <div className="sticky top-16 z-10 bg-[#000000]/95 backdrop-blur-sm border-b border-white/5 py-3">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
             <Filter size={13} className="text-white/30 shrink-0" />
@@ -540,7 +540,7 @@ export default function Books() {
       </div>
 
       {/* Books Grid */}
-      <section className="py-10 bg-[#080F1E]">
+      <section className="py-10 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <AnimatePresence mode="wait">
             <motion.div
@@ -653,7 +653,7 @@ export default function Books() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#0A1628]">
+      <section className="py-16 bg-[#0B0B0D]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}

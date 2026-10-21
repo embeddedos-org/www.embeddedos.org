@@ -90,7 +90,7 @@ export default function EoSimProductPage() {
   const [activeCmd, setActiveCmd] = useState(0);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <section className="relative py-24 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/5" />
         <div className="max-w-5xl mx-auto relative z-10 text-center">
@@ -176,7 +176,7 @@ export default function EoSimProductPage() {
             key={activeCmd}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#0D1117] border border-white/10 rounded-xl p-6"
+            className="bg-[#0B0B0D] border border-white/10 rounded-xl p-6"
           >
             <p className="text-gray-300 mb-4">{commands[activeCmd].desc}</p>
             <div className="bg-black/50 rounded-lg p-4 font-mono text-sm">

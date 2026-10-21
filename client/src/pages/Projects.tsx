@@ -265,7 +265,7 @@ export default function Projects() {
       </section>
 
       {/* Stats */}
-      <section className="py-10 bg-[#080F1E]">
+      <section className="py-10 bg-[#000000]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             {STATS.map(s => (
@@ -361,7 +361,7 @@ export default function Projects() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#080F1E] text-center">
+      <section className="py-16 bg-[#000000] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <Star size={32} className="text-[#F97316] mx-auto mb-4" />
           <h2 className="font-heading font-bold text-white text-2xl mb-4">
