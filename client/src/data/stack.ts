@@ -1,8 +1,8 @@
 /**
  * The stack's facts, for use in page copy.
  *
- * Everything here resolves to shared/stack-data.ts, which `pnpm sync:stack`
- * regenerates by counting the sibling repositories. Import these instead of
+ * Everything here resolves to the committed shared/stack-data.ts snapshot.
+ * The old sync pipeline is retired. Import these snapshot values instead of
  * typing a number into a page: the hand-written figures drifted badly — the
  * platform count read "52+" on nine pages while eos/boards held 83 board
  * definitions across 55 architectures.
@@ -32,7 +32,7 @@ export const REPO_COUNT = STACK.totals.repositories;
 export const FAMILY_COUNT = STACK.totals.families;
 
 /**
- * Platforms EoSim can simulate. Deliberately separate from BOARD_COUNT — the
+ * Platform descriptors EoSim registers, not a count of runnable targets. The
  * simulator covers a wider set than the kernel ships board files for, and the
  * site previously used one figure for both.
  */
