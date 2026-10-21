@@ -587,19 +587,17 @@ export default function Navbar() {
       </a>
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-[oklch(12%_0.04_248/0.88)] backdrop-blur-[28px] shadow-[0_1px_0_oklch(100%_0_0/0.07),0_4px_32px_oklch(0%_0_0/0.5)]"
-            : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-50 border-b bg-black/[0.66] backdrop-blur-[18px] backdrop-saturate-[1.6] transition-[border-color,background-color] duration-300 ${
+          scrolled ? "border-[#232326]" : "border-transparent"
         }`}
         role="banner"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,44px)]">
+          <div className="flex items-center justify-between h-[52px] lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-x-6">
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2.5 shrink-0 group"
+              className="flex items-center gap-[9px] shrink-0 group justify-self-start"
               aria-label="EmbeddedOS Home"
             >
               <img
@@ -609,13 +607,13 @@ export default function Navbar() {
                 width={32}
                 height={32}
                 alt="EmbeddedOS"
-                className="w-8 h-8 rounded-lg object-cover transition-transform duration-200 group-hover:scale-105"
+                className="w-[22px] h-[22px] rounded-[5px] object-cover transition-transform duration-200 group-hover:scale-105"
               />
               <div className="flex flex-col leading-none">
-                <span className="font-heading font-bold text-white text-sm tracking-tight">
+                <span className="font-heading font-semibold text-[#f5f5f7] text-[15px] tracking-[-0.01em]">
                   EmbeddedOS
                 </span>
-                <span className="text-[10px] text-[#F97316] font-semibold tracking-widest uppercase">
+                <span className="text-[10px] text-[#a1a1a6] font-medium tracking-[0.08em] uppercase mt-0.5">
                   Foundation · 501(c)(3)
                 </span>
               </div>
@@ -623,21 +621,21 @@ export default function Navbar() {
 
             {/* Desktop Nav */}
             <NavigationMenu.Root
-              className="hidden lg:flex items-center"
+              className="hidden lg:flex items-center justify-self-center"
               delayDuration={100}
               value={openMenu}
               onValueChange={setOpenMenu}
             >
-              <NavigationMenu.List className="flex items-center gap-1">
+              <NavigationMenu.List className="flex items-center gap-[clamp(20px,2.6vw,34px)]">
                 {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
                   const section = NAV_ITEMS[label];
                   return (
                     <NavigationMenu.Item key={label}>
-                      <NavigationMenu.Trigger className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white/70 hover:text-white rounded-lg hover:bg-white/[0.07] transition-all duration-200 data-[state=open]:text-white data-[state=open]:bg-white/[0.07] group select-none">
+                      <NavigationMenu.Trigger className="relative flex items-center gap-1 py-[17px] text-[13px] font-normal text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200 data-[state=open]:text-[#f5f5f7] group select-none after:absolute after:left-0 after:right-0 after:bottom-[11px] after:h-px after:bg-[#f5f5f7] after:origin-left after:scale-x-0 after:transition-transform after:duration-[350ms] after:ease-[cubic-bezier(0.2,0.7,0.2,1)] hover:after:scale-x-100 focus-visible:after:scale-x-100 data-[state=open]:after:scale-x-100">
                         {label}
                         <ChevronDown
                           size={14}
-                          className="transition-transform duration-200 group-data-[state=open]:rotate-180 text-white/50"
+                          className="transition-transform duration-200 group-data-[state=open]:rotate-180 text-[#6e6e73]"
                         />
                       </NavigationMenu.Trigger>
 
@@ -650,10 +648,10 @@ export default function Navbar() {
                             duration: 0.18,
                             ease: "easeOut" as const,
                           }}
-                          className="bg-[oklch(13%_0.045_248/0.95)] backdrop-blur-[32px] rounded-2xl shadow-[0_24px_64px_oklch(0%_0_0/0.65),inset_0_1px_0_oklch(100%_0_0/0.09)] border border-white/[0.08] p-6 mx-4"
+                          className="bg-[#0b0b0d]/95 backdrop-blur-[32px] backdrop-saturate-[1.6] rounded-[22px] shadow-[0_24px_64px_rgba(0,0,0,0.7)] border border-[#232326] p-6 mx-4"
                         >
                           <div className="max-w-5xl mx-auto">
-                            <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-5">
+                            <p className="text-[12px] font-semibold text-[#a1a1a6] uppercase tracking-[0.08em] mb-5">
                               {section.description}
                             </p>
                             <div
@@ -661,7 +659,7 @@ export default function Navbar() {
                             >
                               {section.sections.map(sec => (
                                 <div key={sec.title}>
-                                  <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-2">
+                                  <div className="text-[11px] font-semibold text-[#a1a1a6] uppercase tracking-[0.08em] mb-2">
                                     {sec.title}
                                   </div>
                                   <div className="space-y-1">
@@ -685,7 +683,7 @@ export default function Navbar() {
                                           // change the location and would leave
                                           // the panel open. Close it here too.
                                           onClick={() => setOpenMenu("")}
-                                          className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-white/[0.07] transition-all duration-200 group/item"
+                                          className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#141417] transition-colors duration-200 group/item"
                                         >
                                           <div
                                             className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
@@ -700,10 +698,10 @@ export default function Navbar() {
                                             />
                                           </div>
                                           <div>
-                                            <div className="text-xs font-semibold text-white group-hover/item:text-[#F97316] transition-colors leading-tight">
+                                            <div className="text-[13px] font-medium tracking-[-0.01em] text-[#f5f5f7] group-hover/item:text-[#FF8A3D] transition-colors leading-tight">
                                               {item.name}
                                             </div>
-                                            <div className="text-[11px] text-white/40 mt-0.5 leading-tight">
+                                            <div className="text-[12px] text-[#a1a1a6] mt-0.5 leading-tight">
                                               {item.desc}
                                             </div>
                                           </div>
@@ -726,9 +724,9 @@ export default function Navbar() {
                     href="https://github.com/embeddedos-org"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/5 transition-colors duration-150"
+                    className="flex items-center gap-1.5 py-[17px] text-[13px] text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200"
                   >
-                    <Star size={14} className="text-[#F97316]" />
+                    <Star size={14} className="opacity-80" />
                     GitHub
                   </a>
                 </NavigationMenu.Item>
@@ -741,13 +739,13 @@ export default function Navbar() {
             </NavigationMenu.Root>
 
             {/* Right actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 justify-self-end">
               <button
                 onClick={() => {
                   const event = new CustomEvent("open-search");
                   window.dispatchEvent(event);
                 }}
-                className="flex items-center justify-center w-9 h-9 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
+                className="flex items-center justify-center w-9 h-9 rounded-full text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06] transition-colors duration-200"
                 aria-label="Search (Ctrl+K)"
               >
                 <Search size={18} />
@@ -757,7 +755,7 @@ export default function Navbar() {
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("open-donate"))
                 }
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 bg-[#34D399]/15 hover:bg-[#34D399]/25 text-[#34D399] border border-[#34D399]/40 text-sm font-semibold rounded-lg btn-press"
+                className="hidden sm:inline-flex items-center gap-1.5 h-[30px] px-[14px] bg-primary hover:bg-brand-amber-light text-primary-foreground text-[13px] font-medium tracking-[-0.01em] rounded-full btn-press transition-colors duration-200"
               >
                 <Heart size={13} />
                 Donate
@@ -765,7 +763,7 @@ export default function Navbar() {
 
               <Link
                 href="/getting-started"
-                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-[#F97316] hover:bg-[#EA580C] text-white text-sm font-semibold rounded-lg btn-press"
+                className="hidden sm:inline-flex items-center gap-1.5 h-[30px] px-[14px] border border-[#3a3a3e] hover:border-[#a1a1a6] text-[#f5f5f7] text-[13px] font-medium tracking-[-0.01em] rounded-full btn-press transition-colors duration-200"
               >
                 Get Started
                 <ArrowRight size={14} />
@@ -774,7 +772,7 @@ export default function Navbar() {
               {/* Mobile toggle */}
               <button
                 onClick={toggleMobile}
-                className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors duration-150"
+                className="lg:hidden flex items-center justify-center w-11 h-11 -mr-2.5 rounded-full text-[#f5f5f7] hover:text-white transition-colors duration-200"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-menu"
@@ -828,14 +826,14 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              // The drawer starts below the 64px site header (top-16) and sits
-              // under it in z-order, so its header row can never overlap the
-              // site header — the header's own toggle (now an X) closes it.
-              className="fixed top-16 right-0 bottom-0 z-40 w-80 glass-strong border-l border-white/10 overflow-y-auto lg:hidden"
+              // The drawer starts below the 52px site header (top-[52px]) and
+              // sits under it in z-order, so its header row can never overlap
+              // the site header — the header's own toggle (now an X) closes it.
+              className="fixed top-[52px] right-0 bottom-0 z-40 w-80 bg-black border-t border-l border-[#232326] overflow-y-auto lg:hidden"
               aria-label="Mobile navigation"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <div className="flex items-center justify-between p-4 border-b border-[#232326]">
                 <Link href="/" className="flex items-center gap-2">
                   <img
                     loading="eager"
@@ -844,15 +842,15 @@ export default function Navbar() {
                     width={32}
                     height={32}
                     alt="EmbeddedOS"
-                    className="w-7 h-7 rounded-lg"
+                    className="w-[22px] h-[22px] rounded-[5px]"
                   />
-                  <span className="font-heading font-bold text-white text-sm">
+                  <span className="font-heading font-semibold text-[#f5f5f7] text-[15px] tracking-[-0.01em]">
                     EmbeddedOS
                   </span>
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg text-white/60 hover:text-white hover:bg-white/5"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06]"
                   aria-label="Close menu"
                 >
                   <X size={18} />
@@ -870,12 +868,12 @@ export default function Navbar() {
                           setMobileExpanded(e => (e === label ? null : label))
                         }
                         aria-expanded={isExpanded}
-                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+                        className="w-full flex items-center justify-between px-1 py-3 border-b border-[#232326] text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
                       >
                         {label}
                         <ChevronDown
                           size={16}
-                          className={`text-white/40 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                          className={`text-[#6e6e73] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                         />
                       </button>
                       <AnimatePresence>
@@ -887,10 +885,10 @@ export default function Navbar() {
                             transition={{ duration: 0.2, ease: "easeOut" }}
                             className="overflow-hidden"
                           >
-                            <div className="pl-3 pb-2 space-y-3">
+                            <div className="pl-1 pt-2 pb-3 space-y-3">
                               {section.sections.map(sec => (
                                 <div key={sec.title}>
-                                  <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest px-2 py-1">
+                                  <div className="text-[12px] font-semibold text-[#a1a1a6] uppercase tracking-[0.08em] px-2 py-1">
                                     {sec.title}
                                   </div>
                                   {sec.items.map(item => {
@@ -907,7 +905,7 @@ export default function Navbar() {
                                       <Comp
                                         key={item.name}
                                         {...extraProps}
-                                        className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-white/5 transition-colors"
+                                        className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-[#141417] transition-colors"
                                       >
                                         <div
                                           className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
@@ -922,10 +920,10 @@ export default function Navbar() {
                                           />
                                         </div>
                                         <div>
-                                          <div className="text-xs font-semibold text-white">
+                                          <div className="text-[15px] font-medium tracking-[-0.01em] text-[#f5f5f7]">
                                             {item.name}
                                           </div>
-                                          <div className="text-[10px] text-white/40">
+                                          <div className="text-[12px] text-[#a1a1a6]">
                                             {item.desc}
                                           </div>
                                         </div>
@@ -947,28 +945,28 @@ export default function Navbar() {
                   href="https://github.com/embeddedos-org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
                 >
-                  <Star size={16} className="text-[#F97316]" />
+                  <Star size={16} className="text-[#a1a1a6]" />
                   GitHub
                 </a>
               </div>
 
               {/* CTA */}
-              <div className="p-4 border-t border-white/10 space-y-2">
+              <div className="p-4 border-t border-[#232326] space-y-2">
                 <button
                   onClick={() => {
                     setMobileOpen(false);
                     window.dispatchEvent(new CustomEvent("open-donate"));
                   }}
-                  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#34D399]/15 hover:bg-[#34D399]/25 text-[#34D399] border border-[#34D399]/40 font-bold rounded-xl transition-all active:scale-95"
+                  className="flex items-center justify-center gap-2 w-full h-11 px-[22px] bg-primary hover:bg-brand-amber-light text-primary-foreground text-[15px] font-medium tracking-[-0.01em] rounded-full transition-all active:scale-95"
                 >
                   <Heart size={16} />
                   Donate
                 </button>
                 <Link
                   href="/getting-started"
-                  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
+                  className="flex items-center justify-center gap-2 w-full h-11 px-[22px] border border-[#3a3a3e] hover:border-[#a1a1a6] text-[#f5f5f7] text-[15px] font-medium tracking-[-0.01em] rounded-full transition-all active:scale-95"
                   onClick={() => setMobileOpen(false)}
                 >
                   Get Started

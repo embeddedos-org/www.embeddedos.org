@@ -510,7 +510,7 @@ export default function Books() {
       </section>
 
       {/* Filter Tabs */}
-      <div className="sticky top-16 z-10 bg-[#000000]/95 backdrop-blur-sm border-b border-white/5 py-3">
+      <div className="sticky top-[52px] z-10 bg-[#000000]/95 backdrop-blur-sm border-b border-white/5 py-3">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-2 overflow-x-auto pb-0.5 scrollbar-none">
             <Filter size={13} className="text-white/30 shrink-0" />

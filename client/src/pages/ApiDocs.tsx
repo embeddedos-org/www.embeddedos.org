@@ -2614,7 +2614,7 @@ export default function ApiDocs() {
 
       <div className="max-w-7xl mx-auto flex">
         {/* Sidebar */}
-        <aside className="hidden lg:block w-56 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-6 pr-4 border-r border-white/5">
+        <aside className="hidden lg:block w-56 shrink-0 sticky top-[52px] h-[calc(100vh-52px)] overflow-y-auto py-6 pr-4 border-r border-white/5">
           <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-3 px-2">
             Modules
           </div>
