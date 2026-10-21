@@ -593,7 +593,7 @@ export default function Navbar() {
         role="banner"
       >
         <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,44px)]">
-          <div className="flex items-center justify-between h-[52px] lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-x-6">
+          <div className="flex items-center justify-between h-[52px] xl:grid xl:grid-cols-[1fr_auto_1fr] xl:gap-x-6">
             {/* Logo */}
             <Link
               href="/"
@@ -626,7 +626,7 @@ export default function Navbar() {
               value={openMenu}
               onValueChange={setOpenMenu}
             >
-              <NavigationMenu.List className="flex items-center gap-[clamp(20px,2.6vw,34px)]">
+              <NavigationMenu.List className="flex items-center gap-5 xl:gap-[clamp(20px,2.6vw,34px)]">
                 {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
                   const section = NAV_ITEMS[label];
                   return (
@@ -755,7 +755,7 @@ export default function Navbar() {
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("open-donate"))
                 }
-                className="hidden sm:inline-flex items-center gap-1.5 h-[30px] px-[14px] bg-primary hover:bg-brand-amber-light text-primary-foreground text-[13px] font-medium tracking-[-0.01em] rounded-full btn-press transition-colors duration-200"
+                className="hidden sm:inline-flex items-center gap-1.5 h-[30px] px-[14px] whitespace-nowrap bg-primary hover:bg-brand-amber-light text-primary-foreground text-[13px] font-medium tracking-[-0.01em] rounded-full btn-press transition-colors duration-200"
               >
                 <Heart size={13} />
                 Donate
@@ -763,7 +763,7 @@ export default function Navbar() {
 
               <Link
                 href="/getting-started"
-                className="hidden sm:inline-flex items-center gap-1.5 h-[30px] px-[14px] border border-[#3a3a3e] hover:border-[#a1a1a6] text-[#f5f5f7] text-[13px] font-medium tracking-[-0.01em] rounded-full btn-press transition-colors duration-200"
+                className="hidden sm:inline-flex items-center gap-1.5 h-[30px] px-[14px] whitespace-nowrap border border-[#3a3a3e] hover:border-[#a1a1a6] text-[#f5f5f7] text-[13px] font-medium tracking-[-0.01em] rounded-full btn-press transition-colors duration-200"
               >
                 Get Started
                 <ArrowRight size={14} />
