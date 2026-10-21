@@ -4,15 +4,19 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   EMBEDDEDOS ENTERPRISE THEME
-   Deep Ocean Blue + Warm Amber-Orange
-   ============================================================ */
+   EMBEDDEDOS ENTERPRISE THEME — BLACK EDITION
+   Black stage + neutral greys + Warm Amber-Orange
+   ============================================================
+   The grounds, panels and lines are the Black Edition neutrals
+   (#000 stage, #0B0B0D / #141417 panels, #232326 lines, #F5F5F7 /
+   #A1A1A6 text). The token names still say "navy" because other
+   code uses them; only their values moved. Accent hues unchanged. */
 
 @theme inline {
   /* Brand Colors */
-  --color-brand-navy: oklch(17.8% 0.055 248); /* #0B1D3A */
-  --color-brand-navy-light: oklch(22% 0.05 248); /* #0F2547 */
-  --color-brand-navy-mid: oklch(28% 0.06 248); /* #163060 */
+  --color-brand-navy: oklch(0% 0 0); /* #000000, was #0B1D3A */
+  --color-brand-navy-light: oklch(15.1% 0.004 286); /* #0B0B0D, was #0F2547 */
+  --color-brand-navy-mid: oklch(19.3% 0.006 286); /* #141417, was #163060 */
   --color-brand-amber: oklch(67% 0.19 50); /* #F97316 */
   --color-brand-amber-light: oklch(74% 0.17 50); /* #FB923C */
   --color-brand-amber-dark: oklch(58% 0.18 50); /* #EA580C */
@@ -21,29 +25,37 @@
   --color-brand-purple: oklch(65% 0.18 290); /* #A78BFA */
 
   /* Semantic tokens */
-  --color-background: oklch(17.8% 0.055 248);
-  --color-foreground: oklch(97% 0.005 248);
-  --color-card: oklch(22% 0.05 248);
-  --color-card-foreground: oklch(97% 0.005 248);
-  --color-popover: oklch(22% 0.05 248);
-  --color-popover-foreground: oklch(97% 0.005 248);
+  --color-background: oklch(0% 0 0); /* #000000 */
+  --color-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
+  --color-card: oklch(15.1% 0.004 286); /* #0B0B0D */
+  --color-card-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
+  --color-popover: oklch(15.1% 0.004 286); /* #0B0B0D */
+  --color-popover-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
   --color-primary: oklch(67% 0.19 50);
-  --color-primary-foreground: oklch(10% 0.02 248);
-  --color-secondary: oklch(28% 0.06 248);
-  --color-secondary-foreground: oklch(97% 0.005 248);
-  --color-muted: oklch(28% 0.06 248);
-  --color-muted-foreground: oklch(65% 0.02 248);
+  --color-primary-foreground: oklch(0% 0 0); /* #000000 */
+  --color-secondary: oklch(19.3% 0.006 286); /* #141417 */
+  --color-secondary-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
+  --color-muted: oklch(19.3% 0.006 286); /* #141417 */
+  --color-muted-foreground: oklch(71.1% 0.007 286); /* #A1A1A6 */
   --color-accent: oklch(67% 0.19 50);
-  --color-accent-foreground: oklch(10% 0.02 248);
+  --color-accent-foreground: oklch(0% 0 0); /* #000000 */
   --color-destructive: oklch(62% 0.22 25);
-  --color-border: oklch(32% 0.04 248);
-  --color-input: oklch(28% 0.06 248);
+  --color-border: oklch(25.7% 0.006 286); /* #232326 */
+  --color-input: oklch(25.7% 0.006 286); /* #232326 */
   --color-ring: oklch(67% 0.19 50);
 
-  /* Typography — Space Grotesk (headings) + DM Sans (body) per UI/UX Pro Max */
-  --font-sans: "DM Sans", system-ui, sans-serif;
-  --font-heading: "Space Grotesk", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* Typography — Black Edition: the platform UI face first (SF Pro on Apple,
+     Segoe UI on Windows, Roboto on Android). The webfonts stay loaded and
+     remain the fallback before Arial; canvases and /brand still name them. */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+    "DM Sans", Arial, sans-serif;
+  --font-heading:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
+    "Space Grotesk", Arial, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, "JetBrains Mono", Consolas,
+    monospace;
 
   /* Radius */
   --radius: 0.5rem;
@@ -76,7 +88,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Glassmorphism tokens */
-  --glass-bg: oklch(22% 0.05 248 / 0.75);
+  --glass-bg: oklch(15.1% 0.004 286 / 0.75); /* #0B0B0D at 75% */
   --glass-border: oklch(100% 0 0 / 0.08);
   --glass-blur: blur(20px);
 
