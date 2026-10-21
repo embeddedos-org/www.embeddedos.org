@@ -132,8 +132,10 @@ describe("image budgets", () => {
   });
 
   it("the homepage image set stays under 800 KB", () => {
+    // What the homepage shows before any script: the logo and the story's
+    // poster at its largest (the 2560 desktop WebP; a phone gets the 1280 one).
     const homepageImages = [
-      "home-story-poster.jpg",
+      "story/d/poster.webp",
       "embeddedos-logo-mark_bc053888.jpg",
     ];
     const total = homepageImages.reduce(
@@ -141,6 +143,22 @@ describe("image budgets", () => {
       0
     );
     expect(total, `homepage images = ${kb(total)} KB`).toBeLessThan(800 * 1024);
+  });
+
+  it("no image in the homepage's media folders exceeds 260 KB", () => {
+    // The story frames, the board renders and the industry posters live in
+    // subfolders, which the flat check above does not open. Frames are packed
+    // two (or four, for phones) to a strip so each strip stays under this.
+    const oversized: string[] = [];
+    for (const dir of ["story", "boards", "industries", "film"]) {
+      for (const f of fs.globSync("**/*.{avif,gif,jpg,jpeg,png,svg,webp}", {
+        cwd: path.join(IMG_DIR, dir),
+      })) {
+        const size = fs.statSync(path.join(IMG_DIR, dir, f)).size;
+        if (size > 260 * 1024) oversized.push(`${dir}/${f} = ${kb(size)} KB`);
+      }
+    }
+    expect(oversized).toEqual([]);
   });
 
   it("defers below-the-fold images", () => {
