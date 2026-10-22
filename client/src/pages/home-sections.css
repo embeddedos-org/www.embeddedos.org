@@ -1,8 +1,10 @@
 /* The homepage sections (#home-sections: marquee, board map, mission, stack, ecosystem, health, hardware, why,
    community, call to action). These rules are the ones client/src/home3d/story.css had for them, moved when the
-   3D story was replaced (the story's own rules went with it). The only edits are colours: the navy grounds
-   (#060a14, #0c1830, #0d1119 and their rgba forms) map to the Black Edition neutrals #000 / #0b0b0d, as across
-   the rest of the site, and four blue-tinted greys to neutral greys of the same lightness. */
+   3D story was replaced (the story's own rules went with it). The only edits are colours, on the site's own
+   map: the navy grounds (#0b1d3a, #060a14 and their rgba forms) become #000; surfaces lighter than the page
+   (#0c1830, #0d1119, #080f1e bands) become #0b0b0d; the board map's blue badge and focus fill (#12284a → #071224,
+   #151c29) become the pedestal greys #1c1c21 / #0b0b0d; four blue-tinted greys become neutral greys of the same
+   lightness. */
 .hs :where(*, *::before, *::after) {
   margin: revert;
   padding: revert;
@@ -39,7 +41,7 @@
 }
 .hs {
   color-scheme: dark;
-  --ground: #0b1d3a;
+  --ground: #000000;
   --deep: #000000;
   --panel: #0b0b0d;
   --line: rgba(238, 242, 247, 0.1);
@@ -112,7 +114,7 @@
   padding-block: var(--space-section);
 }
 .hs .hp-band {
-  background: #080f1e;
+  background: #0b0b0d;
   border-block: 1px solid rgba(255, 255, 255, 0.06);
 }
 .hs .hp-badge {
@@ -568,7 +570,7 @@
   position: relative;
   border-radius: 20px;
   border: 1px solid rgba(56, 189, 248, 0.28);
-  background: radial-gradient(80% 90% at 50% 45%, #12284a, #071224);
+  background: radial-gradient(80% 90% at 50% 45%, #1c1c21, #0b0b0d);
   padding: 10px;
   min-width: 0;
 }
@@ -624,7 +626,7 @@
 .hs .hp-board .mp:hover .body,
 .hs .hp-board .mp:focus-visible .body {
   stroke-width: 4;
-  fill: #151c29;
+  fill: #1c1c21;
 }
 .hs .hp-board .mp.on .body {
   stroke-width: 4.5;

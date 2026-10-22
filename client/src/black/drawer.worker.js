@@ -71,7 +71,7 @@ function strip(d) {
         F[d.id] = a;
         if (H.length && last && Math.floor(Math.round(last.f) / P.PER) === d.id)
           unhold();
-        postMessage({ t: "have", id: d.id, ms: performance.now() - t0 });
+        postMessage({ t: "have", id: d.id, g, ms: performance.now() - t0 });
         if (last) draw(last);
       });
     })
@@ -180,18 +180,19 @@ onmessage = e => {
     case "init":
       cv = d.canvas;
       P = d;
+      G = d.g || 0;
       cx = cv.getContext("2d", { alpha: false });
       size(d);
       break;
     case "res":
-      G++;
+      G = d.g;
       unhold();
       hold();
       size(d);
       if (last) draw(last);
       break;
     case "set":
-      G++;
+      G = d.g;
       unhold();
       hold();
       Q = [];

@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { Link } from "wouter";
+import { ChapterExtras, ChapterWord } from "./ChapterExtras";
 
 /**
  * Every industry: the 25 chapters the homepage's 3D story used to carry, as an
@@ -428,6 +429,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-ehealth365"
               style={{ "--c": "#EF4444" } as CSSProperties}
             >
+              <ChapterWord id="ehealth365" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d01"
@@ -498,7 +500,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eHealth365 · 2 lines · 2 models
                   </span>{" "}
-                  <h3>Smart Ring Pro + Smart Patch Pro</h3>{" "}
+                  <h4>Smart Ring Pro + Smart Patch Pro</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -528,7 +530,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · wearable profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -581,6 +583,7 @@ export default function Chapters() {
                   <p className="src">eos · products/wearable.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="ehealth365" />
             </div>
             <div
               className="bk-chap"
@@ -589,6 +592,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eoshealth"
               style={{ "--c": "#FB7185" } as CSSProperties}
             >
+              <ChapterWord id="eoshealth" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d02"
@@ -650,6 +654,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="eoshealth" />
             </div>
             <div
               className="bk-chap"
@@ -658,6 +663,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-emedical"
               style={{ "--c": "#F472B6" } as CSSProperties}
             >
+              <ChapterWord id="emedical" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d03"
@@ -731,7 +737,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eMedical · 4 lines · 19 models
                   </span>{" "}
-                  <h3>eECG-12</h3>{" "}
+                  <h4>eECG-12</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -785,7 +791,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · medical profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -835,6 +841,7 @@ export default function Chapters() {
                   <p className="src">eos · products/medical.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="emedical" />
             </div>
             <div
               className="bk-chap"
@@ -843,6 +850,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eradar360"
               style={{ "--c": "#F97316" } as CSSProperties}
             >
+              <ChapterWord id="eradar360" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d04"
@@ -901,6 +909,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="eradar360" />
             </div>
             <div
               className="bk-chap"
@@ -909,6 +918,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-etransport"
               style={{ "--c": "#38BDF8" } as CSSProperties}
             >
+              <ChapterWord id="etransport" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d05"
@@ -970,6 +980,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="etransport" />
             </div>
             <div
               className="bk-chap"
@@ -978,6 +989,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-epam"
               style={{ "--c": "#2DD4BF" } as CSSProperties}
             >
+              <ChapterWord id="epam" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d06"
@@ -1038,6 +1050,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="epam" />
             </div>
             <div
               className="bk-chap"
@@ -1046,6 +1059,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eaerospace"
               style={{ "--c": "#22D3EE" } as CSSProperties}
             >
+              <ChapterWord id="eaerospace" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d07"
@@ -1118,7 +1132,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eAerospace · 17 lines · 57 models
                   </span>{" "}
-                  <h3>eMR-400</h3>{" "}
+                  <h4>eMR-400</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -1175,7 +1189,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · drone profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -1234,6 +1248,7 @@ export default function Chapters() {
                   <p className="src">eos · products/drone.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="eaerospace" />
             </div>
             <div
               className="bk-chap"
@@ -1242,6 +1257,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-erobotics"
               style={{ "--c": "#A78BFA" } as CSSProperties}
             >
+              <ChapterWord id="erobotics" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d08"
@@ -1315,7 +1331,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eRobotics · 3 lines · 15 models
                   </span>{" "}
-                  <h3>A full robot from five designs</h3>{" "}
+                  <h4>A full robot from five designs</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -1364,7 +1380,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · robot profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -1417,6 +1433,7 @@ export default function Chapters() {
                   <p className="src">eos · products/robot.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="erobotics" />
             </div>
             <div
               className="bk-chap"
@@ -1425,6 +1442,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eagritech"
               style={{ "--c": "#10B981" } as CSSProperties}
             >
+              <ChapterWord id="eagritech" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d09"
@@ -1486,6 +1504,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="eagritech" />
             </div>
             <div
               className="bk-chap"
@@ -1494,6 +1513,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-efrontier"
               style={{ "--c": "#C084FC" } as CSSProperties}
             >
+              <ChapterWord id="efrontier" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d10"
@@ -1552,6 +1572,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="efrontier" />
             </div>
             <div
               className="bk-chap"
@@ -1560,6 +1581,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eindustrial"
               style={{ "--c": "#34D399" } as CSSProperties}
             >
+              <ChapterWord id="eindustrial" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d11"
@@ -1622,6 +1644,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="eindustrial" />
             </div>
             <div
               className="bk-chap"
@@ -1630,6 +1653,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eenergy"
               style={{ "--c": "#F59E0B" } as CSSProperties}
             >
+              <ChapterWord id="eenergy" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d12"
@@ -1702,7 +1726,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eEnergy · 3 lines · 15 models
                   </span>{" "}
-                  <h3>eBMS-100A</h3>{" "}
+                  <h4>eBMS-100A</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -1745,7 +1769,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · ev profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -1812,6 +1836,7 @@ export default function Chapters() {
                   <p className="src">eos · products/ev.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="eenergy" />
             </div>
             <div
               className="bk-chap"
@@ -1820,6 +1845,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-esmartcity"
               style={{ "--c": "#60A5FA" } as CSSProperties}
             >
+              <ChapterWord id="esmartcity" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d13"
@@ -1892,7 +1918,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eSmartCity · 13 lines · 25 models
                   </span>{" "}
-                  <h3>eSL-400</h3>{" "}
+                  <h4>eSL-400</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -1941,7 +1967,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · iot profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -1991,6 +2017,7 @@ export default function Chapters() {
                   <p className="src">eos · products/iot.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="esmartcity" />
             </div>
             <div
               className="bk-chap"
@@ -1999,6 +2026,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-emining"
               style={{ "--c": "#A8A29E" } as CSSProperties}
             >
+              <ChapterWord id="emining" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d14"
@@ -2060,6 +2088,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="emining" />
             </div>
             <div
               className="bk-chap"
@@ -2068,6 +2097,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eedgeai"
               style={{ "--c": "#818CF8" } as CSSProperties}
             >
+              <ChapterWord id="eedgeai" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d15"
@@ -2140,7 +2170,7 @@ export default function Chapters() {
                   <span className="spot-k">
                     eEdgeAI · 8 lines · 8 models
                   </span>{" "}
-                  <h3>eVIS-600</h3>{" "}
+                  <h4>eVIS-600</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -2185,7 +2215,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · ai_edge profile</span>{" "}
-                  <h3>How EoS would run it</h3>{" "}
+                  <h4>How EoS would run it</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-docs">
@@ -2242,6 +2272,7 @@ export default function Chapters() {
                   <p className="src">eos · products/ai_edge.h</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="eedgeai" />
             </div>
             <div
               className="bk-chap"
@@ -2250,6 +2281,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-eelectronics"
               style={{ "--c": "#FBBF24" } as CSSProperties}
             >
+              <ChapterWord id="eelectronics" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d16"
@@ -2311,6 +2343,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="eelectronics" />
             </div>
             <div
               className="bk-chap"
@@ -2319,6 +2352,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-econsumer"
               style={{ "--c": "#8B5CF6" } as CSSProperties}
             >
+              <ChapterWord id="econsumer" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d17"
@@ -2380,6 +2414,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="econsumer" />
             </div>
             <div
               className="bk-chap"
@@ -2388,6 +2423,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-ecybersec"
               style={{ "--c": "#06B6D4" } as CSSProperties}
             >
+              <ChapterWord id="ecybersec" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d18"
@@ -2451,6 +2487,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="ecybersec" />
             </div>
             <div
               className="bk-chap"
@@ -2459,6 +2496,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-edefense"
               style={{ "--c": "#9CA3AF" } as CSSProperties}
             >
+              <ChapterWord id="edefense" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d19"
@@ -2521,6 +2559,7 @@ export default function Chapters() {
                   </span>
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="edefense" />
             </div>
             <div
               className="bk-chap"
@@ -2529,6 +2568,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-rbt-wake"
               style={{ "--c": "#34D399" } as CSSProperties}
             >
+              <ChapterWord id="rbt-wake" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d08"
@@ -2598,7 +2638,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · robot profile</span>{" "}
-                  <h3>The same board, docked in the chest</h3>{" "}
+                  <h4>The same board, docked in the chest</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Profile in eos</span>
                     <span className="s-info">Concept body</span>
@@ -2649,7 +2689,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · boot order</span>{" "}
-                  <h3>EoS wakes the body</h3>{" "}
+                  <h4>EoS wakes the body</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Kernel + init · working code</span>
                     <span className="s-part">eBoot · host-tested</span>
@@ -2690,6 +2730,7 @@ export default function Chapters() {
                   </p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="rbt-wake" />
             </div>
             <div
               className="bk-chap"
@@ -2698,6 +2739,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-rbt-see"
               style={{ "--c": "#34D399" } as CSSProperties}
             >
+              <ChapterWord id="rbt-see" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d08"
@@ -2766,7 +2808,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">eRobotics · eVision-4K</span>{" "}
-                  <h3>Stereo eyes with depth</h3>{" "}
+                  <h4>Stereo eyes with depth</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -2817,7 +2859,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">eRobotics · eLiDAR-360</span>{" "}
-                  <h3>A full turn of laser range</h3>{" "}
+                  <h4>A full turn of laser range</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -2868,6 +2910,7 @@ export default function Chapters() {
                   </p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="rbt-see" />
             </div>
             <div
               className="bk-chap"
@@ -2876,6 +2919,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-rbt-walk"
               style={{ "--c": "#34D399" } as CSSProperties}
             >
+              <ChapterWord id="rbt-walk" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d08"
@@ -2944,7 +2988,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">eRobotics · eServo-200</span>{" "}
-                  <h3>A servo drive in every joint</h3>{" "}
+                  <h4>A servo drive in every joint</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -2999,7 +3043,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · real time</span>{" "}
-                  <h3>Balance is a deadline</h3>{" "}
+                  <h4>Balance is a deadline</h4>{" "}
                   <div className="chips">
                     <span className="s-code">Kernel · working code</span>
                     <span className="s-docs">IMU HAL · stub</span>
@@ -3039,6 +3083,7 @@ export default function Chapters() {
                   </p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="rbt-walk" />
             </div>
             <div
               className="bk-chap"
@@ -3047,6 +3092,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-rbt-hands"
               style={{ "--c": "#34D399" } as CSSProperties}
             >
+              <ChapterWord id="rbt-hands" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d08"
@@ -3114,7 +3160,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">eRobotics · eGripper-3F</span>{" "}
-                  <h3>Three fingers that adapt</h3>{" "}
+                  <h4>Three fingers that adapt</h4>{" "}
                   <div className="chips">
                     <span className="s-info">Design stage</span>
                   </div>{" "}
@@ -3167,7 +3213,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS + eAI</span>{" "}
-                  <h3>Eyes guide the hand</h3>{" "}
+                  <h4>Eyes guide the hand</h4>{" "}
                   <div className="chips">
                     <span className="s-part">eAI · stub inference</span>
                   </div>{" "}
@@ -3197,6 +3243,7 @@ export default function Chapters() {
                   <p className="src">eAI · eIPC</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="rbt-hands" />
             </div>
             <div
               className="bk-chap"
@@ -3205,6 +3252,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-rbt-safe"
               style={{ "--c": "#34D399" } as CSSProperties}
             >
+              <ChapterWord id="rbt-safe" />
               <figure
                 className="bk-chap-media"
                 data-clip="/media/industries/d08"
@@ -3274,7 +3322,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · motor service</span>{" "}
-                  <h3>Stop in one call</h3>{" "}
+                  <h4>Stop in one call</h4>{" "}
                   <div className="chips">
                     <span className="s-code">e-stop · working code</span>
                   </div>{" "}
@@ -3314,7 +3362,7 @@ export default function Chapters() {
                 >
                   {" "}
                   <span className="spot-k">EoS · OTA + eBoot</span>{" "}
-                  <h3>Update without a cable</h3>{" "}
+                  <h4>Update without a cable</h4>{" "}
                   <div className="chips">
                     <span className="s-part">OTA · partial</span>
                     <span className="s-part">eBoot · host-tested</span>
@@ -3346,6 +3394,7 @@ export default function Chapters() {
                   <p className="src">eos services/ota · eBoot</p>{" "}
                 </article>{" "}
               </div>
+              <ChapterExtras id="rbt-safe" />
             </div>
             <div
               className="bk-chap"
@@ -3354,6 +3403,7 @@ export default function Chapters() {
               aria-labelledby="bk-ct-every"
               style={{ "--c": "#38BDF8" } as CSSProperties}
             >
+              <ChapterWord id="every" />
               <article
                 className="card"
                 style={{ "--c": "#38BDF8" } as CSSProperties}
@@ -3454,6 +3504,7 @@ export default function Chapters() {
                   </Link>{" "}
                 </div>{" "}
               </article>{" "}
+              <ChapterExtras id="every" />
             </div>
           </div>
         </div>

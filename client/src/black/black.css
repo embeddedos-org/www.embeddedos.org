@@ -5,7 +5,10 @@
   --bg: #000;
   --fg: #f5f5f7;
   --fg2: #a1a1a6;
-  --fg3: #6e6e73;
+  /* tertiary text: 5.8:1 on #000, 5.4:1 on the #0b0b0d panels (WCAG AA for small text) */
+  --fg3: #86868b;
+  /* the hero's dimmed second line only (large text: 4.1:1 clears the 3:1 bar) */
+  --fg4: #6e6e73;
   --line: #232326;
   --panel: #0b0b0d;
   --panel2: #141417;
@@ -299,7 +302,7 @@
   margin: 16px auto 0;
 }
 .bk-s0 h1 span {
-  color: var(--fg3);
+  color: var(--fg4);
   display: block;
   white-space: nowrap;
 }
@@ -1081,6 +1084,17 @@
   opacity: 1;
   z-index: 1;
 }
+/* until the film starts, its poster image shows (the videos stay transparent) */
+.bk-fposter {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bk-player:not(.started) video.on {
+  opacity: 0;
+}
 .bk-pbig,
 .bk-pbar {
   z-index: 2;
@@ -1551,23 +1565,6 @@
 .bs-strip li.on img {
   opacity: 1;
 }
-.bs-strip a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 0;
-  background: var(--orange);
-}
-.bshow.auto .bs-strip li.on a::after {
-  animation: bk-prog 7s linear forwards;
-}
-@keyframes bk-prog {
-  to {
-    width: 100%;
-  }
-}
 @media (max-width: 620px) {
   .bs-stage {
     border-radius: 20px;
@@ -1609,4 +1606,173 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* where the frame is narrower than 16:10 (4:3 laptops, tablets) the board sits under the side text: deeper scrims */
+@media (max-aspect-ratio: 3/2) and (min-width: 801px) {
+  .bk.cine .bk-scr.l {
+    background: linear-gradient(
+      90deg,
+      var(--bg) 0,
+      var(--scrim) 42%,
+      transparent 78%
+    );
+  }
+  .bk.cine .bk-scr.r {
+    background: linear-gradient(
+      270deg,
+      var(--bg) 0,
+      var(--scrim) 42%,
+      transparent 78%
+    );
+  }
+  .bk.cine .bk-scr.b {
+    background: linear-gradient(
+      0deg,
+      var(--bg) 0,
+      var(--scrim) 36%,
+      transparent 70%
+    );
+  }
+}
+.bk.cine .bk-sc .in,
+.bk.cine .bk-s3 {
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.85);
+}
+/* phones: the scene text pinned to the bottom keeps clear of the floating assistant button */
+@media (orientation: portrait), (max-width: 800px) {
+  .bk.cine .bk-s1 .in,
+  .bk.cine .bk-s2 .in,
+  .bk.cine .bk-s4 .in,
+  .bk.cine .bk-s3 .bk-cap {
+    padding-right: 76px;
+  }
+}
+
+/* ───────── each chapter's notes from the 3D story: its word, design line, parts and line of designs ───────── */
+.bk-kw {
+  margin: 0 0 6px;
+  font-size: clamp(34px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  color: var(--c, var(--fg));
+  opacity: 0.22;
+  text-transform: none;
+}
+.bk-more {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  min-width: 0;
+}
+.bk-more h4 {
+  margin: 6px 0 0;
+  font: 600 var(--t-label) / 1.2 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+.bk-design {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+.bk-design b {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bk-parts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+.bk-parts li {
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.bk-parts .lb {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bk-parts .lb small {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--fg3);
+}
+.bk-parts .nt {
+  color: var(--fg2);
+}
+.bk-parts .st {
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.02em;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #333338;
+  color: var(--fg2);
+  white-space: nowrap;
+}
+.bk-parts .st.s-code {
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #a7f3d0;
+}
+.bk-parts .st.s-part {
+  border-color: rgba(34, 211, 238, 0.4);
+  color: #a5f3fc;
+}
+.bk-parts .st.s-none {
+  border-style: dashed;
+}
+@media (max-width: 700px) {
+  .bk-parts li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .bk-parts .nt {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+.bk-more ul.chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bk-chap .chips li {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--fg2);
+  white-space: nowrap;
+}
+.bk-chap .chips li.s-code {
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #a7f3d0;
+}
+.bk-chap .chips li.s-part {
+  border-color: rgba(34, 211, 238, 0.4);
+  color: #a5f3fc;
+}
+.bk-chap .chips li.s-docs {
+  border-color: #333338;
+}
+.bk-chap .chips li.s-none {
+  border-style: dashed;
+}
+.bk-chap {
+  scroll-margin-top: calc(var(--nav) + 24px);
 }

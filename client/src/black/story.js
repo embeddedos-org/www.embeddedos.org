@@ -219,7 +219,7 @@ export function mountBlack(host) {
       // windows are set in frames, so strips of 2 or 4 frames behave alike: decode ~8 frames around the scroll
       // position, keep ~12-16 decoded, fetch ~24 ahead
       SPAN = Math.max(2, Math.round(8 / CPER));
-      LRU_MAX = SPAN + 2;
+      LRU_MAX = SPAN + 1;
       AHEAD = Math.round(24 / CPER);
     }
     let SPAN = 2;
@@ -275,6 +275,7 @@ export function mountBlack(host) {
     const fastNet =
       !conn.saveData && !/(^|-)2g|3g/.test(conn.effectiveType || "4g");
     let prefetchAll = false;
+    let canStream = false;
     let worker = null;
     let drawer = null;
     let offs = false;
@@ -353,12 +354,15 @@ export function mountBlack(host) {
           AC,
           PER: CPER,
           T: TOTAL,
+          g: gen,
         },
         [oc]
       );
+      drawer.postMessage({ t: "want", w: wanted, s: SPAN });
       drawer.onmessage = e => {
         const d = e.data;
         if (d.t === "have") {
+          if (d.g !== gen) return; // decoded before a set switch or a resize; the drawer has already moved it aside
           delete decoding[d.id];
           noteDecode(d.ms);
           if (Math.abs(d.id - wanted) > SPAN) {
@@ -637,7 +641,7 @@ export function mountBlack(host) {
         DW = want;
         DH = Math.round((DW * FH) / FW);
         gen++;
-        if (offs) drawer.postMessage({ t: "res", DW, DH });
+        if (offs) drawer.postMessage({ t: "res", DW, DH, g: gen });
         else holdAll();
         bitmaps = {};
         lru = [];
@@ -855,12 +859,23 @@ export function mountBlack(host) {
       stepAt = performance.now();
       wanted = Math.floor(frameAt(shown) / CPER);
       if (offs)
-        drawer.postMessage({ t: "set", FW, FH, TW, TH, PER: CPER, DW, DH });
+        drawer.postMessage({
+          t: "set",
+          FW,
+          FH,
+          TW,
+          TH,
+          PER: CPER,
+          DW,
+          DH,
+          g: gen,
+        });
       else {
         if (atlas && atlas.close) atlas.close();
         atlas = null;
       }
-      if (worker) worker.postMessage({ t: "want", w: wanted, s: SPAN });
+      if (offs) drawer.postMessage({ t: "want", w: wanted, s: SPAN });
+      else if (worker) worker.postMessage({ t: "want", w: wanted, s: SPAN });
       size();
       getAtlas();
       dirty = true;
@@ -902,7 +917,29 @@ export function mountBlack(host) {
       }
     }
     let raf = 0;
+    // the frame loop sleeps while the story is off screen (it wakes a little before the story scrolls back in)
+    let awake = true;
+    if ("IntersectionObserver" in W) {
+      const sleeper = new IntersectionObserver(
+        es => {
+          if (dead()) return;
+          awake = es[0].isIntersecting;
+          if (awake && !raf) {
+            dirty = true;
+            raf = W.requestAnimationFrame(tick);
+          }
+        },
+        { rootMargin: "300px 0px" }
+      );
+      sleeper.observe(storyEl);
+      stop.push(() => sleeper.disconnect());
+    }
     function tick(now) {
+      if (!awake) {
+        raf = 0;
+        last = 0;
+        return;
+      }
       raf = W.requestAnimationFrame(tick);
       const dt = last ? Math.min(100, now - last) : 16;
       last = now;
@@ -913,6 +950,10 @@ export function mountBlack(host) {
         shown += diff * kf;
         if (Math.abs(u - shown) < 0.0004) shown = u;
         if (Math.abs(diff) > 0.002) dir = diff > 0 ? 1 : -1;
+        if (canStream && !prefetchAll && shown > 0.5) {
+          prefetchAll = true; // the reader is in the story: stream the rest of it
+          pump();
+        }
         const f = frameAt(shown);
         const nw = Math.floor(f / CPER);
         if (nw !== wanted) {
@@ -957,9 +998,6 @@ export function mountBlack(host) {
           if (!eco && slow > 30) {
             eco = true;
             slow = 0;
-          } else if (eco && slow > 90 && ema > 30) {
-            slow = 0;
-            stepDown();
           }
         }
       }
@@ -991,10 +1029,19 @@ export function mountBlack(host) {
           /* the atlas only covers frames not decoded yet */
         });
     }
-    const idle = (fn, t) =>
-      W.requestIdleCallback
-        ? W.requestIdleCallback(fn, { timeout: t })
-        : later(fn, t / 3);
+    // idle work is cancelled with the story, and does nothing if the story has gone
+    const idleIds = [];
+    stop.push(() => {
+      if (W.cancelIdleCallback) idleIds.forEach(id => W.cancelIdleCallback(id));
+    });
+    const idle = (fn, t) => {
+      const run = () => {
+        if (!dead()) fn();
+      };
+      if (W.requestIdleCallback)
+        idleIds.push(W.requestIdleCallback(run, { timeout: t }));
+      else later(run, t / 3);
+    };
     function afterLoad() {
       later(() => {
         quiet = true;
@@ -1007,10 +1054,11 @@ export function mountBlack(host) {
       };
       idle(ga, 800);
       idle(insertTraces, 2500);
-      if (fastNet) {
-        prefetchAll = true; // the rest of the story streams in right away
-        pump();
-      }
+      // The rest of the story streams in only on a connection that says it is fast (Chromium's Network
+      // Information: 4G at 5 Mbit/s or more, no Save-Data), and only once the reader has scrolled into the story;
+      // otherwise strips arrive just ahead of the scroll position (~24 frames).
+      canStream =
+        fastNet && conn.effectiveType === "4g" && (conn.downlink || 0) >= 5;
     }
     boot(() => {
       dirty = true;
@@ -1054,7 +1102,7 @@ export function mountBlack(host) {
 
   /* ---------------------------------------------------------------- the making-of film */
   function film() {
-    // Seventeen short segments, played back to back on two stacked videos; the next is always loaded behind the
+    // Short segments (cut at the chapters), played back to back on two stacked videos; the next is always loaded behind the
     // current one, so cuts are seamless and a chapter jump starts at once. H.264 MP4, from this site (the CSP
     // allows media from 'self' only, so no blob: fallback; Apache serves Range requests, so seeking is direct).
     const player = $("bk-player");
@@ -1101,6 +1149,16 @@ export function mountBlack(host) {
         v._cb = [];
         cb.forEach(f => f());
       };
+      // a segment that will not load stops the film where it is, with the play button back, instead of leaving
+      // it waiting at the next cut
+      v.onerror = () => {
+        if (v._u !== u) return;
+        v._cb = [];
+        v._u = "";
+        swapping = false;
+        playing = false;
+        setUi(false);
+      };
       v.preload = "auto";
       v.src = u;
       v.load();
@@ -1122,14 +1180,13 @@ export function mountBlack(host) {
       const o = V[act];
       act = i;
       cur = k;
+      player.classList.add("started");
       V[i].classList.add("on");
       o.classList.remove("on");
       o.pause();
       swapping = false;
       V[i].removeAttribute("aria-hidden");
-      V[i].tabIndex = 0;
       o.setAttribute("aria-hidden", "true");
-      o.tabIndex = -1;
       ahead();
       ftick();
     }
@@ -1213,6 +1270,7 @@ export function mountBlack(host) {
       if (ftime._t !== ts) {
         ftime.textContent = ts;
         ftime._t = ts;
+        ftrack.setAttribute("aria-valuetext", mmss(t) + " of " + mmss(FD));
       }
       chs.forEach((c, i) => {
         if (t >= +c.dataset.t - 0.05) k = i;
@@ -1240,7 +1298,7 @@ export function mountBlack(host) {
     }
     function setUi(o) {
       player.classList.toggle("playing", o);
-      fpp.setAttribute("aria-pressed", String(o));
+      if (o) player.classList.add("started");
       fpp.setAttribute("aria-label", o ? "Pause film" : "Play film");
     }
     const toggle = () => {
@@ -1282,10 +1340,23 @@ export function mountBlack(host) {
     };
     on(ftrack, "click", e => trackSeek(e.clientX));
     on(ftrack, "keydown", e => {
-      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-        e.preventDefault();
-        seek(now() + (e.key === "ArrowRight" ? 5 : -5));
-      }
+      const to =
+        e.key === "ArrowRight" || e.key === "ArrowUp"
+          ? now() + 5
+          : e.key === "ArrowLeft" || e.key === "ArrowDown"
+            ? now() - 5
+            : e.key === "PageUp"
+              ? now() + 15
+              : e.key === "PageDown"
+                ? now() - 15
+                : e.key === "Home"
+                  ? 0
+                  : e.key === "End"
+                    ? FD
+                    : null;
+      if (to === null) return;
+      e.preventDefault();
+      seek(to);
     });
     host
       .querySelectorAll('a[href="#film"]')
@@ -1323,24 +1394,30 @@ export function mountBlack(host) {
 
   /* ---------------------------------------------------------------- the industry explorer */
   function explorer() {
-    // One chapter at a time: the list selects, the chapter's device clip plays, and the tour advances by itself
-    // while on screen until the reader picks one (a pick holds for two cycles). Without this every chapter shows.
+    // One chapter at a time: the list selects and the chapter's device clip plays while the explorer is on screen.
+    // It never changes chapter by itself (a tour switched the text under the reader and, on phones, moved the page
+    // by the difference in panel heights). Without this script every chapter shows, in order.
     const ix = host.querySelector(".bk-ix");
     if (!ix) return null;
+    const list = ix.querySelector(".bk-ix-list");
     const tabs = [...ix.querySelectorAll('.bk-ix-list [role="tab"]')];
     const panels = tabs.map(t =>
       host.querySelector("#" + t.getAttribute("aria-controls"))
     );
     if (!tabs.length || panels.some(p => !p)) return null;
     ix.classList.add("js");
+    panels.forEach(p => (p.tabIndex = 0));
     let cur = 0;
-    let picked = false;
-    let pickT = 0;
     let inView = false;
-    let hold = 0;
-    let t0 = 0;
-    let raf = 0;
-    const DUR = 6.4;
+    // the list runs down the side on wide screens and across on phones
+    const narrow = W.matchMedia("(max-width: 900px)");
+    const orient = () =>
+      list.setAttribute(
+        "aria-orientation",
+        narrow.matches ? "horizontal" : "vertical"
+      );
+    orient();
+    on(narrow, "change", orient);
     const play = i => {
       const v = panels[i].querySelector("video");
       const fig = panels[i].querySelector(".bk-chap-media");
@@ -1359,13 +1436,12 @@ export function mountBlack(host) {
           }
         );
     };
-    function show(i, user) {
+    function show(i) {
       const prev = cur;
       cur = i;
       tabs.forEach((b, k) => {
         b.setAttribute("aria-selected", String(k === i));
         b.tabIndex = k === i ? 0 : -1;
-        b.style.setProperty("--p", k === i ? (user || !motion ? 1 : 0) : 0);
       });
       panels.forEach((p, k) => p.classList.toggle("on", k === i));
       if (prev !== i) {
@@ -1374,86 +1450,74 @@ export function mountBlack(host) {
         const f = panels[prev].querySelector(".bk-chap-media");
         if (f) f.classList.remove("playing");
       }
-      const list = tabs[i].closest("ol");
-      if (list && list.scrollWidth > list.clientWidth + 4)
+      if (list.scrollWidth > list.clientWidth + 4)
         list.scrollTo({
           left: tabs[i].offsetLeft - 16,
           behavior: reduce ? "auto" : "smooth",
         });
       if (inView) play(i);
-      t0 = performance.now();
     }
     tabs.forEach((b, i) => {
       on(b, "click", e => {
         e.preventDefault();
-        picked = true;
-        pickT = performance.now();
-        show(i, true);
+        show(i);
       });
       on(b, "keydown", e => {
+        const n = tabs.length;
         const k = /Arrow(Down|Right)/.test(e.key)
-          ? 1
+          ? (cur + 1) % n
           : /Arrow(Up|Left)/.test(e.key)
-            ? -1
-            : 0;
-        if (!k) return;
+            ? (cur - 1 + n) % n
+            : e.key === "Home"
+              ? 0
+              : e.key === "End"
+                ? n - 1
+                : -1;
+        if (k < 0) return;
         e.preventDefault();
-        picked = true;
-        pickT = performance.now();
-        const n = (cur + k + tabs.length) % tabs.length;
-        show(n, true);
-        tabs[n].focus();
+        show(k);
+        tabs[k].focus();
       });
     });
-    on(ix, "pointerenter", () => {
-      hold = 1;
-    });
-    on(ix, "pointerleave", () => {
-      hold = 0;
-    });
-    on(ix, "focusin", () => {
-      hold = 1;
-    });
-    on(ix, "focusout", () => {
-      hold = 0;
-    });
-    // a link to one chapter (#ch-…) opens that chapter
+    // A link to one chapter (#ch-…) opens it and brings it into view. The browser's own jump happens before the
+    // story grows to its scroll length and the other chapters fold away, so the scroll is set again once the
+    // layout has settled (and left alone if the reader has scrolled meanwhile).
+    const land = k => {
+      let moved = false;
+      const mark = () => {
+        moved = true;
+      };
+      ["wheel", "touchstart", "keydown"].forEach(ev =>
+        W.addEventListener(ev, mark, { once: true, passive: true })
+      );
+      const go = () => {
+        if (moved || disposed) return;
+        const top = panels[k].getBoundingClientRect().top + W.scrollY - 64 - 24;
+        W.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+      };
+      W.requestAnimationFrame(() => W.requestAnimationFrame(go));
+      later(go, 700);
+      later(() => {
+        ["wheel", "touchstart", "keydown"].forEach(ev =>
+          W.removeEventListener(ev, mark)
+        );
+      }, 800);
+    };
     const fromHash = () => {
       const k = panels.findIndex(p => "#" + p.id === location.hash);
       if (k >= 0) {
-        picked = true;
-        pickT = performance.now();
-        show(k, true);
+        show(k);
+        land(k);
       }
     };
     on(W, "hashchange", fromHash);
     fromHash();
-    function adv(nowT) {
-      raf = 0;
-      if (!inView) return;
-      if (picked && !hold && nowT - pickT > DUR * 2000) {
-        picked = false;
-        t0 = nowT;
-      }
-      if (!picked && !hold) {
-        const p = clamp((nowT - t0) / (DUR * 1000), 0, 1);
-        tabs[cur].style.setProperty("--p", p.toFixed(3));
-        if (p >= 1) show((cur + 1) % tabs.length, false);
-      } else
-        t0 =
-          nowT -
-          (parseFloat(tabs[cur].style.getPropertyValue("--p")) || 0) *
-            DUR *
-            1000;
-      raf = W.requestAnimationFrame(adv);
-    }
     observe(
       es => {
         const v = es[0].intersectionRatio > 0.35;
         if (v && !inView) {
           inView = true;
-          show(cur, picked);
-          if (motion && !raf) raf = W.requestAnimationFrame(adv);
+          play(cur);
         } else if (!v && inView) {
           inView = false;
           const vd = panels[cur].querySelector("video");
@@ -1464,9 +1528,10 @@ export function mountBlack(host) {
       ix
     );
     return () => {
-      W.cancelAnimationFrame(raf);
       ix.classList.remove("js");
+      list.setAttribute("aria-orientation", "vertical");
       panels.forEach(p => {
+        p.removeAttribute("tabindex");
         const v = p.querySelector("video");
         if (v) {
           v.pause();
@@ -1480,8 +1545,8 @@ export function mountBlack(host) {
   /* ---------------------------------------------------------------- the board showcase */
   function showcase(el) {
     // The strip selects a board; its image crosses over on the stage and its pane shows. A fine pointer gets a
-    // lens over the full-resolution render; touch swipes; it advances by itself every 7 s while in view until the reader
-    // takes over. The board settles onto the stage as the section scrolls in.
+    // lens over the full-resolution render; touch swipes. It never changes board by itself. The board settles onto
+    // the stage as the section scrolls in.
     if (!el) return null;
     const base = el.getAttribute("data-base");
     const tabs = [...el.querySelectorAll(".bs-strip [role=tab]")];
@@ -1494,8 +1559,6 @@ export function mountBlack(host) {
     const N = tabs.length;
     let cur = 0;
     let slot = 0;
-    let auto = !reduce;
-    let timer = 0;
     let seen = false;
     let avif = null;
     if (!N || slots.length < 2) return null;
@@ -1523,7 +1586,6 @@ export function mountBlack(host) {
     let lr = 0;
     function select(i, user) {
       i = (i + N) % N;
-      if (user) stopAuto();
       if (i === cur) return;
       const dirn = i > cur === !(Math.abs(i - cur) > N / 2) ? 1 : -1; // wrapping round counts as forward
       cur = i;
@@ -1568,6 +1630,7 @@ export function mountBlack(host) {
     }
     tabs.forEach((t, k) => {
       on(t, "click", e => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // new tab or window: follow the link
         e.preventDefault();
         select(k, true);
       });
@@ -1627,6 +1690,14 @@ export function mountBlack(host) {
       im.onload = () => {
         if (lensSrc === u) lens.style.backgroundImage = "url(" + u + ")";
       };
+      // a lens image that will not load (missing, or AVIF on an older Safari) falls back to the stage image
+      im.onerror = () => {
+        const st = slots[slot].querySelector("img").currentSrc;
+        if (lensSrc === u && st && st !== u) {
+          lensSrc = st;
+          lens.style.backgroundImage = "url(" + st + ")";
+        }
+      };
       im.src = u;
     }
     function moveLens() {
@@ -1662,7 +1733,6 @@ export function mountBlack(host) {
       on(stageEl, "pointerenter", e => {
         if (e.pointerType !== "mouse") return;
         inLens = true;
-        stopAuto();
         loadLens();
       });
       on(stageEl, "pointerleave", () => {
@@ -1675,23 +1745,6 @@ export function mountBlack(host) {
         ly = e.clientY;
         if (!lr) lr = W.requestAnimationFrame(moveLens);
       });
-    }
-    // advance by itself while in view, until the reader selects, swipes or points at the stage
-    function stopAuto() {
-      auto = false;
-      clearTimeout(timer);
-      el.classList.remove("auto");
-    }
-    function arm() {
-      clearTimeout(timer);
-      el.classList.remove("auto");
-      if (!auto || !seen || D.hidden || disposed) return;
-      void el.offsetWidth;
-      el.classList.add("auto");
-      timer = later(() => {
-        select(cur + 1, false);
-        arm();
-      }, 7000);
     }
     // the board settles onto the stage as the section scrolls in (a few degrees of tilt, a touch of scale)
     let fq = 0;
@@ -1713,24 +1766,12 @@ export function mountBlack(host) {
         const v = es[0].isIntersecting && es[0].intersectionRatio >= 0.5;
         if (v !== seen) {
           seen = v;
-          if (v) {
-            preload(cur + 1);
-            arm();
-          } else {
-            clearTimeout(timer);
-            el.classList.remove("auto");
-          }
+          if (v) preload(cur + 1);
         }
       },
       { threshold: [0, 0.5] },
       stageEl
     );
-    on(D, "visibilitychange", () => {
-      if (D.hidden) {
-        clearTimeout(timer);
-        el.classList.remove("auto");
-      } else arm();
-    });
     if (motion) {
       on(
         W,
@@ -1745,15 +1786,21 @@ export function mountBlack(host) {
     return () => {
       W.cancelAnimationFrame(fq);
       W.cancelAnimationFrame(lr);
-      el.classList.remove("js", "auto", "lens");
+      el.classList.remove("js", "lens");
     };
   }
 
   /* ---------------------------------------------------------------- reveals */
   function reveals() {
     // headings and blocks rise in as they arrive; nothing is hidden before that moment
-    if (!motion || !W.Element || !Element.prototype.animate) return null;
-    const io = observe(
+    if (
+      !motion ||
+      !W.Element ||
+      !Element.prototype.animate ||
+      !("IntersectionObserver" in W)
+    )
+      return null;
+    const io = new IntersectionObserver(
       es =>
         es.forEach(e => {
           if (!e.isIntersecting) return;
@@ -1767,15 +1814,13 @@ export function mountBlack(host) {
             { duration: 900, easing: "cubic-bezier(.2,.7,.2,1)" }
           );
         }),
-      { threshold: 0.01, rootMargin: "0px 0px -8% 0px" },
-      host.querySelector(".bk-sec") || host
+      { threshold: 0.01, rootMargin: "0px 0px -8% 0px" }
     );
-    if (io)
-      host
-        .querySelectorAll(
-          ".bk-sec h2, .bk-sec-h .bk-lead, .bk-chap .card, .bs-stage"
-        )
-        .forEach(el => io.observe(el));
-    return null;
+    host
+      .querySelectorAll(
+        ".bk-sec h2, .bk-sec-h .bk-lead, .bk-chap .card, .bs-stage"
+      )
+      .forEach(el => io.observe(el));
+    return () => io.disconnect();
   }
 }

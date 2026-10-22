@@ -124,6 +124,88 @@ test.describe("homepage story", () => {
     await expect(page.locator("#ch-rbt-hands .spot")).toHaveCount(2);
   });
 
+  test("a link to a chapter lands on it", async ({ page }) => {
+    await page.goto("/#ch-emedical");
+    await expect(page.locator("#bk-ct-emedical")).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    // the chapter is brought into view once the story has its full length
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() => {
+            const r = document
+              .getElementById("ch-emedical")!
+              .getBoundingClientRect();
+            return r.top >= 0 && r.top < innerHeight / 2;
+          }),
+        { timeout: 5_000 }
+      )
+      .toBe(true);
+  });
+
+  test("the chapter list answers Home and End", async ({ page }) => {
+    await page.goto("/");
+    const first = page.locator("#bk-ct-ehealth365");
+    await first.scrollIntoViewIfNeeded();
+    await first.focus();
+    await page.keyboard.press("End");
+    await expect(page.locator("#bk-ct-every")).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    await expect(page.locator("#bk-ct-every")).toBeFocused();
+    await page.keyboard.press("Home");
+    await expect(first).toHaveAttribute("aria-selected", "true");
+  });
+
+  test("neither the chapters nor the boards change by themselves", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.locator("#industries").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(8_000);
+    await expect(page.locator("#bk-ct-ehealth365")).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    await page.locator("#bshow").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(8_000);
+    await expect(page.locator("#bt-learn-rp2350")).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+  });
+
+  test("a software renderer gets the light mode", async ({ page }) => {
+    await page.addInitScript(() => {
+      const proto = HTMLCanvasElement.prototype as unknown as {
+        getContext: (type: string, opts?: unknown) => unknown;
+      };
+      const real = proto.getContext;
+      proto.getContext = function (this: unknown, type, opts) {
+        if (type.startsWith("webgl") || type === "experimental-webgl")
+          return {
+            getExtension: (n: string) =>
+              n === "WEBGL_debug_renderer_info"
+                ? { UNMASKED_RENDERER_WEBGL: 0x9246 }
+                : null,
+            getParameter: () => "Google SwiftShader",
+          };
+        return real.call(this, type, opts);
+      };
+    });
+    const errors: string[] = [];
+    page.on("pageerror", e => errors.push(e.message));
+    await page.goto("/");
+    await expect(page.locator(".bk")).toHaveClass(/\blite\b/, {
+      timeout: 10_000,
+    });
+    await expect(page.locator("#hero-heading")).toBeVisible();
+    expect(errors).toEqual([]);
+  });
+
   test("the board showcase selects a board", async ({ page }) => {
     await page.goto("/");
     const tab = page.locator("#bt-cm5-base");
@@ -149,15 +231,24 @@ test.describe("homepage story", () => {
   test("leaving the homepage releases the story", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator(".bk canvas.seq")).toHaveCount(1);
+    let after = 0;
+    let left = false;
+    page.on("request", r => {
+      if (left && r.url().includes("/media/story/")) after++;
+    });
     await page.locator('a[href="/donate"]').first().click();
     await page.waitForURL("**/donate");
+    left = true;
+    await page.waitForTimeout(1_500);
+    expect(after).toBe(0);
     await expect(page.locator("canvas.seq")).toHaveCount(0);
     await expect
       .poll(() =>
         page.evaluate(
           () =>
-            document.querySelectorAll('link[rel="preload"][href*="/media/story/"]')
-              .length
+            document.querySelectorAll(
+              'link[rel="preload"][href*="/media/story/"]'
+            ).length
         )
       )
       .toBe(0);

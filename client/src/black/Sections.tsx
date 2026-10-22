@@ -5,9 +5,10 @@ import { EAI_EDGE_PROFILE } from "@/data/architecture";
 import { BOARD_CHECKS, BOARDS_URL, EOS_BOARDS, FILM } from "./data";
 
 const S = "/media/story/";
-// the same rules frameTier() uses, so the poster on screen and the frames that replace it come from one set
+// frameTier() picks the 1920 set when max(width, height × 1.6) × 1.12 ≤ 1997 at 1x, i.e. width ≤ 1783 and height
+// ≤ 1114: the poster on screen and the frames that replace it come from one set
 const HQ =
-  "(orientation: landscape) and (min-width: 801px) and (max-width: 1783px) and (min-aspect-ratio: 8/5) and (max-resolution: 1.49dppx)";
+  "(orientation: landscape) and (min-width: 801px) and (max-width: 1783px) and (max-height: 1114px) and (max-resolution: 1.49dppx)";
 const SMALL = "(orientation: portrait), (max-width: 800px)";
 
 /**
@@ -260,13 +261,22 @@ export function MakingOf() {
           id="bk-player"
           data-segs={FILM.segments.join(",")}
         >
+          {/* a lazy image, not the video's poster attribute (which loads at once, ahead of the hero) */}
+          <img
+            className="bk-fposter"
+            src="/media/film/poster.webp"
+            width={1920}
+            height={1080}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
           <video
             id="bk-fv"
             className="on"
             muted
             playsInline
             preload="none"
-            poster="/media/film/poster.webp"
             aria-label="The making of the EoS Learn RP2350: schematic, parts, copper layers, checks, the ray-traced board, the boot chain and the published files"
           />
           <video
@@ -293,7 +303,6 @@ export function MakingOf() {
               className="bk-pp"
               id="bk-fpp"
               aria-label="Play film"
-              aria-pressed="false"
             >
               <svg className="i-play" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M4.5 2.8v10.4l8.4-5.2z" />
