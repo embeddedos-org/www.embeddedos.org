@@ -3509,7 +3509,7 @@ export default function Chapters() {
             </div>
           </div>
         </div>
-        <div className="legend">
+        <div className="legend" id="legend">
           <span className="l-code">
             <i />
             Working

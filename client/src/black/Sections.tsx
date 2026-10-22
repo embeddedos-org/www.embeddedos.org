@@ -26,6 +26,8 @@ export function StoryHero() {
       data-media={MEDIA_HOME}
       aria-label="The EoS Learn RP2350, ray-traced from its KiCad design"
     >
+      {/* the old homepage's first chapter anchor, kept so links to /#ch-intro still land at the top */}
+      <span id="ch-intro" />
       <div className="bk-stage" id="bk-stage">
         <article
           className="card hero-card bk-scene bk-s0"

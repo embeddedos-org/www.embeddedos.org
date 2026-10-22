@@ -36,7 +36,7 @@
   --t-label: 12px;
   --gut: clamp(16px, 4vw, 44px);
   --sec: clamp(104px, 13vw, 184px);
-  --nav: 64px;
+  --nav: 53px; /* the site header: a 52px row and its hairline */
   --r: 22px;
   background: var(--bg);
   color: var(--fg);
