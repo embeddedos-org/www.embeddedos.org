@@ -249,7 +249,7 @@ test.describe("homepage story", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            document.querySelectorAll('link[rel="preload"][href*="/story/s"]')
+            document.querySelectorAll('link[rel="preload"][href*="/story/"]')
               .length
         )
       )

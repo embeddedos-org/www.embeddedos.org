@@ -373,8 +373,9 @@ export function mountBlack(host) {
           bitmaps[d.id] = true;
           touch(d.id);
           dirty = true;
-        } else if (d.t === "fail") delete decoding[d.id];
-        else if (d.t === "live") goLive();
+        } else if (d.t === "fail") {
+          if (d.g === gen) delete decoding[d.id]; // a stale reply must not clear a newer request
+        } else if (d.t === "live") goLive();
       };
       offs = true;
     }
@@ -924,7 +925,7 @@ export function mountBlack(host) {
       const sleeper = new IntersectionObserver(
         es => {
           if (dead()) return;
-          awake = es[0].isIntersecting;
+          awake = es[es.length - 1].isIntersecting;
           if (awake && !raf) {
             dirty = true;
             raf = W.requestAnimationFrame(tick);
@@ -1357,6 +1358,11 @@ export function mountBlack(host) {
                     : null;
       if (to === null) return;
       e.preventDefault();
+      // the film loops, so End while playing would run out and start again: it stops on the last frame
+      if (e.key === "End" && playing) {
+        userPaused = true;
+        fstop();
+      }
       seek(to);
     });
     host
@@ -1410,6 +1416,10 @@ export function mountBlack(host) {
     panels.forEach(p => (p.tabIndex = 0));
     let cur = 0;
     let inView = false;
+    // Each chapter's clip is watched, not the explorer: with its notes a chapter can be several screens tall on a
+    // phone, and the explorer as a whole would never count as in view. A clip plays while a third of it is on screen.
+    const figs = panels.map(p => p.querySelector(".bk-chap-media"));
+    const ratio = new Map();
     // the list runs down the side on wide screens and across on phones
     const narrow = W.matchMedia("(max-width: 900px)");
     const orient = () =>
@@ -1456,7 +1466,8 @@ export function mountBlack(host) {
           left: tabs[i].offsetLeft - 16,
           behavior: reduce ? "auto" : "smooth",
         });
-      if (inView) play(i);
+      inView = false;
+      check(); // the new chapter's clip starts once the observer has measured it
     }
     tabs.forEach((b, i) => {
       on(b, "click", e => {
@@ -1489,7 +1500,7 @@ export function mountBlack(host) {
         moved = true;
       };
       ["wheel", "touchstart", "keydown"].forEach(ev =>
-        W.addEventListener(ev, mark, { once: true, passive: true })
+        on(W, ev, mark, { once: true, passive: true })
       );
       const go = () => {
         if (moved || disposed) return;
@@ -1513,21 +1524,28 @@ export function mountBlack(host) {
     };
     on(W, "hashchange", fromHash);
     fromHash();
-    observe(
-      es => {
-        const v = es[0].intersectionRatio > 0.35;
-        if (v && !inView) {
-          inView = true;
-          play(cur);
-        } else if (!v && inView) {
-          inView = false;
-          const vd = panels[cur].querySelector("video");
-          if (vd) vd.pause();
-        }
-      },
-      { threshold: [0, 0.35] },
-      ix
-    );
+    function check() {
+      const v = (ratio.get(figs[cur]) || 0) > 0.35;
+      if (v && !inView) {
+        inView = true;
+        play(cur);
+      } else if (!v && inView) {
+        inView = false;
+        const vd = panels[cur].querySelector("video");
+        if (vd) vd.pause();
+      }
+    }
+    if ("IntersectionObserver" in W) {
+      const io = new IntersectionObserver(
+        es => {
+          es.forEach(e => ratio.set(e.target, e.intersectionRatio));
+          check();
+        },
+        { threshold: [0, 0.35] }
+      );
+      figs.forEach(f => f && io.observe(f));
+      off.push(() => io.disconnect());
+    }
     return () => {
       ix.classList.remove("js");
       list.setAttribute("aria-orientation", "vertical");

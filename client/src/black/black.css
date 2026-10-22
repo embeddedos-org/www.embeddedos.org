@@ -309,6 +309,16 @@
 .bk-s0 h1 span.h1a {
   color: inherit;
 }
+/* phones: two unbroken lines would need a 20-24px headline; it keeps the display scale and wraps instead */
+@media (max-width: 520px) {
+  .bk-s0 h1 {
+    font-size: 34px;
+  }
+  .bk-s0 h1 span {
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
 .bk-s0 .bk-lead {
   margin: 20px auto 0;
   max-width: 42em;
@@ -837,7 +847,7 @@
 }
 .bk-chap .fact span {
   display: block;
-  font: 500 11px/1.3 var(--mono);
+  font: 500 12px/1.3 var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--fg3);
@@ -925,7 +935,7 @@
   min-width: 0;
 }
 .bk-spots .spot-k {
-  font: 500 11px/1.3 var(--mono);
+  font: 500 12px/1.3 var(--mono);
   letter-spacing: 0.04em;
   color: var(--c, var(--fg3));
 }
@@ -953,7 +963,7 @@
 }
 .bk-spots .facts dt {
   color: var(--fg3);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
 }
 .bk-spots .facts dd {
@@ -962,7 +972,7 @@
   font-weight: 600;
 }
 .bk-spots .src {
-  font: 500 11px/1.3 var(--mono);
+  font: 500 12px/1.3 var(--mono);
   color: var(--fg3);
   overflow-wrap: anywhere;
 }
@@ -1224,7 +1234,7 @@
     background-color 0.2s;
 }
 .bk-fchap button .t {
-  font: 500 11px var(--mono);
+  font: 500 12px var(--mono);
   color: var(--fg3);
 }
 .bk-fchap button:hover {
@@ -1641,9 +1651,9 @@
 }
 /* phones: the scene text pinned to the bottom keeps clear of the floating assistant button */
 @media (orientation: portrait), (max-width: 800px) {
-  .bk.cine .bk-s1 .in,
-  .bk.cine .bk-s2 .in,
-  .bk.cine .bk-s4 .in,
+  .bk.cine .bk-s1 .in > :not(.bk-kick),
+  .bk.cine .bk-s2 .in > :not(.bk-kick),
+  .bk.cine .bk-s4 .in > :not(.bk-kick),
   .bk.cine .bk-s3 .bk-cap {
     padding-right: 76px;
   }
@@ -1657,7 +1667,8 @@
   line-height: 0.95;
   letter-spacing: -0.045em;
   color: var(--c, var(--fg));
-  opacity: 0.22;
+  /* large text: 0.8 keeps every chapter colour at 3:1 or more on black (the darkest, #8B5CF6, needs 0.75) */
+  opacity: 0.8;
   text-transform: none;
 }
 .bk-more {
@@ -1715,7 +1726,7 @@
   color: var(--fg2);
 }
 .bk-parts .st {
-  font: 500 11px/1.2 var(--mono);
+  font: 500 12px/1.2 var(--mono);
   letter-spacing: 0.02em;
   padding: 4px 8px;
   border-radius: 999px;

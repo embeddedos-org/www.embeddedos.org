@@ -29,7 +29,7 @@ function unhold() {
 function run() {
   Q = Q.filter(j => {
     if (Math.abs(j.id - WANT) > SPAN) {
-      postMessage({ t: "fail", id: j.id });
+      postMessage({ t: "fail", id: j.id, g: G });
       return false;
     }
     return true;
@@ -65,9 +65,10 @@ function strip(d) {
         }
         if (w !== P.DW) {
           a.forEach(b => b.close());
-          postMessage({ t: "fail", id: d.id });
+          postMessage({ t: "fail", id: d.id, g });
           return;
         }
+        if (F[d.id]) F[d.id].forEach(b => b.close());
         F[d.id] = a;
         if (H.length && last && Math.floor(Math.round(last.f) / P.PER) === d.id)
           unhold();
@@ -75,7 +76,7 @@ function strip(d) {
         if (last) draw(last);
       });
     })
-    .catch(() => postMessage({ t: "fail", id: d.id }))
+    .catch(() => postMessage({ t: "fail", id: d.id, g }))
     .then(() => {
       busy--;
       run();

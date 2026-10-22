@@ -389,9 +389,12 @@ export function Showcase() {
                   decoding="async"
                 />
               </picture>
+              {/* the cross-fade's second slot: it starts on the same image (the same file, so nothing more
+                  downloads) rather than with no source, which reads as a broken image */}
               <picture className="bs-img" aria-hidden="true">
-                <source type="image/avif" />
+                <source type="image/avif" srcSet={`${B}${first.slug}.avif`} />
                 <img
+                  src={`${B}${first.slug}.webp`}
                   alt=""
                   width={1600}
                   height={1200}
