@@ -5,7 +5,30 @@ import { act, cleanup, render, screen } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { ReactNode } from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  onTestFinished,
+  vi,
+} from "vitest";
+
+// CALENDLY_EVENT_URL is set in foundation.ts. The "without an event URL"
+// block below forces null, the email-fallback mode, through this getter; every
+// other test sees the real constant.
+const calendly = vi.hoisted(() => ({ forceNull: false }));
+vi.mock("../../client/src/data/foundation", async importOriginal => {
+  const actual =
+    await importOriginal<typeof import("../../client/src/data/foundation")>();
+  return {
+    ...actual,
+    get CALENDLY_EVENT_URL() {
+      return calendly.forceNull ? null : actual.CALENDLY_EVENT_URL;
+    },
+  };
+});
 
 vi.mock("wouter", () => ({
   Link: ({
@@ -331,8 +354,15 @@ describe("the Calendly embed and the CSP", () => {
   });
 });
 
-describe("before the event URL is set", () => {
-  it("has no Calendly URL yet", () => {
+describe("without an event URL (the email fallback, forced)", () => {
+  beforeEach(() => {
+    calendly.forceNull = true;
+  });
+  afterEach(() => {
+    calendly.forceNull = false;
+  });
+
+  it("is forced to null for this block", () => {
     expect(CALENDLY_EVENT_URL).toBe(null);
   });
 
@@ -389,6 +419,12 @@ describe("the event URL", () => {
     undefined,
   ])("refuses %j and keeps the fallback", url => {
     expect(calendlyEventUrl(url)).toBe(null);
+    // An undefined url falls back to CALENDLY_EVENT_URL, which is now set;
+    // force it to null so this checks the refusal, not the default.
+    calendly.forceNull = true;
+    onTestFinished(() => {
+      calendly.forceNull = false;
+    });
     const { container } = render(
       <BookingCalendar url={url} page="/contact" fallback={<p>fallback</p>} />
     );

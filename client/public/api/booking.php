@@ -3,15 +3,16 @@
 declare(strict_types=1);
 
 /*
- * Off until the team's Calendly event exists. While it is false, every request
- * gets 503 and nothing is mailed: with CALENDLY_EVENT_URL null the site never
- * calls this endpoint, so anything that does is not a real booking. Turn it on
- * in the same change that sets CALENDLY_EVENT_URL (README, "Booking"). Even
- * then the endpoint checks only the Origin header, the shape of the Calendly
- * identifiers and a per-address rate limit; it cannot confirm a booking with
- * Calendly, which is why each notice says to check Calendly first.
+ * On, together with CALENDLY_EVENT_URL (README, "Booking"): the team's Calendly
+ * event exists and /book embeds it. Set it back to false whenever
+ * CALENDLY_EVENT_URL is null; every request then gets 503 and nothing is
+ * mailed, because the site never calls this endpoint without a calendar. Even
+ * when on, the endpoint checks only the Origin header, the shape of the
+ * Calendly identifiers, the page path and a per-address rate limit; it cannot
+ * confirm a booking with Calendly, which is why each notice says to check
+ * Calendly first.
  */
-const BOOKING_NOTICES_ENABLED = false;
+const BOOKING_NOTICES_ENABLED = true;
 
 const BOOKING_INBOXES = [
     'kartikeydheer@embeddedos.org',

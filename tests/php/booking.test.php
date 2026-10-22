@@ -221,7 +221,7 @@ array_map('unlink', glob("$dir/*") ?: []);
 // handle_booking() is the whole request path; the mailer and the body reader
 // are passed in, so these calls record mail instead of sending it.
 
-equals('booking notices are off until the Calendly event exists', false, BOOKING_NOTICES_ENABLED);
+equals('booking notices are on, together with the Calendly event URL', true, BOOKING_NOTICES_ENABLED);
 
 $site      = 'https://www.embeddedos.org';
 $switchDir = sys_get_temp_dir() . '/eos-booking-switch-' . bin2hex(random_bytes(4));

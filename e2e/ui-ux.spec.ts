@@ -239,14 +239,13 @@ test.describe("keyboard operability", () => {
     const second = page.getByRole("radio", { name: /Partnership or OEM/ });
     await expect(second).toBeChecked();
     await expect(second).toBeFocused();
-    // Step 2 reads "Pick a time" once CALENDLY_EVENT_URL is set, and
-    // "Suggest times" while /book offers the contact form instead; the unit
-    // tests pin each mode's labels.
+    // CALENDLY_EVENT_URL is set, so step 2 is "Pick a time"; the unit tests
+    // pin the email-fallback labels with the URL forced to null.
     await expect(
       page
         .getByRole("list", { name: "Booking progress" })
         .locator('[aria-current="step"]')
-    ).toContainText(/Pick a time|Suggest times/);
+    ).toContainText("Pick a time");
     const ring = await second.evaluate(input => {
       const card = input.nextElementSibling as HTMLElement;
       const style = getComputedStyle(card);

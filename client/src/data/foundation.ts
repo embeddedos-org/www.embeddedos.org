@@ -383,4 +383,5 @@ export const SOCIAL_URLS = {
   discord: "https://discord.gg/n6Kd9fwja",
 } as const;
 
-export const CALENDLY_EVENT_URL: string | null = null;
+export const CALENDLY_EVENT_URL: string | null =
+  "https://calendly.com/kartikeydheer-embeddedos/30min";

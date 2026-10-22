@@ -5,14 +5,9 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const EVENT_URL = "https://calendly.com/embeddedos-team/30min";
-
-vi.mock("../../client/src/data/foundation", async importOriginal => ({
-  ...(await importOriginal<
-    typeof import("../../client/src/data/foundation")
-  >()),
-  CALENDLY_EVENT_URL: "https://calendly.com/embeddedos-team/30min",
-}));
+// The real constant, not a mock: this file tests the calendar mode the site
+// now ships.
+const EVENT_URL = "https://calendly.com/kartikeydheer-embeddedos/30min";
 
 vi.mock("wouter", () => ({
   Link: ({
@@ -33,7 +28,11 @@ import { CALENDLY_EVENT_URL } from "../../client/src/data/foundation";
 import Contact from "../../client/src/pages/Contact";
 import EosBoards from "../../client/src/pages/EosBoards";
 import Book from "../../client/src/pages/Book";
-import { bookingFrameUrl } from "../../client/src/lib/booking";
+import {
+  bookingCalendarReady,
+  bookingFrameUrl,
+  calendlyEventUrl,
+} from "../../client/src/lib/booking";
 
 beforeEach(() => {
   vi.stubGlobal(
@@ -64,8 +63,10 @@ afterEach(() => {
 });
 
 describe("once CALENDLY_EVENT_URL is set", () => {
-  it("is set for this file", () => {
+  it("is the team's event, and passes the page's own URL check", () => {
     expect(CALENDLY_EVENT_URL).toBe(EVENT_URL);
+    expect(calendlyEventUrl(CALENDLY_EVENT_URL)).toBe(EVENT_URL);
+    expect(bookingCalendarReady()).toBe(true);
   });
 
   it("/book embeds the calendar for that URL once a topic is chosen", () => {
