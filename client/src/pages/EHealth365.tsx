@@ -136,7 +136,7 @@ function DeviceCard3D({
       style={
         {
           transformStyle: "preserve-3d",
-          background: hovered ? `${color}08` : "#0B0B0D",
+          background: hovered ? "#141417" : "#0B0B0D",
           borderColor: hovered ? `${color}40` : "rgba(255,255,255,0.08)",
           boxShadow: hovered ? `0 20px 60px ${color}20` : "none",
         } as React.CSSProperties

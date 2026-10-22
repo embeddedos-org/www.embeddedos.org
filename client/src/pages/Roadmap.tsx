@@ -204,7 +204,7 @@ const fadeUp = {
 
 export default function Roadmap() {
   return (
-    <div className="min-h-screen bg-[#020617] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* ── HERO ── */}
       <section className="relative py-28 px-4 overflow-hidden">
         {/* Background glows */}
@@ -451,7 +451,7 @@ export default function Roadmap() {
                   href="https://github.com/embeddedos-org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#020617] font-bold rounded-xl btn-press"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#000000] font-bold rounded-xl btn-press"
                 >
                   Open an Issue
                   <ArrowRight size={16} />

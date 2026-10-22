@@ -644,7 +644,7 @@ export default function EcadHardware() {
     filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
 
   return (
-    <div className="min-h-screen bg-[#050A14] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
       <section className="relative pt-28 pb-16 px-6 overflow-hidden">
         <img
@@ -655,7 +655,7 @@ export default function EcadHardware() {
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
         />
-        <div className="absolute bottom-4 right-6 z-10 rounded-md border border-white/10 bg-[#050A14]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60">
+        <div className="absolute bottom-4 right-6 z-10 rounded-md border border-white/10 bg-[#000000]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60">
           Illustrative concept artwork
         </div>
         <div

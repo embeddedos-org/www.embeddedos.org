@@ -13,9 +13,10 @@
  *
  * It deliberately does not compute contrast. The page backgrounds vary, and the
  * honest threshold is empirical: on the two grounds the site actually uses,
- * #0B1D3A and #080F1E, white at 50% opacity is the lowest value that clears
- * 4.5:1 (5.08:1 and 5.31:1 respectively). Anything below that is unreadable
- * somewhere on the site, so the rule is a floor rather than a calculation.
+ * #000000 and the #0B0B0D panel, white at 50% opacity is the lowest step that
+ * clears 4.5:1 (5.32:1 and 5.33:1; 45% gives 4.43:1 on black). Anything below
+ * that is unreadable somewhere on the site, so the rule is a floor rather than
+ * a calculation.
  *
  * ## Why there is a baseline
  *
@@ -40,15 +41,15 @@ const SRC = join(__dirname, "../../client/src");
 
 /**
  * The lowest white opacity that clears 4.5:1 on every ground the site uses.
- * Raising a background lighter than #0B1D3A would let a lower value through,
- * but nothing on the site does that today.
+ * A lighter ground would let a lower value through, but black is the darkest
+ * there is, so this floor cannot be lowered.
  */
 const MIN_WHITE_ALPHA = 50;
 
 /**
  * Greys whose contrast is too low on the dark grounds, measured rather than
- * guessed: gray-600 is 1.95:1 and gray-500 is 3.04:1 against a bg-white/5 card
- * over #0B1D3A. gray-400 is 5.79:1 and is fine.
+ * guessed: gray-600 is 2.57:1 and gray-500 is 4.02:1 against a bg-white/5 card
+ * over black. gray-400 is 7.66:1 and is fine.
  */
 const BANNED_GRAYS = ["text-gray-500", "text-gray-600", "text-gray-700"];
 

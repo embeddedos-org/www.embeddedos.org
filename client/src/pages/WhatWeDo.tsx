@@ -264,7 +264,7 @@ export default function WhatWeDo() {
   const heroRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen bg-[#050A14] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
       <section
         ref={heroRef}

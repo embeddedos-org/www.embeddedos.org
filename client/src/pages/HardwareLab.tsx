@@ -181,7 +181,7 @@ function FamilyCard({
       className="group rounded-3xl border p-6 transition-all duration-300"
       style={
         {
-          background: hovered ? `${color}06` : "#0B0B0D",
+          background: hovered ? "#141417" : "#0B0B0D",
           borderColor: hovered ? `${color}40` : "rgba(255,255,255,0.08)",
           boxShadow: hovered ? `0 20px 60px ${color}15` : "none",
         } as React.CSSProperties

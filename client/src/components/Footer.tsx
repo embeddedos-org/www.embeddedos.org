@@ -243,7 +243,8 @@ export default function Footer() {
       className="relative border-t border-[#232326] overflow-hidden bg-black"
       role="contentinfo"
     >
-      <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,44px)] pt-[72px] pb-10 relative">
+      {/* phones: the bottom row clears the assistant button (56px, 24px from the corner) */}
+      <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,44px)] pt-[72px] pb-28 sm:pb-10 relative">
         {/* At xl, the brand and all six link groups share one row. Below xl,
             the existing responsive spans keep the denser columns readable. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-[2fr_repeat(6,minmax(0,1fr))] gap-x-8 xl:gap-x-6 gap-y-10">

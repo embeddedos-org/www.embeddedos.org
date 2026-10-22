@@ -200,7 +200,7 @@ export default function ContactFormModal() {
               tabIndex={-1}
               className="relative w-full max-w-lg pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none max-h-[90vh] overflow-y-auto"
               style={{
-                background: "linear-gradient(145deg, #0d1526 0%, #000000 100%)",
+                background: "linear-gradient(145deg, #141417 0%, #0b0b0d 100%)",
                 border: "1px solid rgba(255,255,255,0.08)",
               }}
               role="dialog"
@@ -304,7 +304,7 @@ export default function ContactFormModal() {
                             <option
                               key={t.key}
                               value={t.key}
-                              className="bg-[#0d1526]"
+                              className="bg-[#141417]"
                             >
                               {t.label}
                             </option>

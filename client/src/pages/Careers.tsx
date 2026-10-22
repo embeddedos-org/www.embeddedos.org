@@ -1089,7 +1089,7 @@ function ApplicationForm() {
             >
               <SelectValue placeholder="Select a role..." />
             </SelectTrigger>
-            <SelectContent className="bg-[#0D1829] border-white/10">
+            <SelectContent className="bg-[#141417] border-white/10">
               {ROLE_CATEGORIES.map(r => (
                 <SelectItem
                   key={r}
@@ -1125,7 +1125,7 @@ function ApplicationForm() {
             >
               <SelectValue placeholder="Select type..." />
             </SelectTrigger>
-            <SelectContent className="bg-[#0D1829] border-white/10">
+            <SelectContent className="bg-[#141417] border-white/10">
               {EMPLOYMENT_TYPES.map(t => (
                 <SelectItem
                   key={t}
@@ -1164,7 +1164,7 @@ function ApplicationForm() {
           >
             <SelectValue placeholder="Select authorization status..." />
           </SelectTrigger>
-          <SelectContent className="bg-[#0D1829] border-white/10">
+          <SelectContent className="bg-[#141417] border-white/10">
             {WORK_AUTH_OPTIONS.map(a => (
               <SelectItem
                 key={a}
@@ -1467,7 +1467,7 @@ export default function Careers() {
   }, {});
 
   return (
-    <div className="min-h-screen bg-[#060D1A] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F97316]/5 via-transparent to-[#8B5CF6]/5" />

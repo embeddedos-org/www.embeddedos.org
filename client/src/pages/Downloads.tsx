@@ -227,9 +227,9 @@ const DOWNLOADS = [
 
 export default function Downloads() {
   return (
-    <div className="min-h-screen pt-16 bg-[#050B18]">
+    <div className="min-h-screen pt-16 bg-[#000000]">
       {/* Hero */}
-      <section className="section-padding bg-gradient-to-b from-[#000000] to-[#050B18]">
+      <section className="section-padding bg-gradient-to-b from-[#000000] to-[#0b0b0d]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             variants={fadeUp}

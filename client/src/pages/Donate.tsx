@@ -264,7 +264,7 @@ export default function Donate() {
   return (
     <div className="min-h-screen bg-[#000000] text-white">
       {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-20 bg-gradient-to-br from-[#0a0520] via-[#000000] to-[#020818]">
+      <section className="relative overflow-hidden pt-32 pb-20 bg-gradient-to-br from-[#0b0b0d] via-[#000000] to-[#000000]">
         <div
           className="absolute inset-0 opacity-10"
           style={{

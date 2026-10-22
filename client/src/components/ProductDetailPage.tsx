@@ -209,7 +209,7 @@ export default function ProductDetailPage({
             className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#000000] via-[#0D1B2A] to-[#000000]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#000000] via-[#0b0b0d] to-[#000000]" />
         <div
           className="absolute inset-0 opacity-20"
           style={{

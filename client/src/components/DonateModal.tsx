@@ -136,7 +136,7 @@ export default function DonateModal() {
               tabIndex={-1}
               className="relative w-full max-w-md pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none"
               style={{
-                background: "linear-gradient(145deg, #0d1526 0%, #000000 100%)",
+                background: "linear-gradient(145deg, #141417 0%, #0b0b0d 100%)",
                 border: "1px solid rgba(255,255,255,0.08)",
               }}
               role="dialog"

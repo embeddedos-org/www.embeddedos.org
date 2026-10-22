@@ -1275,7 +1275,12 @@ function ScrollToTop() {
         if (cancelled) return;
         const target = document.querySelector(hash);
         if (target) {
-          jump(window.scrollY + target.getBoundingClientRect().top);
+          // below the fixed header, not under it
+          const bar =
+            document
+              .querySelector('header[role="banner"]')
+              ?.getBoundingClientRect().height ?? 0;
+          jump(window.scrollY + target.getBoundingClientRect().top - bar - 16);
           return;
         }
         if (frames++ > 90) {

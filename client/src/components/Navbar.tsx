@@ -587,7 +587,7 @@ export default function Navbar() {
       </a>
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 border-b bg-black/[0.66] backdrop-blur-[18px] backdrop-saturate-[1.6] transition-[border-color,background-color] duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 border-b bg-black/[0.85] backdrop-blur-[18px] backdrop-saturate-[1.6] transition-[border-color,background-color] duration-300 ${
           scrolled ? "border-[#232326]" : "border-transparent"
         }`}
         role="banner"
@@ -631,7 +631,7 @@ export default function Navbar() {
                   const section = NAV_ITEMS[label];
                   return (
                     <NavigationMenu.Item key={label}>
-                      <NavigationMenu.Trigger className="relative flex items-center gap-1 py-[17px] text-[13px] font-normal text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200 data-[state=open]:text-[#f5f5f7] group select-none after:absolute after:left-0 after:right-0 after:bottom-[11px] after:h-px after:bg-[#f5f5f7] after:origin-left after:scale-x-0 after:transition-transform after:duration-[350ms] after:ease-[cubic-bezier(0.2,0.7,0.2,1)] hover:after:scale-x-100 focus-visible:after:scale-x-100 data-[state=open]:after:scale-x-100">
+                      <NavigationMenu.Trigger className="relative flex items-center gap-1 py-4 leading-5 text-[13px] font-normal text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200 data-[state=open]:text-[#f5f5f7] group select-none after:absolute after:left-0 after:right-0 after:bottom-[11px] after:h-px after:bg-[#f5f5f7] after:origin-left after:scale-x-0 after:transition-transform after:duration-[350ms] after:ease-[cubic-bezier(0.2,0.7,0.2,1)] hover:after:scale-x-100 focus-visible:after:scale-x-100 data-[state=open]:after:scale-x-100">
                         {label}
                         <ChevronDown
                           size={14}
@@ -724,7 +724,7 @@ export default function Navbar() {
                     href="https://github.com/embeddedos-org"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 py-[17px] text-[13px] text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200"
+                    className="flex items-center gap-1.5 py-4 leading-5 text-[13px] text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200"
                   >
                     <Star size={14} className="opacity-80" />
                     GitHub
@@ -826,10 +826,10 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              // The drawer starts below the 52px site header (top-[52px]) and
+              // The drawer starts below the 53px site header (top-[53px]) and
               // sits under it in z-order, so its header row can never overlap
               // the site header — the header's own toggle (now an X) closes it.
-              className="fixed top-[52px] right-0 bottom-0 z-40 w-80 bg-black border-t border-l border-[#232326] overflow-y-auto lg:hidden"
+              className="fixed top-[53px] right-0 bottom-0 z-40 w-80 bg-black border-t border-l border-[#232326] overflow-y-auto lg:hidden"
               aria-label="Mobile navigation"
             >
               {/* Header */}

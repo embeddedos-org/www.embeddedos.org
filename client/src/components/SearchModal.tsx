@@ -193,7 +193,7 @@ export default function SearchModal() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              className="w-full max-w-xl bg-[#0d1424] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+              className="w-full max-w-xl bg-[#0b0b0d] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
               onClick={e => e.stopPropagation()}
               // Without these a screen reader gets no signal that a modal
               // opened — focus simply lands on an unlabelled text field in the
