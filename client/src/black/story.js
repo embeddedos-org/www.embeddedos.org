@@ -216,10 +216,17 @@ export function mountBlack(host) {
       TH = 80;
       base = MEDIA + SET + "/";
       CPER = t[2];
+      // windows are set in frames, so strips of 2 or 4 frames behave alike: decode ~8 frames around the scroll
+      // position, keep ~12-16 decoded, fetch ~24 ahead
+      SPAN = Math.max(2, Math.round(8 / CPER));
+      LRU_MAX = SPAN + 2;
+      AHEAD = Math.round(24 / CPER);
     }
+    let SPAN = 2;
+    let LRU_MAX = 4;
+    let AHEAD = 6;
     useSet(tierNow.set);
     let NC = Math.ceil(TOTAL / CPER);
-    const LRU_MAX = 3;
     let DW = 0;
     let DH = 0;
     // decode only as many pixels as this screen can show (the camera zooms up to 1.12× on desktop, 1.5× on phones)
@@ -354,7 +361,7 @@ export function mountBlack(host) {
         if (d.t === "have") {
           delete decoding[d.id];
           noteDecode(d.ms);
-          if (Math.abs(d.id - wanted) > 2) {
+          if (Math.abs(d.id - wanted) > SPAN) {
             drawer.postMessage({ t: "drop", id: d.id });
             return;
           }
@@ -388,7 +395,7 @@ export function mountBlack(host) {
           delete decoding[i];
           if (d.err || !d.frames) return;
           noteDecode(d.ms);
-          if (Math.abs(i - wanted) > 2) {
+          if (Math.abs(i - wanted) > SPAN) {
             d.frames.forEach(f => f.close());
             return;
           }
@@ -397,7 +404,7 @@ export function mountBlack(host) {
           unhold(i);
           dirty = true;
         };
-        worker.postMessage({ t: "want", w: wanted });
+        worker.postMessage({ t: "want", w: wanted, s: SPAN });
         dirty = true;
       });
     }
@@ -500,7 +507,7 @@ export function mountBlack(host) {
             }
             delete decoding[i];
             noteDecode(performance.now() - t0);
-            if (Math.abs(i - wanted) > 2 || w !== DW) {
+            if (Math.abs(i - wanted) > SPAN || w !== DW) {
               o.forEach(f => f.close());
               return;
             }
@@ -515,7 +522,7 @@ export function mountBlack(host) {
         });
     }
     function pump() {
-      const ahead = 6;
+      const ahead = AHEAD;
       const behind = 1;
       const cap = 6;
       while (inflight < cap) {
@@ -547,7 +554,7 @@ export function mountBlack(host) {
               blobs[i] = b;
               state[i] = 2;
               inflight--;
-              if (Math.abs(i - wanted) <= 2) ensureBitmap(i);
+              if (Math.abs(i - wanted) <= SPAN) ensureBitmap(i);
               dirty = true;
               pump();
             },
@@ -853,7 +860,7 @@ export function mountBlack(host) {
         if (atlas && atlas.close) atlas.close();
         atlas = null;
       }
-      if (worker) worker.postMessage({ t: "want", w: wanted });
+      if (worker) worker.postMessage({ t: "want", w: wanted, s: SPAN });
       size();
       getAtlas();
       dirty = true;
@@ -911,13 +918,12 @@ export function mountBlack(host) {
         if (nw !== wanted) {
           wanted = nw;
           if (bitmaps[wanted]) touch(wanted);
-          if (offs) drawer.postMessage({ t: "want", w: wanted });
-          else if (worker) worker.postMessage({ t: "want", w: wanted });
+          if (offs) drawer.postMessage({ t: "want", w: wanted, s: SPAN });
+          else if (worker)
+            worker.postMessage({ t: "want", w: wanted, s: SPAN });
           pump();
         }
-        ensureBitmap(wanted);
-        ensureBitmap(wanted + dir);
-        ensureBitmap(wanted + 2 * dir);
+        for (let k = 0; k <= SPAN; k++) ensureBitmap(wanted + k * dir);
         const blend = !lite && !eco;
         const key = blend ? f.toFixed(2) : String(Math.round(f));
         if (ready && (key !== lastKey || dirty)) {
@@ -1474,7 +1480,7 @@ export function mountBlack(host) {
   /* ---------------------------------------------------------------- the board showcase */
   function showcase(el) {
     // The strip selects a board; its image crosses over on the stage and its pane shows. A fine pointer gets a
-    // lens over the 2400 px render; touch swipes; it advances by itself every 7 s while in view until the reader
+    // lens over the full-resolution render; touch swipes; it advances by itself every 7 s while in view until the reader
     // takes over. The board settles onto the stage as the section scrolls in.
     if (!el) return null;
     const base = el.getAttribute("data-base");
@@ -1610,10 +1616,10 @@ export function mountBlack(host) {
       },
       { passive: true }
     );
-    // lens: the 2400 px render under a fine pointer (the stage image where a board has no 2400 render)
+    // lens: the board at the render's own resolution under a fine pointer (the stage image where a board has none)
     function loadLens() {
       const u = tabs[cur].hasAttribute("data-lens")
-        ? url(cur, "-2400.avif")
+        ? url(cur, "-lens.avif")
         : slots[slot].querySelector("img").currentSrc;
       if (!u || u === lensSrc) return;
       lensSrc = u;

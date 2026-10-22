@@ -3,10 +3,12 @@
 let Q = [];
 let busy = 0;
 let WANT = 0;
+// how many strips either side of the wanted one are still worth decoding (sent with "want"; 8 frames)
+let SPAN = 2;
 
 function run() {
   Q = Q.filter(j => {
-    if (Math.abs(j.id - WANT) > 2) {
+    if (Math.abs(j.id - WANT) > SPAN) {
       self.postMessage({ id: j.id, g: j.g, err: "stale" });
       return false;
     }
@@ -53,6 +55,7 @@ self.onmessage = e => {
   }
   if (d.t === "want") {
     WANT = d.w;
+    if (d.s) SPAN = d.s;
     run();
     return;
   }

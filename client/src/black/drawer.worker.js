@@ -14,6 +14,8 @@ let live = false;
 let Q = [];
 let busy = 0;
 let WANT = 0;
+// how many strips either side of the wanted one are still worth decoding (sent with "want"; 8 frames)
+let SPAN = 2;
 let ST = [0, 0, 0, 0];
 
 function hold() {
@@ -26,7 +28,7 @@ function unhold() {
 }
 function run() {
   Q = Q.filter(j => {
-    if (Math.abs(j.id - WANT) > 2) {
+    if (Math.abs(j.id - WANT) > SPAN) {
       postMessage({ t: "fail", id: j.id });
       return false;
     }
@@ -222,6 +224,7 @@ onmessage = e => {
     }
     case "want":
       WANT = d.w;
+      if (d.s) SPAN = d.s;
       run();
       break;
     case "strip":
