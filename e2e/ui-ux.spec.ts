@@ -427,8 +427,8 @@ test.describe("motion preferences", () => {
  *
  * These assert the properties the design actually depends on, not the exact
  * numbers a designer may want to tune: a headline that dominates its viewport,
- * a scale that moves with the viewport rather than stepping, a scrim that
- * covers the 3D layer, and a bounded reading measure.
+ * a scale that moves with the viewport rather than stepping, scrims that
+ * cover the story's frames, and a bounded reading measure.
  */
 test.describe("design system", () => {
   test("the hero headline uses the display scale, and it is fluid", async ({
@@ -478,66 +478,68 @@ test.describe("design system", () => {
     ).toBeGreaterThan(32);
   });
 
-  test("the hero scrim covers the 3D layer rather than sitting under it", async ({
+  test("the story's scrims cover its frames rather than sitting under them", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(600);
+    await expect(page.locator(".bk canvas.seq")).toHaveCount(1);
 
-    const layering = await page.evaluate(() => {
-      const scrim = document.querySelector(".hs .scrim");
-      if (!scrim) return { present: false };
-
-      const section = scrim.parentElement!;
-      const kids = [...section.children];
-      const canvasHost = kids.find(
-        k => k.matches("canvas") || k.querySelector("canvas")
-      );
-
-      const s = getComputedStyle(scrim);
-      return {
-        present: true,
-        // Paints after the canvas: both are positioned, so DOM order decides.
-        afterCanvas: canvasHost
-          ? kids.indexOf(scrim) > kids.indexOf(canvasHost)
-          : null,
-        covers: s.position === "absolute" && s.inset === "0px",
-        // A scrim that intercepted clicks would break every hero control.
-        clickThrough: s.pointerEvents === "none",
-        painted: s.backgroundImage !== "none",
-      };
-    });
-
-    expect(layering.present, "the hero scrim is missing").toBe(true);
-    expect(layering.covers, "scrim does not cover the hero").toBe(true);
-    expect(layering.clickThrough, "scrim would swallow hero clicks").toBe(true);
-    expect(layering.painted, "scrim paints nothing").toBe(true);
-    expect(layering.afterCanvas, "scrim paints under the 3D canvas").not.toBe(
-      false
+    const layering = await page.evaluate(() =>
+      [...document.querySelectorAll(".bk .bk-scr")].map(scrim => {
+        const stage = scrim.parentElement!;
+        const kids = [...stage.children];
+        const canvasHost = kids.find(
+          k => k.matches("canvas") || k.querySelector("canvas")
+        );
+        const s = getComputedStyle(scrim);
+        const z = (el: Element) => parseInt(getComputedStyle(el).zIndex) || 0;
+        return {
+          // Paints after the canvas: a higher z-index, or DOM order when equal.
+          afterCanvas: canvasHost
+            ? z(scrim) > z(canvasHost) ||
+              (z(scrim) === z(canvasHost) &&
+                kids.indexOf(scrim) > kids.indexOf(canvasHost))
+            : null,
+          covers: s.position === "absolute" && s.inset === "0px",
+          // A scrim that intercepted clicks would break every story control.
+          clickThrough: s.pointerEvents === "none",
+          painted: s.backgroundImage !== "none",
+        };
+      })
     );
+
+    expect(layering.length, "the story's scrims are missing").toBe(3);
+    for (const l of layering) {
+      expect(l.covers, "scrim does not cover the story").toBe(true);
+      expect(l.clickThrough, "scrim would swallow story clicks").toBe(true);
+      expect(l.painted, "scrim paints nothing").toBe(true);
+      expect(l.afterCanvas, "scrim paints under the frames' canvas").toBe(true);
+    }
   });
 
-  test("the scrim switches to its stacked-layout variant below lg", async ({
+  test("the bottom scrim switches to its stacked-layout variant on phones", async ({
     page,
   }) => {
-    // The @media (max-width: 760px) branch exists because the story's cards
-    // stack at the bottom there: a left-weighted wash would leave the 3D model
-    // sitting behind the right half of every line. Nothing exercised that branch.
+    // At 800px and narrower (and in portrait) the story's scene text stacks at
+    // the bottom of the screen, so the bottom scrim reaches higher: the
+    // side-by-side wash would leave the board behind the upper lines.
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const read = async (width: number) => {
-      await page.setViewportSize({ width, height: 900 });
+      await page.setViewportSize({ width, height: 600 });
+      // a phone/desktop switch restarts the story; read once it is back
+      await expect(page.locator(".bk")).toHaveClass(/\bcine\b/);
       await page.waitForTimeout(300);
       return page.evaluate(
         () =>
-          getComputedStyle(document.querySelector(".hs .scrim")!)
+          getComputedStyle(document.querySelector(".bk .bk-scr.b")!)
             .backgroundImage
       );
     };
 
-    const stacked = await read(760);
-    const side = await read(761);
+    const stacked = await read(800);
+    const side = await read(1200);
 
     expect(stacked, "no scrim painted in the stacked layout").not.toBe("none");
     expect(side, "no scrim painted in the side-by-side layout").not.toBe(
