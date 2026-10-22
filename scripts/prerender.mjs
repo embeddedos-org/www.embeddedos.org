@@ -396,6 +396,8 @@ export const DESCRIPTION_OVERRIDES = {
  * client/src/lib/page-meta.ts by tests/unit/page-meta.test.ts.
  */
 export const SOCIAL_IMAGE_RULES = [
+  // the homepage: its ray-traced board as a JPEG (social crawlers take JPEG most widely)
+  [/^\/$/, "/media/og-home-2026-10-22.jpg"],
   [
     /^\/(architecture|flow|ecosystem|stacks)$/,
     "/media/architecture-diagram-hero_72436b3f.jpg",

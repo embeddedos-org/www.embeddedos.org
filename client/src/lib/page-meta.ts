@@ -137,6 +137,8 @@ export function canonicalFor(route: string): string {
 }
 
 export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [
+  // the homepage: its ray-traced board as a JPEG (social crawlers take JPEG most widely)
+  [/^\/$/, "/media/og-home-2026-10-22.jpg"],
   [
     /^\/(architecture|flow|ecosystem|stacks)$/,
     "/media/architecture-diagram-hero_72436b3f.jpg",

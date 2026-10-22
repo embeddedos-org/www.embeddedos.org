@@ -1504,7 +1504,7 @@ export function mountBlack(host) {
       );
       const go = () => {
         if (moved || disposed) return;
-        const top = panels[k].getBoundingClientRect().top + W.scrollY - 64 - 24;
+        const top = panels[k].getBoundingClientRect().top + W.scrollY - 53 - 24;
         W.scrollTo({ top: Math.max(0, top), behavior: "auto" });
       };
       W.requestAnimationFrame(() => W.requestAnimationFrame(go));
