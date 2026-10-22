@@ -32,7 +32,6 @@ function pl(K, u, ease) {
   return K[K.length - 1].slice(1);
 }
 
-const MEDIA = "/media/story/";
 const SMALL_Q = "(orientation: portrait), (max-width: 800px)";
 
 /** The machine and the screen, read once: which frame set is sharp here, and whether this is a weak machine. */
@@ -178,6 +177,8 @@ export function mountBlack(host) {
     const stage = $("bk-stage");
     const cam = $("bk-cam");
     if (!storyEl || !stage || !cam) return null;
+    // the frames' folder, as the page names it (data.ts MEDIA_HOME)
+    const MEDIA = (storyEl.getAttribute("data-media") || "/media/") + "story/";
     root.classList.add("cine");
     root.style.setProperty("--units", UNITS);
     stop.push(() => root.classList.remove("cine", "live"));
@@ -1124,7 +1125,7 @@ export function mountBlack(host) {
         1400 &&
       !tier.weak &&
       !(cn && (cn.saveData || /2g|3g/.test(cn.effectiveType || "")));
-    const FB = "/media/film/" + (hd ? "1080" : "720") + "/s";
+    const FB = player.getAttribute("data-base") + (hd ? "1080" : "720") + "/s";
     let act = 0;
     let cur = 0;
     const has = [-1, -1];

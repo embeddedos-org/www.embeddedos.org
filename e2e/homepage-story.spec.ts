@@ -77,10 +77,13 @@ test.describe("homepage story", () => {
 
   test("if the frames cannot download, the poster stays", async ({ page }) => {
     let blocked = 0;
-    await page.route(/\/media\/story\/[dhm]\/s\d{3}\.avif$/, route => {
-      blocked++;
-      return route.abort("failed");
-    });
+    await page.route(
+      /\/media\/home-[^/]+\/story\/[dhm]\/s\d{3}\.avif$/,
+      route => {
+        blocked++;
+        return route.abort("failed");
+      }
+    );
     const errors: string[] = [];
     page.on("pageerror", e => errors.push(e.message));
     await page.goto("/");
@@ -234,7 +237,7 @@ test.describe("homepage story", () => {
     let after = 0;
     let left = false;
     page.on("request", r => {
-      if (left && r.url().includes("/media/story/")) after++;
+      if (left && /\/media\/home-[^/]+\/story\//.test(r.url())) after++;
     });
     await page.locator('a[href="/donate"]').first().click();
     await page.waitForURL("**/donate");
@@ -246,9 +249,8 @@ test.describe("homepage story", () => {
       .poll(() =>
         page.evaluate(
           () =>
-            document.querySelectorAll(
-              'link[rel="preload"][href*="/media/story/"]'
-            ).length
+            document.querySelectorAll('link[rel="preload"][href*="/story/s"]')
+              .length
         )
       )
       .toBe(0);

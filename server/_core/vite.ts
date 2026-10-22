@@ -67,7 +67,17 @@ export function serveStatic(app: Express) {
 
   // `index: false` keeps express.static from 301-redirecting /about to /about/;
   // the handler below resolves prerendered directory indexes itself.
-  app.use(express.static(distPath, { index: false, redirect: false }));
+  // `setHeaders` names AVIF, which the static server's type table does not
+  // know (it answered application/octet-stream for the homepage's frames).
+  app.use(
+    express.static(distPath, {
+      index: false,
+      redirect: false,
+      setHeaders: (res, file) => {
+        if (file.endsWith(".avif")) res.setHeader("Content-Type", "image/avif");
+      },
+    })
+  );
 
   // Mounted without a path pattern on purpose: `app.use("*", ...)` rewrites
   // req.url/req.path to "/" for the handler, which would serve the homepage

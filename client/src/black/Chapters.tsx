@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { ChapterExtras, ChapterWord } from "./ChapterExtras";
+import { MEDIA_HOME } from "./data";
 
 /**
  * Every industry: the 25 chapters the homepage's 3D story used to carry, as an
@@ -432,15 +433,15 @@ export default function Chapters() {
               <ChapterWord id="ehealth365" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d01"
+                data-clip={MEDIA_HOME + "industries/d01"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d01.avif"
+                    srcSet={MEDIA_HOME + "industries/d01.avif"}
                   />
                   <img
-                    src="/media/industries/d01.webp"
+                    src={MEDIA_HOME + "industries/d01.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -595,15 +596,15 @@ export default function Chapters() {
               <ChapterWord id="eoshealth" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d02"
+                data-clip={MEDIA_HOME + "industries/d02"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d02.avif"
+                    srcSet={MEDIA_HOME + "industries/d02.avif"}
                   />
                   <img
-                    src="/media/industries/d02.webp"
+                    src={MEDIA_HOME + "industries/d02.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -666,15 +667,15 @@ export default function Chapters() {
               <ChapterWord id="emedical" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d03"
+                data-clip={MEDIA_HOME + "industries/d03"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d03.avif"
+                    srcSet={MEDIA_HOME + "industries/d03.avif"}
                   />
                   <img
-                    src="/media/industries/d03.webp"
+                    src={MEDIA_HOME + "industries/d03.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -853,15 +854,15 @@ export default function Chapters() {
               <ChapterWord id="eradar360" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d04"
+                data-clip={MEDIA_HOME + "industries/d04"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d04.avif"
+                    srcSet={MEDIA_HOME + "industries/d04.avif"}
                   />
                   <img
-                    src="/media/industries/d04.webp"
+                    src={MEDIA_HOME + "industries/d04.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -921,15 +922,15 @@ export default function Chapters() {
               <ChapterWord id="etransport" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d05"
+                data-clip={MEDIA_HOME + "industries/d05"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d05.avif"
+                    srcSet={MEDIA_HOME + "industries/d05.avif"}
                   />
                   <img
-                    src="/media/industries/d05.webp"
+                    src={MEDIA_HOME + "industries/d05.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -992,15 +993,15 @@ export default function Chapters() {
               <ChapterWord id="epam" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d06"
+                data-clip={MEDIA_HOME + "industries/d06"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d06.avif"
+                    srcSet={MEDIA_HOME + "industries/d06.avif"}
                   />
                   <img
-                    src="/media/industries/d06.webp"
+                    src={MEDIA_HOME + "industries/d06.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1062,15 +1063,15 @@ export default function Chapters() {
               <ChapterWord id="eaerospace" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d07"
+                data-clip={MEDIA_HOME + "industries/d07"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d07.avif"
+                    srcSet={MEDIA_HOME + "industries/d07.avif"}
                   />
                   <img
-                    src="/media/industries/d07.webp"
+                    src={MEDIA_HOME + "industries/d07.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1260,15 +1261,15 @@ export default function Chapters() {
               <ChapterWord id="erobotics" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d08"
+                data-clip={MEDIA_HOME + "industries/d08"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d08.avif"
+                    srcSet={MEDIA_HOME + "industries/d08.avif"}
                   />
                   <img
-                    src="/media/industries/d08.webp"
+                    src={MEDIA_HOME + "industries/d08.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1445,15 +1446,15 @@ export default function Chapters() {
               <ChapterWord id="eagritech" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d09"
+                data-clip={MEDIA_HOME + "industries/d09"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d09.avif"
+                    srcSet={MEDIA_HOME + "industries/d09.avif"}
                   />
                   <img
-                    src="/media/industries/d09.webp"
+                    src={MEDIA_HOME + "industries/d09.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1516,15 +1517,15 @@ export default function Chapters() {
               <ChapterWord id="efrontier" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d10"
+                data-clip={MEDIA_HOME + "industries/d10"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d10.avif"
+                    srcSet={MEDIA_HOME + "industries/d10.avif"}
                   />
                   <img
-                    src="/media/industries/d10.webp"
+                    src={MEDIA_HOME + "industries/d10.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1584,15 +1585,15 @@ export default function Chapters() {
               <ChapterWord id="eindustrial" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d11"
+                data-clip={MEDIA_HOME + "industries/d11"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d11.avif"
+                    srcSet={MEDIA_HOME + "industries/d11.avif"}
                   />
                   <img
-                    src="/media/industries/d11.webp"
+                    src={MEDIA_HOME + "industries/d11.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1656,15 +1657,15 @@ export default function Chapters() {
               <ChapterWord id="eenergy" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d12"
+                data-clip={MEDIA_HOME + "industries/d12"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d12.avif"
+                    srcSet={MEDIA_HOME + "industries/d12.avif"}
                   />
                   <img
-                    src="/media/industries/d12.webp"
+                    src={MEDIA_HOME + "industries/d12.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -1848,15 +1849,15 @@ export default function Chapters() {
               <ChapterWord id="esmartcity" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d13"
+                data-clip={MEDIA_HOME + "industries/d13"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d13.avif"
+                    srcSet={MEDIA_HOME + "industries/d13.avif"}
                   />
                   <img
-                    src="/media/industries/d13.webp"
+                    src={MEDIA_HOME + "industries/d13.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2029,15 +2030,15 @@ export default function Chapters() {
               <ChapterWord id="emining" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d14"
+                data-clip={MEDIA_HOME + "industries/d14"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d14.avif"
+                    srcSet={MEDIA_HOME + "industries/d14.avif"}
                   />
                   <img
-                    src="/media/industries/d14.webp"
+                    src={MEDIA_HOME + "industries/d14.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2100,15 +2101,15 @@ export default function Chapters() {
               <ChapterWord id="eedgeai" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d15"
+                data-clip={MEDIA_HOME + "industries/d15"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d15.avif"
+                    srcSet={MEDIA_HOME + "industries/d15.avif"}
                   />
                   <img
-                    src="/media/industries/d15.webp"
+                    src={MEDIA_HOME + "industries/d15.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2284,15 +2285,15 @@ export default function Chapters() {
               <ChapterWord id="eelectronics" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d16"
+                data-clip={MEDIA_HOME + "industries/d16"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d16.avif"
+                    srcSet={MEDIA_HOME + "industries/d16.avif"}
                   />
                   <img
-                    src="/media/industries/d16.webp"
+                    src={MEDIA_HOME + "industries/d16.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2355,15 +2356,15 @@ export default function Chapters() {
               <ChapterWord id="econsumer" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d17"
+                data-clip={MEDIA_HOME + "industries/d17"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d17.avif"
+                    srcSet={MEDIA_HOME + "industries/d17.avif"}
                   />
                   <img
-                    src="/media/industries/d17.webp"
+                    src={MEDIA_HOME + "industries/d17.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2426,15 +2427,15 @@ export default function Chapters() {
               <ChapterWord id="ecybersec" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d18"
+                data-clip={MEDIA_HOME + "industries/d18"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d18.avif"
+                    srcSet={MEDIA_HOME + "industries/d18.avif"}
                   />
                   <img
-                    src="/media/industries/d18.webp"
+                    src={MEDIA_HOME + "industries/d18.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2499,15 +2500,15 @@ export default function Chapters() {
               <ChapterWord id="edefense" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d19"
+                data-clip={MEDIA_HOME + "industries/d19"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d19.avif"
+                    srcSet={MEDIA_HOME + "industries/d19.avif"}
                   />
                   <img
-                    src="/media/industries/d19.webp"
+                    src={MEDIA_HOME + "industries/d19.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2571,15 +2572,15 @@ export default function Chapters() {
               <ChapterWord id="rbt-wake" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d08"
+                data-clip={MEDIA_HOME + "industries/d08"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d08.avif"
+                    srcSet={MEDIA_HOME + "industries/d08.avif"}
                   />
                   <img
-                    src="/media/industries/d08.webp"
+                    src={MEDIA_HOME + "industries/d08.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2742,15 +2743,15 @@ export default function Chapters() {
               <ChapterWord id="rbt-see" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d08"
+                data-clip={MEDIA_HOME + "industries/d08"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d08.avif"
+                    srcSet={MEDIA_HOME + "industries/d08.avif"}
                   />
                   <img
-                    src="/media/industries/d08.webp"
+                    src={MEDIA_HOME + "industries/d08.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -2922,15 +2923,15 @@ export default function Chapters() {
               <ChapterWord id="rbt-walk" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d08"
+                data-clip={MEDIA_HOME + "industries/d08"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d08.avif"
+                    srcSet={MEDIA_HOME + "industries/d08.avif"}
                   />
                   <img
-                    src="/media/industries/d08.webp"
+                    src={MEDIA_HOME + "industries/d08.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -3095,15 +3096,15 @@ export default function Chapters() {
               <ChapterWord id="rbt-hands" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d08"
+                data-clip={MEDIA_HOME + "industries/d08"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d08.avif"
+                    srcSet={MEDIA_HOME + "industries/d08.avif"}
                   />
                   <img
-                    src="/media/industries/d08.webp"
+                    src={MEDIA_HOME + "industries/d08.webp"}
                     width={1280}
                     height={720}
                     alt=""
@@ -3255,15 +3256,15 @@ export default function Chapters() {
               <ChapterWord id="rbt-safe" />
               <figure
                 className="bk-chap-media"
-                data-clip="/media/industries/d08"
+                data-clip={MEDIA_HOME + "industries/d08"}
               >
                 <picture>
                   <source
                     type="image/avif"
-                    srcSet="/media/industries/d08.avif"
+                    srcSet={MEDIA_HOME + "industries/d08.avif"}
                   />
                   <img
-                    src="/media/industries/d08.webp"
+                    src={MEDIA_HOME + "industries/d08.webp"}
                     width={1280}
                     height={720}
                     alt=""

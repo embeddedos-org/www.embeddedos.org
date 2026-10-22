@@ -68,6 +68,9 @@ ErrorDocument 404 /404.html
   AddOutputFilterByType BROTLI_COMPRESS application/xml image/svg+xml
 </IfModule>
 
+# AVIF is not in every server's type table; the homepage's story frames, boards and industry posters are AVIF.
+AddType image/avif .avif
+
 <IfModule mod_expires.c>
   ExpiresActive On
   # Hashed build assets: immutable for a year.

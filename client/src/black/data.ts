@@ -17,6 +17,14 @@ export interface EosBoard {
   facts: string[];
 }
 
+/**
+ * The homepage's media folder (story frames, boards, film, industry clips).
+ * Its files are served as immutable for a year (.htaccess) and their names
+ * carry no content hash, so new media goes in a new folder: change this name
+ * whenever any of it changes.
+ */
+export const MEDIA_HOME = "/media/home-2026-10-22/";
+
 export const BOARDS_URL =
   "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/boards/eos/";
 

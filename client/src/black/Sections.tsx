@@ -2,9 +2,9 @@ import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { EAI_EDGE_PROFILE } from "@/data/architecture";
-import { BOARD_CHECKS, BOARDS_URL, EOS_BOARDS, FILM } from "./data";
+import { BOARD_CHECKS, BOARDS_URL, EOS_BOARDS, FILM, MEDIA_HOME } from "./data";
 
-const S = "/media/story/";
+const S = MEDIA_HOME + "story/";
 // frameTier() picks the 1920 set when max(width, height × 1.6) × 1.12 ≤ 1997 at 1x, i.e. width ≤ 1783 and height
 // ≤ 1114: the poster on screen and the frames that replace it come from one set
 const HQ =
@@ -23,6 +23,7 @@ export function StoryHero() {
     <section
       className="bk-story"
       id="bk-story"
+      data-media={MEDIA_HOME}
       aria-label="The EoS Learn RP2350, ray-traced from its KiCad design"
     >
       <div className="bk-stage" id="bk-stage">
@@ -260,11 +261,12 @@ export function MakingOf() {
           className="bk-player"
           id="bk-player"
           data-segs={FILM.segments.join(",")}
+          data-base={MEDIA_HOME + "film/"}
         >
           {/* a lazy image, not the video's poster attribute (which loads at once, ahead of the hero) */}
           <img
             className="bk-fposter"
-            src="/media/film/poster.webp"
+            src={MEDIA_HOME + "film/poster.webp"}
             width={1920}
             height={1080}
             alt=""
@@ -343,7 +345,7 @@ export function MakingOf() {
   );
 }
 
-const B = "/media/boards/";
+const B = MEDIA_HOME + "boards/";
 
 /**
  * The board showcase: one board large on a stage, a spec pane per board and
