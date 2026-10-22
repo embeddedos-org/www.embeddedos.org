@@ -322,7 +322,9 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
 `client/src/data/booking.ts`.
 
 - **The event URL is one constant:** `CALENDLY_EVENT_URL` in
-  `client/src/data/foundation.ts`. While it is `null`, choosing a topic offers
+  `client/src/data/foundation.ts`. It is set to the team's event,
+  `https://calendly.com/kartikeydheer-embeddedos/30min`, so `/book` embeds the
+  calendar. If it is ever `null` again, choosing a topic offers
   to arrange the call by email through the contact form, and nothing loads from
   Calendly. The page then shows the `_BY_EMAIL` versions of the "what to expect"
   list, the time-zone note and the FAQ, which promise an email reply and no
@@ -336,8 +338,10 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
   Calendly link",
   https://calendly.com/help/how-to-pre-fill-invitee-information-in-your-calendly-link).
   In Calendly, give the event a first question such as "What would you like to
-  talk about?", or the topic is not recorded. Each card shows
-  `BOOKING_MINUTES` (30), which must match the event's duration.
+  talk about?", or the topic is not recorded. **The event's first custom
+  question must be the topic:** nothing in this repository can check that;
+  confirm it in Calendly. Each card shows `BOOKING_MINUTES` (30), which must
+  match the event's duration.
 - **The calendar is themed** with Calendly's `background_color`, `text_color`
   and `primary_color` parameters, set from the brand navy and orange
   (`CALENDLY_THEME` in `client/src/lib/booking.ts`, tested against
@@ -358,11 +362,12 @@ state. Topics, durations, the "what to expect" list and the FAQ are in
   srikanth@embeddedos.org with the subject "New meeting booked via
   embeddedos.org". The addresses are `BOOKING_INBOXES` in that file, on the
   server only.
-- **`booking.php` is off until the Calendly event exists.**
-  `BOOKING_NOTICES_ENABLED` in that file is `false`; while it is, every request
-  gets HTTP 503 with `{"ok":false,"error":"booking_notices_disabled"}` and no
-  mail is sent. Set it to `true` in the same change that sets
-  `CALENDLY_EVENT_URL`, and not before. Even when it is on, the endpoint checks
+- **`booking.php` is on, together with the event URL.**
+  `BOOKING_NOTICES_ENABLED` in that file is `true` because `CALENDLY_EVENT_URL`
+  is set; the two change together. When it is `false`, every request gets HTTP
+  503 with `{"ok":false,"error":"booking_notices_disabled"}` and no mail is
+  sent, so set it back to `false` whenever `CALENDLY_EVENT_URL` is `null`. Even
+  when it is on, the endpoint checks
   only that the request carries the site's `Origin` header, that the event and
   invitee identifiers have the shape of Calendly's API URIs (the invitee
   belonging to that event), that the page is a plain site path, and that one
