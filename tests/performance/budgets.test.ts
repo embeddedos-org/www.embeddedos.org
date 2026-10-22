@@ -20,6 +20,18 @@ const brotli = (buf: Buffer) =>
   }).length;
 
 const read = (p: string) => fs.readFileSync(p);
+// three.js's own chunk, found by its content: the bundler names a shared chunk
+// after one of its modules ("three.module-…" while the homepage imported three
+// directly, "extends-…" since only the 3D pages do), so the name is not stable.
+// `__THREE__` is the global three.js registers to catch duplicate copies.
+const threeChunks = () =>
+  fs
+    .readdirSync(ASSETS)
+    .filter(
+      f =>
+        f.endsWith(".js") &&
+        fs.readFileSync(path.join(ASSETS, f), "utf8").includes("__THREE__")
+    );
 const assetsMatching = (re: RegExp) =>
   fs.readdirSync(ASSETS).filter(f => re.test(f));
 const kb = (n: number) => Math.round(n / 1024);
@@ -80,12 +92,14 @@ describe("javascript budgets", () => {
     const preloads = [
       ...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"/g),
     ].map(m => m[1]);
-    expect(preloads.filter(p => /three/i.test(p))).toEqual([]);
+    const three = threeChunks();
+    expect(three.length).toBeGreaterThan(0);
+    expect(preloads.filter(p => three.some(t => p.endsWith(t)))).toEqual([]);
     expect(preloads.length).toBeLessThanOrEqual(4);
   });
 
   it("keeps three.js in an async chunk that only 3D pages pull in", () => {
-    const three = assetsMatching(/three/i);
+    const three = threeChunks();
     expect(three.length).toBeGreaterThan(0);
     const entry = fs.readFileSync(
       path.join(ASSETS, assetsMatching(/^index-.*\.js$/)[0]),
@@ -99,7 +113,7 @@ describe("javascript budgets", () => {
     // ceiling a dependency bump can silently double what the architecture
     // and CAD pages download. Set slightly above the 193 KB the current
     // build produces.
-    const three = assetsMatching(/three/i);
+    const three = threeChunks();
     expect(three.length).toBeGreaterThan(0);
     for (const f of three) {
       const size = brotli(read(path.join(ASSETS, f)));
