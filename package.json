@@ -166,7 +166,9 @@
       "postcss>nanoid": "^3.3.18",
       "esbuild": "^0.25.0",
       "qs": "^6.16.0",
-      "proxy-addr": "^2.0.8"
+      "proxy-addr": "^2.0.8",
+      "dompurify": "^3.4.17",
+      "follow-redirects": "^1.16.1"
     }
   }
 }
