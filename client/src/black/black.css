@@ -1311,7 +1311,9 @@
 .bs-fig {
   position: absolute;
   inset: 0;
-  transform: rotateX(var(--rx, 0deg)) scale(var(--sc, 1));
+  /* --rx/--sc: the settle as the section scrolls in; --hx/--hy: the lean toward the pointer */
+  transform: rotateX(calc(var(--rx, 0deg) + var(--hy, 0deg)))
+    rotateY(var(--hx, 0deg)) scale(var(--sc, 1));
   transform-origin: 50% 70%;
 }
 .bs-shadow {
@@ -1856,4 +1858,168 @@
 }
 .bk-chap {
   scroll-margin-top: calc(var(--nav) + 24px);
+}
+
+/* ───────── board showcase: the parts, as dots on the board, and the card that says what each one does ───────── */
+.bs-hots {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+.bs-dot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.bs-dot::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 3px rgba(255, 138, 61, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 0.25s,
+    box-shadow 0.25s;
+}
+.bs-dot::after {
+  content: "";
+  position: absolute;
+  /* a 16px ring at the dot's centre, whatever the size of the button around it */
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  pointer-events: none;
+}
+.bs-dot:hover::before,
+.bs-dot:focus-visible::before,
+.bs-dot[aria-expanded="true"]::before {
+  transform: scale(1.25);
+  background: var(--orange-hi);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.92),
+    0 2px 12px rgba(0, 0, 0, 0.7);
+}
+.bs-dot:focus-visible {
+  outline: none;
+}
+@media (pointer: coarse) {
+  .bs-dot {
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+  }
+}
+@media (max-width: 700px) {
+  .bs-dot::before {
+    width: 8px;
+    height: 8px;
+    box-shadow:
+      0 0 0 2px rgba(255, 138, 61, 0.55),
+      0 1px 6px rgba(0, 0, 0, 0.7);
+  }
+  .bs-card {
+    font-size: 13px;
+  }
+}
+.bs-card {
+  position: absolute;
+  z-index: 4;
+  width: min(290px, 78%);
+  display: grid;
+  gap: 5px;
+  padding: 14px 16px 15px;
+  border-radius: 14px;
+  background: rgba(11, 11, 13, 0.9);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid #2e2e33;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--fg);
+  pointer-events: none;
+}
+.bs-card[hidden] {
+  display: none;
+}
+.bs-card b {
+  font: 600 12px/1.3 var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--orange-hi);
+}
+.bs-card span {
+  color: var(--fg2);
+}
+.bshow.dotting .bs-lens {
+  opacity: 0;
+}
+.bshow.dotting .bs-stage {
+  cursor: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* each new board's parts arrive one after another, then breathe */
+  .bs-hots.in .bs-dot {
+    animation: bs-pop 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(0.3s + var(--i, 0) * 0.07s);
+  }
+  .bs-dot::after {
+    animation: bs-ping 3s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+    animation-delay: calc(1s + var(--i, 0) * 0.45s);
+  }
+  .bs-card:not([hidden]) {
+    animation: bs-card 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+.lite .bs-dot::after {
+  animation: none;
+}
+@keyframes bs-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bs-ping {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.7);
+  }
+  60%,
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+@keyframes bs-card {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

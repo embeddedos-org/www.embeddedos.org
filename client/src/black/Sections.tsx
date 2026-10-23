@@ -407,7 +407,7 @@ export function Showcase() {
             </div>
             <div className="bs-lens" aria-hidden="true" />
             <p className="bs-tip" aria-hidden="true">
-              Point at the board to look closer
+              Point at the board to look closer, or at a dot to see the part
             </p>
             <p className="bs-count" aria-hidden="true">
               <b>01</b> / {String(n).padStart(2, "0")}
