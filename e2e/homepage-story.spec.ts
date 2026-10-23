@@ -273,22 +273,99 @@ test.describe("homepage story", () => {
     await expect(dot).toBeVisible();
     await dot.focus();
     await expect(page.locator("#bshow .bs-card")).toBeVisible();
-    await expect(dot).toHaveAttribute("aria-describedby", "bs-card");
-    await expect(page.locator("#bs-card")).toHaveText(
-      BOARD_PARTS["learn-rp2350"][0].note
-    );
+    // the dot itself carries its part's name and note, whichever card was last open
+    const [p0, p1] = BOARD_PARTS["learn-rp2350"];
+    await expect(dot).toHaveAccessibleName(`${p0.ref}, ${p0.name}`);
+    await expect(dot).toHaveAccessibleDescription(p0.note);
+    await expect(
+      page.locator("#bshow .bs-dot").nth(1)
+    ).toHaveAccessibleDescription(p1.note);
     await page.keyboard.press("Escape");
     await expect(page.locator("#bshow .bs-card")).toBeHidden();
   });
 
+  test("the dots stay on their parts when the window is resized", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const show = page.locator("#bshow");
+    const parts = BOARD_PARTS["learn-rp2350"];
+    for (const width of [1440, 1300, 1279, 1061, 1000, 760]) {
+      await page.setViewportSize({ width, height: 900 });
+      await show
+        .locator(".bs-stage")
+        .evaluate(e =>
+          e.scrollIntoView({ block: "center", behavior: "instant" })
+        );
+      await expect(show.locator(".bs-dot").first()).toBeVisible();
+      await expect
+        .poll(async () => {
+          const img = (await show.locator(".bs-img.on img").boundingBox())!;
+          let worst = 0;
+          for (const [k, p] of parts.entries()) {
+            const b = (await show.locator(".bs-dot").nth(k).boundingBox())!;
+            worst = Math.max(
+              worst,
+              Math.abs(b.x + b.width / 2 - (img.x + p.x * img.width)),
+              Math.abs(b.y + b.height / 2 - (img.y + p.y * img.height))
+            );
+          }
+          return worst;
+        })
+        .toBeLessThan(2);
+    }
+  });
+
+  for (const width of [640, 420])
+    test(`in a ${width}px window the pointer can move onto a part's card and read it`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/");
+      const show = page.locator("#bshow");
+      await show
+        .locator(".bs-stage")
+        .evaluate(e =>
+          e.scrollIntoView({ block: "center", behavior: "instant" })
+        );
+      const dots = show.locator(".bs-dot");
+      const card = show.locator(".bs-card");
+      await expect(dots.first()).toBeVisible();
+      for (const k of [0, 1, 2]) {
+        await dots.nth(k).hover();
+        await expect(card).toBeVisible();
+        const d = (await dots.nth(k).boundingBox())!;
+        const c = (await card.boundingBox())!;
+        // aim at the card's point nearest the dot, slowly
+        const tx = Math.min(
+          Math.max(d.x + d.width / 2, c.x + 8),
+          c.x + c.width - 8
+        );
+        const ty = Math.min(
+          Math.max(d.y + d.height / 2, c.y + 8),
+          c.y + c.height - 8
+        );
+        await page.mouse.move(tx, ty, { steps: 12 });
+        await page.waitForTimeout(1_000);
+        await expect(card).toBeVisible();
+        await page.mouse.move(2, 2);
+        await expect(card).toBeHidden();
+      }
+    });
+
   test.describe("on a phone", () => {
     test.use({
       viewport: { width: 390, height: 844 },
+      // a phone's 2x screen: Chrome then moves a tap's click onto a nearby target, which the dots must not follow
+      deviceScaleFactor: 2,
       hasTouch: true,
       isMobile: true,
     });
 
-    test("a tap opens the part tapped, even where two dots sit close", async ({
+    test("a tap opens the part tapped on every board, even where two dots sit close", async ({
       page,
     }) => {
       await page.emulateMedia({ reducedMotion: "reduce" });
@@ -297,15 +374,20 @@ test.describe("homepage story", () => {
       const stage = show.locator(".bs-stage");
       const dots = show.locator(".bs-dot");
       const card = show.locator(".bs-card");
-      for (const slug of ["learn-rp2350", "probe-s3", "lpc55s69"]) {
+      for (const [slug, parts] of Object.entries(BOARD_PARTS)) {
         if (slug !== "learn-rp2350") await page.locator(`#bt-${slug}`).click();
-        await expect(dots).toHaveCount(BOARD_PARTS[slug].length);
+        await expect(dots).toHaveCount(parts.length);
+        // the new board's dots, not the last board's
+        await expect(dots.first()).toHaveAttribute(
+          "aria-label",
+          `${parts[0].ref}, ${parts[0].name}`
+        );
         await stage.evaluate(e =>
           e.scrollIntoView({ block: "center", behavior: "instant" })
         );
         // the dots show once the board image has loaded and sized their layer
         await expect(dots.first()).toBeVisible();
-        for (const [k, p] of BOARD_PARTS[slug].entries()) {
+        for (const [k, p] of parts.entries()) {
           const b = (await dots.nth(k).boundingBox())!;
           await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2);
           await expect(card.locator("b")).toHaveText(`${p.ref} · ${p.name}`);

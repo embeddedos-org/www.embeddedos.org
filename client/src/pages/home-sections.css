@@ -602,7 +602,7 @@
   margin-top: clamp(36px, 4vw, 48px);
 }
 
-/* ───────── the book shelf: a calm grid of 14 (seven across on wide screens), a sideways row on phones ───────── */
+/* ───────── the book shelf: a calm grid of 14 (seven across, then five), a sideways row on small screens ───────── */
 .hs .hp-shelf {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -682,13 +682,13 @@
     transform: translateY(-4px);
   }
 }
-@media (min-width: 700px) and (max-width: 1100px) {
+@media (min-width: 860px) and (max-width: 1100px) {
   .hs .hp-shelf {
-    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 36px 20px;
   }
 }
-@media (max-width: 699px) {
+@media (max-width: 859px) {
   .hs .hp-shelf {
     grid-template-columns: none;
     grid-auto-flow: column;
@@ -707,6 +707,21 @@
   }
   .hs .hp-shelf li {
     scroll-snap-align: start;
+  }
+}
+@media (max-width: 859px) and (hover: hover) and (pointer: fine) {
+  /* a mouse cannot swipe: the row keeps a thin scrollbar */
+  .hs .hp-shelf {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line2) transparent;
+  }
+  .hs .hp-shelf::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+  }
+  .hs .hp-shelf::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: var(--line2);
   }
 }
 

@@ -1483,6 +1483,9 @@
   margin: 0;
   color: var(--fg);
 }
+.bs-dl .nw {
+  white-space: nowrap;
+}
 .bs-f {
   margin: 0;
   padding-left: 17px;
@@ -1951,7 +1954,7 @@
   opacity: 0;
   pointer-events: none;
 }
-.bs-dot:hover::before,
+/* lit when its card is open (hover opens it, so a plain :hover would light the dot on top, not the one meant) */
 .bs-dot:focus-visible::before,
 .bs-dot[aria-expanded="true"]::before {
   transform: scale(1.25);

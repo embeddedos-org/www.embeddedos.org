@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { EAI_EDGE_PROFILE } from "@/data/architecture";
@@ -433,7 +433,15 @@ export function Showcase() {
                   <dt>Layers</dt>
                   <dd>{b.layers}</dd>
                   <dt>KiCad 10.0.6</dt>
-                  <dd>{BOARD_CHECKS}</dd>
+                  <dd>
+                    {/* breaks only between the three checks */}
+                    {BOARD_CHECKS.split(" · ").map((c, k) => (
+                      <Fragment key={c}>
+                        {k > 0 && " · "}
+                        <span className="nw">{c}</span>
+                      </Fragment>
+                    ))}
+                  </dd>
                 </dl>
                 <ul className="bs-f">
                   {b.facts.map(f => (
