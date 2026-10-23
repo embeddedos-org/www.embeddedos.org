@@ -10,9 +10,9 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID         | Task                                             | Owner    | Mode           | Status | Depends on                                        |
-| ---------- | ------------------------------------------------ | -------- | -------------- | ------ | ------------------------------------------------- |
-| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | review | Independent review; Calendly event is a follow-up |
+| ID         | Task                                             | Owner    | Mode           | Status | Depends on       |
+| ---------- | ------------------------------------------------ | -------- | -------------- | ------ | ---------------- |
+| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | review | Review of PR #94 |
 
 Acceptance criteria from the handoff:
 
@@ -49,22 +49,29 @@ does and keeps the topic's own case (`24eda785`). Review round 3 (`b34afe7c` to
 MIT and open-hardware statements, and `booking.php` is off by default (503, no
 mail) until the Calendly event exists.
 
-| Verification at `9eb25678` (2026-10-20)               | Result                                                                                                         |
-| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Type check, lint and format                           | PASS; ESLint 0 errors and 22 existing warnings                                                                 |
-| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build                 |
-| Full Vitest                                           | PASS, 1,093 passed and 8 skipped                                                                               |
-| Security suite                                        | PASS, 21 tests                                                                                                 |
-| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                  |
-| Playwright smoke, accessibility and functional suites | PASS, 16, 88 and 14 tests, one worker, Google hosts blocked                                                    |
-| Native PHP 8.4.26                                     | PASS, 316 assertions (booking 149, including the off switch)                                                   |
-| Board files                                           | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`                   |
-| Visual checks                                         | PASS for the catalogue, downloads, email fallback and footer at 1440 px and 375 px; no overflow or page errors |
+Progress on 2026-10-23: the owner created the Calendly event.
+`CALENDLY_EVENT_URL` is `https://calendly.com/kartikeydheer-embeddedos/30min`, so
+`/book` embeds the live calendar, and `booking.php`'s notices are on with it, to
+both inboxes. The endpoint still checks only the Origin header, the shape of the
+Calendly identifiers, the page path and 5 requests an hour per address; it
+cannot confirm a booking with Calendly. The owner should confirm in Calendly
+that the event's first custom question is the topic (the page prefills it as
+`a1`); that cannot be checked from the repository.
 
-The real Calendly event is still unconfigured (`CALENDLY_EVENT_URL = null`).
-Event hosts, availability, first custom question, video link and delivery to
-both inboxes remain unverified. No deployment or real notification delivery was
-performed.
+| Verification at `a8426546` (2026-10-23)               | Result                                                                                                                                                                                                                                      |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type check, lint and format                           | PASS; ESLint 0 errors and 22 existing warnings                                                                                                                                                                                              |
+| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build                                                                                                                                              |
+| Full Vitest                                           | 1,101 passed, 8 skipped, 1 failed: the dependency audit below                                                                                                                                                                               |
+| Security suite                                        | FAIL, 20 of 21: `pnpm audit --prod` now reports 1 critical and 3 high advisories (dompurify 3.4.13 via streamdown and mermaid; follow-redirects 1.16.0 via axios). `pnpm-lock.yaml` is identical to master, so this is not from this branch |
+| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                                                                                                                                               |
+| Playwright smoke, accessibility and functional suites | PASS, 16, 88 and 16 tests, one worker, Google hosts blocked                                                                                                                                                                                 |
+| Native PHP 8.4.26                                     | PASS, 316 assertions (booking 149, both switch states)                                                                                                                                                                                      |
+| Board files                                           | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`                                                                                                                                                |
+| Visual checks                                         | PASS for the catalogue, downloads, live calendar on `/book` and footer at 1440 px and 375 px; no overflow or page errors                                                                                                                    |
+
+No real booking, Calendly email or notice delivery has been made or verified, and
+nothing is deployed.
 
 ## Completed
 
