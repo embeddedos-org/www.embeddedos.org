@@ -424,6 +424,7 @@ export const SOCIAL_IMAGE_RULES = [
     /^\/(eostudio|product-eostudio)$/,
     "/media/product-eostudio-ide_2fc95a2d.jpg",
   ],
+  [/^\/eos-boards$/, "/media/board-eos-learn-rp2350-iso.jpg"],
   [
     /^\/(ecad-hardware|hardware-lab)$/,
     "/media/product-ecad-hardware_f5806032.jpg",

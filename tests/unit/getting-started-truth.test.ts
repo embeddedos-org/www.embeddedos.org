@@ -60,11 +60,11 @@ describe("getting-started guide truth", () => {
     }
   });
 
-  it("shows the platform count ebuild prints today, and where gate verdicts live", () => {
-    // `ebuild platforms list` printed 153 on 2026-10-08 (EoSim b34572c added
-    // four board defs); 149 was stale.
-    expect(page).toContain("153 EoSim platforms");
-    expect(page).not.toContain("149 EoSim platforms");
+  it("uses the shared platform snapshot and shows where gate verdicts live", () => {
+    // The browser test checks the rendered count against the shared snapshot.
+    // Here prevent a second, independently stale count in the command example.
+    expect(page).toContain("${SIM_PLATFORM_COUNT} EoSim platforms");
+    expect(page).not.toMatch(/# \d+ EoSim platforms/);
     // validate prints a JSON summary; the V0..V4 lines come from the receipt.
     expect(page).toContain("eRadar360_CAD_Design__hardware/receipt.json");
   });

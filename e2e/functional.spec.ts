@@ -295,3 +295,40 @@ test.describe("careers application submission", () => {
     expect(panel).not.toMatch(/Application received/i);
   });
 });
+
+test.describe("the footer's board-licence link", () => {
+  // The link goes to /eos-boards#licence. wouter does not scroll to a hash on
+  // the path already open, so on /eos-boards the footer scrolls there itself;
+  // from any other page the router's hash landing does it. Either way the
+  // section must end up in view, below the fixed header, not under it.
+  for (const from of ["/eos-boards", "/terms"]) {
+    test(`lands on the licence section, clear of the header, from ${from}`, async ({
+      page,
+    }) => {
+      await page.goto(from, { waitUntil: "networkidle" });
+      const link = page
+        .locator("footer")
+        .getByRole("link", { name: "EoS board designs: all rights reserved" });
+      await link.scrollIntoViewIfNeeded();
+      await link.click();
+      await expect(page).toHaveURL(/\/eos-boards#licence$/);
+
+      const section = page.locator("#licence");
+      await expect(section).toBeVisible();
+      const headerBottom = await page
+        .locator('header[role="banner"]')
+        .evaluate(el => Math.round(el.getBoundingClientRect().bottom));
+      await expect
+        .poll(
+          () =>
+            section.evaluate(el => {
+              const top = Math.round(el.getBoundingClientRect().top);
+              return top >= 0 && top < window.innerHeight / 2 ? top : -1;
+            }),
+          { timeout: 5000 }
+        )
+        .toBeGreaterThanOrEqual(headerBottom);
+      await expect(page.locator("#licence-heading")).toBeInViewport();
+    });
+  }
+});

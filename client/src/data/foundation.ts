@@ -218,7 +218,7 @@ export const OUT_OF_SCOPE = [
   {
     claim: "We do not sell software, licences or access.",
     detail:
-      "Every Foundation repository is MIT licensed. There is no paid tier, no " +
+      "All Foundation software is MIT licensed. There is no paid tier, no " +
       "commercial edition and no feature withheld from the free release.",
   },
   {
@@ -382,3 +382,6 @@ export const SOCIAL_URLS = {
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
   discord: "https://discord.gg/n6Kd9fwja",
 } as const;
+
+export const CALENDLY_EVENT_URL: string | null =
+  "https://calendly.com/kartikeydheer-embeddedos/30min";

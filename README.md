@@ -312,6 +312,81 @@ migrate).
 
 ---
 
+## Booking
+
+`/book` is the booking page, linked as "Book a call" in the header. `/contact`
+and `/eos-boards` each carry a compact card that links to it. The page is
+`client/src/pages/Book.tsx`: pick a topic, pick a time in the embedded Calendly
+calendar (`client/src/components/BookingCalendar.tsx`), then see the confirmed
+state. Topics, durations, the "what to expect" list and the FAQ are in
+`client/src/data/booking.ts`.
+
+- **The event URL is one constant:** `CALENDLY_EVENT_URL` in
+  `client/src/data/foundation.ts`. It is set to the team's event,
+  `https://calendly.com/kartikeydheer-embeddedos/30min`, so `/book` embeds the
+  calendar. If it is ever `null` again, choosing a topic offers
+  to arrange the call by email through the contact form, and nothing loads from
+  Calendly. The page then shows the `_BY_EMAIL` versions of the "what to expect"
+  list, the time-zone note and the FAQ, which promise an email reply and no
+  Calendly confirmation. Set it to the event's public scheduling link,
+  `https://calendly.com/<user>/<event>`; any other value keeps the email
+  fallback. Once it is set, Calendly's `widget.js` and `widget.css` load when
+  the calendar nears the viewport. A plain link to the scheduling page sits under
+  the calendar in case the script is blocked.
+- **The topic is prefilled** as `a1`, the answer to the event's first custom
+  question (Calendly Help Center, "How to pre-fill invitee information in your
+  Calendly link",
+  https://calendly.com/help/how-to-pre-fill-invitee-information-in-your-calendly-link).
+  In Calendly, give the event a first question such as "What would you like to
+  talk about?", or the topic is not recorded. **The event's first custom
+  question must be the topic:** nothing in this repository can check that;
+  confirm it in Calendly. Each card shows `BOOKING_MINUTES` (30), which must
+  match the event's duration.
+- **The calendar is themed** with Calendly's `background_color`, `text_color`
+  and `primary_color` parameters, set from the brand navy and orange
+  (`CALENDLY_THEME` in `client/src/lib/booking.ts`, tested against
+  `client/src/index.css`). The frame URL carries only those three colours and
+  the `a1` topic; it does not hide Calendly's cookie banner, so Calendly shows
+  its own cookie preferences for the visitor's region, as the Privacy page
+  says. Calendly applies the colours only on its paid plans ("If you're on a
+  paid plan, you can update your embed's look and feel",
+  https://calendly.com/help/how-to-customize-your-embed). On a free plan the
+  calendar stays white inside the dark card.
+- **CSP:** `client/public/.htaccess` allows `https://assets.calendly.com` in
+  `script-src` and `style-src`, and `https://calendly.com` in `frame-src`.
+- **Notifications:** Calendly emails the event's host. As well, when a visitor
+  books in the embedded calendar, the page takes the event and invitee
+  identifiers from Calendly's `calendly.event_scheduled` message (accepted
+  from `https://calendly.com` only) and posts them, with the page path, to
+  `client/public/api/booking.php`, which mails kartikeydheer@embeddedos.org and
+  srikanth@embeddedos.org with the subject "New meeting booked via
+  embeddedos.org". The addresses are `BOOKING_INBOXES` in that file, on the
+  server only.
+- **`booking.php` is on, together with the event URL.**
+  `BOOKING_NOTICES_ENABLED` in that file is `true` because `CALENDLY_EVENT_URL`
+  is set; the two change together. When it is `false`, every request gets HTTP
+  503 with `{"ok":false,"error":"booking_notices_disabled"}` and no mail is
+  sent, so set it back to `false` whenever `CALENDLY_EVENT_URL` is `null`. Even
+  when it is on, the endpoint checks
+  only that the request carries the site's `Origin` header, that the event and
+  invitee identifiers have the shape of Calendly's API URIs (the invitee
+  belonging to that event), that the page is a plain site path, and that one
+  address sends at most 5 requests an hour. Any client outside a browser can
+  set the `Origin` header, and there is no Calendly signature to verify, so the
+  endpoint cannot confirm that a booking exists: each email says it is not
+  checked against Calendly and to confirm the booking there.
+- **On Calendly's side,** so that Srikanth also gets Calendly's own booking
+  emails, make the event a Collective event type and add him as a co-host. In
+  Calendly: open the Scheduling page, open the event type's settings, expand
+  **Hosts**, enter his name or email, select **+ Add co-host**, then **Save
+  changes** (Calendly Help Center, "How to manage shared event types",
+  https://calendly.com/help/how-to-manage-shared-event-types). That article
+  lists shared event types for the Professional, Standard, Standard Plus,
+  Teams, Teams Plus and Enterprise plans. A Collective event offers only times
+  when every host is free. Calendly's notifications article documents no other
+  way to add a recipient to the host's booking email
+  (https://calendly.com/help/calendly-scheduling-notifications).
+
 ## Notes for contributors
 
 - **Do not render `<Navbar />` or `<Footer />` inside a page.** `App.tsx`
@@ -370,9 +445,38 @@ migrate).
   clip the section.
 - Payload budgets are enforced in `tests/performance/budgets.test.ts`; adding a
   large eager import will fail the suite rather than quietly regress the site.
+- **A new board on `/eos-boards` is one manifest entry plus its media, its
+  two KiCad files and its licence.** Add the board to `EOS_BOARDS` in
+  `client/src/data/eos-boards.ts`, copying its facts from the board's
+  `README.md` and its check counts from `build-report.json` and `drc.json` in
+  eCAD-Hardware-Products. Put its media in `client/public/media/`:
+  `board-<slug>-iso.jpg`, `-top.jpg` and `-bottom.jpg` from the board's
+  renders, `board-<slug>-thumb.jpg` (the iso render at 480 px, for the index),
+  `board-<slug>-turntable.mp4` (H.264, no audio) and
+  `board-<slug>-turntable-poster.jpg` (the video's first frame). Copy, unchanged
+  and from the commit in `checks.commit`, its native files
+  `boards/eos/<slug>/hardware/<slug>.kicad_sch` and `<slug>.kicad_pcb` to
+  `client/public/cad/<slug>/`, and its `boards/eos/<slug>/LICENSE.txt` to
+  `client/public/board-licences/<slug>.txt` (`git show <commit>:<path>` in
+  eCAD-Hardware-Products gives the exact bytes).
+  Set `source` to `BOARD_SOURCES.merged`: the page lists only boards merged on
+  eCAD-Hardware-Products master. Set `checks.commit` to the commit its counts
+  come from. Then run `pnpm optimize:images` for the WebP siblings and the manifest.
+  `tests/unit/eos-boards.test.tsx` fails if a media, KiCad or licence file is
+  missing, a declared pixel size is wrong, or a KiCad file or licence does not
+  carry the owner's name and terms.
 
 ---
 
 ## Licence
 
-MIT. See [SECURITY.md](./SECURITY.md) for the vulnerability disclosure policy.
+MIT, except the EmbeddedOS development-board renders and turntable videos in
+`client/public/media/board-*`, the boards' native KiCad files in
+`client/public/cad/`, and the board licences in `client/public/board-licences/`
+(each board's `LICENSE.txt`, unchanged). Those are Copyright (c) 2026
+Kartikeydheer Srivastava, all rights reserved, and are published here for
+viewing under each board's `LICENSE.txt` in eCAD-Hardware-Products; see
+`/eos-boards`. Third-party material in a board keeps its own licence, as that
+board's licence lists.
+
+See [SECURITY.md](./SECURITY.md) for the vulnerability disclosure policy.

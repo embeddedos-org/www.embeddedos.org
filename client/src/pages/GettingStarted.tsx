@@ -254,7 +254,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       {
         title: "Which Boards Can Be Simulated",
         text: "ebuild sim runs Arm Cortex-M targets: stm32f4, stm32h7, stm32l4, nrf52, nrf52840, rp2040 and raspi-pico, all on the same QEMU Cortex-M3 machine. Other boards, such as esp32, are refused with a message instead of being faked.",
-        code: `ebuild platforms list\n# 153 EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
+        code: `ebuild platforms list\n# ${SIM_PLATFORM_COUNT} EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
       },
       {
         title: "Debug with GDB",
@@ -484,7 +484,7 @@ export default function GettingStarted() {
             <h2 className="font-heading font-black text-2xl text-white mb-2">
               The EmbeddedOS Ecosystem
             </h2>
-            <p className="text-white/40 text-sm">
+            <p className="text-white/60 text-sm">
               8 tools that work together — understand what each one does before
               you start
             </p>
@@ -525,7 +525,7 @@ export default function GettingStarted() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-white/45 text-xs leading-relaxed">
+                  <p className="text-white/65 text-xs leading-relaxed">
                     {tool.desc}
                   </p>
                 </motion.div>
@@ -548,7 +548,7 @@ export default function GettingStarted() {
             <h2 className="font-heading font-black text-2xl text-white mb-1">
               Choose Your Path
             </h2>
-            <p className="text-white/40 text-sm">
+            <p className="text-white/60 text-sm">
               Pick the option that matches where you are right now
             </p>
           </motion.div>
@@ -603,7 +603,7 @@ export default function GettingStarted() {
                     <div className="font-heading font-bold text-white text-sm">
                       {p.label}
                     </div>
-                    <div className="text-xs text-white/45">{p.sublabel}</div>
+                    <div className="text-xs text-white/65">{p.sublabel}</div>
                   </div>
                 </button>
               );
@@ -658,7 +658,7 @@ export default function GettingStarted() {
                   >
                     <Info size={14} className="text-white/40 mt-0.5 shrink-0" />
                     <div>
-                      <span className="text-xs font-bold text-white/40 uppercase tracking-wider">
+                      <span className="text-xs font-bold text-white/60 uppercase tracking-wider">
                         Prerequisites:{" "}
                       </span>
                       <span className="text-xs text-white/60">
@@ -731,7 +731,7 @@ export default function GettingStarted() {
                                 onClick={() =>
                                   copyCode(step.code!, `${pathId}-${i}`)
                                 }
-                                className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
+                                className="flex items-center gap-1.5 text-xs text-white/65 hover:text-white transition-colors"
                               >
                                 {copiedKey === `${pathId}-${i}` ? (
                                   <CheckCircle2
@@ -746,7 +746,12 @@ export default function GettingStarted() {
                                   : "Copy"}
                               </button>
                             </div>
-                            <pre className="p-4 text-xs overflow-x-auto font-mono leading-relaxed">
+                            <pre
+                              role="region"
+                              aria-label={`${step.title} commands`}
+                              tabIndex={0}
+                              className="p-4 text-xs overflow-x-auto font-mono leading-relaxed"
+                            >
                               <code style={{ color: "#E6EDF3" }}>
                                 {step.code}
                               </code>
@@ -797,7 +802,7 @@ export default function GettingStarted() {
                   className="mt-8 rounded-2xl border border-white/8 p-5"
                   style={{ background: "rgba(255,255,255,0.02)" }}
                 >
-                  <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
+                  <div className="text-xs font-bold text-white/60 uppercase tracking-widest mb-3">
                     What's Next
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -851,7 +856,7 @@ export default function GettingStarted() {
             <h2 className="font-heading font-black text-2xl text-white mb-1">
               Once it builds, where to look next
             </h2>
-            <p className="text-white/40 text-sm">
+            <p className="text-white/60 text-sm">
               The pages that explain how the pieces fit together
             </p>
           </motion.div>
@@ -875,7 +880,7 @@ export default function GettingStarted() {
               {
                 href: "/downloads",
                 label: "Every repository and install command",
-                desc: "All EmbeddedOS repositories, MIT licensed, in one list.",
+                desc: "All EmbeddedOS software repositories, MIT licensed, in one list.",
               },
               {
                 href: "/stacks",

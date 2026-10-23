@@ -1,10 +1,10 @@
 /**
- * GENERATED FILE — do not edit by hand.
+ * Committed stack-data snapshot.
  *
- * Regenerate with `pnpm sync:stack`, which counts and copies from the sibling
- * EmbeddedOS repositories. Every figure here is derived from a source repo, so
- * the website cannot drift from the stack the way it did when these numbers
- * were written by hand.
+ * The manifest sync pipeline is retired; refresh fields from recorded source
+ * repository evidence (see source below). Other fields retain their recorded
+ * snapshot dates; updating one field does not reverify the entire snapshot.
+ * Do not infer runtime support from descriptor counts.
  *
  * See scripts/sync-stack-data.mjs for what is deliberately not included.
  */
@@ -127,7 +127,9 @@ export const STACK = {
       "Texas Instruments",
       "Xilinx/AMD",
     ],
-    simulatedPlatforms: 150,
+    // `ebuild platforms list`: 158 descriptors, verified 2026-10-21 against
+    // EoSim c73961d9fc6182f5f15cd0f96149f62651e89902; not 158 runnable targets.
+    simulatedPlatforms: 158,
   },
   tiers: {
     "1": "Core OS",

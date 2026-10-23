@@ -882,7 +882,7 @@ export default function Home() {
             >
               {" "}
               <Link className="eyebrow" href="/mission">
-                Foundation · 501(c)(3) · MIT License
+                Foundation · 501(c)(3) · MIT License (software)
               </Link>{" "}
               <h1 id="hero-heading">
                 Open-source embedded systems for intelligent physical devices
@@ -2015,7 +2015,9 @@ export default function Home() {
                 named models. Each carries a datasheet, and most add a bill of
                 materials and a power simulation. All are at design stage; no
                 routed PCB or Gerbers yet. The repository is published under the
-                MIT licence.
+                MIT licence, except the original EoS development boards, which
+                are all rights reserved, and the manufacturer designs mirrored
+                under boards/cad, which keep their manufacturers' licences.
               </p>{" "}
               <p className="fact">
                 <span>Ten future concepts</span>eBCI-Lite, eCubeSat-1U,
@@ -5756,7 +5758,7 @@ export default function Home() {
             <div className="hp-cta-card">
               {" "}
               <span className="hp-badge" data-fade="">
-                Open Source · 501(c)(3) · MIT License
+                Open Source · 501(c)(3) · MIT License (software)
               </span>{" "}
               <h2 id="hp-cta" data-split="">
                 Ready to build on EmbeddedOS?

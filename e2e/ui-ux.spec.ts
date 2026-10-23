@@ -7,6 +7,7 @@
  */
 import { test, expect, type Page } from "./fixtures";
 import AxeBuilder from "@axe-core/playwright";
+import { STACK } from "../shared/stack-data";
 
 /**
  * Stop the page fetching the third-party Zeffy donation iframe.
@@ -36,6 +37,8 @@ const PAGES = [
   "/faq",
   "/careers",
   "/get-involved",
+  "/getting-started",
+  // One page
   // One page per distinct component added for the Marketing and Research
   // structure. Listing all 33 would treble the suite's runtime to re-test the
   // same four components with different text; listing none would have shipped
@@ -54,6 +57,8 @@ const PAGES = [
   "/press-kit", // press kit
   "/social", // social accounts
   "/youtube", // channel page
+  "/eos-boards",
+  "/book",
 ];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
@@ -90,6 +95,70 @@ test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
       expect(summary, `axe violations on ${route}`).toEqual([]);
     });
   }
+});
+
+test.describe("getting-started delivery paths", () => {
+  test("every path exposes its panel without overflow or blocking axe violations", async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    await page.goto("/getting-started", { waitUntil: "networkidle" });
+    const tabs = page
+      .getByRole("tablist", { name: "Getting started paths" })
+      .getByRole("tab");
+    const count = await tabs.count();
+    expect(count).toBe(6);
+
+    for (let index = 0; index < count; index++) {
+      const tab = tabs.nth(index);
+      const label = await tab.innerText();
+      await tab.click();
+      await expect(tab).toHaveAttribute("aria-selected", "true");
+      await expect(tab).toHaveAttribute("tabindex", "0");
+      const panelId = await tab.getAttribute("aria-controls");
+      expect(panelId).toBeTruthy();
+      const panel = page.locator(`#${panelId}`);
+      await expect(panel).toBeVisible();
+      await expect(page.getByRole("tabpanel")).toHaveCount(1);
+      expect((await panel.innerText()).length, label).toBeGreaterThan(100);
+
+      const overflow = await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth
+      );
+      expect(overflow, `${label} overflows the viewport`).toBeLessThanOrEqual(
+        1
+      );
+
+      const results = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+        .analyze();
+      const blocking = results.violations
+        .filter(v => v.impact === "serious" || v.impact === "critical")
+        .map(v => `${v.id}: ${v.help}`);
+      expect(blocking, `${label} accessibility violations`).toEqual([]);
+    }
+  });
+
+  test.describe("without JavaScript", () => {
+    test.use({ javaScriptEnabled: false });
+
+    test("the prerendered simulation instructions remain readable", async ({
+      page,
+    }) => {
+      await page.goto("/getting-started");
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      const panel = page.getByRole("tabpanel");
+      await expect(panel).toHaveCount(1);
+      await expect(panel).toBeVisible();
+      await expect(panel).toContainText("ebuild setup");
+      await expect(panel).toContainText("ebuild sim");
+      await expect(panel).toContainText(
+        `${STACK.totals.simulatedPlatforms} EoSim platforms`
+      );
+    });
+  });
 });
 
 test.describe("document structure", () => {
@@ -151,7 +220,15 @@ test.describe("responsive layout", () => {
       // /careers carries the only real form on the site — a two-column grid of
       // inputs and three comboboxes, which is the layout most likely to burst
       // its container on a narrow screen, and it was not in this sample.
-      for (const route of ["/", "/about", "/donate", "/careers"]) {
+      for (const route of [
+        "/",
+        "/about",
+        "/donate",
+        "/careers",
+        "/eos-boards",
+        "/contact",
+        "/book",
+      ]) {
         await page.goto(route);
         await page.waitForTimeout(400);
         const overflow = await page.evaluate(
@@ -217,6 +294,37 @@ test.describe("responsive layout", () => {
 });
 
 test.describe("keyboard operability", () => {
+  test("the /book topic cards are radios a keyboard can choose, with a visible focus ring", async ({
+    page,
+  }) => {
+    await page.goto("/book", { waitUntil: "networkidle" });
+    const first = page.getByRole("radio", { name: /Platform demo/ });
+    await first.focus();
+    await page.keyboard.press("Space");
+    await expect(first).toBeChecked();
+    await page.keyboard.press("ArrowDown");
+    const second = page.getByRole("radio", { name: /Partnership or OEM/ });
+    await expect(second).toBeChecked();
+    await expect(second).toBeFocused();
+    // CALENDLY_EVENT_URL is set, so step 2 is "Pick a time"; the unit tests
+    // pin the email-fallback labels with the URL forced to null.
+    await expect(
+      page
+        .getByRole("list", { name: "Booking progress" })
+        .locator('[aria-current="step"]')
+    ).toContainText("Pick a time");
+    const ring = await second.evaluate(input => {
+      const card = input.nextElementSibling as HTMLElement;
+      const style = getComputedStyle(card);
+      return {
+        style: style.outlineStyle,
+        width: parseFloat(style.outlineWidth),
+      };
+    });
+    expect(ring.style).toBe("solid");
+    expect(ring.width).toBeGreaterThanOrEqual(2);
+  });
+
   test("primary navigation is reachable by keyboard", async ({ page }) => {
     await page.goto("/");
     const reached: string[] = [];
@@ -248,6 +356,7 @@ test.describe("keyboard operability", () => {
     ["/architecture", "Architecture diagrams"],
     ["/api-docs", "API modules"],
     ["/eosuite", "App categories"],
+    ["/getting-started", "Getting started paths"],
   ] as const) {
     test(`arrow keys move through the ${label} tabs and switch the panel`, async ({
       page,
@@ -264,6 +373,8 @@ test.describe("keyboard operability", () => {
       const next = vertical ? "ArrowDown" : "ArrowRight";
       const previous = vertical ? "ArrowUp" : "ArrowLeft";
 
+      // Not every page initially selects its first tab (the guide starts on sim).
+      await tabs.first().click();
       await tabs.first().focus();
       await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
       const target = (await tabs.first().getAttribute("aria-controls")) ?? "";

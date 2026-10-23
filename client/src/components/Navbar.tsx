@@ -17,6 +17,7 @@ import {
   Menu,
   X,
   Star,
+  CalendarDays,
   Package,
   Wrench,
   Heart,
@@ -732,6 +733,16 @@ export default function Navbar() {
                     GitHub
                   </a>
                 </NavigationMenu.Item>
+
+                <NavigationMenu.Item>
+                  <Link
+                    href="/book"
+                    className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/5 transition-colors duration-150"
+                  >
+                    <CalendarDays size={14} className="text-[#22D3EE]" />
+                    Book a call
+                  </Link>
+                </NavigationMenu.Item>
               </NavigationMenu.List>
 
               <NavigationMenu.Viewport
@@ -952,6 +963,14 @@ export default function Navbar() {
                   <Star size={16} className="text-[#F97316]" />
                   GitHub
                 </a>
+                <Link
+                  href="/book"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  <CalendarDays size={16} className="text-[#22D3EE]" />
+                  Book a call
+                </Link>
               </div>
 
               {/* CTA */}
