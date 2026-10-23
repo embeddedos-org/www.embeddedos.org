@@ -438,7 +438,8 @@
 .bk-legend i.b {
   background: var(--gold-dim);
 }
-.bk .traces {
+/* the story's trace overlay waits for its scene (the board map in the sections below has its own) */
+.bk-story .traces {
   opacity: 0;
 }
 .bk .t-f,

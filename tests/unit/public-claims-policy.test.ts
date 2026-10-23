@@ -15,6 +15,7 @@ const PUBLIC_SOURCES = [
   "client/src/components/HealthShowcase.tsx",
   "client/src/components/Navbar.tsx",
   "client/src/data/article-bodies.ts",
+  "client/src/data/books.ts",
   "client/src/data/category-about.ts",
   "client/src/data/content.ts",
   "client/src/data/programme-details.ts",
