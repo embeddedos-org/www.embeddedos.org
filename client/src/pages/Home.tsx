@@ -509,7 +509,8 @@ export default function Home() {
               </h2>
               <p className="hp-lead" data-fade="">
                 The Embedded Operating Systems Research Foundation is a
-                501(c)(3) public charity (EIN 41-4821627). We exist to advance
+                501(c)(3) public charity (
+                <span className="nw">EIN 41-4821627</span>). We exist to advance
                 open-source embedded systems research, education, and technology
                 for the public benefit, accountable to our community, not to
                 shareholders. Every line of code we publish is MIT licensed and
@@ -675,7 +676,7 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-              <ol className="hp-dev" data-stagger="">
+              <ol className="hp-dev" role="list" data-stagger="">
                 {HEALTH.map((d, i) => (
                   <li key={d.name} style={tint(d.c)}>
                     <span className="n">{String(i + 1).padStart(2, "0")}</span>

@@ -407,7 +407,7 @@ export function Showcase() {
             </div>
             <div className="bs-lens" aria-hidden="true" />
             <p className="bs-tip" aria-hidden="true">
-              Point at the board to look closer, or at a dot to see the part
+              Point at a dot to see the part, or turn on Magnify to look closer
             </p>
             <p className="bs-count" aria-hidden="true">
               <b>01</b> / {String(n).padStart(2, "0")}
@@ -429,7 +429,7 @@ export function Showcase() {
                   <dt>Main chip</dt>
                   <dd>{b.chip}</dd>
                   <dt>Size</dt>
-                  <dd>{b.size} mm</dd>
+                  <dd>{`${b.size}\u00a0mm`}</dd>
                   <dt>Layers</dt>
                   <dd>{b.layers}</dd>
                   <dt>KiCad 10.0.6</dt>

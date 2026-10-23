@@ -1421,6 +1421,11 @@
   right: 22px;
   top: 20px;
   font-size: 13px;
+  transition: opacity 0.2s;
+}
+/* a part's card may sit where the count is; the count steps aside while one is open */
+.bshow.dotting .bs-count {
+  opacity: 0;
 }
 .bs-count b {
   color: var(--fg);
@@ -1494,6 +1499,15 @@
   color: var(--orange-hi);
   margin-top: 2px;
 }
+@media (pointer: coarse) {
+  .bs-go {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    min-height: 44px;
+    margin-block: -11px;
+  }
+}
 .bs-act {
   display: flex;
   align-items: center;
@@ -1531,7 +1545,6 @@
   }
   .bs-info > .bs-pane {
     grid-column: 1;
-    grid-row: 1;
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr) minmax(0, 1fr);
     grid-template-areas: "k dl f" "h dl f" "d dl f" "go dl f";
@@ -1539,8 +1552,14 @@
     column-gap: 40px;
     row-gap: 12px;
   }
+  /* every pane shares one cell, the others kept but unseen, so the cell is always as tall as the tallest board's
+     facts and the strip below never moves when the board changes */
+  .bshow.js .bs-info > .bs-pane {
+    grid-row: 1;
+  }
   .bshow.js .bs-info > .bs-pane:not(.on) {
-    display: none;
+    display: grid;
+    visibility: hidden;
   }
   .bs-pane .bs-k {
     grid-area: k;
@@ -1576,6 +1595,28 @@
   .bs-info > .bs-act .bs-hint {
     max-width: 200px;
     text-align: right;
+  }
+}
+/* 1061-1279: the arrows and count go under the facts, so the size and KiCad lines keep room to read on one line */
+@media (min-width: 1061px) and (max-width: 1279px) {
+  .bs-info {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 18px;
+  }
+  .bs-info > .bs-pane {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 0.9fr) minmax(0, 1fr);
+    column-gap: 32px;
+  }
+  .bs-info > .bs-act {
+    grid-column: 1;
+    grid-row: 2;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bs-info > .bs-act .bs-hint {
+    max-width: none;
+    text-align: left;
   }
 }
 .bs-strip {
@@ -1937,12 +1978,11 @@
       0 0 0 2px rgba(255, 138, 61, 0.55),
       0 1px 6px rgba(0, 0, 0, 0.7);
   }
-  .bs-card {
-    font-size: 13px;
-  }
 }
 .bs-card {
   position: absolute;
+  left: 0;
+  top: 0;
   z-index: 4;
   width: min(290px, 78%);
   display: grid;
@@ -1957,7 +1997,18 @@
   font-size: 13.5px;
   line-height: 1.45;
   color: var(--fg);
-  pointer-events: none;
+  /* the pointer can rest on the card to read it (WCAG 1.4.13); it is placed with translate, never left/top */
+  pointer-events: auto;
+}
+.bs-card.dock {
+  width: calc(100% - 12px);
+  max-width: 520px;
+}
+@media (max-width: 700px) {
+  .bs-card {
+    font-size: 13px;
+    padding: 11px 13px 12px;
+  }
 }
 .bs-card[hidden] {
   display: none;
@@ -1972,6 +2023,42 @@
 }
 .bshow.dotting .bs-lens {
   opacity: 0;
+}
+.bshow.lens .bs-hots {
+  visibility: hidden;
+}
+.bs-mag {
+  position: absolute;
+  left: 18px;
+  top: 14px;
+  z-index: 5;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--fg2);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.bs-mag:hover {
+  color: var(--fg);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.bs-mag[aria-pressed="true"] {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+.bs-mag:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
 }
 .bshow.dotting .bs-stage {
   cursor: auto;

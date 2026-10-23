@@ -1565,8 +1565,8 @@ export function mountBlack(host) {
 
   /* ---------------------------------------------------------------- the board showcase */
   function showcase(el) {
-    // The strip selects a board; its image crosses over on the stage and its pane shows. A fine pointer gets a
-    // lens over the full-resolution render; touch swipes. It never changes board by itself. The board settles onto
+    // The strip selects a board; its image crosses over on the stage and its pane shows. Dots mark its parts; a
+    // fine pointer can turn on a lens over the full-resolution render; touch swipes. It never changes board by itself. The board settles onto
     // the stage as the section scrolls in.
     if (!el) return null;
     const base = el.getAttribute("data-base");
@@ -1609,23 +1609,30 @@ export function mountBlack(host) {
     // pointing at one, focusing it or tapping it shows what the part is and what it does here
     const hots = D.createElement("div");
     hots.className = "bs-hots";
+    hots.hidden = true;
     const card = D.createElement("div");
     card.className = "bs-card";
-    card.id = "bs-card";
     card.setAttribute("role", "tooltip");
     card.hidden = true;
+    const cardH = D.createElement("b");
+    const cardT = D.createElement("span");
+    cardT.id = "bs-card"; // each dot names its part; the note alone is its description
+    card.append(cardH, cardT);
     hots.appendChild(card);
     fig.appendChild(hots);
     let dotOn = null;
     let hideT = 0;
     let lastPointer = "mouse";
     let pointerAt = -1e9;
+    let mag = false;
     const partsOf = i => BOARD_PARTS[tabs[i].getAttribute("data-s")] || [];
     function placeHots() {
-      // the layer covers the drawn board exactly (the image element is sized to the render's own 4:3 shape)
+      // the layer covers the drawn board exactly (the image element is sized to the render's own 4:3 shape); until
+      // the lazy image has loaded it has no size, and the dots stay hidden rather than gather in a corner
       const s = slots[slot];
       const im = s.querySelector("img");
-      if (!im.offsetWidth) return;
+      hots.hidden = !im.offsetWidth;
+      if (hots.hidden) return;
       hots.style.left = s.offsetLeft + im.offsetLeft + "px";
       hots.style.top = s.offsetTop + im.offsetTop + "px";
       hots.style.width = im.offsetWidth + "px";
@@ -1638,25 +1645,31 @@ export function mountBlack(host) {
       if (dotOn && dotOn !== b) dotOn.setAttribute("aria-expanded", "false");
       dotOn = b;
       b.setAttribute("aria-expanded", "true");
-      const h = D.createElement("b");
-      h.textContent = p.ref + " · " + p.name;
-      const t = D.createElement("span");
-      t.textContent = p.note;
-      card.replaceChildren(h, t);
+      cardH.textContent = p.ref + " · " + p.name;
+      cardT.textContent = p.note;
+      card.classList.remove("dock");
       card.hidden = false;
-      // beside the dot, kept inside the board's frame
-      const w = card.offsetWidth;
-      const hh = card.offsetHeight;
       const W0 = hots.clientWidth;
       const H0 = hots.clientHeight;
       const px = p.x * W0;
       const py = p.y * H0;
+      let w = card.offsetWidth;
+      let hh = card.offsetHeight;
       let x = px + 20;
+      let y = 0;
       if (x + w > W0 - 6) x = px - 20 - w;
-      if (x < 6) x = clamp(px - w / 2, 6, Math.max(6, W0 - w - 6));
-      const y = clamp(py - hh / 2, 6, Math.max(6, H0 - hh - 6));
-      card.style.left = Math.round(x) + "px";
-      card.style.top = Math.round(y) + "px";
+      if (x >= 6) y = clamp(py - hh / 2, 6, Math.max(6, H0 - hh - 6));
+      else {
+        // no room beside the dot (a narrow board): the card spans the board along the edge away from the part,
+        // so it never covers what it describes
+        card.classList.add("dock");
+        w = card.offsetWidth;
+        hh = card.offsetHeight;
+        x = (W0 - w) / 2;
+        y = py > H0 / 2 ? 6 : Math.max(6, H0 - hh - 6);
+      }
+      // moved with a transform, not left/top, so following the pointer from dot to dot is never a layout shift
+      card.style.translate = Math.round(x) + "px " + Math.round(y) + "px";
       el.classList.add("dotting");
       el.classList.remove("lens");
     }
@@ -1669,7 +1682,7 @@ export function mountBlack(host) {
         el.classList.remove("dotting");
       };
       if (now) done();
-      else hideT = later(done, 140);
+      else hideT = setTimeout(done, 140);
     }
     function renderDots(i) {
       hideCard(true);
@@ -1692,18 +1705,38 @@ export function mountBlack(host) {
       hots.classList.add("in");
       placeHots();
     }
+    // a fingertip's 44px targets overlap where two parts sit close; a tap goes to the dot nearest the finger
+    function nearest(x, y) {
+      let best = null;
+      let bd = Infinity;
+      hots.querySelectorAll(".bs-dot").forEach(d => {
+        const r = d.getBoundingClientRect();
+        const dd =
+          (r.left + r.width / 2 - x) ** 2 + (r.top + r.height / 2 - y) ** 2;
+        if (dd < bd) {
+          bd = dd;
+          best = d;
+        }
+      });
+      return best;
+    }
     const dotOf = e =>
       e.target instanceof Element ? e.target.closest(".bs-dot") : null;
+    const inCard = n => n instanceof Node && card.contains(n);
     on(hots, "pointerdown", e => {
       lastPointer = e.pointerType || "mouse";
       pointerAt = performance.now();
     });
     on(hots, "pointerover", e => {
+      if (e.pointerType !== "mouse") return;
       const b = dotOf(e);
-      if (b && e.pointerType === "mouse") showCard(b);
+      if (b) showCard(b);
+      // the pointer can move onto the card and read it there: it stays open (WCAG 1.4.13)
+      else if (inCard(e.target)) clearTimeout(hideT);
     });
     on(hots, "pointerout", e => {
-      if (dotOf(e) && e.pointerType === "mouse") hideCard();
+      if (e.pointerType !== "mouse" || !(dotOf(e) || inCard(e.target))) return;
+      if (!inCard(e.relatedTarget) && e.relatedTarget !== dotOn) hideCard();
     });
     on(hots, "focusin", e => {
       // keyboard focus opens the card; a tap's focus is left to its click, which toggles
@@ -1714,22 +1747,37 @@ export function mountBlack(host) {
       if (dotOf(e)) hideCard();
     });
     on(hots, "click", e => {
-      const b = dotOf(e);
+      let b = dotOf(e);
       if (!b) return;
+      const tap = lastPointer !== "mouse";
+      if (tap && e.detail) {
+        b = nearest(e.clientX, e.clientY) || b;
+        if (D.activeElement !== b) b.focus({ preventScroll: true });
+      }
       // a tap toggles the card; a mouse already shows it on hover
-      if (lastPointer !== "mouse" && dotOn === b && !card.hidden)
-        hideCard(true);
+      if (tap && dotOn === b && !card.hidden) hideCard(true);
       else showCard(b);
     });
-    on(el, "keydown", e => {
+    // Escape closes the card wherever focus is, as a tooltip must
+    on(D, "keydown", e => {
       if (e.key === "Escape" && dotOn) hideCard(true);
     });
+    // a click or tap anywhere else on the stage, the card included, closes it
     on(stageEl, "click", e => {
       if (!dotOf(e)) hideCard(true);
     });
-    slots.forEach(s => on(s.querySelector("img"), "load", placeHots));
-    on(W, "resize", placeHots, { passive: true });
-    // the board leans a few degrees toward the pointer and settles back when it leaves
+    // the layer follows the image's box whenever it changes: the image loading, the stylesheet arriving, the layout
+    // switching at a breakpoint
+    let ro = null;
+    if ("ResizeObserver" in W) {
+      ro = new ResizeObserver(placeHots);
+      slots.forEach(s => ro.observe(s.querySelector("img")));
+    } else {
+      slots.forEach(s => on(s.querySelector("img"), "load", placeHots));
+      on(W, "resize", placeHots, { passive: true });
+    }
+    // the board leans a few degrees toward the pointer and settles back when it leaves (not while the lens is on,
+    // which needs the board still)
     let tx = 0;
     let ty = 0;
     let hx = 0;
@@ -1751,7 +1799,7 @@ export function mountBlack(host) {
     }
     if (hoverable && motion) {
       on(stageEl, "pointermove", e => {
-        if (e.pointerType !== "mouse" || lite) return;
+        if (e.pointerType !== "mouse" || lite || mag) return;
         const r = stageEl.getBoundingClientRect();
         aim(
           clamp(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1),
@@ -1792,7 +1840,7 @@ export function mountBlack(host) {
         nx.removeAttribute("aria-hidden");
         slot = 1 - slot;
         lensSrc = "";
-        if (inLens) loadLens();
+        if (inLens && mag) loadLens();
         renderDots(i);
       };
       (im.decode ? im.decode() : Promise.resolve()).then(go, go);
@@ -1883,7 +1931,14 @@ export function mountBlack(host) {
       const sr = stageEl.getBoundingClientRect();
       const px = (lx - r.left) / r.width;
       const py = (ly - r.top) / r.height;
-      const inside = !dotOn && px > 0.02 && px < 0.98 && py > 0.02 && py < 0.98;
+      const inside =
+        mag &&
+        !overMag &&
+        !dotOn &&
+        px > 0.02 &&
+        px < 0.98 &&
+        py > 0.02 &&
+        py < 0.98;
       el.classList.toggle("lens", inside);
       stageEl.style.setProperty(
         "--lx",
@@ -1906,18 +1961,37 @@ export function mountBlack(host) {
         Math.round(L - py * r.height * Z) +
         "px";
     }
-    if (hoverable && lens) {
+    // the lens is off until asked for: it would hide the dots, and the lean would carry the board out from under it
+    let overMag = false;
+    const magBtn = hoverable && lens ? D.createElement("button") : null;
+    if (magBtn) {
+      magBtn.type = "button";
+      magBtn.className = "bs-mag";
+      magBtn.textContent = "Magnify";
+      magBtn.setAttribute("aria-pressed", "false");
+      stageEl.appendChild(magBtn);
+      on(magBtn, "click", () => {
+        mag = !mag;
+        magBtn.setAttribute("aria-pressed", String(mag));
+        el.classList.toggle("mag", mag);
+        if (mag) {
+          hideCard(true);
+          aim(0, 0);
+          loadLens();
+        } else el.classList.remove("lens");
+      });
       on(stageEl, "pointerenter", e => {
         if (e.pointerType !== "mouse") return;
         inLens = true;
-        loadLens();
+        if (mag) loadLens();
       });
       on(stageEl, "pointerleave", () => {
         inLens = false;
         el.classList.remove("lens");
       });
       on(stageEl, "pointermove", e => {
-        if (e.pointerType !== "mouse") return;
+        if (e.pointerType !== "mouse" || !mag) return;
+        overMag = magBtn.contains(e.target);
         lx = e.clientX;
         ly = e.clientY;
         if (!lr) lr = W.requestAnimationFrame(moveLens);
@@ -1966,10 +2040,12 @@ export function mountBlack(host) {
       W.cancelAnimationFrame(lr);
       W.cancelAnimationFrame(tr);
       clearTimeout(hideT);
+      if (ro) ro.disconnect();
       hots.remove();
+      if (magBtn) magBtn.remove();
       fig.style.removeProperty("--hx");
       fig.style.removeProperty("--hy");
-      el.classList.remove("js", "lens", "dotting");
+      el.classList.remove("js", "lens", "dotting", "mag");
     };
   }
 

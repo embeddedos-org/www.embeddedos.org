@@ -1008,8 +1008,6 @@ function mountSections(HS) {
                 attributeFilter: ["class"],
               });
           }
-          // (The card tilt and the magnetic buttons were removed with the Black Edition sections: their cards
-          // are hairline lists now, and the buttons keep the site's plain hover.)
         })
       );
     });
