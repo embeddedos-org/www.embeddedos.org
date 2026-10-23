@@ -10,6 +10,7 @@ import {
   Globe,
   Landmark,
   Clock,
+  CalendarDays,
 } from "lucide-react";
 import {
   CONTACT_EMAILS,
@@ -19,6 +20,8 @@ import {
   type ContactTopicKey,
 } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
+import BookingTeaser from "@/components/BookingTeaser";
+import { bookingCalendarReady } from "@/lib/booking";
 
 /**
  * The topics shown on this page, in display order, with the icon/colour this
@@ -248,6 +251,38 @@ export default function Contact() {
               {CONTACT_EMAILS.contact}
             </a>
           </div>
+        </div>
+      </section>
+
+      <section
+        id="book-a-meeting"
+        aria-labelledby="book-a-meeting-heading"
+        className="py-12 px-4 scroll-mt-24"
+      >
+        <div className="max-w-5xl mx-auto min-w-0">
+          <h2
+            id="book-a-meeting-heading"
+            className="text-xl font-bold text-white mb-2 flex items-center gap-2"
+          >
+            <CalendarDays
+              className="w-5 h-5 text-[#F97316]"
+              aria-hidden="true"
+            />
+            Book a call
+          </h2>
+          <p className="text-gray-300 text-sm leading-relaxed mb-6 max-w-2xl">
+            Talk to the Foundation team about the platform, a partnership,
+            research or education.
+          </p>
+          <BookingTeaser
+            href="/book"
+            title="Book a call with the team"
+            line={
+              bookingCalendarReady()
+                ? "Pick a topic and a time on our booking page."
+                : "Pick a topic on our booking page and arrange a time by email."
+            }
+          />
         </div>
       </section>
 

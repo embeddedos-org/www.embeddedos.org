@@ -255,8 +255,9 @@ export default function GetInvolved() {
           </p>
           <p className="text-white/40 text-sm mb-6">
             EmbeddedOS is licensed under the MIT License. All hardware designs
-            are open hardware. We will never add paywalls, ads, or proprietary
-            features.
+            are open hardware, except the original EoS development boards, which
+            are all rights reserved. We will never add paywalls, ads, or
+            proprietary features.
           </p>
           <a
             href="https://github.com/embeddedos-org"

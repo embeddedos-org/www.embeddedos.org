@@ -76,7 +76,7 @@ const TEAM_VALUES = [
     icon: Globe,
     color: "#F97316",
     title: "Open by Default",
-    desc: "Every line of code, every design decision, every research paper — published openly under MIT license.",
+    desc: "Every line of code, every design decision, every research paper — published openly under MIT license, except the original EoS development boards, which are all rights reserved.",
   },
   {
     icon: Cpu,
@@ -351,7 +351,9 @@ export default function About() {
                 <div className="text-white/40 text-xs uppercase tracking-widest mb-1">
                   Software License
                 </div>
-                <div className="text-white">MIT License (all repositories)</div>
+                <div className="text-white">
+                  MIT License (all Foundation software)
+                </div>
               </div>
               <div>
                 <div className="text-white/40 text-xs uppercase tracking-widest mb-1">

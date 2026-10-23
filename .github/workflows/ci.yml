@@ -182,7 +182,7 @@ jobs:
 
       # Mirrors `pnpm test:php` verbatim without requiring a pnpm install.
       - name: PHP endpoint tests
-        run: php tests/php/apply.test.php && php tests/php/contact.test.php
+        run: php tests/php/apply.test.php && php tests/php/contact.test.php && php tests/php/booking.test.php
 
   # The deploy branch is an orphan branch whose root must be exactly the
   # contents of dist/public; scripts/deploy-branch.mjs replaces it wholesale

@@ -57,6 +57,8 @@ const PAGES = [
   "/press-kit", // press kit
   "/social", // social accounts
   "/youtube", // channel page
+  "/eos-boards",
+  "/book",
 ];
 
 test.describe("accessibility (axe, WCAG 2.1 A/AA)", () => {
@@ -218,7 +220,15 @@ test.describe("responsive layout", () => {
       // /careers carries the only real form on the site — a two-column grid of
       // inputs and three comboboxes, which is the layout most likely to burst
       // its container on a narrow screen, and it was not in this sample.
-      for (const route of ["/", "/about", "/donate", "/careers"]) {
+      for (const route of [
+        "/",
+        "/about",
+        "/donate",
+        "/careers",
+        "/eos-boards",
+        "/contact",
+        "/book",
+      ]) {
         await page.goto(route);
         await page.waitForTimeout(400);
         const overflow = await page.evaluate(
@@ -284,6 +294,37 @@ test.describe("responsive layout", () => {
 });
 
 test.describe("keyboard operability", () => {
+  test("the /book topic cards are radios a keyboard can choose, with a visible focus ring", async ({
+    page,
+  }) => {
+    await page.goto("/book", { waitUntil: "networkidle" });
+    const first = page.getByRole("radio", { name: /Platform demo/ });
+    await first.focus();
+    await page.keyboard.press("Space");
+    await expect(first).toBeChecked();
+    await page.keyboard.press("ArrowDown");
+    const second = page.getByRole("radio", { name: /Partnership or OEM/ });
+    await expect(second).toBeChecked();
+    await expect(second).toBeFocused();
+    // CALENDLY_EVENT_URL is set, so step 2 is "Pick a time"; the unit tests
+    // pin the email-fallback labels with the URL forced to null.
+    await expect(
+      page
+        .getByRole("list", { name: "Booking progress" })
+        .locator('[aria-current="step"]')
+    ).toContainText("Pick a time");
+    const ring = await second.evaluate(input => {
+      const card = input.nextElementSibling as HTMLElement;
+      const style = getComputedStyle(card);
+      return {
+        style: style.outlineStyle,
+        width: parseFloat(style.outlineWidth),
+      };
+    });
+    expect(ring.style).toBe("solid");
+    expect(ring.width).toBeGreaterThanOrEqual(2);
+  });
+
   test("primary navigation is reachable by keyboard", async ({ page }) => {
     await page.goto("/");
     const reached: string[] = [];

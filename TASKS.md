@@ -10,9 +10,68 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID  | Task             | Owner | Mode | Status | Depends on |
-| --- | ---------------- | ----- | ---- | ------ | ---------- |
-| —   | No active tasks. | —     | —    | —      | —          |
+| ID         | Task                                             | Owner    | Mode           | Status | Depends on       |
+| ---------- | ------------------------------------------------ | -------- | -------------- | ------ | ---------------- |
+| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | review | Review of PR #94 |
+
+Acceptance criteria from the handoff:
+
+- "add batch 2's 8 boards to `/eos-boards` (it shows 7), with links to master."
+- "the privacy page must mention Calendly before launch."
+- The owner asked to create the Calendly event. Create the 30-minute team event,
+  with topic as the first custom question, using the connected account; retain
+  email fallback until its real URL and host configuration are verified.
+
+Verification: type check, lint, format, build, Vitest and security, SEO and
+sitemap; smoke, accessibility and functional suites with one worker; inspect
+desktop/mobile previews; independent review before publication.
+
+Progress on 2026-10-15: the catalogue now contains all 15 merged boards, with
+master links, pinned check results and optimized media. Calendly processing is
+disclosed in Privacy. The booking notice limiter now locks the whole
+read/check/write operation and fails closed; the external booking link preserves
+the chosen topic. Independent review cleared both fixes and verified the board
+checks and media against upstream commit `28ec996`. A mutation back to the old
+limiter was rejected: 8 admissions and 1 stored timestamp instead of 5.
+
+Owner's decision on 2026-10-20: open the pull request now, with `/book` on its
+contact-form fallback. `CALENDLY_EVENT_URL` stays `null` and no booking URL is
+invented; the Calendly event comes later, in a follow-up, once Calendly access
+exists. Until then the email fallback is the page's only booking path.
+
+Progress on 2026-10-20: each board offers its native KiCad schematic and PCB and
+its full licence, byte-identical to eCAD-Hardware-Products master (`6ac37a17`).
+The README's licence section names those files as all rights reserved
+(`50b84a6a`). Without an event URL, `/book` now promises only what the fallback
+does and keeps the topic's own case (`24eda785`). Review round 3 (`b34afe7c` to
+`9eb25678`): the footer, Terms of Use §3 (effective date now 20 October 2026),
+`/get-involved`, `/ecad-hardware` and `/about` carve the EoS boards out of their
+MIT and open-hardware statements, and `booking.php` is off by default (503, no
+mail) until the Calendly event exists.
+
+Progress on 2026-10-23: the owner created the Calendly event.
+`CALENDLY_EVENT_URL` is `https://calendly.com/kartikeydheer-embeddedos/30min`, so
+`/book` embeds the live calendar, and `booking.php`'s notices are on with it, to
+both inboxes. The endpoint still checks only the Origin header, the shape of the
+Calendly identifiers, the page path and 5 requests an hour per address; it
+cannot confirm a booking with Calendly. The owner should confirm in Calendly
+that the event's first custom question is the topic (the page prefills it as
+`a1`); that cannot be checked from the repository.
+
+| Verification at `a8426546` (2026-10-23)               | Result                                                                                                                                                                                                                                      |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type check, lint and format                           | PASS; ESLint 0 errors and 22 existing warnings                                                                                                                                                                                              |
+| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build                                                                                                                                              |
+| Full Vitest                                           | 1,101 passed, 8 skipped, 1 failed: the dependency audit below                                                                                                                                                                               |
+| Security suite                                        | FAIL, 20 of 21: `pnpm audit --prod` now reports 1 critical and 3 high advisories (dompurify 3.4.13 via streamdown and mermaid; follow-redirects 1.16.0 via axios). `pnpm-lock.yaml` is identical to master, so this is not from this branch |
+| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                                                                                                                                               |
+| Playwright smoke, accessibility and functional suites | PASS, 16, 88 and 16 tests, one worker, Google hosts blocked (www.recaptcha.net, called by the Calendly frame, only from the independent re-run on; same counts)                                                                             |
+| Native PHP 8.4.26                                     | PASS, 316 assertions (booking 149, both switch states)                                                                                                                                                                                      |
+| Board files                                           | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`                                                                                                                                                |
+| Visual checks                                         | PASS for the catalogue, downloads, live calendar on `/book` and footer at 1440 px and 375 px; no overflow or page errors                                                                                                                    |
+
+No real booking, Calendly email or notice delivery has been made or verified, and
+nothing is deployed.
 
 ## Completed
 

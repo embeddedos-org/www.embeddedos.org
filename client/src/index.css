@@ -1397,3 +1397,124 @@ button:active:not(:disabled) {
 :focus-visible {
   transition-duration: 0s;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .calendly-inline-widget .calendly-spinner > div {
+    animation: none;
+  }
+}
+
+.book-trace {
+  stroke-dasharray: 14 86;
+  stroke-dashoffset: 100;
+  opacity: 0.55;
+  animation: book-trace 9s linear infinite;
+}
+
+@keyframes book-trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.book-glow {
+  animation: book-glow 8s ease-in-out infinite;
+}
+
+@keyframes book-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.book-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(100% 0 0 / 0.05) 25%,
+    oklch(100% 0 0 / 0.12) 50%,
+    oklch(100% 0 0 / 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: book-shimmer 1.6s linear infinite;
+}
+
+@keyframes book-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.book-pop {
+  animation: book-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes book-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.book-draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: book-draw 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.book-draw-late {
+  animation-delay: 0.45s;
+}
+
+@keyframes book-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.book-confetti {
+  opacity: 0;
+  animation: book-confetti 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards;
+}
+
+@keyframes book-confetti {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--angle))
+      translateY(calc(var(--distance) * -1)) rotate(180deg) scale(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-trace,
+  .book-glow,
+  .book-shimmer,
+  .book-pop {
+    animation: none;
+  }
+  .book-trace {
+    stroke-dasharray: none;
+    opacity: 0.25;
+  }
+  .book-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .book-confetti {
+    display: none;
+  }
+}
