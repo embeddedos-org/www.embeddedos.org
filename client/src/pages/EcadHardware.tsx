@@ -710,6 +710,8 @@ export default function EcadHardware() {
         loading="lazy"
         decoding="async"
         src="/media/product-ecad-hardware_f5806032.jpg"
+        width={1400}
+        height={788}
         alt=""
         aria-hidden="true"
         className="ecad-heroimg"

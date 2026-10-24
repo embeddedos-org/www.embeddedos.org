@@ -212,9 +212,10 @@ describe("product pages", () => {
     for (const r of productRoutes()) {
       const lang = nodesOf(r, "SoftwareSourceCode")[0]?.programmingLanguage;
       if (!lang) continue;
+      // the language badge in the product hero's facts list (data-badge="language")
       const badge = docs
         .get(r)!
-        .match(/text-xs font-mono text-white\/40[^>]*>\s*([^<]{1,40})</)?.[1]
+        .match(/data-badge="language"[^>]*>\s*([^<]{1,40})</)?.[1]
         ?.trim();
       if (badge !== lang)
         wrong.push(`${r}: badge "${badge}" vs schema "${lang}"`);

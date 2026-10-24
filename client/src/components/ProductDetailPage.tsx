@@ -193,6 +193,8 @@ export default function ProductDetailPage({
           loading="lazy"
           decoding="async"
           src={heroImage}
+          width={1400}
+          height={788}
           alt=""
           aria-hidden="true"
           className="pd-heroimg"
@@ -237,7 +239,7 @@ export default function ProductDetailPage({
           </Link>
         </div>
         <ul className="badges" aria-label="Facts">
-          <li>{shownLang}</li>
+          <li data-badge="language">{shownLang}</li>
           <li className="ok">
             {shownVersion ? `MIT · v${shownVersion}` : "MIT licensed"}
           </li>

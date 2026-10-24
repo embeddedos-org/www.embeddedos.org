@@ -631,6 +631,8 @@ export default function Architecture() {
           loading="lazy"
           decoding="async"
           src="/media/architecture-diagram-hero_72436b3f.jpg"
+          width={1376}
+          height={768}
           alt=""
           aria-hidden="true"
           className="ar-heroimg"

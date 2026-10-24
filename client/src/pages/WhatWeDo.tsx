@@ -240,6 +240,8 @@ export default function WhatWeDo() {
         loading="lazy"
         decoding="async"
         src="/media/what-we-do-illustration_4c2ad2f7.jpg"
+        width={1600}
+        height={900}
         alt=""
         aria-hidden="true"
         className="wd-heroimg"
