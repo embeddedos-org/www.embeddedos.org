@@ -123,7 +123,7 @@ export default function FutureResearchPage() {
       <section className="sec tight fr-end">
         <div className="wrap">
           <div className="ctas">
-            <Link href="/research" className="btn or">
+            <Link href="/research" className="btn pri">
               Current Research{" "}
               <span className="ar" aria-hidden="true">
                 →

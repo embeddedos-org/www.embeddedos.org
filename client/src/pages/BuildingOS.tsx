@@ -120,7 +120,7 @@ export default function BuildingOS() {
       <section className="sec tight bo-end">
         <div className="wrap">
           <div className="ctas">
-            <Link href="/eos" className="btn or">
+            <Link href="/eos" className="btn pri">
               Explore EoS Kernel{" "}
               <span className="ar" aria-hidden="true">
                 →

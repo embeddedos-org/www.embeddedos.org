@@ -92,7 +92,7 @@
   }
 }
 .bp.eflow .steps .n {
-  border-color: var(--c, var(--line2));
+  border-color: var(--line2);
 }
 /* CAD integration: three numbered steps side by side */
 .bp.eflow .ef-cad {

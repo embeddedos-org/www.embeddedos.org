@@ -293,8 +293,9 @@ export default function Footer() {
                 href={FOUNDATION.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                /* F-32: #F97316 at 70% was 3.85:1 — full strength is 6.95:1. */
-                className="text-[#F97316] hover:underline transition-colors"
+                /* The footer's link style (grey, hairline underline), as the
+                   address link below; #A1A1A6 is 8.2:1 on black. */
+                className="underline decoration-[#3a3a3e] underline-offset-4 hover:text-[#f5f5f7] transition-colors"
               >
                 {WEBSITE_HOST}
               </a>
@@ -422,7 +423,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[#a1a1a6]">
             <div className="flex items-center gap-1.5 whitespace-nowrap">
               Made with
-              <Heart size={11} className="text-[#F97316] animate-pulse" />
+              <Heart size={11} className="text-[#a1a1a6]" />
               for the embedded community
             </div>
             <a

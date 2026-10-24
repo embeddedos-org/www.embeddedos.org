@@ -50,7 +50,7 @@
   text-wrap: balance;
 }
 .hs :focus-visible {
-  outline: 2px solid var(--orange);
+  outline: 2px solid var(--fg);
   outline-offset: 3px;
   border-radius: 6px;
 }

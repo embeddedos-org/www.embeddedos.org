@@ -359,7 +359,7 @@ export default function Aerospace() {
             href="https://github.com/embeddedos-org"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn or"
+            className="btn pri"
           >
             Explore AeroSwift{" "}
             <span className="ar" aria-hidden="true">

@@ -637,7 +637,7 @@ export default function Donate() {
                   Become a Foundation Member for sustained support — with
                   recognition, early access, and voting rights.
                 </p>
-                <Link href="/membership" className="btn or dn-wide">
+                <Link href="/membership" className="btn pri dn-wide">
                   View Membership Tiers <span aria-hidden="true">→</span>
                 </Link>
               </div>

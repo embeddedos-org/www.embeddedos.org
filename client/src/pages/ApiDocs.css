@@ -49,7 +49,7 @@
   border-color: var(--fg2);
 }
 .bp.apid .ad-search input:focus-visible {
-  outline: 2px solid var(--orange-hi);
+  outline: 2px solid var(--fg);
   outline-offset: 2px;
 }
 .bp.apid .ad-clear {
@@ -256,7 +256,7 @@
 .bp.apid code.ad-sname {
   justify-self: start;
   font-size: 14px;
-  color: var(--orange-hi);
+  color: var(--fg);
 }
 .bp.apid .tbl td.mono {
   font: 13px/1.5 var(--mono);
@@ -369,7 +369,7 @@
   color: var(--fg2);
 }
 .bp.apid .ad-sig .ty {
-  color: var(--orange-hi);
+  color: var(--fg2);
 }
 .bp.apid .ad-sig .fn {
   color: var(--fg);
@@ -394,7 +394,7 @@
 }
 .bp.apid .ad-body p.ad-ret {
   margin-top: 4px;
-  color: var(--green);
+  color: var(--fg2);
 }
 .bp.apid .ad-exh {
   display: flex;

@@ -318,7 +318,7 @@ export default function EHealth365() {
             href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eHealth365_CAD_Design"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn or"
+            className="btn pri"
           >
             View CAD Files <span aria-hidden="true">↗</span>
           </a>
@@ -528,7 +528,7 @@ export default function EHealth365() {
             href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eHealth365_CAD_Design"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn or"
+            className="btn pri"
           >
             View on GitHub <span aria-hidden="true">↗</span>
           </a>

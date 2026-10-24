@@ -13,14 +13,18 @@ export type MaturityStatus = (typeof MATURITY_STATUSES)[number];
  * MATURITY_TONES / STATUS_TONES) across CadEvolutionHero, CadWalkthrough3D
  * and HeroTechStack — keep the single copy here so the maturity key can
  * never drift between the hero, the walkthrough and the legend.
+ *
+ * Black Edition: every status is the same neutral hairline pill with grey
+ * text; the status is told by its words, and its colour survives only as the
+ * small dot (MATURITY_DOT in cad-walkthrough-data.ts) beside it and in the key.
  */
+const MATURITY_PILL = "border-[#34343a] bg-transparent text-[#a1a1a6]";
 export const MATURITY_TONES: Record<MaturityStatus, string> = {
-  "Shipped profile": "border-emerald-400/40 bg-emerald-400/10 text-emerald-300",
-  "Available project": "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
-  "Experimental / Research":
-    "border-amber-400/40 bg-amber-400/10 text-amber-300",
-  Planned: "border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300",
-  "Design / Concept": "border-slate-400/40 bg-slate-400/10 text-slate-300",
+  "Shipped profile": MATURITY_PILL,
+  "Available project": MATURITY_PILL,
+  "Experimental / Research": MATURITY_PILL,
+  Planned: MATURITY_PILL,
+  "Design / Concept": MATURITY_PILL,
 };
 
 export type ArchitectureStageId =

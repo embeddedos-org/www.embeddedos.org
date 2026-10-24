@@ -66,7 +66,7 @@
   text-decoration: none;
 }
 .bp :focus-visible {
-  outline: 2px solid var(--orange-hi);
+  outline: 2px solid var(--fg);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -290,8 +290,12 @@
   border-radius: 50%;
   background: var(--c, var(--fg3));
 }
-.bp .badges li.ok {
-  color: var(--green);
+.bp .badges li.ok::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
 }
 /* the hero's visual: a large board or device, full width of the column */
 .bp .pvis {
@@ -619,7 +623,7 @@
   place-items: center;
   background: var(--panel2);
   border: 1px solid var(--line);
-  color: var(--c, var(--fg));
+  color: var(--fg); /* grey tile, white icon: no coloured icons */
 }
 .bp .card .ic svg {
   width: 20px;

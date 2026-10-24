@@ -196,25 +196,19 @@ export default function DeviceRadarChart() {
             onMouseLeave={() => setHovered(null)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            // Neutral toggles: the series colour lives only in the dot (and the
+            // chart), so a shown series is a white label, a hidden one grey.
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all"
             style={{
-              borderColor: visible[device.name]
-                ? device.color + "60"
-                : "rgba(255,255,255,0.1)",
-              background: visible[device.name]
-                ? device.color + "15"
-                : "rgba(255,255,255,0.03)",
-              color: visible[device.name]
-                ? device.color
-                : "rgba(255,255,255,0.3)",
+              borderColor: visible[device.name] ? "#48484e" : "#232326",
+              background: "transparent",
+              color: visible[device.name] ? "#f5f5f7" : "#86868b",
             }}
           >
             <div
               className="w-2 h-2 rounded-full"
               style={{
-                background: visible[device.name]
-                  ? device.color
-                  : "rgba(255,255,255,0.2)",
+                background: visible[device.name] ? device.color : "#48484e",
               }}
             />
             {device.name}

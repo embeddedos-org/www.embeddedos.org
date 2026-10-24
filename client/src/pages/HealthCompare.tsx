@@ -301,7 +301,7 @@ export default function HealthCompare() {
         lead="Side-by-side comparison of four in-development health research designs. Listed capabilities are design goals; clinical validation and regulatory review are pending."
       >
         <div className="ctas">
-          <Link href="/health" className="btn or">
+          <Link href="/health" className="btn pri">
             View Health Page <span className="ar">›</span>
           </Link>
           <a
@@ -465,7 +465,7 @@ export default function HealthCompare() {
         lead="The device concepts are intended to share EoS research firmware and SDK interfaces. Review the linked repository for the components and integrations currently available."
       >
         <div className="ctas">
-          <Link href="/health" className="btn or">
+          <Link href="/health" className="btn pri">
             Explore Health Devices <span className="ar">›</span>
           </Link>
           <a

@@ -175,8 +175,7 @@
   color: var(--fg3);
 }
 .bp.donate .dn-input:focus {
-  outline: none;
-  border-color: var(--orange-hi);
+  border-color: var(--fg2);
 }
 .bp.donate .dn-wide {
   width: 100%;
@@ -310,7 +309,7 @@
 .bp.donate .card .dn-proc {
   white-space: normal;
   font-size: 13px;
-  color: var(--green);
+  color: var(--fg2);
 }
 .bp.donate .dn-impact {
   list-style: none;

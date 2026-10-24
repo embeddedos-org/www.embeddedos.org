@@ -115,7 +115,7 @@ export default function ProgrammePage({ path }: ProgrammePageProps) {
                       subject: programme.name,
                     })
                   }
-                  className="btn or"
+                  className="btn pri"
                 >
                   Contact us about this
                 </button>

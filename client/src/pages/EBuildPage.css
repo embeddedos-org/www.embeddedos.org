@@ -56,7 +56,7 @@
   background: var(--c, var(--fg3));
 }
 .bp.ebuild .eb-steps .n {
-  border-color: var(--c, var(--line2));
+  border-color: var(--line2);
 }
 .bp.ebuild .eb-steps .code pre {
   font-size: 13px;

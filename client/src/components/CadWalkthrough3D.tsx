@@ -66,8 +66,8 @@ function CadStatic({
       >
         <defs>
           <linearGradient id="cadwalk-spine" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#38BDF8" />
-            <stop offset="1" stopColor="#F472B6" />
+            <stop offset="0" stopColor="#a1a1a6" />
+            <stop offset="1" stopColor="#48484e" />
           </linearGradient>
         </defs>
         <path
@@ -244,7 +244,7 @@ export default function CadWalkthrough3D({
 
           {/* Mode badge */}
           <div className="absolute top-2 right-3 z-10 pointer-events-none">
-            <span className="text-xs font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border text-cyan-300 border-cyan-300/40 bg-cyan-300/15">
+            <span className="text-xs font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border text-[#a1a1a6] border-[#34343a] bg-black/70">
               cad walkthrough
             </span>
           </div>
@@ -264,7 +264,7 @@ export default function CadWalkthrough3D({
                       ? "Resume auto-orbit"
                       : "Pause auto-orbit"
                 }
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-black/80 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.12em] text-white/70 transition-colors hover:border-cyan-300/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-black/80 px-3 py-1.5 font-mono text-xs uppercase tracking-[0.12em] text-white/70 transition-colors hover:border-[#a1a1a6] hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
                 // a 44px tap target; inline, because index.css sets a 32px
                 // floor on inline-flex buttons outside Tailwind's layers
                 style={{ minHeight: 44 }}
@@ -354,12 +354,17 @@ export default function CadWalkthrough3D({
                   </span>
                   {s.maturity ? (
                     <span
-                      className={`mt-1 inline-block rounded-md border px-1.5 py-px text-xs font-medium leading-snug ${MATURITY_TONES[s.maturity]}`}
+                      className={`mt-1 inline-flex items-center gap-1.5 rounded-md border px-1.5 py-px text-xs font-medium leading-snug ${MATURITY_TONES[s.maturity]}`}
                     >
+                      <span
+                        className="w-1.5 h-1.5 rotate-45 flex-shrink-0"
+                        style={{ background: MATURITY_DOT[s.maturity] }}
+                        aria-hidden="true"
+                      />
                       {s.maturity}
                     </span>
                   ) : (
-                    <span className="mt-1 inline-block rounded-md border border-slate-400/40 bg-slate-400/10 px-1.5 py-px text-xs font-medium leading-snug text-slate-300">
+                    <span className="mt-1 inline-block rounded-md border border-[#34343a] px-1.5 py-px text-xs font-medium leading-snug text-[#a1a1a6]">
                       Drawing
                     </span>
                   )}
@@ -378,10 +383,7 @@ export default function CadWalkthrough3D({
         <div className="flex flex-wrap items-center gap-2">
           <span
             className="inline-block h-2.5 w-2.5 rounded-full"
-            style={{
-              backgroundColor: active.color,
-              boxShadow: `0 0 10px ${active.color}`,
-            }}
+            style={{ backgroundColor: active.color }}
             aria-hidden="true"
           />
           <span className="text-base font-bold text-white">
@@ -390,8 +392,13 @@ export default function CadWalkthrough3D({
           </span>
           {active.maturity && (
             <span
-              className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${MATURITY_TONES[active.maturity]}`}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${MATURITY_TONES[active.maturity]}`}
             >
+              <span
+                className="w-1.5 h-1.5 rotate-45 flex-shrink-0"
+                style={{ background: MATURITY_DOT[active.maturity] }}
+                aria-hidden="true"
+              />
               {active.maturity}
             </span>
           )}
@@ -400,7 +407,7 @@ export default function CadWalkthrough3D({
           {active.description}
         </p>
         {active.key === "on-device-ai" && (
-          <p className="mt-2 font-mono text-xs text-emerald-300/90">
+          <p className="mt-2 font-mono text-xs text-[#a1a1a6]">
             {EAI_EDGE_PROFILE.maturity}: {EAI_EDGE_PROFILE.name} ={" "}
             {EAI_EDGE_PROFILE.sequence.join(" → ")}
           </p>
@@ -420,7 +427,7 @@ export default function CadWalkthrough3D({
         {active.href && (
           <Link
             href={active.href}
-            className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#38bdf8] hover:text-white"
+            className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#ff8a3d] hover:text-[#f97316]"
           >
             Explore {active.shortLabel}
             <ArrowRight size={14} aria-hidden="true" />

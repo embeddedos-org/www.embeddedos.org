@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 
 const IMPACT_ITEMS = [
-  { icon: Cpu, label: "Fund hardware research", color: "#F97316" },
-  { icon: Shield, label: "Keep the OS open source", color: "#34D399" },
-  { icon: Users, label: "Support contributors", color: "#A78BFA" },
-  { icon: Plane, label: "Advance aerospace R&D", color: "#60A5FA" },
+  { icon: Cpu, label: "Fund hardware research" },
+  { icon: Shield, label: "Keep the OS open source" },
+  { icon: Users, label: "Support contributors" },
+  { icon: Plane, label: "Advance aerospace R&D" },
 ];
 
 /** Focusable descendants, in tab order, skipping anything disabled or hidden. */
@@ -134,28 +134,15 @@ export default function DonateModal() {
             <div
               ref={panelRef}
               tabIndex={-1}
-              className="relative w-full max-w-md pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none"
-              style={{
-                background: "linear-gradient(145deg, #141417 0%, #0b0b0d 100%)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
+              className="relative w-full max-w-md pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none bg-[#0b0b0d] border border-[#232326]"
               role="dialog"
               aria-modal="true"
               aria-labelledby="donate-title"
             >
-              {/* Header gradient bar */}
-              <div
-                className="h-1 w-full"
-                style={{
-                  background:
-                    "linear-gradient(90deg, #F97316, #F59E0B, #34D399, #60A5FA)",
-                }}
-              />
-
               {/* Close button */}
               <button
                 onClick={dismiss}
-                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-[#86868b] hover:text-white hover:bg-white/10 transition-colors"
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06] transition-colors"
                 aria-label="Close donate dialog"
               >
                 <X size={16} />
@@ -164,13 +151,13 @@ export default function DonateModal() {
               <div className="p-6">
                 {/* Icon + Title */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#34D399]/15 border border-[#34D399]/30 flex items-center justify-center">
-                    <Heart size={24} className="text-[#34D399]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#141417] border border-[#34343a] flex items-center justify-center">
+                    <Heart size={24} className="text-[#f5f5f7]" />
                   </div>
                   <div>
                     <h2
                       id="donate-title"
-                      className="font-heading font-extrabold text-white text-xl"
+                      className="font-heading font-extrabold text-[#f5f5f7] text-xl"
                     >
                       Support EmbeddedOS
                     </h2>
@@ -180,7 +167,7 @@ export default function DonateModal() {
                   </div>
                 </div>
 
-                <p className="text-sm text-white/60 leading-relaxed mb-5">
+                <p className="text-sm text-[#a1a1a6] leading-relaxed mb-5">
                   EmbeddedOS is a free, open-source project maintained by
                   volunteers and funded entirely by donations. Your support
                   keeps the OS free for everyone — from students to aerospace
@@ -189,17 +176,16 @@ export default function DonateModal() {
 
                 {/* Impact grid */}
                 <div className="grid grid-cols-2 gap-2 mb-5">
-                  {IMPACT_ITEMS.map(({ icon: Icon, label, color }) => (
+                  {IMPACT_ITEMS.map(({ icon: Icon, label }) => (
                     <div
                       key={label}
-                      className="flex items-center gap-2 glass rounded-lg p-2.5 border border-white/5"
+                      className="flex items-center gap-2 rounded-lg p-2.5 bg-[#141417] border border-[#232326]"
                     >
                       <Icon
                         size={14}
-                        style={{ color }}
-                        className="flex-shrink-0"
+                        className="flex-shrink-0 text-[#a1a1a6]"
                       />
-                      <span className="text-xs text-white/60">{label}</span>
+                      <span className="text-xs text-[#a1a1a6]">{label}</span>
                     </div>
                   ))}
                 </div>
@@ -208,39 +194,37 @@ export default function DonateModal() {
                 <a
                   href="/donate#donate-now"
                   onClick={dismiss}
-                  className="flex items-center justify-between w-full px-4 py-4 rounded-xl border border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20 hover:border-orange-500/50 transition-all duration-150 group mb-3"
+                  className="flex items-center justify-between w-full px-4 py-4 rounded-xl bg-primary hover:bg-brand-amber-light text-primary-foreground transition-colors duration-150 group mb-3"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center">
-                      <CreditCard size={16} className="text-orange-400" />
+                    <div className="w-9 h-9 rounded-lg bg-black/10 border border-black/15 flex items-center justify-center">
+                      <CreditCard size={16} />
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-white">
-                        Donate Now
-                      </div>
-                      <div className="text-xs text-white/50">
+                      <div className="text-sm font-semibold">Donate Now</div>
+                      <div className="text-xs text-black/80">
                         Secure · 0% platform fees · Tax-deductible
                       </div>
                     </div>
                   </div>
                   <ArrowRight
                     size={14}
-                    className="text-orange-400/60 group-hover:text-orange-400 transition-colors"
+                    className="transition-transform group-hover:translate-x-0.5"
                   />
                 </a>
 
                 {/* Trust signals */}
                 <div className="flex items-center justify-center gap-4 mb-4 flex-wrap">
                   <span className="flex items-center gap-1 text-xs text-[#86868b]">
-                    <Shield size={11} className="text-[#34D399]" />
+                    <Shield size={11} />
                     Secure payment
                   </span>
                   <span className="flex items-center gap-1 text-xs text-[#86868b]">
-                    <span className="text-[#34D399] text-xs">✓</span>
+                    <span className="text-xs">✓</span>
                     0% fees
                   </span>
                   <span className="flex items-center gap-1 text-xs text-[#86868b]">
-                    <span className="text-[#34D399] text-xs">✓</span>
+                    <span className="text-xs">✓</span>
                     Tax receipt by email
                   </span>
                 </div>

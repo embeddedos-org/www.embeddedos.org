@@ -44,7 +44,7 @@
 .bp.patents .pt-card .st {
   white-space: normal;
   font-size: 13px;
-  color: var(--green);
+  color: var(--fg2);
 }
 .bp.patents .pt-card .pt-desc {
   font-size: 16px;

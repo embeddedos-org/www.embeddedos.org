@@ -95,9 +95,6 @@
   text-transform: uppercase;
   color: var(--fg3);
 }
-.bp.ae .av-sim {
-  color: var(--c, var(--fg2));
-}
 .bp.ae .av-chart {
   height: 88px;
   margin-top: 6px;

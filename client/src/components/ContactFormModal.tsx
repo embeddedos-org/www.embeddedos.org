@@ -198,26 +198,14 @@ export default function ContactFormModal() {
             <div
               ref={panelRef}
               tabIndex={-1}
-              className="relative w-full max-w-lg pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none max-h-[90vh] overflow-y-auto"
-              style={{
-                background: "linear-gradient(145deg, #141417 0%, #0b0b0d 100%)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
+              className="relative w-full max-w-lg pointer-events-auto rounded-2xl overflow-hidden shadow-2xl outline-none max-h-[90vh] overflow-y-auto bg-[#0b0b0d] border border-[#232326]"
               role="dialog"
               aria-modal="true"
               aria-labelledby="contact-title"
             >
-              <div
-                className="h-1 w-full"
-                style={{
-                  background:
-                    "linear-gradient(90deg, #F97316, #F59E0B, #34D399, #60A5FA)",
-                }}
-              />
-
               <button
                 onClick={close}
-                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06] transition-colors"
                 aria-label="Close contact dialog"
               >
                 <X size={16} />
@@ -226,16 +214,16 @@ export default function ContactFormModal() {
               <div className="p-6">
                 {status === "sent" ? (
                   <div className="text-center py-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#34D399]/15 border border-[#34D399]/30 flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle2 size={24} className="text-[#34D399]" />
+                    <div className="w-12 h-12 rounded-xl bg-[#141417] border border-[#34343a] flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle2 size={24} className="text-[#f5f5f7]" />
                     </div>
                     <h2
                       id="contact-title"
-                      className="font-heading font-extrabold text-white text-xl mb-2"
+                      className="font-heading font-extrabold text-[#f5f5f7] text-xl mb-2"
                     >
                       Message sent
                     </h2>
-                    <p className="text-sm text-white/60 leading-relaxed mb-6">
+                    <p className="text-sm text-[#a1a1a6] leading-relaxed mb-6">
                       Thank you — a person will read this and reply to{" "}
                       {form.email || "the address you provided"}.
                       {topic.key === "security"
@@ -244,7 +232,7 @@ export default function ContactFormModal() {
                     </p>
                     <button
                       onClick={close}
-                      className="w-full px-4 py-3 rounded-xl border border-white/15 bg-white/10 hover:bg-white/15 text-sm font-semibold text-white transition-colors"
+                      className="w-full px-4 py-3 rounded-full border border-[#48484e] hover:border-[#a1a1a6] text-sm font-semibold text-[#f5f5f7] transition-colors"
                     >
                       Close
                     </button>
@@ -252,17 +240,17 @@ export default function ContactFormModal() {
                 ) : (
                   <>
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center flex-shrink-0">
-                        <Mail size={24} className="text-orange-400" />
+                      <div className="w-12 h-12 rounded-xl bg-[#141417] border border-[#34343a] flex items-center justify-center flex-shrink-0">
+                        <Mail size={24} className="text-[#f5f5f7]" />
                       </div>
                       <div>
                         <h2
                           id="contact-title"
-                          className="font-heading font-extrabold text-white text-xl"
+                          className="font-heading font-extrabold text-[#f5f5f7] text-xl"
                         >
                           Contact Us
                         </h2>
-                        <p className="text-xs text-white/50">
+                        <p className="text-xs text-[#a1a1a6]">
                           Replies come from a person, not a queue.
                         </p>
                       </div>
@@ -271,7 +259,7 @@ export default function ContactFormModal() {
                     {status === "error" && (
                       <div
                         role="alert"
-                        className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-300 text-xs"
+                        className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg bg-[#141417] border border-[#34343a] text-[#fca5a5] text-xs"
                       >
                         <AlertTriangle
                           size={14}
@@ -285,7 +273,7 @@ export default function ContactFormModal() {
                       <div>
                         <label
                           htmlFor="contact-topic"
-                          className="block text-xs font-medium text-white/50 mb-1.5"
+                          className="block text-xs font-medium text-[#a1a1a6] mb-1.5"
                         >
                           What is this about?
                         </label>
@@ -298,7 +286,7 @@ export default function ContactFormModal() {
                               topic: e.target.value as ContactTopicKey,
                             }))
                           }
-                          className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-orange-500/50"
+                          className="w-full px-3 py-2.5 rounded-lg bg-[#141417] border border-[#34343a] text-sm text-[#f5f5f7] focus:border-[#a1a1a6]"
                         >
                           {CONTACT_TOPICS.map(t => (
                             <option
@@ -310,7 +298,7 @@ export default function ContactFormModal() {
                             </option>
                           ))}
                         </select>
-                        <p className="text-[11px] text-white/50 mt-1">
+                        <p className="text-[11px] text-[#a1a1a6] mt-1">
                           {topic.description}
                         </p>
                       </div>
@@ -319,7 +307,7 @@ export default function ContactFormModal() {
                         <div>
                           <label
                             htmlFor="contact-name"
-                            className="block text-xs font-medium text-white/50 mb-1.5"
+                            className="block text-xs font-medium text-[#a1a1a6] mb-1.5"
                           >
                             Name
                           </label>
@@ -332,14 +320,14 @@ export default function ContactFormModal() {
                             onChange={e =>
                               setForm(f => ({ ...f, name: e.target.value }))
                             }
-                            className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50"
+                            className="w-full px-3 py-2.5 rounded-lg bg-[#141417] border border-[#34343a] text-sm text-[#f5f5f7] placeholder:text-[#86868b] focus:border-[#a1a1a6]"
                             placeholder="Ada Lovelace"
                           />
                         </div>
                         <div>
                           <label
                             htmlFor="contact-email"
-                            className="block text-xs font-medium text-white/50 mb-1.5"
+                            className="block text-xs font-medium text-[#a1a1a6] mb-1.5"
                           >
                             Your email
                           </label>
@@ -352,7 +340,7 @@ export default function ContactFormModal() {
                             onChange={e =>
                               setForm(f => ({ ...f, email: e.target.value }))
                             }
-                            className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50"
+                            className="w-full px-3 py-2.5 rounded-lg bg-[#141417] border border-[#34343a] text-sm text-[#f5f5f7] placeholder:text-[#86868b] focus:border-[#a1a1a6]"
                             placeholder="you@example.org"
                           />
                         </div>
@@ -361,10 +349,10 @@ export default function ContactFormModal() {
                       <div>
                         <label
                           htmlFor="contact-subject"
-                          className="block text-xs font-medium text-white/50 mb-1.5"
+                          className="block text-xs font-medium text-[#a1a1a6] mb-1.5"
                         >
                           Subject{" "}
-                          <span className="text-white/50">(optional)</span>
+                          <span className="text-[#a1a1a6]">(optional)</span>
                         </label>
                         <input
                           id="contact-subject"
@@ -374,7 +362,7 @@ export default function ContactFormModal() {
                           onChange={e =>
                             setForm(f => ({ ...f, subject: e.target.value }))
                           }
-                          className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50"
+                          className="w-full px-3 py-2.5 rounded-lg bg-[#141417] border border-[#34343a] text-sm text-[#f5f5f7] placeholder:text-[#86868b] focus:border-[#a1a1a6]"
                           placeholder="A short summary"
                         />
                       </div>
@@ -382,7 +370,7 @@ export default function ContactFormModal() {
                       <div>
                         <label
                           htmlFor="contact-message"
-                          className="block text-xs font-medium text-white/50 mb-1.5"
+                          className="block text-xs font-medium text-[#a1a1a6] mb-1.5"
                         >
                           Message
                         </label>
@@ -396,7 +384,7 @@ export default function ContactFormModal() {
                           onChange={e =>
                             setForm(f => ({ ...f, message: e.target.value }))
                           }
-                          className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/50 focus:outline-none focus:border-orange-500/50 resize-none"
+                          className="w-full px-3 py-2.5 rounded-lg bg-[#141417] border border-[#34343a] text-sm text-[#f5f5f7] placeholder:text-[#86868b] focus:border-[#a1a1a6] resize-none"
                           placeholder="What would you like to tell us?"
                         />
                       </div>
@@ -423,9 +411,9 @@ export default function ContactFormModal() {
                       <button
                         type="submit"
                         disabled={status === "submitting"}
-                        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20 hover:border-orange-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 text-sm font-bold text-white"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-full bg-[#f5f5f7] hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150 text-sm font-semibold text-black"
                       >
-                        <Send size={14} className="text-orange-400" />
+                        <Send size={14} />
                         {status === "submitting" ? "Sending…" : "Send Message"}
                       </button>
                     </form>

@@ -54,8 +54,8 @@
 .bp.membership .mb-pop {
   font: 600 12px/1 var(--mono);
   letter-spacing: 0.06em;
-  color: #000;
-  background: var(--orange);
+  color: var(--fg2);
+  border: 1px solid var(--line2);
   border-radius: 999px;
   padding: 6px 10px;
 }

@@ -31,7 +31,7 @@
 }
 .bp.about .ab-y {
   font: 500 14px/1.4 var(--mono);
-  color: var(--orange-hi);
+  color: var(--fg2);
   font-variant-numeric: tabular-nums;
 }
 .bp.about .ab-t {

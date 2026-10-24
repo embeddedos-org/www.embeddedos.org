@@ -818,7 +818,7 @@ function ApplicationForm() {
                     phone: form.phone || undefined,
                   }).mailtoUrl || shortMailto(prepared.subject)
             }
-            className="btn or"
+            className="btn pri"
           >
             Reopen the email
           </a>
@@ -1121,7 +1121,7 @@ function ApplicationForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="btn or cf-submit"
+          className="btn pri cf-submit"
         >
           {submitting ? "Sending…" : "Send Application"}
         </button>

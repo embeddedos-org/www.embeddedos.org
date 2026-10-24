@@ -258,7 +258,7 @@
 .bp.arch .ar-role h3.label {
   font: 600 12px/1.3 var(--sans);
   letter-spacing: 0.08em;
-  color: var(--orange-hi);
+  color: var(--fg2);
   margin-bottom: 16px;
 }
 .bp.arch .ar-role h4 {

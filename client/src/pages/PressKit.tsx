@@ -88,7 +88,7 @@ export default function PressKit() {
                 <button
                   type="button"
                   onClick={() => openContactForm({ topic: "press" })}
-                  className="btn or"
+                  className="btn pri"
                 >
                   Contact Press &amp; Media
                 </button>

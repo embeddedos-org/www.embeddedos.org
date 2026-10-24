@@ -69,9 +69,9 @@ main {
   left: 1rem;
   z-index: 9999;
   padding: 0.75rem 1.5rem;
-  background: #f97316;
-  color: #fff;
-  border-radius: 0.5rem;
+  background: #f5f5f7;
+  color: #000;
+  border-radius: 999px;
   font-weight: 600;
 }
 .skip-to-content:focus {

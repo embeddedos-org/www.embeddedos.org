@@ -53,7 +53,7 @@
   gap: 8px;
   font-size: 13px;
   font-weight: 500;
-  color: var(--c, var(--fg2));
+  color: var(--fg2);
 }
 .bp.ind .ind-theme::before {
   content: "";
@@ -61,7 +61,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--c, var(--fg3));
 }
 
 /* the sector index */

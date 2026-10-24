@@ -91,7 +91,7 @@ export default function YouTubeChannel() {
             href={SOCIAL_URLS.youtube}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn or"
+            className="btn pri"
           >
             Open the channel <span aria-hidden="true">↗</span>
           </a>

@@ -59,7 +59,6 @@ const NAV_ITEMS = {
             desc: "Real-time embedded OS",
             icon: Cpu,
             href: "https://github.com/embeddedos-org/eos",
-            color: "#F97316",
             external: true,
           },
           {
@@ -67,7 +66,6 @@ const NAV_ITEMS = {
             desc: "Secure bootloader & OTA",
             icon: Zap,
             href: "https://github.com/embeddedos-org/eBoot",
-            color: "#22D3EE",
             external: true,
           },
           {
@@ -75,7 +73,6 @@ const NAV_ITEMS = {
             desc: "Ultra-low latency IPC",
             icon: MessageSquare,
             href: "https://github.com/embeddedos-org/eIPC",
-            color: "#A78BFA",
             external: true,
           },
           {
@@ -83,7 +80,6 @@ const NAV_ITEMS = {
             desc: "Next-gen build tool",
             icon: Wrench,
             href: "/ebuild",
-            color: "#34D399",
             external: false,
           },
           {
@@ -91,7 +87,6 @@ const NAV_ITEMS = {
             desc: "On-device LLM inference",
             icon: Bot,
             href: "https://github.com/embeddedos-org/eosllm",
-            color: "#F59E0B",
             external: true,
           },
           // eos-programming-language is a private repo — link the org profile until it is published.
@@ -100,7 +95,6 @@ const NAV_ITEMS = {
             desc: "Fastest embedded APIs",
             icon: Braces,
             href: "https://github.com/embeddedos-org",
-            color: "#60A5FA",
             external: true,
           },
         ],
@@ -113,7 +107,6 @@ const NAV_ITEMS = {
             desc: "AI layer & eBot agent",
             icon: FlaskConical,
             href: "https://github.com/embeddedos-org/eAI",
-            color: "#34D399",
             external: true,
           },
           {
@@ -121,7 +114,6 @@ const NAV_ITEMS = {
             desc: "Neural interface adapter",
             icon: Wifi,
             href: "https://github.com/embeddedos-org/eNI",
-            color: "#A78BFA",
             external: true,
           },
         ],
@@ -134,7 +126,6 @@ const NAV_ITEMS = {
             desc: `${SIM_PLATFORM_COUNT} platform simulator`,
             icon: Terminal,
             href: "https://github.com/embeddedos-org/EoSim",
-            color: "#F97316",
             external: true,
           },
           {
@@ -142,7 +133,6 @@ const NAV_ITEMS = {
             desc: "Universal IDE v3.1",
             icon: LayoutGrid,
             href: "https://github.com/embeddedos-org/EoStudio",
-            color: "#22D3EE",
             external: true,
           },
         ],
@@ -155,7 +145,6 @@ const NAV_ITEMS = {
             desc: "EoS quantum kernel support",
             icon: Atom,
             href: "/quantum",
-            color: "#A855F7",
             external: false,
           },
         ],
@@ -169,7 +158,6 @@ const NAV_ITEMS = {
             desc: "1-2 seat VTOL aircraft",
             icon: Plane,
             href: "/aerospace",
-            color: "#60A5FA",
             external: false,
           },
           {
@@ -177,7 +165,6 @@ const NAV_ITEMS = {
             desc: "10-seat urban air taxi",
             icon: Rocket,
             href: "/aerospace",
-            color: "#F472B6",
             external: false,
           },
         ],
@@ -195,7 +182,6 @@ const NAV_ITEMS = {
             desc: "What We Build — full ecosystem",
             icon: Layers,
             href: "/products",
-            color: "#F97316",
             external: false,
           },
           {
@@ -203,7 +189,6 @@ const NAV_ITEMS = {
             desc: `RTOS kernel for ${BOARD_COUNT} boards`,
             icon: CpuIcon,
             href: "/product-eos",
-            color: "#22D3EE",
             external: false,
           },
           {
@@ -211,7 +196,6 @@ const NAV_ITEMS = {
             desc: "Desktop, Laptop, Tablet, TV, Kiosk",
             icon: Layers,
             href: "/product-eos-platform",
-            color: "#6366F1",
             external: false,
           },
           {
@@ -219,7 +203,6 @@ const NAV_ITEMS = {
             desc: "Secure bootloader + OTA updates",
             icon: Zap,
             href: "/product-eboot",
-            color: "#F97316",
             external: false,
           },
         ],
@@ -232,7 +215,6 @@ const NAV_ITEMS = {
             desc: "On-device LLM inference & agents",
             icon: Brain,
             href: "/product-eai",
-            color: "#A855F7",
             external: false,
           },
           {
@@ -240,7 +222,6 @@ const NAV_ITEMS = {
             desc: "Configurable neural research interface",
             icon: Activity,
             href: "/product-eni",
-            color: "#10B981",
             external: false,
           },
           {
@@ -248,7 +229,6 @@ const NAV_ITEMS = {
             desc: "Capability-secured IPC fabric",
             icon: Network,
             href: "/product-eipc",
-            color: "#F59E0B",
             external: false,
           },
           {
@@ -256,7 +236,6 @@ const NAV_ITEMS = {
             desc: "SQL + Document + KV database",
             icon: Database,
             href: "/product-edb",
-            color: "#3B82F6",
             external: false,
           },
         ],
@@ -269,7 +248,6 @@ const NAV_ITEMS = {
             desc: "60+ first-party embedded apps",
             icon: Package,
             href: "/product-eapps",
-            color: "#F97316",
             external: false,
           },
           {
@@ -277,7 +255,6 @@ const NAV_ITEMS = {
             desc: "11-app embedded office suite",
             icon: FileText,
             href: "/product-eoffice",
-            color: "#059669",
             external: false,
           },
           {
@@ -285,7 +262,6 @@ const NAV_ITEMS = {
             desc: "eSocial, eRide, eTravel, eWallet",
             icon: Globe,
             href: "/product-eserviceapps",
-            color: "#EC4899",
             external: false,
           },
         ],
@@ -298,7 +274,6 @@ const NAV_ITEMS = {
             desc: "Build system & SDK generator",
             icon: Wrench,
             href: "/product-ebuild",
-            color: "#EF4444",
             external: false,
           },
           {
@@ -306,7 +281,6 @@ const NAV_ITEMS = {
             desc: `${SIM_PLATFORM_COUNT} virtual platforms simulator`,
             icon: Zap,
             href: "/product-eosim",
-            color: "#06B6D4",
             external: false,
           },
           {
@@ -314,7 +288,6 @@ const NAV_ITEMS = {
             desc: "Embedded IDE with board picker",
             icon: Code,
             href: "/product-eostudio",
-            color: "#8B5CF6",
             external: false,
           },
         ],
@@ -327,7 +300,6 @@ const NAV_ITEMS = {
             desc: "USB-C ECG + SpO₂ key",
             icon: Activity,
             href: "/health",
-            color: "#F85149",
             external: false,
           },
           {
@@ -335,7 +307,6 @@ const NAV_ITEMS = {
             desc: "sEMG + TENS wristband",
             icon: Watch,
             href: "/health",
-            color: "#F59E0B",
             external: false,
           },
           {
@@ -343,7 +314,6 @@ const NAV_ITEMS = {
             desc: "Titanium smart ring",
             icon: Fingerprint,
             href: "/health",
-            color: "#A78BFA",
             external: false,
           },
           {
@@ -351,7 +321,6 @@ const NAV_ITEMS = {
             desc: "14-day biosensor patch",
             icon: Microscope,
             href: "/health",
-            color: "#34D399",
             external: false,
           },
           {
@@ -361,7 +330,6 @@ const NAV_ITEMS = {
             desc: "Hardware design catalog",
             icon: CpuIcon,
             href: "/ecad-hardware",
-            color: "#F97316",
             external: false,
           },
         ],
@@ -379,7 +347,6 @@ const NAV_ITEMS = {
             desc: "Up in 10 minutes",
             icon: BookOpen,
             href: "/getting-started",
-            color: "#F97316",
             external: false,
           },
           {
@@ -389,7 +356,6 @@ const NAV_ITEMS = {
             desc: "Guides & reference",
             icon: FileText,
             href: "/docs",
-            color: "#60A5FA",
             external: false,
           },
           {
@@ -397,7 +363,6 @@ const NAV_ITEMS = {
             desc: "300+ APIs documented",
             icon: Code,
             href: "/api-docs",
-            color: "#22D3EE",
             external: false,
           },
           {
@@ -405,7 +370,6 @@ const NAV_ITEMS = {
             desc: "3D block diagrams & system design",
             icon: Layers,
             href: "/architecture",
-            color: "#A78BFA",
             external: false,
           },
           {
@@ -413,7 +377,6 @@ const NAV_ITEMS = {
             desc: "14 technical books",
             icon: FileText,
             href: "/books",
-            color: "#34D399",
             external: false,
           },
         ],
@@ -426,7 +389,6 @@ const NAV_ITEMS = {
             desc: "Board bring-up guides",
             icon: Wrench,
             href: "/hardware-lab",
-            color: "#F59E0B",
             external: false,
           },
           {
@@ -434,7 +396,6 @@ const NAV_ITEMS = {
             desc: "Technology stacks",
             icon: Layers,
             href: "/stacks",
-            color: "#60A5FA",
             external: false,
           },
           {
@@ -442,7 +403,6 @@ const NAV_ITEMS = {
             desc: "Visual block programming",
             icon: Zap,
             href: "/eflow",
-            color: "#F472B6",
             external: false,
           },
           {
@@ -450,7 +410,6 @@ const NAV_ITEMS = {
             desc: "Build, sim & flash tool",
             icon: Wrench,
             href: "/ebuild",
-            color: "#34D399",
             external: false,
           },
           {
@@ -458,7 +417,6 @@ const NAV_ITEMS = {
             desc: "Educational platform",
             icon: Gamepad2,
             href: "/kids",
-            color: "#F97316",
             external: false,
           },
         ],
@@ -483,7 +441,6 @@ const NAV_ITEMS = {
             desc: "Where to start contributing",
             icon: Heart,
             href: "/get-involved",
-            color: "#34D399",
             external: false,
           },
           {
@@ -491,7 +448,6 @@ const NAV_ITEMS = {
             desc: `${REPO_COUNT} open-source repos`,
             icon: Github,
             href: "https://github.com/embeddedos-org",
-            color: "#22D3EE",
             external: true,
           },
           {
@@ -499,7 +455,6 @@ const NAV_ITEMS = {
             desc: "Ask and answer in public",
             icon: MessageSquare,
             href: "https://github.com/orgs/embeddedos-org/discussions",
-            color: "#A78BFA",
             external: true,
           },
         ],
@@ -512,7 +467,6 @@ const NAV_ITEMS = {
             desc: "Governance & working groups",
             icon: Users,
             href: "/community",
-            color: "#F97316",
             external: false,
           },
           {
@@ -520,7 +474,6 @@ const NAV_ITEMS = {
             desc: "Meetups & conferences",
             icon: Rocket,
             href: "/events",
-            color: "#FBBF24",
             external: false,
           },
           {
@@ -528,7 +481,6 @@ const NAV_ITEMS = {
             desc: "Releases & announcements",
             icon: FileText,
             href: "/news",
-            color: "#60A5FA",
             external: false,
           },
         ],
@@ -685,20 +637,11 @@ export default function Navbar() {
                                           onClick={() => setOpenMenu("")}
                                           className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#141417] transition-colors duration-200 group/item"
                                         >
-                                          <div
-                                            className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                                            style={{
-                                              background: `${item.color}20`,
-                                              border: `1px solid ${item.color}40`,
-                                            }}
-                                          >
-                                            <Icon
-                                              size={14}
-                                              style={{ color: item.color }}
-                                            />
+                                          <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 bg-[#141417] border border-[#232326] text-[#a1a1a6] group-hover/item:text-[#f5f5f7] transition-colors">
+                                            <Icon size={14} />
                                           </div>
                                           <div>
-                                            <div className="text-[13px] font-medium tracking-[-0.01em] text-[#f5f5f7] group-hover/item:text-[#FF8A3D] transition-colors leading-tight">
+                                            <div className="text-[13px] font-medium tracking-[-0.01em] text-[#f5f5f7] leading-tight">
                                               {item.name}
                                             </div>
                                             <div className="text-[12px] text-[#a1a1a6] mt-0.5 leading-tight">
@@ -848,13 +791,6 @@ export default function Navbar() {
                     EmbeddedOS
                   </span>
                 </Link>
-                <button
-                  onClick={() => setMobileOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06]"
-                  aria-label="Close menu"
-                >
-                  <X size={18} />
-                </button>
               </div>
 
               <div className="p-4 space-y-1">
@@ -907,17 +843,8 @@ export default function Navbar() {
                                         {...extraProps}
                                         className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-[#141417] transition-colors"
                                       >
-                                        <div
-                                          className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
-                                          style={{
-                                            background: `${item.color}20`,
-                                            border: `1px solid ${item.color}40`,
-                                          }}
-                                        >
-                                          <Icon
-                                            size={12}
-                                            style={{ color: item.color }}
-                                          />
+                                        <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 bg-[#141417] border border-[#232326] text-[#a1a1a6]">
+                                          <Icon size={12} />
                                         </div>
                                         <div>
                                           <div className="text-[15px] font-medium tracking-[-0.01em] text-[#f5f5f7]">

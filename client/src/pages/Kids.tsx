@@ -71,7 +71,7 @@ export default function Kids() {
         lead="The educational platform that teaches kids embedded programming through games, interactive projects, and real hardware — from ages 6 to 18."
       >
         <div className="ctas">
-          <Link href="/getting-started" className="btn or">
+          <Link href="/getting-started" className="btn pri">
             Start Learning{" "}
             <span className="ar" aria-hidden="true">
               →

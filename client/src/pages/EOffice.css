@@ -82,7 +82,7 @@
   flex: none;
   background: var(--panel2);
   border: 1px solid var(--line);
-  color: var(--c, var(--fg));
+  color: var(--fg);
 }
 
 /* the chosen app: what it does beside a preview of its window */
@@ -168,7 +168,7 @@
   color: var(--green);
 }
 .bp.eoffice .eo-lines .t-note {
-  color: var(--orange-hi);
+  color: var(--fg2);
 }
 .bp.eoffice .eo-lines .t-bullet {
   padding-left: 16px;

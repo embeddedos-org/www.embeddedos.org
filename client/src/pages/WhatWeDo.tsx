@@ -256,7 +256,7 @@ export default function WhatWeDo() {
         </p>
         <div className="ctas">
           <Link href="/getting-started">
-            <button type="button" className="btn or">
+            <button type="button" className="btn pri">
               Get Started{" "}
               <span className="ar" aria-hidden="true">
                 →
@@ -423,7 +423,7 @@ export default function WhatWeDo() {
           </div>
           <div className="ctas">
             <Link href="/about">
-              <button type="button" className="btn or">
+              <button type="button" className="btn pri">
                 About the Foundation{" "}
                 <span className="ar" aria-hidden="true">
                   →

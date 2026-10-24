@@ -103,7 +103,7 @@ export default function Security() {
         <button
           type="button"
           onClick={() => openContactForm({ topic: "security" })}
-          className="btn or"
+          className="btn pri"
         >
           Contact Security Team
         </button>

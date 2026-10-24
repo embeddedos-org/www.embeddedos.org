@@ -120,7 +120,7 @@ export default function Vision() {
             </p>
           </div>
           <div className="ctas">
-            <Link href="/get-involved" className="btn or">
+            <Link href="/get-involved" className="btn pri">
               Get Involved{" "}
               <span className="ar" aria-hidden="true">
                 →

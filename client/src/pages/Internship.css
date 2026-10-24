@@ -51,7 +51,7 @@
 }
 .bp.intern .in-terms {
   font: 500 14px/1.4 var(--mono);
-  color: var(--orange-hi);
+  color: var(--fg);
 }
 .bp.intern .in-cta {
   margin-top: auto;

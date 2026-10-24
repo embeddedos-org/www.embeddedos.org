@@ -690,14 +690,7 @@ export default function ArchitectureDiagram3D({
 
       {/* Mode badge */}
       <div className="absolute top-2 right-3 z-10 pointer-events-none">
-        <span
-          className="text-xs font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border"
-          style={{
-            color: accent,
-            borderColor: accent + "40",
-            background: accent + "15",
-          }}
-        >
+        <span className="text-xs font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border text-[#a1a1a6] border-[#34343a] bg-black/70">
           {mode}
         </span>
       </div>

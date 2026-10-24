@@ -1,6 +1,6 @@
 /* /eradar360: the design-stage automotive sensing concept. */
 .bp.er .er-oem {
-  color: #c4b5fd;
+  color: var(--fg);
 }
 .bp.er .phero .badges {
   margin-top: 26px;
@@ -29,8 +29,7 @@
   padding: clamp(24px, 4vw, 44px);
   border: 1px solid var(--line);
   border-radius: 28px;
-  background: radial-gradient(110% 90% at 50% 45%, #0f1416 0%, #0b0b0d 60%)
-    var(--panel);
+  background: var(--panel);
 }
 @media (max-width: 620px) {
   .bp.er .er-scope .btn.sm,
@@ -98,7 +97,6 @@
   margin: -6px 0 0 -6px;
   border-radius: 50%;
   background: #22d3ee;
-  box-shadow: 0 0 12px #22d3ee;
 }
 @keyframes er-spin {
   to {
@@ -174,10 +172,6 @@
   gap: 12px;
   margin-bottom: 16px;
 }
-.bp.er .er-stop {
-  border-color: rgba(248, 81, 73, 0.5);
-  color: #ff8a84;
-}
 .bp.er .er-alerts {
   list-style: none;
   margin: 0;
@@ -220,7 +214,7 @@
 
 /* configurations */
 .bp.er .er-ref {
-  color: #67e8f9;
+  color: var(--fg);
 }
 .bp.er .er-cost {
   margin: 8px 0 0;

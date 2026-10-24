@@ -774,7 +774,7 @@ export default function Quantum() {
         lead="The eQC module brings real-time quantum hardware control to the EoS kernel. Join the Foundation to help shape the operating system for the quantum era."
       >
         <div className="ctas">
-          <Link href="/get-involved" className="btn or">
+          <Link href="/get-involved" className="btn pri">
             Get Involved{" "}
             <span className="ar" aria-hidden="true">
               →

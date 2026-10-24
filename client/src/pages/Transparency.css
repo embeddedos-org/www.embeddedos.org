@@ -54,7 +54,7 @@
   font: 500 13px/1.5 var(--mono);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--orange-hi);
+  color: var(--fg2);
 }
 .bp.transparency .tr-tl h3 {
   font-size: 19px;

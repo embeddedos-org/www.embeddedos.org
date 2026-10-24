@@ -18,6 +18,10 @@ const sm = x => {
 const win = (x, a, b, c, d) =>
   sm((x - a) / (b - a)) * (1 - sm((x - c) / (d - c)));
 const pad = (n, w) => String(n).padStart(w, "0");
+// The story's frame never grows past the frames' own width (2560 × 1600): on a wider or taller screen (a 4K
+// monitor at 100 %, a window zoomed far out) it stays that size, centred on the black page, so the board keeps
+// its proportion to the text instead of filling an enormous window. black.css caps .bk-cam the same way.
+const FRAME_MAX = 2560;
 // piecewise-linear keyframes [u, ...values], optionally eased between keys
 function pl(K, u, ease) {
   if (u <= K[0][0]) return K[0].slice(1);
@@ -47,7 +51,8 @@ export function frameTier() {
     (n.deviceMemory || 4) <= 2 ||
     !!c.saveData;
   const slow = /(^|-)2g|3g/.test(c.effectiveType || "");
-  const need = Math.max(innerWidth, innerHeight * 1.6) * 1.12 * dpr;
+  const need =
+    Math.min(Math.max(innerWidth, innerHeight * 1.6), FRAME_MAX) * 1.12 * dpr;
   // 2560 (d) for Retina and wide screens; 1920 (h) for 1x laptops, where it looks the same at two-thirds the
   // bytes; 1280 (m) for phones. A weak machine never takes d; a 2G/3G connection takes m.
   const set =
@@ -184,6 +189,7 @@ export function mountBlack(host) {
     root.classList.add("cine");
     root.style.setProperty("--units", UNITS);
     stop.push(() => root.classList.remove("cine", "live"));
+    stop.push(() => storyEl && storyEl.style.removeProperty("--s0-shift"));
 
     const small = tierNow.small;
     // this instance's own copy: the opening keyframes are moved down to clear the hero's text (size())
@@ -237,7 +243,7 @@ export function mountBlack(host) {
       const dpr = Math.min(2, W.devicePixelRatio || 1);
       const css = small
         ? innerWidth * 1.6 * 1.5
-        : Math.max(innerWidth, innerHeight * 1.6) * 1.12;
+        : Math.min(Math.max(innerWidth, innerHeight * 1.6), FRAME_MAX) * 1.12;
       return Math.min(FW, Math.max(640, Math.ceil((css * dpr) / 16) * 16));
     }
     DW = fitW();
@@ -631,6 +637,9 @@ export function mountBlack(host) {
 
     let vh = 0;
     let vw = 0;
+    // the camera's moves are fractions of the screen, up to the capped frame's own size (FRAME_MAX)
+    let uw = 0;
+    let uh = 0;
     let top0 = 0;
     let shown = 0;
     let dirty = true;
@@ -639,6 +648,8 @@ export function mountBlack(host) {
       const r = stage.getBoundingClientRect();
       vw = r.width;
       vh = r.height;
+      uw = Math.min(vw, FRAME_MAX);
+      uh = Math.min(vh, FRAME_MAX / 1.6);
       const want = fitW();
       if (want > DW + 160 && ready) {
         // window grew: decode sharper frames, keeping the old ones on screen until they arrive
@@ -659,16 +670,29 @@ export function mountBlack(host) {
       }
       top0 = storyEl.getBoundingClientRect().top + W.scrollY;
       // The board opens just below the hero's text, whatever that text's height on this screen: frame 0's top edge
-      // sits 20.5% down the camera's frame, so the camera starts low enough to keep it under the last line.
+      // sits 20.5% down the camera's frame, so the camera starts low enough to keep it under the last line, and on
+      // a tall screen (where the type has stopped growing) no more than 56px further down, not a fixed 30%.
       const s0 = sc[0];
       if (s0) {
-        const textBottom = s0.offsetTop + s0.offsetHeight;
-        const camW = small ? innerWidth * 1.6 : Math.max(innerWidth, vh * 1.6);
-        const camH = (camW / 1.6) * CAM[0][3];
-        const y0 = Math.max(
-          CAM_Y0,
-          (textBottom + 18 + camH * 0.295 - vh / 2) / vh
+        storyEl.style.setProperty("--s0-shift", "0px");
+        let textBottom = s0.offsetTop + s0.offsetHeight;
+        const camW = Math.min(
+          small ? innerWidth * 1.6 : Math.max(innerWidth, vh * 1.6),
+          FRAME_MAX
         );
+        const camH = (camW / 1.6) * CAM[0][3];
+        // On a screen taller than the opening (the text, the gap, then the board, which fills about 72% of the
+        // frame's height), the two sit together in its middle rather than at the top over an empty lower half.
+        const shift = Math.max(
+          0,
+          Math.round((vh - (textBottom + 74 + camH * 0.72)) / 2)
+        );
+        if (shift) {
+          storyEl.style.setProperty("--s0-shift", shift + "px");
+          textBottom += shift;
+        }
+        const under = (textBottom + 18 + camH * 0.295 - vh / 2) / uh;
+        const y0 = Math.min(Math.max(CAM_Y0, under), under + 56 / uh);
         CAM[0][2] = y0;
         CAM[1][2] = y0;
       }
@@ -722,8 +746,8 @@ export function mountBlack(host) {
     let uiKey = -1;
     function camAt(u) {
       const c = pl(CAM, u, true);
-      const x = Math.round(c[0] * vw * 2) / 2;
-      const y = Math.round(c[1] * vh * 2) / 2;
+      const x = Math.round(c[0] * uw * 2) / 2;
+      const y = Math.round(c[1] * uh * 2) / 2;
       const s = Math.round(c[2] * 1000) / 1000;
       const k = x + "|" + y + "|" + s;
       if (k !== camKey) {

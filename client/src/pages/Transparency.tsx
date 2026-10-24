@@ -304,7 +304,7 @@ export default function Transparency() {
             <button
               type="button"
               onClick={() => openContactForm({ topic: "finance" })}
-              className="btn or"
+              className="btn pri"
             >
               Contact Finance &amp; Governance
             </button>

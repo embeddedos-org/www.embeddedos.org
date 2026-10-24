@@ -545,7 +545,7 @@ export default function Demo() {
               type="button"
               onClick={start}
               disabled={running}
-              className="btn or"
+              className="btn pri"
             >
               {running ? "Running…" : "Run"}
             </button>

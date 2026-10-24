@@ -74,7 +74,7 @@
 }
 .bp.pd .pd-repo-name {
   font: 500 13px/1.4 var(--mono);
-  color: var(--orange-hi);
+  color: var(--fg);
   overflow-wrap: anywhere;
 }
 .bp.pd .pd-repo .badges {

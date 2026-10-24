@@ -458,7 +458,7 @@ export default function HardwareLab() {
             href="https://github.com/embeddedos-org/eos"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn or"
+            className="btn pri"
           >
             View BSP on GitHub{" "}
             <span className="ar" aria-hidden="true">
@@ -610,7 +610,7 @@ export default function HardwareLab() {
         }
       >
         <div className="ctas">
-          <Link href="/flow" className="btn or">
+          <Link href="/flow" className="btn pri">
             Try EoSim <span className="ar">›</span>
           </Link>
         </div>

@@ -86,7 +86,7 @@ export default function About() {
         lead="A 501(c)(3) organization dedicated to advancing open-source embedded systems research, education, and technology for the benefit of humanity."
       >
         <div className="ctas">
-          <Link href="/get-involved" className="btn or">
+          <Link href="/get-involved" className="btn pri">
             Get Involved{" "}
             <span className="ar" aria-hidden="true">
               →

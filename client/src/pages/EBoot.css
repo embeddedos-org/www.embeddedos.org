@@ -41,7 +41,7 @@
   gap: 6px;
 }
 .bp.eboot .eb-stages .k {
-  color: var(--c, var(--fg3));
+  color: var(--fg3);
 }
 .bp.eboot .eb-log {
   margin-top: 0;

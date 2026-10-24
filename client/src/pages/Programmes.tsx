@@ -114,7 +114,7 @@ export default function Programmes() {
               <button
                 type="button"
                 onClick={() => openContactForm({ topic: "contact" })}
-                className="btn or"
+                className="btn pri"
               >
                 Help start one — contact us
               </button>

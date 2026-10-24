@@ -129,7 +129,7 @@ export default function Books() {
                 href={`https://github.com/embeddedos-org/${featured.repo}/releases/latest`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn or"
+                className="btn pri"
               >
                 Download PDF
               </a>

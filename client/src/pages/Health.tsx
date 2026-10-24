@@ -368,7 +368,7 @@ export default function Health() {
             href="https://github.com/embeddedos-org/eos-health"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn or"
+            className="btn pri"
           >
             View on GitHub{" "}
             <span className="ar" aria-hidden="true">
@@ -493,7 +493,7 @@ export default function Health() {
         lead="The project intends to publish design files, research firmware, and companion-app code as they become available. Review the linked repositories for the artifacts currently available."
       >
         <div className="ctas">
-          <Link href="/get-involved" className="btn or">
+          <Link href="/get-involved" className="btn pri">
             Get Involved{" "}
             <span className="ar" aria-hidden="true">
               →

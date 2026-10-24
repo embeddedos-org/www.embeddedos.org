@@ -52,7 +52,7 @@
   border-color: var(--fg2);
 }
 .bp.eosuite .es-search input:focus-visible {
-  outline: 2px solid var(--orange-hi);
+  outline: 2px solid var(--fg);
   outline-offset: 2px;
 }
 

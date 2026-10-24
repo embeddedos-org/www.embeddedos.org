@@ -95,7 +95,7 @@ export default function Patents() {
         alt
       >
         <div className="ctas">
-          <Link href="/contact" className="btn or">
+          <Link href="/contact" className="btn pri">
             Contact Foundation
           </Link>
           <Link href="/membership" className="btn gh">

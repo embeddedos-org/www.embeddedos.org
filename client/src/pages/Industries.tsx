@@ -417,7 +417,7 @@ export default function Industries() {
         lead="The roadmap says which of these sectors gets attention next, and what has to be true before a design can move past TRL 4 — physical qualification, then certification evidence. The programmes behind the work, and what the Foundation deliberately does not do, are on the Mission & Scope page."
       >
         <div className="ctas">
-          <Link href="/roadmap" className="btn or">
+          <Link href="/roadmap" className="btn pri">
             See the roadmap{" "}
             <span className="ar" aria-hidden="true">
               →

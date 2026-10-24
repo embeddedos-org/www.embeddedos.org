@@ -123,7 +123,7 @@ export default function ContentIndex({ path }: ContentIndexProps) {
                     topic: category.contactTopic ?? "contact",
                   })
                 }
-                className="btn or"
+                className="btn pri"
               >
                 Send us a message
               </button>

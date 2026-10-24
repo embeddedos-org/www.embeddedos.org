@@ -177,7 +177,7 @@ export default function CertificationPage() {
           ))}
         </ol>
         <div className="ctas ct-ctas">
-          <Link href="/getting-started" className="btn or">
+          <Link href="/getting-started" className="btn pri">
             Start Studying{" "}
             <span className="ar" aria-hidden="true">
               →
