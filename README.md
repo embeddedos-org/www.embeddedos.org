@@ -316,76 +316,71 @@ migrate).
 
 `/book` is the booking page, linked as "Book a call" in the header. `/contact`
 and `/eos-boards` each carry a compact card that links to it. The page is
-`client/src/pages/Book.tsx`: pick a topic, pick a time in the embedded Calendly
-calendar (`client/src/components/BookingCalendar.tsx`), then see the confirmed
-state. Topics, durations, the "what to expect" list and the FAQ are in
-`client/src/data/booking.ts`.
+`client/src/pages/Book.tsx`: it lists the topics as guidance and embeds the
+Foundation's Google Calendar appointment schedule
+(`client/src/components/BookingCalendar.tsx`), where the visitor picks a time
+and fills in Google's booking form. Topics, durations, the "what to expect"
+list and the FAQ are in `client/src/data/booking.ts`.
 
-- **The event URL is one constant:** `CALENDLY_EVENT_URL` in
-  `client/src/data/foundation.ts`. It is set to the team's event,
-  `https://calendly.com/kartikeydheer-embeddedos/30min`, so `/book` embeds the
-  calendar. If it is ever `null` again, choosing a topic offers
-  to arrange the call by email through the contact form, and nothing loads from
-  Calendly. The page then shows the `_BY_EMAIL` versions of the "what to expect"
-  list, the time-zone note and the FAQ, which promise an email reply and no
-  Calendly confirmation. Set it to the event's public scheduling link,
-  `https://calendly.com/<user>/<event>`; any other value keeps the email
-  fallback. Once it is set, Calendly's `widget.js` and `widget.css` load when
-  the calendar nears the viewport. A plain link to the scheduling page sits under
-  the calendar in case the script is blocked.
-- **The topic is prefilled** as `a1`, the answer to the event's first custom
-  question (Calendly Help Center, "How to pre-fill invitee information in your
-  Calendly link",
-  https://calendly.com/help/how-to-pre-fill-invitee-information-in-your-calendly-link).
-  In Calendly, give the event a first question such as "What would you like to
-  talk about?", or the topic is not recorded. **The event's first custom
-  question must be the topic:** nothing in this repository can check that;
-  confirm it in Calendly. Each card shows `BOOKING_MINUTES` (30), which must
-  match the event's duration.
-- **The calendar is themed** with Calendly's `background_color`, `text_color`
-  and `primary_color` parameters, set from the brand navy and orange
-  (`CALENDLY_THEME` in `client/src/lib/booking.ts`, tested against
-  `client/src/index.css`). The frame URL carries only those three colours and
-  the `a1` topic; it does not hide Calendly's cookie banner, so Calendly shows
-  its own cookie preferences for the visitor's region, as the Privacy page
-  says. Calendly applies the colours only on its paid plans ("If you're on a
-  paid plan, you can update your embed's look and feel",
-  https://calendly.com/help/how-to-customize-your-embed). On a free plan the
-  calendar stays white inside the dark card.
-- **CSP:** `client/public/.htaccess` allows `https://assets.calendly.com` in
-  `script-src` and `style-src`, and `https://calendly.com` in `frame-src`.
-- **Notifications:** Calendly emails the event's host. As well, when a visitor
-  books in the embedded calendar, the page takes the event and invitee
-  identifiers from Calendly's `calendly.event_scheduled` message (accepted
-  from `https://calendly.com` only) and posts them, with the page path, to
-  `client/public/api/booking.php`, which mails kartikeydheer@embeddedos.org and
-  srikanth@embeddedos.org with the subject "New meeting booked via
-  embeddedos.org". The addresses are `BOOKING_INBOXES` in that file, on the
-  server only.
-- **`booking.php` is on, together with the event URL.**
-  `BOOKING_NOTICES_ENABLED` in that file is `true` because `CALENDLY_EVENT_URL`
-  is set; the two change together. When it is `false`, every request gets HTTP
-  503 with `{"ok":false,"error":"booking_notices_disabled"}` and no mail is
-  sent, so set it back to `false` whenever `CALENDLY_EVENT_URL` is `null`. Even
-  when it is on, the endpoint checks
-  only that the request carries the site's `Origin` header, that the event and
-  invitee identifiers have the shape of Calendly's API URIs (the invitee
-  belonging to that event), that the page is a plain site path, and that one
-  address sends at most 5 requests an hour. Any client outside a browser can
-  set the `Origin` header, and there is no Calendly signature to verify, so the
-  endpoint cannot confirm that a booking exists: each email says it is not
-  checked against Calendly and to confirm the booking there.
-- **On Calendly's side,** so that Srikanth also gets Calendly's own booking
-  emails, make the event a Collective event type and add him as a co-host. In
-  Calendly: open the Scheduling page, open the event type's settings, expand
-  **Hosts**, enter his name or email, select **+ Add co-host**, then **Save
-  changes** (Calendly Help Center, "How to manage shared event types",
-  https://calendly.com/help/how-to-manage-shared-event-types). That article
-  lists shared event types for the Professional, Standard, Standard Plus,
-  Teams, Teams Plus and Enterprise plans. A Collective event offers only times
-  when every host is free. Calendly's notifications article documents no other
-  way to add a recipient to the host's booking email
-  (https://calendly.com/help/calendly-scheduling-notifications).
+- **The calendar is two constants** in `client/src/data/foundation.ts`:
+  - `GOOGLE_APPOINTMENTS_EMBED_URL`, the iframe `src` from the schedule's
+    embed code, now
+    `https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true`;
+  - `GOOGLE_BOOKING_PAGE_URL`, the schedule's booking page link, now
+    `https://calendar.app.google/PPzWao4AzvXtZeva6`. It sits under the
+    calendar as "Open the booking page" and opens in a new tab.
+- **To change the calendar,** open the appointment schedule in Google
+  Calendar and use its share options: copy the booking page link into
+  `GOOGLE_BOOKING_PAGE_URL`, and from the website embed code copy only the
+  `src` of the `<iframe>` into `GOOGLE_APPOINTMENTS_EMBED_URL`. Do not paste
+  Google's "Book an appointment" button code: it loads
+  `scheduling-button-script.js` and a stylesheet from Google, which the CSP
+  does not allow and the site does not use. `client/src/lib/booking.ts`
+  accepts only these forms:
+  - embed: `https://calendar.google.com/calendar/appointments/<id>?gv=true`
+    (optionally `appointments/schedules/<id>`);
+  - booking page: `https://calendar.app.google/<id>`, or the
+    `https://calendar.google.com/calendar/appointments/...` address without
+    the query.
+
+  Then update `tests/unit/booking-url-set.test.tsx`, which pins both values.
+  An embed URL that does not pass the check shows the email fallback instead
+  of a calendar, with the `_BY_EMAIL` versions of the steps, the "what to
+  expect" list, the time-zone note and the FAQ, which promise only an email
+  reply; a booking link that does not pass is left out.
+
+- **Set in Google Calendar, not here:** the slot length, the video link and the
+  booking form. The cards and copy say 30 minutes (`BOOKING_MINUTES`) and a
+  video link in the confirmation email, so the schedule must use 30-minute
+  slots with Google Meet (or another video link). The page asks visitors to
+  mention their topic in the booking form, which by default asks only for a
+  first name, a last name and an email address, so give the form an item such
+  as "What would you like to talk about?". Nothing in this repository can check these settings;
+  confirm them on the schedule.
+- **The topic can no longer be passed in:** Google's embed takes no prefill,
+  so the topic cards are guidance, not inputs, and the three steps are a guide
+  rather than a progress bar.
+- **Loading:** the iframe is mounted when the card comes within 300 px of the
+  viewport, never while the site is prerendered, and carries
+  `loading="lazy"`. A skeleton shows until the frame's load event. If that has
+  not fired after 15 s (`FRAME_TIMEOUT_MS`), the card offers the booking page
+  and the email option over it, and the calendar takes over again if it loads
+  after all. The browser fires load even for an error page in the frame, so
+  the link under the calendar is always shown.
+- **CSP:** `client/public/.htaccess` allows `https://calendar.google.com` in
+  `frame-src` and adds no Google script or style host for the calendar.
+- **Notifications:** each booking lands in the schedule owner's Google
+  Calendar, and Google notifies the owner and emails the booker a
+  confirmation. The embedded calendar
+  tells this site nothing about a booking, so the site sends no notice of its
+  own and stores nothing.
+- **`client/public/api/booking.php` is retired.** It used to mail the team a
+  notice posted by the previous calendar. It now answers every request with
+  HTTP 410 and does nothing else. It stays only because the cPanel deploy
+  (`client/public/.cpanel.yml`) copies files and never deletes: removed from
+  the repository, the old endpoint would stay live on the server. After this
+  version is deployed, delete `public_html/api/booking.php` on the server, then
+  delete the file here too.
 
 ## Notes for contributors
 

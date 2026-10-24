@@ -657,8 +657,8 @@ export default function EosBoards() {
               title="Talk to us about a board"
               line={
                 bookingCalendarReady()
-                  ? "Choose EoS boards and hardware on the booking page and pick a time."
-                  : "Choose EoS boards and hardware on the booking page and arrange a time by email."
+                  ? "Pick a time on the booking page and mention EoS boards and hardware."
+                  : "Arrange a time by email through the booking page and mention EoS boards and hardware."
               }
             />
           </div>

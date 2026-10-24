@@ -294,28 +294,69 @@ test.describe("responsive layout", () => {
 });
 
 test.describe("keyboard operability", () => {
-  test("the /book topic cards are radios a keyboard can choose, with a visible focus ring", async ({
+  test("/book frames the Google calendar without a topic pick, and its booking-page link is a keyboard-visible new-tab link", async ({
     page,
   }) => {
     await page.goto("/book", { waitUntil: "networkidle" });
-    const first = page.getByRole("radio", { name: /Platform demo/ });
-    await first.focus();
-    await page.keyboard.press("Space");
-    await expect(first).toBeChecked();
-    await page.keyboard.press("ArrowDown");
-    const second = page.getByRole("radio", { name: /Partnership or OEM/ });
-    await expect(second).toBeChecked();
-    await expect(second).toBeFocused();
-    // CALENDLY_EVENT_URL is set, so step 2 is "Pick a time"; the unit tests
-    // pin the email-fallback labels with the URL forced to null.
+    // The topics are guidance for the booking form, not inputs, and the steps
+    // are a guide: Google's frame tells the page nothing about a booking.
+    await expect(page.getByRole("radio")).toHaveCount(0);
     await expect(
       page
-        .getByRole("list", { name: "Booking progress" })
-        .locator('[aria-current="step"]')
-    ).toContainText("Pick a time");
-    const ring = await second.evaluate(input => {
-      const card = input.nextElementSibling as HTMLElement;
-      const style = getComputedStyle(card);
+        .getByRole("list", { name: "How booking works" })
+        .getByRole("listitem")
+    ).toHaveText(["1Choose a topic", "2Pick a time", "3Confirmed"]);
+
+    // The frame mounts as its card nears the viewport. fixtures.ts answers
+    // calendar.google.com with a placeholder, so nothing reaches Google.
+    await page.locator("#pick-a-time").scrollIntoViewIfNeeded();
+    const calendar = page.locator('[data-booking="google-calendar"]');
+    const frame = calendar.locator("iframe");
+    await expect(frame).toHaveCount(1);
+    await expect(frame).toHaveAttribute(
+      "src",
+      /^https:\/\/calendar\.google\.com\/calendar\/appointments\/[A-Za-z0-9_-]+=*\?gv=true$/
+    );
+    await expect(frame).toHaveAttribute(
+      "title",
+      /Google Calendar appointment schedule/
+    );
+    await expect(frame).toHaveAttribute("loading", "lazy");
+    await expect(calendar.getByRole("status")).toHaveText(
+      "The calendar has loaded."
+    );
+    // The frame holds fixtures.ts's placeholder, not Google's page.
+    await expect(
+      page.frameLocator('[data-booking="google-calendar"] iframe').locator("p")
+    ).toHaveText(/e2e placeholder/);
+    const box = await frame.boundingBox();
+    expect(box?.height ?? 0).toBeGreaterThanOrEqual(600);
+    // The page-wide axe run above settles before the frame mounts, so audit
+    // the calendar card (the frame's title, the link) here, once it is in.
+    const card = await new AxeBuilder({ page })
+      .include('[data-booking="google-calendar"]')
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
+    expect(
+      card.violations
+        .filter(v => v.impact === "serious" || v.impact === "critical")
+        .map(v => `${v.id}: ${v.help}`)
+    ).toEqual([]);
+
+    const link = calendar.getByRole("link", { name: /Open the booking page/ });
+    await expect(link).toHaveAttribute(
+      "href",
+      /^https:\/\/calendar\.app\.google\/[A-Za-z0-9]+$/
+    );
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
+    // Reach it by keyboard so the ring is the :focus-visible one.
+    await link.focus();
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(link).toBeFocused();
+    const ring = await link.evaluate(a => {
+      const style = getComputedStyle(a);
       return {
         style: style.outlineStyle,
         width: parseFloat(style.outlineWidth),

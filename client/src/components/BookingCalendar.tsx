@@ -1,65 +1,23 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ExternalLink } from "lucide-react";
-import { CALENDLY_EVENT_URL } from "@/data/foundation";
 import {
-  CALENDLY_ORIGIN,
-  CALENDLY_SCRIPT,
-  CALENDLY_STYLESHEET,
-  bookingFrameUrl,
-  bookingNoticeFrom,
-  calendlyEventUrl,
-  sendBookingNotice,
-  type BookingNotice,
-} from "@/lib/booking";
+  GOOGLE_APPOINTMENTS_EMBED_URL,
+  GOOGLE_BOOKING_PAGE_URL,
+} from "@/data/foundation";
+import { appointmentsEmbedUrl, bookingPageUrl } from "@/lib/booking";
 
-interface CalendlyApi {
-  initInlineWidget(options: {
-    url: string;
-    parentElement: HTMLElement;
-    resize?: boolean;
-  }): void;
-}
+export const CALENDAR_FRAME_TITLE =
+  "Google Calendar appointment schedule for a call with the EmbeddedOS team";
 
-type CalendlyWindow = Window & {
-  Calendly?: CalendlyApi;
-  __EOS_PRERENDER__?: boolean;
-};
+/**
+ * How long the frame may take to fire its load event before the page offers
+ * the booking page and the email option over it. A cross-origin frame reports
+ * nothing else, and the browser fires load even for its own error page, so
+ * the link under the calendar is always shown as well.
+ */
+export const FRAME_TIMEOUT_MS = 15_000;
 
-let loader: Promise<CalendlyApi> | null = null;
-
-export function loadCalendly(): Promise<CalendlyApi> {
-  if (loader) return loader;
-  const win = window as CalendlyWindow;
-  loader = new Promise<CalendlyApi>((resolve, reject) => {
-    if (win.Calendly?.initInlineWidget) return resolve(win.Calendly);
-    if (!document.querySelector(`link[href="${CALENDLY_STYLESHEET}"]`)) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = CALENDLY_STYLESHEET;
-      document.head.appendChild(link);
-    }
-    const script = document.createElement("script");
-    script.src = CALENDLY_SCRIPT;
-    script.async = true;
-    script.onload = () =>
-      win.Calendly?.initInlineWidget
-        ? resolve(win.Calendly)
-        : reject(new Error("Calendly's widget script loaded without its API"));
-    script.onerror = () => {
-      script.remove();
-      reject(new Error("Calendly's widget script was blocked or failed"));
-    };
-    document.head.appendChild(script);
-  });
-  loader.catch(() => {
-    loader = null;
-  });
-  return loader;
-}
-
-export function resetCalendlyLoader(): void {
-  loader = null;
-}
+type PrerenderWindow = Window & { __EOS_PRERENDER__?: boolean };
 
 type LoadState = "waiting" | "loading" | "ready" | "failed";
 
@@ -92,144 +50,119 @@ function CalendarSkeleton() {
   );
 }
 
+/**
+ * The team's Google Calendar appointment schedule in a plain iframe. No Google
+ * script or stylesheet loads: the frame is mounted when the card nears the
+ * viewport (never while the site is prerendered), and the site's own link to
+ * the booking page sits under it.
+ */
 export default function BookingCalendar({
-  url = CALENDLY_EVENT_URL,
-  topic = null,
-  page,
+  url = GOOGLE_APPOINTMENTS_EMBED_URL,
+  link = GOOGLE_BOOKING_PAGE_URL,
   fallback,
-  onReady,
-  onFailed,
-  onScheduled,
 }: {
   url?: string | null;
-  topic?: string | null;
-  page: string;
+  link?: string | null;
   fallback: ReactNode;
-  onReady?: () => void;
-  onFailed?: () => void;
-  onScheduled?: (notice: BookingNotice) => void;
 }) {
-  const base = calendlyEventUrl(url);
-  const frameUrl = base ? bookingFrameUrl(base, topic) : null;
+  const src = appointmentsEmbedUrl(url);
+  const page = bookingPageUrl(link);
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<LoadState>("waiting");
-  const callbacks = useRef({ onReady, onFailed, onScheduled });
-  callbacks.current = { onReady, onFailed, onScheduled };
 
   useEffect(() => {
     const element = ref.current;
-    if (!frameUrl || !element) return;
-    if ((window as CalendlyWindow).__EOS_PRERENDER__) return;
-    let cancelled = false;
-    const ready = () => {
-      if (cancelled) return;
-      setState(current => (current === "loading" ? "ready" : current));
-      callbacks.current.onReady?.();
-    };
-    const onMessage = (event: MessageEvent) => {
-      if (event.origin !== CALENDLY_ORIGIN) return;
-      const name = (event.data as { event?: unknown } | null)?.event;
-      if (typeof name === "string" && name.startsWith("calendly.")) ready();
-    };
-    window.addEventListener("message", onMessage);
-    const start = () => {
-      setState("loading");
-      loadCalendly()
-        .then(api => {
-          if (cancelled) return;
-          element.replaceChildren();
-          api.initInlineWidget({
-            url: frameUrl,
-            parentElement: element,
-            resize: false,
-          });
-          element
-            .querySelector("iframe")
-            ?.addEventListener("load", ready, { once: true });
-        })
-        .catch(() => {
-          if (cancelled) return;
-          setState("failed");
-          callbacks.current.onFailed?.();
-        });
-    };
-    let observer: IntersectionObserver | null = null;
-    if (typeof IntersectionObserver !== "function") start();
-    else {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) return;
-          observer?.disconnect();
-          start();
-        },
-        { rootMargin: "300px 0px" }
-      );
-      observer.observe(element);
+    if (!src || !element) return;
+    if ((window as PrerenderWindow).__EOS_PRERENDER__) return;
+    const start = () =>
+      setState(current => (current === "waiting" ? "loading" : current));
+    if (typeof IntersectionObserver !== "function") {
+      start();
+      return;
     }
-    return () => {
-      cancelled = true;
-      observer?.disconnect();
-      window.removeEventListener("message", onMessage);
-    };
-  }, [frameUrl]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        observer.disconnect();
+        start();
+      },
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [src]);
 
   useEffect(() => {
-    if (!frameUrl) return;
-    const sent = new Set<string>();
-    const onMessage = (event: MessageEvent) => {
-      const notice = bookingNoticeFrom(event, page);
-      if (!notice || sent.has(notice.event_uri)) return;
-      sent.add(notice.event_uri);
-      void sendBookingNotice(notice);
-      callbacks.current.onScheduled?.(notice);
-    };
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [frameUrl, page]);
+    if (state !== "loading") return;
+    const timer = window.setTimeout(
+      () => setState(current => (current === "loading" ? "failed" : current)),
+      FRAME_TIMEOUT_MS
+    );
+    return () => window.clearTimeout(timer);
+  }, [state]);
 
-  if (!base) return <div data-booking="fallback">{fallback}</div>;
+  if (!src) return <div data-booking="fallback">{fallback}</div>;
 
-  const pageLink = (
+  const pageLink = page && (
     <a
-      href={frameUrl ?? base}
+      href={page}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 font-semibold text-brand-amber-light underline underline-offset-2 break-words"
+      className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-brand-amber/60 px-4 py-2.5 text-sm font-semibold text-brand-amber-light hover:border-brand-amber hover:bg-brand-amber/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-amber"
     >
-      open the booking page on calendly.com
+      Open the booking page{" "}
+      <span className="sr-only">on Google Calendar (opens in a new tab)</span>
       <ExternalLink size={14} aria-hidden="true" />
     </a>
   );
 
-  if (state === "failed")
-    return (
-      <div data-booking="failed" className="grid gap-4">
-        <p className="text-sm text-gray-300">
-          The calendar could not load here. You can {pageLink}, or:
-        </p>
-        {fallback}
-      </div>
-    );
-
   return (
-    <div data-booking="calendly" className="grid gap-3 min-w-0">
-      <div className="relative w-full min-w-0 h-[700px] overflow-hidden rounded-xl bg-brand-navy">
-        {state !== "ready" && <CalendarSkeleton />}
+    <div data-booking="google-calendar" className="grid gap-3 min-w-0">
+      <div
+        ref={ref}
+        className="relative w-full min-w-0 h-[600px] sm:h-[700px] overflow-hidden rounded-xl bg-brand-navy"
+      >
+        {state !== "waiting" && (
+          <iframe
+            src={src}
+            title={CALENDAR_FRAME_TITLE}
+            loading="lazy"
+            onLoad={() => setState("ready")}
+            className="absolute inset-0 h-full w-full border-0 bg-white"
+          />
+        )}
+        {(state === "waiting" || state === "loading") && <CalendarSkeleton />}
+        {state === "failed" && (
+          <div
+            data-booking="failed"
+            className="absolute inset-0 grid content-center gap-4 overflow-y-auto bg-brand-navy p-4 sm:p-6"
+          >
+            <p className="text-sm text-gray-300">
+              {page
+                ? "The calendar could not load here. You can open the booking page on Google Calendar, or:"
+                : "The calendar could not load here."}
+            </p>
+            {pageLink && <div>{pageLink}</div>}
+            {fallback}
+          </div>
+        )}
         <p role="status" className="sr-only">
           {state === "ready"
             ? "The calendar has loaded."
-            : "Loading the calendar."}
+            : state === "failed"
+              ? "The calendar could not load."
+              : "Loading the calendar."}
         </p>
-        <div
-          ref={ref}
-          className="calendly-inline-widget relative h-full w-full min-w-0"
-          data-url={frameUrl ?? undefined}
-          data-auto-load="false"
-        />
       </div>
-      <p className="text-sm text-gray-300">
-        If the calendar does not appear, {pageLink}.
-      </p>
+      {pageLink && state !== "failed" && (
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-gray-300">
+            If the calendar does not appear, open the booking page on Google
+            Calendar.
+          </p>
+          {pageLink}
+        </div>
+      )}
     </div>
   );
 }

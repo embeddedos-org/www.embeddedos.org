@@ -1,14 +1,9 @@
-import { useEffect, useReducer, useRef } from "react";
-import { Link } from "wouter";
 import {
   ArrowRight,
   CalendarDays,
-  Check,
   ChevronDown,
-  CircuitBoard,
   Clock,
   Globe,
-  Home,
   Mail,
 } from "lucide-react";
 import BookingCalendar from "@/components/BookingCalendar";
@@ -26,13 +21,9 @@ import {
 import {
   BOOKING_STEPS,
   BOOKING_STEPS_BY_EMAIL,
-  INITIAL_BOOKING,
   bookingCalendarReady,
-  bookingReducer,
-  type BookingStep,
 } from "@/lib/booking";
 import { openContactForm } from "@/lib/contact-form";
-import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 
 const TRACES = [
   "M1200 90 H1050 V190 H920",
@@ -50,17 +41,6 @@ const VIAS: ReadonlyArray<readonly [number, number]> = [
   [80, 260],
   [1000, 250],
 ];
-
-const CONFETTI = Array.from({ length: 14 }, (_, i) => ({
-  angle: (360 / 14) * i,
-  distance: 70 + (i % 3) * 22,
-  color: ["#F97316", "#22D3EE", "#A78BFA", "#34D399", "#FB923C"][i % 5],
-  delay: (i % 4) * 40,
-}));
-
-function stepIndex(step: BookingStep): number {
-  return BOOKING_STEPS.findIndex(s => s.step === step);
-}
 
 function HeroTraces() {
   return (
@@ -110,208 +90,82 @@ function HeroTraces() {
   );
 }
 
-function Stepper({
-  step,
-  steps,
-}: {
-  step: BookingStep;
-  steps: typeof BOOKING_STEPS;
-}) {
-  const current = stepIndex(step);
+function Steps({ steps }: { steps: typeof BOOKING_STEPS }) {
   return (
     <ol
-      aria-label="Booking progress"
+      aria-label="How booking works"
       className="grid grid-cols-3 gap-2 sm:gap-4"
     >
-      {steps.map((s, i) => {
-        const done = i < current || step === "confirmed";
-        const active = i === current;
-        return (
-          <li
-            key={s.step}
-            aria-current={active ? "step" : undefined}
-            className="min-w-0"
-          >
-            <div
-              className={`h-1 rounded-full transition-colors duration-500 motion-reduce:transition-none ${done || active ? "bg-brand-amber" : "bg-white/15"}`}
-            />
-            <div className="mt-2 flex items-center gap-2 min-w-0">
-              <span
-                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-xs font-bold transition-all duration-300 motion-reduce:transition-none ${done ? "border-brand-amber bg-brand-amber text-brand-navy" : active ? "border-brand-amber text-brand-amber-light shadow-glow-amber" : "border-white/25 text-white/70"}`}
-              >
-                {done ? <Check size={14} aria-hidden="true" /> : i + 1}
-              </span>
-              <span
-                className={`text-xs sm:text-sm font-semibold leading-tight ${active || done ? "text-white" : "text-white/70"}`}
-              >
-                {s.label}
-                {done && <span className="sr-only"> (done)</span>}
-              </span>
-            </div>
-          </li>
-        );
-      })}
+      {steps.map((s, i) => (
+        <li key={s.step} className="min-w-0">
+          <div className="h-1 rounded-full bg-brand-amber/50" />
+          <div className="mt-2 flex items-center gap-2 min-w-0">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand-amber text-xs font-bold text-brand-amber-light">
+              {i + 1}
+            </span>
+            <span className="text-xs sm:text-sm font-semibold leading-tight text-white">
+              {s.label}
+            </span>
+          </div>
+        </li>
+      ))}
     </ol>
   );
 }
 
-function TopicCard({
-  topic,
-  checked,
-  disabled,
-  onSelect,
-}: {
-  topic: BookingTopic;
-  checked: boolean;
-  disabled: boolean;
-  onSelect: () => void;
-}) {
+function TopicCard({ topic }: { topic: BookingTopic }) {
   return (
-    <label className="group relative block cursor-pointer has-[:disabled]:cursor-default">
-      <input
-        type="radio"
-        name="booking-topic"
-        value={topic.key}
-        checked={checked}
-        disabled={disabled}
-        onChange={onSelect}
-        className="peer sr-only"
-      />
-      <span className="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-all duration-300 ease-out motion-reduce:transition-none group-hover:-translate-y-0.5 group-hover:border-white/25 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand-amber peer-checked:-translate-y-0.5 peer-checked:border-brand-amber peer-checked:bg-brand-amber/[0.08] peer-checked:shadow-glow-amber motion-reduce:group-hover:translate-y-0 motion-reduce:peer-checked:translate-y-0">
-        <span className="flex items-start justify-between gap-3">
-          <span
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-            style={{ background: `${topic.color}1f`, color: topic.color }}
-          >
-            <topic.icon size={20} aria-hidden="true" />
-          </span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-white/15 px-2 py-0.5 text-xs text-white/80">
-            <Clock size={12} aria-hidden="true" /> {topic.minutes} min
-          </span>
+    <li className="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <span className="flex items-start justify-between gap-3">
+        <span
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+          style={{ background: `${topic.color}1f`, color: topic.color }}
+        >
+          <topic.icon size={20} aria-hidden="true" />
         </span>
-        <span className="font-heading text-base font-bold text-white">
-          {topic.title}
-        </span>
-        <span className="text-sm leading-relaxed text-gray-300">
-          {topic.line}
+        <span className="inline-flex items-center gap-1 rounded-full border border-white/15 px-2 py-0.5 text-xs text-white/80">
+          <Clock size={12} aria-hidden="true" /> {topic.minutes} min
         </span>
       </span>
-      <span
-        aria-hidden="true"
-        className="book-pop absolute right-3 bottom-3 hidden h-6 w-6 items-center justify-center rounded-full bg-brand-amber text-brand-navy peer-checked:flex"
-      >
-        <Check size={14} />
+      <span className="font-heading text-base font-bold text-white">
+        {topic.title}
       </span>
-    </label>
+      <span className="text-sm leading-relaxed text-gray-300">
+        {topic.line}
+      </span>
+    </li>
   );
 }
 
-function Confirmed({
-  topic,
-  onRestart,
-}: {
-  topic: BookingTopic | null;
-  onRestart: () => void;
-}) {
-  const heading = useRef<HTMLHeadingElement>(null);
-  const reducedMotion = usePrefersReducedMotion();
-  useEffect(() => {
-    heading.current?.focus();
-  }, []);
+function EmailFallback() {
   return (
-    <div
-      data-booking-state="confirmed"
-      className="relative overflow-hidden rounded-2xl border border-brand-green/40 bg-brand-navy-light p-6 sm:p-10 text-center shadow-glow-teal"
-    >
-      <div className="relative mx-auto mb-6 h-24 w-24">
-        {!reducedMotion && (
-          <div aria-hidden="true" className="absolute inset-0">
-            {CONFETTI.map(c => (
-              <span
-                key={c.angle}
-                className="book-confetti absolute left-1/2 top-1/2 h-2 w-2 rounded-sm"
-                style={
-                  {
-                    background: c.color,
-                    animationDelay: `${500 + c.delay}ms`,
-                    "--angle": `${c.angle}deg`,
-                    "--distance": `${c.distance}px`,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </div>
-        )}
-        <svg viewBox="0 0 96 96" className="h-24 w-24" aria-hidden="true">
-          <circle
-            cx="48"
-            cy="48"
-            r="44"
-            fill="none"
-            strokeWidth="4"
-            pathLength={100}
-            className="book-draw stroke-brand-green"
-          />
-          <path
-            d="M30 50 L43 62 L67 36"
-            fill="none"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            pathLength={100}
-            className="book-draw book-draw-late stroke-brand-green"
-          />
-        </svg>
-      </div>
-      <h2
-        ref={heading}
-        tabIndex={-1}
-        className="font-heading text-3xl font-black text-white outline-none"
-      >
-        You're booked
-      </h2>
-      {topic && (
-        <p className="mt-2 text-brand-amber-light font-semibold">
-          {topic.title} · {topic.minutes} min
+    <div className="rounded-xl border border-white/10 bg-brand-navy p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-white mb-1">
+          Arrange the call by email
         </p>
-      )}
-      <p className="mx-auto mt-4 max-w-xl leading-relaxed text-gray-300">
-        You and the team each get an email with the time and a video link. To
-        reschedule or cancel, use the link in yours.
-      </p>
-      <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-        <Link
-          href="/eos-boards"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-amber px-5 py-3 font-semibold text-brand-navy hover:bg-brand-amber-light"
-        >
-          <CircuitBoard size={18} aria-hidden="true" /> Explore EoS boards
-        </Link>
-        <Link
-          href="/"
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-5 py-3 font-semibold text-white hover:border-white/40"
-        >
-          <Home size={18} aria-hidden="true" /> Back to home
-        </Link>
+        <p className="text-sm leading-relaxed text-gray-300">
+          Send us a few times that suit you and we will set up your call.
+        </p>
       </div>
       <button
         type="button"
-        onClick={onRestart}
-        className="mt-6 text-sm text-gray-300 underline underline-offset-2 hover:text-white"
+        onClick={() =>
+          openContactForm({ topic: "contact", subject: "Meeting request" })
+        }
+        className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-amber px-5 py-3 font-semibold text-brand-navy hover:bg-brand-amber-light"
       >
-        Book another call
+        <Mail size={16} aria-hidden="true" /> Email us to arrange it
       </button>
     </div>
   );
 }
 
 export default function Book() {
-  const [state, dispatch] = useReducer(bookingReducer, INITIAL_BOOKING);
-  const topic = BOOKING_TOPICS.find(t => t.key === state.topic) ?? null;
-  // Without a valid event URL there is no calendar, only the email fallback,
-  // and Calendly sends no confirmation.
+  // Without a valid embed URL there is no calendar, only the email fallback,
+  // and Google sends no confirmation.
   const hasCalendar = bookingCalendarReady();
   const steps = hasCalendar ? BOOKING_STEPS : BOOKING_STEPS_BY_EMAIL;
-  const current = steps[stepIndex(state.step)];
   const expectations = hasCalendar ? BOOKING_EXPECT : BOOKING_EXPECT_BY_EMAIL;
   const questions = hasCalendar ? BOOKING_FAQ : BOOKING_FAQ_BY_EMAIL;
 
@@ -343,11 +197,7 @@ export default function Book() {
       <div className="px-6 pb-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 rounded-2xl border border-white/10 bg-white/[0.02] p-4 sm:p-5">
-            <Stepper step={state.step} steps={steps} />
-            <p role="status" className="sr-only">
-              Step {stepIndex(state.step) + 1} of {steps.length}:{" "}
-              {current.label}
-            </p>
+            <Steps steps={steps} />
           </div>
 
           <div className="grid gap-10 lg:grid-cols-3">
@@ -361,25 +211,14 @@ export default function Book() {
                 </h2>
                 <p className="mb-5 text-sm text-gray-300">
                   {hasCalendar
-                    ? "Pick one; it goes into the booking so the right people join."
-                    : "Pick one; it goes into the subject of your email so the right people join."}
+                    ? "Mention your topic in the booking form so the right people join."
+                    : "Mention your topic in your email so the right people join."}
                 </p>
-                <fieldset>
-                  <legend className="sr-only">Topic of the call</legend>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {BOOKING_TOPICS.map(t => (
-                      <TopicCard
-                        key={t.key}
-                        topic={t}
-                        checked={state.topic === t.key}
-                        disabled={state.step === "confirmed"}
-                        onSelect={() =>
-                          dispatch({ type: "select", topic: t.key })
-                        }
-                      />
-                    ))}
-                  </div>
-                </fieldset>
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {BOOKING_TOPICS.map(t => (
+                    <TopicCard key={t.key} topic={t} />
+                  ))}
+                </ul>
               </section>
 
               <section
@@ -387,88 +226,24 @@ export default function Book() {
                 aria-labelledby="time-heading"
                 className="scroll-mt-24"
               >
-                {state.step === "confirmed" ? (
-                  <Confirmed
-                    topic={topic}
-                    onRestart={() => dispatch({ type: "restart" })}
-                  />
-                ) : (
-                  <>
-                    <h2
-                      id="time-heading"
-                      className="font-heading text-2xl font-bold mb-5"
-                    >
-                      {hasCalendar ? "Pick a time" : "Suggest a few times"}
-                    </h2>
-                    <div className="rounded-2xl border border-brand-amber/25 bg-brand-navy-light p-3 sm:p-4 shadow-glow-amber">
-                      <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-sm">
-                        <span className="font-semibold text-white">
-                          {topic ? topic.title : "No topic chosen yet"}
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-gray-300">
-                          <Clock size={14} aria-hidden="true" />{" "}
-                          {BOOKING_MINUTES} min
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-gray-300">
-                          <Globe size={14} aria-hidden="true" /> Your time zone
-                        </span>
-                      </div>
-                      {topic ? (
-                        <BookingCalendar
-                          topic={topic.title}
-                          page="/book"
-                          onReady={() => dispatch({ type: "frame-ready" })}
-                          onFailed={() => dispatch({ type: "frame-failed" })}
-                          onScheduled={notice =>
-                            dispatch({ type: "scheduled", notice })
-                          }
-                          fallback={
-                            <div className="rounded-xl border border-white/10 bg-brand-navy p-6 flex flex-col sm:flex-row sm:items-center gap-4">
-                              <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-white mb-1">
-                                  Arrange the call by email
-                                </p>
-                                <p className="text-sm leading-relaxed text-gray-300">
-                                  Send us a few times that suit you and we will
-                                  set up your “{topic.title}” call.
-                                </p>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  openContactForm({
-                                    topic:
-                                      topic.key === "partnership"
-                                        ? "partners"
-                                        : "contact",
-                                    subject: `Meeting request: ${topic.title}`,
-                                  })
-                                }
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-amber px-5 py-3 font-semibold text-brand-navy hover:bg-brand-amber-light"
-                              >
-                                <Mail size={16} aria-hidden="true" /> Email us
-                                to arrange it
-                              </button>
-                            </div>
-                          }
-                        />
-                      ) : (
-                        <div className="flex h-56 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-white/15 bg-brand-navy px-6 text-center">
-                          <CalendarDays
-                            size={28}
-                            className="text-brand-amber-light"
-                            aria-hidden="true"
-                          />
-                          <p className="text-gray-300">
-                            {hasCalendar
-                              ? "Choose a topic above and the calendar opens here."
-                              : "Choose a topic above to arrange the call by email."}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
+                <h2
+                  id="time-heading"
+                  className="font-heading text-2xl font-bold mb-5"
+                >
+                  {hasCalendar ? "Pick a time" : "Suggest a few times"}
+                </h2>
+                <div className="rounded-2xl border border-brand-amber/25 bg-brand-navy-light p-3 sm:p-4 shadow-glow-amber">
+                  <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-sm">
+                    <span className="inline-flex items-center gap-1 text-gray-300">
+                      <Clock size={14} aria-hidden="true" /> {BOOKING_MINUTES}{" "}
+                      min
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-gray-300">
+                      <Globe size={14} aria-hidden="true" /> Your time zone
+                    </span>
+                  </div>
+                  <BookingCalendar fallback={<EmailFallback />} />
+                </div>
               </section>
             </div>
 

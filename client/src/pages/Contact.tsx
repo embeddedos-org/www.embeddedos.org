@@ -279,8 +279,8 @@ export default function Contact() {
             title="Book a call with the team"
             line={
               bookingCalendarReady()
-                ? "Pick a topic and a time on our booking page."
-                : "Pick a topic on our booking page and arrange a time by email."
+                ? "Pick a time on our booking page and tell us your topic."
+                : "Arrange a time by email through our booking page."
             }
           />
         </div>

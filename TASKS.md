@@ -10,9 +10,14 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID         | Task                                             | Owner    | Mode           | Status | Depends on       |
-| ---------- | ------------------------------------------------ | -------- | -------------- | ------ | ---------------- |
-| EOS-BOARDS | Resume original-board catalogue and booking page | Frontend | Implementation | review | Review of PR #94 |
+| ID         | Task                                                        | Owner    | Mode           | Status | Depends on         |
+| ---------- | ----------------------------------------------------------- | -------- | -------------- | ------ | ------------------ |
+| EOS-BOARDS | Resume original-board catalogue and booking page            | Frontend | Implementation | done   | —                  |
+| BOOK-GCAL  | `/book` on the owner's Google Calendar appointment schedule | Frontend | Implementation | review | Independent review |
+
+EOS-BOARDS was merged as PR #94 on 2026-10-23 (`ca73d62d` on master). The
+notes below are its record as it stood then; its calendar and booking notices
+are replaced by BOOK-GCAL, further down.
 
 Acceptance criteria from the handoff:
 
@@ -72,6 +77,46 @@ that the event's first custom question is the topic (the page prefills it as
 
 No real booking, Calendly email or notice delivery has been made or verified, and
 nothing is deployed.
+
+### BOOK-GCAL
+
+Acceptance criteria from the owner, verbatim: "use this link to add into
+website, not your calendar", with these links:
+
+- Booking page (short link): https://calendar.app.google/PPzWao4AzvXtZeva6
+- Embed URL: https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true
+
+From the brief: embed the schedule in an iframe with the site's own link to the
+booking page (new tab, `rel="noopener"`), and do not load Google's
+`scheduling-button-script.js` or its stylesheet.
+
+Done on 2026-10-24 (branch `feat/book-google-calendar`): `/book` frames the
+schedule from `GOOGLE_APPOINTMENTS_EMBED_URL` and links
+`GOOGLE_BOOKING_PAGE_URL` (both in `client/src/data/foundation.ts`, validated
+in `client/src/lib/booking.ts`). The topics are guidance ("mention your topic in
+the booking form"), because Google's embed takes no prefill, and the steps are
+a guide, because the frame reports no booking; the confirmed panel is gone. The
+CSP frames `https://calendar.google.com` only and drops the old calendar's
+hosts. The Privacy page describes Google Calendar instead (effective date 24
+October 2026). The site's own booking notices are removed;
+`client/public/api/booking.php` stays only as a 410 tombstone, because the
+cPanel deploy never deletes files.
+
+Open, for the owner (not checkable from the repository): the schedule must
+offer 30-minute slots with a video link, and its booking form needs an item for
+the topic; after the next deploy, delete `public_html/api/booking.php` on the
+server, then the tombstone. No browser in this work loaded Google's page, so
+the embed is unverified against Google itself, and no real booking has been
+made.
+
+| Verification on 2026-10-24                  | Result                                                                                                                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type check, lint (changed files) and format | PASS                                                                                                                                                                                  |
+| Production build (`www-build.sh`)           | PASS, 139/139 routes, 0 failed/thin/degraded/error-boundary; Google DNS-blocked in the prerender                                                                                      |
+| Full Vitest, one worker                     | 1,091 passed, 8 skipped, 1 failed: the dependency audit (zod, body-parser: 2 high), pre-existing; `pnpm-lock.yaml` is unchanged                                                       |
+| Booking tests                               | PASS, 64; 9 mutations (CSP, lazy loading, prerender guard, timeout, URL checks, the tombstone) each fail them                                                                         |
+| Playwright smoke and UI/UX, one worker      | 110 passed, 2 failed: the `/getting-started` delivery-path axe check (colour contrast), which fails the same way on the master build; every `/book` test passes on desktop and mobile |
+| Native PHP                                  | NOT RUN, PHP is not installed here; the booking PHP test is removed and the tombstone is checked statically                                                                           |
 
 ## Completed
 

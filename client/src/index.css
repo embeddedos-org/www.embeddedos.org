@@ -1398,12 +1398,6 @@ button:active:not(:disabled) {
   transition-duration: 0s;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .calendly-inline-widget .calendly-spinner > div {
-    animation: none;
-  }
-}
-
 .book-trace {
   stroke-dasharray: 14 86;
   stroke-dashoffset: 100;
@@ -1451,70 +1445,14 @@ button:active:not(:disabled) {
   }
 }
 
-.book-pop {
-  animation: book-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes book-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.book-draw {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: book-draw 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-.book-draw-late {
-  animation-delay: 0.45s;
-}
-
-@keyframes book-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.book-confetti {
-  opacity: 0;
-  animation: book-confetti 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards;
-}
-
-@keyframes book-confetti {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(var(--angle))
-      translateY(calc(var(--distance) * -1)) rotate(180deg) scale(0.6);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .book-trace,
   .book-glow,
-  .book-shimmer,
-  .book-pop {
+  .book-shimmer {
     animation: none;
   }
   .book-trace {
     stroke-dasharray: none;
     opacity: 0.25;
-  }
-  .book-draw {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-  .book-confetti {
-    display: none;
   }
 }
