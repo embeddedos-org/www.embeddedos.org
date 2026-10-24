@@ -4,7 +4,11 @@ import {
   GOOGLE_APPOINTMENTS_EMBED_URL,
   GOOGLE_BOOKING_PAGE_URL,
 } from "@/data/foundation";
-import { appointmentsEmbedUrl, bookingPageUrl } from "@/lib/booking";
+import {
+  GOOGLE_CALENDAR_ORIGIN,
+  appointmentsEmbedUrl,
+  bookingPageUrl,
+} from "@/lib/booking";
 
 export const CALENDAR_FRAME_TITLE =
   "Google Calendar appointment schedule for a call with the EmbeddedOS team";
@@ -78,7 +82,10 @@ export default function BookingCalendar({
   // Set when the frame loads while focus is in the failed overlay, which then
   // unmounts: focus follows the calendar instead of dropping to <body>.
   const focusFrame = useRef(false);
+  // Set when the browser refuses the frame (see the securitypolicyviolation listener below).
+  const blocked = useRef(false);
   const [state, setState] = useState<LoadState>("waiting");
+  const started = state !== "waiting";
   const prerendering =
     typeof window !== "undefined" &&
     Boolean((window as PrerenderWindow).__EOS_PRERENDER__);
@@ -114,6 +121,23 @@ export default function BookingCalendar({
     return () => window.clearTimeout(timer);
   }, [state]);
 
+  // A frame the browser refuses (a Content-Security-Policy without calendar.google.com, as in a strict preview)
+  // still fires "load", with the browser's own "content is blocked" page in it. The refusal itself arrives as a
+  // securitypolicyviolation event: the card then shows its failed panel and links, never a broken frame.
+  useEffect(() => {
+    if (!src || !started) return;
+    const onRefused = (e: SecurityPolicyViolationEvent) => {
+      const directive = e.effectiveDirective || e.violatedDirective || "";
+      if (!/^(frame|child|default)-src/.test(directive)) return;
+      if (!String(e.blockedURI).startsWith(GOOGLE_CALENDAR_ORIGIN)) return;
+      blocked.current = true;
+      setState("failed");
+    };
+    document.addEventListener("securitypolicyviolation", onRefused);
+    return () =>
+      document.removeEventListener("securitypolicyviolation", onRefused);
+  }, [src, started]);
+
   useEffect(() => {
     if (state !== "ready" || !focusFrame.current) return;
     focusFrame.current = false;
@@ -121,6 +145,8 @@ export default function BookingCalendar({
   }, [state]);
 
   const onFrameLoad = () => {
+    // the browser's error page for a refused frame: keep the failed panel
+    if (blocked.current) return;
     focusFrame.current = Boolean(
       overlay.current?.contains(document.activeElement)
     );

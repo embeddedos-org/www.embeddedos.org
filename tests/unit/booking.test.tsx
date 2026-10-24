@@ -275,6 +275,49 @@ describe("the calendar frame", () => {
     expect(document.activeElement).toBe(frame);
   });
 
+  // A policy without calendar.google.com (a strict preview, a misconfigured server) makes the browser refuse
+  // the frame and fire "load" with its own error page; the card must show its failed panel instead.
+  const refusal = (blockedURI: string, directive: string) =>
+    Object.assign(new Event("securitypolicyviolation"), {
+      blockedURI,
+      effectiveDirective: directive,
+      violatedDirective: directive,
+    });
+
+  it("shows the failed panel, never the browser's error page, when a security policy refuses the frame", () => {
+    const reveal = mockIntersectionObserver();
+    const { container } = render(
+      <BookingCalendar url={EMBED} link={LINK} fallback={fallback} />
+    );
+    reveal();
+    act(() => {
+      document.dispatchEvent(refusal(GOOGLE_CALENDAR_ORIGIN, "frame-src"));
+    });
+    const failed = container.querySelector('[data-booking="failed"]');
+    expect(failed).not.toBe(null);
+    expect(failed?.querySelector(`a[href="${LINK}"]`)).not.toBe(null);
+    // the browser's error page still fires load: the panel stays
+    fireEvent.load(container.querySelector("iframe") as HTMLIFrameElement);
+    expect(container.querySelector('[data-booking="failed"]')).not.toBe(null);
+  });
+
+  it("ignores refusals of anything but the calendar's frame", () => {
+    const reveal = mockIntersectionObserver();
+    const { container } = render(
+      <BookingCalendar url={EMBED} link={LINK} fallback={fallback} />
+    );
+    reveal();
+    act(() => {
+      document.dispatchEvent(refusal("https://example.com/x.png", "img-src"));
+      document.dispatchEvent(refusal("https://example.com", "frame-src"));
+    });
+    expect(container.querySelector('[data-booking="failed"]')).toBe(null);
+    fireEvent.load(container.querySelector("iframe") as HTMLIFrameElement);
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "The calendar has loaded."
+    );
+  });
+
   it("prerenders a plain line and the links, not a skeleton, for visitors without JavaScript", () => {
     (window as { __EOS_PRERENDER__?: boolean }).__EOS_PRERENDER__ = true;
     const reveal = mockIntersectionObserver();
