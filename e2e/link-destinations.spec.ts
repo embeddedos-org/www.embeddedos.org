@@ -136,20 +136,34 @@ for (const [route, hrefs] of ROUTES) {
       const matches = page.locator(`main a[href="${href}"]`);
       if ((await matches.count()) === 0) continue;
       const { index, panel } = await matches.evaluateAll(links => {
+        // A tab panel that is not showing: the hidden attribute, display: none (the homepage's chapter
+        // explorer), or kept in the layout but invisible (the board showcase's panes, so the strip below them
+        // never moves). Its link is reached by clicking the panel's own tab, as a visitor would.
+        const hiddenPanel = (el: Element): Element | null => {
+          for (
+            let p = el.closest('[role="tabpanel"]');
+            p;
+            p = p.parentElement?.closest('[role="tabpanel"]') ?? null
+          ) {
+            const cs = getComputedStyle(p);
+            if (
+              (p as HTMLElement).hidden ||
+              cs.display === "none" ||
+              cs.visibility === "hidden"
+            )
+              return p;
+          }
+          return null;
+        };
+        // links inside the homepage's scroll-driven story (.bk-story) show only while their scene is on, so
+        // another copy of the same link is tried first
         const free = links.findIndex(
-          el =>
-            !el.closest('[role="tabpanel"][hidden]') &&
-            !el.closest(".hs .stage")
+          el => !hiddenPanel(el) && !el.closest(".hs .stage, .bk-story")
         );
         if (free >= 0) return { index: free, panel: "" };
-        const shown = links.findIndex(
-          el => !el.closest('[role="tabpanel"][hidden]')
-        );
+        const shown = links.findIndex(el => !hiddenPanel(el));
         if (shown >= 0) return { index: shown, panel: "" };
-        return {
-          index: 0,
-          panel: links[0].closest('[role="tabpanel"][hidden]')?.id ?? "",
-        };
+        return { index: 0, panel: hiddenPanel(links[0])?.id ?? "" };
       });
       if (panel) {
         await page
@@ -170,6 +184,14 @@ for (const [route, hrefs] of ROUTES) {
       // header, which then intercepts the click. Instant, because index.css
       // sets scroll-behavior: smooth and an animating scroll leaves the click
       // chasing a moving target.
+      // A link in a list that scrolls on its own (the homepage's chapter index) is revealed there first.
+      await link.evaluate(el =>
+        el.scrollIntoView({
+          block: "nearest",
+          inline: "nearest",
+          behavior: "instant",
+        })
+      );
       await link.evaluate(el => {
         const r = el.getBoundingClientRect();
         window.scrollTo({
@@ -182,6 +204,41 @@ for (const [route, hrefs] of ROUTES) {
       });
       await page.waitForTimeout(120);
 
+      // The hit test probes the centre of the link's first line box: a link that wraps across two lines has an
+      // empty gap at the centre of its bounding box, and Playwright's own click aims at a line box too.
+      const hitTest = ([selector, nth]: readonly [string, number]) => {
+        const el = document.querySelectorAll(selector)[nth];
+        if (!el) return false;
+        const rects = el.getClientRects();
+        const r = rects.length ? rects[0] : el.getBoundingClientRect();
+        const hit = document.elementFromPoint(
+          r.left + r.width / 2,
+          r.top + r.height / 2
+        );
+        return !!hit && (hit === el || el.contains(hit));
+      };
+      const target = [`main a[href="${href}"]`, index] as const;
+
+      // A link only in the scroll-driven story is reachable while its scene is on: step through the story
+      // until it is the element under its own centre (or the story ends, and the wait below fails loudly).
+      if (await link.evaluate(el => !!el.closest(".bk-story"))) {
+        const [top, height] = await page.evaluate(() => {
+          const s = document.querySelector(".bk-story") as HTMLElement;
+          return [
+            s.getBoundingClientRect().top + window.scrollY,
+            s.offsetHeight,
+          ];
+        });
+        for (let y = top; y < top + height; y += 160) {
+          await page.evaluate(
+            v => window.scrollTo({ top: v, left: 0, behavior: "instant" }),
+            y
+          );
+          await page.waitForTimeout(80);
+          if (await page.evaluate(hitTest, target)) break;
+        }
+      }
+
       // Playwright's actionability checks confirm the link itself is stable,
       // but not that nothing is painted over it: on the heaviest page the
       // card grid's entrance animations can leave a neighbouring card's
@@ -190,20 +247,7 @@ for (const [route, hrefs] of ROUTES) {
       // Poll the hit target instead of extending the blind pause — this waits
       // for the real condition, and a link that is genuinely covered still
       // fails loudly on the click below.
-      await page.waitForFunction(
-        ([selector, nth]) => {
-          const el = document.querySelectorAll(selector)[nth];
-          if (!el) return false;
-          const r = el.getBoundingClientRect();
-          const hit = document.elementFromPoint(
-            r.left + r.width / 2,
-            r.top + r.height / 2
-          );
-          return !!hit && (hit === el || el.contains(hit));
-        },
-        [`main a[href="${href}"]`, index] as const,
-        { timeout: 15_000 }
-      );
+      await page.waitForFunction(hitTest, target, { timeout: 15_000 });
 
       // A download link saves its file instead of navigating, so the page
       // never leaves the route: /eos-boards' native KiCad files. Check what
