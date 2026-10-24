@@ -2,6 +2,9 @@ import { useEffect, useRef, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { BOOKS, type Book } from "@/data/books";
+import { BOOKING_MINUTES, BOOKING_TOPICS } from "@/data/booking";
+import { GOOGLE_BOOKING_PAGE_URL } from "@/data/foundation";
+import { openContactForm } from "@/lib/contact-form";
 import { StoryHero, MakingOf, Showcase } from "../black/Sections";
 import Chapters from "../black/Chapters";
 import "../black/black.css";
@@ -372,6 +375,63 @@ export default function Home() {
       <Showcase />
       <div className="hs">
         <div className="hp" id="home-sections">
+          {/* right after the boards: a call with the team, one click from the homepage (owner, 24 Oct) */}
+          <section
+            className="hp-sec hp-call"
+            id="talk-to-the-team"
+            aria-labelledby="hp-call"
+            data-reveal=""
+          >
+            <div className="hp-wrap">
+              <div className="hp-head hp-call-h">
+                <p className="hp-label" data-fade="">
+                  Talk to the team
+                </p>
+                <h2 id="hp-call" data-split="">
+                  Schedule a call.
+                </h2>
+                <p className="hp-lead" data-fade="">
+                  A {BOOKING_MINUTES}-minute video call with the people who
+                  build EmbeddedOS: the kernel, the tools and the boards.
+                </p>
+                <div className="hp-actions" data-fade="">
+                  <Link className="hp-btn pri" href="/book">
+                    Schedule a call <Arrow />
+                  </Link>
+                  {GOOGLE_BOOKING_PAGE_URL && (
+                    <a
+                      className="hp-btn gh"
+                      href={GOOGLE_BOOKING_PAGE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open the booking calendar{" "}
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    className="hp-txt"
+                    onClick={() => openContactForm()}
+                  >
+                    Email us instead
+                  </button>
+                </div>
+                <p className="hp-note">
+                  Mention your topic in the booking form so the right people
+                  join.
+                </p>
+              </div>
+              <ul className="hp-topics" role="list" data-stagger="">
+                {BOOKING_TOPICS.map(t => (
+                  <li key={t.key}>
+                    <b>{t.title}</b>
+                    <span>{t.line}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
           <div className="hp-marquee" aria-label="EmbeddedOS ecosystem">
             <p>EmbeddedOS Ecosystem</p>
             <div className="mq-row">
@@ -837,6 +897,9 @@ export default function Home() {
                 </Link>
                 <Link className="hp-btn gh" href="/docs">
                   Read the Docs
+                </Link>
+                <Link className="hp-btn gh" href="/book">
+                  Schedule a call
                 </Link>
               </div>
             </div>

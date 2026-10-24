@@ -478,6 +478,28 @@ test.describe("homepage story", () => {
     await expect(prev).toBeEnabled();
   });
 
+  test("the homepage offers a call: the section's button reaches /book and the calendar link opens the team's booking page", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const call = page.locator("#talk-to-the-team");
+    await expect(call.locator("h2")).toHaveText("Schedule a call.");
+    await expect(call.locator(".hp-topics li")).toHaveCount(5);
+    const cal = call.getByRole("link", { name: /Open the booking calendar/ });
+    await expect(cal).toHaveAttribute(
+      "href",
+      "https://calendar.app.google/PPzWao4AzvXtZeva6"
+    );
+    await expect(cal).toHaveAttribute("target", "_blank");
+    await expect(cal).toHaveAttribute("rel", /noopener/);
+    // the closing section offers it too
+    await expect(
+      page.locator(".hp-cta").getByRole("link", { name: "Schedule a call" })
+    ).toHaveAttribute("href", "/book");
+    await call.getByRole("link", { name: /^Schedule a call/ }).click();
+    await page.waitForURL("**/book");
+  });
+
   test("a board-map part opens its details", async ({ page }) => {
     await page.goto("/");
     const map = page.locator("#board-map");
