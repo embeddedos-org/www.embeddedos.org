@@ -218,7 +218,7 @@ export const OUT_OF_SCOPE = [
   {
     claim: "We do not sell software, licences or access.",
     detail:
-      "Every Foundation repository is MIT licensed. There is no paid tier, no " +
+      "All Foundation software is MIT licensed. There is no paid tier, no " +
       "commercial edition and no feature withheld from the free release.",
   },
   {
@@ -382,3 +382,16 @@ export const SOCIAL_URLS = {
   discussions: "https://github.com/orgs/embeddedos-org/discussions",
   discord: "https://discord.gg/n6Kd9fwja",
 } as const;
+
+/**
+ * The Foundation's Google Calendar appointment schedule, which /book embeds.
+ * GOOGLE_APPOINTMENTS_EMBED_URL is the iframe src from the schedule's embed
+ * code; GOOGLE_BOOKING_PAGE_URL is its booking page, linked under the calendar
+ * and opened in a new tab. client/src/lib/booking.ts accepts only Google
+ * appointment schedule addresses; README, "Booking", says how to change them.
+ */
+export const GOOGLE_APPOINTMENTS_EMBED_URL: string | null =
+  "https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true";
+
+export const GOOGLE_BOOKING_PAGE_URL: string | null =
+  "https://calendar.app.google/PPzWao4AzvXtZeva6";

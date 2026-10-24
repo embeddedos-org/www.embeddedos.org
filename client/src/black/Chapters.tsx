@@ -3418,7 +3418,10 @@ export default function Chapters() {
                   named models. Each carries a datasheet, and most add a bill of
                   materials and a power simulation. All are at design stage; no
                   routed PCB or Gerbers yet. The repository is published under
-                  the MIT licence.
+                  the MIT licence, except the original EoS development boards,
+                  which are all rights reserved, and the manufacturer designs
+                  mirrored under boards/cad, which keep their manufacturers'
+                  licences.
                 </p>{" "}
                 <p className="fact">
                   <span>Ten future concepts</span>eBCI-Lite, eCubeSat-1U,

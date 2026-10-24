@@ -205,6 +205,25 @@ for (const [route, hrefs] of ROUTES) {
         { timeout: 15_000 }
       );
 
+      // A download link saves its file instead of navigating, so the page
+      // never leaves the route: /eos-boards' native KiCad files. Check what
+      // the click delivers instead — the named file, downloaded without error.
+      if ((await link.getAttribute("download")) !== null) {
+        const [download] = await Promise.all([
+          page.waitForEvent("download", { timeout: 15_000 }),
+          link.click({ timeout: 15_000 }),
+        ]);
+        const got = new URL(download.url()).pathname;
+        const failure = await download.failure();
+        if (got !== href || failure)
+          wrongDestination.push(
+            `${href} -> downloaded ${got}${failure ? ` (${failure})` : ""}`
+          );
+        // A failed download has no file to delete; delete() would throw.
+        if (!failure) await download.delete();
+        continue;
+      }
+
       await link.click({ timeout: 15_000 });
       await page.waitForTimeout(400);
 

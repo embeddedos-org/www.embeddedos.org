@@ -316,6 +316,7 @@ export default function WhatWeDo() {
               }}
             >
               <Layers size={12} /> FOUNDATION · 501(C)(3) · MIT LICENSE
+              (SOFTWARE)
             </span>
             <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
               What{" "}

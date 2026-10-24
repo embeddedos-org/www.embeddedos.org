@@ -226,8 +226,8 @@ export default function Membership() {
             <div className="flex items-center justify-center gap-3 text-sm text-muted-foreground">
               <Shield className="w-4 h-4 text-green-400" />
               <span>
-                501(c)(3) · Tax-deductible donations · MIT License · No vendor
-                lock-in
+                501(c)(3) · Tax-deductible donations · MIT License (software) ·
+                No vendor lock-in
               </span>
             </div>
           </motion.div>

@@ -247,6 +247,8 @@ const HardwareLab = lazyPage(
   "/hardware-lab",
   () => import("./pages/HardwareLab")
 );
+const EosBoards = lazyPage("/eos-boards", () => import("./pages/EosBoards"));
+const Book = lazyPage("/book", () => import("./pages/Book"));
 const Stacks = lazyPage("/stacks", () => import("./pages/Stacks"));
 const EApps = lazyPage("/eapps", () => import("./pages/EApps"));
 const Kids = lazyPage("/kids", () => import("./pages/Kids"));
@@ -529,6 +531,16 @@ function Router() {
       <Route path="/hardware-lab">
         <Suspense fallback={<PageLoader />}>
           <HardwareLab />
+        </Suspense>
+      </Route>
+      <Route path="/eos-boards">
+        <Suspense fallback={<PageLoader />}>
+          <EosBoards />
+        </Suspense>
+      </Route>
+      <Route path="/book">
+        <Suspense fallback={<PageLoader />}>
+          <Book />
         </Suspense>
       </Route>
       <Route path="/stacks">
@@ -1275,7 +1287,14 @@ function ScrollToTop() {
         if (cancelled) return;
         const target = document.querySelector(hash);
         if (target) {
-          jump(window.scrollY + target.getBoundingClientRect().top);
+          // Honour the target's scroll-margin-top (scroll-mt-*), which clears
+          // the fixed navbar; it is 0 for targets that set none.
+          const margin = parseFloat(getComputedStyle(target).scrollMarginTop);
+          jump(
+            window.scrollY +
+              target.getBoundingClientRect().top -
+              (Number.isFinite(margin) ? margin : 0)
+          );
           return;
         }
         if (frames++ > 90) {

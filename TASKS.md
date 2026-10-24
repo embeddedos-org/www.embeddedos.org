@@ -10,9 +10,129 @@ Status is one of: `todo`, `in-progress`, `blocked`, `review`, `done`.
 
 ## Active
 
-| ID  | Task             | Owner | Mode | Status | Depends on |
-| --- | ---------------- | ----- | ---- | ------ | ---------- |
-| —   | No active tasks. | —     | —    | —      | —          |
+| ID         | Task                                                        | Owner    | Mode           | Status | Depends on         |
+| ---------- | ----------------------------------------------------------- | -------- | -------------- | ------ | ------------------ |
+| EOS-BOARDS | Resume original-board catalogue and booking page            | Frontend | Implementation | done   | —                  |
+| BOOK-GCAL  | `/book` on the owner's Google Calendar appointment schedule | Frontend | Implementation | review | Independent review |
+
+EOS-BOARDS was merged as PR #94 on 2026-10-23 (`ca73d62d` on master). The
+notes below are its record as it stood then; its calendar and booking notices
+are replaced by BOOK-GCAL, further down.
+
+Acceptance criteria from the handoff:
+
+- "add batch 2's 8 boards to `/eos-boards` (it shows 7), with links to master."
+- "the privacy page must mention Calendly before launch."
+- The owner asked to create the Calendly event. Create the 30-minute team event,
+  with topic as the first custom question, using the connected account; retain
+  email fallback until its real URL and host configuration are verified.
+
+Verification: type check, lint, format, build, Vitest and security, SEO and
+sitemap; smoke, accessibility and functional suites with one worker; inspect
+desktop/mobile previews; independent review before publication.
+
+Progress on 2026-10-15: the catalogue now contains all 15 merged boards, with
+master links, pinned check results and optimized media. Calendly processing is
+disclosed in Privacy. The booking notice limiter now locks the whole
+read/check/write operation and fails closed; the external booking link preserves
+the chosen topic. Independent review cleared both fixes and verified the board
+checks and media against upstream commit `28ec996`. A mutation back to the old
+limiter was rejected: 8 admissions and 1 stored timestamp instead of 5.
+
+Owner's decision on 2026-10-20: open the pull request now, with `/book` on its
+contact-form fallback. `CALENDLY_EVENT_URL` stays `null` and no booking URL is
+invented; the Calendly event comes later, in a follow-up, once Calendly access
+exists. Until then the email fallback is the page's only booking path.
+
+Progress on 2026-10-20: each board offers its native KiCad schematic and PCB and
+its full licence, byte-identical to eCAD-Hardware-Products master (`6ac37a17`).
+The README's licence section names those files as all rights reserved
+(`50b84a6a`). Without an event URL, `/book` now promises only what the fallback
+does and keeps the topic's own case (`24eda785`). Review round 3 (`b34afe7c` to
+`9eb25678`): the footer, Terms of Use §3 (effective date now 20 October 2026),
+`/get-involved`, `/ecad-hardware` and `/about` carve the EoS boards out of their
+MIT and open-hardware statements, and `booking.php` is off by default (503, no
+mail) until the Calendly event exists.
+
+Progress on 2026-10-23: the owner created the Calendly event.
+`CALENDLY_EVENT_URL` is `https://calendly.com/kartikeydheer-embeddedos/30min`, so
+`/book` embeds the live calendar, and `booking.php`'s notices are on with it, to
+both inboxes. The endpoint still checks only the Origin header, the shape of the
+Calendly identifiers, the page path and 5 requests an hour per address; it
+cannot confirm a booking with Calendly. The owner should confirm in Calendly
+that the event's first custom question is the topic (the page prefills it as
+`a1`); that cannot be checked from the repository.
+
+| Verification at `a8426546` (2026-10-23)               | Result                                                                                                                                                                                                                                      |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type check, lint and format                           | PASS; ESLint 0 errors and 22 existing warnings                                                                                                                                                                                              |
+| Production build                                      | PASS, 139/139 routes, no failed/thin/degraded/error-boundary pages; tree clean after the build                                                                                                                                              |
+| Full Vitest                                           | 1,101 passed, 8 skipped, 1 failed: the dependency audit below                                                                                                                                                                               |
+| Security suite                                        | FAIL, 20 of 21: `pnpm audit --prod` now reports 1 critical and 3 high advisories (dompurify 3.4.13 via streamdown and mermaid; follow-redirects 1.16.0 via axios). `pnpm-lock.yaml` is identical to master, so this is not from this branch |
+| SEO and sitemap                                       | PASS, 0 SEO errors/warnings; 138 sitemap URLs                                                                                                                                                                                               |
+| Playwright smoke, accessibility and functional suites | PASS, 16, 88 and 16 tests, one worker, Google hosts blocked (www.recaptcha.net, called by the Calendly frame, only from the independent re-run on; same counts)                                                                             |
+| Native PHP 8.4.26                                     | PASS, 316 assertions (booking 149, both switch states)                                                                                                                                                                                      |
+| Board files                                           | PASS, all 45 CAD and licence files byte-identical to eCAD-Hardware-Products master `e3ede5e`                                                                                                                                                |
+| Visual checks                                         | PASS for the catalogue, downloads, live calendar on `/book` and footer at 1440 px and 375 px; no overflow or page errors                                                                                                                    |
+
+No real booking, Calendly email or notice delivery has been made or verified, and
+nothing is deployed.
+
+### BOOK-GCAL
+
+Acceptance criteria from the owner, verbatim, as written on 24 October 2026:
+"use this look to add into website not your calendar", with these links:
+
+- Booking page (short link): https://calendar.app.google/PPzWao4AzvXtZeva6
+- Embed URL: https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true
+
+Later the same day, verbatim, as written: "no kepe the logo as it is and event
+he caldeny uypdate wiht the link as i have given you". Lightly corrected
+reading (not the owner's spelling): "… and even the calendar update with the
+link as I have given you". The logo part is about the site redesign, not this
+task.
+
+From the brief: embed the schedule in an iframe with the site's own link to the
+booking page (new tab, `rel="noopener"`), and do not load Google's
+`scheduling-button-script.js` or its stylesheet.
+
+Done on 2026-10-24 (branch `feat/book-google-calendar`): `/book` frames the
+schedule from `GOOGLE_APPOINTMENTS_EMBED_URL` and links
+`GOOGLE_BOOKING_PAGE_URL` (both in `client/src/data/foundation.ts`, validated
+in `client/src/lib/booking.ts`). The topics are guidance ("mention your topic in
+the booking form"), because Google's embed takes no prefill, and the steps are
+a guide, because the frame reports no booking; the confirmed panel is gone. The
+CSP frames `https://calendar.google.com` only and drops the old calendar's
+hosts. The Privacy page describes Google Calendar instead (effective date 24
+October 2026). The site's own booking notices are removed;
+`client/public/api/booking.php` stays only as a 410 tombstone, because the
+cPanel deploy never deletes files.
+
+Open, for the owner (not checkable from the repository): the schedule must
+offer 30-minute slots with a video link, its booking form needs an item for
+the topic, and its settings decide which confirmation emails go out; decide
+whether the calendar may load with no click, as it now does on tall screens
+(seen at 1080 px high, not at 900); after the next deploy, delete
+`public_html/api/booking.php` on the server, then the tombstone. No browser in
+this work loaded Google's page, so the embed is unverified against Google
+itself, and no real booking has been made.
+
+Review round 1 (independent review, CHANGES REQUIRED, no blocker) is fixed:
+the owner's words are quoted as written; the frame is `inert` until it is
+shown and a late load keeps focus; without JavaScript the card offers the
+booking page and the contact page instead of a loading state; the README no
+longer states that Google notifies the owner; the Privacy page counts three
+Google services; `tests/php/booking-retired.test.php` runs the stub in
+`test:php` and CI.
+
+| Verification on 2026-10-24                  | Result                                                                                                                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Type check, lint (changed files) and format | PASS                                                                                                                                                                                  |
+| Production build (`www-build.sh`)           | PASS, 139/139 routes, 0 failed/thin/degraded/error-boundary; Google DNS-blocked in the prerender                                                                                      |
+| Full Vitest, one worker                     | 1,091 passed, 8 skipped, 1 failed: the dependency audit (zod, body-parser: 2 high), pre-existing; `pnpm-lock.yaml` is unchanged                                                       |
+| Booking tests                               | PASS, 64; 9 mutations (CSP, lazy loading, prerender guard, timeout, URL checks, the tombstone) each fail them                                                                         |
+| Playwright smoke and UI/UX, one worker      | 110 passed, 2 failed: the `/getting-started` delivery-path axe check (colour contrast), which fails the same way on the master build; every `/book` test passes on desktop and mobile |
+| Native PHP                                  | NOT RUN, PHP is not installed here; the booking PHP test is removed and the tombstone is checked statically                                                                           |
 
 ## Completed
 

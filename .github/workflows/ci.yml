@@ -162,7 +162,8 @@ jobs:
   # The PHP endpoint unit tests (tests/php/*.test.php) are plain `php`
   # invocations with no phpunit dependency: each file requires its endpoint,
   # which returns early under the CLI SAPI, and asserts on the pure functions.
-  # They need no build, database, or browser, and they run in milliseconds —
+  # booking-retired.test.php instead runs the retired booking.php stub and
+  # checks its 410 answer. They need no build, database, or browser, and they run in milliseconds —
   # but until now no workflow executed them at all, so this job runs them on
   # their own, independent of the long browser-bound suite above.
   php-tests:
@@ -182,7 +183,7 @@ jobs:
 
       # Mirrors `pnpm test:php` verbatim without requiring a pnpm install.
       - name: PHP endpoint tests
-        run: php tests/php/apply.test.php && php tests/php/contact.test.php
+        run: php tests/php/apply.test.php && php tests/php/contact.test.php && php tests/php/booking-retired.test.php
 
   # The deploy branch is an orphan branch whose root must be exactly the
   # contents of dist/public; scripts/deploy-branch.mjs replaces it wholesale

@@ -822,7 +822,7 @@ export default function Home() {
           >
             <div className="hp-wrap">
               <p className="hp-label" data-fade="">
-                Open Source · 501(c)(3) · MIT License
+                Open Source · 501(c)(3) · MIT License (software)
               </p>
               <h2 id="hp-cta" data-split="">
                 Ready to build on EmbeddedOS?
