@@ -38,7 +38,7 @@ We do not sell, rent, or share your personal information with third parties for 
 
 What the site does store, in your browser's local storage (not cookies), is limited to two functional preferences: your theme choice (light/dark) and whether you have dismissed the donate dialog. Both stay on your device, are never transmitted to us, and clearing your browser storage simply resets them.
 
-Two Google services are involved in loading this site. Google Fonts (fonts.gstatic.com) serves the typefaces used across the pages and may set a cache cookie per Google's own privacy policy. The Google Ads tag (googletagmanager.com) measures page views and ad conversions for the Foundation's Google Ads account; Google's handling of that data is governed by Google's Privacy Policy. This site sets no cookies of its own. The booking calendar on /book also comes from Google; its cookies and storage are described under Third-Party Services below.
+Two Google services are involved in loading every page of this site, and a third on /book. Google Fonts (fonts.gstatic.com) serves the typefaces used across the pages and may set a cache cookie per Google's own privacy policy. The Google Ads tag (googletagmanager.com) measures page views and ad conversions for the Foundation's Google Ads account; Google's handling of that data is governed by Google's Privacy Policy. This site sets no cookies of its own. The third, the Google Calendar booking calendar on /book, is described with its cookies and storage under Third-Party Services below.
 
 You can disable cookies in your browser settings. Doing so will not prevent you from accessing any content on this website.`,
   },

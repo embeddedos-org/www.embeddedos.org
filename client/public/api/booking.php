@@ -5,8 +5,8 @@ declare(strict_types=1);
 /*
  * Retired. This endpoint mailed the team inboxes a booking notice posted by
  * /book's previous calendar. /book now embeds a Google Calendar appointment
- * schedule, which tells the page nothing about a booking, and Google Calendar
- * notifies the calendar's owner itself, so nothing posts here any more.
+ * schedule, which tells the page nothing about a booking (Google Calendar's
+ * own settings decide who is emailed about it), so nothing posts here any more.
  *
  * The file stays, reduced to this, because the deploy cannot delete:
  * client/public/.cpanel.yml copies the build into public_html and has

@@ -366,6 +366,30 @@ test.describe("keyboard operability", () => {
     expect(ring.width).toBeGreaterThanOrEqual(2);
   });
 
+  test.describe("/book without JavaScript", () => {
+    test.use({ javaScriptEnabled: false });
+
+    test("the calendar card offers the booking page and the contact page, not an endless loading state", async ({
+      page,
+    }) => {
+      await page.goto("/book");
+      const card = page.locator('[data-booking="static"]');
+      await expect(card).toBeVisible();
+      await expect(card).toContainText(
+        "The calendar appears here once the page's scripts run."
+      );
+      await expect(
+        card.getByRole("link", { name: /Open the booking page/ })
+      ).toHaveAttribute("href", /^https:\/\/calendar\.app\.google\//);
+      await expect(
+        card.getByRole("link", { name: "contact page" })
+      ).toHaveAttribute("href", "/contact");
+      await expect(page.locator("iframe")).toHaveCount(0);
+      await expect(page.locator(".book-shimmer")).toHaveCount(0);
+      await expect(page.getByText("Loading the calendar.")).toHaveCount(0);
+    });
+  });
+
   test("primary navigation is reachable by keyboard", async ({ page }) => {
     await page.goto("/");
     const reached: string[] = [];

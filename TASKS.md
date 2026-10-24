@@ -80,11 +80,17 @@ nothing is deployed.
 
 ### BOOK-GCAL
 
-Acceptance criteria from the owner, verbatim: "use this link to add into
-website, not your calendar", with these links:
+Acceptance criteria from the owner, verbatim, as written on 24 October 2026:
+"use this look to add into website not your calendar", with these links:
 
 - Booking page (short link): https://calendar.app.google/PPzWao4AzvXtZeva6
 - Embed URL: https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true
+
+Later the same day, verbatim, as written: "no kepe the logo as it is and event
+he caldeny uypdate wiht the link as i have given you". Lightly corrected
+reading (not the owner's spelling): "… and even the calendar update with the
+link as I have given you". The logo part is about the site redesign, not this
+task.
 
 From the brief: embed the schedule in an iframe with the site's own link to the
 booking page (new tab, `rel="noopener"`), and do not load Google's
@@ -103,11 +109,21 @@ October 2026). The site's own booking notices are removed;
 cPanel deploy never deletes files.
 
 Open, for the owner (not checkable from the repository): the schedule must
-offer 30-minute slots with a video link, and its booking form needs an item for
-the topic; after the next deploy, delete `public_html/api/booking.php` on the
-server, then the tombstone. No browser in this work loaded Google's page, so
-the embed is unverified against Google itself, and no real booking has been
-made.
+offer 30-minute slots with a video link, its booking form needs an item for
+the topic, and its settings decide which confirmation emails go out; decide
+whether the calendar may load with no click, as it now does on tall screens
+(seen at 1080 px high, not at 900); after the next deploy, delete
+`public_html/api/booking.php` on the server, then the tombstone. No browser in
+this work loaded Google's page, so the embed is unverified against Google
+itself, and no real booking has been made.
+
+Review round 1 (independent review, CHANGES REQUIRED, no blocker) is fixed:
+the owner's words are quoted as written; the frame is `inert` until it is
+shown and a late load keeps focus; without JavaScript the card offers the
+booking page and the contact page instead of a loading state; the README no
+longer states that Google notifies the owner; the Privacy page counts three
+Google services; `tests/php/booking-retired.test.php` runs the stub in
+`test:php` and CI.
 
 | Verification on 2026-10-24                  | Result                                                                                                                                                                                |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

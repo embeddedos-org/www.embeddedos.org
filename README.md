@@ -369,18 +369,27 @@ list and the FAQ are in `client/src/data/booking.ts`.
   the link under the calendar is always shown.
 - **CSP:** `client/public/.htaccess` allows `https://calendar.google.com` in
   `frame-src` and adds no Google script or style host for the calendar.
-- **Notifications:** each booking lands in the schedule owner's Google
-  Calendar, and Google notifies the owner and emails the booker a
-  confirmation. The embedded calendar
-  tells this site nothing about a booking, so the site sends no notice of its
-  own and stores nothing.
+- **Notifications:** the embedded calendar tells this site nothing about a
+  booking, so the site sends no notice of its own and stores nothing. Google
+  adds each booking to the schedule owner's calendar ("When someone books an
+  appointment, it's added to your calendar", Google Calendar Help). Any email
+  about it, to the booker or to the team, is decided by the appointment
+  schedule's own settings in Google Calendar, which also set up "confirmation
+  emails and reminders" (Google Calendar Help, "Create an appointment
+  schedule"). Check there that the booker gets a confirmation email, which the
+  FAQ promises along with its cancel link, and that the team learns of each
+  booking, by email or by watching the calendar.
 - **`client/public/api/booking.php` is retired.** It used to mail the team a
   notice posted by the previous calendar. It now answers every request with
-  HTTP 410 and does nothing else. It stays only because the cPanel deploy
+  HTTP 410 and does nothing else (`tests/php/booking-retired.test.php` and
+  `tests/unit/booking.test.tsx` pin that). It stays because the cPanel deploy
   (`client/public/.cpanel.yml`) copies files and never deletes: removed from
   the repository, the old endpoint would stay live on the server. After this
   version is deployed, delete `public_html/api/booking.php` on the server, then
-  delete the file here too.
+  delete the file here. That deletion turns CI's `deploy-drift` job red until
+  the deploy branch is next rebuilt with `scripts/deploy-branch.mjs`, because
+  `scripts/check-deploy-drift.mjs` fails on files the deploy branch has and the
+  build does not; rebuild it soon after.
 
 ## Notes for contributors
 

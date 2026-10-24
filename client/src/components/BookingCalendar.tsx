@@ -55,6 +55,11 @@ function CalendarSkeleton() {
  * script or stylesheet loads: the frame is mounted when the card nears the
  * viewport (never while the site is prerendered), and the site's own link to
  * the booking page sits under it.
+ *
+ * The prerendered HTML is what a visitor without JavaScript keeps, so the
+ * prerender writes a plain line and the links instead of the skeleton and its
+ * "Loading" status. main.tsx mounts with createRoot, which replaces that HTML,
+ * so a visitor with JavaScript gets the live card.
  */
 export default function BookingCalendar({
   url = GOOGLE_APPOINTMENTS_EMBED_URL,
@@ -68,7 +73,15 @@ export default function BookingCalendar({
   const src = appointmentsEmbedUrl(url);
   const page = bookingPageUrl(link);
   const ref = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLIFrameElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
+  // Set when the frame loads while focus is in the failed overlay, which then
+  // unmounts: focus follows the calendar instead of dropping to <body>.
+  const focusFrame = useRef(false);
   const [state, setState] = useState<LoadState>("waiting");
+  const prerendering =
+    typeof window !== "undefined" &&
+    Boolean((window as PrerenderWindow).__EOS_PRERENDER__);
 
   useEffect(() => {
     const element = ref.current;
@@ -101,6 +114,19 @@ export default function BookingCalendar({
     return () => window.clearTimeout(timer);
   }, [state]);
 
+  useEffect(() => {
+    if (state !== "ready" || !focusFrame.current) return;
+    focusFrame.current = false;
+    frame.current?.focus();
+  }, [state]);
+
+  const onFrameLoad = () => {
+    focusFrame.current = Boolean(
+      overlay.current?.contains(document.activeElement)
+    );
+    setState("ready");
+  };
+
   if (!src) return <div data-booking="fallback">{fallback}</div>;
 
   const pageLink = page && (
@@ -116,6 +142,27 @@ export default function BookingCalendar({
     </a>
   );
 
+  if (prerendering)
+    return (
+      <div
+        data-booking="static"
+        className="grid gap-4 rounded-xl border border-white/10 bg-brand-navy p-6"
+      >
+        <p className="text-sm leading-relaxed text-gray-300">
+          The calendar appears here once the page&apos;s scripts run. If it does
+          not, open the booking page on Google Calendar, or email us from our{" "}
+          <a
+            href="/contact"
+            className="font-semibold text-brand-amber-light underline underline-offset-2"
+          >
+            contact page
+          </a>
+          .
+        </p>
+        {pageLink && <div>{pageLink}</div>}
+      </div>
+    );
+
   return (
     <div data-booking="google-calendar" className="grid gap-3 min-w-0">
       <div
@@ -124,16 +171,21 @@ export default function BookingCalendar({
       >
         {state !== "waiting" && (
           <iframe
+            ref={frame}
             src={src}
             title={CALENDAR_FRAME_TITLE}
             loading="lazy"
-            onLoad={() => setState("ready")}
+            // Covered by the skeleton or the failed overlay until it loads, so
+            // out of the tab order and the accessibility tree until then.
+            inert={state !== "ready"}
+            onLoad={onFrameLoad}
             className="absolute inset-0 h-full w-full border-0 bg-white"
           />
         )}
         {(state === "waiting" || state === "loading") && <CalendarSkeleton />}
         {state === "failed" && (
           <div
+            ref={overlay}
             data-booking="failed"
             className="absolute inset-0 grid content-center gap-4 overflow-y-auto bg-brand-navy p-4 sm:p-6"
           >

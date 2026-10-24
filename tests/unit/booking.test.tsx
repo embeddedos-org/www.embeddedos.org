@@ -195,6 +195,8 @@ describe("the calendar frame", () => {
     expect(frames[0].getAttribute("title")).toBe(CALENDAR_FRAME_TITLE);
     expect(frames[0].getAttribute("loading")).toBe("lazy");
     expect(frames[0]).not.toHaveAttribute("sandbox");
+    // Under the skeleton, so out of the tab order until it loads.
+    expect(frames[0]).toHaveAttribute("inert");
   });
 
   it("swaps the skeleton for the calendar when the frame loads", () => {
@@ -204,11 +206,15 @@ describe("the calendar frame", () => {
     );
     reveal();
     expect(container.querySelector(".book-shimmer")).not.toBe(null);
-    fireEvent.load(container.querySelector("iframe") as HTMLIFrameElement);
+    const frame = container.querySelector("iframe") as HTMLIFrameElement;
+    fireEvent.load(frame);
     expect(container.querySelector(".book-shimmer")).toBe(null);
     expect(screen.getByRole("status")).toHaveTextContent(
       "The calendar has loaded."
     );
+    expect(frame).not.toHaveAttribute("inert");
+    // Nothing had focus in the card, so the load moves none.
+    expect(document.activeElement).toBe(document.body);
   });
 
   it("offers the booking page in a new tab under the calendar", () => {
@@ -254,12 +260,22 @@ describe("the calendar frame", () => {
     expect(
       screen.getAllByRole("link", { name: /Open the booking page/ })
     ).toHaveLength(1);
-    // The frame stays: if it loads after all, the calendar takes over again.
-    fireEvent.load(container.querySelector("iframe") as HTMLIFrameElement);
+    const frame = container.querySelector("iframe") as HTMLIFrameElement;
+    // Behind the overlay, so out of the tab order: the first Tab reaches the
+    // overlay's link, not a frame nobody can see.
+    expect(frame).toHaveAttribute("inert");
+    // The frame stays: if it loads after all, the calendar takes over again,
+    // and focus that was in the overlay follows it instead of dropping.
+    const link = screen.getByRole("link", { name: /Open the booking page/ });
+    link.focus();
+    expect(document.activeElement).toBe(link);
+    fireEvent.load(frame);
     expect(container.querySelector('[data-booking="failed"]')).toBe(null);
+    expect(frame).not.toHaveAttribute("inert");
+    expect(document.activeElement).toBe(frame);
   });
 
-  it("frames nothing while the site is being prerendered", () => {
+  it("prerenders a plain line and the links, not a skeleton, for visitors without JavaScript", () => {
     (window as { __EOS_PRERENDER__?: boolean }).__EOS_PRERENDER__ = true;
     const reveal = mockIntersectionObserver();
     const { container } = render(
@@ -267,6 +283,20 @@ describe("the calendar frame", () => {
     );
     reveal();
     expect(container.querySelector("iframe")).toBe(null);
+    expect(container.querySelector(".book-shimmer")).toBe(null);
+    expect(screen.queryByRole("status")).toBe(null);
+    expect(container.textContent).not.toMatch(/loading/i);
+    const card = container.querySelector('[data-booking="static"]');
+    expect(card).toHaveTextContent(
+      "The calendar appears here once the page's scripts run. If it does not, open the booking page on Google Calendar, or email us from our contact page."
+    );
+    expect(
+      screen.getByRole("link", { name: /Open the booking page/ })
+    ).toHaveAttribute("href", LINK);
+    expect(screen.getByRole("link", { name: "contact page" })).toHaveAttribute(
+      "href",
+      "/contact"
+    );
   });
 });
 
@@ -347,19 +377,73 @@ describe("no third-party scheduling code in the client", () => {
   });
 });
 
+describe("the privacy page", () => {
+  const privacy = read("client/src/pages/Privacy.tsx");
+
+  it("names Google Calendar as the booking calendar, with Google's policy", () => {
+    expect(privacy).toContain(
+      "**Google Calendar** (meeting scheduling, Google LLC) — governed by Google's Privacy Policy at policies.google.com/privacy."
+    );
+    expect(privacy).toContain(
+      "The appointment calendar loads from Google only on /book."
+    );
+  });
+
+  it("counts the Google services it names", () => {
+    expect(privacy).toContain(
+      "Two Google services are involved in loading every page of this site, and a third on /book."
+    );
+    expect(privacy).toContain(
+      "The third, the Google Calendar booking calendar on /book, is described"
+    );
+    expect(privacy).not.toMatch(
+      /Two Google services are involved in loading this site\./
+    );
+  });
+});
+
 describe("the retired booking-notice endpoint", () => {
   const php = read("client/public/api/booking.php");
 
-  it("answers 410 Gone and does nothing else", () => {
-    expect(php).toContain("http_response_code(410);");
-    expect(php).toContain(`echo '{"ok":false,"error":"gone"}';`);
+  // The file's code without its comment, one statement per line.
+  const statements = php
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .split("\n")
+    .map(line => line.trim())
+    .filter(Boolean);
+
+  it("is exactly: 410 Gone, a JSON type, no-store and a fixed body", () => {
+    expect(statements).toEqual([
+      "<?php",
+      "declare(strict_types=1);",
+      "http_response_code(410);",
+      "header('Content-Type: application/json; charset=utf-8');",
+      "header('Cache-Control: no-store');",
+      `echo '{"ok":false,"error":"gone"}';`,
+    ]);
   });
 
-  it("reads no request, stores nothing and sends no mail", () => {
-    const code = php.replace(/\/\*[\s\S]*?\*\//g, "");
-    expect(code).not.toMatch(/\bmail\s*\(/);
-    expect(code).not.toMatch(/php:\/\/input|\$_(POST|GET|SERVER|REQUEST)/);
-    expect(code).not.toMatch(/fopen|file_put_contents|sys_get_temp_dir/);
+  it("reads no request, touches no file or environment and sends no mail", () => {
+    const code = statements.join("\n");
+    expect(code).not.toMatch(/\bmail\s*\(|error_log|syslog/);
+    expect(code).not.toMatch(
+      /php:\/\/input|\$_(POST|GET|SERVER|REQUEST|COOKIE|FILES|ENV)|getenv/
+    );
+    expect(code).not.toMatch(
+      /fopen|file_get_contents|file_put_contents|sys_get_temp_dir|\b(include|require)(_once)?\b/
+    );
+  });
+
+  it("is run by the PHP tests, in test:php and in CI", () => {
+    const pkg = JSON.parse(read("package.json")) as {
+      scripts: Record<string, string>;
+    };
+    expect(pkg.scripts["test:php"]).toContain(
+      "php tests/php/booking-retired.test.php"
+    );
+    expect(read(".github/workflows/ci.yml")).toContain(
+      "php tests/php/booking-retired.test.php"
+    );
   });
 
   it("is posted to by nothing in the client", () => {
