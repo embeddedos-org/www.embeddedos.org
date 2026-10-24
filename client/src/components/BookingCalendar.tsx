@@ -4,11 +4,7 @@ import {
   GOOGLE_APPOINTMENTS_EMBED_URL,
   GOOGLE_BOOKING_PAGE_URL,
 } from "@/data/foundation";
-import {
-  GOOGLE_CALENDAR_ORIGIN,
-  appointmentsEmbedUrl,
-  bookingPageUrl,
-} from "@/lib/booking";
+import { appointmentsEmbedUrl, bookingPageUrl } from "@/lib/booking";
 
 export const CALENDAR_FRAME_TITLE =
   "Google Calendar appointment schedule for a call with the EmbeddedOS team";
@@ -20,6 +16,8 @@ export const CALENDAR_FRAME_TITLE =
  * the link under the calendar is always shown as well.
  */
 export const FRAME_TIMEOUT_MS = 15_000;
+/** calendar.google.com, or another Google page its schedule may redirect to. */
+const GOOGLE_FRAME = /^https:\/\/([a-z0-9-]+\.)*google\.com(?:[/:?#]|$)/i;
 
 type PrerenderWindow = Window & { __EOS_PRERENDER__?: boolean };
 
@@ -85,7 +83,6 @@ export default function BookingCalendar({
   // Set when the browser refuses the frame (see the securitypolicyviolation listener below).
   const blocked = useRef(false);
   const [state, setState] = useState<LoadState>("waiting");
-  const started = state !== "waiting";
   const prerendering =
     typeof window !== "undefined" &&
     Boolean((window as PrerenderWindow).__EOS_PRERENDER__);
@@ -121,22 +118,26 @@ export default function BookingCalendar({
     return () => window.clearTimeout(timer);
   }, [state]);
 
-  // A frame the browser refuses (a Content-Security-Policy without calendar.google.com, as in a strict preview)
-  // still fires "load", with the browser's own "content is blocked" page in it. The refusal itself arrives as a
-  // securitypolicyviolation event: the card then shows its failed panel and links, never a broken frame.
+  // A frame the browser refuses still fires "load", with the browser's own
+  // "content is blocked" page in it: a policy without calendar.google.com
+  // (a strict preview), or the schedule redirecting to another Google page
+  // the policy leaves out. The refusal itself is a securitypolicyviolation
+  // event, and the card then shows its failed panel and links instead.
+  // Report-only policies block nothing, so they are ignored.
   useEffect(() => {
-    if (!src || !started) return;
+    if (!src) return;
     const onRefused = (e: SecurityPolicyViolationEvent) => {
+      if (e.disposition === "report") return;
       const directive = e.effectiveDirective || e.violatedDirective || "";
       if (!/^(frame|child|default)-src/.test(directive)) return;
-      if (!String(e.blockedURI).startsWith(GOOGLE_CALENDAR_ORIGIN)) return;
+      if (!GOOGLE_FRAME.test(String(e.blockedURI))) return;
       blocked.current = true;
       setState("failed");
     };
     document.addEventListener("securitypolicyviolation", onRefused);
     return () =>
       document.removeEventListener("securitypolicyviolation", onRefused);
-  }, [src, started]);
+  }, [src]);
 
   useEffect(() => {
     if (state !== "ready" || !focusFrame.current) return;
