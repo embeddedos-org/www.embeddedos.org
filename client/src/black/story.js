@@ -659,16 +659,15 @@ export function mountBlack(host) {
       }
       top0 = storyEl.getBoundingClientRect().top + W.scrollY;
       // The board opens just below the hero's text, whatever that text's height on this screen: frame 0's top edge
-      // sits 20.5% down the camera's frame, so the camera starts low enough to keep it under the last line.
+      // sits 20.5% down the camera's frame, so the camera starts low enough to keep it under the last line, and on
+      // a tall screen (where the type has stopped growing) no more than 56px further down, not a fixed 30%.
       const s0 = sc[0];
       if (s0) {
         const textBottom = s0.offsetTop + s0.offsetHeight;
         const camW = small ? innerWidth * 1.6 : Math.max(innerWidth, vh * 1.6);
         const camH = (camW / 1.6) * CAM[0][3];
-        const y0 = Math.max(
-          CAM_Y0,
-          (textBottom + 18 + camH * 0.295 - vh / 2) / vh
-        );
+        const under = (textBottom + 18 + camH * 0.295 - vh / 2) / vh;
+        const y0 = Math.min(Math.max(CAM_Y0, under), under + 56 / vh);
         CAM[0][2] = y0;
         CAM[1][2] = y0;
       }
