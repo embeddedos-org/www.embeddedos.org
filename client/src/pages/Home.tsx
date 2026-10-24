@@ -566,11 +566,36 @@ export default function Home() {
                   </Link>
                 </div>
               </div>
-              <ul className="hp-shelf" data-stagger="">
+              <ul className="hp-shelf" id="hp-shelf" data-stagger="">
                 {BOOKS.map(book => (
                   <ShelfBook key={book.id} book={book} />
                 ))}
               </ul>
+              {/* shown by home-sections.js when the row is wider than the page: a mouse cannot swipe it */}
+              <div className="hp-shelf-nav" hidden>
+                <button
+                  className="hp-rb"
+                  type="button"
+                  data-d="-1"
+                  aria-label="Previous books"
+                  aria-controls="hp-shelf"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M10 3 5 8l5 5" />
+                  </svg>
+                </button>
+                <button
+                  className="hp-rb"
+                  type="button"
+                  data-d="1"
+                  aria-label="Next books"
+                  aria-controls="hp-shelf"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="m6 3 5 5-5 5" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </section>
           <section className="hp-sec" aria-labelledby="hp-stack" data-reveal="">

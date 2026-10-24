@@ -602,15 +602,27 @@
   margin-top: clamp(36px, 4vw, 48px);
 }
 
-/* ───────── the book shelf: a calm grid of 14 (seven across, then five), a sideways row on small screens ───────── */
+/* ───────── the book shelf: one row of the 14 covers, as in the approved prototype; each turns on its spine ───────── */
 .hs .hp-shelf {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 44px 22px;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(140px, 15vw, 180px);
+  gap: 22px;
+  margin: 0 calc(-1 * var(--gut));
+  padding: 8px var(--gut) 24px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gut);
+  scrollbar-width: none;
+}
+.hs .hp-shelf::-webkit-scrollbar {
+  display: none;
 }
 .hs .hp-shelf li {
   display: flex;
   min-width: 0;
+  scroll-snap-align: start;
 }
 .hs .hp-bk {
   display: flex;
@@ -624,11 +636,14 @@
   aspect-ratio: 2 / 3;
   margin-bottom: 14px;
   overflow: hidden;
-  border-radius: 3px 8px 8px 3px;
+  border-radius: 4px 9px 9px 4px;
   border: 1px solid var(--line);
   background: var(--panel2);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.9);
+  transform: perspective(900px) rotateY(var(--ry, 0deg));
+  transform-origin: left center;
   transition:
-    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
     border-color 0.3s;
 }
 .hs .hp-bk .cv img {
@@ -643,7 +658,10 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 14px 12px 16px 16px;
-  box-shadow: inset 3px 0 0 var(--c);
+  background: linear-gradient(160deg, var(--panel2), var(--panel));
+  box-shadow:
+    inset 3px 0 0 var(--c),
+    0 18px 40px -18px rgba(0, 0, 0, 0.9);
 }
 .hs .hp-bk .tc small {
   font-size: 12px;
@@ -674,55 +692,61 @@
   font: 500 12px/1.3 var(--mono);
   color: var(--fg3);
 }
-.hs .hp-bk:hover .cv {
+.hs .hp-bk:hover .cv,
+.hs .hp-bk:focus-visible .cv {
   border-color: var(--line2);
 }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .hs .hp-bk:hover .cv {
-    transform: translateY(-4px);
+@media (prefers-reduced-motion: no-preference) {
+  .hs .hp-bk:hover .cv,
+  .hs .hp-bk:focus-visible .cv {
+    --ry: -14deg;
   }
 }
-@media (min-width: 860px) and (max-width: 1100px) {
-  .hs .hp-shelf {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 36px 20px;
-  }
+.hs .hp-shelf-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
 }
-@media (max-width: 859px) {
-  .hs .hp-shelf {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: clamp(132px, 30vw, 168px);
-    gap: 18px;
-    margin-inline: calc(-1 * var(--gut));
-    padding: 4px var(--gut) 12px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--gut);
-    scrollbar-width: none;
-  }
-  .hs .hp-shelf::-webkit-scrollbar {
-    display: none;
-  }
-  .hs .hp-shelf li {
-    scroll-snap-align: start;
-  }
+.hs .hp-shelf-nav[hidden] {
+  display: none;
 }
-@media (max-width: 859px) and (hover: hover) and (pointer: fine) {
-  /* a mouse cannot swipe: the row keeps a thin scrollbar */
-  .hs .hp-shelf {
-    scrollbar-width: thin;
-    scrollbar-color: var(--line2) transparent;
-  }
-  .hs .hp-shelf::-webkit-scrollbar {
-    display: block;
-    height: 8px;
-  }
-  .hs .hp-shelf::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background: var(--line2);
-  }
+.hs .hp-rb {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line2);
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    opacity 0.2s;
+}
+.hs .hp-rb svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.hs .hp-rb:hover {
+  border-color: var(--fg3);
+  background: var(--panel);
+}
+.hs .hp-rb:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.hs .hp-rb:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
 }
 
 /* ───────── the stack: seven layers on a hairline list, a thin colour rule each ───────── */

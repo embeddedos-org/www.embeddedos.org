@@ -413,6 +413,19 @@ test.describe("homepage story", () => {
       await expect(img).toHaveAttribute("width", "240");
       await expect(img).toHaveAttribute("height", "360");
     }
+    // one row wider than the page: its buttons page through it
+    const shelf = page.locator(".hp-shelf");
+    const [prev, next] = await page.locator(".hp-shelf-nav button").all();
+    await shelf.evaluate(e =>
+      e.scrollIntoView({ block: "center", behavior: "instant" })
+    );
+    await expect(page.locator(".hp-shelf-nav")).toBeVisible();
+    await expect(prev).toBeDisabled();
+    await next.click();
+    await expect
+      .poll(() => shelf.evaluate(e => e.scrollLeft))
+      .toBeGreaterThan(100);
+    await expect(prev).toBeEnabled();
   });
 
   test("a board-map part opens its details", async ({ page }) => {

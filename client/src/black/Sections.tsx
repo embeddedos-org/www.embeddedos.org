@@ -35,9 +35,6 @@ export function StoryHero() {
           style={{ "--c": "#F97316" } as CSSProperties}
         >
           <div className="bk-wrap">
-            <Link className="bk-label eyebrow" href="/mission">
-              Foundation · 501(c)(3) · <b>MIT License</b>
-            </Link>
             <h1 id="hero-heading">
               <span className="h1a">Open-source embedded systems</span>{" "}
               <span>for intelligent physical devices</span>

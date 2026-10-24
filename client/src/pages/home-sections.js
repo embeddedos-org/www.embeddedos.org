@@ -502,6 +502,7 @@ function mountSections(HS) {
           var html = HS;
           var map = setupMap(A, animate);
           mapRef.m = map;
+          setupShelf();
           var card = document.querySelector(".cmd-card");
           var trace = card && card.querySelector(".trace");
           var hud = card ? all(card, ".hud span") : [];
@@ -1011,6 +1012,30 @@ function mountSections(HS) {
         })
       );
     });
+    // the book shelf is one row wider than the page: its buttons page through it, and show only when it overflows
+    function setupShelf() {
+      var shelf = HS.querySelector(".hp-shelf");
+      var nav = HS.querySelector(".hp-shelf-nav");
+      if (!shelf || !nav) return;
+      var bs = all(nav, "button");
+      function update() {
+        var max = shelf.scrollWidth - shelf.clientWidth;
+        nav.hidden = max <= 2;
+        bs[0].disabled = shelf.scrollLeft <= 2;
+        bs[1].disabled = shelf.scrollLeft >= max - 2;
+      }
+      bs.forEach(function (b) {
+        __on(b, "click", function () {
+          shelf.scrollBy({
+            left: +b.getAttribute("data-d") * shelf.clientWidth * 0.8,
+            behavior: reduce ? "auto" : "smooth",
+          });
+        });
+      });
+      __on(shelf, "scroll", update, { passive: true });
+      new ResizeObserverT(update).observe(shelf);
+      update();
+    }
     function setupMap(A, animate) {
       var root = document.getElementById("board-map");
       if (!root || typeof PARTS === "undefined") return null;
