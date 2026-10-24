@@ -244,7 +244,7 @@ test.describe("homepage story", () => {
     await expect(card.locator("b")).toHaveText(
       `${parts[0].ref} · ${parts[0].name}`
     );
-    await expect(dots.first()).toHaveAttribute("aria-expanded", "true");
+    await expect(dots.first()).toHaveClass(/\bon\b/);
     // the pointer can move onto the card and rest there (WCAG 1.4.13)
     const d = (await dots.first().boundingBox())!;
     const c = (await card.boundingBox())!;
@@ -260,7 +260,7 @@ test.describe("homepage story", () => {
     // Escape closes it with focus anywhere
     await page.keyboard.press("Escape");
     await expect(card).toBeHidden();
-    await expect(dots.first()).toHaveAttribute("aria-expanded", "false");
+    await expect(dots.first()).not.toHaveClass(/\bon\b/);
     // another board brings its own parts
     await page.locator("#bt-cm5-base").click();
     await expect(dots).toHaveCount(BOARD_PARTS["cm5-base"].length);
@@ -396,6 +396,56 @@ test.describe("homepage story", () => {
         }
       }
     });
+  });
+
+  test("a tap opens the part where the finger went down, even if the browser moves the click", async ({
+    page,
+  }) => {
+    // Chrome may move a touch's click onto a nearby target; here the finger goes down on STM32's B3 and the click
+    // lands on U3, 14 px away, and the card must still be B3's
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const show = page.locator("#bshow");
+    await page.locator("#bt-stm32-64").click();
+    await show
+      .locator(".bs-stage")
+      .evaluate(e =>
+        e.scrollIntoView({ block: "center", behavior: "instant" })
+      );
+    const b3 = show.locator('.bs-dot[aria-label^="B3,"]');
+    const u3 = show.locator('.bs-dot[aria-label^="U3,"]');
+    await expect(b3).toBeVisible();
+    const box = async (l: typeof b3) => {
+      const r = (await l.boundingBox())!;
+      return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+    };
+    const down = await box(b3);
+    const up = await box(u3);
+    await page.evaluate(
+      ([d, u]) => {
+        const at = (x: number, y: number) => document.elementFromPoint(x, y)!;
+        at(d.x, d.y).dispatchEvent(
+          new PointerEvent("pointerdown", {
+            bubbles: true,
+            pointerType: "touch",
+            clientX: d.x,
+            clientY: d.y,
+          })
+        );
+        document
+          .querySelector('#bshow .bs-dot[aria-label^="U3,"]')!
+          .dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+              detail: 1,
+              clientX: u.x,
+              clientY: u.y,
+            })
+          );
+      },
+      [down, up]
+    );
+    await expect(show.locator(".bs-card b")).toHaveText(/^B3 · /);
   });
 
   test("the shelf shows all fourteen books, each cover lazy and sized", async ({

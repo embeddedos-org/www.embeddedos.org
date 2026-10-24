@@ -1023,6 +1023,9 @@ function mountSections(HS) {
         nav.hidden = max <= 2;
         bs[0].disabled = shelf.scrollLeft <= 2;
         bs[1].disabled = shelf.scrollLeft >= max - 2;
+        // the row fades out at an edge with more books beyond it
+        shelf.classList.toggle("fl", !bs[0].disabled);
+        shelf.classList.toggle("fr", max > 2 && !bs[1].disabled);
       }
       bs.forEach(function (b) {
         __on(b, "click", function () {

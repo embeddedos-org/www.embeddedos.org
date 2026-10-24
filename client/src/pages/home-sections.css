@@ -619,6 +619,31 @@
 .hs .hp-shelf::-webkit-scrollbar {
   display: none;
 }
+.hs .hp-shelf.fl,
+.hs .hp-shelf.fr {
+  --fl: 0px;
+  --fr: 0px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fl),
+    #000 calc(100% - var(--fr)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fl),
+    #000 calc(100% - var(--fr)),
+    transparent
+  );
+}
+.hs .hp-shelf.fl {
+  --fl: 64px;
+}
+.hs .hp-shelf.fr {
+  --fr: 64px;
+}
 .hs .hp-shelf li {
   display: flex;
   min-width: 0;

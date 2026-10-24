@@ -1956,7 +1956,7 @@
 }
 /* lit when its card is open (hover opens it, so a plain :hover would light the dot on top, not the one meant) */
 .bs-dot:focus-visible::before,
-.bs-dot[aria-expanded="true"]::before {
+.bs-dot.on::before {
   transform: scale(1.25);
   background: var(--orange-hi);
   box-shadow:
