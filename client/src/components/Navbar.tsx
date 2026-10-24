@@ -877,12 +877,13 @@ export default function Navbar() {
                   );
                 })}
 
-                {/* GitHub */}
+                {/* GitHub and Book a call, one row each: on phones index.css
+                    makes nav links inline-flex, so w-full keeps them apart */}
                 <a
                   href="https://github.com/embeddedos-org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
+                  className="flex w-full items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
                 >
                   <Star size={16} className="text-[#a1a1a6]" />
                   GitHub
@@ -890,7 +891,7 @@ export default function Navbar() {
                 <Link
                   href="/book"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
+                  className="flex w-full items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
                 >
                   <CalendarDays size={16} className="text-[#a1a1a6]" />
                   Book a call
