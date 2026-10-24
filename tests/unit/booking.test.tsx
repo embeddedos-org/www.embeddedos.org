@@ -277,11 +277,16 @@ describe("the calendar frame", () => {
 
   // A policy without calendar.google.com (a strict preview, a misconfigured server) makes the browser refuse
   // the frame and fire "load" with its own error page; the card must show its failed panel instead.
-  const refusal = (blockedURI: string, directive: string) =>
+  const refusal = (
+    blockedURI: string,
+    directive: string,
+    disposition = "enforce"
+  ) =>
     Object.assign(new Event("securitypolicyviolation"), {
       blockedURI,
       effectiveDirective: directive,
       violatedDirective: directive,
+      disposition,
     });
 
   it("shows the failed panel, never the browser's error page, when a security policy refuses the frame", () => {
@@ -301,6 +306,34 @@ describe("the calendar frame", () => {
     expect(container.querySelector('[data-booking="failed"]')).not.toBe(null);
   });
 
+  it("shows the failed panel when the schedule redirects to a Google page the policy refuses", () => {
+    const reveal = mockIntersectionObserver();
+    const { container } = render(
+      <BookingCalendar url={EMBED} link={LINK} fallback={fallback} />
+    );
+    reveal();
+    act(() => {
+      document.dispatchEvent(
+        refusal("https://accounts.google.com", "frame-src")
+      );
+    });
+    expect(container.querySelector('[data-booking="failed"]')).not.toBe(null);
+  });
+
+  it("ignores report-only policies, which block nothing", () => {
+    const reveal = mockIntersectionObserver();
+    const { container } = render(
+      <BookingCalendar url={EMBED} link={LINK} fallback={fallback} />
+    );
+    reveal();
+    act(() => {
+      document.dispatchEvent(
+        refusal(GOOGLE_CALENDAR_ORIGIN, "frame-src", "report")
+      );
+    });
+    expect(container.querySelector('[data-booking="failed"]')).toBe(null);
+  });
+
   it("ignores refusals of anything but the calendar's frame", () => {
     const reveal = mockIntersectionObserver();
     const { container } = render(
@@ -310,6 +343,12 @@ describe("the calendar frame", () => {
     act(() => {
       document.dispatchEvent(refusal("https://example.com/x.png", "img-src"));
       document.dispatchEvent(refusal("https://example.com", "frame-src"));
+      // the calendar's host, but not a frame (an image the page asked for)
+      document.dispatchEvent(refusal(GOOGLE_CALENDAR_ORIGIN, "img-src"));
+      // a look-alike host
+      document.dispatchEvent(
+        refusal("https://calendar.google.com.example.net", "frame-src")
+      );
     });
     expect(container.querySelector('[data-booking="failed"]')).toBe(null);
     fireEvent.load(container.querySelector("iframe") as HTMLIFrameElement);
