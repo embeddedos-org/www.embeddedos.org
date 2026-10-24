@@ -60,7 +60,8 @@ describe("images load from hosts the CSP allows", () => {
 
 describe("book covers are served from the site", () => {
   it("has a JPEG and a WebP cover for every book's repository", () => {
-    const books = fs.readFileSync(path.join(SRC, "pages/Books.tsx"), "utf8");
+    // the book list lives in data/books.ts (shared by /books and the homepage shelf)
+    const books = fs.readFileSync(path.join(SRC, "data/books.ts"), "utf8");
     const repos = [
       ...new Set([...books.matchAll(/repo:\s*"([^"]+)"/g)].map(m => m[1])),
     ];

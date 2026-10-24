@@ -2,12 +2,13 @@ import anime from "animejs";
 
 /*
  * The homepage sections' behaviour (#home-sections): the word-by-word heading
- * reveals, the counters, the stack layers, the board map and its part details,
- * the card tilt. Moved unchanged from client/src/home3d/story.js (its lifecycle
- * helpers and the sections block) when the 3D story above these sections was
- * replaced by the ray-traced one; the 3D engine and its chapter state went
- * with that file. mountSections(HS) runs on the .hs wrapper and returns a
- * function that undoes it.
+ * reveals, the counters, the stack layers, the board map and its part details.
+ * Moved unchanged from client/src/home3d/story.js (its lifecycle helpers and
+ * the sections block) when the 3D story above these sections was replaced by
+ * the ray-traced one; the 3D engine and its chapter state went with that file.
+ * The Black Edition sections then dropped the card tilt, the magnetic buttons
+ * and the call to action's drifting orbs. mountSections(HS) runs on the .hs
+ * wrapper and returns a function that undoes it.
  */
 function mountSections(HS) {
   const ac = new AbortController();
@@ -501,6 +502,7 @@ function mountSections(HS) {
           var html = HS;
           var map = setupMap(A, animate);
           mapRef.m = map;
+          setupShelf();
           var card = document.querySelector(".cmd-card");
           var trace = card && card.querySelector(".trace");
           var hud = card ? all(card, ".hud span") : [];
@@ -840,22 +842,6 @@ function mountSections(HS) {
             }
             countUp(all(s, "[data-n]"));
             if (s.id === "board-map" && map) map.reveal();
-            all(s, ".hp-orb").forEach(function (o, i) {
-              loop(
-                s,
-                A({
-                  targets: o,
-                  translateX: [0, A.random(-80, 80)],
-                  translateY: [0, A.random(-50, 50)],
-                  scale: [0.9, 1.2],
-                  duration: A.random(4200, 6800),
-                  delay: i * 400,
-                  direction: "alternate",
-                  loop: true,
-                  easing: "easeInOutSine",
-                })
-              );
-            });
           }
           function runSignal(s) {
             var dot = s.querySelector(".hp-dot"),
@@ -1023,57 +1009,33 @@ function mountSections(HS) {
                 attributeFilter: ["class"],
               });
           }
-          all(document, ".hp-card").forEach(function (el) {
-            el.addEventListener("pointermove", function (e) {
-              if (e.pointerType !== "mouse") return;
-              var r = el.getBoundingClientRect(),
-                x = (e.clientX - r.left) / r.width - 0.5,
-                y = (e.clientY - r.top) / r.height - 0.5;
-              A({
-                targets: el,
-                rotateY: x * 9,
-                rotateX: -y * 9,
-                translateZ: 6,
-                duration: 400,
-                easing: "easeOutQuad",
-              });
-            });
-            el.addEventListener("pointerleave", function () {
-              A({
-                targets: el,
-                rotateY: 0,
-                rotateX: 0,
-                translateZ: 0,
-                duration: 900,
-                easing: "spring(1, 90, 12, 0)",
-              });
-            });
-          });
-          all(document, ".hp-btn").forEach(function (el) {
-            el.addEventListener("pointermove", function (e) {
-              if (e.pointerType !== "mouse") return;
-              var r = el.getBoundingClientRect();
-              A({
-                targets: el,
-                translateX: (e.clientX - r.left - r.width / 2) * 0.22,
-                translateY: (e.clientY - r.top - r.height / 2) * 0.3,
-                duration: 300,
-                easing: "easeOutQuad",
-              });
-            });
-            el.addEventListener("pointerleave", function () {
-              A({
-                targets: el,
-                translateX: 0,
-                translateY: 0,
-                duration: 900,
-                easing: "spring(1, 90, 12, 0)",
-              });
-            });
-          });
         })
       );
     });
+    // the book shelf is one row wider than the page: its buttons page through it, and show only when it overflows
+    function setupShelf() {
+      var shelf = HS.querySelector(".hp-shelf");
+      var nav = HS.querySelector(".hp-shelf-nav");
+      if (!shelf || !nav) return;
+      var bs = all(nav, "button");
+      function update() {
+        var max = shelf.scrollWidth - shelf.clientWidth;
+        nav.hidden = max <= 2;
+        bs[0].disabled = shelf.scrollLeft <= 2;
+        bs[1].disabled = shelf.scrollLeft >= max - 2;
+      }
+      bs.forEach(function (b) {
+        __on(b, "click", function () {
+          shelf.scrollBy({
+            left: +b.getAttribute("data-d") * shelf.clientWidth * 0.8,
+            behavior: reduce ? "auto" : "smooth",
+          });
+        });
+      });
+      __on(shelf, "scroll", update, { passive: true });
+      new ResizeObserverT(update).observe(shelf);
+      update();
+    }
     function setupMap(A, animate) {
       var root = document.getElementById("board-map");
       if (!root || typeof PARTS === "undefined") return null;

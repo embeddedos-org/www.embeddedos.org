@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT, REPO_COUNT } from "@/data/stack";
 import { EAI_EDGE_PROFILE } from "@/data/architecture";
@@ -35,9 +35,6 @@ export function StoryHero() {
           style={{ "--c": "#F97316" } as CSSProperties}
         >
           <div className="bk-wrap">
-            <Link className="bk-label eyebrow" href="/mission">
-              Foundation · 501(c)(3) · <b>MIT License</b>
-            </Link>
             <h1 id="hero-heading">
               <span className="h1a">Open-source embedded systems</span>{" "}
               <span>for intelligent physical devices</span>
@@ -407,7 +404,7 @@ export function Showcase() {
             </div>
             <div className="bs-lens" aria-hidden="true" />
             <p className="bs-tip" aria-hidden="true">
-              Point at the board to look closer
+              Point at a dot to see the part, or turn on Magnify to look closer
             </p>
             <p className="bs-count" aria-hidden="true">
               <b>01</b> / {String(n).padStart(2, "0")}
@@ -429,11 +426,19 @@ export function Showcase() {
                   <dt>Main chip</dt>
                   <dd>{b.chip}</dd>
                   <dt>Size</dt>
-                  <dd>{b.size} mm</dd>
+                  <dd>{`${b.size}\u00a0mm`}</dd>
                   <dt>Layers</dt>
                   <dd>{b.layers}</dd>
                   <dt>KiCad 10.0.6</dt>
-                  <dd>{BOARD_CHECKS}</dd>
+                  <dd>
+                    {/* breaks only between the three checks */}
+                    {BOARD_CHECKS.split(" · ").map((c, k) => (
+                      <Fragment key={c}>
+                        {k > 0 && " · "}
+                        <span className="nw">{c}</span>
+                      </Fragment>
+                    ))}
+                  </dd>
                 </dl>
                 <ul className="bs-f">
                   {b.facts.map(f => (

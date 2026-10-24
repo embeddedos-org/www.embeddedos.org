@@ -1,4 +1,5 @@
 import { test, expect } from "./fixtures";
+import { BOARD_PARTS } from "../client/src/black/parts";
 
 /**
  * The homepage's ray-traced story (client/src/black). These replace the 3D
@@ -218,6 +219,213 @@ test.describe("homepage story", () => {
     await expect(page.locator("#bp-cm5-base")).toBeVisible();
     await expect(page.locator("#bp-learn-rp2350")).toBeHidden();
     await expect(page.locator(".bs-count b")).toHaveText("04");
+  });
+
+  test("the showcase marks each board's parts, and a part's card stays while read and closes with Escape", async ({
+    page,
+  }) => {
+    // reduced motion keeps the board still (no lean, no settle), so the card is where it was measured
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const show = page.locator("#bshow");
+    // jump, not glide (the page scrolls smoothly), so nothing moves between measuring and pointing
+    await show
+      .locator(".bs-stage")
+      .evaluate(e =>
+        e.scrollIntoView({ block: "center", behavior: "instant" })
+      );
+    const dots = show.locator(".bs-dot");
+    const card = show.locator(".bs-card");
+    const parts = BOARD_PARTS["learn-rp2350"];
+    await expect(dots).toHaveCount(parts.length);
+    await expect(dots.first()).toBeVisible();
+    await dots.first().hover();
+    await expect(card).toBeVisible();
+    await expect(card.locator("b")).toHaveText(
+      `${parts[0].ref} · ${parts[0].name}`
+    );
+    await expect(dots.first()).toHaveAttribute("aria-expanded", "true");
+    // the pointer can move onto the card and rest there (WCAG 1.4.13)
+    const d = (await dots.first().boundingBox())!;
+    const c = (await card.boundingBox())!;
+    const cy = Math.min(
+      Math.max(d.y + d.height / 2, c.y + 10),
+      c.y + c.height - 10
+    );
+    await page.mouse.move(c.x > d.x ? c.x + 10 : c.x + c.width - 10, cy, {
+      steps: 3,
+    });
+    await page.waitForTimeout(400);
+    await expect(card).toBeVisible();
+    // Escape closes it with focus anywhere
+    await page.keyboard.press("Escape");
+    await expect(card).toBeHidden();
+    await expect(dots.first()).toHaveAttribute("aria-expanded", "false");
+    // another board brings its own parts
+    await page.locator("#bt-cm5-base").click();
+    await expect(dots).toHaveCount(BOARD_PARTS["cm5-base"].length);
+  });
+
+  test("a part's card opens from the keyboard", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#bshow .bs-stage").scrollIntoViewIfNeeded();
+    const dot = page.locator("#bshow .bs-dot").first();
+    await expect(dot).toBeVisible();
+    await dot.focus();
+    await expect(page.locator("#bshow .bs-card")).toBeVisible();
+    // the dot itself carries its part's name and note, whichever card was last open
+    const [p0, p1] = BOARD_PARTS["learn-rp2350"];
+    await expect(dot).toHaveAccessibleName(`${p0.ref}, ${p0.name}`);
+    await expect(dot).toHaveAccessibleDescription(p0.note);
+    await expect(
+      page.locator("#bshow .bs-dot").nth(1)
+    ).toHaveAccessibleDescription(p1.note);
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#bshow .bs-card")).toBeHidden();
+  });
+
+  test("the dots stay on their parts when the window is resized", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const show = page.locator("#bshow");
+    const parts = BOARD_PARTS["learn-rp2350"];
+    for (const width of [1440, 1300, 1279, 1061, 1000, 760]) {
+      await page.setViewportSize({ width, height: 900 });
+      await show
+        .locator(".bs-stage")
+        .evaluate(e =>
+          e.scrollIntoView({ block: "center", behavior: "instant" })
+        );
+      await expect(show.locator(".bs-dot").first()).toBeVisible();
+      await expect
+        .poll(async () => {
+          const img = (await show.locator(".bs-img.on img").boundingBox())!;
+          let worst = 0;
+          for (const [k, p] of parts.entries()) {
+            const b = (await show.locator(".bs-dot").nth(k).boundingBox())!;
+            worst = Math.max(
+              worst,
+              Math.abs(b.x + b.width / 2 - (img.x + p.x * img.width)),
+              Math.abs(b.y + b.height / 2 - (img.y + p.y * img.height))
+            );
+          }
+          return worst;
+        })
+        .toBeLessThan(2);
+    }
+  });
+
+  for (const width of [640, 420])
+    test(`in a ${width}px window the pointer can move onto a part's card and read it`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/");
+      const show = page.locator("#bshow");
+      await show
+        .locator(".bs-stage")
+        .evaluate(e =>
+          e.scrollIntoView({ block: "center", behavior: "instant" })
+        );
+      const dots = show.locator(".bs-dot");
+      const card = show.locator(".bs-card");
+      await expect(dots.first()).toBeVisible();
+      for (const k of [0, 1, 2]) {
+        await dots.nth(k).hover();
+        await expect(card).toBeVisible();
+        const d = (await dots.nth(k).boundingBox())!;
+        const c = (await card.boundingBox())!;
+        // aim at the card's point nearest the dot, slowly
+        const tx = Math.min(
+          Math.max(d.x + d.width / 2, c.x + 8),
+          c.x + c.width - 8
+        );
+        const ty = Math.min(
+          Math.max(d.y + d.height / 2, c.y + 8),
+          c.y + c.height - 8
+        );
+        await page.mouse.move(tx, ty, { steps: 12 });
+        await page.waitForTimeout(1_000);
+        await expect(card).toBeVisible();
+        await page.mouse.move(2, 2);
+        await expect(card).toBeHidden();
+      }
+    });
+
+  test.describe("on a phone", () => {
+    test.use({
+      viewport: { width: 390, height: 844 },
+      // a phone's 2x screen: Chrome then moves a tap's click onto a nearby target, which the dots must not follow
+      deviceScaleFactor: 2,
+      hasTouch: true,
+      isMobile: true,
+    });
+
+    test("a tap opens the part tapped on every board, even where two dots sit close", async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto("/");
+      const show = page.locator("#bshow");
+      const stage = show.locator(".bs-stage");
+      const dots = show.locator(".bs-dot");
+      const card = show.locator(".bs-card");
+      for (const [slug, parts] of Object.entries(BOARD_PARTS)) {
+        if (slug !== "learn-rp2350") await page.locator(`#bt-${slug}`).click();
+        await expect(dots).toHaveCount(parts.length);
+        // the new board's dots, not the last board's
+        await expect(dots.first()).toHaveAttribute(
+          "aria-label",
+          `${parts[0].ref}, ${parts[0].name}`
+        );
+        await stage.evaluate(e =>
+          e.scrollIntoView({ block: "center", behavior: "instant" })
+        );
+        // the dots show once the board image has loaded and sized their layer
+        await expect(dots.first()).toBeVisible();
+        for (const [k, p] of parts.entries()) {
+          const b = (await dots.nth(k).boundingBox())!;
+          await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2);
+          await expect(card.locator("b")).toHaveText(`${p.ref} · ${p.name}`);
+          await page.keyboard.press("Escape");
+          await expect(card).toBeHidden();
+        }
+      }
+    });
+  });
+
+  test("the shelf shows all fourteen books, each cover lazy and sized", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const books = page.locator(".hp-shelf > li");
+    await expect(books).toHaveCount(14);
+    await expect(books.locator('a[href="/books"]')).toHaveCount(14);
+    const covers = page.locator(".hp-shelf img");
+    // two books share another's cover, so their titles are set in type instead
+    await expect(covers).toHaveCount(12);
+    for (const img of await covers.all()) {
+      await expect(img).toHaveAttribute("loading", "lazy");
+      await expect(img).toHaveAttribute("width", "240");
+      await expect(img).toHaveAttribute("height", "360");
+    }
+    // one row wider than the page: its buttons page through it
+    const shelf = page.locator(".hp-shelf");
+    const [prev, next] = await page.locator(".hp-shelf-nav button").all();
+    await shelf.evaluate(e =>
+      e.scrollIntoView({ block: "center", behavior: "instant" })
+    );
+    await expect(page.locator(".hp-shelf-nav")).toBeVisible();
+    await expect(prev).toBeDisabled();
+    await next.click();
+    await expect
+      .poll(() => shelf.evaluate(e => e.scrollLeft))
+      .toBeGreaterThan(100);
+    await expect(prev).toBeEnabled();
   });
 
   test("a board-map part opens its details", async ({ page }) => {
