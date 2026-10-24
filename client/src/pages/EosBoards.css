@@ -1,0 +1,368 @@
+/*
+ * /eos-boards: the board index, the licence, the process and the check terms,
+ * then each board large (its turntable and three renders beside its record),
+ * and the licensing contacts. Status colours survive only as small dots.
+ */
+.bp.eosb .eb-hstatus {
+  margin-top: 26px;
+  border-left-color: var(--orange);
+}
+
+/* the index: every board as a card with its render */
+.bp.eosb .eb-index {
+  padding-top: clamp(40px, 5vw, 64px);
+}
+.bp.eosb .eb-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  .bp.eosb .eb-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .bp.eosb .eb-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 420px) {
+  .bp.eosb .eb-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.eosb .eb-cards > li {
+  display: flex;
+  min-width: 0;
+}
+.bp.eosb .eb-card {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  transition:
+    border-color 0.3s,
+    background-color 0.3s;
+}
+.bp.eosb .eb-card:hover,
+.bp.eosb .eb-card:focus-visible {
+  border-color: var(--line2);
+  background: var(--panel2);
+}
+.bp.eosb .eb-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  overflow: hidden;
+  background: var(--panel2);
+}
+.bp.eosb .eb-ct {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px 16px;
+}
+.bp.eosb .eb-cat {
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.bp.eosb .eb-name {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.bp.eosb .eb-size {
+  font-size: 13px;
+  color: var(--fg2);
+}
+
+/* the licence */
+.bp.eosb .eb-lic {
+  gap: 18px;
+  padding: clamp(24px, 4vw, 44px);
+}
+.bp.eosb .eb-lic h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.bp.eosb .eb-lic ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  max-width: 52em;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--fg);
+}
+.bp.eosb .eb-lic .eb-lic-fine {
+  font-size: 15px;
+  color: var(--fg2);
+}
+
+/* process and check terms */
+.bp.eosb .eb-proc .k {
+  font-size: 13px;
+}
+
+/* one board */
+.bp.eosb .eb-board {
+  padding-block: clamp(56px, 7vw, 104px);
+}
+.bp.eosb .eb-bgrid {
+  display: grid;
+  gap: clamp(32px, 4vw, 56px);
+}
+@media (min-width: 1024px) {
+  .bp.eosb .eb-bgrid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+  }
+  .bp.eosb .eb-media {
+    position: sticky;
+    top: calc(var(--nav) + 64px);
+  }
+}
+.bp.eosb .eb-media {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.bp.eosb .eb-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.bp.eosb .eb-tt {
+  border-radius: 24px;
+}
+.bp.eosb .eb-views {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.bp.eosb .eb-views figure {
+  margin: 0;
+  min-width: 0;
+}
+.bp.eosb .eb-views figcaption {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--fg3);
+}
+.bp.eosb .eb-info {
+  min-width: 0;
+}
+.bp.eosb .eb-info h2 {
+  font-size: clamp(32px, 3.4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.bp.eosb .eb-purpose {
+  margin-top: 14px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+.bp.eosb .eb-status {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.bp.eosb .eb-status::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.bp.eosb .eb-spec {
+  margin-top: 26px;
+  grid-template-columns: minmax(0, 9em) minmax(0, 1fr);
+}
+.bp.eosb .eb-spec dt,
+.bp.eosb .eb-spec dd {
+  padding: 12px 0;
+}
+.bp.eosb .eb-h3 {
+  font-size: 19px;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.bp.eosb .eb-info > .eb-h3 {
+  margin-top: 30px;
+}
+.bp.eosb .eb-checks {
+  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.bp.eosb .eb-chk {
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.bp.eosb .eb-chk dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--fg2);
+}
+.bp.eosb .eb-chk dt::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fg3);
+}
+.bp.eosb .eb-chk[data-state="ok"] dt::before {
+  background: var(--green);
+}
+.bp.eosb .eb-chk[data-state="warn"] dt::before {
+  background: var(--orange);
+}
+.bp.eosb .eb-chk dd {
+  margin: 6px 0 0;
+  font: 600 28px/1 var(--display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+.bp.eosb .eb-warn {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.eosb .eb-warn b {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bp.eosb .eb-src {
+  margin-top: 10px;
+}
+.bp.eosb .eb-more {
+  margin-top: 26px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.bp.eosb .eb-more summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  min-height: 44px;
+  padding: 14px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.bp.eosb .eb-more summary::-webkit-details-marker {
+  display: none;
+}
+.bp.eosb .eb-more summary::after {
+  content: "+";
+  flex: none;
+  font: 300 22px/1 var(--sans);
+  color: var(--fg2);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.bp.eosb .eb-more[open] summary::after {
+  transform: rotate(45deg);
+}
+.bp.eosb .eb-more-b {
+  display: grid;
+  gap: 12px;
+  padding: 4px 0 22px;
+}
+.bp.eosb .eb-more-b ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  list-style: disc;
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+.bp.eosb .eb-more-b ul.eb-third {
+  font-size: 13px;
+  color: var(--fg3);
+}
+.bp.eosb .eb-dl {
+  margin-top: 26px;
+}
+@media (max-width: 480px) {
+  .bp.eosb .eb-dl .btn,
+  .bp.eosb .eb-info .btn {
+    white-space: normal;
+    text-align: center;
+  }
+}
+.bp.eosb .eb-cadnote {
+  margin-top: 12px;
+}
+.bp.eosb .eb-cadnote + .ctas {
+  margin-top: 20px;
+  gap: 12px 24px;
+}
+
+/* licensing contacts and the call */
+.bp.eosb .eb-mail {
+  color: var(--fg);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.bp.eosb .eb-reasons .card {
+  gap: 12px;
+}
+.bp.eosb .eb-ask {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.bp.eosb .eb-reasons .card p {
+  margin-bottom: 8px;
+}
+.bp.eosb .eb-book {
+  margin-top: clamp(40px, 5vw, 64px);
+  display: grid;
+  gap: 16px;
+}
+.bp.eosb .eb-prs {
+  margin-top: clamp(32px, 4vw, 48px);
+}
+@media (max-width: 480px) {
+  .bp.eosb .eb-prs .btn {
+    white-space: normal;
+    text-align: center;
+  }
+}

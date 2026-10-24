@@ -1,0 +1,81 @@
+/*
+ * The calendar card on /book, in the Black Edition (it sits inside the page's
+ * .bp root): a hairline frame on the panel colour, grey text, the outlined
+ * pill (bp.css .btn.gh) for the booking page. Google draws what is inside the
+ * frame; the frame keeps a white ground so its page never flashes black.
+ */
+.bp .bkc {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.bp .bkc-stage {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: 600px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+@media (min-width: 640px) {
+  .bp .bkc-stage {
+    height: 700px;
+  }
+}
+.bp .bkc-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+/* inside the frame's clipped box the ring sits inside, or the clip hides it */
+.bp .bkc-frame:focus-visible {
+  outline-offset: -3px;
+}
+.bp .bkc-skel {
+  background: var(--panel);
+}
+.bp .bkc-failed {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  gap: 16px;
+  overflow-y: auto;
+  padding: clamp(16px, 3vw, 28px);
+  background: var(--panel);
+}
+.bp .bkc-failed > p,
+.bp .bkc-under > p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp .bkc-under {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+.bp .bkc-under > p {
+  flex: 1 1 20em;
+  min-width: 0;
+}
+.bp .bkc-static {
+  gap: 16px;
+}
+.bp .bkc-static > p {
+  color: var(--fg2);
+}
+@media (max-width: 480px) {
+  .bp .bkc .btn,
+  .bp .bkc-static .btn {
+    white-space: normal;
+    text-align: center;
+  }
+}

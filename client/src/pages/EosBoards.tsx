@@ -1,16 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  CalendarDays,
-  CircleCheck,
-  CircuitBoard,
-  Download,
-  ExternalLink,
-  GraduationCap,
-  Handshake,
-  Mail,
-  Scale,
-  TriangleAlert,
-} from "lucide-react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   BOARD_LICENSOR,
   BOARD_STATUS,
@@ -29,7 +17,9 @@ import {
 } from "@/data/eos-boards";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
 import BookingTeaser from "@/components/BookingTeaser";
+import { BpPage, LocalNav, PageHero } from "@/components/bp";
 import { bookingCalendarReady } from "@/lib/booking";
+import "./EosBoards.css";
 
 export const CHECK_TERMS = [
   {
@@ -61,21 +51,18 @@ export const CHECK_TERMS = [
 
 export const CONTACT_REASONS = [
   {
-    icon: Scale,
     title: "Licensing",
     body: "Copying, modifying, manufacturing or selling one of these designs needs written permission, which may be given for a fee.",
     subject: "Licence request: EmbeddedOS development boards",
     action: "Ask about a licence",
   },
   {
-    icon: Handshake,
     title: "Partnerships",
     body: "Companies and universities that want to build on a board, co-develop a new one or take one to manufacture.",
     subject: "Partnership: EmbeddedOS development boards",
     action: "Propose a partnership",
   },
   {
-    icon: GraduationCap,
     title: "Evaluation",
     body: "Professors, labs and engineering teams weighing a board for a course, a research project or a product.",
     subject: "Evaluation: EmbeddedOS development boards",
@@ -179,6 +166,10 @@ function Turntable({ board }: { board: EosBoard }) {
   );
 }
 
+/**
+ * One recorded check: the label, then the count. A small dot carries what the
+ * colour used to: green for none found, orange for warnings, grey otherwise.
+ */
 function CheckTile({
   label,
   value,
@@ -188,16 +179,11 @@ function CheckTile({
   value: number;
   warn?: boolean;
 }) {
+  const state = warn ? "warn" : value === 0 ? "ok" : "found";
   return (
-    <div
-      className={`rounded-xl border px-3 py-2 ${warn ? "border-amber-400/30 bg-amber-400/[0.06]" : "border-emerald-400/25 bg-emerald-400/[0.06]"}`}
-    >
-      <dt className="text-xs text-gray-300">{label}</dt>
-      <dd
-        className={`text-2xl font-black ${warn ? "text-amber-300" : "text-emerald-300"}`}
-      >
-        {value}
-      </dd>
+    <div className="eb-chk" data-state={state}>
+      <dt>{label}</dt>
+      <dd>{value}</dd>
     </div>
   );
 }
@@ -208,71 +194,53 @@ function BoardSection({ board }: { board: EosBoard }) {
     <article
       id={board.slug}
       aria-labelledby={`${board.slug}-name`}
-      className="scroll-mt-24 py-14 px-6 border-t border-white/[0.06]"
+      className="sec eb-board"
     >
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-        <div className="min-w-0 grid gap-3 lg:sticky lg:top-24">
-          <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0b1220]">
+      <div className="wrap wide eb-bgrid">
+        <div className="eb-media">
+          <div className="eb-frame eb-tt">
             <Turntable board={board} />
           </div>
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="eb-views">
             {(["iso", "top", "bottom"] as const).map(view => (
-              <figure key={view} className="min-w-0">
-                <div className="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-white/10 bg-[#0b1220]">
+              <figure key={view}>
+                <div className="eb-frame">
                   <Picture
                     src={boardImage(board.slug, view)}
                     size={view === "iso" ? board.media.iso : board.media.plan}
                     alt={imageAlt(board, view)}
                   />
                 </div>
-                <figcaption className="text-xs text-gray-400 mt-1.5">
-                  {VIEW_LABEL[view]}
-                </figcaption>
+                <figcaption>{VIEW_LABEL[view]}</figcaption>
               </figure>
             ))}
           </div>
-          <p className="text-xs text-gray-400">
+          <p className="fine">
             Renders and animation © {BOARD_LICENSOR.year} {BOARD_LICENSOR.name}.
             All rights reserved.
           </p>
         </div>
 
-        <div className="min-w-0">
-          <h2
-            id={`${board.slug}-name`}
-            className="text-3xl md:text-4xl font-black mb-3"
-          >
-            {board.name}
-          </h2>
-          <p className="text-lg text-gray-300 leading-relaxed mb-4">
-            {board.purpose}
-          </p>
-          <p className="inline-flex items-start gap-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.08] px-3 py-2 text-sm text-amber-200 mb-6">
-            <TriangleAlert size={16} className="shrink-0 mt-0.5" />
+        <div className="eb-info">
+          <h2 id={`${board.slug}-name`}>{board.name}</h2>
+          <p className="eb-purpose">{board.purpose}</p>
+          <p className="eb-status">
             <span>Status: {BOARD_STATUS}.</span>
           </p>
 
-          <dl className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8 text-sm">
-            <div className="col-span-2 sm:col-span-3">
-              <dt className="text-gray-400">Main chip</dt>
-              <dd className="font-semibold text-white">{board.mainChip}</dd>
-            </div>
-            <div>
-              <dt className="text-gray-400">Size</dt>
-              <dd className="font-semibold text-white">
-                {formatSize(board.sizeMm)}
-              </dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-gray-400">Layers</dt>
-              <dd className="font-semibold text-white">
-                {board.layers} ({board.stackup})
-              </dd>
-            </div>
+          <dl className="kv eb-spec">
+            <dt>Main chip</dt>
+            <dd>{board.mainChip}</dd>
+            <dt>Size</dt>
+            <dd>{formatSize(board.sizeMm)}</dd>
+            <dt>Layers</dt>
+            <dd>
+              {board.layers} ({board.stackup})
+            </dd>
           </dl>
 
-          <h3 className="text-lg font-bold mb-3">Checks, as recorded</h3>
-          <dl className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
+          <h3 className="eb-h3">Checks, as recorded</h3>
+          <dl className="eb-checks">
             <CheckTile label="ERC violations" value={checks.ercViolations} />
             <CheckTile label="DRC errors" value={checks.drcErrors} />
             <CheckTile label="Unconnected" value={checks.unconnectedItems} />
@@ -287,60 +255,46 @@ function BoardSection({ board }: { board: EosBoard }) {
             />
           </dl>
           {checks.warningNote && (
-            <p className="text-sm text-gray-300 mb-3">
-              <span className="font-semibold text-amber-200">
+            <p className="eb-warn">
+              <b>
                 {checks.drcWarnings === 1
                   ? "The warning:"
                   : `The ${checks.drcWarnings} warnings:`}
-              </span>{" "}
+              </b>{" "}
               {checks.warningNote}
             </p>
           )}
-          <p className="text-xs text-gray-400 mb-6">
+          <p className="fine eb-src">
             From build-report.json and drc.json in the board's folder, KiCad{" "}
             {checks.kicad}, commit {checks.commit}.
           </p>
 
-          <details className="group mb-6 rounded-xl border border-white/10 bg-white/[0.02]">
-            <summary className="cursor-pointer select-none px-4 py-3 font-semibold text-white">
+          <details className="eb-more">
+            <summary>
               Key features, what is not done yet, and third-party material
             </summary>
-            <div className="px-4 pb-2 pt-2">
-              <h3 className="text-lg font-bold mb-3">Key features</h3>
-              <ul className="space-y-2 text-sm text-gray-300 mb-8">
+            <div className="eb-more-b">
+              <h3 className="eb-h3">Key features</h3>
+              <ul>
                 {board.features.map(feature => (
-                  <li key={feature} className="flex gap-2">
-                    <CircuitBoard
-                      size={14}
-                      className="shrink-0 mt-1 text-orange-400"
-                      aria-hidden="true"
-                    />
-                    <span>{feature}</span>
-                  </li>
+                  <li key={feature}>{feature}</li>
                 ))}
               </ul>
 
-              <h3 className="text-lg font-bold mb-3">Not done yet</h3>
-              <ul className="space-y-2 text-sm text-gray-300 mb-8">
+              <h3 className="eb-h3">Not done yet</h3>
+              <ul>
                 {[
                   "This board has not been manufactured, powered or tested on the bench.",
                   ...board.notYetDone,
                 ].map(item => (
-                  <li key={item} className="flex gap-2">
-                    <TriangleAlert
-                      size={14}
-                      className="shrink-0 mt-1 text-amber-300"
-                      aria-hidden="true"
-                    />
-                    <span>{item}</span>
-                  </li>
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
 
-              <h3 className="text-lg font-bold mb-3">
+              <h3 className="eb-h3">
                 Third-party material, under its own licence
               </h3>
-              <ul className="list-disc pl-5 space-y-1 text-xs text-gray-400 mb-4">
+              <ul className="eb-third">
                 {board.thirdParty.map(item => (
                   <li key={item}>{item}</li>
                 ))}
@@ -348,15 +302,15 @@ function BoardSection({ board }: { board: EosBoard }) {
             </div>
           </details>
 
-          <div className="flex flex-wrap items-center gap-3 mb-3">
+          <div className="ctas eb-dl">
             {(["schematic", "pcb"] as const).map(kind => (
               <a
                 key={kind}
                 href={boardCadUrl(board, kind)}
                 download
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-orange-400/30 text-orange-200 hover:bg-orange-400/10"
+                className="btn gh"
               >
-                <Download size={16} aria-hidden="true" />
+                <span aria-hidden="true">↓</span>
                 {kind === "schematic"
                   ? "Schematic (.kicad_sch)"
                   : "PCB layout (.kicad_pcb)"}
@@ -365,30 +319,24 @@ function BoardSection({ board }: { board: EosBoard }) {
               </a>
             ))}
           </div>
-          <p className="text-xs text-gray-400 mb-5 leading-relaxed">
+          <p className="fine eb-cadnote">
             Native KiCad files from commit {checks.commit}, for viewing under{" "}
-            <a
-              href={boardLicenceUrl(board)}
-              className="text-orange-300 underline underline-offset-2"
-            >
+            <a href={boardLicenceUrl(board)} className="tl">
               this board’s full licence
             </a>
             . Keep the licence with any permitted copies. The GitHub folder
             includes the project settings and supporting files.
           </p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="ctas">
             <a
               href={boardFolderUrl(board)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"
+              className="btn gh"
             >
-              {board.name} files on GitHub <ExternalLink size={16} />
+              {board.name} files on GitHub <span aria-hidden="true">↗</span>
             </a>
-            <a
-              href="#boards"
-              className="text-sm text-gray-300 underline underline-offset-2 hover:text-white"
-            >
+            <a href="#boards" className="tl">
               All boards
             </a>
           </div>
@@ -398,69 +346,71 @@ function BoardSection({ board }: { board: EosBoard }) {
   );
 }
 
+const PROCESS = [
+  [
+    "Define the circuit",
+    "Component datasheets set pin assignments, supply limits and component values. Published dimensions and pinouts guide the connectors. Each board identifies its sources and any third-party material.",
+  ],
+  [
+    "Place and route",
+    "Parts receive physical footprints. Copper tracks, vias and planes connect the schematic’s nets, with critical signals and supply connections laid first.",
+  ],
+  [
+    "Check the CAD",
+    "KiCad checks the schematic, physical clearances, missing connections and agreement between the two files. The results below belong to a specific saved revision.",
+  ],
+  [
+    "Inspect the views",
+    "Perspective, top, bottom and rotating views come from that board’s CAD. Missing component models can leave empty areas in a render; the PCB file still records the fitted footprints.",
+  ],
+] as const;
+
 export default function EosBoards() {
   return (
-    <div className="min-h-screen bg-[#050A14] text-white">
-      <section className="relative pt-28 pb-12 px-6 overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div className="relative max-w-6xl mx-auto">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border border-orange-500/30 bg-orange-500/10 text-orange-400">
-            <CircuitBoard size={12} /> EmbeddedOS HARDWARE · ORIGINAL BOARD
-            DESIGNS
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-            EmbeddedOS{" "}
-            <span className="bg-gradient-to-br from-orange-500 to-amber-400 bg-clip-text text-transparent">
-              development boards
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl leading-relaxed mb-6">
-            Original development boards designed by {BOARD_LICENSOR.name} for
-            EmbeddedOS: complete KiCad designs, each with the check results its
-            build recorded.
-          </p>
-          <p className="inline-flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/[0.08] px-4 py-3 text-amber-200 max-w-3xl mb-8">
-            <TriangleAlert size={18} className="shrink-0 mt-0.5" />
-            <span>
-              Every board here is {BOARD_STATUS}. None has been built or
-              powered.
-            </span>
-          </p>
-          <nav
-            id="boards"
-            aria-label="Boards on this page"
-            className="scroll-mt-24"
-          >
-            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+    <BpPage className="eosb">
+      <PageHero
+        sig
+        label="EmbeddedOS HARDWARE · ORIGINAL BOARD DESIGNS"
+        title="EmbeddedOS development boards"
+        lead={`Original development boards designed by ${BOARD_LICENSOR.name} for EmbeddedOS: complete KiCad designs, each with the check results its build recorded.`}
+      >
+        <p className="gnote eb-hstatus">
+          Every board here is {BOARD_STATUS}. None has been built or powered.
+        </p>
+      </PageHero>
+      <LocalNav
+        name="EoS boards"
+        items={[
+          { id: "boards", label: "Boards" },
+          { id: "licence", label: "Licence" },
+          { id: "process", label: "From circuit to board" },
+          { id: "checks", label: "What the checks mean" },
+          { id: "contact", label: "Licensing and contact" },
+        ]}
+      />
+
+      <section className="sec eb-index">
+        <div className="wrap wide">
+          <nav id="boards" aria-label="Boards on this page">
+            <ul className="eb-cards">
               {EOS_BOARDS.map(board => (
-                <li key={board.slug} className="min-w-0">
+                <li key={board.slug}>
                   <a
                     href={`#${board.slug}`}
                     style={{ display: "flex", flexDirection: "column" }}
-                    className="h-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] hover:border-orange-400/50"
+                    className="eb-card"
                   >
-                    <span className="relative block aspect-[3/2] w-full overflow-hidden bg-[#0b1220]">
+                    <span className="eb-thumb">
                       <Picture
                         src={boardThumb(board.slug)}
                         size={board.media.thumb}
                         alt=""
                       />
                     </span>
-                    <span className="block px-3 py-2.5">
-                      <span className="block text-xs text-orange-300">
-                        {board.category}
-                      </span>
-                      <span className="block font-bold text-white leading-snug">
-                        {board.name}
-                      </span>
-                      <span className="block text-xs text-gray-400 mt-0.5">
+                    <span className="eb-ct">
+                      <span className="eb-cat">{board.category}</span>
+                      <span className="eb-name">{board.name}</span>
+                      <span className="eb-size">
                         {formatSize(board.sizeMm)} · {board.layers} layers
                       </span>
                     </span>
@@ -475,123 +425,94 @@ export default function EosBoards() {
       <section
         id="licence"
         aria-labelledby="licence-heading"
-        className="scroll-mt-24 px-6 pb-14"
+        className="sec eb-licence"
       >
-        <div className="max-w-6xl mx-auto rounded-2xl border border-orange-400/30 bg-orange-500/[0.06] p-6 md:p-8">
-          <h2
-            id="licence-heading"
-            className="text-2xl md:text-3xl font-black mb-4 flex items-center gap-3"
-          >
-            <Scale size={24} className="text-orange-400 shrink-0" /> Licence:
-            not open source
-          </h2>
-          <ul className="space-y-3 text-gray-200 leading-relaxed max-w-4xl">
-            <li>
-              These boards are Copyright (c) {BOARD_LICENSOR.year}{" "}
-              {BOARD_LICENSOR.name}, all rights reserved, and not open source.
-              They are not under the MIT licence that covers EmbeddedOS
-              software.
-            </li>
-            <li>
-              Anyone may view them. Copying, modifying, manufacturing or selling
-              needs written permission from {BOARD_LICENSOR.name}, which may be
-              given for a fee. Contact{" "}
-              <a
-                href={boardMailto(
-                  "Licence request: EmbeddedOS development boards"
-                )}
-                className="font-semibold text-orange-300 underline underline-offset-2 break-words"
-              >
-                {BOARD_LICENSOR.email}
-              </a>
-              .
-            </li>
-            <li>
-              EmbeddedOS (EoS) Research Foundation has a limited, revocable
-              permission to use them.
-            </li>
-            <li className="text-sm text-gray-300">
-              Third-party material on a board keeps its own licence; each board
-              lists its own below. The full terms are in the LICENSE.txt file in
-              each board's folder.
-            </li>
-          </ul>
+        <div className="wrap">
+          <div className="card hl eb-lic">
+            <h2 id="licence-heading">Licence: not open source</h2>
+            <ul>
+              <li>
+                These boards are Copyright (c) {BOARD_LICENSOR.year}{" "}
+                {BOARD_LICENSOR.name}, all rights reserved, and not open source.
+                They are not under the MIT licence that covers EmbeddedOS
+                software.
+              </li>
+              <li>
+                Anyone may view them. Copying, modifying, manufacturing or
+                selling needs written permission from {BOARD_LICENSOR.name},
+                which may be given for a fee. Contact{" "}
+                <a
+                  href={boardMailto(
+                    "Licence request: EmbeddedOS development boards"
+                  )}
+                  className="tl"
+                >
+                  {BOARD_LICENSOR.email}
+                </a>
+                .
+              </li>
+              <li>
+                EmbeddedOS (EoS) Research Foundation has a limited, revocable
+                permission to use them.
+              </li>
+              <li className="eb-lic-fine">
+                Third-party material on a board keeps its own licence; each
+                board lists its own below. The full terms are in the LICENSE.txt
+                file in each board's folder.
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section aria-labelledby="process-heading" className="px-6 pb-14">
-        <div className="max-w-6xl mx-auto">
-          <h2
-            id="process-heading"
-            className="text-2xl md:text-3xl font-black mb-3"
-          >
-            From circuit to board
-          </h2>
-          <p className="text-gray-300 max-w-3xl mb-6 leading-relaxed">
-            The schematic describes what connects. The PCB file places those
-            parts and draws the copper connections. Each board below includes
-            both files, its recorded checks and views rendered from the PCB.
-          </p>
-          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              [
-                "Define the circuit",
-                "Component datasheets set pin assignments, supply limits and component values. Published dimensions and pinouts guide the connectors. Each board identifies its sources and any third-party material.",
-              ],
-              [
-                "Place and route",
-                "Parts receive physical footprints. Copper tracks, vias and planes connect the schematic’s nets, with critical signals and supply connections laid first.",
-              ],
-              [
-                "Check the CAD",
-                "KiCad checks the schematic, physical clearances, missing connections and agreement between the two files. The results below belong to a specific saved revision.",
-              ],
-              [
-                "Inspect the views",
-                "Perspective, top, bottom and rotating views come from that board’s CAD. Missing component models can leave empty areas in a render; the PCB file still records the fitted footprints.",
-              ],
-            ].map(([title, body], index) => (
-              <li
-                key={title}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
-              >
-                <span className="text-sm font-bold text-orange-300">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-bold text-white mt-2 mb-2">{title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{body}</p>
+      <section
+        id="process"
+        aria-labelledby="process-heading"
+        className="sec alt"
+      >
+        <div className="wrap">
+          <div className="sec-h">
+            <h2 id="process-heading">From circuit to board</h2>
+            <p className="lead">
+              The schematic describes what connects. The PCB file places those
+              parts and draws the copper connections. Each board below includes
+              both files, its recorded checks and views rendered from the PCB.
+            </p>
+          </div>
+          <ol className="cards four eb-proc">
+            {PROCESS.map(([title, body], index) => (
+              <li key={title}>
+                <div className="card">
+                  <span className="k">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      <section aria-labelledby="checks-heading" className="px-6 pb-14">
-        <div className="max-w-6xl mx-auto">
-          <h2
-            id="checks-heading"
-            className="text-2xl md:text-3xl font-black mb-3 flex items-center gap-3"
-          >
-            <CircleCheck size={24} className="text-emerald-300 shrink-0" /> What
-            the checks mean
-          </h2>
-          <p className="text-gray-300 max-w-3xl mb-6 leading-relaxed">
-            One command generates each board's schematic, layout, routing and
-            fabrication files and runs KiCad's checks. The counts on this page
-            are copied from the report that command wrote. They show the design
-            is consistent; they cannot show that a manufactured board works.
-          </p>
-          <dl className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <section id="checks" aria-labelledby="checks-heading" className="sec">
+        <div className="wrap">
+          <div className="sec-h">
+            <h2 id="checks-heading">What the checks mean</h2>
+            <p className="lead">
+              One command generates each board's schematic, layout, routing and
+              fabrication files and runs KiCad's checks. The counts on this page
+              are copied from the report that command wrote. They show the
+              design is consistent; they cannot show that a manufactured board
+              works.
+            </p>
+          </div>
+          <dl className="kv">
             {CHECK_TERMS.map(c => (
-              <div
-                key={c.term}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
-              >
-                <dt className="font-bold text-white mb-1">{c.term}</dt>
-                <dd className="text-sm text-gray-400 leading-relaxed">
-                  {c.meaning}
-                </dd>
-              </div>
+              <Fragment key={c.term}>
+                <dt>{c.term}</dt>
+                <dd>{c.meaning}</dd>
+              </Fragment>
             ))}
           </dl>
         </div>
@@ -601,57 +522,34 @@ export default function EosBoards() {
         <BoardSection key={board.slug} board={board} />
       ))}
 
-      <section
-        id="contact"
-        aria-labelledby="contact-heading"
-        className="py-16 px-6 border-t border-white/[0.06]"
-      >
-        <div className="max-w-6xl mx-auto">
-          <h2 id="contact-heading" className="text-3xl font-black mb-3">
-            Licensing, partnerships and evaluation
-          </h2>
-          <p className="text-gray-300 max-w-3xl mb-8 leading-relaxed">
-            Write to {BOARD_LICENSOR.name} at{" "}
-            <span className="font-semibold text-white break-words">
-              {BOARD_LICENSOR.email}
-            </span>
-            . Each button opens an email with the subject filled in.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
-            {CONTACT_REASONS.map(reason => (
-              <div
-                key={reason.title}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 flex flex-col"
-              >
-                <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-                  <reason.icon
-                    size={20}
-                    className="text-orange-400"
-                    aria-hidden="true"
-                  />
-                  {reason.title}
-                </h3>
-                <p className="text-sm text-gray-300 leading-relaxed mb-6">
-                  {reason.body}
-                </p>
-                <a
-                  href={boardMailto(reason.subject)}
-                  className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold bg-orange-500 hover:bg-orange-600 text-white"
-                >
-                  <Mail size={16} aria-hidden="true" /> {reason.action}
-                </a>
-              </div>
-            ))}
+      <section id="contact" aria-labelledby="contact-heading" className="sec">
+        <div className="wrap">
+          <div className="sec-h">
+            <h2 id="contact-heading">Licensing, partnerships and evaluation</h2>
+            <p className="lead">
+              Write to {BOARD_LICENSOR.name} at{" "}
+              <b className="eb-mail">{BOARD_LICENSOR.email}</b>. Each button
+              opens an email with the subject filled in.
+            </p>
           </div>
-          <div id="book-a-meeting" className="scroll-mt-24 mb-10 min-w-0">
-            <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-              <CalendarDays
-                size={20}
-                className="text-orange-400"
-                aria-hidden="true"
-              />
-              Book a call
-            </h3>
+          <ul className="cards eb-reasons">
+            {CONTACT_REASONS.map(reason => (
+              <li key={reason.title}>
+                <div className="card">
+                  <h3>{reason.title}</h3>
+                  <p>{reason.body}</p>
+                  <a
+                    href={boardMailto(reason.subject)}
+                    className="btn pri eb-ask"
+                  >
+                    {reason.action}
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div id="book-a-meeting" className="eb-book">
+            <h3 className="eb-h3">Book a call</h3>
             <BookingTeaser
               href="/book"
               title="Talk to us about a board"
@@ -662,22 +560,22 @@ export default function EosBoards() {
               }
             />
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="ctas eb-prs">
             {BOARD_PULL_REQUESTS.map(pullRequest => (
               <a
                 key={pullRequest}
                 href={pullRequestUrl(pullRequest)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold border border-white/15 text-white hover:border-white/30"
+                className="btn gh"
               >
                 Board files in eCAD pull request #{pullRequest}{" "}
-                <ExternalLink size={16} />
+                <span aria-hidden="true">↗</span>
               </a>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </BpPage>
   );
 }

@@ -1,0 +1,228 @@
+/* /book: the steps under the hero, the topics as a hairline list, the calendar large, and the notes beside it. */
+
+/* the three steps: a guide, not a progress bar (Google's frame reports no booking) */
+.bp.book .bk-steps {
+  list-style: none;
+  margin: 36px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 760px;
+  border-top: 1px solid var(--line);
+}
+.bp.book .bk-steps li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 18px 16px 0 0;
+}
+.bp.book .bk-steps .n {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line2);
+  display: grid;
+  place-items: center;
+  font: 500 13px/1 var(--mono);
+  color: var(--fg);
+}
+.bp.book .bk-sl {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--fg);
+}
+@media (max-width: 560px) {
+  .bp.book .bk-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bp.book .bk-steps li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* the calendar column and the notes beside it */
+.bp.book .bk-main {
+  border-top: 1px solid var(--line);
+  padding-top: clamp(48px, 6vw, 88px);
+}
+.bp.book .bk-grid {
+  display: grid;
+  gap: clamp(48px, 6vw, 72px);
+}
+@media (min-width: 1024px) {
+  .bp.book .bk-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+.bp.book .bk-col {
+  display: grid;
+  gap: clamp(56px, 7vw, 88px);
+  min-width: 0;
+}
+.bp.book .bk-col h2 {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.bp.book .bk-sub {
+  margin-top: 12px;
+  font-size: 17px;
+  color: var(--fg2);
+}
+
+/* topics: titles and lines on hairlines, no icons or colours */
+.bp.book .bk-tlist {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bp.book .bk-tlist li {
+  display: grid;
+  grid-template-columns: minmax(0, 13em) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 4px 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.bp.book .bk-tt {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.bp.book .bk-tl {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+.bp.book .bk-tm {
+  font: 500 12px/1.4 var(--mono);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .bp.book .bk-tlist li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .bp.book .bk-tl {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+.bp.book .bk-time {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.bp.book .bk-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.bp.book .bk-meta span + span::before {
+  content: "·";
+  margin-right: 18px;
+  color: var(--fg4);
+}
+
+/* the email fallback: shown in place of the calendar, or under it if it fails */
+.bp.book .bk-fb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: 16px;
+  border: 1px solid var(--line2);
+  background: var(--panel2);
+}
+.bp.book .bk-fb-t {
+  flex: 1 1 18em;
+  min-width: 0;
+}
+.bp.book .bk-fb-h {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.bp.book .bk-fb-h + p {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+
+/* the notes */
+.bp.book .bk-aside {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-width: 0;
+}
+@media (min-width: 1024px) {
+  .bp.book .bk-aside {
+    position: sticky;
+    top: calc(var(--nav) + 24px);
+  }
+}
+.bp.book .bk-box {
+  padding: 24px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.bp.book .bk-box h2 {
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.bp.book .bk-box > p {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.book .bk-exp {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bp.book .bk-exp li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+.bp.book .bk-exp li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.bp.book .bk-faq {
+  margin-top: 14px;
+}
+.bp.book .bk-faq summary {
+  padding: 14px 0;
+  font-size: 15px;
+  min-height: 44px;
+  align-items: center;
+}
+.bp.book .bk-faq details > p {
+  padding-bottom: 16px;
+}
+.bp.book .bk-faq details:last-child {
+  border-bottom: 0;
+}
