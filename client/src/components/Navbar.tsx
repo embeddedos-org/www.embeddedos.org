@@ -579,7 +579,7 @@ export default function Navbar() {
               value={openMenu}
               onValueChange={setOpenMenu}
             >
-              <NavigationMenu.List className="flex items-center gap-5 xl:gap-[clamp(20px,2.6vw,34px)]">
+              <NavigationMenu.List className="flex items-center gap-3 min-[1100px]:gap-4 xl:gap-[clamp(20px,2.6vw,34px)]">
                 {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
                   const section = NAV_ITEMS[label];
                   return (
@@ -678,9 +678,8 @@ export default function Navbar() {
                 <NavigationMenu.Item>
                   <Link
                     href="/book"
-                    className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/5 transition-colors duration-150"
+                    className="flex items-center py-4 leading-5 text-[13px] whitespace-nowrap text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200"
                   >
-                    <CalendarDays size={14} className="text-[#22D3EE]" />
                     Book a call
                   </Link>
                 </NavigationMenu.Item>
@@ -891,9 +890,9 @@ export default function Navbar() {
                 <Link
                   href="/book"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
                 >
-                  <CalendarDays size={16} className="text-[#22D3EE]" />
+                  <CalendarDays size={16} className="text-[#a1a1a6]" />
                   Book a call
                 </Link>
               </div>
