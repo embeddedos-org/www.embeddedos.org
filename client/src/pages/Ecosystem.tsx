@@ -1,24 +1,11 @@
-import { motion } from "framer-motion";
-import {
-  Layers,
-  Cpu,
-  Shield,
-  Brain,
-  Zap,
-  Database,
-  Globe,
-  Code,
-  Monitor,
-  ArrowRight,
-  Rocket,
-  HeartPulse,
-  GitCompareArrows,
-  Network,
-  CircuitBoard,
-  Workflow,
-} from "lucide-react";
+import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import { Band, BpPage, PageHero, Section } from "@/components/bp";
+import "./Ecosystem.css";
+
+// A layer's part: a plain name (the hardware) or a product with its page.
+type LayerItem = string | { name: string; desc: string; href: string };
 
 const layers = [
   {
@@ -147,7 +134,6 @@ const layers = [
 
 const products = [
   {
-    icon: Cpu,
     color: "#F97316",
     name: "EoS",
     tagline: "Core RTOS Kernel",
@@ -155,7 +141,6 @@ const products = [
     href: "/eos",
   },
   {
-    icon: Shield,
     color: "#22D3EE",
     name: "eBootloader",
     tagline: "Secure Boot Chain",
@@ -163,7 +148,6 @@ const products = [
     href: "/eboot",
   },
   {
-    icon: Brain,
     color: "#A855F7",
     name: "EAI",
     tagline: "AI Inference Engine",
@@ -171,7 +155,6 @@ const products = [
     href: "/eai",
   },
   {
-    icon: Zap,
     color: "#34D399",
     name: "ENI",
     tagline: "Neural Interface",
@@ -183,7 +166,6 @@ const products = [
     href: "/eni",
   },
   {
-    icon: Database,
     color: "#FBBF24",
     name: "EIPC",
     tagline: "IPC Bus",
@@ -191,7 +173,6 @@ const products = [
     href: "/eipc",
   },
   {
-    icon: Code,
     color: "#F472B6",
     name: "eBuild",
     tagline: "Build System",
@@ -199,7 +180,6 @@ const products = [
     href: "/ebuild",
   },
   {
-    icon: Monitor,
     color: "#60A5FA",
     name: "EoStudio",
     tagline: "IDE",
@@ -207,7 +187,6 @@ const products = [
     href: "/eostudio",
   },
   {
-    icon: Globe,
     color: "#34D399",
     name: "eFlow",
     tagline: "Visual Programming",
@@ -217,7 +196,6 @@ const products = [
   // Project pages with no footer column. /ecosystem is the footer's hub for
   // them, so the grid names every one — see tests/unit/navigation.test.ts.
   {
-    icon: Zap,
     color: "#22D3EE",
     name: "eAI Edge",
     tagline: "Edge AI Deployment",
@@ -225,7 +203,6 @@ const products = [
     href: "/eai-edge",
   },
   {
-    icon: CircuitBoard,
     color: "#F472B6",
     name: "eCAD Hardware",
     tagline: "Open Hardware Designs",
@@ -233,7 +210,6 @@ const products = [
     href: "/ecad-hardware",
   },
   {
-    icon: Rocket,
     color: "#60A5FA",
     name: "Aerospace",
     tagline: "Aerospace Concepts",
@@ -241,7 +217,6 @@ const products = [
     href: "/aerospace",
   },
   {
-    icon: HeartPulse,
     color: "#F85149",
     name: "Health",
     tagline: "Health Device Concepts",
@@ -249,7 +224,6 @@ const products = [
     href: "/health",
   },
   {
-    icon: GitCompareArrows,
     color: "#A78BFA",
     name: "Health Compare",
     tagline: "Compare Health Concepts",
@@ -257,7 +231,6 @@ const products = [
     href: "/health-compare",
   },
   {
-    icon: Network,
     color: "#A855F7",
     name: "Neural Link AI",
     tagline: "Neural Interface Research",
@@ -265,7 +238,6 @@ const products = [
     href: "/neural-link-ai",
   },
   {
-    icon: Workflow,
     color: "#34D399",
     name: "Flow Editor",
     tagline: "Visual Block Editor",
@@ -273,7 +245,6 @@ const products = [
     href: "/flow",
   },
   {
-    icon: Monitor,
     color: "#F97316",
     name: "eHealth365",
     tagline: "Health Platform",
@@ -281,7 +252,6 @@ const products = [
     href: "/ehealth365",
   },
   {
-    icon: Shield,
     color: "#22D3EE",
     name: "eRadar360",
     tagline: "Radar Platform",
@@ -289,7 +259,6 @@ const products = [
     href: "/eradar360",
   },
   {
-    icon: Globe,
     color: "#E4405F",
     name: "YouTube",
     tagline: "Video Channel",
@@ -300,158 +269,81 @@ const products = [
 
 export default function EcosystemPage() {
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-purple-500/5 to-cyan-500/5" />
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <Layers className="w-4 h-4" /> PRODUCT ECOSYSTEM
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent">
-              The EmbeddedOS Ecosystem
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              14 open-source products built to work together — from bare-metal
-              kernel to AI inference engine to full IDE. Every layer of the
-              embedded stack, free forever.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="ecopage">
+      <PageHero
+        sig
+        label="PRODUCT ECOSYSTEM"
+        title="The EmbeddedOS Ecosystem"
+        lead="14 open-source products built to work together — from bare-metal kernel to AI inference engine to full IDE. Every layer of the embedded stack, free forever."
+      />
 
       {/* Architecture Layers */}
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Full-Stack Embedded Platform
-          </h2>
-          <div className="space-y-3">
-            {layers.map((layer, li) => (
-              <motion.div
-                key={layer.name}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: li * 0.08 }}
-                className="rounded-xl border overflow-hidden"
-                style={{
-                  borderColor: layer.color + "30",
-                  background: layer.bg,
-                }}
-              >
-                <div
-                  className="px-5 py-3 border-b font-semibold text-sm"
-                  style={{
-                    borderColor: layer.color + "20",
-                    color: layer.color,
-                  }}
-                >
-                  {layer.name}
-                </div>
-                <div className="p-4 flex flex-wrap gap-3">
-                  {layer.items.map((item: any) =>
-                    typeof item === "string" ? (
-                      <span
-                        key={item}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400 text-sm"
-                      >
-                        {item}
-                      </span>
-                    ) : (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm"
-                      >
-                        <span className="text-white font-medium">
-                          {item.name}
-                        </span>
-                        <span className="text-gray-500 ml-2">{item.desc}</span>
+      <Section title="Full-Stack Embedded Platform">
+        <ol className="eco-layers">
+          {layers.map(layer => (
+            <li
+              key={layer.name}
+              style={{ "--c": layer.color } as CSSProperties}
+            >
+              <div className="eco-lname">{layer.name}</div>
+              <ul className="eco-items">
+                {(layer.items as LayerItem[]).map(item =>
+                  typeof item === "string" ? (
+                    <li key={item}>
+                      <span className="eco-chip">{item}</span>
+                    </li>
+                  ) : (
+                    <li key={item.name}>
+                      <Link href={item.href} className="eco-link">
+                        <span className="eco-n">{item.name}</span>
+                        <span className="eco-d">{item.desc}</span>
                       </Link>
-                    )
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                    </li>
+                  )
+                )}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </Section>
 
       {/* All Products Grid */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Every Product, Explained
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {products.map((p, i) => (
-              <motion.div
-                key={p.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
+      <Section title="Every Product, Explained">
+        <ul className="cards four">
+          {products.map(p => (
+            <li key={p.name}>
+              <Link
+                href={p.href}
+                className="card"
+                style={{ "--c": p.color } as CSSProperties}
               >
-                <Link
-                  href={p.href}
-                  className="block bg-white/5 border border-white/10 rounded-xl p-5 hover:border-white/20 transition-all h-full"
-                >
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                    style={{ background: p.color + "20" }}
-                  >
-                    <p.icon className="w-5 h-5" style={{ color: p.color }} />
-                  </div>
-                  <div className="text-white font-bold mb-0.5">{p.name}</div>
-                  <div className="text-gray-400 text-sm mb-3">{p.tagline}</div>
-                  <div className="space-y-1">
-                    {p.metrics.map(m => (
-                      <div
-                        key={m}
-                        className="text-xs text-gray-500 flex items-center gap-1"
-                      >
-                        <span
-                          className="w-1 h-1 rounded-full flex-shrink-0"
-                          style={{ background: p.color }}
-                        />
-                        {m}
-                      </div>
-                    ))}
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <h3>{p.name}</h3>
+                <p className="eco-tag">{p.tagline}</p>
+                <ul className="eco-metrics">
+                  {p.metrics.map(m => (
+                    <li key={m}>{m}</li>
+                  ))}
+                </ul>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Start Building</h2>
-          <p className="text-gray-400 mb-6">
-            Use one product or the entire stack — everything is MIT licensed and
-            free forever.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/getting-started"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              Get Started <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              All Products
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
+      <Band
+        title="Start Building"
+        lead="Use one product or the entire stack — everything is MIT licensed and free forever."
+      >
+        <Link href="/getting-started" className="btn pri">
+          Get Started{" "}
+          <span className="ar" aria-hidden="true">
+            →
+          </span>
+        </Link>
+        <Link href="/products" className="btn gh">
+          All Products
+        </Link>
+      </Band>
+    </BpPage>
   );
 }

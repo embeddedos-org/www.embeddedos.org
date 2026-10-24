@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Globe, ArrowRight } from "lucide-react";
+import { useState, type CSSProperties } from "react";
 import { Link } from "wouter";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./EBrowser.css";
 
 const engines = [
   {
@@ -92,146 +92,90 @@ export default function EBrowserPage() {
   const engine = engines.find(e => e.id === activeEngine)!;
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-green-500/5" />
-        <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <Globe className="w-4 h-4" /> EBROWSER
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent">
-              eBrowser
-            </h1>
-            <p className="text-2xl text-gray-300 mb-2">
-              Embedded Web Browser Engine
-            </p>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              A full HTML5/CSS3/JS browser engine built for embedded systems.
-              Scales from 256KB Cortex-M4 to 8GB RK3588S. Configurable feature
-              set, hardware-accelerated compositing, and TLS 1.3.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="ebrowser">
+      <PageHero
+        sig
+        label="EBROWSER"
+        title="eBrowser"
+        sub="Embedded Web Browser Engine"
+        lead="A full HTML5/CSS3/JS browser engine built for embedded systems. Scales from 256KB Cortex-M4 to 8GB RK3588S. Configurable feature set, hardware-accelerated compositing, and TLS 1.3."
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Engine Components
-          </h2>
-          <div className="flex gap-2 mb-6 justify-center flex-wrap">
-            {engines.map(e => (
-              <button
-                key={e.id}
-                onClick={() => setActiveEngine(e.id)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                style={
-                  activeEngine === e.id
-                    ? {
-                        background: e.color + "20",
-                        color: e.color,
-                        border: "1px solid " + e.color + "40",
-                      }
-                    : {
-                        background: "rgba(255,255,255,0.05)",
-                        color: "#9CA3AF",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }
-                }
-              >
-                {e.name}
-              </button>
-            ))}
+      <Section title="Engine Components">
+        <div className="ctas eb-tabs">
+          {engines.map(e => (
+            <button
+              key={e.id}
+              type="button"
+              onClick={() => setActiveEngine(e.id)}
+              aria-pressed={activeEngine === e.id}
+              className="btn gh"
+            >
+              {e.name}
+            </button>
+          ))}
+        </div>
+        <div
+          className="eb-panel"
+          style={{ "--c": engine.color } as CSSProperties}
+        >
+          <div>
+            <p className="eb-desc">{engine.desc}</p>
           </div>
-          <motion.div
-            key={activeEngine}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white/5 border border-white/10 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6"
-          >
-            <div>
-              <p className="text-gray-400 mb-4">{engine.desc}</p>
-            </div>
-            <div>
-              <div className="text-gray-500 text-xs mb-2 uppercase tracking-wider">
-                Key APIs
-              </div>
-              <div className="space-y-1">
-                {engine.apis.map(api => (
-                  <div
-                    key={api}
-                    className="font-mono text-sm px-3 py-1.5 bg-black/30 rounded-lg"
-                    style={{ color: engine.color }}
-                  >
-                    {api}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+          <div>
+            <div className="label">Key APIs</div>
+            <ul className="eb-apis">
+              {engine.apis.map(api => (
+                <li key={api}>{api}</li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </section>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Platform Support
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10 text-gray-500">
-                  <th className="text-left py-2 pr-4">Platform</th>
-                  <th className="text-left py-2 pr-4">RAM</th>
-                  <th className="text-left py-2">Feature Set</th>
-                </tr>
-              </thead>
-              <tbody>
-                {platforms.map((p, i) => (
-                  <tr
-                    key={p.name}
-                    className={i % 2 === 0 ? "bg-white/[0.02]" : ""}
-                  >
-                    <td
-                      className="py-3 pr-4 font-semibold"
-                      style={{ color: p.color }}
+      <Section title="Platform Support">
+        <div className="tbl eb-plat">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Platform</th>
+                <th scope="col">RAM</th>
+                <th scope="col">Feature Set</th>
+              </tr>
+            </thead>
+            <tbody>
+              {platforms.map(p => (
+                <tr key={p.name}>
+                  <td>
+                    <span
+                      className="st"
+                      style={{ "--c": p.color } as CSSProperties}
                     >
                       {p.name}
-                    </td>
-                    <td className="py-3 pr-4 text-gray-400 font-mono text-xs">
-                      {p.ram}
-                    </td>
-                    <td className="py-3 text-gray-300 text-xs">{p.features}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </span>
+                  </td>
+                  <td className="eb-mono">{p.ram}</td>
+                  <td>{p.features}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </section>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/api-docs"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              API Reference <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/eos"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              EoS Kernel
-            </Link>
-          </div>
+      <Section tight>
+        <div className="ctas">
+          <Link href="/api-docs" className="btn pri">
+            API Reference{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
+          <Link href="/eos" className="btn gh">
+            EoS Kernel
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

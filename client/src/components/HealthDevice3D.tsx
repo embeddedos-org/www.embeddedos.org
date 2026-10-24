@@ -3,6 +3,8 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { RoundedBox, Torus, Cylinder } from "@react-three/drei";
 import * as THREE from "three";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
+import { FitCamera, StageLights, type Extent } from "./three-stage";
 
 // ── HEALTH-KEY ULTRA — smart key fob ─────────────────────────────────────────
 function KeyUltraModel({ hovered }: { hovered: boolean }) {
@@ -25,7 +27,11 @@ function KeyUltraModel({ hovered }: { hovered: boolean }) {
     <group ref={groupRef} scale={hovered ? 1.08 : 1}>
       {/* Main body */}
       <RoundedBox args={[1.2, 2.2, 0.35]} radius={0.18} smoothness={4}>
-        <meshStandardMaterial color="#1a1f35" metalness={0.9} roughness={0.1} />
+        <meshStandardMaterial
+          color="#4a4a50"
+          metalness={0.3}
+          roughness={0.35}
+        />
       </RoundedBox>
       {/* Screen */}
       <RoundedBox
@@ -88,9 +94,9 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
       {/* Watch body */}
       <RoundedBox args={[1.5, 1.5, 0.4]} radius={0.22} smoothness={4}>
         <meshStandardMaterial
-          color="#111827"
-          metalness={0.8}
-          roughness={0.15}
+          color="#45454b"
+          metalness={0.3}
+          roughness={0.35}
         />
       </RoundedBox>
       {/* Display */}
@@ -133,7 +139,7 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
         smoothness={4}
         position={[0, 1.1, 0]}
       >
-        <meshStandardMaterial color="#232326" metalness={0.5} roughness={0.4} />
+        <meshStandardMaterial color="#38383d" metalness={0.2} roughness={0.5} />
       </RoundedBox>
       <RoundedBox
         args={[1.3, 0.55, 0.25]}
@@ -141,7 +147,7 @@ function BandNeuroModel({ hovered }: { hovered: boolean }) {
         smoothness={4}
         position={[0, -1.1, 0]}
       >
-        <meshStandardMaterial color="#232326" metalness={0.5} roughness={0.4} />
+        <meshStandardMaterial color="#38383d" metalness={0.2} roughness={0.5} />
       </RoundedBox>
     </group>
   );
@@ -163,11 +169,7 @@ function RingModel({ hovered }: { hovered: boolean }) {
     <group ref={groupRef} scale={hovered ? 1.08 : 1}>
       {/* Ring body */}
       <Torus args={[0.9, 0.22, 32, 64]}>
-        <meshStandardMaterial
-          color="#1a1f35"
-          metalness={0.95}
-          roughness={0.05}
-        />
+        <meshStandardMaterial color="#5c5c62" metalness={0.4} roughness={0.3} />
       </Torus>
       {/* Inner sensor ring */}
       <Torus args={[0.9, 0.08, 16, 64]}>
@@ -208,7 +210,11 @@ function LabModel({ hovered }: { hovered: boolean }) {
     <group ref={groupRef} scale={hovered ? 1.08 : 1}>
       {/* Main body */}
       <RoundedBox args={[2.2, 1.4, 0.5]} radius={0.15} smoothness={4}>
-        <meshStandardMaterial color="#0f172a" metalness={0.7} roughness={0.2} />
+        <meshStandardMaterial
+          color="#4a4a50"
+          metalness={0.3}
+          roughness={0.35}
+        />
       </RoundedBox>
       {/* Screen */}
       <RoundedBox
@@ -255,12 +261,56 @@ function LabModel({ hovered }: { hovered: boolean }) {
 // ── Device canvas wrapper ─────────────────────────────────────────────────────
 type DeviceType = "key" | "band" | "ring" | "lab";
 
-const DEVICE_CAMERAS: Record<DeviceType, [number, number, number]> = {
-  key: [0, 0, 4],
-  band: [0, 0, 4],
-  ring: [0, 0.5, 4],
-  lab: [0, 0, 5],
-};
+// Each model's extreme points as [distance from its turning axis, height],
+// taken from its geometry above (with the tilt it sways through), at the 1.08
+// hover scale, so the fitted camera never cuts a model off. `y` re-centres a
+// model whose parts reach further up than down; `look` looks down on it.
+const HOVER = 1.08;
+const FRAMING: Record<DeviceType, { extent: Extent; y: number; look: number }> =
+  {
+    // body 1.2 × 2.2 with the key-ring loop on top
+    key: {
+      extent: scaled([
+        [0.63, 1.26],
+        [0.16, 1.27],
+      ]),
+      y: -0.125,
+      look: 0,
+    },
+    // watch body, crown and the two band stubs (to ±1.375, swaying ±0.1 rad)
+    band: {
+      extent: scaled([
+        [0.67, 1.44],
+        [0.8, 0.78],
+        [0.97, 0.32],
+      ]),
+      y: 0,
+      look: 0,
+    },
+    // a 1.12 ring standing upright, tipping ±0.2 rad
+    ring: {
+      extent: scaled([
+        [0.45, 1.13],
+        [0.96, 0.96],
+        [1.13, 0.25],
+      ]),
+      y: 0,
+      look: 0.12,
+    },
+    // body 2.2 × 1.4 × 0.5 with the test port in front
+    lab: {
+      extent: scaled([
+        [1.15, 0.76],
+        [0.97, 0.2],
+      ]),
+      y: 0,
+      look: 0,
+    },
+  };
+
+function scaled(points: [number, number][]): Extent {
+  return points.map(([r, y]) => [r * HOVER, y * HOVER] as const);
+}
 
 export function HealthDevice3DCanvas({
   device,
@@ -269,22 +319,33 @@ export function HealthDevice3DCanvas({
   device: DeviceType;
   hovered?: boolean;
 }) {
-  return (
-    <Canvas
-      camera={{ position: DEVICE_CAMERAS[device], fov: 45 }}
-      gl={{ antialias: true, alpha: true }}
-      style={{ background: "transparent" }}
-    >
-      <ambientLight intensity={0.4} />
-      <pointLight position={[3, 3, 3]} intensity={1.5} color="#F97316" />
-      <pointLight position={[-3, -2, 2]} intensity={1} color="#22D3EE" />
-      <pointLight position={[0, 0, 4]} intensity={0.5} color="#A78BFA" />
+  // Draw only while the stage is on screen (and not at all with reduced
+  // motion, where the models stand still): a page shows four of these.
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const onScreen = useOnScreen(wrapRef);
+  const reduceMotion = usePrefersReducedMotion();
+  const framing = FRAMING[device];
 
-      {device === "key" && <KeyUltraModel hovered={hovered} />}
-      {device === "band" && <BandNeuroModel hovered={hovered} />}
-      {device === "ring" && <RingModel hovered={hovered} />}
-      {device === "lab" && <LabModel hovered={hovered} />}
-    </Canvas>
+  return (
+    <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
+      <Canvas
+        dpr={[1, 1.5]}
+        frameloop={onScreen && !reduceMotion ? "always" : "demand"}
+        camera={{ position: [0, 0, 7], fov: 32 }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ background: "transparent" }}
+      >
+        <FitCamera extent={framing.extent} elevation={framing.look} />
+        <StageLights />
+
+        <group position={[0, framing.y, 0]}>
+          {device === "key" && <KeyUltraModel hovered={hovered} />}
+          {device === "band" && <BandNeuroModel hovered={hovered} />}
+          {device === "ring" && <RingModel hovered={hovered} />}
+          {device === "lab" && <LabModel hovered={hovered} />}
+        </group>
+      </Canvas>
+    </div>
   );
 }
 

@@ -12,13 +12,13 @@
  * places is what makes the association hold.
  */
 
-import { ExternalLink } from "lucide-react";
-
 import { SOCIAL_URLS } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
 import { categoryByPath } from "@/data/categories";
 import AboutSections from "@/components/AboutSections";
 import type { AboutSection } from "@/data/about-section";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./SocialMedia.css";
 
 /**
  * The accounts, with what each is actually used for.
@@ -117,70 +117,55 @@ export default function SocialMedia() {
   const category = categoryByPath("/social")!;
 
   return (
-    <div className="min-h-screen pt-16">
-      <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 to-[#000000]" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="badge-teal mb-4 inline-flex">Marketing</div>
-          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-            {category.name}
-          </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
-            {category.summary}
+    <BpPage className="social">
+      <PageHero
+        sig
+        label="Marketing"
+        title={category.name}
+        lead={category.summary}
+      />
+
+      <Section className="so-main">
+        <ul className="cards so-list">
+          {ACCOUNTS.map(account => (
+            <li key={account.key}>
+              <div className="card">
+                <h2>{account.name}</h2>
+                <p>{account.use}</p>
+                <a
+                  href={SOCIAL_URLS[account.key]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="more so-handle"
+                >
+                  {account.handle}
+                  <span aria-hidden="true"> ↗</span>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="card hl so-note">
+          <h2>If an account is not on this list</h2>
+          <p>
+            It is not ours. The Foundation runs no other accounts, sends no
+            direct messages asking for keys, credentials or payment, and does
+            not sell anything over social media. If you find an account
+            presenting itself as EmbeddedOS and it is not listed above, please{" "}
+            <button
+              type="button"
+              onClick={() => openContactForm({ topic: "security" })}
+              className="tl so-tell"
+            >
+              tell us
+            </button>
+            .
           </p>
         </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-10">
-          <ul className="space-y-3">
-            {ACCOUNTS.map(account => (
-              <li
-                key={account.key}
-                className="glass rounded-xl border border-white/5 p-5"
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-3 mb-2">
-                  <span className="text-white font-medium">{account.name}</span>
-                  <a
-                    href={SOCIAL_URLS[account.key]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-[#F97316] underline hover:no-underline font-semibold"
-                  >
-                    {account.handle}
-                    <ExternalLink size={12} aria-hidden="true" />
-                  </a>
-                </div>
-                <p className="text-white/55 text-sm leading-relaxed">
-                  {account.use}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <div className="glass rounded-2xl border border-white/5 p-6">
-            <h2 className="font-heading font-bold text-white text-lg mb-3">
-              If an account is not on this list
-            </h2>
-            <p className="text-white/60 text-sm leading-relaxed">
-              It is not ours. The Foundation runs no other accounts, sends no
-              direct messages asking for keys, credentials or payment, and does
-              not sell anything over social media. If you find an account
-              presenting itself as EmbeddedOS and it is not listed above, please
-              <button
-                type="button"
-                onClick={() => openContactForm({ topic: "security" })}
-                className="text-[#F97316] underline hover:no-underline"
-              >
-                tell us
-              </button>
-              .
-            </p>
-          </div>
-        </div>
-      </section>
+      </Section>
 
       <AboutSections title="About our accounts" sections={SOCIAL_ABOUT} />
-    </div>
+    </BpPage>
   );
 }

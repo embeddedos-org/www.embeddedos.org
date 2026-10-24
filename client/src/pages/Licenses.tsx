@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { Scale, CheckCircle2, ExternalLink } from "lucide-react";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./Licenses.css";
 
 const licenses = [
   {
@@ -76,80 +76,48 @@ SOFTWARE.`;
 
 export default function LicensesPage() {
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-cyan-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-medium mb-6">
-              <Scale className="w-4 h-4" /> LICENSES
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-green-300 bg-clip-text text-transparent">
-              Licenses
-            </h1>
-            <p className="text-xl text-gray-300">
-              All EmbeddedOS software is MIT licensed. Third-party component
-              licenses are listed below.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="licenses">
+      <PageHero
+        sig
+        label="LICENSES"
+        title="Licenses"
+        lead="All EmbeddedOS software is MIT licensed. Third-party component licenses are listed below."
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-4">
-            EmbeddedOS MIT License
-          </h2>
-          <pre className="bg-white/5 border border-white/10 rounded-xl p-6 text-gray-300 text-xs font-mono whitespace-pre-wrap overflow-x-auto">
-            {mitText}
-          </pre>
-        </div>
-      </section>
-
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">
-            Third-Party Licenses
-          </h2>
-          <div className="space-y-3">
-            {licenses.map((l, i) => (
-              <motion.div
-                key={l.name}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-start justify-between gap-4"
-              >
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-white font-medium">{l.name}</span>
-                      <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs">
-                        {l.license}
-                      </span>
-                    </div>
-                    <p className="text-gray-400 text-sm">{l.desc}</p>
-                  </div>
-                </div>
-                <a
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${l.name} licence, opens in a new tab`}
-                  className="text-gray-500 hover:text-white transition-colors flex-shrink-0"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </motion.div>
-            ))}
+      <Section title="EmbeddedOS MIT License" tight>
+        <div className="code">
+          <div className="cbar">
+            <b>LICENSE</b>
+            <span>MIT</span>
           </div>
+          <pre className="wrapm">{mitText}</pre>
         </div>
-      </section>
-    </div>
+      </Section>
+
+      <Section title="Third-Party Licenses">
+        <ul className="cards two">
+          {licenses.map(l => (
+            <li key={l.name}>
+              <div className="card">
+                <div className="top">
+                  <h3>{l.name}</h3>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${l.name} licence, opens in a new tab`}
+                    className="lc-ext"
+                  >
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+                <p className="k">{l.license}</p>
+                <p>{l.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </BpPage>
   );
 }

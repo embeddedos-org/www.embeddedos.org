@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Network, Shield, Zap, ArrowRight, Lock } from "lucide-react";
+import { useState, type CSSProperties } from "react";
 import { Link } from "wouter";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./EIPC.css";
 
 const transports = [
   {
@@ -92,25 +92,21 @@ const wireFormat = [
 
 const features = [
   {
-    icon: Zap,
     color: "#F97316",
     title: "Shared-Memory Fast Path",
     desc: "Shared memory transport for same-core communication, with latency dependent on the target and message configuration.",
   },
   {
-    icon: Shield,
     color: "#22D3EE",
     title: "HMAC Authentication",
     desc: "Every frame is authenticated with HMAC-SHA256. Prevents spoofing and replay attacks between EoS services.",
   },
   {
-    icon: Lock,
     color: "#A855F7",
     title: "Capability-Based Security",
     desc: "Services declare capabilities in their manifest. EIPC enforces capability checks before routing any message.",
   },
   {
-    icon: Network,
     color: "#34D399",
     title: "4 Transport Backends",
     desc: "Shared memory, UART, SPI, and TCP/IP transports. Same API regardless of transport — swap without code changes.",
@@ -122,193 +118,104 @@ export default function EIPCPage() {
   const t = transports.find(x => x.id === activeTransport)!;
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-cyan-500/5" />
-        <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <Network className="w-4 h-4" /> EIPC
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent">
-              EIPC
-            </h1>
-            <p className="text-2xl text-gray-300 mb-2">
-              Embedded Inter-Process Communication
-            </p>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Zero-copy, HMAC-authenticated IPC protocol for EoS services.
-              Transport-dependent latency, 4 transport backends,
-              capability-based security.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="eipc">
+      <PageHero
+        sig
+        label="EIPC"
+        title="EIPC"
+        sub="Embedded Inter-Process Communication"
+        lead="Zero-copy, HMAC-authenticated IPC protocol for EoS services. Transport-dependent latency, 4 transport backends, capability-based security."
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            Transport Backends
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            Same EIPC API regardless of transport. Swap backends without
-            changing application code.
-          </p>
-          <div className="flex gap-2 mb-6 justify-center flex-wrap">
-            {transports.map(tr => (
-              <button
-                key={tr.id}
-                onClick={() => setActiveTransport(tr.id)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                style={
-                  activeTransport === tr.id
-                    ? {
-                        background: tr.color + "20",
-                        color: tr.color,
-                        border: "1px solid " + tr.color + "40",
-                      }
-                    : {
-                        background: "rgba(255,255,255,0.05)",
-                        color: "#9CA3AF",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }
-                }
-              >
-                {tr.label}
-              </button>
-            ))}
-          </div>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTransport}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="bg-white/5 border border-white/10 rounded-xl p-6 grid grid-cols-3 gap-6 text-center"
+      <Section
+        title="Transport Backends"
+        lead="Same EIPC API regardless of transport. Swap backends without changing application code."
+      >
+        <div className="ctas ipc-tabs">
+          {transports.map(tr => (
+            <button
+              key={tr.id}
+              type="button"
+              onClick={() => setActiveTransport(tr.id)}
+              aria-pressed={activeTransport === tr.id}
+              className="btn gh"
             >
-              <div>
-                <div
-                  className="text-3xl font-bold mb-1"
-                  style={{ color: t.color }}
-                >
-                  {t.latency}
-                </div>
-                <div className="text-gray-500 text-sm">Relative latency</div>
-              </div>
-              <div>
-                <div
-                  className="text-3xl font-bold mb-1"
-                  style={{ color: t.color }}
-                >
-                  {t.throughput}
-                </div>
-                <div className="text-gray-500 text-sm">Throughput</div>
-              </div>
-              <div className="text-left">
-                <p className="text-gray-400 text-sm">{t.desc}</p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              {tr.label}
+            </button>
+          ))}
         </div>
-      </section>
+        <div className="ipc-panel" style={{ "--c": t.color } as CSSProperties}>
+          <div className="ipc-fig">
+            <b>{t.latency}</b>
+            <span>Relative latency</span>
+          </div>
+          <div className="ipc-fig">
+            <b>{t.throughput}</b>
+            <span>Throughput</span>
+          </div>
+          <div>
+            <p className="ipc-desc">{t.desc}</p>
+          </div>
+        </div>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            Wire Format
-          </h2>
-          <p className="text-gray-400 text-center mb-6">
-            Every EIPC frame follows this binary layout. Authenticated with
-            HMAC-SHA256.
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10 text-gray-500">
-                  <th className="text-left py-2 pr-4">Field</th>
-                  <th className="text-left py-2 pr-4">Size</th>
-                  <th className="text-left py-2 pr-4">Value</th>
-                  <th className="text-left py-2">Description</th>
+      <Section
+        title="Wire Format"
+        lead="Every EIPC frame follows this binary layout. Authenticated with HMAC-SHA256."
+      >
+        <div className="tbl ipc-wire">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Field</th>
+                <th scope="col">Size</th>
+                <th scope="col">Value</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {wireFormat.map(row => (
+                <tr key={row.field}>
+                  <td className="ipc-mono">{row.field}</td>
+                  <td>{row.size}</td>
+                  <td className="ipc-mono">{row.value}</td>
+                  <td>{row.desc}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {wireFormat.map((row, i) => (
-                  <tr
-                    key={row.field}
-                    className={i % 2 === 0 ? "bg-white/[0.02]" : ""}
-                  >
-                    <td className="py-2 pr-4 font-mono text-orange-400">
-                      {row.field}
-                    </td>
-                    <td className="py-2 pr-4 text-gray-400">{row.size}</td>
-                    <td className="py-2 pr-4 font-mono text-cyan-400 text-xs">
-                      {row.value}
-                    </td>
-                    <td className="py-2 text-gray-400">{row.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </section>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Features
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-6"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: f.color + "20" }}
-                >
-                  <f.icon className="w-5 h-5" style={{ color: f.color }} />
-                </div>
-                <h3 className="text-white font-semibold mb-2">{f.title}</h3>
-                <p className="text-gray-400 text-sm">{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Section title="Features">
+        <ul className="cards two">
+          {features.map(f => (
+            <li key={f.title}>
+              <div className="card">
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/api-docs"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              API Reference <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/eos"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              EoS Kernel
-            </Link>
-            <Link
-              href="/product-eipc"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              eIPC engineering detail
-            </Link>
-          </div>
+      <Section tight>
+        <div className="ctas">
+          <Link href="/api-docs" className="btn pri">
+            API Reference{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
+          <Link href="/eos" className="btn gh">
+            EoS Kernel
+          </Link>
+          <Link href="/product-eipc" className="btn gh">
+            eIPC engineering detail
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

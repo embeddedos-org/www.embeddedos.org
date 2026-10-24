@@ -11,7 +11,6 @@
  * what a journalist actually does with it is paste it.
  */
 
-import { Mail } from "lucide-react";
 import { Link } from "wouter";
 import { openContactForm } from "@/lib/contact-form";
 
@@ -22,6 +21,8 @@ import {
   MISSION_STATEMENT,
 } from "@/data/foundation";
 import { categoryByPath } from "@/data/categories";
+import { BpPage, LocalNav, PageHero } from "@/components/bp";
+import "./PressKit.css";
 
 /** Label/value pairs a reporter is likely to need to verify. */
 const FACTS: readonly { label: string; value: string }[] = [
@@ -55,135 +56,125 @@ export default function PressKit() {
   const category = categoryByPath("/press-kit")!;
 
   return (
-    <div className="min-h-screen pt-16">
-      <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 to-[#000000]" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="badge-teal mb-4 inline-flex">Marketing</div>
-          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-            {category.name}
-          </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
-            {category.summary}
-          </p>
-        </div>
-      </section>
+    <BpPage className="presskit">
+      <PageHero
+        sig
+        label="Marketing"
+        title={category.name}
+        lead={category.summary}
+      />
+      <LocalNav
+        name={category.name}
+        items={[
+          { id: "press", label: "Press enquiries" },
+          { id: "facts", label: "Facts" },
+          { id: "boilerplate", label: "Boilerplate" },
+          { id: "logos", label: "Logos and colours" },
+          { id: "not-say", label: "What we will not say" },
+        ]}
+      />
 
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-14">
-          <div className="glass rounded-2xl border border-[#F97316]/25 p-6">
-            <h2 className="font-heading font-bold text-white text-lg mb-2">
-              Press enquiries
-            </h2>
-            <p className="text-white/60 text-sm leading-relaxed mb-4">
-              Working to a deadline? Email directly rather than using the
-              general contact form. Say what your deadline is and it will be
-              treated as the constraint it is.
-            </p>
-            <button
-              type="button"
-              onClick={() => openContactForm({ topic: "press" })}
-              className="inline-flex items-center gap-2 text-[#F97316] underline hover:no-underline font-semibold"
-            >
-              <Mail size={15} aria-hidden="true" /> Contact Press &amp; Media
-            </button>
-          </div>
-
-          <div>
-            <h2 className="font-heading font-bold text-white text-2xl mb-6">
-              Facts
-            </h2>
-            <dl className="glass rounded-2xl border border-white/5 divide-y divide-white/5">
-              {FACTS.map(fact => (
-                <div
-                  key={fact.label}
-                  className="flex flex-wrap gap-x-6 gap-y-1 px-5 py-3.5"
+      <div className="sec pk-body">
+        <div className="wrap">
+          <section id="press" className="pk-row pk-press">
+            <h2>Press enquiries</h2>
+            <div className="pk-c">
+              <p>
+                Working to a deadline? Email directly rather than using the
+                general contact form. Say what your deadline is and it will be
+                treated as the constraint it is.
+              </p>
+              <div className="ctas">
+                <button
+                  type="button"
+                  onClick={() => openContactForm({ topic: "press" })}
+                  className="btn or"
                 >
-                  <dt className="text-white/55 text-sm w-48 shrink-0">
-                    {fact.label}
-                  </dt>
-                  <dd className="text-white text-sm font-medium">
-                    {fact.value}
+                  Contact Press &amp; Media
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section id="facts" className="pk-row">
+            <h2>Facts</h2>
+            <div className="pk-c">
+              <dl className="kv">
+                {FACTS.map(fact => (
+                  <div key={fact.label} className="pk-kv">
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                ))}
+                <div className="pk-kv">
+                  <dt>Address of record</dt>
+                  <dd>
+                    {MAILING_ADDRESS.street}, {MAILING_ADDRESS.city},{" "}
+                    {MAILING_ADDRESS.region} {MAILING_ADDRESS.postalCode},{" "}
+                    {MAILING_ADDRESS.country}
                   </dd>
                 </div>
-              ))}
-              <div className="flex flex-wrap gap-x-6 gap-y-1 px-5 py-3.5">
-                <dt className="text-white/55 text-sm w-48 shrink-0">
-                  Address of record
-                </dt>
-                <dd className="text-white text-sm font-medium">
-                  {MAILING_ADDRESS.street}, {MAILING_ADDRESS.city},{" "}
-                  {MAILING_ADDRESS.region} {MAILING_ADDRESS.postalCode},{" "}
-                  {MAILING_ADDRESS.country}
-                </dd>
-              </div>
-            </dl>
-            <p className="text-white/55 text-sm mt-4 leading-relaxed">
-              The exempt status is independently verifiable through the IRS{" "}
-              <a
-                href={IRS_LOOKUP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#F97316] underline hover:no-underline"
-              >
-                Tax Exempt Organization Search
-              </a>
-              . Please check it rather than taking this page's word for it.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Boilerplate
-            </h2>
-            <p className="text-white/50 text-sm mb-5">
-              Free to use, unedited or trimmed, in any article about the
-              Foundation.
-            </p>
-            <blockquote className="glass rounded-2xl border border-white/5 p-6">
-              <p className="text-white/80 text-sm leading-relaxed">
-                {BOILERPLATE}
+              </dl>
+              <p className="pk-note">
+                The exempt status is independently verifiable through the IRS{" "}
+                <a
+                  href={IRS_LOOKUP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tl"
+                >
+                  Tax Exempt Organization Search
+                </a>
+                . Please check it rather than taking this page's word for it.
               </p>
-            </blockquote>
-          </div>
+            </div>
+          </section>
 
-          <div>
-            <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Logos and colours
-            </h2>
-            <p className="text-white/60 text-sm leading-relaxed">
-              The marks, the palette, the typefaces and the rules for using them
-              are on the{" "}
-              <Link
-                href="/brand"
-                className="text-[#F97316] underline hover:no-underline"
-              >
-                brand assets
-              </Link>{" "}
-              page. Most editorial use needs no permission.
-            </p>
-          </div>
+          <section id="boilerplate" className="pk-row">
+            <h2>Boilerplate</h2>
+            <div className="pk-c">
+              <p>
+                Free to use, unedited or trimmed, in any article about the
+                Foundation.
+              </p>
+              <blockquote className="pk-quote">
+                <p>{BOILERPLATE}</p>
+              </blockquote>
+            </div>
+          </section>
 
-          <div>
-            <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              What we will not say
-            </h2>
-            <p className="text-white/60 text-sm leading-relaxed">
-              The Foundation does not have adoption numbers, revenue figures or
-              named production users to give you, because it does not yet have
-              them. If a claim of that kind appears in a story about EmbeddedOS,
-              it did not come from here. What can be substantiated is on{" "}
-              <Link
-                href="/transparency"
-                className="text-[#F97316] underline hover:no-underline"
-              >
-                transparency
-              </Link>{" "}
-              and in the public repositories.
-            </p>
-          </div>
+          <section id="logos" className="pk-row">
+            <h2>Logos and colours</h2>
+            <div className="pk-c">
+              <p>
+                The marks, the palette, the typefaces and the rules for using
+                them are on the{" "}
+                <Link href="/brand" className="tl">
+                  brand assets
+                </Link>{" "}
+                page. Most editorial use needs no permission.
+              </p>
+            </div>
+          </section>
+
+          <section id="not-say" className="pk-row">
+            <h2>What we will not say</h2>
+            <div className="pk-c">
+              <p>
+                The Foundation does not have adoption numbers, revenue figures
+                or named production users to give you, because it does not yet
+                have them. If a claim of that kind appears in a story about
+                EmbeddedOS, it did not come from here. What can be substantiated
+                is on{" "}
+                <Link href="/transparency" className="tl">
+                  transparency
+                </Link>{" "}
+                and in the public repositories.
+              </p>
+            </div>
+          </section>
         </div>
-      </section>
-    </div>
+      </div>
+    </BpPage>
   );
 }

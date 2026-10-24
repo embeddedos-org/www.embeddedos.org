@@ -1,7 +1,15 @@
-import { motion } from "framer-motion";
-import { ArrowRight, BookOpen } from "lucide-react";
+import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT } from "@/data/stack";
+import { BpPage, LocalNav, PageHero } from "@/components/bp";
+import "./BuildingOS.css";
+
+/** An anchor id for a chapter: "Secure Boot Chain" → "secure-boot-chain". */
+const chapterId = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 const sections = [
   {
@@ -73,98 +81,57 @@ const sections = [
 
 export default function BuildingOS() {
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-cyan-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <BookOpen className="w-4 h-4" /> DEEP DIVE
+    <BpPage className="bos">
+      <PageHero
+        sig
+        label="DEEP DIVE"
+        title="Building an OS from Scratch"
+        lead="A deep dive into how EmbeddedOS was designed and built — the architecture decisions, tradeoffs, and lessons learned from building a production embedded OS."
+      />
+      <LocalNav
+        name="Building an OS"
+        items={sections.map(s => ({ id: chapterId(s.title), label: s.title }))}
+      />
+
+      {sections.map(s => (
+        <section
+          key={s.num}
+          id={chapterId(s.title)}
+          className="sec bo-ch"
+          style={{ "--c": s.color } as CSSProperties}
+        >
+          <div className="wrap bo-row">
+            <div className="bo-h">
+              <span className="bo-num">{s.num}</span>
+              <h2>{s.title}</h2>
             </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent">
-              Building an OS from Scratch
-            </h1>
-            <p className="text-xl text-gray-400">
-              A deep dive into how EmbeddedOS was designed and built — the
-              architecture decisions, tradeoffs, and lessons learned from
-              building a production embedded OS.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+            <div className="bo-b">
+              <p>{s.content}</p>
+              <ul className="bo-pts">
+                {s.points.map(p => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      ))}
 
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto space-y-12">
-          {sections.map(s => (
-            <motion.div
-              key={s.num}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              <div className="flex items-start gap-6">
-                <div
-                  className="text-5xl font-black font-mono flex-shrink-0 leading-none"
-                  style={{ color: s.color + "40" }}
-                >
-                  {s.num}
-                </div>
-                <div className="flex-1">
-                  <h2
-                    className="text-2xl font-bold text-white mb-3"
-                    style={{
-                      borderLeft: `3px solid ${s.color}`,
-                      paddingLeft: "1rem",
-                    }}
-                  >
-                    {s.title}
-                  </h2>
-                  <p className="text-gray-400 mb-4 leading-relaxed">
-                    {s.content}
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {s.points.map(p => (
-                      <div
-                        key={p}
-                        className="flex items-start gap-2 bg-white/5 rounded-lg px-3 py-2"
-                      >
-                        <div
-                          className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
-                          style={{ background: s.color }}
-                        />
-                        <span className="text-gray-300 text-sm">{p}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/eos"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              Explore EoS Kernel <ArrowRight className="w-4 h-4" />
+      <section className="sec tight bo-end">
+        <div className="wrap">
+          <div className="ctas">
+            <Link href="/eos" className="btn or">
+              Explore EoS Kernel{" "}
+              <span className="ar" aria-hidden="true">
+                →
+              </span>
             </Link>
-            <Link
-              href="/api-docs"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
+            <Link href="/api-docs" className="btn gh">
               API Reference
             </Link>
           </div>
         </div>
       </section>
-    </div>
+    </BpPage>
   );
 }

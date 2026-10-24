@@ -6,40 +6,42 @@
  * content so the page is worth a reader's time before the first item
  * exists or the programme starts. This component renders those sections;
  * the data lives in `@/data/category-about` and `@/data/programme-details`.
+ *
+ * It renders inside a Black Edition page (`BpPage`): one section, the title
+ * as its h2, then each part as a row with its h3 beside the reading column.
  */
 
 import type { AboutSection } from "@/data/about-section";
+import { Section } from "@/components/bp";
+import "./AboutSections.css";
 
 export interface AboutSectionsProps {
   /** The page-level heading, e.g. "About Press Releases". */
   title: string;
   sections: ReadonlyArray<AboutSection>;
+  /** The section's anchor, for a page's local navigation. */
+  id?: string;
 }
 
-export default function AboutSections({ title, sections }: AboutSectionsProps) {
+export default function AboutSections({
+  title,
+  sections,
+  id,
+}: AboutSectionsProps) {
   return (
-    <section aria-label={title} className="section-padding">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <h2 className="font-heading font-bold text-white text-2xl mb-8">
-          {title}
-        </h2>
-        <div className="space-y-8">
-          {sections.map(section => (
-            <div key={section.heading}>
-              <h3 className="font-heading font-bold text-white text-lg mb-3">
-                {section.heading}
-              </h3>
-              <div className="space-y-3">
-                {section.body.map((paragraph, i) => (
-                  <p key={i} className="text-white/60 text-sm leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+    <Section id={id} ariaLabel={title} title={title} className="abs">
+      <div className="abs-rows">
+        {sections.map(section => (
+          <div key={section.heading} className="abs-row">
+            <h3 className="h3">{section.heading}</h3>
+            <div className="prose">
+              {section.body.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

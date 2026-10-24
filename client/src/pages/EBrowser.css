@@ -1,0 +1,73 @@
+/* /ebrowser (EBrowser.tsx): the parts the shared page blocks do not cover. */
+.bp.ebrowser .eb-tabs {
+  margin-bottom: 16px;
+}
+/* the chosen engine component: what it does beside its key APIs */
+.bp.ebrowser .eb-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 48px);
+  padding: clamp(22px, 3vw, 32px);
+  border-radius: var(--r);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--c, var(--line2));
+}
+.bp.ebrowser .eb-desc {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.ebrowser .eb-apis {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.bp.ebrowser .eb-apis li {
+  font: 500 14px/1.4 var(--mono);
+  color: var(--fg);
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--panel2);
+  overflow-wrap: anywhere;
+}
+.bp.ebrowser .tbl .st {
+  font-size: 14px;
+  color: var(--fg);
+  font-weight: 600;
+}
+.bp.ebrowser .tbl td.eb-mono {
+  font-family: var(--mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .bp.ebrowser .eb-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* phones: platform and RAM on one line, the feature set under them */
+@media (max-width: 620px) {
+  .bp.ebrowser .eb-plat tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    border-bottom: 1px solid var(--line);
+  }
+  .bp.ebrowser .eb-plat tbody tr:last-child {
+    border-bottom: 0;
+  }
+  .bp.ebrowser .eb-plat th,
+  .bp.ebrowser .eb-plat td {
+    padding: 12px 14px 6px;
+    border-bottom: 0;
+  }
+  .bp.ebrowser .eb-plat th:last-child,
+  .bp.ebrowser .eb-plat td:last-child {
+    grid-column: 1 / -1;
+    padding-top: 0;
+    padding-bottom: 12px;
+  }
+}

@@ -1,36 +1,9 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
 import { moveTabFocus } from "@/lib/tablist";
-import {
-  Layers,
-  ArrowRight,
-  Play,
-  Code,
-  Cpu,
-  Zap,
-  GitBranch,
-  CheckCircle2,
-  Monitor,
-  Shield,
-  Wrench,
-  Copy,
-  Info,
-} from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      delay: i * 0.07,
-      ease: [0.23, 1, 0.32, 1] as [number, number, number, number],
-    },
-  }),
-};
+import { Band, BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./EFlow.css";
 
 // ─── BLOCK TYPES ───────────────────────────────────────────────────────────
 const BLOCK_TYPES = [
@@ -173,56 +146,48 @@ const PIPELINE = [
     title: "Design",
     desc: "Open eFlow in your browser or via ebuild eflow open. Drag blocks from the palette onto the canvas.",
     color: "#F97316",
-    icon: Layers,
   },
   {
     step: "02",
     title: "Connect",
     desc: "Draw wires between block output ports and input ports. eFlow validates type compatibility in real time.",
     color: "#22D3EE",
-    icon: GitBranch,
   },
   {
     step: "03",
     title: "Configure",
     desc: "Click any block to set its parameters: pin numbers, baud rates, thresholds, model paths, timer intervals.",
     color: "#A78BFA",
-    icon: Wrench,
   },
   {
     step: "04",
     title: "Simulate",
     desc: "Click Run in eFlow to simulate the block diagram in-browser. Virtual GPIO pins respond, UART output appears in the console.",
     color: "#34D399",
-    icon: Monitor,
   },
   {
     step: "05",
     title: "Generate",
     desc: "Click Generate Code. eFlow produces a complete, readable C source file that uses the EoS HAL — no magic, no black box.",
     color: "#F59E0B",
-    icon: Code,
   },
   {
     step: "06",
     title: "Build",
     desc: "ebuild build compiles the generated code. The output is a standard .elf / .bin firmware image.",
     color: "#60A5FA",
-    icon: Cpu,
   },
   {
     step: "07",
     title: "Validate",
     desc: "ebuild analyze runs stack depth analysis, MISRA checks, and memory overlap detection on the generated firmware.",
     color: "#F472B6",
-    icon: Shield,
   },
   {
     step: "08",
     title: "Deploy",
     desc: "ebuild flash writes the firmware to your board via JTAG, SWD, or USB bootloader. ebuild monitor shows live output.",
     color: "#F97316",
-    icon: Zap,
   },
 ];
 
@@ -307,224 +272,31 @@ const COMPARISON = [
   },
 ];
 
-export default function EFlow() {
-  const [activeCategory, setActiveCategory] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+// ─── WHAT IS EFLOW ─────────────────────────────────────────────────────────
+const PILLARS = [
+  {
+    title: "Block-Based",
+    desc: "Every hardware capability is a block: GPIO, UART, I²C, SPI, ADC, PWM, timers, AI inference, PID controllers, filters. Drag them onto the canvas.",
+  },
+  {
+    title: "Wire-Connected",
+    desc: "Draw wires between output ports and input ports. eFlow validates type compatibility in real time — you cannot connect incompatible blocks.",
+  },
+  {
+    title: "Generates Real C",
+    desc: "Click Generate and eFlow produces readable, HAL-idiomatic C code. No obfuscated output — you can read, modify, and extend the generated code.",
+  },
+];
 
-  const copyCode = async (code: string) => {
-    if (!(await copyText(code))) return;
-    setCopiedCode(code);
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
+const EXAMPLE_FLOW = [
+  { label: "Periodic Timer", sub: "1000ms", color: "#22D3EE" },
+  { label: "I²C Read", sub: "BME280 0x76", color: "#34D399" },
+  { label: "Kalman Filter", sub: "noise reduction", color: "#A78BFA" },
+  { label: "Threshold", sub: "> 30°C alert", color: "#F59E0B" },
+  { label: "UART Write", sub: "115200 baud", color: "#F97316" },
+];
 
-  return (
-    <div className="min-h-screen bg-[#000000]">
-      {/* Hero */}
-      <section className="relative py-20 sm:py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D] to-[#000000]" />
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#A78BFA]/6 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#F97316]/5 rounded-full blur-[80px]" />
-        </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-              style={{
-                background: "rgba(167,139,250,0.12)",
-                border: "1px solid rgba(167,139,250,0.3)",
-                color: "#A78BFA",
-              }}
-            >
-              <Layers size={12} /> eFlow — Visual Programming
-            </span>
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            className="font-heading font-black text-5xl sm:text-7xl text-white mb-6 leading-[1.02]"
-          >
-            Build Firmware
-            <br />
-            <span style={{ color: "#A78BFA" }}>Without Writing Code</span>
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="text-white/60 text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
-          >
-            eFlow is EmbeddedOS's visual block programming environment. Drag
-            GPIO, timer, AI, and protocol blocks onto a canvas, connect them
-            with wires, and eFlow generates production-ready C code that runs on
-            any EoS-supported board.
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <Link
-              href="/demo"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all active:scale-95"
-              style={{
-                background: "#A78BFA",
-                boxShadow: "0 0 24px rgba(167,139,250,0.3)",
-              }}
-            >
-              <Play size={16} /> Try eFlow Demo
-            </Link>
-            <Link
-              href="/getting-started"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white/80 transition-all border border-white/15 hover:border-white/30"
-            >
-              Getting Started <ArrowRight size={14} />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* What is eFlow */}
-      <section className="pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              What is eFlow?
-            </h2>
-            <p className="text-white/50 max-w-2xl mx-auto">
-              eFlow is a node-based visual editor — the same paradigm used by
-              Unreal Engine Blueprints, Node-RED, and Max/MSP — but designed
-              specifically for embedded firmware on EmbeddedOS.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-3 gap-5 mb-12">
-            {[
-              {
-                icon: Layers,
-                color: "#A78BFA",
-                title: "Block-Based",
-                desc: "Every hardware capability is a block: GPIO, UART, I²C, SPI, ADC, PWM, timers, AI inference, PID controllers, filters. Drag them onto the canvas.",
-              },
-              {
-                icon: GitBranch,
-                color: "#22D3EE",
-                title: "Wire-Connected",
-                desc: "Draw wires between output ports and input ports. eFlow validates type compatibility in real time — you cannot connect incompatible blocks.",
-              },
-              {
-                icon: Code,
-                color: "#34D399",
-                title: "Generates Real C",
-                desc: "Click Generate and eFlow produces readable, HAL-idiomatic C code. No obfuscated output — you can read, modify, and extend the generated code.",
-              },
-            ].map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="rounded-2xl border p-6"
-                  style={{
-                    background: `${item.color}08`,
-                    borderColor: `${item.color}20`,
-                  }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: `${item.color}18` }}
-                  >
-                    <Icon size={22} style={{ color: item.color }} />
-                  </div>
-                  <h3 className="font-heading font-bold text-white text-lg mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-white/55 text-sm leading-relaxed">
-                    {item.desc}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Visual pipeline diagram */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="rounded-2xl border border-white/8 p-6 overflow-x-auto"
-            style={{ background: "rgba(167,139,250,0.04)" }}
-          >
-            <div className="text-xs font-bold text-white/30 uppercase tracking-widest mb-4 text-center">
-              Example: Temperature Sensor → UART Output
-            </div>
-            <div className="flex items-center gap-2 min-w-max mx-auto w-fit">
-              {[
-                { label: "Periodic Timer", sub: "1000ms", color: "#22D3EE" },
-                { label: "I²C Read", sub: "BME280 0x76", color: "#34D399" },
-                {
-                  label: "Kalman Filter",
-                  sub: "noise reduction",
-                  color: "#A78BFA",
-                },
-                { label: "Threshold", sub: "> 30°C alert", color: "#F59E0B" },
-                { label: "UART Write", sub: "115200 baud", color: "#F97316" },
-              ].map((block, i, arr) => (
-                <div key={block.label} className="flex items-center gap-2">
-                  <div
-                    className="rounded-xl border px-4 py-3 text-center min-w-[100px]"
-                    style={{
-                      background: `${block.color}12`,
-                      borderColor: `${block.color}35`,
-                    }}
-                  >
-                    <div className="text-xs font-bold text-white">
-                      {block.label}
-                    </div>
-                    <div
-                      className="text-[10px] mt-0.5"
-                      style={{ color: block.color }}
-                    >
-                      {block.sub}
-                    </div>
-                  </div>
-                  {i < arr.length - 1 && (
-                    <div className="flex items-center gap-0.5">
-                      <div className="w-6 h-0.5 bg-white/20" />
-                      <ArrowRight size={10} className="text-white/30" />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="text-center mt-4 text-xs text-white/30">
-              ↓ eFlow generates this C code ↓
-            </div>
-            <div
-              className="mt-3 rounded-xl border border-white/8 overflow-hidden"
-              style={{ background: "rgba(5,10,20,0.9)" }}
-            >
-              <pre className="p-4 text-xs font-mono text-[#E6EDF3] overflow-x-auto leading-relaxed">{`void sensor_task(void *arg) {
+const EXAMPLE_C = `void sensor_task(void *arg) {
     eos_i2c_init(I2C1, 400000);
     eos_kalman_t kf = eos_kalman_init(0.1f, 1.0f);
     while (1) {
@@ -537,418 +309,307 @@ export default function EFlow() {
         }
         eos_task_delay_ms(1000);
     }
-}`}</pre>
-            </div>
-          </motion.div>
+}`;
+
+// ─── CAD INTEGRATION ───────────────────────────────────────────────────────
+const CAD_STEPS = [
+  {
+    step: "1",
+    title: "Import Schematic",
+    desc: "Run ebuild cad analyze my-board.kicad_sch. ebuild reads your KiCad schematic and extracts all MCU pin assignments.",
+    color: "#F97316",
+  },
+  {
+    step: "2",
+    title: "Auto-Populated Blocks",
+    desc: "Open eFlow. Every GPIO, UART, SPI, and I²C block is pre-configured with the correct pin names from your schematic (e.g. UART_TX = PA9).",
+    color: "#A78BFA",
+  },
+  {
+    step: "3",
+    title: "Simulate Your Real Board",
+    desc: "Run the simulation. Virtual peripherals match your actual schematic — the BME280 on I²C1 address 0x76 responds exactly as it will on real hardware.",
+    color: "#34D399",
+  },
+];
+
+export default function EFlow() {
+  const [activeCategory, setActiveCategory] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  const copyCode = async (code: string) => {
+    if (!(await copyText(code))) return;
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(null), 2000);
+  };
+
+  return (
+    <BpPage className="eflow">
+      <PageHero
+        label="eFlow — Visual Programming"
+        title={
+          <>
+            Build Firmware
+            <br />
+            Without Writing Code
+          </>
+        }
+        lead="eFlow is EmbeddedOS's visual block programming environment. Drag GPIO, timer, AI, and protocol blocks onto a canvas, connect them with wires, and eFlow generates production-ready C code that runs on any EoS-supported board."
+      >
+        <div className="ctas">
+          <Link href="/demo" className="btn pri">
+            Try eFlow Demo
+          </Link>
+          <Link href="/getting-started" className="btn gh">
+            Getting Started{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
+      </PageHero>
+
+      <LocalNav
+        name="eFlow"
+        items={[
+          { id: "what", label: "What is eFlow?" },
+          { id: "pipeline", label: "Pipeline" },
+          { id: "blocks", label: "Block Library" },
+          { id: "use-cases", label: "Use Cases" },
+          { id: "compare", label: "eFlow vs C" },
+          { id: "cad", label: "CAD Integration" },
+        ]}
+      />
+
+      {/* What is eFlow */}
+      <Section
+        id="what"
+        title="What is eFlow?"
+        lead="eFlow is a node-based visual editor — the same paradigm used by Unreal Engine Blueprints, Node-RED, and Max/MSP — but designed specifically for embedded firmware on EmbeddedOS."
+        split
+      >
+        <ul className="cards">
+          {PILLARS.map(item => (
+            <li key={item.title}>
+              <div className="card">
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Visual pipeline diagram */}
+        <div className="ef-example">
+          <p className="label">Example: Temperature Sensor → UART Output</p>
+          <ol className="ef-flow">
+            {EXAMPLE_FLOW.map(block => (
+              <li
+                key={block.label}
+                style={{ "--c": block.color } as CSSProperties}
+              >
+                <b>{block.label}</b>
+                <span>{block.sub}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="ef-gen">↓ eFlow generates this C code ↓</p>
+          <div className="code">
+            {/* scrolls sideways on a phone, so a keyboard can reach it */}
+            <pre
+              tabIndex={0}
+              role="region"
+              aria-label="C code generated by eFlow"
+            >
+              {EXAMPLE_C}
+            </pre>
+          </div>
+        </div>
+      </Section>
 
       {/* 8-Step Pipeline */}
-      <section className="pb-20 bg-[#000000]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              The 8-Step eFlow Pipeline
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              From blank canvas to flashed firmware in 8 steps. Each step is
-              handled by eFlow and ebuild — no manual toolchain configuration
-              needed.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {PIPELINE.map((step, i) => {
-              const Icon = step.icon;
-              return (
-                <motion.div
-                  key={step.step}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="rounded-2xl border p-5"
-                  style={{
-                    background: `${step.color}06`,
-                    borderColor: `${step.color}20`,
-                  }}
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: `${step.color}18` }}
-                    >
-                      <Icon size={16} style={{ color: step.color }} />
-                    </div>
-                    <span
-                      className="text-xs font-black"
-                      style={{ color: step.color }}
-                    >
-                      {step.step}
-                    </span>
-                  </div>
-                  <h3 className="font-heading font-bold text-white mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-white/50 text-xs leading-relaxed">
-                    {step.desc}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <Section
+        id="pipeline"
+        title="The 8-Step eFlow Pipeline"
+        lead="From blank canvas to flashed firmware in 8 steps. Each step is handled by eFlow and ebuild — no manual toolchain configuration needed."
+        split
+        alt
+      >
+        <ol className="steps num ef-steps">
+          {PIPELINE.map(step => (
+            <li key={step.step} style={{ "--c": step.color } as CSSProperties}>
+              <span className="n">{step.step}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Section>
 
       {/* Block Library */}
-      <section className="pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              Block Library
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              Every block generates a specific EoS HAL call. Click a block to
-              see the generated C code.
-            </p>
-          </motion.div>
-
-          {/* Category tabs */}
-          <div
-            className="flex flex-wrap gap-2 mb-6"
-            role="tablist"
-            aria-label="Block categories"
-            onKeyDown={moveTabFocus}
-          >
-            {BLOCK_TYPES.map((cat, i) => (
-              <button
-                key={cat.category}
-                role="tab"
-                id={`blocks-tab-${i}`}
-                aria-selected={activeCategory === i}
-                aria-controls={`blocks-panel-${i}`}
-                tabIndex={activeCategory === i ? 0 : -1}
-                onClick={() => setActiveCategory(i)}
-                className="px-4 py-2 rounded-xl text-sm font-bold transition-all"
-                style={
-                  activeCategory === i
-                    ? { background: cat.color, color: "#000" }
-                    : {
-                        background: `${cat.color}12`,
-                        color: cat.color,
-                        border: `1px solid ${cat.color}25`,
-                      }
-                }
-              >
-                {cat.category}
-              </button>
-            ))}
-          </div>
-
+      <Section
+        id="blocks"
+        title="Block Library"
+        lead="Every block generates a specific EoS HAL call. Click a block to see the generated C code."
+        split
+      >
+        {/* Category tabs */}
+        <div
+          className="ctas ef-tabs"
+          role="tablist"
+          aria-label="Block categories"
+          onKeyDown={moveTabFocus}
+        >
           {BLOCK_TYPES.map((cat, i) => (
-            <div
+            <button
               key={cat.category}
-              role="tabpanel"
-              id={`blocks-panel-${i}`}
-              aria-labelledby={`blocks-tab-${i}`}
-              hidden={i !== activeCategory}
+              type="button"
+              role="tab"
+              id={`blocks-tab-${i}`}
+              aria-selected={activeCategory === i}
+              aria-controls={`blocks-panel-${i}`}
+              tabIndex={activeCategory === i ? 0 : -1}
+              onClick={() => setActiveCategory(i)}
+              className="btn gh"
+              style={{ "--c": cat.color } as CSSProperties}
             >
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {cat.blocks.map(block => (
-                  <div
-                    key={block.name}
-                    className="rounded-2xl border p-4"
-                    style={{
-                      background: `${cat.color}06`,
-                      borderColor: `${cat.color}20`,
-                    }}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-heading font-bold text-white text-sm">
-                        {block.name}
-                      </h3>
+              {cat.category}
+            </button>
+          ))}
+        </div>
+
+        {BLOCK_TYPES.map((cat, i) => (
+          <div
+            key={cat.category}
+            role="tabpanel"
+            id={`blocks-panel-${i}`}
+            aria-labelledby={`blocks-tab-${i}`}
+            hidden={i !== activeCategory}
+          >
+            <ul className="cards">
+              {cat.blocks.map(block => (
+                <li key={block.name}>
+                  <div className="card ef-block">
+                    <div className="top">
+                      <h3>{block.name}</h3>
                       <button
+                        type="button"
                         onClick={() => copyCode(block.code)}
-                        className="flex items-center gap-1 text-[10px] text-white/30 hover:text-white/60 transition-colors"
+                        className="ef-copy"
                       >
-                        {copiedCode === block.code ? (
-                          <CheckCircle2 size={10} className="text-[#34D399]" />
-                        ) : (
-                          <Copy size={10} />
-                        )}
                         {copiedCode === block.code ? "Copied" : "Copy"}
                       </button>
                     </div>
-                    <p className="text-white/50 text-xs mb-3 leading-relaxed">
-                      {block.desc}
-                    </p>
-                    <pre
-                      className="rounded-lg p-2 text-[10px] font-mono overflow-x-auto"
-                      style={{
-                        background: "rgba(5,10,20,0.8)",
-                        color: cat.color,
-                      }}
-                    >
-                      {block.code}
-                    </pre>
+                    <p>{block.desc}</p>
+                    <pre className="ef-snip">{block.code}</pre>
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </Section>
 
       {/* Use Cases */}
-      <section className="pb-20 bg-[#000000]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              Real-World Use Cases
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              Common embedded patterns that eFlow handles in minutes — no manual
-              HAL calls, no register-level debugging.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 gap-5">
-            {USE_CASES.map((uc, i) => (
-              <motion.div
-                key={uc.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                className="rounded-2xl border p-6"
-                style={{
-                  background: `${uc.color}06`,
-                  borderColor: `${uc.color}20`,
-                }}
+      <Section
+        id="use-cases"
+        title="Real-World Use Cases"
+        lead="Common embedded patterns that eFlow handles in minutes — no manual HAL calls, no register-level debugging."
+        split
+        alt
+      >
+        <ul className="cards two">
+          {USE_CASES.map(uc => (
+            <li key={uc.title}>
+              <div
+                className="card"
+                style={{ "--c": uc.color } as CSSProperties}
               >
-                <h3 className="font-heading font-bold text-white text-lg mb-2">
-                  {uc.title}
-                </h3>
-                <p className="text-white/55 text-sm mb-4 leading-relaxed">
-                  {uc.desc}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {uc.blocks.map((b, j) => (
-                    <span
-                      key={b}
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium"
-                      style={{ background: `${uc.color}15`, color: uc.color }}
-                    >
-                      {j > 0 && <ArrowRight size={9} />}
-                      {b}
-                    </span>
+                <h3>{uc.title}</h3>
+                <p>{uc.desc}</p>
+                <ol className="ef-chain">
+                  {uc.blocks.map(b => (
+                    <li key={b}>{b}</li>
                   ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                </ol>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* eFlow vs Manual C */}
-      <section className="pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              eFlow vs Writing C Directly
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              eFlow is not a replacement for writing C — it is a faster starting
-              point. Here is when to use each approach.
-            </p>
-          </motion.div>
-          <div className="rounded-2xl border border-white/8 overflow-hidden">
-            <div className="grid grid-cols-3 bg-white/5 border-b border-white/8 text-xs font-bold uppercase tracking-widest text-white/40">
-              <div className="p-4">Aspect</div>
-              <div
-                className="p-4 border-l border-white/8"
-                style={{ color: "#A78BFA" }}
-              >
-                eFlow (Visual)
-              </div>
-              <div
-                className="p-4 border-l border-white/8"
-                style={{ color: "#22D3EE" }}
-              >
-                Manual C
-              </div>
-            </div>
-            {COMPARISON.map((row, i) => (
-              <motion.div
-                key={row.aspect}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                className="grid grid-cols-3 border-b border-white/5 last:border-0"
-              >
-                <div className="p-4 text-sm font-semibold text-white/60">
-                  {row.aspect}
-                </div>
-                <div className="p-4 text-sm text-white/55 border-l border-white/5">
-                  {row.eflow}
-                </div>
-                <div className="p-4 text-sm text-white/55 border-l border-white/5">
-                  {row.manual}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div
-            className="mt-4 flex items-start gap-2 p-4 rounded-xl text-sm"
-            style={{
-              background: "rgba(167,139,250,0.08)",
-              border: "1px solid rgba(167,139,250,0.2)",
-            }}
-          >
-            <Info size={14} className="text-[#A78BFA] mt-0.5 shrink-0" />
-            <span className="text-[#A78BFA]">
-              <strong>Tip:</strong> Start with eFlow to prototype quickly, then
-              use "Export to C" to get the generated code and extend it manually
-              for performance-critical sections.
-            </span>
-          </div>
+      <Section
+        id="compare"
+        title="eFlow vs Writing C Directly"
+        lead="eFlow is not a replacement for writing C — it is a faster starting point. Here is when to use each approach."
+        split
+      >
+        <div className="tbl">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Aspect</th>
+                <th scope="col">eFlow (Visual)</th>
+                <th scope="col">Manual C</th>
+              </tr>
+            </thead>
+            <tbody>
+              {COMPARISON.map(row => (
+                <tr key={row.aspect}>
+                  <td>{row.aspect}</td>
+                  <td>{row.eflow}</td>
+                  <td>{row.manual}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </section>
+        <p className="gnote ef-tip">
+          <strong>Tip:</strong> Start with eFlow to prototype quickly, then use
+          &quot;Export to C&quot; to get the generated code and extend it
+          manually for performance-critical sections.
+        </p>
+      </Section>
 
       {/* CAD Integration */}
-      <section className="pb-20 bg-[#000000]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4 text-center">
-              CAD + eFlow Integration
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto text-center">
-              When you import a KiCad schematic via ebuild cad analyze, eFlow
-              automatically populates all block pin fields with the correct pin
-              names from your schematic. No manual lookup in the datasheet.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {[
-              {
-                step: "1",
-                title: "Import Schematic",
-                desc: "Run ebuild cad analyze my-board.kicad_sch. ebuild reads your KiCad schematic and extracts all MCU pin assignments.",
-                color: "#F97316",
-              },
-              {
-                step: "2",
-                title: "Auto-Populated Blocks",
-                desc: "Open eFlow. Every GPIO, UART, SPI, and I²C block is pre-configured with the correct pin names from your schematic (e.g. UART_TX = PA9).",
-                color: "#A78BFA",
-              },
-              {
-                step: "3",
-                title: "Simulate Your Real Board",
-                desc: "Run the simulation. Virtual peripherals match your actual schematic — the BME280 on I²C1 address 0x76 responds exactly as it will on real hardware.",
-                color: "#34D399",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.step}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                className="rounded-2xl border p-6"
-                style={{
-                  background: `${item.color}08`,
-                  borderColor: `${item.color}25`,
-                }}
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 font-black text-lg"
-                  style={{ background: `${item.color}20`, color: item.color }}
-                >
-                  {item.step}
-                </div>
-                <h3 className="font-heading font-bold text-white mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-white/55 text-sm leading-relaxed">
-                  {item.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Section
+        id="cad"
+        title="CAD + eFlow Integration"
+        lead="When you import a KiCad schematic via ebuild cad analyze, eFlow automatically populates all block pin fields with the correct pin names from your schematic. No manual lookup in the datasheet."
+        split
+        alt
+      >
+        <ol className="steps num ef-cad">
+          {CAD_STEPS.map(item => (
+            <li key={item.step} style={{ "--c": item.color } as CSSProperties}>
+              <span className="n">{item.step}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Section>
 
       {/* CTA */}
-      <section className="pb-24 pt-16 text-center">
-        <div className="max-w-2xl mx-auto px-4">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading font-black text-3xl text-white mb-4">
-              Ready to Try eFlow?
-            </h2>
-            <p className="text-white/50 mb-8">
-              Open the interactive simulator and run an eFlow block diagram in
-              your browser — no install required.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/demo"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all active:scale-95"
-                style={{
-                  background: "#A78BFA",
-                  boxShadow: "0 0 20px rgba(167,139,250,0.25)",
-                }}
-              >
-                <Play size={16} /> Open eFlow Demo
-              </Link>
-              <Link
-                href="/getting-started"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white/70 border border-white/15 hover:border-white/30 transition-all"
-              >
-                Getting Started Guide <ArrowRight size={14} />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
+      <Band
+        title="Ready to Try eFlow?"
+        lead="Open the interactive simulator and run an eFlow block diagram in your browser — no install required."
+      >
+        <Link href="/demo" className="btn pri">
+          Open eFlow Demo
+        </Link>
+        <Link href="/getting-started" className="btn gh">
+          Getting Started Guide{" "}
+          <span className="ar" aria-hidden="true">
+            →
+          </span>
+        </Link>
+      </Band>
+    </BpPage>
   );
 }

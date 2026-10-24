@@ -1,0 +1,102 @@
+/* FAQ: search, category filter and the question list (buttons that open answers). */
+.bp.faqpage .fq {
+  padding-top: clamp(24px, 3vw, 40px);
+}
+.bp.faqpage .fq .wrap {
+  max-width: 980px;
+}
+.bp.faqpage .fq-tools {
+  display: grid;
+  gap: 16px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+.bp.faqpage .fq-search {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 20px;
+  border-radius: 14px;
+  border: 1px solid var(--line2);
+  background: var(--panel);
+  color: var(--fg);
+  font: 400 16px/1.4 var(--sans);
+  transition: border-color 0.2s;
+}
+.bp.faqpage .fq-search::placeholder {
+  color: var(--fg3);
+}
+.bp.faqpage .fq-search:focus {
+  outline: none;
+  border-color: var(--orange-hi);
+}
+.bp.faqpage .fq-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bp.faqpage .fq-list {
+  border-top: 1px solid var(--line);
+}
+.bp.faqpage .fq-item {
+  border-bottom: 1px solid var(--line);
+}
+.bp.faqpage .fq-q {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 16px;
+  min-height: 44px;
+  padding: 20px 0;
+  background: none;
+  border: 0;
+  color: var(--fg);
+  font: 500 17px/1.4 var(--sans);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.bp.faqpage .fq-q::after {
+  content: "+";
+  font: 300 22px/1 var(--sans);
+  color: var(--fg2);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.bp.faqpage .fq-q[aria-expanded="true"]::after {
+  transform: rotate(45deg);
+}
+.bp.faqpage .fq-q:hover {
+  color: var(--orange-hi);
+}
+.bp.faqpage .fq-cat {
+  min-width: 6.5em;
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.bp.faqpage .fq-a {
+  max-width: 48em;
+  padding: 0 0 24px;
+  color: var(--fg2);
+  font-size: 16px;
+  line-height: 1.65;
+}
+@media (min-width: 621px) {
+  .bp.faqpage .fq-a {
+    padding-left: calc(6.5em * 12 / 16 + 16px);
+  }
+}
+@media (max-width: 620px) {
+  .bp.faqpage .fq-q {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 16px;
+  }
+  .bp.faqpage .fq-cat {
+    grid-column: 1 / -1;
+  }
+}
+.bp.faqpage .fq-none {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--fg2);
+}

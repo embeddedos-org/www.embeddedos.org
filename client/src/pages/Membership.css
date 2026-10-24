@@ -1,0 +1,109 @@
+/* Membership: the tier cards and the closing band. */
+.bp.membership .mb-facts {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 13px/1.5 var(--mono);
+  color: var(--fg2);
+}
+.bp.membership .mb-facts::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.bp.membership .mb-tier {
+  gap: 14px;
+}
+/* five tiers fill their rows: all five side by side on a wide screen, 3 + 2
+   below that, 2 + 2 + 1 wide on a tablet; never an empty cell */
+@media (min-width: 1200px) {
+  .bp.membership .mb-tiers {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .bp.membership .mb-tiers .card {
+    padding: 24px 20px 22px;
+  }
+}
+@media (min-width: 961px) and (max-width: 1199px) {
+  .bp.membership .mb-tiers {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .bp.membership .mb-tiers > li {
+    grid-column: span 2;
+  }
+  .bp.membership .mb-tiers > li:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+}
+@media (min-width: 621px) and (max-width: 960px) {
+  .bp.membership .mb-tiers > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+.bp.membership .mb-tier .top {
+  align-items: center;
+  flex-wrap: wrap;
+}
+.bp.membership .mb-name {
+  font-size: 19px;
+}
+.bp.membership .mb-pop {
+  font: 600 12px/1 var(--mono);
+  letter-spacing: 0.06em;
+  color: #000;
+  background: var(--orange);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+.bp.membership .card .mb-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--fg2);
+}
+.bp.membership .mb-price b {
+  font: 600 clamp(34px, 3vw, 44px) / 1 var(--display);
+  letter-spacing: -0.035em;
+  color: var(--fg);
+}
+.bp.membership .card ul.mb-list {
+  list-style: none;
+  padding: 0;
+  gap: 8px;
+  font-size: 14px;
+}
+.bp.membership .mb-list li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 8px;
+}
+.bp.membership .mb-list li::before {
+  content: "✓";
+  color: var(--fg3);
+  font-size: 13px;
+}
+.bp.membership .mb-cta {
+  margin-top: auto;
+  padding-top: 8px;
+}
+.bp.membership .mb-cta .btn,
+.bp.membership .mb-cta .mb-wrap {
+  display: flex;
+  width: 100%;
+}
+.bp.membership .mb-wrap .btn {
+  width: 100%;
+}
+.bp.membership .mb-band .lead {
+  margin-top: 14px;
+}
+.bp.membership .mb-band .fine {
+  margin-top: 14px;
+}
+.bp.membership .mb-band .wrap > div:first-child {
+  max-width: 40em;
+}

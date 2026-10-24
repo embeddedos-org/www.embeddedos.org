@@ -22,6 +22,7 @@
   --orange: #f97316;
   --orange-hi: #ff8a3d;
   --green: #34d399;
+  --err: #fca5a5; /* form errors (11:1 on black) */
   --sans:
     -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
     "DM Sans", Arial, sans-serif;
@@ -211,6 +212,15 @@
 .bp .crumbs [aria-current="page"] {
   color: var(--fg2);
 }
+/* phones and touch screens: each link is a 44px tap target; the padding is
+   taken back by the margin, so the line keeps its height and spacing */
+@media (max-width: 700px), (pointer: coarse) {
+  .bp .crumbs a {
+    display: inline-block;
+    padding: 14px 8px;
+    margin: -14px -8px;
+  }
+}
 
 /* ───────── hero ───────── */
 .bp .phero {
@@ -288,7 +298,8 @@
   position: relative;
   margin-top: clamp(40px, 6vw, 72px);
 }
-/* the copper routing of the EoS Learn RP2350 on a tilted plate, behind the hero copy */
+/* the copper routing of the EoS Learn RP2350 on a tilted plate, behind the hero
+   copy; the image is 800px square, about the plate's largest drawn width */
 .bp .sig {
   position: absolute;
   z-index: 0;
@@ -321,17 +332,12 @@
     transparent 62%
   );
 }
+/* up to 900px wide the hero's own fades covered the plate almost entirely (it
+   changed no pixel by more than 4 of 255), so it is not drawn there and its
+   image is not downloaded */
 @media (max-width: 900px) {
   .bp .sig {
-    right: -34vw;
-    width: 118vw;
-    top: auto;
-    bottom: -78vw;
-    transform: none;
-    opacity: 0.55;
-  }
-  .bp .sig::after {
-    background: linear-gradient(180deg, var(--bg) 6%, transparent 46%);
+    display: none;
   }
 }
 .bp .phero::after {
@@ -383,6 +389,11 @@
   display: none;
 }
 .bp .lnav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px; /* a full tap target on phones */
+  min-width: 44px; /* short labels ("v1.0", "Stack") too */
   white-space: nowrap;
   transition: color 0.2s;
 }
@@ -393,8 +404,20 @@
   .bp .lnav b {
     display: none;
   }
+  /* the list fills the bar and fades out at its right edge, so a list that
+     runs past the screen shows that it scrolls; a list that fits ends before
+     the fade, and the spacer lets the last link scroll clear of it */
   .bp .lnav ul {
+    flex: 1 1 auto;
+    min-width: 0;
     margin: 0;
+    -webkit-mask: linear-gradient(90deg, #000 calc(100% - 32px), transparent);
+    mask: linear-gradient(90deg, #000 calc(100% - 32px), transparent);
+  }
+  .bp .lnav ul::after {
+    content: "";
+    flex: none;
+    width: 10px;
   }
 }
 
@@ -546,7 +569,7 @@
   }
 }
 .bp .card.hl {
-  border-color: #3a3a40;
+  border-color: var(--line2);
   background: var(--panel2);
 }
 .bp .card h3 {
@@ -603,6 +626,17 @@
   height: 20px;
 }
 
+/* plain lists in running text keep their markers (the site's CSS reset removes them); lists with a class of their
+   own (badges, cards, link lists, steps) keep their own styling */
+.bp :where(.card, .prose, .gnote, .faq, .kv) ul:not([class]) {
+  list-style: disc;
+  padding-left: 20px;
+}
+.bp :where(.card, .prose, .gnote, .faq, .kv) ol:not([class]) {
+  list-style: decimal;
+  padding-left: 22px;
+}
+
 /* maturity: a dot and the honest label, never a coloured pill */
 .bp .st {
   display: inline-flex;
@@ -653,6 +687,15 @@
   margin-top: 10px;
   font-size: 14px;
   color: var(--fg2);
+}
+/* phones: two figures to a row, not one per screen line */
+@media (max-width: 620px) {
+  .bp .gstats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bp .gstats li {
+    padding-right: 12px;
+  }
 }
 .bp .gstats.tx b {
   font-size: clamp(24px, 2.3vw, 32px);
@@ -755,7 +798,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid #38383d;
+  border: 1px solid var(--line2);
   display: grid;
   place-items: center;
   font: 500 13px/1 var(--mono);
@@ -770,7 +813,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid #38383d;
+  border: 1px solid var(--line2);
   display: grid;
   place-items: center;
   font: 500 13px/1 var(--mono);
@@ -812,8 +855,14 @@
   padding: 16px 18px;
   overflow-x: auto;
   font: 13px/1.7 var(--mono);
-  color: #d6d6db;
+  color: var(--fg);
   background: none;
+}
+/* code that scrolls takes keyboard focus; its ring sits inside the frame,
+   which clips anything outside it */
+.bp .code pre:focus-visible {
+  outline-offset: -2px;
+  border-radius: 12px;
 }
 @media (max-width: 600px) {
   .bp .code pre.wrapm {
@@ -1009,6 +1058,11 @@
   gap: 28px;
   flex-wrap: wrap;
   padding-block: clamp(64px, 8vw, 110px);
+}
+.bp .band .band-t {
+  display: grid;
+  gap: 14px;
+  max-width: 40em;
 }
 .bp .band h2 {
   font-size: clamp(30px, 3.6vw, 52px);

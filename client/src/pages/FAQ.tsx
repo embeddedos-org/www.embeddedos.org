@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { HelpCircle, ChevronDown, Search } from "lucide-react";
+import { BpPage, PageHero } from "@/components/bp";
+import "./FAQ.css";
 
 const faqs = [
   {
@@ -96,104 +96,65 @@ export default function FAQ() {
   );
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-cyan-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <HelpCircle className="w-4 h-4" /> FAQ
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-orange-300 bg-clip-text text-transparent">
-              Frequently Asked Questions
-            </h1>
-            <p className="text-xl text-gray-300">
-              Answers to the most common questions about EmbeddedOS, its
-              products, licensing, and community.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="faqpage">
+      <PageHero
+        sig
+        label="FAQ"
+        title="Frequently Asked Questions"
+        lead="Answers to the most common questions about EmbeddedOS, its products, licensing, and community."
+      />
 
-      <section className="py-8 px-4">
-        <div className="max-w-3xl mx-auto space-y-4">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+      <section className="sec fq">
+        <div className="wrap">
+          <div className="fq-tools">
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search questions..."
               aria-label="Search frequently asked questions"
-              className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50"
+              className="fq-search"
             />
+            <div className="fq-cats">
+              {cats.map(c => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCat(c)}
+                  aria-pressed={cat === c}
+                  className="btn gh"
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
           </div>
-          {/* Category filter */}
-          <div className="flex flex-wrap gap-2">
-            {cats.map(c => (
-              <button
-                key={c}
-                onClick={() => setCat(c)}
-                className={
-                  "px-4 py-1.5 rounded-full text-sm font-medium transition-colors " +
-                  (cat === c
-                    ? "bg-orange-500 text-white"
-                    : "bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10")
-                }
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section className="py-8 px-4 pb-24">
-        <div className="max-w-3xl mx-auto space-y-3">
-          {filtered.map((f, i) => (
-            <motion.div
-              key={f.q}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.03 }}
-              className="bg-white/5 border border-white/10 rounded-xl overflow-hidden"
-            >
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                aria-expanded={open === i}
-                aria-controls={`faq-answer-${i}`}
-                className="w-full flex items-center justify-between p-5 text-left"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-400 font-medium">
-                    {f.cat}
-                  </span>
-                  <span className="text-white font-medium">{f.q}</span>
-                </div>
-                <ChevronDown
-                  className={
-                    "w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ml-4 " +
-                    (open === i ? "rotate-180" : "")
-                  }
-                />
-              </button>
-              <div id={`faq-answer-${i}`} hidden={open !== i}>
-                <div className="px-5 pb-5 text-gray-300 text-sm leading-relaxed border-t border-white/5 pt-4">
-                  {f.a}
+          <div className="fq-list">
+            {filtered.map((f, i) => (
+              <div key={f.q} className="fq-item">
+                <button
+                  type="button"
+                  onClick={() => setOpen(open === i ? null : i)}
+                  aria-expanded={open === i}
+                  aria-controls={`faq-answer-${i}`}
+                  className="fq-q"
+                >
+                  <span className="fq-cat">{f.cat}</span>
+                  <span className="fq-text">{f.q}</span>
+                </button>
+                <div id={`faq-answer-${i}`} hidden={open !== i}>
+                  <p className="fq-a">{f.a}</p>
                 </div>
               </div>
-            </motion.div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              No questions found matching your search.
-            </div>
-          )}
+            ))}
+            {filtered.length === 0 && (
+              <p className="fq-none">
+                No questions found matching your search.
+              </p>
+            )}
+          </div>
         </div>
       </section>
-    </div>
+    </BpPage>
   );
 }

@@ -1,0 +1,37 @@
+/* Resources (/resources): five groups of links, two to a row on wide screens. */
+.bp.resources .rs-main {
+  padding-top: clamp(24px, 3vw, 40px);
+}
+.bp.resources .rs-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(48px, 5vw, 72px) clamp(28px, 4vw, 64px);
+}
+@media (max-width: 860px) {
+  .bp.resources .rs-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* an odd group out at the end takes the full width, its links in two columns */
+@media (min-width: 861px) {
+  .bp.resources .rs-group:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .bp.resources .rs-group:last-child:nth-child(odd) .glinks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(28px, 4vw, 64px);
+  }
+}
+.bp.resources .rs-group h2 {
+  margin-bottom: 18px;
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.bp.resources .rs-group .glinks a {
+  min-height: 44px;
+}
+.bp.resources .rs-group .glinks a span {
+  font-weight: 500;
+}

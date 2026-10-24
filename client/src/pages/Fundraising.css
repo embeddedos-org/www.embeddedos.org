@@ -1,0 +1,52 @@
+/* Fundraising: the use-of-funds shares and the monthly tiers. */
+.bp.fundraising .fr-use .top {
+  align-items: baseline;
+}
+.bp.fundraising .fr-pct {
+  font: 600 clamp(28px, 2.6vw, 36px) / 1 var(--display);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.bp.fundraising .fr-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line2);
+  overflow: hidden;
+}
+.bp.fundraising .fr-bar i {
+  display: block;
+  width: var(--w, 0%);
+  height: 100%;
+  background: var(--orange);
+}
+.bp.fundraising .card .fr-amt {
+  font: 600 26px/1.1 var(--display);
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.bp.fundraising .card ul.fr-perks {
+  list-style: none;
+  padding: 0;
+  gap: 8px;
+  font-size: 14px;
+}
+.bp.fundraising .fr-perks li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 8px;
+}
+.bp.fundraising .fr-perks li::before {
+  content: "✓";
+  color: var(--fg3);
+  font-size: 13px;
+}
+.bp.fundraising .fr-give {
+  margin-top: auto;
+  width: 100%;
+}
+.bp.fundraising .fr-tier {
+  gap: 12px;
+}
+.bp.fundraising .fr-end .ctas {
+  justify-content: center;
+}

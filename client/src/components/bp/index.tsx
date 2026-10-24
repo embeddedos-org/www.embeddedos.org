@@ -61,7 +61,8 @@ export function Crumbs({ items }: { items: Crumb[] }) {
 /**
  * The page hero: a label, the headline, an optional second line and lead, then
  * whatever the page puts under it (buttons, badges, a board). `sig` sets the
- * EoS Learn RP2350's copper routing behind the copy.
+ * EoS Learn RP2350's copper routing behind the copy (wider than 900px; on a
+ * narrower screen the hero's fades would hide it, so it is not drawn).
  */
 export function PageHero({
   label,
@@ -241,20 +242,29 @@ export function BoardFigure({
   );
 }
 
-/** The closing band: one line and the page's next step. */
+/** The closing band: one line (and an optional sentence under it) and the page's next step. */
 export function Band({
   title,
+  lead,
   children,
   id,
 }: {
   title: ReactNode;
+  lead?: ReactNode;
   children?: ReactNode;
   id?: string;
 }) {
   return (
     <section className="band" id={id}>
       <div className="wrap">
-        <h2>{title}</h2>
+        {lead ? (
+          <div className="band-t">
+            <h2>{title}</h2>
+            <p className="lead">{lead}</p>
+          </div>
+        ) : (
+          <h2>{title}</h2>
+        )}
         {children && <div className="ctas">{children}</div>}
       </div>
     </section>

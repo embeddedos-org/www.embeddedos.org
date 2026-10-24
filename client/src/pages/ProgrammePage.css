@@ -1,0 +1,68 @@
+/* A programme's page (/programmes/<slug>): its status first, then its siblings. */
+.bp.prog .badges li.dot.ok::before {
+  background: var(--green);
+}
+.bp.prog .prog-now {
+  padding-top: clamp(24px, 3vw, 40px);
+}
+.bp.prog .prog-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .bp.prog .prog-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.prog .prog-state {
+  gap: 14px;
+  padding: clamp(26px, 3.4vw, 40px);
+}
+.bp.prog .prog-state h2 {
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.bp.prog .prog-state p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.bp.prog .prog-state .ctas {
+  margin-top: 8px;
+}
+.bp.prog .prog-side {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+.bp.prog .prog-h {
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.bp.prog .prog-others {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border-top: 1px solid var(--line);
+}
+.bp.prog .prog-others li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+  min-height: 44px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+}
+/* each sibling's name: a 44px hit area within its row (22.5px line, 11px
+   above and below, taken back by the margin so the row keeps its height) */
+.bp.prog .prog-others a {
+  padding-block: 11px;
+  margin-block: -11px;
+}

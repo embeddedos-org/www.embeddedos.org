@@ -3,55 +3,26 @@
  * Each diagram uses a distinct visual mode (layered, radial, pipeline, tree, matrix)
  * so no two diagrams look alike.
  */
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState, type CSSProperties } from "react";
 import {
   ECOSYSTEM,
   ROLE_LABEL,
   ROLE_ORDER,
   componentsInRole,
 } from "@/data/ecosystem";
-import { motion } from "framer-motion";
-import {
-  Layers,
-  Cpu,
-  Brain,
-  FileText,
-  Package,
-  Database,
-  Shield,
-  ChevronRight,
-  Heart,
-  ExternalLink,
-  CheckCircle,
-  ArrowRight,
-  Radio,
-  GitBranch,
-  Network,
-  DraftingCompass,
-} from "lucide-react";
 import { Link } from "wouter";
 import type { DiagramMode } from "../components/ArchitectureDiagram3D";
 import { moveTabFocus } from "@/lib/tablist";
 import { BOARD_COUNT } from "@/data/stack";
 import { ARCHITECTURE_STAGES } from "@/data/architecture";
+import { useIsMobile } from "@/hooks/useMobile";
+import { BpPage, LocalNav, PageHero, Section, Stats } from "@/components/bp";
+import "./Architecture.css";
 
 const ArchitectureDiagram3D = lazy(
   () => import("../components/ArchitectureDiagram3D")
 );
 const CadWalkthrough3D = lazy(() => import("../components/CadWalkthrough3D"));
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      delay: i * 0.08,
-      ease: [0.23, 1, 0.32, 1] as const,
-    },
-  }),
-};
 
 // ── 1. Full EmbeddedOS Stack — MATRIX mode ───────────────────────────────────
 // Shows all products as a glowing node grid — no other diagram uses this
@@ -369,11 +340,8 @@ const RADAR_LAYERS = [
 ];
 
 // ── Diagram registry ──────────────────────────────────────────────────────────
-type LucideIcon = React.FC<{ className?: string; style?: React.CSSProperties }>;
-
 interface DiagramDef {
   id: string;
-  icon: LucideIcon;
   color: string;
   mode: DiagramMode;
   /** Renders the dedicated CAD walkthrough instead of the generic component. */
@@ -388,7 +356,6 @@ interface DiagramDef {
   stats: { label: string; value: string }[];
   layers: typeof FULL_STACK_LAYERS;
   learnMore: string;
-  bgGradient: string;
 }
 
 const DIAGRAMS: DiagramDef[] = [
@@ -399,7 +366,6 @@ const DIAGRAMS: DiagramDef[] = [
   {
     id: "cad-walkthrough",
     tabLabel: "CAD Walkthrough",
-    icon: DraftingCompass,
     color: "#38BDF8",
     // Unused when cadWalkthrough is set; only satisfies the DiagramDef type.
     mode: "matrix",
@@ -424,12 +390,10 @@ const DIAGRAMS: DiagramDef[] = [
       width: 3.6,
     })),
     learnMore: "/what-we-do",
-    bgGradient: "from-sky-500/10 via-transparent to-cyan-500/5",
   },
   {
     id: "full-stack",
     tabLabel: "Full Stack",
-    icon: Layers,
     color: "#F97316",
     mode: "matrix",
     title: "Full EmbeddedOS Stack",
@@ -446,12 +410,10 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: FULL_STACK_LAYERS,
     learnMore: "/what-we-do",
-    bgGradient: "from-orange-500/10 via-transparent to-pink-500/5",
   },
   {
     id: "eos-kernel",
     tabLabel: "EoS Kernel",
-    icon: Cpu,
     color: "#F97316",
     mode: "layered",
     title: "EoS Kernel Architecture",
@@ -468,12 +430,10 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: EOS_LAYERS,
     learnMore: "/eos",
-    bgGradient: "from-orange-500/10 via-transparent to-amber-500/5",
   },
   {
     id: "eboot",
     tabLabel: "eBoot Chain",
-    icon: Shield,
     color: "#FBBF24",
     mode: "pipeline",
     title: "eBoot Secure Boot Chain",
@@ -490,12 +450,10 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: EBOOT_LAYERS,
     learnMore: "/eboot",
-    bgGradient: "from-yellow-500/10 via-transparent to-orange-500/5",
   },
   {
     id: "eni-eai",
     tabLabel: "Neural Pipeline",
-    icon: Brain,
     color: "#F472B6",
     mode: "radial",
     title: "ENI / EAI Neural Pipeline",
@@ -512,12 +470,10 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: ENI_LAYERS,
     learnMore: "/eai",
-    bgGradient: "from-pink-500/10 via-transparent to-purple-500/5",
   },
   {
     id: "eoffice",
     tabLabel: "eOffice Suite",
-    icon: FileText,
     color: "#34D399",
     mode: "tree",
     title: "eOffice Suite Architecture",
@@ -534,12 +490,10 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: EOFFICE_LAYERS,
     learnMore: "/eoffice",
-    bgGradient: "from-emerald-500/10 via-transparent to-cyan-500/5",
   },
   {
     id: "edb",
     tabLabel: "eDB",
-    icon: Database,
     color: "#22D3EE",
     mode: "pipeline",
     title: "eDB Multi-Model Database",
@@ -556,12 +510,10 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: EDB_LAYERS,
     learnMore: "/product-edb",
-    bgGradient: "from-cyan-500/10 via-transparent to-blue-500/5",
   },
   {
     id: "eradar360",
     tabLabel: "eRadar360",
-    icon: Radio,
     color: "#EF4444",
     mode: "radial",
     title: "eRadar360 Sensor Fusion",
@@ -578,7 +530,6 @@ const DIAGRAMS: DiagramDef[] = [
     ],
     layers: RADAR_LAYERS,
     learnMore: "/ecad-hardware",
-    bgGradient: "from-red-500/10 via-transparent to-orange-500/5",
   },
 ];
 
@@ -594,629 +545,401 @@ const MODE_LABELS: Record<DiagramMode, string> = {
 // ── Donor callout data ────────────────────────────────────────────────────────
 const DONOR_REASONS = [
   {
-    icon: Shield,
     color: "#34D399",
     title: "Medical Device Safety",
     desc: "EoS + eBoot + ENI power medical implants and health monitors. Your donation funds the security audits that keep patients safe.",
   },
   {
-    icon: Brain,
     color: "#F472B6",
     title: "Neural Interface Research",
     desc: "The ENI/EAI pipeline could restore movement to paralyzed patients. Donations fund hardware bring-up on new neural recording platforms.",
   },
   {
-    icon: Cpu,
     color: "#F97316",
     title: "Open Hardware Freedom",
     desc: "All 15 eCAD hardware categories are open KiCad designs. Donations fund new board designs and manufacturing test coverage.",
   },
   {
-    icon: FileText,
     color: "#22D3EE",
     title: "Education & Books",
     desc: "14 technical books covering every layer of the stack — free forever. Donations fund authors, editors, and translation into 5 languages.",
   },
 ];
 
+// ── Visualization modes explainer ────────────────────────────────────────────
+const MODES = [
+  {
+    color: "#F97316",
+    title: "Layered Stack",
+    desc: "Horizontal slabs showing OS layers from hardware to apps. Best for kernel and platform architectures.",
+    used: "EoS Kernel",
+  },
+  {
+    color: "#FBBF24",
+    title: "Pipeline Flow",
+    desc: "Left-to-right sequential stages with arrows. Best for boot chains and query processing paths.",
+    used: "eBoot, eDB",
+  },
+  {
+    color: "#F472B6",
+    title: "Radial Hub",
+    desc: "Central hub with orbiting nodes. Best for inference engines and sensor fusion systems.",
+    used: "ENI/EAI, eRadar360",
+  },
+  {
+    color: "#34D399",
+    title: "Dependency Tree",
+    desc: "Top-down hierarchy showing how components depend on each other. Best for app suites.",
+    used: "eOffice Suite",
+  },
+  {
+    color: "#A78BFA",
+    title: "Node Matrix",
+    desc: "3D grid of glowing nodes. Best for showing the full ecosystem of products at once.",
+    used: "Full Stack",
+  },
+  {
+    color: "#38BDF8",
+    title: "System Map",
+    desc: "Seven architecture stages as one connected 3D map with maturity badges and documented links. Best for seeing how the whole platform fits together.",
+    used: "Reference architecture",
+  },
+];
+
+const QUICK_LINKS = [
+  { label: "EoS Kernel", href: "/eos" },
+  { label: "eBoot", href: "/eboot" },
+  { label: "EAI / ENI", href: "/eai" },
+  { label: "eOffice", href: "/eoffice" },
+  { label: "eDB", href: "/product-edb" },
+  { label: "eCAD Hardware", href: "/ecad-hardware" },
+  { label: "API Docs", href: "/api-docs" },
+  { label: "GitHub", href: "https://github.com/embeddedos-org" },
+];
+
 export default function Architecture() {
   const [active, setActive] = useState("cad-walkthrough");
-  const diagram = DIAGRAMS.find(d => d.id === active) ?? DIAGRAMS[0];
+  // The 3D views get a large stage: full width, and as tall as a phone allows.
+  const stageHeight = useIsMobile() ? 420 : 600;
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      {/* ── Hero ── */}
-      <section className="relative py-24 px-4 overflow-hidden">
+    <BpPage className="arch">
+      {/* The faint illustration stays inside the hero: this wrapper clips it
+          to the hero's own height, so it never runs behind the section bar. */}
+      <div className="ar-top">
         <img
           loading="lazy"
           decoding="async"
           src="/media/architecture-diagram-hero_72436b3f.jpg"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+          className="ar-heroimg"
         />
-        <div
-          className={`absolute inset-0 bg-gradient-to-br ${diagram.bgGradient} transition-all duration-700`}
-        />
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <Layers className="w-4 h-4" /> ARCHITECTURE &amp; BLOCK DIAGRAMS
-            </div>
-            <h1 className="text-5xl sm:text-6xl font-bold mb-5 bg-gradient-to-r from-white via-orange-200 to-orange-400 bg-clip-text text-transparent leading-tight">
-              Inside EmbeddedOS
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Eight distinct interactive 3D diagrams — each using a different
-              visual model to best represent its product's architecture. From a
-              CAD drawing that builds into a complete product, to layered OS
-              stacks, radial sensor fusion hubs, and dependency trees.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href="#diagrams"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"
-                style={{ background: "#F97316", color: "#fff" }}
-              >
-                Explore Diagrams <ChevronRight className="w-4 h-4" />
-              </a>
-              <Link
-                href="/donate"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 text-white/70 hover:text-white text-sm font-medium transition-all duration-150"
-              >
-                <Heart className="w-4 h-4 text-pink-400" /> Support the
-                Foundation
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        <PageHero
+          label="ARCHITECTURE & BLOCK DIAGRAMS"
+          title="Inside EmbeddedOS"
+          lead="Eight distinct interactive 3D diagrams — each using a different visual model to best represent its product's architecture. From a CAD drawing that builds into a complete product, to layered OS stacks, radial sensor fusion hubs, and dependency trees."
+        >
+          <div className="ctas">
+            <a href="#diagrams" className="btn pri">
+              Explore Diagrams{" "}
+              <span className="ar" aria-hidden="true">
+                →
+              </span>
+            </a>
+            <Link href="/donate" className="btn gh">
+              Support the Foundation
+            </Link>
+          </div>
+        </PageHero>
+      </div>
+
+      <LocalNav
+        name="Architecture"
+        items={[
+          { id: "diagrams", label: "Diagrams" },
+          { id: "all-diagrams", label: "All Diagrams" },
+          { id: "modes", label: "Visualization Modes" },
+          { id: "donors", label: "Why Donors Fund" },
+          { id: "components", label: "The components" },
+        ]}
+      />
 
       {/* ── Diagram selector + active diagram ── */}
-      <section className="py-4 px-4" id="diagrams">
-        <div className="max-w-6xl mx-auto">
+      <section className="sec ar-diagrams" id="diagrams">
+        <div className="wrap">
           {/* Selector tabs */}
           <div
-            className="flex flex-wrap gap-2 justify-center mb-10"
+            className="ctas ar-tabs"
             role="tablist"
             aria-label="Architecture diagrams"
             onKeyDown={moveTabFocus}
           >
-            {DIAGRAMS.map(d => {
-              const Icon = d.icon;
-              return (
-                <button
-                  key={d.id}
-                  role="tab"
-                  id={`diagram-tab-${d.id}`}
-                  aria-selected={active === d.id}
-                  aria-controls={`diagram-panel-${d.id}`}
-                  tabIndex={active === d.id ? 0 : -1}
-                  onClick={() => setActive(d.id)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-200 ${
-                    active === d.id
-                      ? "text-white border-transparent"
-                      : "text-white/50 border-white/10 hover:border-white/20 hover:text-white/80"
-                  }`}
-                  style={
-                    active === d.id
-                      ? {
-                          background: d.color + "22",
-                          borderColor: d.color + "66",
-                          color: d.color,
-                        }
-                      : {}
-                  }
-                >
-                  <Icon className="w-4 h-4" style={{}} />
-                  <span>{d.tabLabel}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Active diagram */}
-          {DIAGRAMS.map(d => {
-            const isActive = d.id === active;
-            return (
-              <div
+            {DIAGRAMS.map(d => (
+              <button
                 key={d.id}
-                role="tabpanel"
-                id={`diagram-panel-${d.id}`}
-                aria-labelledby={`diagram-tab-${d.id}`}
-                hidden={!isActive}
+                type="button"
+                role="tab"
+                id={`diagram-tab-${d.id}`}
+                aria-selected={active === d.id}
+                aria-controls={`diagram-panel-${d.id}`}
+                tabIndex={active === d.id ? 0 : -1}
+                onClick={() => setActive(d.id)}
+                className="btn gh"
+                style={{ "--c": d.color } as CSSProperties}
               >
-                {/* Top: 3D canvas + info panel */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
-                  {/* 3D Canvas */}
-                  <div>
-                    {isActive &&
-                      (d.cadWalkthrough ? (
-                        <Suspense
-                          fallback={
-                            <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
-                              Loading CAD walkthrough…
-                            </div>
-                          }
-                        >
-                          <CadWalkthrough3D height={400} />
-                        </Suspense>
-                      ) : (
-                        <Suspense
-                          fallback={
-                            <div className="h-80 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-sm">
-                              Loading 3D diagram…
-                            </div>
-                          }
-                        >
-                          <ArchitectureDiagram3D
-                            layers={d.layers}
-                            mode={d.mode}
-                            height={400}
-                            accentColor={d.color}
-                          />
-                        </Suspense>
-                      ))}
-                    {/* Mode label */}
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-xs text-white/30">
-                        Visualization:
-                      </span>
-                      <span
-                        className="text-xs font-semibold px-2 py-0.5 rounded-full border"
-                        style={{
-                          color: d.color,
-                          borderColor: d.color + "40",
-                          background: d.color + "12",
-                        }}
-                      >
-                        {d.cadWalkthrough
-                          ? "CAD Walkthrough"
-                          : MODE_LABELS[d.mode]}
-                      </span>
-                      <span className="text-xs text-white/20">
-                        {d.cadWalkthrough
-                          ? "· Drag to orbit · Step through the build · Keyboard: stepper below"
-                          : "· Drag to rotate · Interactive"}
-                      </span>
-                    </div>
-                  </div>
+                <span>{d.tabLabel}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
-                  {/* Info panel */}
-                  <div>
-                    <div
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 border"
-                      style={{
-                        background: d.color + "18",
-                        borderColor: d.color + "44",
-                        color: d.color,
-                      }}
-                    >
-                      <d.icon className="w-3.5 h-3.5" />
-                      {d.subtitle}
-                    </div>
-                    <h2 className="text-3xl font-bold text-white mb-3">
-                      {d.title}
-                    </h2>
-                    <p className="text-gray-400 leading-relaxed mb-5">
-                      {d.desc}
-                    </p>
-
-                    {/* Stats row */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-                      {d.stats.map(s => (
+        {/* Every diagram's panel is in the page; only the active one is shown */}
+        {DIAGRAMS.map(d => {
+          const isActive = d.id === active;
+          return (
+            <div
+              key={d.id}
+              role="tabpanel"
+              id={`diagram-panel-${d.id}`}
+              aria-labelledby={`diagram-tab-${d.id}`}
+              hidden={!isActive}
+              className="ar-panel"
+              style={{ "--c": d.color } as CSSProperties}
+            >
+              {/* The 3D view, on a large stage (one canvas: the active one) */}
+              <div className="wrap wide ar-stage">
+                {isActive &&
+                  (d.cadWalkthrough ? (
+                    <Suspense
+                      fallback={
                         <div
-                          key={s.label}
-                          className="rounded-xl p-3 text-center border border-white/5"
-                          style={{ background: d.color + "0d" }}
+                          className="ar-wait"
+                          style={{ height: stageHeight }}
                         >
-                          <div
-                            className="font-bold text-lg"
-                            style={{ color: d.color }}
-                          >
-                            {s.value}
-                          </div>
-                          <div className="text-[11px] text-white/40 mt-0.5">
-                            {s.label}
-                          </div>
+                          Loading CAD walkthrough…
                         </div>
-                      ))}
-                    </div>
-
-                    {/* Layer list */}
-                    <div className="space-y-1.5 mb-5 max-h-52 overflow-y-auto pr-1">
-                      {[...d.layers].reverse().map(layer => (
-                        <div
-                          key={layer.label}
-                          className="flex items-start gap-3 p-2.5 rounded-xl bg-white/4 border border-white/6 hover:border-white/12 transition-colors"
-                        >
-                          <div
-                            className="w-2.5 h-2.5 rounded-sm mt-1 flex-shrink-0"
-                            style={{ background: layer.color }}
-                          />
-                          <div>
-                            <div className="text-white text-xs font-semibold">
-                              {layer.label}
-                            </div>
-                            {layer.sublabels && (
-                              <div className="text-white/35 text-[10px] mt-0.5">
-                                {layer.sublabels.join(" · ")}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Learn more link */}
-                    <Link
-                      href={d.learnMore}
-                      className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:underline"
-                      style={{ color: d.color }}
+                      }
                     >
+                      <CadWalkthrough3D height={stageHeight} />
+                    </Suspense>
+                  ) : (
+                    <Suspense
+                      fallback={
+                        <div
+                          className="ar-wait"
+                          style={{ height: stageHeight }}
+                        >
+                          Loading 3D diagram…
+                        </div>
+                      }
+                    >
+                      <ArchitectureDiagram3D
+                        layers={d.layers}
+                        mode={d.mode}
+                        height={stageHeight}
+                        accentColor={d.color}
+                      />
+                    </Suspense>
+                  ))}
+              </div>
+
+              <div className="wrap">
+                {/* Mode label */}
+                <p className="ar-mode">
+                  <span>Visualization:</span>
+                  <b>
+                    {d.cadWalkthrough ? "CAD Walkthrough" : MODE_LABELS[d.mode]}
+                  </b>
+                  <span>
+                    {d.cadWalkthrough
+                      ? "· Drag to orbit · Step through the build · Keyboard: stepper below"
+                      : "· Drag to rotate · Interactive"}
+                  </span>
+                </p>
+
+                {/* What the diagram shows, and its layers */}
+                <div className="ar-info">
+                  <div className="ar-copy">
+                    <p className="label">{d.subtitle}</p>
+                    <h2>{d.title}</h2>
+                    <p className="ar-desc">{d.desc}</p>
+                    <Stats
+                      small
+                      items={d.stats.map(s => ({
+                        value: s.value,
+                        label: s.label,
+                      }))}
+                    />
+                    <Link href={d.learnMore} className="btn ln ar-more">
                       Learn more about{" "}
                       {d.title.split(" ").slice(0, 3).join(" ")}
-                      <ArrowRight className="w-4 h-4" />
+                      <span className="ar" aria-hidden="true">
+                        →
+                      </span>
                     </Link>
                   </div>
+
+                  {/* Layer list */}
+                  <ul className="ar-layers">
+                    {[...d.layers].reverse().map(layer => (
+                      <li
+                        key={layer.label}
+                        style={{ "--c": layer.color } as CSSProperties}
+                      >
+                        <b>{layer.label}</b>
+                        {layer.sublabels && (
+                          <span>{layer.sublabels.join(" · ")}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Bottom: illustration + "Why This Matters" */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
-                  <div className="rounded-2xl overflow-hidden border border-white/8 bg-white/3">
+                {/* Illustration + "Why This Matters" */}
+                <div className="ar-why">
+                  <figure className="board">
                     <img
                       src={d.image}
                       alt={`${d.title} illustration`}
-                      className="w-full h-56 object-cover"
+                      width={1280}
+                      height={720}
                       loading="lazy"
+                      decoding="async"
                     />
-                  </div>
-                  <div
-                    className="rounded-2xl p-6 border"
-                    style={{
-                      background: d.color + "0a",
-                      borderColor: d.color + "30",
-                    }}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <CheckCircle
-                        className="w-5 h-5"
-                        style={{ color: d.color }}
-                      />
-                      <span className="font-bold text-white text-base">
-                        Why This Matters
-                      </span>
-                    </div>
-                    <p className="text-white/70 leading-relaxed text-sm">
-                      {d.whyMatters}
-                    </p>
-                    <div className="mt-4 pt-4 border-t border-white/8">
-                      <Link
-                        href="/donate"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-pink-400 hover:text-pink-300 transition-colors"
-                      >
-                        <Heart className="w-4 h-4" />
-                        Support this research
-                      </Link>
-                    </div>
+                  </figure>
+                  <div className="card">
+                    <p className="ar-why-h">Why This Matters</p>
+                    <p>{d.whyMatters}</p>
+                    <Link href="/donate" className="more">
+                      Support this research
+                    </Link>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </section>
 
       {/* ── All diagrams grid ── */}
-      <section className="py-16 px-4 bg-[#000000]">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-3xl font-bold text-white mb-3">
-              All Architecture Diagrams
-            </h2>
-            <p className="text-white/50 text-sm max-w-xl mx-auto">
-              Each diagram uses a different 3D visualization mode to best
-              represent its product's structure. Click any card to open it in
-              the interactive viewer above.
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {DIAGRAMS.map((d, i) => {
-              const Icon = d.icon;
-              return (
-                <motion.button
-                  key={d.id}
-                  onClick={() => {
-                    setActive(d.id);
-                    document
-                      .getElementById("diagrams")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07 }}
-                  className={`text-left p-5 rounded-2xl border transition-all duration-200 hover:scale-[1.02] ${
-                    active === d.id
-                      ? "border-white/20 bg-white/8"
-                      : "border-white/8 bg-white/4 hover:border-white/15"
-                  }`}
-                >
-                  {/* Color band header */}
-                  <div
-                    className="rounded-xl h-2 mb-4 w-full"
-                    style={{
-                      background: `linear-gradient(90deg, ${d.color}, ${d.color}44)`,
-                    }}
-                  />
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{
-                        background: d.color + "20",
-                        border: `1px solid ${d.color}40`,
-                      }}
-                    >
-                      <Icon className="w-5 h-5" style={{ color: d.color }} />
-                    </div>
-                    <div>
-                      <div className="text-white font-semibold text-sm">
-                        {d.title}
-                      </div>
-                      <div className="text-white/40 text-xs">{d.subtitle}</div>
-                    </div>
-                  </div>
-                  {/* Mode badge */}
-                  <div className="mb-3">
+      <Section
+        id="all-diagrams"
+        title="All Architecture Diagrams"
+        lead="Each diagram uses a different 3D visualization mode to best represent its product's structure. Click any card to open it in the interactive viewer above."
+        split
+        alt
+      >
+        <ul className="cards">
+          {DIAGRAMS.map(d => (
+            <li key={d.id}>
+              <button
+                type="button"
+                onClick={() => {
+                  setActive(d.id);
+                  document
+                    .getElementById("diagrams")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className={active === d.id ? "card ar-pick on" : "card ar-pick"}
+                style={{ "--c": d.color } as CSSProperties}
+              >
+                <span className="ar-pick-t">{d.title}</span>
+                <span className="ar-pick-s">{d.subtitle}</span>
+                {/* Mode badge */}
+                <span className="st">
+                  {d.cadWalkthrough ? "CAD Walkthrough" : MODE_LABELS[d.mode]}
+                </span>
+                {/* Layer chips */}
+                <span className="ar-chips">
+                  {d.layers.slice(0, 4).map(l => (
                     <span
-                      className="text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border"
-                      style={{
-                        color: d.color,
-                        borderColor: d.color + "40",
-                        background: d.color + "15",
-                      }}
+                      key={l.label}
+                      style={{ "--c": l.color } as CSSProperties}
                     >
-                      {d.cadWalkthrough
-                        ? "CAD Walkthrough"
-                        : MODE_LABELS[d.mode]}
+                      {l.label.split(" ")[0]}
                     </span>
-                  </div>
-                  {/* Layer chips */}
-                  <div className="flex flex-wrap gap-1">
-                    {d.layers.slice(0, 4).map(l => (
-                      <span
-                        key={l.label}
-                        className="px-1.5 py-0.5 rounded text-[10px] font-mono"
-                        style={{ background: l.color + "18", color: l.color }}
-                      >
-                        {l.label.split(" ")[0]}
-                      </span>
-                    ))}
-                    {d.layers.length > 4 && (
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono text-white/30 bg-white/5">
-                        +{d.layers.length - 4}
-                      </span>
-                    )}
-                  </div>
-                </motion.button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+                  ))}
+                  {d.layers.length > 4 && (
+                    <span className="ar-plus">+{d.layers.length - 4}</span>
+                  )}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* ── Visualization modes explainer ── */}
-      <section className="py-14 px-4">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-2xl font-bold text-white mb-3">
-              6 Visualization Modes
-            </h2>
-            <p className="text-white/40 text-sm max-w-xl mx-auto">
-              Each diagram type is chosen to match the product's actual
-              architecture pattern.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              {
-                mode: "layered" as DiagramMode,
-                color: "#F97316",
-                icon: Layers,
-                title: "Layered Stack",
-                desc: "Horizontal slabs showing OS layers from hardware to apps. Best for kernel and platform architectures.",
-                used: "EoS Kernel",
-              },
-              {
-                mode: "pipeline" as DiagramMode,
-                color: "#FBBF24",
-                icon: ArrowRight,
-                title: "Pipeline Flow",
-                desc: "Left-to-right sequential stages with arrows. Best for boot chains and query processing paths.",
-                used: "eBoot, eDB",
-              },
-              {
-                mode: "radial" as DiagramMode,
-                color: "#F472B6",
-                icon: Radio,
-                title: "Radial Hub",
-                desc: "Central hub with orbiting nodes. Best for inference engines and sensor fusion systems.",
-                used: "ENI/EAI, eRadar360",
-              },
-              {
-                mode: "tree" as DiagramMode,
-                color: "#34D399",
-                icon: GitBranch,
-                title: "Dependency Tree",
-                desc: "Top-down hierarchy showing how components depend on each other. Best for app suites.",
-                used: "eOffice Suite",
-              },
-              {
-                mode: "matrix" as DiagramMode,
-                color: "#A78BFA",
-                icon: Package,
-                title: "Node Matrix",
-                desc: "3D grid of glowing nodes. Best for showing the full ecosystem of products at once.",
-                used: "Full Stack",
-              },
-              {
-                color: "#38BDF8",
-                icon: Network,
-                title: "System Map",
-                desc: "Seven architecture stages as one connected 3D map with maturity badges and documented links. Best for seeing how the whole platform fits together.",
-                used: "Reference architecture",
-              },
-            ].map((m, i) => {
-              const Icon = m.icon;
-              return (
-                <motion.div
-                  key={m.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="glass rounded-xl p-5 border border-white/5"
-                >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-9 h-9 rounded-lg flex items-center justify-center"
-                      style={{ background: m.color + "20" }}
-                    >
-                      <Icon className="w-4 h-4" style={{ color: m.color }} />
-                    </div>
-                    <div>
-                      <div className="text-white text-sm font-bold">
-                        {m.title}
-                      </div>
-                      <div className="text-white/30 text-[10px]">
-                        Used for: {m.used}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-white/50 text-xs leading-relaxed">
-                    {m.desc}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <Section
+        id="modes"
+        title="6 Visualization Modes"
+        lead="Each diagram type is chosen to match the product's actual architecture pattern."
+        split
+      >
+        <ul className="cards">
+          {MODES.map(m => (
+            <li key={m.title}>
+              <div className="card" style={{ "--c": m.color } as CSSProperties}>
+                <h3 className="ar-dot">{m.title}</h3>
+                <p className="k">Used for: {m.used}</p>
+                <p>{m.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* ── Donor callout ── */}
-      <section className="py-16 px-4 bg-[#000000]">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-3xl font-bold text-white mb-3">
-              Why Donors Fund This Research
-            </h2>
-            <p className="text-white/50 text-sm max-w-xl mx-auto">
-              Every layer of the EmbeddedOS stack has real-world impact on
-              safety, health, and freedom.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 gap-5 mb-10">
-            {DONOR_REASONS.map((r, i) => {
-              const Icon = r.icon;
-              return (
-                <motion.div
-                  key={r.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="glass rounded-xl p-6 border border-white/5 card-hover flex gap-4"
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{
-                      background: r.color + "20",
-                      border: `1px solid ${r.color}40`,
-                    }}
-                  >
-                    <Icon size={22} style={{ color: r.color }} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white text-base mb-1">
-                      {r.title}
-                    </h3>
-                    <p className="text-sm text-white/50 leading-relaxed">
-                      {r.desc}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+      <Section
+        id="donors"
+        title="Why Donors Fund This Research"
+        lead="Every layer of the EmbeddedOS stack has real-world impact on safety, health, and freedom."
+        split
+        alt
+      >
+        <ul className="cards two">
+          {DONOR_REASONS.map(r => (
+            <li key={r.title}>
+              <div className="card" style={{ "--c": r.color } as CSSProperties}>
+                <h3 className="ar-dot">{r.title}</h3>
+                <p>{r.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
 
-          {/* CTA */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <Link
-              href="/donate"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-base text-white"
-              style={{
-                background: "linear-gradient(135deg, #F97316, #F59E0B)",
-              }}
-            >
-              <Heart className="w-5 h-5 text-pink-200" />
+        {/* CTA */}
+        <div className="ar-give">
+          <div className="ctas">
+            <Link href="/donate" className="btn or">
               Donate to the Foundation
             </Link>
-            <p className="text-white/30 text-xs mt-3">
-              501(c)(3) nonprofit · 0% platform fees · Tax-deductible
-            </p>
-          </motion.div>
+          </div>
+          <p className="fine">
+            501(c)(3) nonprofit · 0% platform fees · Tax-deductible
+          </p>
         </div>
-      </section>
+      </Section>
 
       {/* ── Components, from the verified ecosystem graph ── */}
       <section
-        className="py-16 px-4 border-t border-white/5"
+        className="sec"
         id="components"
         aria-labelledby="components-heading"
       >
-        <div className="max-w-5xl mx-auto">
-          <h2
-            id="components-heading"
-            className="text-3xl font-bold text-white mb-3"
-          >
-            The components
-          </h2>
-          <p className="text-white/55 mb-3 max-w-3xl">
-            Every part of EmbeddedOS is a separate, independently versioned
-            repository. The grouping below follows the path a device takes at
-            runtime — hardware, boot, operating system, communication, on-device
-            AI, applications — with the development tooling that builds it last.
-          </p>
-          <p className="text-white/40 text-sm mb-10 max-w-3xl">
+        <div className="wrap">
+          <div className="sec-h split">
+            <h2 id="components-heading">The components</h2>
+            <div className="lead">
+              Every part of EmbeddedOS is a separate, independently versioned
+              repository. The grouping below follows the path a device takes at
+              runtime — hardware, boot, operating system, communication,
+              on-device AI, applications — with the development tooling that
+              builds it last.
+            </div>
+          </div>
+          <p className="gnote ar-status">
             Each status is the word that component&rsquo;s own repository uses
             to describe itself. Several are experimental or planned, and are
             labelled as such rather than presented as finished.
@@ -1226,44 +949,32 @@ export default function Architecture() {
             const items = componentsInRole(role);
             if (items.length === 0) return null;
             return (
-              <div key={role} className="mb-10">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-[#F97316] mb-4">
-                  {ROLE_LABEL[role]}
-                </h3>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div key={role} className="ar-role">
+                <h3 className="label">{ROLE_LABEL[role]}</h3>
+                <ul className="cards two">
                   {items.map(component => (
-                    <li
-                      key={component.id}
-                      className="rounded-2xl border border-white/8 p-5 bg-white/[0.02]"
-                    >
-                      <div className="flex items-baseline justify-between gap-3 mb-2">
-                        <h4 className="font-heading font-bold text-white text-lg">
-                          {component.name}
-                        </h4>
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-white/45 border border-white/12 rounded-full px-2 py-0.5 whitespace-nowrap">
-                          {component.maturity}
-                        </span>
-                      </div>
-                      <p className="text-white/60 text-sm leading-relaxed mb-4">
-                        {component.purpose}
-                      </p>
-                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-                        {component.sitePage && (
-                          <Link
-                            href={component.sitePage}
-                            className="text-[#F97316] hover:underline"
+                    <li key={component.id}>
+                      <div className="card">
+                        <div className="top">
+                          <h4>{component.name}</h4>
+                          <span className="st">{component.maturity}</span>
+                        </div>
+                        <p>{component.purpose}</p>
+                        <div className="ar-links">
+                          {component.sitePage && (
+                            <Link href={component.sitePage} className="tl">
+                              {component.name} on this site
+                            </Link>
+                          )}
+                          <a
+                            href={component.repository}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="tl"
                           >
-                            {component.name} on this site
-                          </Link>
-                        )}
-                        <a
-                          href={component.repository}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-white/60 hover:text-white hover:underline"
-                        >
-                          Source repository
-                        </a>
+                            Source repository
+                          </a>
+                        </div>
                       </div>
                     </li>
                   ))}
@@ -1272,7 +983,7 @@ export default function Architecture() {
             );
           })}
 
-          <p className="text-white/40 text-sm">
+          <p className="fine">
             {ECOSYSTEM.length} components. Anything not listed here does not
             exist as a repository yet.
           </p>
@@ -1280,42 +991,27 @@ export default function Architecture() {
       </section>
 
       {/* ── Quick links ── */}
-      <section className="py-10 px-4 border-t border-white/5">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { label: "EoS Kernel", href: "/eos" },
-              { label: "eBoot", href: "/eboot" },
-              { label: "EAI / ENI", href: "/eai" },
-              { label: "eOffice", href: "/eoffice" },
-              { label: "eDB", href: "/product-edb" },
-              { label: "eCAD Hardware", href: "/ecad-hardware" },
-              { label: "API Docs", href: "/api-docs" },
-              { label: "GitHub", href: "https://github.com/embeddedos-org" },
-            ].map(link =>
-              link.href.startsWith("http") ? (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white/50 border border-white/8 hover:border-white/20 hover:text-white/80 transition-all"
-                >
-                  {link.label} <ExternalLink className="w-3 h-3" />
+      <Section tight>
+        <ul className="glinks cols">
+          {QUICK_LINKS.map(link =>
+            link.href.startsWith("http") ? (
+              <li key={link.label}>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  <span>{link.label}</span>
+                  <i aria-hidden="true">↗</i>
                 </a>
-              ) : (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm text-white/50 border border-white/8 hover:border-white/20 hover:text-white/80 transition-all"
-                >
-                  {link.label}
+              </li>
+            ) : (
+              <li key={link.label}>
+                <Link href={link.href}>
+                  <span>{link.label}</span>
+                  <i aria-hidden="true">→</i>
                 </Link>
-              )
-            )}
-          </div>
-        </div>
-      </section>
-    </div>
+              </li>
+            )
+          )}
+        </ul>
+      </Section>
+    </BpPage>
   );
 }

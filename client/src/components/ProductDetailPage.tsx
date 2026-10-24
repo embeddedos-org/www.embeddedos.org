@@ -305,7 +305,15 @@ export default function ProductDetailPage({
                 <b>{usageExamples[activeExample].title}</b>
                 <span>{usageExamples[activeExample].scenario}</span>
               </div>
-              <pre>{usageExamples[activeExample].code}</pre>
+              {/* the code scrolls sideways on a phone, so it takes keyboard
+                  focus and is named (a bare aria-label on a pre is not allowed) */}
+              <pre
+                tabIndex={0}
+                role="region"
+                aria-label={`${usageExamples[activeExample].title}: example code`}
+              >
+                {usageExamples[activeExample].code}
+              </pre>
             </div>
           )}
         </Section>

@@ -155,7 +155,7 @@ export default function DonateModal() {
               {/* Close button */}
               <button
                 onClick={dismiss}
-                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-[#86868b] hover:text-white hover:bg-white/10 transition-colors"
                 aria-label="Close donate dialog"
               >
                 <X size={16} />
@@ -174,7 +174,7 @@ export default function DonateModal() {
                     >
                       Support EmbeddedOS
                     </h2>
-                    <p className="text-xs text-white/40">
+                    <p className="text-xs text-[#a1a1a6]">
                       501(c)(3) · Tax-deductible
                     </p>
                   </div>
@@ -231,15 +231,15 @@ export default function DonateModal() {
 
                 {/* Trust signals */}
                 <div className="flex items-center justify-center gap-4 mb-4 flex-wrap">
-                  <span className="flex items-center gap-1 text-xs text-white/30">
+                  <span className="flex items-center gap-1 text-xs text-[#86868b]">
                     <Shield size={11} className="text-[#34D399]" />
                     Secure payment
                   </span>
-                  <span className="flex items-center gap-1 text-xs text-white/30">
+                  <span className="flex items-center gap-1 text-xs text-[#86868b]">
                     <span className="text-[#34D399] text-xs">✓</span>
                     0% fees
                   </span>
-                  <span className="flex items-center gap-1 text-xs text-white/30">
+                  <span className="flex items-center gap-1 text-xs text-[#86868b]">
                     <span className="text-[#34D399] text-xs">✓</span>
                     Tax receipt by email
                   </span>
@@ -249,7 +249,7 @@ export default function DonateModal() {
                     so there is nothing to "remind" about. */}
                 <button
                   onClick={dismiss}
-                  className="w-full text-xs text-white/30 hover:text-white/50 transition-colors py-1"
+                  className="w-full text-xs text-[#86868b] hover:text-[#f5f5f7] transition-colors py-1"
                 >
                   Maybe later
                 </button>

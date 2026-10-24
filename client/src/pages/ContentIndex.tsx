@@ -26,8 +26,6 @@
  * included.
  */
 
-import { motion } from "framer-motion";
-import { ArrowRight, Calendar, ExternalLink, Mail, Tag } from "lucide-react";
 import { Link } from "wouter";
 
 import {
@@ -45,15 +43,8 @@ import { type Category, categoryByPath } from "@/data/categories";
 import { CATEGORY_ABOUT } from "@/data/category-about";
 import { openContactForm } from "@/lib/contact-form";
 import AboutSections from "@/components/AboutSections";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.06, ease: "easeOut" as const },
-  }),
-};
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./ContentIndex.css";
 
 /** The items a category shows. Programme and bespoke categories show none. */
 export function itemsFor(category: Category): ContentItem[] {
@@ -82,161 +73,111 @@ export default function ContentIndex({ path }: ContentIndexProps) {
 
   if (!category) {
     return (
-      <div className="min-h-screen pt-16">
-        <section className="section-padding">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-            <h1 className="font-heading font-extrabold text-3xl text-white mb-4">
-              Category not found
-            </h1>
-            <p className="text-white/60 mb-8">
-              There is no category at this address.
-            </p>
-            <Link href="/news" className="text-[#F97316] underline">
+      <BpPage className="ci">
+        <PageHero
+          sig
+          title="Category not found"
+          lead="There is no category at this address."
+        >
+          <div className="ctas">
+            <Link href="/news" className="btn gh">
               Everything the Foundation publishes
             </Link>
           </div>
-        </section>
-      </div>
+        </PageHero>
+      </BpPage>
     );
   }
 
   const items = itemsFor(category);
 
   return (
-    <div className="min-h-screen pt-16">
-      <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/80 to-[#000000]" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible">
-            <div className="badge-teal mb-4 inline-flex">
-              {eyebrowFor(category)}
-            </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-              {category.name}
-            </h1>
-            <p className="text-white/60 text-lg max-w-xl mx-auto">
-              {category.summary}
-            </p>
-            {/*
-              Stated on every index, zero included. A count is the cheapest
-              defence against a page that looks busier than it is.
-            */}
-            <p className="text-white/55 text-sm mt-4">
-              {items.length === 0
-                ? "Nothing published yet"
-                : `${items.length} published`}
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="ci">
+      <PageHero
+        sig
+        label={eyebrowFor(category)}
+        title={category.name}
+        lead={category.summary}
+      >
+        {/*
+          Stated on every index, zero included. A count is the cheapest
+          defence against a page that looks busier than it is.
+        */}
+        <p className={items.length === 0 ? "ci-count" : "ci-count on"}>
+          {items.length === 0
+            ? "Nothing published yet"
+            : `${items.length} published`}
+        </p>
+      </PageHero>
 
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          {items.length === 0 ? (
-            <div className="glass rounded-2xl border border-white/5 p-8">
-              <h2 className="font-heading font-bold text-white text-lg mb-3">
-                What will appear here
-              </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
-                {category.emptyNote}
-              </p>
-              <div className="flex flex-wrap gap-4 mt-6 text-sm">
-                <button
-                  type="button"
-                  onClick={() =>
-                    openContactForm({
-                      topic: category.contactTopic ?? "contact",
-                    })
-                  }
-                  className="inline-flex items-center gap-2 text-[#F97316] underline hover:no-underline"
-                >
-                  <Mail size={14} /> Send us a message
-                </button>
-                <Link
-                  href="/news"
-                  className="inline-flex items-center gap-2 text-white/60 underline hover:no-underline"
-                >
-                  What has been published <ArrowRight size={13} />
-                </Link>
-              </div>
+      <Section className="ci-main">
+        {items.length === 0 ? (
+          <div className="card hl ci-empty">
+            <h2>What will appear here</h2>
+            <p>{category.emptyNote}</p>
+            <div className="ctas">
+              <button
+                type="button"
+                onClick={() =>
+                  openContactForm({
+                    topic: category.contactTopic ?? "contact",
+                  })
+                }
+                className="btn or"
+              >
+                Send us a message
+              </button>
+              <Link href="/news" className="btn gh">
+                What has been published <span aria-hidden="true">→</span>
+              </Link>
             </div>
-          ) : (
-            <div className="space-y-6">
-              {items.map((item, i) => (
-                <motion.article
-                  key={item.slug}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="glass rounded-2xl border border-white/5 hover:border-white/10 p-6 card-hover"
-                >
-                  <div className="flex flex-wrap items-center gap-3 mb-3 text-xs">
-                    <span className="font-bold px-2.5 py-1 rounded-full bg-[#F97316]/15 text-[#F97316] border border-[#F97316]/30">
-                      {badgeOf(item)}
-                    </span>
-                    <span className="flex items-center gap-1.5 text-white/55">
-                      <Calendar size={12} />
-                      {formatDate(item.date)}
-                    </span>
-                    {item.area && (
-                      <span className="text-white/55">
-                        {AREA_LABEL[item.area]}
-                      </span>
-                    )}
-                  </div>
-                  <h2 className="font-heading font-bold text-white text-lg mb-2 leading-snug">
-                    {item.title}
-                  </h2>
-                  <p className="text-white/60 text-sm leading-relaxed mb-4">
-                    {item.summary}
-                  </p>
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex flex-wrap gap-1.5">
-                      {item.tags.map(tag => (
-                        <span
-                          key={tag}
-                          className="flex items-center gap-1 text-[11px] text-white/55 bg-white/5 px-2 py-0.5 rounded-full"
-                        >
-                          <Tag size={9} />
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    {isInternal(item) ? (
-                      <Link
-                        href={item.href}
-                        className="flex items-center gap-1.5 text-xs text-[#F97316] hover:text-[#EA580C] font-semibold transition-colors"
-                      >
-                        Read <ArrowRight size={12} />
-                      </Link>
-                    ) : (
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-[#F97316] hover:text-[#EA580C] font-semibold transition-colors"
-                      >
-                        Read <ExternalLink size={12} />
-                      </a>
-                    )}
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          )}
-
-          <div className="pt-10">
-            <Link
-              href="/news"
-              className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
-            >
-              Everything the Foundation publishes <ArrowRight size={13} />
-            </Link>
           </div>
-        </div>
-      </section>
+        ) : (
+          <div className="ci-list">
+            {items.map(item => (
+              <article key={item.slug} className="card ci-item">
+                <div className="ci-meta">
+                  <span className="ci-badge">{badgeOf(item)}</span>
+                  <span>{formatDate(item.date)}</span>
+                  {item.area && <span>{AREA_LABEL[item.area]}</span>}
+                </div>
+                <h2>{item.title}</h2>
+                <p>{item.summary}</p>
+                <div className="ci-foot">
+                  <ul className="ci-tags" aria-label="Tags">
+                    {item.tags.map(tag => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                  {isInternal(item) ? (
+                    <Link href={item.href} className="btn gh sm ci-read">
+                      Read <span aria-hidden="true">→</span>
+                    </Link>
+                  ) : (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn gh sm ci-read"
+                    >
+                      Read <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        <ul className="glinks ci-all">
+          <li>
+            <Link href="/news">
+              <span>Everything the Foundation publishes</span>
+              <i aria-hidden="true">→</i>
+            </Link>
+          </li>
+        </ul>
+      </Section>
 
       {/*
         Long-form about content (F-01): the fourteen empty categories carry
@@ -249,6 +190,6 @@ export default function ContentIndex({ path }: ContentIndexProps) {
           sections={CATEGORY_ABOUT[path]}
         />
       )}
-    </div>
+    </BpPage>
   );
 }

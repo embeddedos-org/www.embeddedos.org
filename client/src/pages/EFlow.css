@@ -1,0 +1,187 @@
+/* /eflow (EFlow.tsx): the parts the shared page blocks do not cover. */
+
+/* the worked example: five blocks wired left to right, then the C they become */
+.bp.eflow .ef-example {
+  margin-top: clamp(28px, 4vw, 48px);
+  padding: clamp(22px, 3vw, 36px);
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.bp.eflow .ef-flow {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 28px;
+}
+.bp.eflow .ef-flow li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line2);
+  border-top: 2px solid var(--c, var(--fg3));
+  background: var(--panel2);
+  min-width: 0;
+}
+.bp.eflow .ef-flow b {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.bp.eflow .ef-flow span {
+  font: 500 12px/1.4 var(--mono);
+  color: var(--fg2);
+}
+/* the wire between two blocks */
+.bp.eflow .ef-flow li + li::before {
+  content: "";
+  position: absolute;
+  left: -28px;
+  top: 50%;
+  width: 28px;
+  height: 1px;
+  background: var(--fg3);
+}
+.bp.eflow .ef-flow li + li::after {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: calc(50% - 4px);
+  border: 4px solid transparent;
+  border-left: 5px solid var(--fg3);
+  border-right: 0;
+}
+@media (max-width: 900px) {
+  .bp.eflow .ef-flow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .bp.eflow .ef-flow li + li::before {
+    left: 28px;
+    top: -22px;
+    width: 1px;
+    height: 22px;
+  }
+  .bp.eflow .ef-flow li + li::after {
+    left: 24px;
+    top: -6px;
+    border: 4px solid transparent;
+    border-top: 5px solid var(--fg3);
+    border-bottom: 0;
+  }
+}
+.bp.eflow .ef-gen {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--fg3);
+}
+
+/* the 8 steps: two columns of numbered steps on wide screens */
+.bp.eflow .ef-steps {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 48px;
+}
+@media (max-width: 760px) {
+  .bp.eflow .ef-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.eflow .steps .n {
+  border-color: var(--c, var(--line2));
+}
+/* CAD integration: three numbered steps side by side */
+.bp.eflow .ef-cad {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+}
+@media (max-width: 900px) {
+  .bp.eflow .ef-cad {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* block library: the category accent is a dot on its tab */
+.bp.eflow .ef-tabs {
+  margin-bottom: 24px;
+}
+.bp.eflow .ef-tabs .btn::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.eflow .ef-block h3 {
+  font-size: 19px;
+  min-width: 0;
+}
+.bp.eflow .ef-copy {
+  flex: none;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: none;
+  color: var(--fg2);
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.bp.eflow .ef-copy:hover {
+  color: var(--fg);
+  border-color: var(--fg3);
+}
+@media (max-width: 700px), (pointer: coarse) {
+  .bp.eflow .ef-copy {
+    min-height: 44px;
+    min-width: 64px;
+  }
+}
+.bp.eflow .ef-snip {
+  margin: auto 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font: 12px/1.6 var(--mono);
+  color: var(--fg);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* a use case's chain of blocks, joined by arrows */
+.bp.eflow .ef-chain {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.bp.eflow .ef-chain li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--fg);
+}
+.bp.eflow .ef-chain li + li::before {
+  content: "→";
+  color: var(--fg3);
+}
+
+.bp.eflow .ef-tip {
+  margin-top: 16px;
+}
+.bp.eflow .ef-tip strong {
+  color: var(--fg);
+}

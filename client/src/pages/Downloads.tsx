@@ -1,31 +1,37 @@
-import { motion } from "framer-motion";
-import {
-  Download,
-  Github,
-  Package,
-  Terminal,
-  Cpu,
-  Layers,
-  Brain,
-  Zap,
-  ArrowRight,
-  ExternalLink,
-} from "lucide-react";
+import type { CSSProperties } from "react";
+import { Link } from "wouter";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./Downloads.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.07, ease: "easeOut" as const },
-  }),
-};
+/** An anchor id for a category: "AI & Neural" → "ai-neural". */
+const categoryId = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+const INSTALL = [
+  {
+    step: "1",
+    title: "Clone the repo",
+    code: "git clone https://github.com/embeddedos-org/eos",
+  },
+  {
+    step: "2",
+    title: "Initialize your project",
+    code: "ebuild init my-project --board stm32f4",
+  },
+  {
+    step: "3",
+    title: "Build and flash",
+    code: "ebuild build && ebuild flash",
+  },
+];
 
 const DOWNLOADS = [
   {
     category: "Core Platform",
-    icon: Cpu,
     color: "#F97316",
     items: [
       {
@@ -60,7 +66,6 @@ const DOWNLOADS = [
   },
   {
     category: "Developer Tools",
-    icon: Terminal,
     color: "#22D3EE",
     items: [
       {
@@ -96,7 +101,6 @@ const DOWNLOADS = [
   },
   {
     category: "AI & Neural",
-    icon: Brain,
     color: "#A78BFA",
     items: [
       {
@@ -133,7 +137,6 @@ const DOWNLOADS = [
   },
   {
     category: "Applications & Services",
-    icon: Package,
     color: "#34D399",
     items: [
       {
@@ -170,7 +173,6 @@ const DOWNLOADS = [
   },
   {
     category: "Health & Devices",
-    icon: Zap,
     color: "#F472B6",
     items: [
       {
@@ -198,7 +200,6 @@ const DOWNLOADS = [
   },
   {
     category: "Protocols & Middleware",
-    icon: Layers,
     color: "#F97316",
     items: [
       {
@@ -227,253 +228,149 @@ const DOWNLOADS = [
 
 export default function Downloads() {
   return (
-    <div className="min-h-screen pt-16 bg-[#000000]">
-      {/* Hero */}
-      <section className="section-padding bg-gradient-to-b from-[#000000] to-[#0b0b0d]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+    <BpPage className="dls">
+      <PageHero
+        sig
+        label="Downloads"
+        title={
+          <>
+            Everything EmbeddedOS, <span>MIT Licensed</span>
+          </>
+        }
+        lead="Every component of the EmbeddedOS ecosystem is free and open-source under the MIT License. Download directly from GitHub — no registration, no paywalls."
+      >
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
           >
-            <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#F97316] uppercase mb-4">
-              <Download size={13} /> Downloads
+            Browse All Repos{" "}
+            <span className="ar" aria-hidden="true">
+              ↗
             </span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
-              Everything EmbeddedOS,{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F97316] to-[#FBBF24]">
-                MIT Licensed
-              </span>
-            </h1>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto mb-8">
-              Every component of the EmbeddedOS ecosystem is free and
-              open-source under the MIT License. Download directly from GitHub —
-              no registration, no paywalls.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href="https://github.com/embeddedos-org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold px-6 py-3 rounded-lg transition-colors"
-              >
-                <Github size={18} />
-                Browse All Repos
-              </a>
-              <a
-                href="/getting-started"
-                className="inline-flex items-center gap-2 border border-white/20 hover:border-[#F97316] text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-              >
-                Get Started Guide
-                <ArrowRight size={16} />
-              </a>
-            </div>
-          </motion.div>
+          </a>
+          <Link href="/getting-started" className="btn gh">
+            Get Started Guide{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
+      </PageHero>
+      <LocalNav
+        name="Downloads"
+        items={[
+          ...DOWNLOADS.map(c => ({
+            id: categoryId(c.category),
+            label: c.category,
+          })),
+          { id: "quick-install", label: "Quick Install" },
+          { id: "license", label: "MIT License" },
+        ]}
+      />
 
       {/* Download Categories */}
-      <section className="section-padding">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="space-y-16">
-            {DOWNLOADS.map((category, ci) => {
-              const Icon = category.icon;
-              return (
-                <motion.div
-                  key={category.category}
-                  variants={fadeUp}
-                  custom={ci}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ background: `${category.color}20` }}
-                    >
-                      <Icon size={20} style={{ color: category.color }} />
-                    </div>
-                    <h2 className="text-xl font-bold text-white">
-                      {category.category}
-                    </h2>
-                    <div className="flex-1 h-px bg-white/10 ml-2" />
-                  </div>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {category.items.map((item, ii) => (
-                      <motion.div
-                        key={item.name}
-                        variants={fadeUp}
-                        custom={ci * 0.3 + ii * 0.1}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="bg-white/5 border border-white/10 rounded-xl p-5 hover:border-white/20 transition-all hover:-translate-y-0.5 group"
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <div>
-                            <h3 className="font-bold text-white text-sm">
-                              {item.name}
-                            </h3>
-                            <span className="text-xs text-white/40 font-mono">
-                              {item.version}
-                            </span>
-                          </div>
-                          <span className="text-xs text-white/30 bg-white/5 px-2 py-0.5 rounded-full">
-                            {item.size}
-                          </span>
-                        </div>
-                        <p className="text-xs text-white/55 leading-relaxed mb-4">
-                          {item.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {item.tags.map(tag => (
-                            <span
-                              key={tag}
-                              className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/40 font-mono"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] text-[#34D399] font-semibold">
-                            {item.license} License
-                          </span>
-                          <a
-                            href={item.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 text-xs font-semibold transition-colors group-hover:text-[#F97316]"
-                            style={{ color: category.color }}
-                          >
-                            <Github size={13} />
-                            Download
-                            <ExternalLink size={11} />
-                          </a>
-                        </div>
-                      </motion.div>
+      {DOWNLOADS.map(category => (
+        <Section
+          key={category.category}
+          id={categoryId(category.category)}
+          className="dl-cat"
+        >
+          <h2
+            className="dl-ch"
+            style={{ "--c": category.color } as CSSProperties}
+          >
+            {category.category}
+          </h2>
+          <ul className="dl-list">
+            {category.items.map(item => (
+              <li key={item.name} className="dl-item">
+                <div className="dl-name">
+                  <h3>{item.name}</h3>
+                  <span className="dl-ver">{item.version}</span>
+                </div>
+                <div className="dl-about">
+                  <p>{item.description}</p>
+                  <ul className="dl-tags">
+                    {item.tags.map(tag => (
+                      <li key={tag}>{tag}</li>
                     ))}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+                  </ul>
+                </div>
+                <div className="dl-meta">
+                  <dl>
+                    <dt>Size</dt>
+                    <dd>{item.size}</dd>
+                  </dl>
+                  <p className="dl-lic">{item.license} License</p>
+                </div>
+                <a
+                  href={item.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn gh dl-get"
+                >
+                  Download{" "}
+                  <span className="ar" aria-hidden="true">
+                    ↗
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ))}
 
       {/* Install Instructions */}
-      <section className="section-padding bg-[#000000]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-2xl font-bold text-white mb-3">
-              Quick Install
-            </h2>
-            <p className="text-white/50 text-sm">
-              Get started with EmbeddedOS in under 5 minutes
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {[
-              {
-                step: "1",
-                title: "Clone the repo",
-                code: "git clone https://github.com/embeddedos-org/eos",
-                color: "#F97316",
-              },
-              {
-                step: "2",
-                title: "Initialize your project",
-                code: "ebuild init my-project --board stm32f4",
-                color: "#22D3EE",
-              },
-              {
-                step: "3",
-                title: "Build and flash",
-                code: "ebuild build && ebuild flash",
-                color: "#34D399",
-              },
-            ].map((s, i) => (
-              <motion.div
-                key={s.step}
-                variants={fadeUp}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="bg-white/5 border border-white/10 rounded-xl p-5"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span
-                    className="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center"
-                    style={{ background: `${s.color}20`, color: s.color }}
-                  >
-                    {s.step}
-                  </span>
-                  <span className="text-sm font-semibold text-white">
-                    {s.title}
-                  </span>
+      <Section
+        id="quick-install"
+        title="Quick Install"
+        lead="Get started with EmbeddedOS in under 5 minutes"
+        split
+      >
+        <ol className="steps num dl-steps">
+          {INSTALL.map(s => (
+            <li key={s.step}>
+              <span className="n">{s.step}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <div className="code">
+                  <pre tabIndex={0}>
+                    <code>{s.code}</code>
+                  </pre>
                 </div>
-                <code className="block text-xs font-mono text-[#22D3EE] bg-black/30 px-3 py-2 rounded-lg break-all">
-                  {s.code}
-                </code>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div
-            variants={fadeUp}
-            custom={3}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mt-8"
-          >
-            <a
-              href="/getting-started"
-              className="inline-flex items-center gap-2 text-[#F97316] hover:text-[#EA580C] font-semibold text-sm transition-colors"
-            >
-              Full Getting Started Guide
-              <ArrowRight size={14} />
-            </a>
-          </motion.div>
-        </div>
-      </section>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="dl-more">
+          <Link href="/getting-started" className="btn ln">
+            Full Getting Started Guide{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
+        </p>
+      </Section>
 
       {/* License Notice */}
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
-              <h3 className="text-lg font-bold text-white mb-3">MIT License</h3>
-              <p className="text-white/55 text-sm leading-relaxed mb-4">
-                All EmbeddedOS software is released under the MIT License. You
-                are free to use, copy, modify, merge, publish, distribute,
-                sublicense, and/or sell copies of the software, subject to the
-                copyright notice and permission notice appearing in all copies.
-              </p>
-              <a
-                href="/licenses"
-                className="inline-flex items-center gap-1.5 text-[#F97316] hover:text-[#EA580C] text-sm font-semibold transition-colors"
-              >
-                View full license text
-                <ArrowRight size={13} />
-              </a>
-            </div>
-          </motion.div>
+      <Section id="license" title="MIT License">
+        <div className="prose dl-license">
+          <p>
+            All EmbeddedOS software is released under the MIT License. You are
+            free to use, copy, modify, merge, publish, distribute, sublicense,
+            and/or sell copies of the software, subject to the copyright notice
+            and permission notice appearing in all copies.
+          </p>
+          <p>
+            <Link href="/licenses" className="tl">
+              View full license text
+            </Link>
+          </p>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

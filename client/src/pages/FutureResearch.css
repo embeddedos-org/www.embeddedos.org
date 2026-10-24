@@ -1,0 +1,79 @@
+/* /future-research: six long-horizon directions, each a row with its horizon, aim and milestones. */
+.bp.fres .fr-dir {
+  padding-block: clamp(56px, 7vw, 104px);
+}
+.bp.fres .fr-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr);
+  gap: 24px clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .bp.fres .fr-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.fres .fr-h {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+.bp.fres .fr-hz {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  font: 500 13px/1 var(--mono);
+  color: var(--fg2);
+}
+.bp.fres .fr-hz::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.fres .fr-h h2 {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  max-width: 12em;
+}
+.bp.fres .fr-b {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.bp.fres .fr-b > p {
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.6;
+  color: var(--fg2);
+  max-width: 40em;
+}
+.bp.fres .fr-ms {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bp.fres .fr-ms li {
+  display: grid;
+  grid-template-columns: 7px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+.bp.fres .fr-ms li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  transform: translateY(-2px);
+}

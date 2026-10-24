@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
 
 interface TraceSegment {
   x1: number;
@@ -145,6 +146,9 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
   // F-23: paint one static frame instead of looping when the visitor
   // prefers reduced motion.
   const reduceMotion = usePrefersReducedMotion();
+  // Signals only move while the bench runs, so frames are drawn only then, and
+  // only while the board is on screen; stopped, it shows one still frame.
+  const onScreen = useOnScreen(canvasRef);
   const tRef = useRef(0);
 
   useEffect(() => {
@@ -153,21 +157,24 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
+    // the page's Black Edition greys and type (bp.css tokens), with their values as fallbacks
+    const css = getComputedStyle(canvas);
+    const token = (name: string, fallback: string) =>
+      css.getPropertyValue(name).replace(/\s+/g, " ").trim() || fallback;
+    const gridInk = token("--line", "#232326");
+    const mono = token("--mono", "ui-monospace, Menlo, monospace");
+
+    const animate = running && onScreen && !reduceMotion;
+    let dpr = 1;
 
     const draw = () => {
-      const w = canvas.width;
-      const h = canvas.height;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
       // PCB background grid
-      ctx.strokeStyle = "rgba(34,211,238,0.04)";
+      ctx.strokeStyle = gridInk;
       ctx.lineWidth = 0.5;
       const gridSize = 20;
       for (let x = 0; x < w; x += gridSize) {
@@ -250,29 +257,42 @@ export default function PCBTrace({ running = true }: { running?: boolean }) {
         }
       }
 
-      // MCU label
+      // MCU label (never under 12px, the smallest text the site uses)
       ctx.fillStyle = "rgba(255,255,255,0.6)";
-      ctx.font = `bold ${Math.min(w, h) * 0.025}px 'JetBrains Mono', monospace`;
+      ctx.font = `bold ${Math.max(12, Math.min(w, h) * 0.025)}px ${mono}`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("MCU", 0.5 * w, 0.5 * h);
 
-      // F-23: one static frame under reduced motion; the loop otherwise.
-      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion (and while stopped or
+      // scrolled away); the loop otherwise.
+      if (animate) frameRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    // a sharp canvas, at no more than 1.5 device pixels per CSS pixel;
+    // resizing clears it, so a still frame is drawn again
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(canvas.offsetWidth * dpr);
+      canvas.height = Math.round(canvas.offsetHeight * dpr);
+      if (!animate) draw();
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    if (animate) draw();
     return () => {
       cancelAnimationFrame(frameRef.current);
       ro.disconnect();
     };
-  }, [running, reduceMotion]);
+  }, [running, reduceMotion, onScreen]);
 
   return (
     <canvas
       ref={canvasRef}
       className="w-full h-full rounded-xl"
-      style={{ background: "rgba(5,10,20,0.9)" }}
+      style={{ background: "var(--panel, #0b0b0d)" }}
       aria-label="PCB signal trace visualization"
     />
   );

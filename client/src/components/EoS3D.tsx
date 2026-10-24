@@ -10,6 +10,8 @@ import { RoundedBox, Torus } from "@react-three/drei";
 import * as THREE from "three";
 import { supportsWebGL } from "./HeroTechStack";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
+import FitCamera, { type SceneExtent } from "./fit-camera";
 
 // ── Kernel Core ────────────────────────────────────────────────────────────────
 function KernelCore({ hovered }: { hovered: boolean }) {
@@ -46,26 +48,28 @@ function KernelCore({ hovered }: { hovered: boolean }) {
       </mesh>
 
       {/* Orbit ring 1 */}
-      <mesh ref={ring1Ref}>
-        <Torus args={[1.1, 0.025, 8, 64]} />
+      <Torus ref={ring1Ref} args={[1.1, 0.025, 8, 64]}>
         <meshStandardMaterial
           color="#22D3EE"
           emissive="#22D3EE"
           emissiveIntensity={1.5}
           toneMapped={false}
         />
-      </mesh>
+      </Torus>
 
       {/* Orbit ring 2 */}
-      <mesh ref={ring2Ref} rotation={[Math.PI / 3, 0, Math.PI / 6]}>
-        <Torus args={[1.4, 0.018, 8, 64]} />
+      <Torus
+        ref={ring2Ref}
+        args={[1.4, 0.018, 8, 64]}
+        rotation={[Math.PI / 3, 0, Math.PI / 6]}
+      >
         <meshStandardMaterial
           color="#34D399"
           emissive="#34D399"
           emissiveIntensity={1.2}
           toneMapped={false}
         />
-      </mesh>
+      </Torus>
 
       {/* HAL nodes orbiting */}
       {[0, 1, 2, 3, 4, 5].map(i => {
@@ -171,8 +175,7 @@ function BootStage({
 
   return (
     <group position={[0, y, 0]}>
-      <mesh ref={ref}>
-        <RoundedBox args={[1.4, 0.5, 0.3]} radius={0.08} smoothness={4} />
+      <RoundedBox ref={ref} args={[1.4, 0.5, 0.3]} radius={0.08} smoothness={4}>
         <meshStandardMaterial
           color={color}
           emissive={color}
@@ -180,7 +183,7 @@ function BootStage({
           metalness={0.7}
           roughness={0.2}
         />
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -325,15 +328,20 @@ function AppIcon({
   });
 
   return (
-    <mesh ref={ref} position={position}>
-      <RoundedBox args={[0.35, 0.35, 0.1]} radius={0.06} smoothness={4} />
+    <RoundedBox
+      ref={ref}
+      position={position}
+      args={[0.35, 0.35, 0.1]}
+      radius={0.06}
+      smoothness={4}
+    >
       <meshStandardMaterial
         color={color}
         emissive={color}
         emissiveIntensity={0.7}
         toneMapped={false}
       />
-    </mesh>
+    </RoundedBox>
   );
 }
 
@@ -402,33 +410,50 @@ function AppGridItem({
   });
 
   return (
-    <mesh ref={ref} position={position}>
-      <RoundedBox args={[0.42, 0.42, 0.08]} radius={0.07} smoothness={4} />
+    <RoundedBox
+      ref={ref}
+      position={position}
+      args={[0.42, 0.42, 0.08]}
+      radius={0.07}
+      smoothness={4}
+    >
       <meshStandardMaterial
         color={color}
         emissive={color}
         emissiveIntensity={0.4}
         toneMapped={false}
       />
-    </mesh>
+    </RoundedBox>
   );
 }
 
 // ── Public Canvas exports ──────────────────────────────────────────────────────
+// Every scene here animates, so it draws each frame only while it is on screen
+// and motion is allowed; otherwise it draws on demand (one frame, then on
+// interaction). The pixel ratio is capped at 1.5: these stages are large, and
+// a 2x or 3x buffer costs a weak GPU far more than it adds to the picture.
 function GuardedCanvas({ children, ...props }: ComponentProps<typeof Canvas>) {
   const [webglReady, setWebglReady] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const onScreen = useOnScreen(wrapRef);
 
   useEffect(() => {
     setWebglReady(supportsWebGL());
   }, []);
 
-  if (!webglReady) return null;
-
   return (
-    <Canvas frameloop={reducedMotion ? "demand" : "always"} {...props}>
-      {children}
-    </Canvas>
+    <div ref={wrapRef} className="h-full w-full">
+      {webglReady && (
+        <Canvas
+          dpr={[1, 1.5]}
+          frameloop={onScreen && !reducedMotion ? "always" : "demand"}
+          {...props}
+        >
+          {children}
+        </Canvas>
+      )}
+    </div>
   );
 }
 
@@ -474,12 +499,24 @@ export function EAINetworkCanvas({ hovered }: { hovered: boolean }) {
   );
 }
 
+// The envelopes FitCamera fits to the stage (see fit-camera.tsx), over the
+// whole animation and at the 1.05 hover scale:
+// - eOffice: six 0.35 tiles on a ring of radius 1.1, each spinning on its own
+//   axis (0.18 from its centre at most), around a 0.35 hub;
+// - eApps: a 4 x 3 grid of 0.42 tiles 0.55 apart (2.07 x 1.52), spun about the
+//   vertical and tilted by up to 0.1 rad, which lifts its far edge by 0.1.
+const EOFFICE_EXTENT: SceneExtent = { cy: 0, hy: 0.19, r: 1.35 };
+const EAPPS_EXTENT: SceneExtent = { cy: 0, hy: 0.9, r: 1.17 };
+
 export function EOfficeCanvas({ hovered }: { hovered: boolean }) {
+  // The camera sits a little above the ring, so the six apps read as a ring
+  // instead of lining up edge-on; FitCamera then sets its distance.
   return (
     <GuardedCanvas
-      camera={{ position: [0, 0, 4], fov: 50 }}
+      camera={{ position: [0, 1.5, 4], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
     >
+      <FitCamera extent={EOFFICE_EXTENT} />
       <ambientLight intensity={0.3} />
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#F97316" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#A78BFA" />
@@ -494,6 +531,7 @@ export function EAppsCanvas({ hovered }: { hovered: boolean }) {
       camera={{ position: [0, 0, 4.5], fov: 50 }}
       gl={{ antialias: true, alpha: true }}
     >
+      <FitCamera extent={EAPPS_EXTENT} />
       <ambientLight intensity={0.3} />
       <pointLight position={[3, 3, 3]} intensity={1.5} color="#22D3EE" />
       <pointLight position={[-3, -2, -2]} intensity={0.8} color="#F97316" />
