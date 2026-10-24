@@ -482,12 +482,18 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: max(100vw, 160svh);
+  /* never past the frames' own 2560 × 1600 (story.js FRAME_MAX), so a huge window keeps the board in
+     proportion to the text */
+  width: min(max(100vw, 160svh), 2560px);
   max-width: none;
   margin: 0;
   overflow: visible;
   transform: translate(-50%, -50%)
-    translate3d(calc(var(--c0x) * 100vw), calc(var(--c0y) * 100svh), 0)
+    translate3d(
+      calc(var(--c0x) * min(100vw, 2560px)),
+      calc(var(--c0y) * min(100svh, 1600px)),
+      0
+    )
     scale(var(--c0s));
   will-change: transform;
   --c0x: 0;
@@ -588,7 +594,8 @@
   opacity: 1;
   left: 0;
   right: 0;
-  top: calc(var(--nav) + clamp(18px, 4.5vh, 64px));
+  /* --s0-shift (story.js) centres the opening on screens taller than it */
+  top: calc(var(--nav) + clamp(18px, 4.5vh, 64px) + var(--s0-shift, 0px));
 }
 .bk.cine .bk-s1,
 .bk.cine .bk-s4 {
@@ -624,7 +631,7 @@
 }
 @media (orientation: portrait), (max-width: 800px) {
   .bk.cine .bk-cam {
-    width: 160vw;
+    width: min(160vw, 2560px);
     --c0x: 0.05;
     --c0y: 0.2;
     --c0s: 0.88;
