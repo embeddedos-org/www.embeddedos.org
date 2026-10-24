@@ -312,6 +312,85 @@ migrate).
 
 ---
 
+## Booking
+
+`/book` is the booking page, linked as "Book a call" in the header. `/contact`
+and `/eos-boards` each carry a compact card that links to it. The page is
+`client/src/pages/Book.tsx`: it lists the topics as guidance and embeds the
+Foundation's Google Calendar appointment schedule
+(`client/src/components/BookingCalendar.tsx`), where the visitor picks a time
+and fills in Google's booking form. Topics, durations, the "what to expect"
+list and the FAQ are in `client/src/data/booking.ts`.
+
+- **The calendar is two constants** in `client/src/data/foundation.ts`:
+  - `GOOGLE_APPOINTMENTS_EMBED_URL`, the iframe `src` from the schedule's
+    embed code, now
+    `https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true`;
+  - `GOOGLE_BOOKING_PAGE_URL`, the schedule's booking page link, now
+    `https://calendar.app.google/PPzWao4AzvXtZeva6`. It sits under the
+    calendar as "Open the booking page" and opens in a new tab.
+- **To change the calendar,** open the appointment schedule in Google
+  Calendar and use its share options: copy the booking page link into
+  `GOOGLE_BOOKING_PAGE_URL`, and from the website embed code copy only the
+  `src` of the `<iframe>` into `GOOGLE_APPOINTMENTS_EMBED_URL`. Do not paste
+  Google's "Book an appointment" button code: it loads
+  `scheduling-button-script.js` and a stylesheet from Google, which the CSP
+  does not allow and the site does not use. `client/src/lib/booking.ts`
+  accepts only these forms:
+  - embed: `https://calendar.google.com/calendar/appointments/<id>?gv=true`
+    (optionally `appointments/schedules/<id>`);
+  - booking page: `https://calendar.app.google/<id>`, or the
+    `https://calendar.google.com/calendar/appointments/...` address without
+    the query.
+
+  Then update `tests/unit/booking-url-set.test.tsx`, which pins both values.
+  An embed URL that does not pass the check shows the email fallback instead
+  of a calendar, with the `_BY_EMAIL` versions of the steps, the "what to
+  expect" list, the time-zone note and the FAQ, which promise only an email
+  reply; a booking link that does not pass is left out.
+
+- **Set in Google Calendar, not here:** the slot length, the video link and the
+  booking form. The cards and copy say 30 minutes (`BOOKING_MINUTES`) and a
+  video link in the confirmation email, so the schedule must use 30-minute
+  slots with Google Meet (or another video link). The page asks visitors to
+  mention their topic in the booking form, which by default asks only for a
+  first name, a last name and an email address, so give the form an item such
+  as "What would you like to talk about?". Nothing in this repository can check these settings;
+  confirm them on the schedule.
+- **The topic can no longer be passed in:** Google's embed takes no prefill,
+  so the topic cards are guidance, not inputs, and the three steps are a guide
+  rather than a progress bar.
+- **Loading:** the iframe is mounted when the card comes within 300 px of the
+  viewport, never while the site is prerendered, and carries
+  `loading="lazy"`. A skeleton shows until the frame's load event. If that has
+  not fired after 15 s (`FRAME_TIMEOUT_MS`), the card offers the booking page
+  and the email option over it, and the calendar takes over again if it loads
+  after all. The browser fires load even for an error page in the frame, so
+  the link under the calendar is always shown.
+- **CSP:** `client/public/.htaccess` allows `https://calendar.google.com` in
+  `frame-src` and adds no Google script or style host for the calendar.
+- **Notifications:** the embedded calendar tells this site nothing about a
+  booking, so the site sends no notice of its own and stores nothing. Google
+  adds each booking to the schedule owner's calendar ("When someone books an
+  appointment, it's added to your calendar", Google Calendar Help). Any email
+  about it, to the booker or to the team, is decided by the appointment
+  schedule's own settings in Google Calendar, which also set up "confirmation
+  emails and reminders" (Google Calendar Help, "Create an appointment
+  schedule"). Check there that the booker gets a confirmation email, which the
+  FAQ promises along with its cancel link, and that the team learns of each
+  booking, by email or by watching the calendar.
+- **`client/public/api/booking.php` is retired.** It used to mail the team a
+  notice posted by the previous calendar. It now answers every request with
+  HTTP 410 and does nothing else (`tests/php/booking-retired.test.php` and
+  `tests/unit/booking.test.tsx` pin that). It stays because the cPanel deploy
+  (`client/public/.cpanel.yml`) copies files and never deletes: removed from
+  the repository, the old endpoint would stay live on the server. After this
+  version is deployed, delete `public_html/api/booking.php` on the server, then
+  delete the file here. That deletion turns CI's `deploy-drift` job red until
+  the deploy branch is next rebuilt with `scripts/deploy-branch.mjs`, because
+  `scripts/check-deploy-drift.mjs` fails on files the deploy branch has and the
+  build does not; rebuild it soon after.
+
 ## Notes for contributors
 
 - **Do not render `<Navbar />` or `<Footer />` inside a page.** `App.tsx`
@@ -370,9 +449,38 @@ migrate).
   clip the section.
 - Payload budgets are enforced in `tests/performance/budgets.test.ts`; adding a
   large eager import will fail the suite rather than quietly regress the site.
+- **A new board on `/eos-boards` is one manifest entry plus its media, its
+  two KiCad files and its licence.** Add the board to `EOS_BOARDS` in
+  `client/src/data/eos-boards.ts`, copying its facts from the board's
+  `README.md` and its check counts from `build-report.json` and `drc.json` in
+  eCAD-Hardware-Products. Put its media in `client/public/media/`:
+  `board-<slug>-iso.jpg`, `-top.jpg` and `-bottom.jpg` from the board's
+  renders, `board-<slug>-thumb.jpg` (the iso render at 480 px, for the index),
+  `board-<slug>-turntable.mp4` (H.264, no audio) and
+  `board-<slug>-turntable-poster.jpg` (the video's first frame). Copy, unchanged
+  and from the commit in `checks.commit`, its native files
+  `boards/eos/<slug>/hardware/<slug>.kicad_sch` and `<slug>.kicad_pcb` to
+  `client/public/cad/<slug>/`, and its `boards/eos/<slug>/LICENSE.txt` to
+  `client/public/board-licences/<slug>.txt` (`git show <commit>:<path>` in
+  eCAD-Hardware-Products gives the exact bytes).
+  Set `source` to `BOARD_SOURCES.merged`: the page lists only boards merged on
+  eCAD-Hardware-Products master. Set `checks.commit` to the commit its counts
+  come from. Then run `pnpm optimize:images` for the WebP siblings and the manifest.
+  `tests/unit/eos-boards.test.tsx` fails if a media, KiCad or licence file is
+  missing, a declared pixel size is wrong, or a KiCad file or licence does not
+  carry the owner's name and terms.
 
 ---
 
 ## Licence
 
-MIT. See [SECURITY.md](./SECURITY.md) for the vulnerability disclosure policy.
+MIT, except the EmbeddedOS development-board renders and turntable videos in
+`client/public/media/board-*`, the boards' native KiCad files in
+`client/public/cad/`, and the board licences in `client/public/board-licences/`
+(each board's `LICENSE.txt`, unchanged). Those are Copyright (c) 2026
+Kartikeydheer Srivastava, all rights reserved, and are published here for
+viewing under each board's `LICENSE.txt` in eCAD-Hardware-Products; see
+`/eos-boards`. Third-party material in a board keeps its own licence, as that
+board's licence lists.
+
+See [SECURITY.md](./SECURITY.md) for the vulnerability disclosure policy.

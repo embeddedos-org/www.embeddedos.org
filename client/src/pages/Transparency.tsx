@@ -102,7 +102,7 @@ const PUBLIC_DOCUMENTS = [
   },
   {
     name: "Software licences",
-    desc: `Every Foundation repository is released under the ${FOUNDATION.softwareLicense}.`,
+    desc: `All Foundation software is released under the ${FOUNDATION.softwareLicense}.`,
     href: "/licenses",
   },
 ] as const;

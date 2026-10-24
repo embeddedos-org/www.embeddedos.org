@@ -9,6 +9,8 @@ import {
 import { openContactForm } from "@/lib/contact-form";
 import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
 import "./Contact.css";
+import BookingTeaser from "@/components/BookingTeaser";
+import { bookingCalendarReady } from "@/lib/booking";
 
 /**
  * The topics shown on this page, in display order. Deliberately a subset of `CONTACT_TOPICS`:
@@ -127,6 +129,7 @@ export default function Contact() {
         items={[
           { id: "get-in-touch", label: "Get in Touch" },
           { id: "email", label: "Prefer email?" },
+          { id: "book-a-meeting", label: "Book a call" },
           { id: "social", label: "Social & Community" },
           { id: "organization", label: "The Organization" },
         ]}
@@ -180,6 +183,31 @@ export default function Contact() {
               {CONTACT_EMAILS.contact}
             </a>
           </div>
+        </div>
+      </section>
+
+      <section
+        id="book-a-meeting"
+        aria-labelledby="book-a-meeting-heading"
+        className="sec tight ct-book"
+      >
+        <div className="wrap">
+          <div className="sec-h">
+            <h2 id="book-a-meeting-heading">Book a call</h2>
+            <p className="lead">
+              Talk to the Foundation team about the platform, a partnership,
+              research or education.
+            </p>
+          </div>
+          <BookingTeaser
+            href="/book"
+            title="Book a call with the team"
+            line={
+              bookingCalendarReady()
+                ? "Pick a time on our booking page and tell us your topic."
+                : "Arrange a time by email through our booking page."
+            }
+          />
         </div>
       </section>
 

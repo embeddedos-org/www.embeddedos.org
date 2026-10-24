@@ -164,7 +164,8 @@ export default function Membership() {
         lead="Support Foundation embedded systems research. Every contribution funds hardware testing, technical books, security audits, and community events."
       >
         <p className="mb-facts">
-          501(c)(3) · Tax-deductible donations · MIT License · No vendor lock-in
+          501(c)(3) · Tax-deductible donations · MIT License (software) · No
+          vendor lock-in
         </p>
       </PageHero>
 

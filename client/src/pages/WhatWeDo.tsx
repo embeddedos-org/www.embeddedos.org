@@ -246,7 +246,7 @@ export default function WhatWeDo() {
       />
       <PageHero
         sig
-        label="FOUNDATION · 501(C)(3) · MIT LICENSE"
+        label="FOUNDATION · 501(C)(3) · MIT LICENSE (SOFTWARE)"
         title="What EmbeddedOS Does"
         lead="We build open-source embedded-system projects spanning secure boot, a real-time OS, communications, applications, developer tools, on-device AI, and longer-term artificial general intelligence (AGI) research. Each architecture stage below is labeled by its current maturity; no achieved AGI system is claimed."
       >

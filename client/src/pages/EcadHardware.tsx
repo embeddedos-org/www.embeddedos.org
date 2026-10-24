@@ -715,7 +715,7 @@ export default function EcadHardware() {
         className="ecad-heroimg"
       />
       <PageHero
-        label="eCAD HARDWARE DESIGNS · MIT LICENSE"
+        label="eCAD HARDWARE DESIGNS · MIT LICENSE, EXCEPT EoS BOARDS AND MIRRORED DESIGNS"
         title="Hardware Design Portfolio"
         lead="15 hardware design categories — from health wearables to aerospace systems, industrial PLCs to personal air mobility concepts. The repository includes a mix of design documents, KiCad sources, BOMs, and datasheets; coverage varies by design."
       >
@@ -844,7 +844,7 @@ export default function EcadHardware() {
         id="explore"
         alt
         title="Explore the Hardware Designs"
-        lead="The repository is MIT-licensed and includes a mix of design documents, KiCad sources, BOMs, and datasheets. Artifact coverage varies by design."
+        lead="The repository is MIT-licensed, except the original EoS development boards, which are all rights reserved, and the manufacturer designs mirrored under boards/cad, which keep their manufacturers' licences. It includes a mix of design documents, KiCad sources, BOMs, and datasheets. Artifact coverage varies by design."
       >
         <div className="ctas">
           <a

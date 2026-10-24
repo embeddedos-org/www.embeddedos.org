@@ -51,7 +51,7 @@ const MILESTONES = [
 const TEAM_VALUES = [
   {
     title: "Open by Default",
-    desc: "Every line of code, every design decision, every research paper — published openly under MIT license.",
+    desc: "Every line of code, every design decision, every research paper — published openly under MIT license, except the original EoS development boards, which are all rights reserved.",
   },
   {
     title: "Hardware First",
@@ -190,7 +190,7 @@ export default function About() {
           <dt>Tax Status</dt>
           <dd>501(c)(3) Organization</dd>
           <dt>Software License</dt>
-          <dd>MIT License (all repositories)</dd>
+          <dd>MIT License (all Foundation software)</dd>
           <dt>Hosting</dt>
           <dd>Powered by InterServer</dd>
           <dt>Website</dt>

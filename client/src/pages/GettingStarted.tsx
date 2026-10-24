@@ -205,7 +205,7 @@ const PATH_CONTENT: Record<Path, PathContent> = {
       {
         title: "Which Boards Can Be Simulated",
         text: "ebuild sim runs Arm Cortex-M targets: stm32f4, stm32h7, stm32l4, nrf52, nrf52840, rp2040 and raspi-pico, all on the same QEMU Cortex-M3 machine. Other boards, such as esp32, are refused with a message instead of being faked.",
-        code: `ebuild platforms list\n# 153 EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
+        code: `ebuild platforms list\n# ${SIM_PLATFORM_COUNT} EoSim platforms (* = runnable with \`ebuild sim\`):\n#    adi-aducm4050            arm      Analog Devices\n#    ...\n\nebuild sim --platform esp32\n# Error: no simulation target for board 'esp32' yet. Boards ebuild sim can run: ...`,
       },
       {
         title: "Debug with GDB",
@@ -367,7 +367,7 @@ const WHERE_NEXT = [
   {
     href: "/downloads",
     label: "Every repository and install command",
-    desc: "All EmbeddedOS repositories, MIT licensed, in one list.",
+    desc: "All EmbeddedOS software repositories, MIT licensed, in one list.",
   },
   {
     href: "/stacks",
@@ -536,7 +536,11 @@ export default function GettingStarted() {
                                 : "Copy"}
                             </button>
                           </div>
-                          <pre tabIndex={0}>
+                          <pre
+                            role="region"
+                            aria-label={`${step.title} commands`}
+                            tabIndex={0}
+                          >
                             <code>{step.code}</code>
                           </pre>
                         </div>

@@ -196,6 +196,69 @@
   border-color: var(--fg2);
 }
 
+/* ───────── talk to the team: a call with the team; its topics as a hairline list ───────── */
+.hs .hp-call-h .hp-actions {
+  margin-top: 8px;
+}
+.hs .hp-topics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0 28px;
+}
+@media (min-width: 1100px) {
+  .hs .hp-topics {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+.hs .hp-topics li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 0 22px;
+  border-top: 1px solid var(--line);
+}
+.hs .hp-topics b {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.hs .hp-topics span {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--fg2);
+}
+.hs .hp-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--fg3);
+}
+.hs .hp-txt {
+  min-height: 44px;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  color: var(--fg2);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--line2);
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+.hs .hp-txt:hover {
+  color: var(--fg);
+  text-decoration-color: var(--fg3);
+}
+.hs .hp-txt:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* maturity: a small dot and the honest label (filled = working, ring = in code, amber = stub, pink = planned) */
 .hs .hp-pill,
 .hs .hp-st {
@@ -618,6 +681,31 @@
 }
 .hs .hp-shelf::-webkit-scrollbar {
   display: none;
+}
+.hs .hp-shelf.fl,
+.hs .hp-shelf.fr {
+  --fl: 0px;
+  --fr: 0px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fl),
+    #000 calc(100% - var(--fr)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fl),
+    #000 calc(100% - var(--fr)),
+    transparent
+  );
+}
+.hs .hp-shelf.fl {
+  --fl: 64px;
+}
+.hs .hp-shelf.fr {
+  --fr: 64px;
 }
 .hs .hp-shelf li {
   display: flex;

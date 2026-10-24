@@ -203,6 +203,13 @@ const products = [
     href: "/eai-edge",
   },
   {
+    color: "#FB923C",
+    name: "Development Boards",
+    tagline: "Original EoS Board Designs",
+    metrics: ["KiCad designs", "ERC + DRC checked"],
+    href: "/eos-boards",
+  },
+  {
     color: "#F472B6",
     name: "eCAD Hardware",
     tagline: "Open Hardware Designs",

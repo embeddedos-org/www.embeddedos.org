@@ -1412,3 +1412,62 @@ button:active:not(:disabled) {
 :focus-visible {
   transition-duration: 0s;
 }
+
+.book-trace {
+  stroke-dasharray: 14 86;
+  stroke-dashoffset: 100;
+  opacity: 0.55;
+  animation: book-trace 9s linear infinite;
+}
+
+@keyframes book-trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.book-glow {
+  animation: book-glow 8s ease-in-out infinite;
+}
+
+@keyframes book-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.book-shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(100% 0 0 / 0.05) 25%,
+    oklch(100% 0 0 / 0.12) 50%,
+    oklch(100% 0 0 / 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: book-shimmer 1.6s linear infinite;
+}
+
+@keyframes book-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-trace,
+  .book-glow,
+  .book-shimmer {
+    animation: none;
+  }
+  .book-trace {
+    stroke-dasharray: none;
+    opacity: 0.25;
+  }
+}

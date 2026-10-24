@@ -17,6 +17,8 @@ const SECTIONS = [
 
 **Website Content:** The text, documentation, and design of www.embeddedos.org are © 2026 Embedded Operating Systems Research Foundation. You may share and reproduce content with attribution.
 
+**EoS Development Boards:** The original EoS board designs on /eos-boards, with their renders, videos, KiCad files and board licences, are not covered by the MIT License or the permission above: they are Copyright (c) 2026 Kartikeydheer Srivastava, all rights reserved, each board's LICENSE.txt governs it, and the Foundation has a limited, revocable permission to use them.
+
 **Trademarks:** "EmbeddedOS", "EoS", "eBoot", "eAI", "eNI", "EoSim", "EoStudio", "AeroSwift", "HEALTH-KEY ULTRA", "HEALTH-BAND Neuro", "HEALTH-RING", and "HEALTH-LAB" are trademarks of the Embedded Operating Systems Research Foundation.
 
 **Patents:** HEALTH-KEY ULTRA (U.S. App. No. 64/073,334) and HEALTH-BAND Neuro (U.S. App. No. 64/076,078) are patent-pending inventions of the Foundation.`,
@@ -121,8 +123,8 @@ export default function Terms() {
     <BpPage className="legal terms">
       <PageHero sig label="Legal" title="Terms of Use">
         <p className="lg-meta">
-          Effective date: September 15, 2026 · Embedded Operating Systems
-          Research Foundation
+          Effective date: October 20, 2026 · Embedded Operating Systems Research
+          Foundation
         </p>
       </PageHero>
       <LocalNav

@@ -1651,6 +1651,7 @@ export function mountBlack(host) {
     let pointerAt = -1e9;
     let downX = 0;
     let downY = 0;
+    let tapOpen = false;
     let mag = false;
     const partsOf = i => BOARD_PARTS[tabs[i].getAttribute("data-s")] || [];
     function placeHots() {
@@ -1670,9 +1671,9 @@ export function mountBlack(host) {
       clearTimeout(hideT);
       const p = partsOf(cur)[+b.dataset.k];
       if (!p) return;
-      if (dotOn && dotOn !== b) dotOn.setAttribute("aria-expanded", "false");
+      if (dotOn && dotOn !== b) dotOn.classList.remove("on");
       dotOn = b;
-      b.setAttribute("aria-expanded", "true");
+      b.classList.add("on");
       cardH.textContent = p.ref + " · " + p.name;
       cardT.textContent = p.note;
       card.hidden = false;
@@ -1698,7 +1699,7 @@ export function mountBlack(host) {
       const fy = y => clamp(y, 6, Math.max(6, H0 - h - 6));
       // right of the dot, left, above, below, then corner to corner with it: of those that fit, the one covering
       // the fewest other dots
-      const D2 = G * 0.7;
+      const D2 = 9; // corner to corner: the card's rounded corner then starts within reach of the dot
       const R = px + G + w <= W0 - 6;
       const L = px - G - w >= 6;
       const U = py - G - h >= 6;
@@ -1713,11 +1714,31 @@ export function mountBlack(host) {
         [px - D2 - w, py - D2 - h, px - D2 - w >= 6 && py - D2 - h >= 6],
         [px - D2 - w, py + D2, px - D2 - w >= 6 && py + D2 + h <= H0 - 6],
       ];
+      // the Magnify switch sits over the stage: a card under it counts as covering several dots
+      let mag0 = null;
+      if (magBtn && magBtn.offsetWidth) {
+        const m = magBtn.getBoundingClientRect();
+        const r = hots.getBoundingClientRect();
+        mag0 = [
+          m.left - r.left,
+          m.top - r.top,
+          m.right - r.left,
+          m.bottom - r.top,
+        ];
+      }
       let at = null;
       let least = Infinity;
-      for (const [x, y, fits] of spots) {
+      // a tap's card docks along the board's edge (a finger needs no path onto it, and it hides fewer dots there)
+      for (const [x, y, fits] of tapOpen ? [] : spots) {
         if (!fits) continue;
-        let n = 0;
+        let n =
+          mag0 &&
+          x < mag0[2] &&
+          x + w > mag0[0] &&
+          y < mag0[3] &&
+          y + h > mag0[1]
+            ? 5
+            : 0;
         parts.forEach((q, j) => {
           const qx = q.x * W0;
           const qy = q.y * H0;
@@ -1736,8 +1757,8 @@ export function mountBlack(host) {
         }
       }
       if (!at) {
-        // no room anywhere around the dot (a very small board): the card spans the board along the edge away from
-        // the part, so it never covers what it describes
+        // a tap, or no room anywhere around the dot (a very small board): the card spans the board along the edge
+        // away from the part, so it never covers what it describes
         card.classList.add("dock");
         const dh = card.offsetHeight;
         at = [
@@ -1752,7 +1773,7 @@ export function mountBlack(host) {
     function hideCard(now) {
       clearTimeout(hideT);
       const done = () => {
-        if (dotOn) dotOn.setAttribute("aria-expanded", "false");
+        if (dotOn) dotOn.classList.remove("on");
         dotOn = null;
         card.hidden = true;
         el.classList.remove("dotting");
@@ -1779,7 +1800,6 @@ export function mountBlack(host) {
         b.style.setProperty("--i", String(k));
         b.setAttribute("aria-label", p.ref + ", " + p.name);
         b.setAttribute("aria-describedby", n.id);
-        b.setAttribute("aria-expanded", "false");
         hots.insertBefore(b, card);
       });
       hots.classList.remove("in");
@@ -1814,6 +1834,7 @@ export function mountBlack(host) {
     });
     const hover = e => {
       if (e.pointerType !== "mouse") return;
+      tapOpen = false;
       const b = dotOf(e) && nearest(e.clientX, e.clientY);
       if (b) {
         if (b !== dotOn || card.hidden) showCard(b);
@@ -1838,7 +1859,10 @@ export function mountBlack(host) {
     on(hots, "focusin", e => {
       // keyboard focus opens the card; a tap's focus is left to its click, which toggles
       const b = dotOf(e);
-      if (b && performance.now() - pointerAt > 600) showCard(b);
+      if (b && performance.now() - pointerAt > 600) {
+        tapOpen = false;
+        showCard(b);
+      }
     });
     on(hots, "focusout", e => {
       if (dotOf(e)) hideCard();
@@ -1854,15 +1878,19 @@ export function mountBlack(host) {
       }
       // a tap toggles the card; a mouse already shows it on hover
       if (tap && dotOn === b && !card.hidden) hideCard(true);
-      else showCard(b);
+      else {
+        tapOpen = tap && !!e.detail;
+        showCard(b);
+      }
     });
     // Escape closes the card wherever focus is, as a tooltip must
     on(D, "keydown", e => {
       if (e.key === "Escape" && dotOn) hideCard(true);
     });
-    // a click or tap anywhere else on the stage, the card included, closes it
+    // a click anywhere else on the stage closes the card, and so does a tap on the card itself
     on(stageEl, "click", e => {
-      if (!dotOf(e)) hideCard(true);
+      if (!dotOf(e) && !(inCard(e.target) && lastPointer === "mouse"))
+        hideCard(true);
     });
     // the layer follows the image wherever it changes size or place: the image loading, the stylesheet arriving,
     // the stage resizing, the window resizing
