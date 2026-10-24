@@ -74,7 +74,7 @@ export default function Book() {
     <BpPage className="book">
       <PageHero
         sig
-        label="Book a call"
+        label="BOOK A CALL"
         title="Talk to the EmbeddedOS team"
         lead={`A ${BOOKING_MINUTES}-minute video call with the people who build EmbeddedOS: the kernel, the tools and the boards.`}
       >
