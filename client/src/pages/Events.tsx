@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
-import { Calendar, MapPin, ArrowRight, Users } from "lucide-react";
+import type { CSSProperties } from "react";
 import { openContactForm } from "@/lib/contact-form";
+import { Band, BpPage, PageHero, Section } from "@/components/bp";
+import "./Events.css";
 
 const upcoming = [
   {
@@ -71,139 +72,84 @@ const typeColors: Record<string, string> = {
 
 export default function Events() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-6">
-              <Calendar className="w-4 h-4" /> EVENTS
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">
-              Events & Conferences
-            </h1>
-            <p className="text-xl text-gray-300">
-              Conferences, workshops, hackathons, and community meetups.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="events">
+      <PageHero
+        sig
+        label="EVENTS"
+        title="Events & Conferences"
+        lead="Conferences, workshops, hackathons, and community meetups."
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Upcoming Events</h2>
-          <div className="space-y-4">
-            {upcoming.map((e, i) => (
-              <motion.div
-                key={e.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-6"
-              >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div>
-                    <span
-                      className="text-xs font-semibold px-2 py-0.5 rounded-full mr-2"
-                      style={{
-                        background: (typeColors[e.type] || "#F97316") + "20",
-                        color: typeColors[e.type] || "#F97316",
-                      }}
-                    >
-                      {e.type}
-                    </span>
-                    <h3 className="text-white font-semibold text-lg mt-2">
-                      {e.title}
-                    </h3>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-3">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {e.date}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {e.location}
-                  </span>
-                </div>
-                <p className="text-gray-400 text-sm mb-4">{e.desc}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {e.tags.map(t => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 rounded-full bg-white/5 text-gray-500 text-xs"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  href={e.href}
-                  className="inline-flex items-center gap-2 text-orange-400 text-sm font-medium hover:underline"
+      <Section title="Upcoming Events" className="ev-up">
+        <ul className="cards two">
+          {upcoming.map(e => (
+            <li key={e.title}>
+              <div className="card ev-card">
+                <span
+                  className="st"
+                  style={
+                    {
+                      "--c": typeColors[e.type] || "#F97316",
+                    } as CSSProperties
+                  }
                 >
-                  Register / Learn More <ArrowRight className="w-3 h-3" />
+                  {e.type}
+                </span>
+                <h3>{e.title}</h3>
+                <dl className="ev-when">
+                  <dt>Date</dt>
+                  <dd>{e.date}</dd>
+                  <dt>Location</dt>
+                  <dd>{e.location}</dd>
+                </dl>
+                <p>{e.desc}</p>
+                <ul className="ev-tags" aria-label="Tags">
+                  {e.tags.map(t => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+                <a href={e.href} className="more ev-go">
+                  Register / Learn More <span aria-hidden="true">→</span>
                 </a>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Past Events</h2>
-          <div className="space-y-3">
-            {past.map((e, i) => (
-              <motion.div
-                key={e.title}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between"
-              >
-                <div>
-                  <div className="text-white font-medium">{e.title}</div>
-                  <div className="text-gray-500 text-sm">
-                    {e.date} · {e.location}
-                  </div>
+      <Section title="Past Events" className="ev-past">
+        <ul className="ev-rows">
+          {past.map(e => (
+            <li key={e.title}>
+              <div>
+                <div className="ev-name">{e.title}</div>
+                <div className="ev-at">
+                  {e.date} · {e.location}
                 </div>
-                <div className="flex items-center gap-1 text-gray-400 text-sm">
-                  <Users className="w-3 h-3" />
-                  {e.attendees} attendees
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+              </div>
+              <div className="ev-n">{e.attendees} attendees</div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-xl font-bold text-white mb-4">
-            Host a Community Event
-          </h2>
-          <p className="text-gray-400 mb-6">
-            Want to organize an EmbeddedOS meetup or workshop in your city? We
-            provide speaker support, promotional materials, and community
-            promotion.
-          </p>
-          <button
-            type="button"
-            onClick={() =>
-              openContactForm({ topic: "contact", subject: "Host an Event" })
-            }
-            className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors"
-          >
-            Contact Us <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </section>
-    </div>
+      <Band
+        title="Host a Community Event"
+        lead="Want to organize an EmbeddedOS meetup or workshop in your city? We provide speaker support, promotional materials, and community promotion."
+      >
+        <button
+          type="button"
+          onClick={() =>
+            openContactForm({ topic: "contact", subject: "Host an Event" })
+          }
+          className="btn pri"
+        >
+          Contact Us{" "}
+          <span className="ar" aria-hidden="true">
+            →
+          </span>
+        </button>
+      </Band>
+    </BpPage>
   );
 }

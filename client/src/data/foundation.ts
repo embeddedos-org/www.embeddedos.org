@@ -383,5 +383,15 @@ export const SOCIAL_URLS = {
   discord: "https://discord.gg/n6Kd9fwja",
 } as const;
 
-export const CALENDLY_EVENT_URL: string | null =
-  "https://calendly.com/kartikeydheer-embeddedos/30min";
+/**
+ * The Foundation's Google Calendar appointment schedule, which /book embeds.
+ * GOOGLE_APPOINTMENTS_EMBED_URL is the iframe src from the schedule's embed
+ * code; GOOGLE_BOOKING_PAGE_URL is its booking page, linked under the calendar
+ * and opened in a new tab. client/src/lib/booking.ts accepts only Google
+ * appointment schedule addresses; README, "Booking", says how to change them.
+ */
+export const GOOGLE_APPOINTMENTS_EMBED_URL: string | null =
+  "https://calendar.google.com/calendar/appointments/AcZssZ3QwWoaBjMsLfr11qrGiRxBA4URKeZ8Zu-5bv0=?gv=true";
+
+export const GOOGLE_BOOKING_PAGE_URL: string | null =
+  "https://calendar.app.google/PPzWao4AzvXtZeva6";

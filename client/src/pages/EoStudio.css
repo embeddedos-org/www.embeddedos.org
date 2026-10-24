@@ -1,0 +1,48 @@
+/* /eostudio (EoStudio.tsx): the parts the shared page blocks do not cover. */
+
+/* the six editors: a row of full-size buttons, then the chosen one */
+.bp.eostudio .es-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.bp.eostudio .es-tabs .btn {
+  border-radius: 12px;
+  padding: 0 10px;
+}
+.bp.eostudio .es-editor {
+  border-top: 2px solid var(--c, var(--line2));
+  padding: clamp(24px, 3vw, 32px);
+}
+.bp.eostudio .es-editor h3 {
+  font-size: clamp(24px, 2.4vw, 32px);
+}
+.bp.eostudio .es-editor p {
+  font-size: 17px;
+  max-width: 44em;
+}
+.bp.eostudio .card .top .k {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.bp.eostudio .card ul.es-topics {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bp.eostudio .es-topics li {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--fg2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px 11px;
+}
+@media (max-width: 760px) {
+  .bp.eostudio .es-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,68 @@
+/* /kids: the Kids Edition. Six features and the three levels as a progression. */
+.bp.kids .kd-f::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  margin-bottom: 6px;
+}
+.bp.kids .kd-levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 860px) {
+  .bp.kids .kd-levels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.kids .kd-level {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: clamp(26px, 3vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--panel);
+  box-shadow: inset 0 2px 0 var(--c, var(--line2));
+}
+.bp.kids .kd-step {
+  font-family: var(--display);
+  font-size: clamp(56px, 6vw, 84px);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--fg4);
+  font-variant-numeric: tabular-nums;
+}
+.bp.kids .kd-age {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font: 500 13px/1.2 var(--mono);
+  color: var(--fg2);
+}
+.bp.kids .kd-age::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.kids .kd-level h3 {
+  font-size: clamp(24px, 2.4vw, 30px);
+  letter-spacing: -0.025em;
+}
+.bp.kids .kd-level p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg2);
+}

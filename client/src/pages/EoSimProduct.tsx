@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
-import { motion } from "framer-motion";
-import { Cpu, Play, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./EoSimProduct.css";
 
 const commands = [
   {
@@ -90,147 +90,88 @@ export default function EoSimProductPage() {
   const [activeCmd, setActiveCmd] = useState(0);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/5" />
-        <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-6">
-              <Cpu className="w-4 h-4" /> EOSIM
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">
-              EoSim
-            </h1>
-            <p className="text-2xl text-gray-300 mb-2">
-              The EmbeddedOS Hardware Simulator
-            </p>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              {SIM_PLATFORM_COUNT} virtual platforms, full peripheral
-              simulation, hardware-in-the-loop bridge, and a CLI + GUI
-              interface. Test your firmware without hardware.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center mt-8">
-              <Link
-                href="/demo"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors"
-              >
-                <Play className="w-4 h-4" /> Try in Browser
-              </Link>
-              <Link
-                href="/getting-started"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-              >
-                Getting Started
-              </Link>
-              <Link
-                href="/product-eosim"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-              >
-                EoSim engineering detail
-              </Link>
-            </div>
-          </motion.div>
+    <BpPage className="eosimp">
+      <PageHero
+        sig
+        label="EOSIM"
+        title="EoSim"
+        sub="The EmbeddedOS Hardware Simulator"
+        lead={
+          <>
+            {SIM_PLATFORM_COUNT} virtual platforms, full peripheral simulation,
+            hardware-in-the-loop bridge, and a CLI + GUI interface. Test your
+            firmware without hardware.
+          </>
+        }
+      >
+        <div className="ctas">
+          <Link href="/demo" className="btn pri">
+            Try in Browser
+          </Link>
+          <Link href="/getting-started" className="btn gh">
+            Getting Started
+          </Link>
+          <Link href="/product-eosim" className="btn gh">
+            EoSim engineering detail
+          </Link>
         </div>
-      </section>
+      </PageHero>
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            CLI Reference
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            All EoSim commands with examples. Run{" "}
-            <code className="text-cyan-400 bg-white/5 px-1 rounded">
-              eosim --help
-            </code>{" "}
-            for the full reference.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
-            {commands.map((c, i) => (
-              <button
-                key={c.cmd}
-                onClick={() => setActiveCmd(i)}
-                className="text-left px-4 py-3 rounded-lg text-sm font-mono transition-all"
-                style={
-                  activeCmd === i
-                    ? {
-                        background: "rgba(34,211,238,0.1)",
-                        color: "#22D3EE",
-                        border: "1px solid rgba(34,211,238,0.3)",
-                      }
-                    : {
-                        background: "rgba(255,255,255,0.05)",
-                        color: "#9CA3AF",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }
-                }
-              >
-                {c.cmd}
-              </button>
-            ))}
+      <Section
+        title="CLI Reference"
+        lead={
+          <>
+            All EoSim commands with examples. Run <code>eosim --help</code> for
+            the full reference.
+          </>
+        }
+      >
+        <div className="es-cmds">
+          {commands.map((c, i) => (
+            <button
+              key={c.cmd}
+              type="button"
+              onClick={() => setActiveCmd(i)}
+              aria-pressed={activeCmd === i}
+              className="btn gh"
+            >
+              {c.cmd}
+            </button>
+          ))}
+        </div>
+        <div className="code es-out">
+          <div className="cbar">
+            <span>{commands[activeCmd].desc}</span>
           </div>
-          <motion.div
-            key={activeCmd}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-[#0D1117] border border-white/10 rounded-xl p-6"
-          >
-            <p className="text-gray-300 mb-4">{commands[activeCmd].desc}</p>
-            <div className="bg-black/50 rounded-lg p-4 font-mono text-sm">
-              <span className="text-green-400">$ </span>
-              <span className="text-white">{commands[activeCmd].example}</span>
-            </div>
-          </motion.div>
+          <pre className="wrapm">
+            <span className="es-ps">$ </span>
+            <span>{commands[activeCmd].example}</span>
+          </pre>
         </div>
-      </section>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2 text-center">
-            {SIM_PLATFORM_COUNT} Supported Platforms
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            Full peripheral simulation including GPIO, UART, SPI, I²C, ADC, PWM,
-            DMA, and interrupts.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {platforms.map((p, i) => (
-              <motion.div
-                key={p.family}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-5"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-white font-semibold">{p.family}</h3>
-                  <span
-                    className="px-2 py-0.5 rounded-full text-xs font-semibold"
-                    style={{ background: p.color + "20", color: p.color }}
-                  >
-                    {p.count} boards
-                  </span>
+      <Section
+        title={<>{SIM_PLATFORM_COUNT} Supported Platforms</>}
+        lead="Full peripheral simulation including GPIO, UART, SPI, I²C, ADC, PWM, DMA, and interrupts."
+      >
+        <ul className="cards">
+          {platforms.map(p => (
+            <li key={p.family}>
+              <div className="card" style={{ "--c": p.color } as CSSProperties}>
+                <div className="top">
+                  <h3>{p.family}</h3>
+                  <span className="st">{p.count} boards</span>
                 </div>
-                <div className="space-y-1">
+                <ul>
                   {p.boards.map(b => (
-                    <div key={b} className="flex items-center gap-2">
-                      <CheckCircle2
-                        className="w-3 h-3 flex-shrink-0"
-                        style={{ color: p.color }}
-                      />
-                      <span className="text-gray-400 text-xs">{b}</span>
-                    </div>
+                    <li key={b}>{b}</li>
                   ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </BpPage>
   );
 }

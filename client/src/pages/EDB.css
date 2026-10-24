@@ -1,0 +1,12 @@
+/* /edb (EDB.tsx): the parts the shared page blocks do not cover. */
+.bp.edb .edb-tabs {
+  margin-bottom: 16px;
+}
+/* the chosen query model's example; its accent is the thin rule on top */
+.bp.edb .edb-code {
+  border-top: 2px solid var(--c, var(--line2));
+}
+.bp.edb .edb-code pre {
+  font-size: 14px;
+  white-space: pre-wrap;
+}

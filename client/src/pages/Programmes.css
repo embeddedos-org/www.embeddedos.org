@@ -1,0 +1,46 @@
+/* The programmes hub (/programmes): the plain status note, then one row of cards per track. */
+.bp.progs .progs-note {
+  max-width: 52em;
+  gap: 14px;
+  padding: clamp(26px, 3.4vw, 40px);
+}
+.bp.progs .progs-note h2 {
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.bp.progs .progs-note p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.bp.progs .progs-note .ctas {
+  margin-top: 8px;
+}
+/* the programme name is a link: a 45px hit area that does not open up the
+   heading (21px x 1.2 = 25px line, 10px above and below, taken back by the margin) */
+.bp.progs .card h3 a {
+  display: inline-block;
+  padding-block: 10px;
+  margin-block: -10px;
+  text-decoration: underline;
+  text-decoration-color: var(--line2);
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.2s;
+}
+.bp.progs .card h3 a:hover {
+  text-decoration-color: var(--orange-hi);
+}
+.bp.progs .card .top .st {
+  margin-top: 5px;
+}
+.bp.progs .card .more {
+  align-self: flex-start;
+  padding-block: 12px;
+  line-height: 20px;
+  display: inline-block;
+}
+/* the arrow keeps its gap whatever the link's display */
+.bp.progs .card .more span {
+  display: inline-block;
+  margin-left: 4px;
+}

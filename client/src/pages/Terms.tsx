@@ -1,13 +1,6 @@
-import { motion } from "framer-motion";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.05, ease: "easeOut" as const },
-  }),
-};
+import { Fragment } from "react";
+import { BpPage, LocalNav, PageHero } from "@/components/bp";
+import "./Legal.css";
 
 const SECTIONS = [
   {
@@ -78,57 +71,86 @@ const SECTIONS = [
   },
 ];
 
+/** One run of policy text: `**bold**` spans become <strong>. */
+function rich(line: string) {
+  return line
+    .split("**")
+    .map((part, j) => (j % 2 === 1 ? <strong key={j}>{part}</strong> : part));
+}
+
+/**
+ * A section's text, word for word: blank lines separate paragraphs, a block
+ * whose every line starts with "• " is a list, and single line breaks inside a
+ * paragraph are kept.
+ *
+ * Paragraphs and list items are <div>s with ARIA roles here, not <p>/<li>:
+ * scripts/prerender.mjs takes the meta description from the first long
+ * `main p, main li`, and this page's published description is its effective-
+ * date line. Real paragraphs would silently replace it.
+ */
+function PolicyText({ text }: { text: string }) {
+  return (
+    <div className="prose">
+      {text.split("\n\n").map((block, i) => {
+        const lines = block.split("\n");
+        if (lines.every(l => l.startsWith("• ")))
+          return (
+            <div key={i} role="list" className="lg-ul">
+              {lines.map((l, j) => (
+                <div key={j} role="listitem">
+                  {rich(l.slice(2))}
+                </div>
+              ))}
+            </div>
+          );
+        return (
+          <div key={i}>
+            {lines.map((l, j) => (
+              <Fragment key={j}>
+                {j > 0 && <br />}
+                {rich(l)}
+              </Fragment>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Terms() {
   return (
-    <div className="min-h-screen pt-16">
-      <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible">
-            <div className="badge-amber mb-4 inline-flex">Legal</div>
-            <h1 className="font-heading font-extrabold text-4xl text-white mb-4">
-              Terms of Use
-            </h1>
-            <p className="text-white/50 text-sm">
-              Effective date: October 20, 2026 · Embedded Operating Systems
-              Research Foundation
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="space-y-6">
+    <BpPage className="legal terms">
+      <PageHero sig label="Legal" title="Terms of Use">
+        <p className="lg-meta">
+          Effective date: October 20, 2026 · Embedded Operating Systems Research
+          Foundation
+        </p>
+      </PageHero>
+      <LocalNav
+        name="Terms of Use"
+        items={SECTIONS.map((s, i) => ({
+          id: `s${i + 1}`,
+          label: s.title.replace(/^\d+\.\s*/, ""),
+        }))}
+      />
+      <div className="sec lg-body">
+        <div className="wrap">
+          <div className="lg-doc">
             {SECTIONS.map((section, i) => (
-              <motion.div
+              <section
                 key={section.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                className="glass rounded-xl border border-white/5 p-6"
+                id={`s${i + 1}`}
+                className="lg-sec"
+                aria-labelledby={`s${i + 1}-h`}
               >
-                <h2 className="font-heading font-bold text-white text-lg mb-3">
-                  {section.title}
-                </h2>
-                <div className="text-white/60 text-sm leading-relaxed whitespace-pre-line">
-                  {section.content.split("**").map((part, j) =>
-                    j % 2 === 1 ? (
-                      <strong key={j} className="text-white">
-                        {part}
-                      </strong>
-                    ) : (
-                      part
-                    )
-                  )}
-                </div>
-              </motion.div>
+                <h2 id={`s${i + 1}-h`}>{section.title}</h2>
+                <PolicyText text={section.content} />
+              </section>
             ))}
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </BpPage>
   );
 }

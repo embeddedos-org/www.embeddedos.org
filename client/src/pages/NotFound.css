@@ -1,0 +1,18 @@
+/* The 404 page: the parts the shared page blocks do not cover. */
+.bp.nf .phero h2.sub {
+  font-weight: 500;
+}
+.bp.nf .nf-go .sec-h h3 {
+  font-size: var(--t-h2);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.bp.nf .card .nf-t {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+}
+.bp.nf .nf-fine {
+  margin-top: 32px;
+}

@@ -1,0 +1,100 @@
+/* /eos (EoS.tsx): the parts the shared page blocks do not cover. */
+
+/* the 3D kernel on a large stage, framed like a board figure */
+.bp.eospage .stage {
+  height: clamp(320px, 44vw, 600px);
+}
+.bp.eospage .stage-wait {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--line2);
+  border-top-color: var(--fg2);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bp.eospage .stage-wait {
+    animation: eospage-spin 0.9s linear infinite;
+  }
+}
+@keyframes eospage-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* the architecture under it: one row per layer, top layer first, each with
+   its colour as a thin rule */
+.bp.eospage .eos-arch {
+  margin-top: 16px;
+}
+.bp.eospage .eos-layers {
+  list-style: none;
+  margin: 0;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+.bp.eospage .eos-layers > li {
+  display: grid;
+  grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 20px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--panel2);
+  border-left: 2px solid var(--c, var(--line2));
+}
+.bp.eospage .eos-layer {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.bp.eospage .eos-layers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bp.eospage .eos-layers ul li {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--fg2);
+  border: 1px solid var(--line2);
+  border-radius: 14px;
+  padding: 6px 11px;
+}
+@media (max-width: 620px) {
+  .bp.eospage .eos-layers > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* supported boards: the names as a calm list of chips */
+.bp.eospage .eos-boards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.bp.eospage .eos-boards li {
+  font-size: 15px;
+  color: var(--fg);
+  border: 1px solid var(--line2);
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: var(--panel);
+}
+.bp.eospage .eos-boards li.more {
+  color: var(--orange-hi);
+  border-color: color-mix(in srgb, var(--orange-hi) 35%, transparent);
+}
+.bp.eospage .eos-all {
+  margin-top: 20px;
+}

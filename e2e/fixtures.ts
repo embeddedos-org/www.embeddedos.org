@@ -32,6 +32,15 @@ const GOOGLE_TAG_HOSTS =
  */
 const ZEFFY_EMBED = /^https:\/\/www\.zeffy\.com\/[^?#]*\/embed\//;
 
+/**
+ * /book embeds the Foundation's Google Calendar appointment schedule. A run of
+ * the suite must not reach Google, and what Google renders in its frame is not
+ * ours to test, so every calendar.google.com request is answered with a
+ * placeholder document. The <iframe>, its src and its title are still our
+ * markup and still asserted; tests/unit/booking.test.tsx pins the URL.
+ */
+const GOOGLE_CALENDAR = /^https:\/\/calendar\.google\.com\//;
+
 export const test = base.extend({
   context: async ({ context }, use) => {
     await context.route(GOOGLE_TAG_HOSTS, route =>
@@ -46,6 +55,13 @@ export const test = base.extend({
         status: 200,
         contentType: "text/html",
         body: "<!doctype html><title>Zeffy donation form (e2e placeholder)</title>",
+      })
+    );
+    await context.route(GOOGLE_CALENDAR, route =>
+      route.fulfill({
+        status: 200,
+        contentType: "text/html",
+        body: '<!doctype html><html lang="en"><title>Google Calendar appointment schedule (e2e placeholder)</title><p>Google Calendar appointment schedule (e2e placeholder)</p></html>',
       })
     );
     await use(context);

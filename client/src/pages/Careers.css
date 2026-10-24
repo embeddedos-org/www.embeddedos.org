@@ -1,0 +1,396 @@
+/* Careers (/careers): the roles as an accordion, the eligibility rules and the application form. */
+.bp.careers .phero h1 span {
+  color: var(--fg2);
+  -webkit-text-fill-color: var(--fg2);
+}
+
+/* ───────── open positions: search, department filter, the role list ───────── */
+.bp.careers .jb-filters {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.bp.careers .jb-search {
+  width: 100%;
+  max-width: 520px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 16px;
+}
+.bp.careers .jb-search::placeholder {
+  color: var(--fg3);
+}
+.bp.careers .jb-search:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+.bp.careers .jb-depts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bp.careers .jb-depts .btn {
+  padding: 0 18px;
+  font-size: 14px;
+}
+.bp.careers .jb-depts .btn span {
+  color: inherit;
+  opacity: 0.75;
+}
+.bp.careers .jb-list-wrap {
+  display: grid;
+  gap: 12px;
+}
+.bp.careers .jb-none {
+  padding: 48px 0;
+  color: var(--fg2);
+  text-align: center;
+}
+.bp.careers .jb {
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+.bp.careers .jb:hover,
+.bp.careers .jb.open {
+  border-color: var(--line2);
+}
+.bp.careers .jb-head {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: clamp(20px, 2.6vw, 28px) clamp(56px, 6vw, 76px)
+    clamp(20px, 2.6vw, 28px) clamp(20px, 2.6vw, 30px);
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* the open/close mark, drawn in CSS with empty alternative text so the button's
+   name stays the role's own words (the first line is for browsers without it) */
+.bp.careers .jb-head::after {
+  content: "+";
+  content: "+" / "";
+  position: absolute;
+  top: clamp(18px, 2.4vw, 26px);
+  right: clamp(18px, 2.4vw, 28px);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line2);
+  font: 300 20px/1 var(--sans);
+  color: var(--fg2);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.bp.careers .jb.open .jb-head::after {
+  transform: rotate(45deg);
+}
+.bp.careers .jb-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.bp.careers .jb-top h3 {
+  font-size: clamp(19px, 1.8vw, 23px);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.bp.careers .jb-level {
+  font: 500 12px/1 var(--mono);
+  color: var(--fg2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+.bp.careers .jb-sum {
+  display: block;
+  max-width: 62em;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.careers .jb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font: 500 12px/1.5 var(--mono);
+  color: var(--fg3);
+}
+.bp.careers .jb-body {
+  padding: 0 clamp(20px, 2.6vw, 30px) clamp(22px, 2.8vw, 30px);
+}
+.bp.careers .jb-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px clamp(28px, 4vw, 56px);
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 760px) {
+  .bp.careers .jb-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.careers .jb-stack {
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+.bp.careers .jb-body h4 {
+  margin-bottom: 12px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.bp.careers .jb-body h4.jb-soft {
+  color: var(--fg2);
+}
+.bp.careers .jb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.bp.careers .jb-list li {
+  display: grid;
+  grid-template-columns: 7px minmax(0, 1fr);
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.careers .jb-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-top: 9px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.careers .jb-list.soft li::before {
+  background: var(--line2);
+}
+.bp.careers .jb-cta {
+  margin-top: 26px;
+}
+
+/* ───────── internships, eligibility ───────── */
+.bp.careers .cr-more {
+  margin-top: 28px;
+}
+.bp.careers .cr-auth {
+  gap: 14px;
+  padding: clamp(24px, 3vw, 34px);
+}
+.bp.careers .cr-ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bp.careers .card ul.cr-ticks {
+  display: block;
+  font-size: 15px;
+}
+.bp.careers .cr-ticks li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+}
+.bp.careers .cr-ticks li::before {
+  font-size: 14px;
+  line-height: 1.55;
+}
+/* the marks are decoration ("We Accept" / "We Do Not Sponsor" say it), so they
+   have empty alternative text; the first line is for browsers without it */
+.bp.careers .cr-ticks.ok li::before {
+  content: "✓";
+  content: "✓" / "";
+  color: var(--green);
+}
+.bp.careers .cr-ticks.no li::before {
+  content: "×";
+  content: "×" / "";
+  color: var(--fg3);
+}
+
+/* ───────── the application ───────── */
+.bp.careers .cr-apply-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .bp.careers .cr-apply-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (min-width: 961px) {
+  .bp.careers .cr-apply-grid > .sec-h {
+    position: sticky;
+    top: calc(var(--nav) + 80px);
+  }
+}
+/* a text-sized button with a 44px hit area that does not open up the line */
+.bp.careers .cf-link {
+  display: inline-block;
+  padding: 13px 0;
+  margin-block: -13px;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.bp.careers .cf-panel {
+  padding: clamp(22px, 3.4vw, 40px);
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+.bp.careers .cf {
+  display: grid;
+  gap: 22px;
+}
+.bp.careers .cf-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 16px;
+}
+@media (max-width: 640px) {
+  .bp.careers .cf-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.careers .cf-f {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  align-content: start;
+}
+.bp.careers .cf-l {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--fg);
+}
+.bp.careers .cf-req {
+  color: var(--fg2);
+}
+.bp.careers .cf-count {
+  margin-left: 8px;
+  font: 400 12px/1.4 var(--mono);
+  color: var(--fg3);
+}
+.bp.careers .cf .cf-in {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line2);
+  background: var(--panel);
+  color: var(--fg);
+  font-size: 16px;
+  box-shadow: none;
+}
+.bp.careers .cf .cf-in::placeholder {
+  color: var(--fg3);
+}
+.bp.careers .cf .cf-in[data-placeholder] {
+  color: var(--fg3);
+}
+.bp.careers .cf .cf-in:focus-visible {
+  outline: none;
+  border-color: var(--fg);
+  box-shadow: 0 0 0 3px rgba(245, 245, 247, 0.3);
+}
+.bp.careers .cf .cf-ta {
+  height: auto;
+  min-height: 168px;
+  padding: 12px 14px;
+  line-height: 1.55;
+  resize: vertical;
+}
+.bp.careers .cf-err {
+  font-size: 13px;
+  color: var(--err);
+}
+.bp.careers .cf-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg3);
+}
+.bp.careers .cf-send {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+  padding-top: 4px;
+}
+.bp.careers .cf-submit {
+  min-height: 48px;
+  padding: 0 28px;
+  font-weight: 600;
+}
+.bp.careers .cf-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.bp.careers .cf-done {
+  display: grid;
+  gap: 16px;
+}
+.bp.careers .cf-done h3 {
+  font-size: clamp(24px, 2.4vw, 30px);
+  letter-spacing: -0.025em;
+}
+.bp.careers .cf-done p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+.bp.careers .cf-done .cf-small {
+  font-size: 14px;
+  color: var(--fg3);
+}
+.bp.careers .cf-hi {
+  color: var(--fg);
+}
+.bp.careers .cf-text summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--fg2);
+}
+.bp.careers .cf-text pre {
+  max-height: 16rem;
+  overflow: auto;
+  margin: 6px 0 0;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 12px/1.6 var(--mono);
+  color: var(--fg2);
+}

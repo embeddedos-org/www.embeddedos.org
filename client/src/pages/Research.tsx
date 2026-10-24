@@ -1,14 +1,3 @@
-import { motion } from "framer-motion";
-import {
-  FlaskConical,
-  Brain,
-  Cpu,
-  Shield,
-  Zap,
-  Globe,
-  ArrowRight,
-  ExternalLink,
-} from "lucide-react";
 import { Link } from "wouter";
 
 import ProgrammeList from "@/components/ProgrammeList";
@@ -22,6 +11,8 @@ import {
   kindSummary,
   type ContentItem,
 } from "@/data/content";
+import { Band, BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./Research.css";
 
 /**
  * Research output indexes, in one place. /research is the footer's hub
@@ -43,43 +34,31 @@ const RESEARCH_KIND_PATHS: Record<string, string> = {
 
 const areas = [
   {
-    icon: Brain,
-    color: "#A855F7",
     title: "Neural Link & AI Integration",
     desc: "Research into brain-computer interfaces (BCI) using the ENI framework. Topics include spike sorting algorithms, neural decoding, closed-loop stimulation, and BCI latency optimization.",
     href: "/neural-link-ai",
   },
   {
-    icon: Cpu,
-    color: "#F97316",
     title: "AI Operating Systems",
     desc: "Investigating how AI inference should be integrated at the OS level — scheduling AI tasks alongside real-time tasks, memory management for model weights, and hardware-aware kernel extensions.",
     href: "/ai-os",
   },
   {
-    icon: Shield,
-    color: "#22D3EE",
     title: "Building OS with Linux/RTOS",
     desc: "Research into hybrid OS architectures that combine Linux user-space with real-time EoS kernel guarantees — enabling rich application ecosystems without sacrificing determinism.",
     href: "/building-os",
   },
   {
-    icon: Zap,
-    color: "#34D399",
     title: "Future Research Programs",
     desc: "Post-quantum cryptography for embedded systems, formal verification of the EoS kernel, energy harvesting OS primitives, and federated learning on microcontrollers.",
     href: "/future-research",
   },
   {
-    icon: Globe,
-    color: "#FBBF24",
     title: "Open Hardware Research",
     desc: "CAD-driven hardware co-design using the eCAD framework — from schematic capture to firmware simulation. Research into open hardware certification pathways (CE, FCC, FDA).",
     href: "/hardware-lab",
   },
   {
-    icon: FlaskConical,
-    color: "#F472B6",
     title: "Embedded AI Benchmarks",
     desc: "Developing standardized benchmarks for embedded AI inference — latency, throughput, energy efficiency, and accuracy on constrained hardware. Published openly for community use.",
     href: "/eai",
@@ -98,67 +77,38 @@ const papers: ContentItem[] = byKinds(RESEARCH_KINDS);
 
 export default function Research() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-orange-500/5" />
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-sm font-medium mb-6">
-              <FlaskConical className="w-4 h-4" /> RESEARCH
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent">
-              Research Programs
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              The EmbeddedOS Foundation conducts open research across embedded
-              AI, neural interfaces, OS architecture, and hardware security. All
-              findings are published openly.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="research">
+      <PageHero
+        sig
+        label="RESEARCH"
+        title="Research Programs"
+        lead="The EmbeddedOS Foundation conducts open research across embedded AI, neural interfaces, OS architecture, and hardware security. All findings are published openly."
+      />
+      <LocalNav
+        name="Research"
+        items={[
+          { id: "areas", label: "Areas" },
+          { id: "programme", label: "Research programme" },
+          { id: "programmes", label: "Programmes" },
+          { id: "publications", label: "Publications" },
+        ]}
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8">Research Areas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {areas.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link
-                  href={a.href}
-                  className="block bg-white/5 border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all h-full"
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: a.color + "20" }}
-                  >
-                    <a.icon className="w-6 h-6" style={{ color: a.color }} />
-                  </div>
-                  <h3 className="text-white font-semibold mb-2">{a.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {a.desc}
-                  </p>
-                  <div
-                    className="mt-4 flex items-center gap-1 text-sm font-medium"
-                    style={{ color: a.color }}
-                  >
-                    Read more <ArrowRight className="w-3 h-3" />
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Section id="areas" title="Research Areas">
+        <ul className="cards">
+          {areas.map(a => (
+            <li key={a.title}>
+              <Link href={a.href} className="card">
+                <h3>{a.title}</h3>
+                <p>{a.desc}</p>
+                <span className="more">
+                  Read more <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/*
         The research programme's full shape, counts included — and the zeroes
@@ -168,160 +118,115 @@ export default function Research() {
         category showing 0 is a commissioning brief; a category that quietly
         disappeared is a mystery.
       */}
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Research Programme
-          </h2>
-          <p className="text-gray-400 text-sm mb-8">
-            What the Foundation publishes, and what it publishes about. Counts
-            are live; a zero is work not yet done, not a category that does not
-            exist.
-          </p>
-
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
-            By output
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-10">
-            {kindSummary(RESEARCH_KINDS).map(c => (
+      <Section
+        id="programme"
+        title="Research Programme"
+        lead="What the Foundation publishes, and what it publishes about. Counts are live; a zero is work not yet done, not a category that does not exist."
+        split
+        alt
+      >
+        <h3 className="label rp-h">By output</h3>
+        <ul className="rp-grid five">
+          {kindSummary(RESEARCH_KINDS).map(c => (
+            <li key={c.key}>
               <Link
-                key={c.key}
                 href={RESEARCH_KIND_PATHS[c.key] ?? "/research"}
-                className="bg-white/5 border border-white/10 hover:border-white/25 rounded-lg px-4 py-3 block transition-colors"
+                className={c.count > 0 ? "rp-cell on" : "rp-cell"}
               >
-                <div className="text-white text-sm font-medium underline decoration-white/20 underline-offset-4">
-                  {c.label}
-                </div>
-                <div
-                  className={`text-xs mt-1 ${
-                    c.count > 0 ? "text-orange-400" : "text-gray-600"
-                  }`}
-                >
+                <span className="rp-name">{c.label}</span>
+                <span className="rp-n">
                   {c.count > 0 ? `${c.count} published` : "none yet"}
-                </div>
+                </span>
               </Link>
-            ))}
-          </div>
+            </li>
+          ))}
+        </ul>
 
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
-            By subject
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {/*
-              Each subject is now a link to its own page. /research is the
-              footer's hub for the eight /research/* routes, and a hub whose
-              members are not reachable from it is not a hub — it just looked
-              like one.
-            */}
-            {areaSummary().map(c => (
+        <h3 className="label rp-h">By subject</h3>
+        {/*
+          Each subject is now a link to its own page. /research is the
+          footer's hub for the eight /research/* routes, and a hub whose
+          members are not reachable from it is not a hub — it just looked
+          like one.
+        */}
+        <ul className="rp-grid">
+          {areaSummary().map(c => (
+            <li key={c.key}>
               <Link
-                key={c.key}
                 href={`/research/${c.key}`}
-                className="bg-white/5 border border-white/10 hover:border-white/25 rounded-lg px-4 py-3 block transition-colors"
+                className={c.count > 0 ? "rp-cell on" : "rp-cell"}
               >
-                <div className="text-white text-sm font-medium underline decoration-white/20 underline-offset-4">
-                  {c.label}
-                </div>
-                {/*
-                  text-gray-600 here measured 1.95:1 against this card, well
-                  under the 4.5:1 WCAG 1.4.3 wants. gray-400 is 5.79:1 and
-                  still reads as secondary next to the purple count.
-                */}
-                <div
-                  className={`text-xs mt-1 ${
-                    c.count > 0 ? "text-purple-400" : "text-gray-400"
-                  }`}
-                >
+                <span className="rp-name">{c.label}</span>
+                <span className="rp-n">
                   {c.count > 0 ? `${c.count} published` : "none yet"}
-                </div>
+                </span>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       <ProgrammeList
+        id="programmes"
         track="research"
         heading="Research Programmes"
         intro="Collaboration and funding, as distinct from what the Foundation publishes."
       />
 
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-6">
-            Publications & Reports
-          </h2>
-          <div className="space-y-3">
-            {papers.map((p, i) => (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-center justify-between gap-4 hover:border-white/20 transition-all"
-              >
-                <div>
-                  <div className="text-white font-medium mb-1">{p.title}</div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="text-orange-400">
-                      {formatDate(p.date)}
-                    </span>
-                    <span className="text-gray-500">{badgeOf(p)}</span>
-                  </div>
+      <Section id="publications" title="Publications & Reports">
+        <ul className="rs-papers">
+          {papers.map(p => (
+            <li key={p.title}>
+              <div>
+                <div className="rs-title">{p.title}</div>
+                <div className="rs-meta">
+                  <span className="rs-date">{formatDate(p.date)}</span>
+                  <span>{badgeOf(p)}</span>
                 </div>
-                {isInternal(p) ? (
-                  <Link
-                    href={p.href}
-                    aria-label={`Read ${p.title}`}
-                    className="text-gray-400 hover:text-white transition-colors flex-shrink-0"
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                ) : (
-                  <a
-                    href={p.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Read ${p.title}, opens in a new tab`}
-                    className="text-gray-400 hover:text-white transition-colors flex-shrink-0"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+              </div>
+              {isInternal(p) ? (
+                <Link
+                  href={p.href}
+                  aria-label={`Read ${p.title}`}
+                  className="rs-go"
+                >
+                  <span aria-hidden="true">→</span>
+                </Link>
+              ) : (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Read ${p.title}, opens in a new tab`}
+                  className="rs-go"
+                >
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Contribute to Research
-          </h2>
-          <p className="text-gray-400 mb-6">
-            The Foundation welcomes research contributions. Apply for a
-            fellowship or open a research RFC on GitHub Discussions.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/internship"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              Apply for Fellowship <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a
-              href="https://github.com/orgs/embeddedos-org/discussions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              GitHub Discussions
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
+      <Band
+        title="Contribute to Research"
+        lead="The Foundation welcomes research contributions. Apply for a fellowship or open a research RFC on GitHub Discussions."
+      >
+        <Link href="/internship" className="btn pri">
+          Apply for Fellowship{" "}
+          <span className="ar" aria-hidden="true">
+            →
+          </span>
+        </Link>
+        <a
+          href="https://github.com/orgs/embeddedos-org/discussions"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn gh"
+        >
+          GitHub Discussions
+        </a>
+      </Band>
+    </BpPage>
   );
 }

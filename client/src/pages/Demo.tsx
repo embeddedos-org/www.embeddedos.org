@@ -5,25 +5,13 @@ import {
   useCallback,
   lazy,
   Suspense,
+  type CSSProperties,
 } from "react";
 import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Cpu,
-  Zap,
-  Terminal,
-  Play,
-  Square,
-  RotateCcw,
-  ChevronRight,
-  Radio,
-  Wifi,
-  Activity,
-  AlertCircle,
-  CheckCircle2,
-  Github,
-} from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { BOARD_COUNT } from "@/data/stack";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./Demo.css";
 const PCBTrace = lazy(() => import("../components/PCBTrace"));
 const Oscilloscope = lazy(() => import("../components/Oscilloscope"));
 
@@ -378,21 +366,6 @@ int main(void) {
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      delay: i * 0.07,
-      ease: [0.23, 1, 0.32, 1] as [number, number, number, number],
-    },
-  }),
-};
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function Demo() {
@@ -492,612 +465,272 @@ export default function Demo() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080F1E]">
-      {/* Hero */}
-      <section className="relative py-14 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-5"
-              style={{
-                background: "rgba(34,211,238,0.12)",
-                border: "1px solid rgba(34,211,238,0.3)",
-                color: "#22D3EE",
-              }}
-            >
-              <Cpu size={12} /> Interactive Board Visualisation
-            </span>
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
-          >
-            See an EoS Program <span style={{ color: "#22D3EE" }}>Run</span>
+    <BpPage className="demo" style={{ "--c": board.color } as CSSProperties}>
+      <PageHero
+        sig
+        label="Interactive Board Visualisation"
+        title={
+          <>
+            See an EoS Program <span>Run</span>
             <br />
             Without Hardware
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="text-white/60 text-lg max-w-2xl mx-auto mb-6"
+          </>
+        }
+        lead="An illustrative, in-browser visualisation of small EoS programs: toggle GPIO pins and watch console output. It does not compile or execute EoS. To boot the real kernel without hardware, use ebuild sim on QEMU (see Getting Started)."
+      >
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org/EoSim"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
           >
-            An illustrative, in-browser visualisation of small EoS programs:
-            toggle GPIO pins and watch console output. It does not compile or
-            execute EoS. To boot the real kernel without hardware, use ebuild
-            sim on QEMU (see Getting Started).
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            <a
-              href="https://github.com/embeddedos-org/EoSim"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "#22D3EE", color: "#080F1E" }}
-            >
-              <Github size={15} /> View EoSim on GitHub
-            </a>
-            <Link
-              href="/docs"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
-            >
-              Documentation <ChevronRight size={14} />
-            </Link>
-          </motion.div>
+            View EoSim on GitHub{" "}
+            <span className="ar" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <Link href="/docs" className="btn gh">
+            Documentation{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
+      </PageHero>
 
-      {/* Simulator */}
-      <section className="pb-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* PCB Trace + Oscilloscope visualization row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
-            {/* PCB Signal Trace */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
-              className="rounded-2xl border overflow-hidden"
-              style={{
-                background: "rgba(5,10,20,0.9)",
-                borderColor: `${BOARDS[boardIdx].color}30`,
-                height: 220,
-              }}
+      {/* The bench: choose a board and a program, run it, watch the instruments */}
+      <Section
+        wide
+        tight
+        className="demo-bench"
+        ariaLabel="Board visualisation"
+      >
+        <div className="demo-bar">
+          <div className="demo-grp">
+            <p className="label">Target Board</p>
+            <div className="demo-seg">
+              {BOARDS.map((b, i) => (
+                <button
+                  key={b.id}
+                  type="button"
+                  onClick={() => setBoardIdx(i)}
+                  aria-pressed={boardIdx === i}
+                  className="demo-opt"
+                  style={{ "--c": b.color } as CSSProperties}
+                >
+                  {b.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="demo-grp">
+            <p className="label">Program</p>
+            <div className="demo-seg">
+              {PROGRAMS.map((p, i) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setProgramIdx(i)}
+                  aria-pressed={programIdx === i}
+                  className="demo-opt"
+                >
+                  {p.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="demo-run">
+            <button
+              type="button"
+              onClick={start}
+              disabled={running}
+              className="btn pri"
             >
-              <div
-                className="flex items-center gap-2 px-4 py-2.5 border-b"
-                style={{ borderColor: `${BOARDS[boardIdx].color}20` }}
-              >
-                <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ background: BOARDS[boardIdx].color }}
-                />
-                <span
-                  className="text-xs font-mono font-bold"
-                  style={{ color: BOARDS[boardIdx].color }}
-                >
-                  PCB Signal Traces
-                </span>
-                <span className="ml-auto text-[10px] text-white/25 font-mono">
-                  {BOARDS[boardIdx].name}
-                </span>
-              </div>
-              <div style={{ height: 180 }}>
-                <Suspense
-                  fallback={
-                    <div className="w-full h-full flex items-center justify-center text-white/20 text-xs">
-                      Loading...
-                    </div>
-                  }
-                >
-                  <PCBTrace running={running} />
-                </Suspense>
-              </div>
-            </motion.div>
-            {/* Oscilloscope */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
-              className="rounded-2xl border overflow-hidden"
-              style={{
-                background: "rgba(5,10,20,0.9)",
-                borderColor: "rgba(34,211,238,0.2)",
-                height: 220,
-              }}
+              {running ? "Running…" : "Run"}
+            </button>
+            <button
+              type="button"
+              onClick={stop}
+              disabled={!running}
+              className="btn gh"
             >
-              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#22D3EE]/15">
-                <div
-                  className={`w-2 h-2 rounded-full transition-all ${running ? "bg-[#22D3EE] animate-pulse" : "bg-white/20"}`}
+              Stop
+            </button>
+            <button
+              type="button"
+              onClick={reset}
+              aria-label="Reset simulation"
+              title="Reset simulation"
+              className="btn gh demo-reset"
+            >
+              <RotateCcw size={16} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        {/* The two instruments, given the room */}
+        <div className="demo-scopes">
+          <figure className="demo-scope">
+            <figcaption>
+              <b>PCB Signal Traces</b>
+              <span>{BOARDS[boardIdx].name}</span>
+            </figcaption>
+            <div className="demo-cv">
+              <Suspense fallback={<div className="demo-load">Loading...</div>}>
+                <PCBTrace running={running} />
+              </Suspense>
+            </div>
+          </figure>
+          <figure className="demo-scope">
+            <figcaption>
+              <b className="nodot">
+                <i
+                  className={running ? "demo-live on" : "demo-live"}
+                  aria-hidden="true"
                 />
-                <span className="text-xs font-mono font-bold text-[#22D3EE]">
-                  Oscilloscope
-                </span>
-                <span className="ml-auto text-[10px] text-white/25 font-mono">
-                  {PROGRAMS[programIdx].name}
-                </span>
+                Oscilloscope
+              </b>
+              <span>{PROGRAMS[programIdx].name}</span>
+            </figcaption>
+            <div className="demo-cv">
+              <Suspense fallback={<div className="demo-load">Loading...</div>}>
+                <Oscilloscope
+                  program={PROGRAMS[programIdx].id as "blink" | "echo" | "gpio"}
+                  running={running}
+                  color={BOARDS[boardIdx].color}
+                />
+              </Suspense>
+            </div>
+          </figure>
+        </div>
+
+        <div className="demo-grid">
+          {/* Left: the board and its pins */}
+          <div className="demo-col">
+            <div className="demo-panel demo-board">
+              <div className="demo-bh">
+                <div>
+                  <div className="demo-bn">{board.name}</div>
+                  <div className="demo-mcu">{board.mcu}</div>
+                </div>
+                <span className="demo-arch">{board.arch}</span>
               </div>
-              <div style={{ height: 180 }}>
-                <Suspense
-                  fallback={
-                    <div className="w-full h-full flex items-center justify-center text-white/20 text-xs">
-                      Loading...
-                    </div>
-                  }
-                >
-                  <Oscilloscope
-                    program={
-                      PROGRAMS[programIdx].id as "blink" | "echo" | "gpio"
-                    }
-                    running={running}
-                    color={BOARDS[boardIdx].color}
+              <dl className="demo-specs">
+                {[
+                  { label: "Clock", value: board.freq },
+                  { label: "Flash", value: board.flash },
+                  { label: "RAM", value: board.ram },
+                ].map(s => (
+                  <div key={s.label}>
+                    <dt>{s.label}</dt>
+                    <dd>{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div className="demo-panel">
+              <div className="demo-ph">
+                <div className="demo-pt">GPIO Pins</div>
+                <div className="demo-hint">
+                  {running
+                    ? "Read-only while running"
+                    : "Click OUTPUT pins to toggle"}
+                </div>
+              </div>
+              <div className="demo-pins">
+                {pins.map(pin => (
+                  <button
+                    key={pin.id}
+                    type="button"
+                    onClick={() => togglePin(pin.id)}
+                    disabled={pin.mode === "INPUT" || running}
+                    className={[
+                      "demo-pin",
+                      pin.state === "HIGH" && "hi",
+                      pin.mode === "INPUT" && "in",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                  >
+                    <span className="demo-pl">{pin.label}</span>
+                    <span className="demo-ps">{pin.state}</span>
+                    <span className="demo-pm">{pin.mode}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: the program and its serial output */}
+          <div className="demo-col">
+            <div className="code demo-code">
+              <div className="cbar">
+                <b>{program.name.toLowerCase().replace(/ /g, "_")}.c</b>
+                <span>{program.desc}</span>
+              </div>
+              <pre tabIndex={0}>
+                <code>{program.code}</code>
+              </pre>
+            </div>
+
+            <div className="code demo-uart">
+              <div className="cbar">
+                <b>UART / Serial Output</b>
+                <span className="demo-state">
+                  <i
+                    className={running ? "demo-live on ok" : "demo-live"}
+                    aria-hidden="true"
                   />
-                </Suspense>
+                  {running ? "LIVE" : "IDLE"}
+                </span>
               </div>
-            </motion.div>
-          </div>
-
-          {/* Board + Program selectors */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            {/* Board selector */}
-            <div className="flex-1">
-              <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                Target Board
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {BOARDS.map((b, i) => (
-                  <button
-                    key={b.id}
-                    onClick={() => setBoardIdx(i)}
-                    className="px-3 py-2 rounded-lg text-sm font-semibold transition-all"
-                    style={
-                      boardIdx === i
-                        ? { background: b.color, color: "#080F1E" }
-                        : {
-                            background: "rgba(255,255,255,0.05)",
-                            color: "rgba(255,255,255,0.5)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                          }
-                    }
-                  >
-                    {b.name}
-                  </button>
+              <div ref={logBoxRef} className="demo-log" tabIndex={0}>
+                {log.length === 0 && (
+                  <div className="demo-empty">
+                    Press Run to start simulation…
+                  </div>
+                )}
+                {log.map(entry => (
+                  <div key={entry.id} className={`demo-ln ${entry.level}`}>
+                    <span className="demo-ts">{entry.ts}</span>
+                    <span className="demo-msg">{entry.msg}</span>
+                  </div>
                 ))}
+                <div ref={logEndRef} />
               </div>
             </div>
-            {/* Program selector */}
-            <div className="flex-1">
-              <div className="text-xs font-bold text-white/40 uppercase tracking-widest mb-2">
-                Program
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {PROGRAMS.map((p, i) => (
-                  <button
-                    key={p.id}
-                    onClick={() => setProgramIdx(i)}
-                    className="px-3 py-2 rounded-lg text-sm font-semibold transition-all"
-                    style={
-                      programIdx === i
-                        ? { background: "#F97316", color: "#fff" }
-                        : {
-                            background: "rgba(255,255,255,0.05)",
-                            color: "rgba(255,255,255,0.5)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                          }
-                    }
-                  >
-                    {p.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Main simulator grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {/* Left: Board info + GPIO */}
-            <div className="space-y-4">
-              {/* Board info card */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-                custom={0}
-                className="rounded-2xl border p-5"
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  borderColor: `${board.color}30`,
-                }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: `${board.color}20` }}
-                  >
-                    <Cpu size={20} style={{ color: board.color }} />
-                  </div>
-                  <div>
-                    <div className="font-heading font-bold text-white text-lg">
-                      {board.name}
-                    </div>
-                    <div className="text-xs text-white/40">{board.mcu}</div>
-                  </div>
-                  <div className="ml-auto">
-                    <span
-                      className="text-xs font-bold px-2 py-1 rounded-full"
-                      style={{
-                        background: `${board.color}20`,
-                        color: board.color,
-                      }}
-                    >
-                      {board.arch}
-                    </span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    {
-                      label: "Clock",
-                      value: board.freq,
-                      icon: <Zap size={12} />,
-                    },
-                    {
-                      label: "Flash",
-                      value: board.flash,
-                      icon: <Radio size={12} />,
-                    },
-                    {
-                      label: "RAM",
-                      value: board.ram,
-                      icon: <Activity size={12} />,
-                    },
-                  ].map(s => (
-                    <div
-                      key={s.label}
-                      className="rounded-lg p-3 text-center"
-                      style={{ background: "rgba(255,255,255,0.04)" }}
-                    >
-                      <div className="flex items-center justify-center gap-1 text-white/40 text-xs mb-1">
-                        {s.icon} {s.label}
-                      </div>
-                      <div className="font-bold text-white text-sm">
-                        {s.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* GPIO pins */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-                custom={1}
-                className="rounded-2xl border p-5"
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  borderColor: "rgba(255,255,255,0.08)",
-                }}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="font-heading font-bold text-white">
-                    GPIO Pins
-                  </div>
-                  <div className="text-xs text-white/40">
-                    {running
-                      ? "Read-only while running"
-                      : "Click OUTPUT pins to toggle"}
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {pins.map(pin => (
-                    <button
-                      key={pin.id}
-                      onClick={() => togglePin(pin.id)}
-                      disabled={pin.mode === "INPUT" || running}
-                      className="rounded-xl p-3 text-center transition-all"
-                      style={{
-                        background:
-                          pin.state === "HIGH"
-                            ? `${board.color}25`
-                            : "rgba(255,255,255,0.04)",
-                        border: `1px solid ${pin.state === "HIGH" ? board.color + "60" : "rgba(255,255,255,0.08)"}`,
-                        cursor:
-                          pin.mode === "INPUT" || running
-                            ? "default"
-                            : "pointer",
-                        opacity: pin.mode === "INPUT" ? 0.6 : 1,
-                      }}
-                    >
-                      <div
-                        className="text-xs font-bold mb-1"
-                        style={{
-                          color:
-                            pin.state === "HIGH"
-                              ? board.color
-                              : "rgba(255,255,255,0.5)",
-                        }}
-                      >
-                        {pin.label}
-                      </div>
-                      <div className="flex items-center justify-center gap-1">
-                        <div
-                          className="w-2 h-2 rounded-full transition-all"
-                          style={{
-                            background:
-                              pin.state === "HIGH"
-                                ? board.color
-                                : "rgba(255,255,255,0.2)",
-                          }}
-                        />
-                        <span
-                          className="text-[10px]"
-                          style={{
-                            color:
-                              pin.state === "HIGH"
-                                ? board.color
-                                : "rgba(255,255,255,0.3)",
-                          }}
-                        >
-                          {pin.state}
-                        </span>
-                      </div>
-                      <div className="text-[9px] text-white/25 mt-0.5">
-                        {pin.mode}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Controls */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-                custom={2}
-                className="flex gap-3"
-              >
-                <button
-                  onClick={start}
-                  disabled={running}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95 disabled:opacity-40"
-                  style={{
-                    background: running ? "rgba(34,211,238,0.1)" : "#22D3EE",
-                    color: running ? "#22D3EE" : "#080F1E",
-                  }}
-                >
-                  <Play size={16} /> {running ? "Running…" : "Run"}
-                </button>
-                <button
-                  onClick={stop}
-                  disabled={!running}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95 disabled:opacity-40"
-                  style={{
-                    background: "rgba(248,81,73,0.15)",
-                    color: "#F85149",
-                    border: "1px solid rgba(248,81,73,0.3)",
-                  }}
-                >
-                  <Square size={16} /> Stop
-                </button>
-                <button
-                  onClick={reset}
-                  aria-label="Reset simulation"
-                  title="Reset simulation"
-                  className="px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95"
-                  style={{
-                    background: "rgba(255,255,255,0.06)",
-                    color: "rgba(255,255,255,0.5)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                  }}
-                >
-                  <RotateCcw size={16} />
-                </button>
-              </motion.div>
-            </div>
-
-            {/* Right: Code + UART log */}
-            <div className="space-y-4">
-              {/* Code viewer */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-                custom={0}
-                className="rounded-2xl border overflow-hidden"
-                style={{
-                  background: "#0D1117",
-                  borderColor: "rgba(255,255,255,0.08)",
-                }}
-              >
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-[#F85149]/60" />
-                    <div className="w-3 h-3 rounded-full bg-[#F0883E]/60" />
-                    <div className="w-3 h-3 rounded-full bg-[#3FB950]/60" />
-                  </div>
-                  <div className="text-xs text-white/30 ml-2 font-mono">
-                    {program.name.toLowerCase().replace(/ /g, "_")}.c
-                  </div>
-                  <div className="ml-auto text-xs text-white/20">
-                    {program.desc}
-                  </div>
-                </div>
-                <pre
-                  className="p-4 text-xs font-mono text-white/70 overflow-x-auto leading-relaxed"
-                  style={{ maxHeight: "280px", overflowY: "auto" }}
-                >
-                  <code>{program.code}</code>
-                </pre>
-              </motion.div>
-
-              {/* UART / log output */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-                custom={1}
-                className="rounded-2xl border overflow-hidden"
-                style={{
-                  background: "#0A0F1A",
-                  borderColor: "rgba(255,255,255,0.08)",
-                }}
-              >
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
-                  <Terminal size={14} className="text-white/40" />
-                  <div className="text-xs text-white/40 font-mono">
-                    UART / Serial Output
-                  </div>
-                  <div className="ml-auto flex items-center gap-1.5">
-                    <div
-                      className={`w-2 h-2 rounded-full transition-all ${running ? "bg-[#3FB950] animate-pulse" : "bg-white/20"}`}
-                    />
-                    <span className="text-[10px] text-white/30">
-                      {running ? "LIVE" : "IDLE"}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  ref={logBoxRef}
-                  className="p-4 font-mono text-xs space-y-1 overflow-y-auto"
-                  style={{ height: "240px" }}
-                >
-                  <AnimatePresence initial={false}>
-                    {log.length === 0 && (
-                      <div className="text-white/20 text-center pt-8">
-                        Press Run to start simulation…
-                      </div>
-                    )}
-                    {log.map(entry => (
-                      <motion.div
-                        key={entry.id}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.15 }}
-                        className="flex items-start gap-2"
-                      >
-                        <span className="text-white/20 shrink-0">
-                          {entry.ts}
-                        </span>
-                        {entry.level === "ok" && (
-                          <CheckCircle2
-                            size={12}
-                            className="text-[#3FB950] shrink-0 mt-0.5"
-                          />
-                        )}
-                        {entry.level === "info" && (
-                          <Wifi
-                            size={12}
-                            className="text-[#22D3EE] shrink-0 mt-0.5"
-                          />
-                        )}
-                        {entry.level === "warn" && (
-                          <AlertCircle
-                            size={12}
-                            className="text-[#F0883E] shrink-0 mt-0.5"
-                          />
-                        )}
-                        {entry.level === "error" && (
-                          <AlertCircle
-                            size={12}
-                            className="text-[#F85149] shrink-0 mt-0.5"
-                          />
-                        )}
-                        <span
-                          style={{
-                            color:
-                              entry.level === "ok"
-                                ? "#3FB950"
-                                : entry.level === "info"
-                                  ? "#22D3EE"
-                                  : entry.level === "warn"
-                                    ? "#F0883E"
-                                    : "#F85149",
-                          }}
-                        >
-                          {entry.msg}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                  <div ref={logEndRef} />
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Feature highlights */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            {[
-              {
-                icon: <Cpu size={20} />,
-                color: "#22D3EE",
-                title: `${BOARD_COUNT} Supported Boards`,
-                desc: "STM32, ESP32, Raspberry Pi Pico, RISC-V, nRF52, i.MX RT and more, shown as board views. This is a visualisation, not an emulator.",
-              },
-              {
-                icon: <Zap size={20} />,
-                color: "#F97316",
-                title: "Real Kernel on QEMU",
-                desc: "For real execution, ebuild sim builds your code with the EoS kernel and boots it on QEMU's Cortex-M3 machine.",
-              },
-              {
-                icon: <Activity size={20} />,
-                color: "#A78BFA",
-                title: "HIL Bridge Support",
-                desc: "Connect EoSim to real hardware via the HIL bridge for hardware-in-the-loop testing workflows.",
-              },
-            ].map((f, i) => (
-              <motion.div
-                key={f.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                className="rounded-2xl border p-5"
-                style={{
-                  background: "rgba(255,255,255,0.02)",
-                  borderColor: "rgba(255,255,255,0.07)",
-                }}
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
-                  style={{ background: `${f.color}15` }}
-                >
-                  <span style={{ color: f.color }}>{f.icon}</span>
-                </div>
-                <div className="font-heading font-bold text-white mb-1">
-                  {f.title}
-                </div>
-                <div className="text-white/50 text-sm leading-relaxed">
-                  {f.desc}
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
-      </section>
-    </div>
+      </Section>
+
+      {/* What the visualisation is, and where the real kernel runs */}
+      <Section className="demo-facts">
+        <ul className="cards">
+          {[
+            {
+              title: `${BOARD_COUNT} Supported Boards`,
+              desc: "STM32, ESP32, Raspberry Pi Pico, RISC-V, nRF52, i.MX RT and more, shown as board views. This is a visualisation, not an emulator.",
+            },
+            {
+              title: "Real Kernel on QEMU",
+              desc: "For real execution, ebuild sim builds your code with the EoS kernel and boots it on QEMU's Cortex-M3 machine.",
+            },
+            {
+              title: "HIL Bridge Support",
+              desc: "Connect EoSim to real hardware via the HIL bridge for hardware-in-the-loop testing workflows.",
+            },
+          ].map(f => (
+            <li key={f.title}>
+              <div className="card">
+                <h2 className="demo-fh">{f.title}</h2>
+                <p>{f.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </BpPage>
   );
 }

@@ -1,0 +1,77 @@
+/* /eosuite (EOSuite.tsx): the parts the shared page blocks do not cover. */
+
+.bp.eosuite .es-stats {
+  padding-bottom: clamp(16px, 3vw, 32px);
+}
+
+/* the app browser follows the category counts directly */
+.bp.eosuite .es-apps {
+  padding-top: clamp(32px, 4vw, 56px);
+}
+
+/* category tabs and the search field share one bar */
+.bp.eosuite .es-bar {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.bp.eosuite .es-tabs .btn::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.eosuite .es-search {
+  position: relative;
+  max-width: 520px;
+  color: var(--fg3);
+}
+.bp.eosuite .es-search svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.bp.eosuite .es-search input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px 0 42px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: var(--panel);
+  color: var(--fg);
+  font: inherit;
+  font-size: 15px;
+}
+.bp.eosuite .es-search input::placeholder {
+  color: var(--fg3);
+}
+.bp.eosuite .es-search input:focus {
+  border-color: var(--fg2);
+}
+.bp.eosuite .es-search input:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+/* app cards: the category accent is the status dot */
+.bp.eosuite .card .top h3 {
+  min-width: 0;
+}
+.bp.eosuite .card .st {
+  margin-top: 4px;
+}
+.bp.eosuite .card .st::before {
+  background: var(--c, var(--fg3));
+}
+
+.bp.eosuite .es-more {
+  border-top: 1px solid var(--line);
+}
+
+/* the six counts sit two to a row on a phone */
+.bp.eosuite .es-stats .gstats {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}

@@ -294,28 +294,69 @@ test.describe("responsive layout", () => {
 });
 
 test.describe("keyboard operability", () => {
-  test("the /book topic cards are radios a keyboard can choose, with a visible focus ring", async ({
+  test("/book frames the Google calendar without a topic pick, and its booking-page link is a keyboard-visible new-tab link", async ({
     page,
   }) => {
     await page.goto("/book", { waitUntil: "networkidle" });
-    const first = page.getByRole("radio", { name: /Platform demo/ });
-    await first.focus();
-    await page.keyboard.press("Space");
-    await expect(first).toBeChecked();
-    await page.keyboard.press("ArrowDown");
-    const second = page.getByRole("radio", { name: /Partnership or OEM/ });
-    await expect(second).toBeChecked();
-    await expect(second).toBeFocused();
-    // CALENDLY_EVENT_URL is set, so step 2 is "Pick a time"; the unit tests
-    // pin the email-fallback labels with the URL forced to null.
+    // The topics are guidance for the booking form, not inputs, and the steps
+    // are a guide: Google's frame tells the page nothing about a booking.
+    await expect(page.getByRole("radio")).toHaveCount(0);
     await expect(
       page
-        .getByRole("list", { name: "Booking progress" })
-        .locator('[aria-current="step"]')
-    ).toContainText("Pick a time");
-    const ring = await second.evaluate(input => {
-      const card = input.nextElementSibling as HTMLElement;
-      const style = getComputedStyle(card);
+        .getByRole("list", { name: "How booking works" })
+        .getByRole("listitem")
+    ).toHaveText(["1Choose a topic", "2Pick a time", "3Confirmed"]);
+
+    // The frame mounts as its card nears the viewport. fixtures.ts answers
+    // calendar.google.com with a placeholder, so nothing reaches Google.
+    await page.locator("#pick-a-time").scrollIntoViewIfNeeded();
+    const calendar = page.locator('[data-booking="google-calendar"]');
+    const frame = calendar.locator("iframe");
+    await expect(frame).toHaveCount(1);
+    await expect(frame).toHaveAttribute(
+      "src",
+      /^https:\/\/calendar\.google\.com\/calendar\/appointments\/[A-Za-z0-9_-]+=*\?gv=true$/
+    );
+    await expect(frame).toHaveAttribute(
+      "title",
+      /Google Calendar appointment schedule/
+    );
+    await expect(frame).toHaveAttribute("loading", "lazy");
+    await expect(calendar.getByRole("status")).toHaveText(
+      "The calendar has loaded."
+    );
+    // The frame holds fixtures.ts's placeholder, not Google's page.
+    await expect(
+      page.frameLocator('[data-booking="google-calendar"] iframe').locator("p")
+    ).toHaveText(/e2e placeholder/);
+    const box = await frame.boundingBox();
+    expect(box?.height ?? 0).toBeGreaterThanOrEqual(600);
+    // The page-wide axe run above settles before the frame mounts, so audit
+    // the calendar card (the frame's title, the link) here, once it is in.
+    const card = await new AxeBuilder({ page })
+      .include('[data-booking="google-calendar"]')
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze();
+    expect(
+      card.violations
+        .filter(v => v.impact === "serious" || v.impact === "critical")
+        .map(v => `${v.id}: ${v.help}`)
+    ).toEqual([]);
+
+    const link = calendar.getByRole("link", { name: /Open the booking page/ });
+    await expect(link).toHaveAttribute(
+      "href",
+      /^https:\/\/calendar\.app\.google\/[A-Za-z0-9]+$/
+    );
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
+    // Reach it by keyboard so the ring is the :focus-visible one.
+    await link.focus();
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(link).toBeFocused();
+    const ring = await link.evaluate(a => {
+      const style = getComputedStyle(a);
       return {
         style: style.outlineStyle,
         width: parseFloat(style.outlineWidth),
@@ -323,6 +364,30 @@ test.describe("keyboard operability", () => {
     });
     expect(ring.style).toBe("solid");
     expect(ring.width).toBeGreaterThanOrEqual(2);
+  });
+
+  test.describe("/book without JavaScript", () => {
+    test.use({ javaScriptEnabled: false });
+
+    test("the calendar card offers the booking page and the contact page, not an endless loading state", async ({
+      page,
+    }) => {
+      await page.goto("/book");
+      const card = page.locator('[data-booking="static"]');
+      await expect(card).toBeVisible();
+      await expect(card).toContainText(
+        "The calendar appears here once the page's scripts run."
+      );
+      await expect(
+        card.getByRole("link", { name: /Open the booking page/ })
+      ).toHaveAttribute("href", /^https:\/\/calendar\.app\.google\//);
+      await expect(
+        card.getByRole("link", { name: "contact page" })
+      ).toHaveAttribute("href", "/contact");
+      await expect(page.locator("iframe")).toHaveCount(0);
+      await expect(page.locator(".book-shimmer")).toHaveCount(0);
+      await expect(page.getByText("Loading the calendar.")).toHaveCount(0);
+    });
   });
 
   test("primary navigation is reachable by keyboard", async ({ page }) => {
@@ -538,8 +603,8 @@ test.describe("motion preferences", () => {
  *
  * These assert the properties the design actually depends on, not the exact
  * numbers a designer may want to tune: a headline that dominates its viewport,
- * a scale that moves with the viewport rather than stepping, a scrim that
- * covers the 3D layer, and a bounded reading measure.
+ * a scale that moves with the viewport rather than stepping, scrims that
+ * cover the story's frames, and a bounded reading measure.
  */
 test.describe("design system", () => {
   test("the hero headline uses the display scale, and it is fluid", async ({
@@ -589,66 +654,68 @@ test.describe("design system", () => {
     ).toBeGreaterThan(32);
   });
 
-  test("the hero scrim covers the 3D layer rather than sitting under it", async ({
+  test("the story's scrims cover its frames rather than sitting under them", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(600);
+    await expect(page.locator(".bk canvas.seq")).toHaveCount(1);
 
-    const layering = await page.evaluate(() => {
-      const scrim = document.querySelector(".hs .scrim");
-      if (!scrim) return { present: false };
-
-      const section = scrim.parentElement!;
-      const kids = [...section.children];
-      const canvasHost = kids.find(
-        k => k.matches("canvas") || k.querySelector("canvas")
-      );
-
-      const s = getComputedStyle(scrim);
-      return {
-        present: true,
-        // Paints after the canvas: both are positioned, so DOM order decides.
-        afterCanvas: canvasHost
-          ? kids.indexOf(scrim) > kids.indexOf(canvasHost)
-          : null,
-        covers: s.position === "absolute" && s.inset === "0px",
-        // A scrim that intercepted clicks would break every hero control.
-        clickThrough: s.pointerEvents === "none",
-        painted: s.backgroundImage !== "none",
-      };
-    });
-
-    expect(layering.present, "the hero scrim is missing").toBe(true);
-    expect(layering.covers, "scrim does not cover the hero").toBe(true);
-    expect(layering.clickThrough, "scrim would swallow hero clicks").toBe(true);
-    expect(layering.painted, "scrim paints nothing").toBe(true);
-    expect(layering.afterCanvas, "scrim paints under the 3D canvas").not.toBe(
-      false
+    const layering = await page.evaluate(() =>
+      [...document.querySelectorAll(".bk .bk-scr")].map(scrim => {
+        const stage = scrim.parentElement!;
+        const kids = [...stage.children];
+        const canvasHost = kids.find(
+          k => k.matches("canvas") || k.querySelector("canvas")
+        );
+        const s = getComputedStyle(scrim);
+        const z = (el: Element) => parseInt(getComputedStyle(el).zIndex) || 0;
+        return {
+          // Paints after the canvas: a higher z-index, or DOM order when equal.
+          afterCanvas: canvasHost
+            ? z(scrim) > z(canvasHost) ||
+              (z(scrim) === z(canvasHost) &&
+                kids.indexOf(scrim) > kids.indexOf(canvasHost))
+            : null,
+          covers: s.position === "absolute" && s.inset === "0px",
+          // A scrim that intercepted clicks would break every story control.
+          clickThrough: s.pointerEvents === "none",
+          painted: s.backgroundImage !== "none",
+        };
+      })
     );
+
+    expect(layering.length, "the story's scrims are missing").toBe(3);
+    for (const l of layering) {
+      expect(l.covers, "scrim does not cover the story").toBe(true);
+      expect(l.clickThrough, "scrim would swallow story clicks").toBe(true);
+      expect(l.painted, "scrim paints nothing").toBe(true);
+      expect(l.afterCanvas, "scrim paints under the frames' canvas").toBe(true);
+    }
   });
 
-  test("the scrim switches to its stacked-layout variant below lg", async ({
+  test("the bottom scrim switches to its stacked-layout variant on phones", async ({
     page,
   }) => {
-    // The @media (max-width: 760px) branch exists because the story's cards
-    // stack at the bottom there: a left-weighted wash would leave the 3D model
-    // sitting behind the right half of every line. Nothing exercised that branch.
+    // At 800px and narrower (and in portrait) the story's scene text stacks at
+    // the bottom of the screen, so the bottom scrim reaches higher: the
+    // side-by-side wash would leave the board behind the upper lines.
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const read = async (width: number) => {
-      await page.setViewportSize({ width, height: 900 });
+      await page.setViewportSize({ width, height: 600 });
+      // a phone/desktop switch restarts the story; read once it is back
+      await expect(page.locator(".bk")).toHaveClass(/\bcine\b/);
       await page.waitForTimeout(300);
       return page.evaluate(
         () =>
-          getComputedStyle(document.querySelector(".hs .scrim")!)
+          getComputedStyle(document.querySelector(".bk .bk-scr.b")!)
             .backgroundImage
       );
     };
 
-    const stacked = await read(760);
-    const side = await read(761);
+    const stacked = await read(800);
+    const side = await read(1200);
 
     expect(stacked, "no scrim painted in the stacked layout").not.toBe("none");
     expect(side, "no scrim painted in the side-by-side layout").not.toBe(

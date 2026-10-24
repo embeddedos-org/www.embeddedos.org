@@ -1,0 +1,44 @@
+/* /projects (Projects.tsx): the parts the shared page blocks do not cover. */
+.bp.projectspage .pj-stats {
+  padding-bottom: clamp(32px, 5vw, 64px);
+}
+
+/* the repository groups: each group's name with its colour as a dot, then
+   its repositories as cards */
+.bp.projectspage .pj-groups .wrap {
+  display: grid;
+  gap: clamp(48px, 6vw, 80px);
+}
+.bp.projectspage h2.pj-gh {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(24px, 2.4vw, 32px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.bp.projectspage h2.pj-gh::before {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.projectspage .card .top h3 {
+  font-size: 19px;
+}
+/* the repository's tag, as it was ("⭐ Core", "🔬 Health"…) */
+.bp.projectspage .pj-tag {
+  flex: none;
+  padding-top: 3px;
+  font-size: 12px;
+  color: var(--fg3);
+  white-space: nowrap;
+}
+.bp.projectspage a.card:hover h3 {
+  color: var(--orange-hi);
+}

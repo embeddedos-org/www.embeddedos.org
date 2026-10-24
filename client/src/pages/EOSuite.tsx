@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { moveTabFocus } from "@/lib/tablist";
-import { motion } from "framer-motion";
-import { Smartphone, ArrowRight, Search } from "lucide-react";
 import { Link } from "wouter";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
+import { BpPage, PageHero, Section, Stats } from "@/components/bp";
+import "./EOSuite.css";
 
 const categories = [
   {
@@ -342,49 +342,30 @@ export default function EOSuitePage() {
   const totalApps = categories.reduce((sum, c) => sum + c.count, 0);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/5" />
-        <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-6">
-              <Smartphone className="w-4 h-4" /> EOSUITE
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">
-              eOSuite
-            </h1>
-            <p className="text-2xl text-gray-300 mb-2">
-              The Complete EmbeddedOS App Ecosystem
-            </p>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              {totalApps}+ apps across 6 categories — native C/LVGL apps,
-              browser extensions, and Flutter mobile companions. Every app runs
-              on EoS, ships with source, and is MIT licensed.
-            </p>
-            <div className="flex flex-wrap gap-6 justify-center mt-8">
-              {categories.map(c => (
-                <div key={c.id} className="text-center">
-                  <div
-                    className="text-2xl font-bold"
-                    style={{ color: c.color }}
-                  >
-                    {c.count}
-                  </div>
-                  <div className="text-gray-500 text-xs">{c.name}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="eosuite">
+      <PageHero
+        label="EOSUITE"
+        title="eOSuite"
+        sub="The Complete EmbeddedOS App Ecosystem"
+        lead={
+          <>
+            {totalApps}+ apps across 6 categories — native C/LVGL apps, browser
+            extensions, and Flutter mobile companions. Every app runs on EoS,
+            ships with source, and is MIT licensed.
+          </>
+        }
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
+      <div className="wrap es-stats">
+        <Stats
+          items={categories.map(c => ({ value: c.count, label: c.name }))}
+        />
+      </div>
+
+      <Section id="apps" className="es-apps">
+        <div className="es-bar">
           <div
-            className="flex flex-wrap gap-2 mb-6 justify-center"
+            className="ctas es-tabs"
             role="tablist"
             aria-label="App categories"
             onKeyDown={moveTabFocus}
@@ -392,94 +373,86 @@ export default function EOSuitePage() {
             {categories.map(c => (
               <button
                 key={c.id}
+                type="button"
                 role="tab"
                 id={`suite-tab-${c.id}`}
                 aria-selected={activeCategory === c.id}
                 aria-controls={`suite-panel-${c.id}`}
                 tabIndex={activeCategory === c.id ? 0 : -1}
                 onClick={() => setActiveCategory(c.id)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                style={
-                  activeCategory === c.id
-                    ? {
-                        background: c.color + "20",
-                        color: c.color,
-                        border: "1px solid " + c.color + "40",
-                      }
-                    : {
-                        background: "rgba(255,255,255,0.05)",
-                        color: "#9CA3AF",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }
-                }
+                className="btn gh"
+                style={{ "--c": c.color } as CSSProperties}
               >
                 {c.name} ({c.count})
               </button>
             ))}
           </div>
-          <div className="relative mb-6">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <div className="es-search">
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
             <input
               type="text"
               placeholder="Search apps..."
               aria-label="Search apps"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-white/30"
             />
           </div>
-          {categories.map(cat => (
-            <div
-              key={cat.id}
-              role="tabpanel"
-              id={`suite-panel-${cat.id}`}
-              aria-labelledby={`suite-tab-${cat.id}`}
-              hidden={cat.id !== activeCategory}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-            >
-              {cat.apps.filter(matches).map((app, i) => (
-                <motion.div
-                  key={app.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white/5 border border-white/10 rounded-xl p-4"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h2 className="text-white font-semibold">{app.name}</h2>
-                    <span
-                      className="px-2 py-0.5 rounded text-xs"
-                      style={{ background: cat.color + "15", color: cat.color }}
-                    >
-                      {app.type}
-                    </span>
-                  </div>
-                  <p className="text-gray-400 text-sm">{app.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          ))}
         </div>
-      </section>
+        {categories.map(cat => (
+          <div
+            key={cat.id}
+            role="tabpanel"
+            id={`suite-panel-${cat.id}`}
+            aria-labelledby={`suite-tab-${cat.id}`}
+            hidden={cat.id !== activeCategory}
+            style={{ "--c": cat.color } as CSSProperties}
+          >
+            {/* the panel's own heading, for the outline; the tab shows the name */}
+            <h2 className="sr-only">{cat.name}</h2>
+            <ul className="cards">
+              {cat.apps.filter(matches).map(app => (
+                <li key={app.name}>
+                  <div className="card">
+                    <div className="top">
+                      <h3>{app.name}</h3>
+                      <span className="st">{app.type}</span>
+                    </div>
+                    <p>{app.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/eapps"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              eApps Store <ArrowRight className="w-4 h-4" />
+      <section className="sec tight es-more">
+        <div className="wrap">
+          <div className="ctas">
+            <Link href="/eapps" className="btn pri">
+              eApps Store{" "}
+              <span className="ar" aria-hidden="true">
+                →
+              </span>
             </Link>
-            <Link
-              href="/eoffice"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
+            <Link href="/eoffice" className="btn gh">
               eOffice Suite
             </Link>
           </div>
         </div>
       </section>
-    </div>
+    </BpPage>
   );
 }

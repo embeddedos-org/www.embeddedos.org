@@ -401,8 +401,10 @@ describe("footer columns", () => {
   });
 
   it("keeps the published legal address readable", () => {
+    // Black Edition footer text is #A1A1A6: 8.2:1 on the black footer, above
+    // the 7.4:1 that text-white/60 gave there and well over the 4.5:1 floor.
     expect(footerSource).toMatch(
-      /<address className="[^"]*text-white\/60[^"]*"/
+      /<address className="[^"]*text-\[#a1a1a6\][^"]*"/
     );
   });
 

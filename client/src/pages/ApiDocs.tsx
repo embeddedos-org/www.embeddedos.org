@@ -1,39 +1,15 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "wouter";
+import { useState, useRef, useEffect, type CSSProperties } from "react";
 import { copyText } from "@/lib/clipboard";
 import { moveTabFocus } from "@/lib/tablist";
-import {
-  Search,
-  ChevronRight,
-  Copy,
-  Check,
-  ExternalLink,
-  X,
-  Cpu,
-  Zap,
-  Network,
-  Lock,
-  RefreshCw,
-  Activity,
-  Settings,
-  HardDrive,
-  Battery,
-  Globe,
-  Bug,
-  Package,
-  Server,
-  FileText,
-  Terminal,
-  Code2,
-  Smartphone,
-} from "lucide-react";
+import { Search, Copy, Check, X } from "lucide-react";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
+import { BpPage, Crumbs, PageHero, Stats } from "@/components/bp";
+import "./ApiDocs.css";
 
 const MODULES = [
   {
     id: "hal",
     label: "HAL",
-    icon: Cpu,
     color: "#22D3EE",
     title: "Hardware Abstraction Layer",
     description:
@@ -380,7 +356,6 @@ const MODULES = [
   {
     id: "kernel",
     label: "Kernel",
-    icon: Settings,
     color: "#34D399",
     title: "Kernel (RTOS)",
     description:
@@ -681,7 +656,6 @@ const MODULES = [
   {
     id: "multicore",
     label: "Multicore",
-    icon: Zap,
     color: "#A78BFA",
     title: "Multicore Framework",
     description:
@@ -764,7 +738,6 @@ const MODULES = [
   {
     id: "crypto",
     label: "Crypto",
-    icon: Lock,
     color: "#F97316",
     title: "Cryptographic Services",
     description: "SHA-256, CRC, AES-256-GCM, RSA, ECC, TRNG",
@@ -834,7 +807,6 @@ const MODULES = [
   {
     id: "ota",
     label: "OTA",
-    icon: RefreshCw,
     color: "#22D3EE",
     title: "OTA Updates",
     description:
@@ -897,7 +869,6 @@ const MODULES = [
   {
     id: "sensor",
     label: "Sensors",
-    icon: Activity,
     color: "#F59E0B",
     title: "Sensor Framework",
     description:
@@ -958,7 +929,6 @@ const MODULES = [
   {
     id: "filesystem",
     label: "Filesystem",
-    icon: HardDrive,
     color: "#60A5FA",
     title: "Filesystem",
     description:
@@ -1037,7 +1007,6 @@ const MODULES = [
   {
     id: "power",
     label: "Power",
-    icon: Battery,
     color: "#FBBF24",
     title: "Power Management",
     description:
@@ -1086,7 +1055,6 @@ const MODULES = [
   {
     id: "net",
     label: "Network",
-    icon: Globe,
     color: "#34D399",
     title: "Networking",
     description: "TCP/UDP sockets, HTTP client, MQTT, mDNS, TLS",
@@ -1184,7 +1152,6 @@ const MODULES = [
   {
     id: "debug",
     label: "Debug",
-    icon: Bug,
     color: "#F85149",
     title: "Debug Tools",
     description: "GDB stub, core dump, stack canary, trace, profiler",
@@ -1235,7 +1202,6 @@ const MODULES = [
   {
     id: "logging",
     label: "Logging",
-    icon: FileText,
     color: "#A78BFA",
     title: "Logging",
     description:
@@ -1278,7 +1244,6 @@ const MODULES = [
   {
     id: "services",
     label: "Services",
-    icon: Server,
     color: "#F472B6",
     title: "Service Manager",
     description:
@@ -1327,7 +1292,6 @@ const MODULES = [
   {
     id: "eai",
     label: "EAI",
-    icon: Zap,
     color: "#A855F7",
     title: "EAI — Embedded AI Runtime",
     description:
@@ -1428,7 +1392,6 @@ const MODULES = [
   {
     id: "eni",
     label: "ENI",
-    icon: Activity,
     color: "#10B981",
     title: "ENI — Embedded Neural Interface",
     description:
@@ -1523,7 +1486,6 @@ const MODULES = [
   {
     id: "eipc",
     label: "EIPC",
-    icon: Network,
     color: "#F59E0B",
     title: "EIPC — Secure IPC Fabric",
     description:
@@ -1607,7 +1569,6 @@ const MODULES = [
   {
     id: "edb",
     label: "eDB",
-    icon: HardDrive,
     color: "#3B82F6",
     title: "eDB — Embedded Database",
     description:
@@ -1723,7 +1684,6 @@ const MODULES = [
   {
     id: "eboot",
     label: "eBoot",
-    icon: RefreshCw,
     color: "#F97316",
     title: "eBootloader — Secure Multi-Architecture Bootloader",
     description:
@@ -1807,7 +1767,6 @@ const MODULES = [
   {
     id: "ebuild",
     label: "eBuild",
-    icon: Package,
     color: "#EF4444",
     title: "eBuild — Build System & SDK Generator",
     description:
@@ -1894,7 +1853,6 @@ const MODULES = [
   {
     id: "eosim",
     label: "EoSim",
-    icon: Terminal,
     color: "#06B6D4",
     title: "EoSim — Embedded Systems Simulator",
     description: `${SIM_PLATFORM_COUNT} virtual platforms, QEMU + Renode, HIL bridge, and scriptable Python scenarios`,
@@ -1968,7 +1926,6 @@ const MODULES = [
   {
     id: "eostudio",
     label: "EoStudio",
-    icon: Code2,
     color: "#8B5CF6",
     title: "EoStudio — Embedded IDE",
     description:
@@ -2034,7 +1991,6 @@ const MODULES = [
   {
     id: "eoffice",
     label: "eOffice",
-    icon: FileText,
     color: "#059669",
     title: "eOffice — Embedded Office Suite",
     description:
@@ -2097,7 +2053,6 @@ const MODULES = [
   {
     id: "ebrowser",
     label: "eBrowser",
-    icon: Globe,
     color: "#0EA5E9",
     title: "eBrowser — Embedded Web Browser Engine",
     description:
@@ -2168,7 +2123,6 @@ const MODULES = [
   {
     id: "eosuite",
     label: "eOSuite",
-    icon: Package,
     color: "#F59E0B",
     title: "eOSuite — 43 Cross-Platform Applications",
     description:
@@ -2280,7 +2234,6 @@ const MODULES = [
   {
     id: "eserviceapps",
     label: "eServiceApps",
-    icon: Smartphone,
     color: "#EC4899",
     title: "eServiceApps — Flutter Mobile Super App",
     description:
@@ -2430,19 +2383,16 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
+      type="button"
       onClick={async () => {
         if (!(await copyText(text))) return;
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
-      className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-white/40 hover:text-white"
+      className="ad-copy"
       title="Copy"
     >
-      {copied ? (
-        <Check size={13} className="text-green-400" />
-      ) : (
-        <Copy size={13} />
-      )}
+      {copied ? <Check size={14} className="ok" /> : <Copy size={14} />}
     </button>
   );
 }
@@ -2462,43 +2412,36 @@ function ApiCard({
   const after = api.sig.slice(nameAt + fnName.length);
 
   return (
-    <div className="border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-colors">
+    <div className="ad-card">
       <button
+        type="button"
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
         aria-controls={id}
-        className="w-full text-left p-4 flex items-start justify-between gap-3 hover:bg-white/3 transition-colors"
+        className="ad-sum"
       >
-        <div className="flex-1 min-w-0">
-          <code className="text-sm font-mono">
-            <span className="text-[#F59E0B]">{before}</span>
-            <span className="text-[#22D3EE] font-semibold">{fnName}</span>
-            <span className="text-white/60">{after}</span>
+        <span className="ad-head">
+          <code className="ad-sig">
+            <span className="ty">{before}</span>
+            <span className="fn">{fnName}</span>
+            <span className="rest">{after}</span>
           </code>
-          <p className="text-xs text-white/50 mt-1 truncate">{api.desc}</p>
-        </div>
-        <ChevronRight
-          size={14}
-          className={`shrink-0 mt-1 text-white/30 transition-transform ${open ? "rotate-90" : ""}`}
-        />
+          <span className="ad-desc">{api.desc}</span>
+        </span>
       </button>
       <div id={id} hidden={!open}>
-        <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
-          <p className="text-sm text-white/70">{api.desc}</p>
+        <div className="ad-body">
+          <p>{api.desc}</p>
           <div>
-            <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
-              Returns
-            </span>
-            <p className="text-sm text-[#34D399] mt-1">{api.ret}</p>
+            <span className="ad-k">Returns</span>
+            <p className="ad-ret">{api.ret}</p>
           </div>
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
-                Example
-              </span>
+            <div className="ad-exh">
+              <span className="ad-k">Example</span>
               <CopyButton text={api.example} />
             </div>
-            <pre className="text-xs bg-black/40 rounded-lg p-3 overflow-x-auto text-[#A78BFA] border border-white/5">
+            <pre className="ad-pre">
               <code>{api.example}</code>
             </pre>
           </div>
@@ -2539,94 +2482,70 @@ export default function ApiDocs() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
-      {/* Hero */}
-      <section className="relative pt-28 pb-12 px-4 border-b border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#22D3EE]/5 via-transparent to-[#A78BFA]/5" />
-        <div className="max-w-7xl mx-auto relative">
-          <div className="flex items-center gap-2 text-sm text-white/40 mb-4">
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <ChevronRight size={14} />
-            <Link href="/docs" className="hover:text-white transition-colors">
-              Docs
-            </Link>
-            <ChevronRight size={14} />
-            <span className="text-white">API Reference</span>
-          </div>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#22D3EE]/10 border border-[#22D3EE]/20 text-[#22D3EE] text-xs font-semibold mb-4">
-                <Code2 size={12} />
-                EoS API Reference v2.1
-              </div>
-              <h1 className="text-4xl lg:text-5xl font-bold font-heading mb-3">
-                EmbeddedOS <span className="text-gradient">API Reference</span>
-              </h1>
-              <p className="text-white/60 text-lg max-w-2xl">
-                Complete C API documentation for all EoS modules. {totalApis}+
-                functions across {MODULES.length} modules — from GPIO to OTA
-                updates.
-              </p>
-            </div>
-            <div className="flex gap-4 shrink-0">
-              {[
-                { label: "Functions", value: `${totalApis}+` },
-                { label: "Modules", value: `${MODULES.length}` },
-                { label: "Version", value: "v2.1" },
-              ].map(s => (
-                <div key={s.label} className="text-center">
-                  <div className="text-2xl font-bold text-[#22D3EE]">
-                    {s.value}
-                  </div>
-                  <div className="text-xs text-white/40">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Search */}
-          <div className="mt-6 relative max-w-lg">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
-            />
-            <input
-              ref={searchRef}
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Search functions… (⌘F)"
-              aria-label="Search API functions"
-              className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#22D3EE]/50 focus:bg-white/8 transition-all"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                aria-label="Clear search"
-                className="absolute right-2 top-1/2 -translate-y-1/2 min-w-6 min-h-6 flex items-center justify-center text-white/30 hover:text-white"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </div>
+    <BpPage className="apid">
+      <PageHero
+        crumbs={
+          <Crumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Docs", href: "/docs" },
+              { label: "API Reference" },
+            ]}
+          />
+        }
+        label="EoS API Reference v2.1"
+        title="EmbeddedOS API Reference"
+        lead={
+          <>
+            Complete C API documentation for all EoS modules. {totalApis}+
+            functions across {MODULES.length} modules — from GPIO to OTA
+            updates.
+          </>
+        }
+      >
+        <Stats
+          small
+          items={[
+            { label: "Functions", value: `${totalApis}+` },
+            { label: "Modules", value: `${MODULES.length}` },
+            { label: "Version", value: "v2.1" },
+          ]}
+        />
+        {/* Search */}
+        <div className="ad-search">
+          <Search size={16} aria-hidden="true" className="ad-sic" />
+          <input
+            ref={searchRef}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search functions… (⌘F)"
+            aria-label="Search API functions"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              aria-label="Clear search"
+              className="ad-clear"
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
-      </section>
+      </PageHero>
 
-      <div className="max-w-7xl mx-auto flex">
-        {/* Sidebar */}
-        <aside className="hidden lg:block w-56 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-6 pr-4 border-r border-white/5">
-          <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-3 px-2">
-            Modules
-          </div>
+      <div className="wrap wide ad-doc">
+        {/* Sidebar: sticks under the 53px site header */}
+        <aside className="hidden lg:block w-56 shrink-0 sticky top-[53px] h-[calc(100vh-53px)] overflow-y-auto ad-side">
+          <p className="ad-side-h">Modules</p>
           <div
-            className="space-y-0.5"
+            className="ad-side-tabs"
             role="tablist"
             aria-orientation="vertical"
             aria-label="API modules"
             onKeyDown={moveTabFocus}
           >
             {MODULES.map(m => {
-              const Icon = m.icon;
               const count = m.subsections.reduce(
                 (a, s) => a + (s.apis?.length || 0),
                 0
@@ -2634,48 +2553,36 @@ export default function ApiDocs() {
               return (
                 <button
                   key={m.id}
+                  type="button"
                   role="tab"
                   id={`api-tab-${m.id}`}
                   aria-selected={activeModule === m.id}
                   aria-controls={`api-module-${m.id}`}
                   tabIndex={activeModule === m.id ? 0 : -1}
                   onClick={() => setActiveModule(m.id)}
-                  className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm transition-all ${
-                    activeModule === m.id
-                      ? "bg-white/8 text-white"
-                      : "text-white/50 hover:text-white hover:bg-white/5"
-                  }`}
+                  style={{ "--c": m.color } as CSSProperties}
                 >
-                  <Icon
-                    size={14}
-                    style={{
-                      color: activeModule === m.id ? m.color : undefined,
-                    }}
-                  />
-                  <span className="flex-1 text-left">{m.label}</span>
-                  <span className="text-[10px] text-white/30">{count}</span>
+                  <span className="ad-l">{m.label}</span>
+                  <span className="ad-n">{count}</span>
                 </button>
               );
             })}
           </div>
-          <div className="mt-6 px-2">
-            <a
-              href="https://github.com/embeddedos-org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition-colors py-1"
-            >
-              <ExternalLink size={11} />
-              GitHub Repositories
-            </a>
-          </div>
+          <a
+            href="https://github.com/embeddedos-org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ad-gh"
+          >
+            GitHub Repositories <span aria-hidden="true">↗</span>
+          </a>
         </aside>
 
         {/* Main content */}
-        <div className="flex-1 min-w-0 py-8 px-6">
+        <div className="ad-main">
           {/* Mobile module selector */}
           <div
-            className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-6"
+            className="lg:hidden ad-mtabs"
             role="tablist"
             aria-label="API modules"
             onKeyDown={moveTabFocus}
@@ -2683,17 +2590,13 @@ export default function ApiDocs() {
             {MODULES.map(m => (
               <button
                 key={m.id}
+                type="button"
                 role="tab"
                 id={`api-tab-mobile-${m.id}`}
                 aria-selected={activeModule === m.id}
                 aria-controls={`api-module-${m.id}`}
                 tabIndex={activeModule === m.id ? 0 : -1}
                 onClick={() => setActiveModule(m.id)}
-                className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  activeModule === m.id
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white"
-                }`}
               >
                 {m.label}
               </button>
@@ -2711,84 +2614,56 @@ export default function ApiDocs() {
                 id={`api-module-${m.id}`}
                 aria-labelledby={`api-tab-${m.id}`}
                 hidden={m.id !== activeModule}
+                style={{ "--c": m.color } as CSSProperties}
               >
-                <div className="flex items-start gap-4 mb-8">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                    style={{
-                      background: `${m.color}20`,
-                      border: `1px solid ${m.color}40`,
-                    }}
-                  >
-                    <m.icon size={22} style={{ color: m.color }} />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold font-heading">
-                      {m.title}
-                    </h2>
-                    <p className="text-white/50 text-sm mt-1">
-                      {m.description}
-                    </p>
-                  </div>
+                <div className="ad-mh">
+                  <h2>{m.title}</h2>
+                  <p>{m.description}</p>
                 </div>
 
                 {subsections.length === 0 ? (
-                  <div className="text-center py-16 text-white/30">
-                    <Search size={32} className="mx-auto mb-3 opacity-50" />
+                  <div className="ad-none">
                     <p>No functions match "{search}"</p>
                   </div>
                 ) : (
-                  <div className="space-y-10">
+                  <div className="ad-subs">
                     {subsections.map(sub => (
                       <div key={sub.name}>
-                        <h3
-                          className="text-lg font-semibold mb-1"
-                          style={{ color: m.color }}
-                        >
-                          {sub.name}
-                        </h3>
+                        <h3 className="ad-sh">{sub.name}</h3>
                         {(sub as any).structs &&
                           (sub as any).structs.map((st: any) => (
-                            <div
-                              key={st.name}
-                              className="mb-4 bg-white/3 border border-white/8 rounded-xl p-4"
-                            >
-                              <div className="text-xs font-bold text-white/40 uppercase tracking-wider mb-2">
-                                struct
-                              </div>
-                              <code className="text-sm font-mono text-[#F59E0B]">
-                                {st.name}
-                              </code>
-                              <div className="mt-3 overflow-x-auto">
-                                <table className="w-full text-xs">
-                                  <thead>
-                                    <tr className="text-white/30 border-b border-white/5">
-                                      <th className="text-left pb-2 pr-4 font-medium">
-                                        Field
-                                      </th>
-                                      <th className="text-left pb-2 pr-4 font-medium">
-                                        Type
-                                      </th>
-                                      <th className="text-left pb-2 font-medium">
-                                        Description
-                                      </th>
+                            <div key={st.name} className="ad-struct">
+                              <div className="ad-k">struct</div>
+                              <code className="ad-sname">{st.name}</code>
+                              {/* A region a keyboard can reach and scroll.
+                                  On a phone the rows stack (ApiDocs.css), so
+                                  the table roles are explicit: a browser may
+                                  drop a table's semantics when its display
+                                  changes. */}
+                              <div
+                                className="tbl"
+                                tabIndex={0}
+                                role="region"
+                                aria-label={`${st.name} fields`}
+                              >
+                                <table role="table">
+                                  <thead role="rowgroup">
+                                    <tr role="row">
+                                      <th role="columnheader">Field</th>
+                                      <th role="columnheader">Type</th>
+                                      <th role="columnheader">Description</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <tbody role="rowgroup">
                                     {st.fields.map((f: any) => (
-                                      <tr
-                                        key={f.name}
-                                        className="border-b border-white/5 last:border-0"
-                                      >
-                                        <td className="py-1.5 pr-4 font-mono text-[#22D3EE]">
+                                      <tr key={f.name} role="row">
+                                        <td role="cell" className="mono">
                                           {f.name}
                                         </td>
-                                        <td className="py-1.5 pr-4 font-mono text-[#F59E0B]">
+                                        <td role="cell" className="mono">
                                           {f.type}
                                         </td>
-                                        <td className="py-1.5 text-white/60">
-                                          {f.desc}
-                                        </td>
+                                        <td role="cell">{f.desc}</td>
                                       </tr>
                                     ))}
                                   </tbody>
@@ -2796,7 +2671,7 @@ export default function ApiDocs() {
                               </div>
                             </div>
                           ))}
-                        <div className="space-y-2">
+                        <div className="ad-list">
                           {sub.apis.map((api, i) => (
                             <ApiCard
                               key={api.sig}
@@ -2814,6 +2689,6 @@ export default function ApiDocs() {
           })}
         </div>
       </div>
-    </div>
+    </BpPage>
   );
 }

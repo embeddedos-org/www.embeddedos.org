@@ -1,0 +1,49 @@
+/* /ai-os (AIOS.tsx): the parts the shared page blocks do not cover. */
+
+/* the EAI stack, top layer first: each layer's name with its accent as a thin
+   rule, then the parts that live in it */
+.bp.aios .aios-stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.bp.aios .aios-stack > li {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px 24px;
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--c, var(--line2));
+}
+.bp.aios .aios-layer {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.bp.aios .aios-stack ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bp.aios .aios-stack ul li {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--fg2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 7px 12px;
+}
+@media (max-width: 620px) {
+  .bp.aios .aios-stack > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

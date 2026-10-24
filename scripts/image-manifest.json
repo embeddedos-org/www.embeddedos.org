@@ -234,10 +234,6 @@
       "sha256": "a0ae430ef46eb14c5b3b980713bc0517e8ad83b315d8bc7e8fea7c01ef3170cf",
       "webpSha256": "fd1196a6b636e50f89865ff3779dcd4db41e4e2262b19d006bf8081455a032f9"
     },
-    "home-story-poster.jpg": {
-      "sha256": "81bfc0d8765af4fb976bb48047acd43fa82ee541cc1cca30b7d745492fe5b01c",
-      "webpSha256": "24f82853c8dfa01a7f067bf383d85fa29f0fb0bbc73254e4320afbf1567d7f34"
-    },
     "book-cover-eai.jpg": {
       "sha256": "57b2f7380c11ac83549d7589c72b6fa5583a067ffd426d7533a993f792743055",
       "webpSha256": "7f3e896ee1505c16309e6d7a823ea69193fe2a463583e63e89c8999c84b50db3"
@@ -445,6 +441,10 @@
     "board-eos-tm4c123-board-turntable-poster.jpg": {
       "sha256": "e7ad3345dca5b58c8fa875f954f3dc97d7410cdd8fabe1023091e449b3caba5d",
       "webpSha256": "f17975015052cad617cabf3b799bc0555b013bf96ff24d21d69bb32230c3b92e"
+    },
+    "og-home-2026-10-22.jpg": {
+      "sha256": "48d0d043d4fb77d2f21689312f5e2b3d4becf7299aff27b30f155e55049e2217",
+      "webpSha256": "ca221852342d7889317065dd85c7e9946e53f1a4211326eb900da2f0d2824450"
     }
   }
 }

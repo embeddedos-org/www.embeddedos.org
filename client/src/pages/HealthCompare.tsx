@@ -1,16 +1,8 @@
-import { useState, lazy, Suspense } from "react";
+import { Fragment, useState, lazy, Suspense, type CSSProperties } from "react";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
-import {
-  Activity,
-  Watch,
-  Fingerprint,
-  Microscope,
-  Check,
-  X,
-  ChevronRight,
-  Github,
-} from "lucide-react";
+import { BpPage, PageHero, Section } from "@/components/bp";
+import "./HealthCompare.css";
+
 const DeviceRadarChart = lazy(() => import("../components/DeviceRadarChart"));
 
 // ─── Device data ──────────────────────────────────────────────────────────────
@@ -21,7 +13,6 @@ const DEVICES = [
     name: "HEALTH-KEY ULTRA",
     tagline: "USB-C Pendrive",
     color: "#F85149",
-    icon: Activity,
     formFactor: "USB-C Pendrive",
     chip: "nRF52840",
     status: "In Development",
@@ -34,7 +25,6 @@ const DEVICES = [
     name: "HEALTH-BAND Neuro",
     tagline: "AI Neuro Wristband",
     color: "#F59E0B",
-    icon: Watch,
     formFactor: "Wristband",
     chip: "nRF52840 + TFLite",
     status: "In Development",
@@ -47,7 +37,6 @@ const DEVICES = [
     name: "HEALTH-RING",
     tagline: "Titanium Smart Ring",
     color: "#A78BFA",
-    icon: Fingerprint,
     formFactor: "Titanium Ring",
     chip: "Custom ASIC",
     status: "In Development",
@@ -60,7 +49,6 @@ const DEVICES = [
     name: "HEALTH-LAB",
     tagline: "Biosensor Patch Concept",
     color: "#34D399",
-    icon: Microscope,
     formFactor: "Flexible Patch",
     chip: "Custom ASIC + BLE 5.3",
     status: "In Development",
@@ -279,30 +267,20 @@ const CATEGORIES = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      delay: i * 0.06,
-      ease: [0.23, 1, 0.32, 1] as [number, number, number, number],
-    },
-  }),
-};
-
 function CellValue({ value, color }: { value: RowValue; color: string }) {
   if (typeof value === "boolean") {
     return value ? (
-      <span className="inline-flex items-center justify-center gap-1 text-xs">
-        <Check size={14} style={{ color }} /> Planned
+      <span className="hc-yes" style={{ "--c": color } as CSSProperties}>
+        Planned
       </span>
     ) : (
-      <X size={14} className="mx-auto text-white/20" />
+      <span className="hc-no">
+        <span aria-hidden="true">—</span>
+        <span className="sr-only">Not planned</span>
+      </span>
     );
   }
-  return <span className="text-white/70 text-xs leading-tight">{value}</span>;
+  return <span className="hc-val">{value}</span>;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -315,372 +293,191 @@ export default function HealthCompare() {
     : ROWS;
 
   return (
-    <div className="min-h-screen bg-[#080F1E]">
-      {/* Hero */}
-      <section className="relative py-14 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
-        {/* Animated glows */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/6 w-72 h-72 bg-[#F85149]/6 rounded-full blur-[90px]" />
-          <div className="absolute top-1/3 right-1/5 w-64 h-64 bg-[#A78BFA]/6 rounded-full blur-[80px]" />
-          <div className="absolute bottom-1/4 left-1/2 w-56 h-56 bg-[#34D399]/5 rounded-full blur-[70px]" />
+    <BpPage className="hc">
+      <PageHero
+        sig
+        label="In-Development Design Comparison"
+        title="Compare All 4 Health Concepts"
+        lead="Side-by-side comparison of four in-development health research designs. Listed capabilities are design goals; clinical validation and regulatory review are pending."
+      >
+        <div className="ctas">
+          <Link href="/health" className="btn pri">
+            View Health Page <span className="ar">›</span>
+          </Link>
+          <a
+            href="https://github.com/embeddedos-org/eos-health"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn gh"
+          >
+            GitHub Repository <span aria-hidden="true">↗</span>
+          </a>
         </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-5"
-              style={{
-                background: "rgba(249,115,22,0.12)",
-                border: "1px solid rgba(249,115,22,0.3)",
-                color: "#F97316",
-              }}
-            >
-              <Activity size={12} /> In-Development Design Comparison
-            </span>
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            className="font-heading font-black text-4xl sm:text-5xl text-white mb-4 leading-tight"
-          >
-            Compare All{" "}
-            <span style={{ color: "#F97316" }}>4 Health Concepts</span>
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="text-white/60 text-lg max-w-2xl mx-auto mb-6"
-          >
-            Side-by-side comparison of four in-development health research
-            designs. Listed capabilities are design goals; clinical validation
-            and regulatory review are pending.
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            <Link
-              href="/health"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "#F97316", color: "#fff" }}
-            >
-              View Health Page <ChevronRight size={14} />
-            </Link>
-            <a
-              href="https://github.com/embeddedos-org/eos-health"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
-            >
-              <Github size={14} /> GitHub Repository
-            </a>
-          </motion.div>
-        </div>
-      </section>
+      </PageHero>
 
-      {/* Comparison table */}
-      <section className="pb-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Radar chart */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-10 glass rounded-2xl p-8 border border-white/5"
-          >
-            <div className="text-center mb-4">
-              <h2 className="font-heading font-bold text-white text-xl mb-1">
-                Illustrative Planned-Capability Radar
-              </h2>
-              <p className="text-sm text-white/40">
-                Conceptual comparison, not measured device performance.
-              </p>
-            </div>
-            <Suspense
-              fallback={
-                <div className="h-64 flex items-center justify-center text-white/20">
-                  Loading...
-                </div>
-              }
-            >
+      {/* Radar chart */}
+      <Section id="radar" alt>
+        <div className="split2 hc-radar">
+          <div className="sec-h">
+            <h2>Illustrative Planned-Capability Radar</h2>
+            <p className="lead">
+              Conceptual comparison, not measured device performance.
+            </p>
+          </div>
+          <div className="hc-stage">
+            <Suspense fallback={<div className="hc-wait">Loading...</div>}>
               <DeviceRadarChart />
             </Suspense>
-          </motion.div>
-
-          {/* Category filter */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            <button
-              onClick={() => setActiveCategory(null)}
-              className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
-              style={
-                activeCategory === null
-                  ? { background: "#F97316", color: "#fff" }
-                  : {
-                      background: "rgba(255,255,255,0.05)",
-                      color: "rgba(255,255,255,0.5)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                    }
-              }
-            >
-              All Categories
-            </button>
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
-                style={
-                  activeCategory === cat
-                    ? { background: "#F97316", color: "#fff" }
-                    : {
-                        background: "rgba(255,255,255,0.05)",
-                        color: "rgba(255,255,255,0.5)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }
-                }
-              >
-                {cat}
-              </button>
-            ))}
           </div>
+        </div>
+      </Section>
 
-          {/* Table */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-            className="rounded-2xl border overflow-hidden"
-            style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      {/* Comparison table */}
+      <Section
+        id="compare"
+        wide
+        title="Planned capabilities, side by side"
+        lead="Filter by category. Listed capabilities are design goals for in-development concepts."
+        split
+      >
+        <div
+          className="ctas hc-filter"
+          role="group"
+          aria-label="Filter rows by category"
+        >
+          <button
+            type="button"
+            onClick={() => setActiveCategory(null)}
+            aria-pressed={activeCategory === null}
+            className="btn gh sm"
           >
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                {/* Header */}
-                <thead>
-                  <tr
-                    style={{
-                      background: "rgba(255,255,255,0.04)",
-                      borderBottom: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    <th className="text-left px-4 py-4 text-white/40 font-semibold text-xs uppercase tracking-widest w-48">
-                      Feature
-                    </th>
-                    {DEVICES.map(d => {
-                      const Icon = d.icon;
-                      return (
-                        <th
-                          key={d.id}
-                          className="px-4 py-4 text-center min-w-[140px]"
-                        >
-                          <div className="flex flex-col items-center gap-2">
-                            <div
-                              className="w-8 h-8 rounded-xl flex items-center justify-center"
-                              style={{ background: `${d.color}20` }}
-                            >
-                              <Icon size={16} style={{ color: d.color }} />
-                            </div>
-                            <div className="font-heading font-bold text-white text-xs leading-tight">
-                              {d.name}
-                            </div>
-                            <div className="text-[10px] text-white/40">
-                              {d.tagline}
-                            </div>
-                            <span
-                              className="text-[9px] font-bold px-2 py-0.5 rounded-full"
-                              style={{
-                                background: `${d.color}20`,
-                                color: d.color,
-                              }}
-                            >
-                              {d.status}
-                            </span>
-                          </div>
-                        </th>
-                      );
-                    })}
-                  </tr>
-                </thead>
-                {/* Body */}
-                <tbody>
-                  {filteredRows.map((row, i) => {
-                    // Category header row
-                    const prevCategory =
-                      i > 0 ? filteredRows[i - 1].category : null;
-                    const showCategoryHeader = row.category !== prevCategory;
-                    return (
-                      <>
-                        {showCategoryHeader && (
-                          <tr
-                            key={`cat-${row.category}`}
-                            style={{
-                              background: "rgba(255,255,255,0.02)",
-                              borderTop: "1px solid rgba(255,255,255,0.06)",
-                            }}
-                          >
-                            <td colSpan={5} className="px-4 py-2">
-                              <span className="text-xs font-bold text-white/30 uppercase tracking-widest">
-                                {row.category}
-                              </span>
-                            </td>
-                          </tr>
-                        )}
-                        <tr
-                          key={row.label}
-                          style={{
-                            background: row.highlight
-                              ? "rgba(249,115,22,0.04)"
-                              : i % 2 === 0
-                                ? "transparent"
-                                : "rgba(255,255,255,0.015)",
-                            borderBottom: "1px solid rgba(255,255,255,0.04)",
-                          }}
-                        >
-                          <td className="px-4 py-3 text-white/60 text-xs font-medium">
-                            {row.label}
-                            {row.highlight && (
-                              <span
-                                className="ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full"
-                                style={{
-                                  background: "rgba(249,115,22,0.2)",
-                                  color: "#F97316",
-                                }}
-                              >
-                                KEY
-                              </span>
-                            )}
-                          </td>
-                          {row.values.map((val, vi) => (
-                            <td key={vi} className="px-4 py-3 text-center">
-                              <CellValue
-                                value={val}
-                                color={DEVICES[vi].color}
-                              />
-                            </td>
-                          ))}
-                        </tr>
-                      </>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
+            All Categories
+          </button>
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setActiveCategory(cat)}
+              aria-pressed={activeCategory === cat}
+              className="btn gh sm"
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
-          {/* Device cards summary */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-            {DEVICES.map((d, i) => {
-              const Icon = d.icon;
-              const count = ROWS.filter(r => r.values[i] === true).length;
-              return (
-                <motion.div
-                  key={d.id}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="rounded-2xl border p-5"
-                  style={{
-                    background: "rgba(255,255,255,0.02)",
-                    borderColor: `${d.color}25`,
-                    borderTopColor: d.color,
-                    borderTopWidth: 2,
-                  }}
+        <div
+          className="tbl hc-tbl"
+          tabIndex={0}
+          role="region"
+          aria-label="Planned capabilities comparison table"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Feature</th>
+                {DEVICES.map(d => (
+                  <th
+                    key={d.id}
+                    scope="col"
+                    style={{ "--c": d.color } as CSSProperties}
+                  >
+                    <span className="hc-dn">{d.name}</span>
+                    <span className="hc-dt">{d.tagline}</span>
+                    <span className="st">{d.status}</span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRows.map((row, i) => {
+                const prevCategory =
+                  i > 0 ? filteredRows[i - 1].category : null;
+                const showCategoryHeader = row.category !== prevCategory;
+                return (
+                  <Fragment key={row.label}>
+                    {showCategoryHeader && (
+                      <tr className="hc-cat">
+                        <th colSpan={5} scope="colgroup">
+                          {row.category}
+                        </th>
+                      </tr>
+                    )}
+                    <tr className={row.highlight ? "hc-key" : undefined}>
+                      <th scope="row">
+                        {row.label}
+                        {row.highlight && <span className="hc-kb">KEY</span>}
+                      </th>
+                      {row.values.map((val, vi) => (
+                        <td key={vi}>
+                          <CellValue value={val} color={DEVICES[vi].color} />
+                        </td>
+                      ))}
+                    </tr>
+                  </Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Device cards summary */}
+        <ul className="cards four hc-sum">
+          {DEVICES.map((d, i) => {
+            const count = ROWS.filter(r => r.values[i] === true).length;
+            return (
+              <li key={d.id}>
+                <div
+                  className="card"
+                  style={{ "--c": d.color } as CSSProperties}
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center"
-                      style={{ background: `${d.color}20` }}
-                    >
-                      <Icon size={18} style={{ color: d.color }} />
+                  <div>
+                    <h3 className="hc-sn">{d.name}</h3>
+                    <span className="k">{d.formFactor}</span>
+                  </div>
+                  <p className="hc-count">
+                    <b>{count}</b>
+                    <span>planned features</span>
+                  </p>
+                  <dl className="hc-dl">
+                    <div>
+                      <dt>Chip:</dt> <dd>{d.chip}</dd>
                     </div>
                     <div>
-                      <div className="font-heading font-bold text-white text-sm">
-                        {d.name}
-                      </div>
-                      <div className="text-[10px] text-white/40">
-                        {d.formFactor}
-                      </div>
+                      <dt>Research audience:</dt> <dd>{d.targetUser}</dd>
                     </div>
-                  </div>
-                  <div
-                    className="text-3xl font-black mb-1"
-                    style={{ color: d.color }}
-                  >
-                    {count}
-                  </div>
-                  <div className="text-xs text-white/40 mb-3">
-                    planned features
-                  </div>
-                  <div className="text-xs text-white/50 mb-1">
-                    <span className="text-white/70">Chip:</span> {d.chip}
-                  </div>
-                  <div className="text-xs text-white/50 mb-1">
-                    <span className="text-white/70">Research audience:</span>{" "}
-                    {d.targetUser}
-                  </div>
-                  <div className="text-xs text-white/50">
-                    <span className="text-white/70">Patent:</span> {d.patent}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                    <div>
+                      <dt>Patent:</dt> <dd>{d.patent}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </Section>
 
-          {/* CTA */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mt-10 rounded-2xl border p-8 text-center"
-            style={{
-              background: "rgba(249,115,22,0.05)",
-              borderColor: "rgba(249,115,22,0.2)",
-            }}
+      {/* CTA */}
+      <Section
+        id="open"
+        alt
+        title="Open Health Research Concept"
+        lead="The device concepts are intended to share EoS research firmware and SDK interfaces. Review the linked repository for the components and integrations currently available."
+      >
+        <div className="ctas">
+          <Link href="/health" className="btn pri">
+            Explore Health Devices <span className="ar">›</span>
+          </Link>
+          <a
+            href="https://github.com/embeddedos-org/eos-health"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn gh"
           >
-            <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Open Health Research Concept
-            </h2>
-            <p className="text-white/60 max-w-xl mx-auto mb-6">
-              The device concepts are intended to share EoS research firmware
-              and SDK interfaces. Review the linked repository for the
-              components and integrations currently available.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link
-                href="/health"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:opacity-90 active:scale-95"
-                style={{ background: "#F97316", color: "#fff" }}
-              >
-                Explore Health Devices <ChevronRight size={14} />
-              </Link>
-              <a
-                href="https://github.com/embeddedos-org/eos-health"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm border border-white/15 text-white/70 hover:bg-white/5 transition-all"
-              >
-                <Github size={14} /> View Repository on GitHub
-              </a>
-            </div>
-          </motion.div>
+            View Repository on GitHub <span aria-hidden="true">↗</span>
+          </a>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

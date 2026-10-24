@@ -1,21 +1,19 @@
-import { motion } from "framer-motion";
-import { Link } from "wouter";
-import {
-  Activity,
-  Watch,
-  Fingerprint,
-  Microscope,
-  Stethoscope,
-  ArrowRight,
-  Shield,
-  Cpu,
-  Wifi,
-  Heart,
-  Zap,
-  ChevronDown,
-} from "lucide-react";
 import { Suspense, lazy, useState, useRef, useEffect } from "react";
+import type { CSSProperties } from "react";
+import { Link } from "wouter";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
+import ViewportGate from "../components/ViewportGate";
+import {
+  BpPage,
+  BoardFigure,
+  LocalNav,
+  PageHero,
+  Section,
+  Stats,
+} from "@/components/bp";
+import "./Health.css";
+
 const DeviceRadarChart = lazy(() => import("../components/DeviceRadarChart"));
 
 const HealthDevice3DCanvas = lazy(() =>
@@ -23,15 +21,6 @@ const HealthDevice3DCanvas = lazy(() =>
     default: m.HealthDevice3DCanvas,
   }))
 );
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.06, ease: "easeOut" as const },
-  }),
-};
 
 const DEVICES = [
   {
@@ -41,7 +30,6 @@ const DEVICES = [
     desc: "An in-development USB-C research device intended to explore ECG, blood-oxygen, breath-alcohol, temperature, UV, and motion sensing. Physical reliability and clinical validation are pending.",
     patent: "U.S. Patent Pending — 64/073,334 (May 23, 2026)",
     color: "#F85149",
-    icon: Activity,
     formFactor: "USB-C Pendrive",
     chip: "nRF52840",
     device3d: "key" as const,
@@ -67,7 +55,6 @@ const DEVICES = [
     desc: "An in-development wristband research design for sEMG gesture-control studies, biometric sensing, and TENS exploration. No therapeutic benefit or clinical performance is claimed.",
     patent: "U.S. Patent Pending — 64/076,078 (May 27, 2026)",
     color: "#F59E0B",
-    icon: Watch,
     formFactor: "Wristband",
     chip: "nRF52840 + TFLite",
     device3d: "band" as const,
@@ -93,7 +80,6 @@ const DEVICES = [
     desc: "A concept ring for researching optical and electrical sensing. AFib, blood-pressure, HbA1c, sleep, and stress outputs are proposed research goals, not clinically validated measurements.",
     patent: "Provisional Target: 2026 Q3 — EOS-2026-003",
     color: "#A78BFA",
-    icon: Fingerprint,
     formFactor: "Titanium Finger Ring",
     chip: "Custom ASIC",
     device3d: "ring" as const,
@@ -119,7 +105,6 @@ const DEVICES = [
     desc: "A concept flexible biosensor patch for studying glucose, lactate, cortisol, electrolyte, uric-acid, and pH sensing. Wear duration and measurement performance require physical validation.",
     patent: "Provisional Target: 2026 Q3 — EOS-2026-004",
     color: "#34D399",
-    icon: Microscope,
     formFactor: "Flexible Biosensor Patch",
     chip: "Custom ASIC + BLE 5.3",
     device3d: "lab" as const,
@@ -164,6 +149,8 @@ function BiometricWaveform({
   // F-23: paint one static frame instead of looping when the visitor
   // prefers reduced motion.
   const reduceMotion = usePrefersReducedMotion();
+  // four of these run on the page: each draws only while it is on screen
+  const onScreen = useOnScreen(canvasRef);
   const offsetRef = useRef(0);
 
   useEffect(() => {
@@ -219,26 +206,34 @@ function BiometricWaveform({
       }
       ctx.stroke();
 
+      // Fade both ends of the trace out (erase it, rather than paint black
+      // over it), so whatever ground the canvas sits on shows through.
+      ctx.save();
+      ctx.shadowBlur = 0;
+      ctx.globalCompositeOperation = "destination-out";
       const grad = ctx.createLinearGradient(0, 0, w * 0.15, 0);
-      grad.addColorStop(0, "rgba(10,15,30,1)");
-      grad.addColorStop(1, "rgba(10,15,30,0)");
+      grad.addColorStop(0, "rgba(0,0,0,1)");
+      grad.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w * 0.15, h);
 
       const grad2 = ctx.createLinearGradient(w * 0.85, 0, w, 0);
-      grad2.addColorStop(0, "rgba(10,15,30,0)");
-      grad2.addColorStop(1, "rgba(10,15,30,1)");
+      grad2.addColorStop(0, "rgba(0,0,0,0)");
+      grad2.addColorStop(1, "rgba(0,0,0,1)");
       ctx.fillStyle = grad2;
       ctx.fillRect(w * 0.85, 0, w * 0.15, h);
+      ctx.restore();
 
       offsetRef.current += type === "neural" ? 0.06 : 0.03;
-      // F-23: one static frame under reduced motion; the loop otherwise.
-      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion (and while scrolled
+      // away); the loop otherwise.
+      if (!reduceMotion && onScreen)
+        frameRef.current = requestAnimationFrame(draw);
     };
 
     draw();
     return () => cancelAnimationFrame(frameRef.current);
-  }, [type, color, reduceMotion]);
+  }, [type, color, reduceMotion, onScreen]);
 
   return (
     <canvas
@@ -252,425 +247,263 @@ function BiometricWaveform({
   );
 }
 
-// Device card with 3D render
-function DeviceCard({
-  device,
-  index,
-}: {
-  device: (typeof DEVICES)[0];
-  index: number;
-}) {
+// One device: its 3D concept on a large stage, the simulated signal under it,
+// and the design's details beside it.
+function DeviceRow({ device }: { device: (typeof DEVICES)[0] }) {
   const [hovered, setHovered] = useState(false);
-  const Icon = device.icon;
 
   return (
-    <motion.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      custom={index}
-      className="glass rounded-2xl overflow-hidden border border-white/5 card-hover"
-      style={{ borderTopColor: device.color, borderTopWidth: 2 }}
+    <article
+      className="hd"
+      style={{ "--c": device.color } as CSSProperties}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* 3D Device Render */}
-      <div className="h-44 w-full relative bg-gradient-to-b from-[#0a0f1e] to-[#060a14]">
-        <Suspense
-          fallback={
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="w-6 h-6 border-2 border-[#F97316] border-t-transparent rounded-full animate-spin" />
-            </div>
-          }
-        >
-          <HealthDevice3DCanvas device={device.device3d} hovered={hovered} />
-        </Suspense>
-        {/* Device name overlay */}
-        <div className="absolute bottom-2 left-3 flex items-center gap-1.5">
-          <div
-            className="w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ background: device.color }}
-          />
-          <span className="text-[9px] text-white/40 font-mono uppercase tracking-widest">
-            Illustrative 3D Concept
-          </span>
+      <div className="hd-vis">
+        <div className="hd-stage">
+          {/* the canvas mounts once the stage is near the viewport: four
+              WebGL scenes no longer start together on page load */}
+          <ViewportGate>
+            <Suspense fallback={<div className="hd-wait" />}>
+              <HealthDevice3DCanvas
+                device={device.device3d}
+                hovered={hovered}
+              />
+            </Suspense>
+          </ViewportGate>
+          <span className="hd-tag">Illustrative 3D Concept</span>
+        </div>
+        <div className="hd-wave">
+          <span className="k">{device.waveLabel}</span>
+          <div className="hd-canvas">
+            <BiometricWaveform
+              type={device.waveType}
+              color={device.waveColor}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Biometric Waveform */}
-      <div className="px-4 py-2 bg-[#060a14] border-b border-white/5">
-        <div className="text-[9px] text-white/30 uppercase tracking-widest mb-1">
-          {device.waveLabel}
-        </div>
-        <div className="h-[60px]">
-          <BiometricWaveform type={device.waveType} color={device.waveColor} />
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center"
-            style={{
-              background: device.color + "20",
-              border: `1px solid ${device.color}40`,
-            }}
-          >
-            <Icon size={24} style={{ color: device.color }} />
-          </div>
-          <span
-            className="text-[10px] font-bold px-2 py-1 rounded-full"
-            style={{
-              background: STATUS_COLORS[device.status] + "20",
-              color: STATUS_COLORS[device.status],
-            }}
-          >
-            {device.status}
-          </span>
-        </div>
-
-        <h3 className="font-heading font-extrabold text-white text-lg mb-0.5">
-          {device.name}
-        </h3>
-        <p
-          className="text-sm font-semibold mb-3"
-          style={{ color: device.color }}
+      <div className="hd-text">
+        <span
+          className="st"
+          style={{ "--c": STATUS_COLORS[device.status] } as CSSProperties}
         >
-          {device.tagline}
-        </p>
-        <p className="text-sm text-white/60 leading-relaxed mb-4">
-          {device.desc}
-        </p>
+          {device.status}
+        </span>
+        <h3>{device.name}</h3>
+        <p className="hd-tagline">{device.tagline}</p>
+        <p className="hd-desc">{device.desc}</p>
 
-        {/* Specs */}
-        <div className="grid grid-cols-2 gap-2 mb-4">
-          <div className="glass rounded-lg p-2 border border-white/5">
-            <div className="text-[10px] text-white/30 uppercase tracking-widest">
-              Form Factor
-            </div>
-            <div className="text-xs text-white font-semibold mt-0.5">
-              {device.formFactor}
-            </div>
+        <dl className="hd-specs">
+          <div>
+            <dt>Form Factor</dt>
+            <dd>{device.formFactor}</dd>
           </div>
-          <div className="glass rounded-lg p-2 border border-white/5">
-            <div className="text-[10px] text-white/30 uppercase tracking-widest">
-              Chip
-            </div>
-            <div className="text-xs text-white font-semibold mt-0.5">
-              {device.chip}
-            </div>
+          <div>
+            <dt>Chip</dt>
+            <dd>{device.chip}</dd>
           </div>
-        </div>
+        </dl>
 
-        {/* Metrics */}
-        <div className="text-[10px] text-white/30 uppercase tracking-widest mb-2">
-          Planned Research Metrics
-        </div>
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        <span className="k hd-mk">Planned Research Metrics</span>
+        <ul className="hd-metrics">
           {device.metrics.map(m => (
-            <span
-              key={m}
-              className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/50 border border-white/10"
-            >
-              {m}
-            </span>
+            <li key={m}>{m}</li>
           ))}
-        </div>
+        </ul>
 
-        {/* Patent */}
-        <div className="text-[10px] text-white/30 border-t border-white/5 pt-3">
-          <Shield size={10} className="inline mr-1" />
-          {device.patent}
-        </div>
+        <p className="hd-patent">{device.patent}</p>
       </div>
-    </motion.div>
+    </article>
   );
 }
 
 export default function Health() {
   return (
-    <div className="min-h-screen pt-16">
-      {/* Hero */}
-      <section className="section-padding bg-grid relative overflow-hidden">
-        {/* Animated background glows */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/6 w-80 h-80 bg-[#F85149]/8 rounded-full blur-[100px]" />
-          <div className="absolute top-1/3 right-1/6 w-72 h-72 bg-[#A78BFA]/8 rounded-full blur-[90px]" />
-          <div className="absolute bottom-1/4 left-1/2 w-64 h-64 bg-[#34D399]/6 rounded-full blur-[80px]" />
-        </div>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center relative">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible">
-            <div className="badge-amber mb-4 inline-flex">
-              <Heart size={12} className="animate-heartbeat" />
-              EoS Health Ecosystem
-            </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-              The Future of{" "}
-              <span className="text-gradient">Wearable Health</span>
-            </h1>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto mb-6">
-              Four open health-research designs in development. Physical
-              reliability, clinical validation, and regulatory review are
-              pending; displayed metrics and signals are illustrative.
-            </p>
-            <div className="text-[10px] text-white/35 uppercase tracking-widest mb-2">
-              Illustrative Simulated Metrics
-            </div>
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {[
-                { label: "Heart Rate", value: "72 bpm", color: "#F85149" },
-                { label: "SpO₂", value: "98%", color: "#F59E0B" },
-                { label: "HRV", value: "42 ms", color: "#A78BFA" },
-                { label: "Glucose", value: "94 mg/dL", color: "#34D399" },
-              ].map(m => (
-                <div
-                  key={m.label}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs"
-                  style={{
-                    background: m.color + "12",
-                    borderColor: m.color + "30",
-                  }}
-                >
-                  <div
-                    className="w-1.5 h-1.5 rounded-full animate-pulse"
-                    style={{ background: m.color }}
-                  />
-                  <span className="text-white/40">{m.label}</span>
-                  <span className="font-bold" style={{ color: m.color }}>
-                    {m.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href="https://github.com/embeddedos-org/eos-health"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
-              >
-                View on GitHub
-                <ArrowRight size={16} />
-              </a>
-              <Link
-                href="/health-compare"
-                className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl transition-all border border-white/10"
-              >
-                Compare Devices
-              </Link>
-            </div>
-            <div className="mt-8 flex justify-center">
-              <ChevronDown size={20} className="text-white/20 animate-bounce" />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="py-10 bg-[#080F1E]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-            {STATS.map(s => (
-              <div key={s.label}>
-                <div
-                  className="font-heading font-extrabold text-3xl"
-                  style={{ color: s.color }}
-                >
-                  {s.value}
-                </div>
-                <div className="text-xs text-white/40 mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Device Cards with 3D Renders */}
-      <section className="section-padding">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-10 text-center"
+    <BpPage className="hl">
+      <PageHero
+        label="EoS Health Ecosystem"
+        title="The Future of Wearable Health"
+        lead="Four open health-research designs in development. Physical reliability, clinical validation, and regulatory review are pending; displayed metrics and signals are illustrative."
+        visual={
+          <BoardFigure
+            base="/media/home-2026-10-22/industries/d02"
+            width={1280}
+            height={720}
+            eager
+            alt="HEALTH-BAND Neuro: the wristband design, rendered"
+            caption={
+              <>
+                <span>
+                  <b>HEALTH-BAND Neuro</b> — the wristband design, one of the
+                  four below
+                </span>
+                <span>Render · design stage</span>
+              </>
+            }
+          />
+        }
+      >
+        <p className="label hl-sim">Illustrative Simulated Metrics</p>
+        <ul className="badges hl-metrics">
+          {[
+            { label: "Heart Rate", value: "72 bpm", color: "#F85149" },
+            { label: "SpO₂", value: "98%", color: "#F59E0B" },
+            { label: "HRV", value: "42 ms", color: "#A78BFA" },
+            { label: "Glucose", value: "94 mg/dL", color: "#34D399" },
+          ].map(m => (
+            <li
+              key={m.label}
+              className="dot"
+              style={{ "--c": m.color } as CSSProperties}
+            >
+              <span>{m.label}</span>
+              <b>{m.value}</b>
+            </li>
+          ))}
+        </ul>
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org/eos-health"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
           >
-            <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              Four Device Concepts
-            </h2>
-            <p className="text-white/50">
-              Illustrative 3D concepts with simulated biometric signals. The
-              listed capabilities are research goals; coverage, reliability, and
-              clinical performance have not been validated.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {DEVICES.map((device, i) => (
-              <DeviceCard key={device.id} device={device} index={i} />
-            ))}
-          </div>
+            View on GitHub{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </a>
+          <Link href="/health-compare" className="btn gh">
+            Compare Devices
+          </Link>
+        </div>
+      </PageHero>
 
-          {/* Radar chart comparison */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            custom={2}
-            className="mt-12 glass rounded-2xl p-8 border border-white/5"
-          >
-            <div className="text-center mb-6">
-              <div className="badge-teal mb-3 inline-flex">
-                Illustrative Planned-Capability Radar
-              </div>
-              <h3 className="font-heading font-bold text-white text-xl mb-1">
-                Device Capability Comparison
-              </h3>
-              <p className="text-sm text-white/40">
-                Conceptual comparison, not measured device performance.
-              </p>
-            </div>
+      <div className="wrap hl-stats">
+        <Stats items={STATS.map(s => ({ value: s.value, label: s.label }))} />
+      </div>
+
+      <LocalNav
+        name="EoS Health"
+        items={[
+          { id: "devices", label: "Devices" },
+          { id: "compare", label: "Comparison" },
+          { id: "app", label: "Health Hub App" },
+          { id: "open", label: "Open research" },
+        ]}
+      />
+
+      {/* Device rows with their 3D concepts */}
+      <Section
+        id="devices"
+        wide
+        title="Four Device Concepts"
+        lead="Illustrative 3D concepts with simulated biometric signals. The listed capabilities are research goals; coverage, reliability, and clinical performance have not been validated."
+        split
+      >
+        <div className="hd-list">
+          {DEVICES.map(device => (
+            <DeviceRow key={device.id} device={device} />
+          ))}
+        </div>
+      </Section>
+
+      {/* Radar chart comparison */}
+      <Section id="compare" alt>
+        <div className="split2 hl-radar">
+          <div>
+            <p className="label">Illustrative Planned-Capability Radar</p>
+            <h3 className="h3 hl-rh">Device Capability Comparison</h3>
+            <p className="hl-rp">
+              Conceptual comparison, not measured device performance.
+            </p>
+            <Link href="/health-compare" className="btn ln hl-rl">
+              Planned specification table{" "}
+              <span className="ar" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </div>
+          <div className="hl-stage">
             <Suspense
-              fallback={
-                <div className="h-64 flex items-center justify-center text-white/20">
-                  Loading chart...
-                </div>
-              }
+              fallback={<div className="hl-wait">Loading chart...</div>}
             >
               <DeviceRadarChart />
             </Suspense>
-            <div className="text-center mt-4">
-              <Link
-                href="/health-compare"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-white/40 hover:text-white transition-colors"
-              >
-                Planned specification table <ArrowRight size={14} />
-              </Link>
-            </div>
-          </motion.div>
+          </div>
         </div>
-      </section>
+      </Section>
 
       {/* Health Hub App */}
-      <section className="section-padding bg-[#080F1E]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="glass rounded-2xl p-8 border border-[#34D399]/20 bg-[#34D399]/5"
+      <Section
+        id="app"
+        title="Planned Health Hub App"
+        lead="A companion-app concept for the four device designs, with planned iOS, Android, BLE, and USB-C integration. The features below are research goals and are not diagnostic tools."
+        split
+      >
+        <ul className="cards four">
+          {[
+            {
+              label: "Digital Twin",
+              desc: "Planned research health model",
+            },
+            {
+              label: "AI Food Camera",
+              desc: "Planned nutrition research",
+            },
+            {
+              label: "Clinician Dashboard Concept",
+              desc: "Planned research-data sharing",
+            },
+            {
+              label: "Research Indicators",
+              desc: "Not diagnostic or clinical alerts",
+            },
+          ].map(({ label, desc }) => (
+            <li key={label}>
+              <div className="card">
+                <h3 className="hl-ah">{label}</h3>
+                <p>{desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="ctas hl-after">
+          <a
+            href="https://github.com/embeddedos-org/eos-health"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn gh"
           >
-            <div className="flex flex-col sm:flex-row gap-6 items-start">
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0"
-                style={{
-                  background: "#34D39920",
-                  border: "1px solid #34D39940",
-                }}
-              >
-                <Stethoscope size={32} className="text-[#34D399]" />
-              </div>
-              <div className="flex-1">
-                <h2 className="font-heading font-extrabold text-white text-2xl mb-2">
-                  Planned Health Hub App
-                </h2>
-                <p className="text-white/60 mb-4">
-                  A companion-app concept for the four device designs, with
-                  planned iOS, Android, BLE, and USB-C integration. The features
-                  below are research goals and are not diagnostic tools.
-                </p>
-                <div className="grid sm:grid-cols-2 gap-3 mb-4">
-                  {[
-                    {
-                      icon: Cpu,
-                      label: "Digital Twin",
-                      desc: "Planned research health model",
-                    },
-                    {
-                      icon: Zap,
-                      label: "AI Food Camera",
-                      desc: "Planned nutrition research",
-                    },
-                    {
-                      icon: Wifi,
-                      label: "Clinician Dashboard Concept",
-                      desc: "Planned research-data sharing",
-                    },
-                    {
-                      icon: Shield,
-                      label: "Research Indicators",
-                      desc: "Not diagnostic or clinical alerts",
-                    },
-                  ].map(({ icon: Icon, label, desc }) => (
-                    <div
-                      key={label}
-                      className="flex items-center gap-3 glass rounded-xl p-3 border border-white/5"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#34D399]/10 flex items-center justify-center flex-shrink-0">
-                        <Icon size={16} className="text-[#34D399]" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-white">
-                          {label}
-                        </div>
-                        <div className="text-xs text-white/40">{desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  <a
-                    href="https://github.com/embeddedos-org/eos-health"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#34D399] hover:bg-[#10B981] text-[#0a0f1e] font-bold rounded-xl text-sm transition-all active:scale-95"
-                  >
-                    View Health Repo <ArrowRight size={14} />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            View Health Repo{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </a>
         </div>
-      </section>
+      </Section>
 
       {/* Open Hardware CTA */}
-      <section className="section-padding">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              Open Health Research Direction
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto mb-6">
-              The project intends to publish design files, research firmware,
-              and companion-app code as they become available. Review the linked
-              repositories for the artifacts currently available.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link
-                href="/get-involved"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
-              >
-                Get Involved <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/hardware-lab"
-                className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl transition-all border border-white/10"
-              >
-                Hardware Lab
-              </Link>
-            </div>
-          </motion.div>
+      <Section
+        id="open"
+        alt
+        title="Open Health Research Direction"
+        lead="The project intends to publish design files, research firmware, and companion-app code as they become available. Review the linked repositories for the artifacts currently available."
+      >
+        <div className="ctas">
+          <Link href="/get-involved" className="btn pri">
+            Get Involved{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
+          <Link href="/hardware-lab" className="btn gh">
+            Hardware Lab
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

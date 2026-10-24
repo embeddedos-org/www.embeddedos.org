@@ -98,9 +98,9 @@ class ErrorBoundary extends Component<Props, State> {
                     window.location.reload();
                   }}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg",
-                    "bg-primary text-primary-foreground",
-                    "hover:opacity-90 cursor-pointer"
+                    "flex items-center gap-2 px-4 py-2 rounded-full",
+                    "bg-[#f5f5f7] text-black",
+                    "hover:bg-white cursor-pointer"
                   )}
                 >
                   <RotateCcw size={16} />
@@ -110,8 +110,8 @@ class ErrorBoundary extends Component<Props, State> {
               <a
                 href="/"
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg",
-                  "border border-input bg-background",
+                  "flex items-center gap-2 px-4 py-2 rounded-full",
+                  "border border-[#48484e] bg-background",
                   "hover:bg-accent hover:text-accent-foreground"
                 )}
               >
