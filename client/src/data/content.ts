@@ -398,7 +398,7 @@ export const CONTENT: readonly ContentItem[] = [
     title: "Capability-Based Security in Real-Time Operating Systems",
     summary:
       "How EoS applies capability-based access control to a real-time kernel: unforgeable references, delegation without ambient authority, and what that costs in a deterministic scheduler.",
-    href: "https://github.com/embeddedos-org/embeddedos-org/blob/main/docs/eos.html",
+    href: "https://github.com/embeddedos-org/embeddedos-org/blob/master/docs/eos.html",
     tags: ["EoS", "Security", "Capabilities", "RTOS"],
   },
   {
@@ -410,7 +410,7 @@ export const CONTENT: readonly ContentItem[] = [
     title: "eBuild: Declarative Cross-Compilation for Embedded AI Systems",
     summary:
       "The design of eBuild's declarative build model: one manifest describing toolchain, board and dependencies, and reproducible cross-compilation across the supported target set.",
-    href: "https://github.com/embeddedos-org/embeddedos-org/blob/main/docs/ebuild.html",
+    href: "https://github.com/embeddedos-org/embeddedos-org/blob/master/docs/ebuild.html",
     tags: ["eBuild", "Toolchain", "Cross-Compilation"],
   },
   {
