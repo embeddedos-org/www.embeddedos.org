@@ -220,6 +220,9 @@
   gap: 10px;
 }
 .bp.eosb .eb-chk {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-width: 0;
   padding: 12px 14px;
   border-radius: 14px;

@@ -16,7 +16,7 @@
   height: 600px;
   overflow: hidden;
   border-radius: 16px;
-  border: 1px solid var(--line);
+  /* no border: the frame fills the whole box, so it keeps its full height */
   background: var(--panel);
 }
 @media (min-width: 640px) {
