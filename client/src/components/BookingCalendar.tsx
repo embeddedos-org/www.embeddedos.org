@@ -16,8 +16,10 @@ export const CALENDAR_FRAME_TITLE =
  * the link under the calendar is always shown as well.
  */
 export const FRAME_TIMEOUT_MS = 15_000;
-/** calendar.google.com, or another Google page its schedule may redirect to. */
-const GOOGLE_FRAME = /^https:\/\/([a-z0-9-]+\.)*google\.com(?:[/:?#]|$)/i;
+/** The schedule's frame, or the Google sign-in and consent pages it may
+ * redirect to; never other Google frames (an ad tag's, say). */
+const GOOGLE_FRAME =
+  /^https:\/\/(calendar|accounts|consent)\.google\.com(?:[/:?#]|$)/i;
 
 type PrerenderWindow = Window & { __EOS_PRERENDER__?: boolean };
 
@@ -80,8 +82,10 @@ export default function BookingCalendar({
   // Set when the frame loads while focus is in the failed overlay, which then
   // unmounts: focus follows the calendar instead of dropping to <body>.
   const focusFrame = useRef(false);
-  // Set when the browser refuses the frame (see the securitypolicyviolation listener below).
+  // Set when the browser refuses the frame (the listener below).
   const blocked = useRef(false);
+  // Set once the calendar frame exists: refusals before it are not ours.
+  const live = useRef(false);
   const [state, setState] = useState<LoadState>("waiting");
   const prerendering =
     typeof window !== "undefined" &&
@@ -127,7 +131,7 @@ export default function BookingCalendar({
   useEffect(() => {
     if (!src) return;
     const onRefused = (e: SecurityPolicyViolationEvent) => {
-      if (e.disposition === "report") return;
+      if (!live.current || e.disposition === "report") return;
       const directive = e.effectiveDirective || e.violatedDirective || "";
       if (!/^(frame|child|default)-src/.test(directive)) return;
       if (!GOOGLE_FRAME.test(String(e.blockedURI))) return;
@@ -138,6 +142,10 @@ export default function BookingCalendar({
     return () =>
       document.removeEventListener("securitypolicyviolation", onRefused);
   }, [src]);
+
+  useEffect(() => {
+    live.current = state !== "waiting";
+  }, [state]);
 
   useEffect(() => {
     if (state !== "ready" || !focusFrame.current) return;

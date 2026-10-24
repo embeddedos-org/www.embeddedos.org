@@ -320,6 +320,25 @@ describe("the calendar frame", () => {
     expect(container.querySelector('[data-booking="failed"]')).not.toBe(null);
   });
 
+  it("ignores refusals before the calendar frame exists, and other Google frames", () => {
+    const reveal = mockIntersectionObserver();
+    const { container } = render(
+      <BookingCalendar url={EMBED} link={LINK} fallback={fallback} />
+    );
+    // not yet near the viewport: no frame, so a refusal is someone else's
+    act(() => {
+      document.dispatchEvent(refusal(GOOGLE_CALENDAR_ORIGIN, "frame-src"));
+    });
+    expect(container.querySelector("iframe")).toBe(null);
+    expect(container.querySelector('[data-booking="failed"]')).toBe(null);
+    reveal();
+    // a Google frame that is not the schedule's (an ad tag's, say)
+    act(() => {
+      document.dispatchEvent(refusal("https://www.google.com", "frame-src"));
+    });
+    expect(container.querySelector('[data-booking="failed"]')).toBe(null);
+  });
+
   it("ignores report-only policies, which block nothing", () => {
     const reveal = mockIntersectionObserver();
     const { container } = render(
