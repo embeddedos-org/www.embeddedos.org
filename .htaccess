@@ -68,6 +68,9 @@ ErrorDocument 404 /404.html
   AddOutputFilterByType BROTLI_COMPRESS application/xml image/svg+xml
 </IfModule>
 
+# AVIF is not in every server's type table; the homepage's story frames, boards and industry posters are AVIF.
+AddType image/avif .avif
+
 <IfModule mod_expires.c>
   ExpiresActive On
   # Hashed build assets: immutable for a year.
@@ -156,20 +159,25 @@ ErrorDocument 404 /404.html
 #   script from googleads.g.doubleclick.net, and conversions redirect to
 #   the visitor's country domain (www.google.co.in was observed), and
 #   ad.doubleclick.net/ccm also loads as an image beacon.
-# - Calendly (the booking calendar on /book,
+# - Google Calendar appointment schedule (the booking calendar on /book,
 #   client/src/components/BookingCalendar.tsx; /contact and /eos-boards
-#   only link to /book): script-src and style-src add
-#   assets.calendly.com for widget.js and widget.css, which load only when
-#   the calendar scrolls into view and only once CALENDLY_EVENT_URL is set;
-#   frame-src adds calendly.com for the scheduling page's iframe. Nothing
-#   else: Calendly publishes no CSP list, and a browser run of the inline
-#   embed against this policy recorded no other violation in this page
-#   (the booking page's own requests run under calendly.com's headers, and
-#   the calendly.event_scheduled notice is a postMessage, not a fetch).
+#   only link to /book): frame-src adds calendar.google.com for the
+#   schedule's iframe, GOOGLE_APPOINTMENTS_EMBED_URL in
+#   client/src/data/foundation.ts. Nothing else: no Google script or
+#   stylesheet loads on the page (Google's "Book an appointment" button
+#   script is deliberately not used), and frame-src governs only the frame
+#   this page embeds and where that frame navigates. Frames and requests
+#   inside the schedule run under calendar.google.com's own headers.
+#   accounts.google.com is deliberately not allowed: Google lets a guest
+#   book without signing in (it can email a verification code instead),
+#   and the link under the calendar opens the booking page in its own tab.
+#   That short link (calendar.app.google) is a plain link, which CSP does
+#   not govern. Not yet measured in a browser against Google's live page:
+#   the e2e suite answers the frame with a local placeholder.
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://assets.calendly.com https://www.googletagmanager.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.paypalobjects.com https://www.paypal.com https://www.googleadservices.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.co.in https://ad.doubleclick.net; frame-src 'self' https://www.zeffy.com https://js.stripe.com https://hooks.stripe.com https://www.googletagmanager.com https://calendly.com; connect-src 'self' https://www.zeffy.com https://api.stripe.com https://www.googletagmanager.com https://www.googleadservices.com https://region1.google-analytics.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.co.in https://ad.doubleclick.net; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://www.paypal.com"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://www.googletagmanager.com https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.paypalobjects.com https://www.paypal.com https://www.googleadservices.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.co.in https://ad.doubleclick.net; frame-src 'self' https://www.zeffy.com https://js.stripe.com https://hooks.stripe.com https://www.googletagmanager.com https://calendar.google.com; connect-src 'self' https://www.zeffy.com https://api.stripe.com https://www.googletagmanager.com https://www.googleadservices.com https://region1.google-analytics.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://www.google.com https://www.google.co.in https://ad.doubleclick.net; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://www.paypal.com"
 </IfModule>
