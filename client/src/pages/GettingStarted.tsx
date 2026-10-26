@@ -9,6 +9,8 @@ import "./GettingStarted.css";
 const ECOSYSTEM = [
   {
     id: "ebuild",
+    repo: "ebuild",
+    href: "/ebuild",
     name: "ebuild",
     role: "Build Tool",
     desc: "Creates, builds and simulates EoS projects, analyzes KiCad schematics, and drives flash tools.",
@@ -16,6 +18,8 @@ const ECOSYSTEM = [
   },
   {
     id: "eosim",
+    repo: "EoSim",
+    href: "/demo",
     name: "EoSim",
     role: "Simulator",
     desc: `Registry of ${SIM_PLATFORM_COUNT} platform descriptors and simulation engines. Cortex-M apps run on QEMU through ebuild sim.`,
@@ -23,6 +27,8 @@ const ECOSYSTEM = [
   },
   {
     id: "eos",
+    repo: "eos",
+    href: "/eos",
     name: "EoS Kernel",
     role: "RTOS Kernel",
     desc: "The real-time OS kernel. Provides HAL, scheduler, IPC, drivers, and POSIX subset.",
@@ -30,34 +36,44 @@ const ECOSYSTEM = [
   },
   {
     id: "eboot",
+    repo: "eBoot",
+    href: "/eboot",
     name: "eBoot",
     role: "Bootloader",
-    desc: "Secure bootloader with verified boot, OTA A/B updates, and hardware root of trust.",
+    desc: "Two-stage C bootloader with image authentication, slot management, recovery, and target-specific key configuration.",
     color: "#F59E0B",
   },
   {
     id: "eflow",
+    repo: "eFlow",
+    href: "/flow",
     name: "eFlow",
     role: "Visual Programming",
-    desc: "Drag-and-drop block editor that generates production C code. No assembly needed for common patterns.",
+    desc: "Host-side flow prototype with an interpreter, CLI, schema, and examples. Target code generation and visual editors remain future work.",
     color: "#A78BFA",
   },
   {
     id: "eai",
+    repo: "eAI",
+    href: "/eai",
     name: "EAI / ENI",
     role: "Edge AI",
-    desc: "On-device TFLite/ONNX inference and neural interface adapter for BCI devices.",
+    desc: "Embedded AI runtime and neural-interface research. Model support and hardware requirements depend on configuration.",
     color: "#34D399",
   },
   {
     id: "eapps",
+    repo: "eApps",
+    href: "/eapps",
     name: "eApps",
     role: "App Ecosystem",
-    desc: "60+ apps including eOffice Suite, eBrowser, eDB, and eBot AI assistant.",
+    desc: "Marketplace catalog and application source for native, web, mobile, desktop, and extension projects.",
     color: "#60A5FA",
   },
   {
     id: "eostudio",
+    repo: "EoStudio",
+    href: "/eostudio",
     name: "EoStudio",
     role: "IDE",
     desc: "Universal IDE with AI tutor, 3D modeler, game editor, and UI designer.",
@@ -440,6 +456,22 @@ export default function GettingStarted() {
                 <span className="k">{tool.role}</span>
                 <h3>{tool.name}</h3>
                 <p>{tool.desc}</p>
+                <div className="ctas">
+                  <Link href={tool.href} className="btn gh">
+                    Explore {tool.name} →
+                  </Link>
+                  <a
+                    href={`https://github.com/embeddedos-org/${tool.repo}`}
+                    className="btn gh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub ↗
+                    <span className="sr-only">
+                      : {tool.name} repository (opens in a new tab)
+                    </span>
+                  </a>
+                </div>
               </div>
             </li>
           ))}

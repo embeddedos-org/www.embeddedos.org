@@ -1,30 +1,5 @@
 /* /eoffice (EOffice.tsx): the parts the shared page blocks do not cover. */
 
-/* the 3D suite on a large stage, framed like a board figure */
-.bp.eoffice .stage {
-  height: clamp(320px, 44vw, 600px);
-}
-.bp.eoffice .stage-wait {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid var(--line2);
-  border-top-color: var(--fg2);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .bp.eoffice .stage-wait {
-    animation: eoffice-spin 0.9s linear infinite;
-  }
-}
-@keyframes eoffice-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* the app picker: one tile per app, the app's accent on its icon */
 .bp.eoffice .eo-grid {
   display: grid;

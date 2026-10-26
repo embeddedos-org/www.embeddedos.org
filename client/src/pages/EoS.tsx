@@ -1,104 +1,79 @@
-import { Suspense, lazy, type CSSProperties } from "react";
+import ProductRepositoryPanel from "@/components/ProductRepositoryPanel";
+import { type CSSProperties } from "react";
 import { Link } from "wouter";
-import { BOARD_COUNT, ARCH_COUNT, boardsLabel } from "@/data/stack";
-import ViewportGate from "../components/ViewportGate";
 import { Band, BpPage, PageHero, Section } from "@/components/bp";
 import "./EoS.css";
-const EoSKernelCanvas = lazy(() =>
-  import("../components/EoS3D").then(m => ({ default: m.EoSKernelCanvas }))
-);
 
 const LAYERS = [
   {
-    name: "Applications",
-    color: "#A78BFA",
-    items: ["eOffice", "eBrowser", "eDB", "60+ eApps", "Custom Apps"],
+    name: "Kernel",
+    color: "#a1a1aa",
+    items: ["Tasks", "Synchronization", "IPC"],
   },
   {
-    name: "AI / ENI Layer",
-    color: "#34D399",
-    items: ["EAI Engine", "ENI Adapter", "eBot", "eosllm"],
+    name: "HAL",
+    color: "#a1a1aa",
+    items: ["Host backend", "Bare-metal backend"],
   },
   {
-    name: "EoS Services",
-    color: "#22D3EE",
-    items: ["eIPC", "OTA Manager", "App Store", "Security Manager", "eFlow"],
+    name: "Drivers",
+    color: "#a1a1aa",
+    items: ["Driver framework", "Devicetree parser"],
   },
   {
-    name: "EoS Kernel",
-    color: "#F97316",
-    items: [
-      "RTOS Scheduler",
-      "Memory Manager",
-      "Driver Model",
-      "POSIX Layer",
-      "EoS Language API",
-    ],
+    name: "Services",
+    color: "#a1a1aa",
+    items: ["Security", "OTA", "Filesystem", "Sensors"],
   },
   {
-    name: "eBoot",
-    color: "#F59E0B",
-    items: ["Secure Boot", "Verified Chain", "OTA Staging", "Recovery"],
-  },
-  {
-    name: "Hardware (HAL)",
-    color: "#60A5FA",
-    items: [
-      "STM32",
-      "ESP32",
-      "nRF52",
-      "RISC-V",
-      "i.MX RT",
-      "RPi Pico",
-      `${BOARD_COUNT - 6} more`,
-    ],
+    name: "Build targets",
+    color: "#a1a1aa",
+    items: ["Host libraries", "Cross-compile toolchains"],
   },
 ];
 
 const FEATURES = [
   {
-    color: "#F97316",
-    title: "Deterministic Scheduling",
-    desc: "Fixed-priority preemptive scheduling with configurable tick rates, so worst-case response is bounded rather than average.",
+    color: "#a1a1aa",
+    title: "C11 kernel",
+    desc: "Tasks, synchronization primitives, and IPC are organized under kernel/.",
   },
   {
-    color: "#34D399",
-    title: "Secure Boot Chain",
-    desc: "eBoot verifies every stage cryptographically. Tampered firmware cannot run.",
+    color: "#a1a1aa",
+    title: "Hardware abstraction",
+    desc: "The HAL has host and bare-metal backend code. Peripheral implementation and board validation remain incomplete.",
   },
   {
-    color: "#22D3EE",
-    title: "Modular Driver Model",
-    desc: "Add or remove drivers without recompiling the kernel. Hot-plug on supported platforms.",
+    color: "#a1a1aa",
+    title: "Driver framework",
+    desc: "The repository includes a driver framework and a devicetree parser. Review per-driver coverage before selecting hardware.",
   },
   {
-    color: "#A78BFA",
-    title: "POSIX-Compatible API",
-    desc: "Port existing POSIX applications to EoS with minimal changes. Standard threads, mutexes, and sockets.",
+    color: "#a1a1aa",
+    title: "Runtime services",
+    desc: "Explore the security, filesystem, sensor, power, and OTA modules. Maturity varies by subsystem.",
   },
   {
-    color: "#F59E0B",
-    title: "EoS Language",
-    desc: "A low-overhead embedded API surface — direct memory-mapped register access with type safety.",
+    color: "#a1a1aa",
+    title: "Host-side development",
+    desc: "CMake supports host builds and tests. Start with the repository\u2019s build and test instructions.",
   },
   {
-    color: "#60A5FA",
-    title: `${BOARD_COUNT} Board Definitions`,
-    desc: `STM32, ESP32, nRF52, RISC-V, i.MX RT, Raspberry Pi Pico and ${BOARD_COUNT - 6} more, spanning ${ARCH_COUNT} instruction-set architectures.`,
+    color: "#a1a1aa",
+    title: "Experimental status",
+    desc: "STATUS.md records the evidence and limitations. No observed hardware boot or reproducible latency benchmark is reported.",
   },
 ];
 
 const BOARDS = [
-  "STM32F4 / F7 / H7",
-  "ESP32 / ESP32-S3",
+  "STM32F4",
+  "STM32H743",
   "nRF52840",
-  "RISC-V (GD32VF103)",
-  "i.MX RT1060",
-  "Raspberry Pi Pico",
-  "Nordic nRF9160",
-  "Renesas RA6M5",
-  "TI CC2652",
-  "Microchip SAME70",
+  "ESP32",
+  "RP2350",
+  "AM64x",
+  "i.MX8M",
+  "SAMD51",
 ];
 
 export default function EoS() {
@@ -115,25 +90,17 @@ export default function EoS() {
         }
         lead={
           <>
-            A deterministic, real-time operating system kernel built for
-            resource-constrained devices. Fixed-priority preemptive scheduling,
-            a modular driver model, a POSIX-compatible API, and{" "}
-            {boardsLabel(true)}.
+            An experimental C11 embedded OS framework with a kernel, hardware
+            abstraction, driver framework, and runtime services. Start with a
+            host build and review target-specific status before using hardware.
           </>
         }
         visual={
           <div className="eos-vis">
-            {/* The 3D kernel on a large stage; it loads only near the viewport. */}
-            <div className="board stage">
-              <Suspense fallback={<div className="stage-wait" />}>
-                <ViewportGate>
-                  <EoSKernelCanvas hovered={false} />
-                </ViewportGate>
-              </Suspense>
-            </div>
+            <ProductRepositoryPanel product="eos" />
             <div className="code eos-arch">
               <div className="cbar">
-                <b>eos-architecture.d</b>
+                <b>EoS · repository modules</b>
               </div>
               <ol className="eos-layers">
                 {LAYERS.map(layer => (
@@ -169,7 +136,7 @@ export default function EoS() {
 
       <Section
         title="Kernel Features"
-        lead="What makes EoS different from other RTOS platforms"
+        lead="Explore the modules in the public repository"
       >
         <ul className="cards">
           {FEATURES.map(f => (
@@ -184,14 +151,13 @@ export default function EoS() {
       </Section>
 
       <Section
-        title={<>{BOARD_COUNT} Supported Boards</>}
-        lead="From hobbyist boards to industrial MCUs"
+        title="Board descriptors"
+        lead="Examples of configuration descriptors in the repository; these are not validated hardware ports"
       >
         <ul className="eos-boards">
           {BOARDS.map(b => (
             <li key={b}>{b}</li>
           ))}
-          <li className="more">+ 42 more →</li>
         </ul>
         <p className="eos-all">
           <Link href="/hardware-lab" className="btn ln">
@@ -204,16 +170,11 @@ export default function EoS() {
       </Section>
 
       <Band
-        title="Try EoS on your board"
-        lead={
-          <>
-            Flash EoS to any of {BOARD_COUNT} supported boards, or try EoSim to
-            simulate without hardware.
-          </>
-        }
+        title="Start with the source"
+        lead="Follow the host-build guide and inspect STATUS.md before selecting a target board."
       >
         <Link href="/getting-started" className="btn pri">
-          Flash Your Board{" "}
+          Get Started{" "}
           <span className="ar" aria-hidden="true">
             →
           </span>

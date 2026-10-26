@@ -1,70 +1,66 @@
-import { Suspense, lazy, type CSSProperties } from "react";
+import ProductRepositoryPanel from "@/components/ProductRepositoryPanel";
+import { type CSSProperties } from "react";
 import { Link } from "wouter";
-import ViewportGate from "../components/ViewportGate";
-import { BOARD_COUNT } from "@/data/stack";
 import { Band, BpPage, PageHero, Section } from "@/components/bp";
 import "./EBoot.css";
-const EBootCanvas = lazy(() =>
-  import("../components/EoS3D").then(m => ({ default: m.EBootCanvas }))
-);
 
 const BOOT_STAGES = [
   {
     step: "01",
-    name: "ROM Bootloader",
-    desc: "Immutable factory code verifies eBoot signature using hardware root-of-trust keys burned into OTP fuses.",
-    color: "#60A5FA",
+    name: "Stage-0",
+    desc: "Early reset entry, hardware initialization, watchdog, and transition to Stage-1.",
+    color: "#a1a1aa",
   },
   {
     step: "02",
-    name: "eBoot Stage 1",
-    desc: "Minimal loader initialises clocks, DRAM, and the cryptographic engine. Verifies Stage 2 signature.",
-    color: "#22D3EE",
+    name: "Stage-1",
+    desc: "Scan available images, evaluate boot policy, and select an application or RTOS image.",
+    color: "#a1a1aa",
   },
   {
     step: "03",
-    name: "eBoot Stage 2",
-    desc: "Full bootloader environment. Loads EoS kernel image, verifies hash chain, applies OTA staging if pending.",
-    color: "#34D399",
+    name: "Image authentication",
+    desc: "Inspect the Ed25519 verification, image metadata, key provisioning, and rollback logic in core/.",
+    color: "#a1a1aa",
   },
   {
     step: "04",
-    name: "EoS Kernel",
-    desc: "Verified kernel image handed control. Device is in a fully attested, trusted state.",
-    color: "#F97316",
+    name: "Payload hand-off",
+    desc: "Transfer control to the selected image after the configured checks; use recovery when normal boot cannot proceed.",
+    color: "#a1a1aa",
   },
 ];
 
 const FEATURES = [
   {
-    color: "#34D399",
-    title: "Verified Boot Chain",
-    desc: "Every stage cryptographically signed. A tampered image cannot boot — the chain breaks and recovery mode activates.",
+    color: "#a1a1aa",
+    title: "Two-stage boot chain",
+    desc: "Stage-0 handles early bring-up; Stage-1 handles image selection and payload hand-off.",
   },
   {
-    color: "#22D3EE",
-    title: "OTA Update Pipeline",
-    desc: "Dual-bank A/B update with automatic rollback. Failed updates revert to the last known-good image automatically.",
+    color: "#a1a1aa",
+    title: "Image authentication",
+    desc: "The core includes Ed25519 image verification. Read the security options and key-lifecycle documentation before configuring a target.",
   },
   {
-    color: "#F97316",
-    title: "Hardware Root of Trust",
-    desc: "Keys burned into OTP fuses at manufacturing. No software path can override the root verification.",
+    color: "#a1a1aa",
+    title: "A/B slot management",
+    desc: "Slot selection, anti-rollback counters, and firmware-update modules are present in the core.",
   },
   {
-    color: "#F59E0B",
-    title: "Fast Boot (<200ms)",
-    desc: "Optimised stage initialisation gets devices to the EoS kernel in under 200ms on most MCU families.",
+    color: "#a1a1aa",
+    title: "Production-key configuration",
+    desc: "A real-board Release build requires a production public key unless the documented development-key override is explicitly enabled.",
   },
   {
-    color: "#A78BFA",
-    title: "Recovery Console",
-    desc: "UART recovery shell for field repair. Re-flash firmware without physical access to JTAG.",
+    color: "#a1a1aa",
+    title: "Recovery paths",
+    desc: "The repository includes authenticated recovery, a boot menu, and UART transport code.",
   },
   {
-    color: "#60A5FA",
-    title: `${BOARD_COUNT} Board Support`,
-    desc: "Same eBoot codebase across all EoS-supported MCU families. One tool, every device.",
+    color: "#a1a1aa",
+    title: "Target-specific builds",
+    desc: "Native builds compile the platform-independent libraries. Cross-compiles select a board and toolchain explicitly.",
   },
 ];
 
@@ -72,49 +68,24 @@ const FEATURES = [
 // colour of the stage that prints it.
 const BOOT_LOG = [
   {
-    color: "#60A5FA",
-    prefix: "[ROM]   ",
-    text: "Verifying eBoot Stage 1 signature... OK",
+    color: "#a1a1aa",
+    prefix: "stage0/  ",
+    text: "Reset entry and hardware initialization",
   },
   {
-    color: "#22D3EE",
-    prefix: "[BOOT1] ",
-    text: "Initialising clocks @ 480 MHz... OK",
+    color: "#a1a1aa",
+    prefix: "stage1/  ",
+    text: "Image selection and payload hand-off",
   },
   {
-    color: "#22D3EE",
-    prefix: "[BOOT1] ",
-    text: "DRAM init 64MB SDRAM... OK",
+    color: "#a1a1aa",
+    prefix: "core/    ",
+    text: "Verification, slots, recovery, and updates",
   },
   {
-    color: "#22D3EE",
-    prefix: "[BOOT1] ",
-    text: "Verifying Stage 2 signature... OK",
-  },
-  {
-    color: "#34D399",
-    prefix: "[BOOT2] ",
-    text: "OTA staging: no pending update",
-  },
-  {
-    color: "#34D399",
-    prefix: "[BOOT2] ",
-    text: "Verifying EoS kernel hash... OK",
-  },
-  {
-    color: "#34D399",
-    prefix: "[BOOT2] ",
-    text: "Handing control to EoS kernel...",
-  },
-  {
-    color: "#F97316",
-    prefix: "[EoS]   ",
-    text: "EmbeddedOS v2.4.1 booting... 187ms",
-  },
-  {
-    color: "#F97316",
-    prefix: "[EoS]   ",
-    text: "All systems nominal. ✓",
+    color: "#a1a1aa",
+    prefix: "docs/    ",
+    text: "Threat model, key lifecycle, and configuration",
   },
 ];
 
@@ -130,17 +101,8 @@ export default function EBoot() {
             <span>Secure Bootloader</span>
           </>
         }
-        lead="A cryptographically verified, multi-stage bootloader for EmbeddedOS devices. Hardware root-of-trust, OTA A/B updates with automatic rollback, and sub-200ms boot time."
-        visual={
-          // The 3D boot sequence on a large stage; it loads only near the viewport.
-          <div className="board stage">
-            <Suspense fallback={<div className="stage-wait" />}>
-              <ViewportGate>
-                <EBootCanvas hovered={false} />
-              </ViewportGate>
-            </Suspense>
-          </div>
-        }
+        lead="A modular C bootloader with Stage-0 and Stage-1, Ed25519 image authentication, slot management, and recovery code. Explore the implementation and configure it for your target."
+        visual={<ProductRepositoryPanel product="eboot" />}
       >
         <div className="ctas">
           <Link href="/getting-started" className="btn pri">
@@ -157,7 +119,7 @@ export default function EBoot() {
 
       <Section
         title="Boot Sequence"
-        lead="Four verified stages from silicon to running OS"
+        lead="The repository’s boot-chain structure, from early initialization to a selected payload"
       >
         <div className="split2 eb-seq">
           <ol className="eb-stages">
@@ -175,7 +137,7 @@ export default function EBoot() {
           </ol>
           <div className="code eb-log">
             <div className="cbar">
-              <b>boot-sequence.log</b>
+              <b>Boot implementation · source map</b>
             </div>
             <pre className="wrapm">
               {BOOT_LOG.map((line, i) => (
@@ -204,7 +166,7 @@ export default function EBoot() {
 
       <Band
         title="Secure your device from boot"
-        lead="eBoot is included with every EoS installation. No separate configuration needed."
+        lead="Read the build guide, select a target, and configure the trust anchor before deploying firmware."
       >
         <Link href="/getting-started" className="btn pri">
           Flash eBoot{" "}

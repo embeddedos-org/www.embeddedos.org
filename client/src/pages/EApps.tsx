@@ -1,213 +1,135 @@
-import { Suspense, lazy, type CSSProperties } from "react";
-import ViewportGate from "../components/ViewportGate";
+import ProductRepositoryPanel from "@/components/ProductRepositoryPanel";
+import { type CSSProperties } from "react";
 import { Link } from "wouter";
-import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 import { BpPage, PageHero, Section, Stats } from "@/components/bp";
 import "./EApps.css";
-const EAppsCanvas = lazy(() =>
-  import("../components/EoS3D").then(m => ({ default: m.EAppsCanvas }))
-);
 
 const APP_CATEGORIES = [
   {
-    title: "eOffice Suite",
+    title: "eOffice productivity",
     count: 11,
-    color: "#F97316",
-    desc: "Complete office productivity suite for embedded displays and workstations.",
+    color: "#a1a1aa",
+    desc: "Eleven productivity apps in the eOffice repository.",
     apps: [
-      "eWriter (Word Processor)",
-      "eSheet (Spreadsheet)",
-      "ePresent (Slides)",
-      "eNotes (Markdown)",
-      "eDraw (Vector Graphics)",
-      "eCalc (Calculator)",
-      "eCalendar",
-      "eContacts",
-      "eMail Client",
-      "eChat",
-      "eFiles (File Manager)",
+      "eDocs",
+      "eSheets",
+      "eSlides",
+      "ePlanner",
+      "eNotes",
+      "eMail",
+      "eDrive",
+      "eConnect",
+      "eDB",
+      "eForms",
+      "eSway",
     ],
   },
   {
-    title: "Browser & Extensions",
-    count: 11,
-    color: "#22D3EE",
-    desc: "eBrowser with 11 extensions for Chrome, Firefox, VS Code, JetBrains, Obsidian, and Slack.",
+    title: "Native applications",
+    count: 8,
+    color: "#a1a1aa",
+    desc: "Selected application folders in eApps/apps; build prerequisites vary.",
     apps: [
-      "eBrowser (Core)",
-      "Chrome Extension",
-      "Firefox Extension",
-      "VS Code Extension",
-      "JetBrains Plugin",
-      "Obsidian Plugin",
-      "Slack App",
-      "Edge Extension",
-      "Safari Extension",
-      "eBot Web Extension",
-      "DevTools Panel",
+      "eclock",
+      "ecal",
+      "efiles",
+      "enote",
+      "epdf",
+      "esettings",
+      "essh",
+      "ezip",
     ],
   },
   {
-    title: "Desktop Apps",
-    count: 4,
-    color: "#A78BFA",
-    desc: "Native desktop applications for development and system management.",
-    apps: [
-      "EoStudio (Universal IDE v3.1)",
-      "EoSim (Board Simulator)",
-      "eBrowser Desktop",
-      "eOffice Desktop",
-    ],
-  },
-  {
-    title: "Mobile Apps",
+    title: "Marketplace & integrations",
     count: 5,
-    color: "#34D399",
-    desc: "Flutter-based mobile apps for iOS and Android.",
+    color: "#a1a1aa",
+    desc: "Source areas in the eApps repository.",
     apps: [
-      "eRide (Transportation)",
-      "eSocial (Social Network)",
-      "eTrack (Asset Tracking)",
-      "eTravel (Travel Planner)",
-      "eWallet (Digital Wallet)",
+      "Browser extensions",
+      "IDE tools",
+      "Web apps",
+      "Mobile apps",
+      "Desktop wrappers",
     ],
-  },
-  {
-    title: "Native LVGL Apps",
-    count: 40,
-    color: "#F59E0B",
-    desc: "40+ native C/LVGL apps for embedded displays running directly on EmbeddedOS.",
-    apps: [
-      "System Monitor",
-      "Network Config",
-      "File Browser",
-      "Terminal Emulator",
-      "Media Player",
-      "Image Viewer",
-      "Text Editor",
-      "Calculator",
-      "Clock/Timer",
-      "Weather",
-      "Maps (Offline)",
-      "Camera Viewer",
-      "Sensor Dashboard",
-      "Log Viewer",
-      "OTA Updater",
-      "Settings App",
-      "App Store Client",
-      "Diagnostics",
-      "Benchmark Tool",
-      "Crypto Wallet",
-      "QR Scanner",
-      "Barcode Reader",
-      "PDF Viewer",
-      "eBook Reader",
-      "Music Player",
-      "Video Player",
-      "Photo Gallery",
-      "Contact Book",
-      "Calendar",
-      "Task Manager",
-      "Notes",
-      "Voice Recorder",
-      "Alarm",
-      "Stopwatch",
-      "Unit Converter",
-      "Currency Converter",
-      "Password Manager",
-      "2FA Authenticator",
-      "SSH Client",
-      "FTP Client",
-    ],
-  },
-  {
-    title: "Developer Tools",
-    count: 3,
-    color: "#60A5FA",
-    desc: "Tools for building, testing, and deploying EmbeddedOS applications.",
-    apps: ["ebuild CLI", "eosim CLI", "eBot CLI"],
   },
 ];
 
 const STATS = [
-  { value: "60+", label: "Total Apps" },
-  { value: "11", label: "Browser Extensions" },
-  { value: "5", label: "Mobile Apps" },
-  { value: "40+", label: "Native LVGL Apps" },
+  {
+    value: "11",
+    label: "eOffice apps",
+  },
+  {
+    value: "C / LVGL",
+    label: "Native app source",
+  },
+  {
+    value: "JSON",
+    label: "Marketplace catalog",
+  },
+  {
+    value: "MIT",
+    label: "Repository license",
+  },
 ];
 
 const FEATURED = [
   {
-    name: "EoStudio IDE",
-    version: "v3.1",
-    color: "#22D3EE",
-    icon: "💻",
-    tagline: "Universal IDE for Embedded Development",
-    desc: "A full-featured IDE with EmbeddedOS-native debugging, JTAG/SWD support, AI code completion via eBot, real-time RTOS task visualization, and one-click board flashing. Runs on Windows, macOS, Linux, and natively on EmbeddedOS.",
+    name: "EoStudio",
+    version: "Source available",
+    color: "#a1a1aa",
+    icon: "01",
+    tagline: "Development & design",
+    desc: "Python development platform with visual-editing modules, plugins, and ebuild integration.",
     features: [
-      "AI code completion (eBot)",
-      "RTOS task visualizer",
-      "JTAG/SWD debugger",
-      "One-click board flash",
-      `${BOARD_COUNT} board profiles`,
-      "eFlow visual editor",
+      "ebuild integration",
+      "Code generation modules",
+      "Plugin system",
     ],
-    platforms: ["Windows", "macOS", "Linux", "EmbeddedOS"],
+    platforms: ["See repository for build targets"],
     href: "https://github.com/embeddedos-org/EoStudio",
   },
   {
     name: "EoSim",
-    version: "v2.0",
-    color: "#F97316",
-    icon: "🖥️",
-    tagline: `${SIM_PLATFORM_COUNT}-Platform Simulator & Hardware Emulator`,
-    desc: `Simulate any of ${SIM_PLATFORM_COUNT} embedded platforms in software — GPIO toggles, UART output, SPI/I2C buses, ADC readings, and full memory maps. Run your firmware before hardware arrives. Integrates with EoStudio and CI/CD pipelines.`,
+    version: "Source available",
+    color: "#a1a1aa",
+    icon: "02",
+    tagline: "Simulation platform",
+    desc: "Platform descriptors, simulation engines, and command-line tools. Runtime coverage depends on the selected platform.",
     features: [
-      `${SIM_PLATFORM_COUNT} platform profiles`,
-      "GPIO/UART/SPI/I2C emulation",
-      "Memory map viewer",
-      "CI/CD integration",
-      "Waveform recorder",
-      "Fault injection testing",
+      "Platform registry",
+      "Simulation tools",
+      "Environment diagnostics",
     ],
-    platforms: ["Windows", "macOS", "Linux", "Web (WASM)"],
-    href: "https://github.com/embeddedos-org/EoStudio",
+    platforms: ["See repository for build targets"],
+    href: "https://github.com/embeddedos-org/EoSim",
   },
   {
     name: "eOffice Suite",
-    version: "v1.0",
-    color: "#A78BFA",
-    icon: "📄",
-    tagline: "11-App Office Suite for Embedded & Desktop",
-    desc: "A complete office productivity suite designed to run on embedded displays (800×480+) and full desktops. Includes word processor, spreadsheet, presentation, notes, drawing, calendar, contacts, mail, chat, file manager, and calculator — all in a unified LVGL + Flutter UI.",
-    features: [
-      "eWriter (Word Processor)",
-      "eSheet (Spreadsheet)",
-      "ePresent (Slides)",
-      "eNotes (Markdown)",
-      "eDraw (Vector)",
-      "eMail + eChat",
-    ],
-    platforms: ["EmbeddedOS", "Linux", "Android", "iOS"],
-    href: "https://github.com/embeddedos-org/eApps",
+    version: "Source available",
+    color: "#a1a1aa",
+    icon: "03",
+    tagline: "Productivity apps",
+    desc: "React and TypeScript applications with web, Electron, and extension packaging.",
+    features: ["eDocs", "eSheets", "eSlides", "ePlanner"],
+    platforms: ["See repository for build targets"],
+    href: "https://github.com/embeddedos-org/eOffice",
   },
   {
     name: "eBrowser",
-    version: "v1.0",
-    color: "#34D399",
-    icon: "🌐",
-    tagline: "Privacy-First Browser with 11 Extensions",
-    desc: "A Chromium-based browser hardened for privacy and embedded use. Ships with 11 extensions including Chrome, Firefox, VS Code, JetBrains, Obsidian, and Slack integrations. Built-in eBot AI assistant, ad blocker, and offline mode for air-gapped systems.",
+    version: "Source available",
+    color: "#a1a1aa",
+    icon: "04",
+    tagline: "Embedded web browser",
+    desc: "C11 browser with LVGL UI and a small HTML/CSS/DOM engine for constrained targets. It does not aim for full web-platform parity.",
     features: [
-      "Built-in ad blocker",
-      "eBot AI sidebar",
-      "Offline / air-gapped mode",
-      "11 extensions",
-      "VS Code + JetBrains plugins",
-      "Tor-compatible",
+      "CMake modules",
+      "LVGL interface",
+      "SDL2 and WebAssembly targets",
     ],
-    platforms: ["Windows", "macOS", "Linux", "EmbeddedOS"],
-    href: "https://github.com/embeddedos-org/eApps",
+    platforms: ["See repository for build targets"],
+    href: "https://github.com/embeddedos-org/eBrowser",
   },
 ];
 
@@ -216,18 +138,9 @@ export default function EApps() {
     <BpPage className="eapps">
       <PageHero
         label="eApps — App Store"
-        title="60+ Apps for Every Platform"
-        lead="Native LVGL apps, browser extensions, desktop apps, and mobile apps — all built on EmbeddedOS and available through the unified eApps store."
-        visual={
-          // The 3D app grid, on a large stage; it loads only near the viewport.
-          <div className="board stage">
-            <Suspense fallback={<div className="stage-wait" />}>
-              <ViewportGate>
-                <EAppsCanvas hovered={false} />
-              </ViewportGate>
-            </Suspense>
-          </div>
-        }
+        title="Explore the eApps ecosystem"
+        lead="Discover native apps, web applications, extensions, and desktop projects. Open the source and check each project’s build and release instructions."
+        visual={<ProductRepositoryPanel product="eapps" />}
       >
         <div className="ctas">
           <a
@@ -251,7 +164,7 @@ export default function EApps() {
       <Section
         id="featured"
         title="Featured Applications"
-        lead="Flagship apps built on EmbeddedOS — available on desktop, mobile, and embedded targets"
+        lead="Explore each project’s own repository for implementation, build targets, and current status"
         split
       >
         <ul className="cards two">
@@ -308,7 +221,7 @@ export default function EApps() {
             <li key={cat.title} style={{ "--c": cat.color } as CSSProperties}>
               <div className="ea-cat-h">
                 <h3>{cat.title}</h3>
-                <span className="st">{cat.count} apps</span>
+                <span className="st">{cat.count} listed examples</span>
                 <p>{cat.desc}</p>
               </div>
               <ul className="ea-list">
@@ -326,10 +239,9 @@ export default function EApps() {
         <div className="card hl ea-ci">
           <h3>Automated CI/CD Builds</h3>
           <p>
-            All 60+ apps are built automatically via GitHub Actions on every
-            commit. Binaries are published for Linux, Windows, macOS, Android,
-            iOS, and embedded targets. The eApps store client auto-updates from
-            the manifest.
+            The repository contains packaging and release workflows. Triggers,
+            required credentials, and published artifacts vary by app. Check the
+            selected project’s Actions and Releases pages before downloading.
           </p>
         </div>
       </Section>
