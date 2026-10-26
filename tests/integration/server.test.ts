@@ -161,8 +161,17 @@ describe("storage proxy", () => {
       ".vtt": /^text\/vtt/,
     };
 
+    // the homepage's story frames, boards, film and industry clips live in
+    // subfolders of /media, so every file is checked, at any depth
     const dist = path.join(ROOT, "dist", "public", "media");
-    const files = fs.readdirSync(dist);
+    const files = (
+      fs.readdirSync(dist, {
+        recursive: true,
+        withFileTypes: true,
+      }) as fs.Dirent[]
+    )
+      .filter(d => d.isFile())
+      .map(d => path.relative(dist, path.join(d.parentPath, d.name)));
     expect(files.length).toBeGreaterThan(15);
 
     const bad: string[] = [];

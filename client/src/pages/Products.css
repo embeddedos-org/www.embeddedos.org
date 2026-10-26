@@ -1,0 +1,149 @@
+/* /products (Products.tsx): the parts the shared page blocks do not cover. */
+.bp.productspage .pr-stats {
+  padding-bottom: clamp(32px, 5vw, 64px);
+}
+
+/* the stack, application layer first: each layer's name beside its parts,
+   the layer's colour as a thin rule */
+.bp.productspage .pr-layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.bp.productspage .pr-layers > li {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 24px;
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--c, var(--line2));
+}
+.bp.productspage .pr-layer {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.bp.productspage .pr-layers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bp.productspage .pr-layers ul li {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--fg2);
+  border: 1px solid var(--line2);
+  border-radius: 14px;
+  padding: 7px 12px;
+}
+@media (max-width: 620px) {
+  .bp.productspage .pr-layers > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* the family filter: one button per family, its colour as a dot */
+.bp.productspage .pr-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+.bp.productspage .pr-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+
+/* one product family per row: what it is on the left, its products on the right */
+.bp.productspage .pr-fam {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+  gap: clamp(28px, 4vw, 64px);
+  padding-block: clamp(36px, 5vw, 56px);
+  border-top: 1px solid var(--line);
+}
+.bp.productspage .pr-fam-text {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+.bp.productspage .pr-fam-text .st {
+  font-size: 13px;
+}
+.bp.productspage .pr-fam-text h2 {
+  font-size: clamp(30px, 3vw, 42px);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.bp.productspage .pr-tag {
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--fg);
+}
+.bp.productspage .pr-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+.bp.productspage .pr-fam-text .badges {
+  margin-top: 4px;
+}
+.bp.productspage .pr-fam-text .ctas {
+  margin-top: 8px;
+}
+.bp.productspage .pr-prods {
+  align-content: start;
+}
+.bp.productspage .pr-prods .card {
+  padding: 20px 20px 18px;
+  gap: 6px;
+}
+.bp.productspage .pr-prods .card h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 18px;
+}
+.bp.productspage .pr-prods .card h3::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  transform: translateY(-2px);
+}
+.bp.productspage .pr-prods .card p {
+  font-size: 14px;
+}
+.bp.productspage .pr-prods a.card:hover h3 {
+  color: var(--orange-hi);
+}
+@media (max-width: 960px) {
+  .bp.productspage .pr-fam {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* the reference pages: the product's name over its one-line note */
+.bp.productspage .pr-rn {
+  font-weight: 600;
+}
+
+/* a family with an odd number of products: the last card takes the whole row
+   rather than leaving an empty cell beside it */
+@media (min-width: 621px) {
+  .bp.productspage .pr-prods > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}

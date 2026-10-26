@@ -1,0 +1,82 @@
+/* /flow (Flow.tsx): the parts the shared page blocks do not cover. */
+
+/* the eight build steps: the number in a circle on wide screens; on phones the
+   circle gives way to a "Step 0n" label above the title, as before */
+.bp.flowpage .fl-step {
+  display: none;
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--orange-hi);
+  margin-bottom: 4px;
+}
+@media (min-width: 901px) {
+  .bp.flowpage .fl-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 48px;
+  }
+}
+@media (max-width: 620px) {
+  .bp.flowpage .fl-steps > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bp.flowpage .fl-steps .n {
+    display: none;
+  }
+  .bp.flowpage .fl-step {
+    display: block;
+  }
+}
+
+/* the runtime architecture, top layer first, each layer's colour as a thin rule */
+.bp.flowpage .fl-layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.bp.flowpage .fl-layers > li {
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  align-items: center;
+  gap: 6px 24px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--c, var(--line2));
+}
+.bp.flowpage .fl-layer {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.bp.flowpage .fl-ldesc {
+  font-size: 15px;
+  color: var(--fg2);
+}
+@media (max-width: 620px) {
+  .bp.flowpage .fl-layers > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* the five target categories fill their rows (3 + 2, then 2 + 2 + 1 wide)
+   instead of leaving an empty cell */
+@media (min-width: 961px) {
+  .bp.flowpage .fl-targets {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .bp.flowpage .fl-targets > li {
+    grid-column: span 2;
+  }
+  .bp.flowpage .fl-targets > li:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+}
+@media (min-width: 621px) and (max-width: 960px) {
+  .bp.flowpage .fl-targets > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}

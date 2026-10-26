@@ -62,10 +62,12 @@ export const BOOKING_TOPICS: readonly BookingTopic[] = [
 ];
 
 /*
- * /book has two modes. With a Calendly event URL set, the visitor books in the
- * embedded calendar and Calendly sends a confirmation email. Without one, the
- * page offers the contact form instead: nothing is booked and Calendly sends
- * nothing, so the "by email" copy promises only an email reply.
+ * /book has two modes. With a valid Google Calendar embed URL, the visitor
+ * books in the embedded appointment schedule and Google sends a confirmation
+ * email. Without one, the page offers the contact form instead: nothing is
+ * booked and Google sends nothing, so the "by email" copy promises only an
+ * email reply. The schedule's slot length, video link and booking form are set
+ * in Google Calendar, not here: BOOKING_MINUTES must match the slot length.
  */
 const EXPECT_EITHER_WAY = [
   "Bring your use case, board or question; we come ready to go through it with you.",
@@ -83,7 +85,7 @@ export const BOOKING_EXPECT_BY_EMAIL = [
 ] as const;
 
 export const BOOKING_TIME_ZONE_NOTE =
-  "Times are shown in the time zone your browser reports, and the calendar lets you change it. The confirmation email gives the time in your zone.";
+  "Check the time zone the calendar shows before you pick a time. Google's confirmation email gives the booked time.";
 
 export const BOOKING_TIME_ZONE_NOTE_BY_EMAIL =
   "When you suggest times, say which time zone they are in.";
@@ -105,7 +107,7 @@ export const BOOKING_FAQ = [
   {
     question: "Can I reschedule or cancel?",
     answer:
-      "Yes. Calendly's confirmation email has links to reschedule or cancel the booking.",
+      "Yes. Google's confirmation email has a link to cancel the booking; to move it, cancel and book a new time.",
   },
   {
     question: "Who will be there?",

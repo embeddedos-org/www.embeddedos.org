@@ -21,6 +21,7 @@ import {
   isPartBuilt,
   WALKTHROUGH_STEPS,
 } from "./cad-walkthrough-data";
+import FitCamera, { type SceneExtent } from "./fit-camera";
 
 const PCB = { x: 6.4, y: 0.16, z: 4.6 };
 const PCB_TOP = PCB.y / 2;
@@ -30,8 +31,21 @@ interface SceneProps {
   step: number;
   reducedMotion: boolean;
   motionPaused: boolean;
+  /** false while the stage is scrolled away: the scene stops drawing */
+  onScreen?: boolean;
+  /** px at the top of the viewport covered by its controls */
+  insetTop?: number;
   onRendererUnavailable?: () => void;
 }
+
+/**
+ * The finished board's reach (see FitCamera), in world units with the board
+ * group's 0.4 lift: from the underside of the PCB (y 0.32) to the top of the
+ * tilted display (y 2.23); the pin rows and PCB corners reach 4.1 from the
+ * centre. Fitting to the finished product keeps the camera still as parts
+ * are added step by step.
+ */
+const BOARD_EXTENT: SceneExtent = { cy: 1.275, hy: 0.955, r: 4.1 };
 
 // ── Build wrapper ───────────────────────────────────────────────────────────
 // Scales each stage's part group in as its step activates. Under reduced
@@ -120,14 +134,14 @@ function CadBase({ step }: { step: number }) {
         <boxGeometry args={[PCB.x, PCB.y, PCB.z]} />
         {blueprint ? (
           <meshBasicMaterial
-            color="#0d1f3c"
+            color="#1f1f23"
             transparent
             opacity={0.55}
             depthWrite={false}
           />
         ) : (
           <meshStandardMaterial
-            color="#0c1626"
+            color="#16161a"
             metalness={0.2}
             roughness={0.7}
           />
@@ -138,10 +152,10 @@ function CadBase({ step }: { step: number }) {
       <mesh position={[0, PCB_TOP + 0.01, 0]}>
         <boxGeometry args={[2.8, 0.02, 2.8]} />
         {blueprint ? (
-          <meshBasicMaterial color="#0d1f3c" transparent opacity={0.4} />
+          <meshBasicMaterial color="#1f1f23" transparent opacity={0.4} />
         ) : (
           <meshStandardMaterial
-            color="#101d33"
+            color="#1d1d21"
             metalness={0.3}
             roughness={0.6}
           />
@@ -153,7 +167,7 @@ function CadBase({ step }: { step: number }) {
         <mesh key={i} position={[x, 0.02, z]}>
           <boxGeometry args={[0.16, 0.1, 0.55]} />
           <meshStandardMaterial
-            color={blueprint ? "#33507a" : "#8fa3bf"}
+            color={blueprint ? "#4c4c54" : "#8fa3bf"}
             metalness={0.85}
             roughness={0.3}
           />
@@ -192,13 +206,13 @@ function SensorParts() {
       ))}
       <mesh position={[-2.5, PCB_TOP + 0.125, -1.5]}>
         <boxGeometry args={[0.7, 0.25, 0.7]} />
-        <PartMaterial color="#1e293b" pulse={false} emissiveIntensity={0.2} />
+        <PartMaterial color="#29292d" pulse={false} emissiveIntensity={0.2} />
         <Edges color="#38bdf8" />
       </mesh>
       {holes.map(([x, z], i) => (
         <mesh key={i} position={[x, PCB_TOP + 0.02, z]}>
           <cylinderGeometry args={[0.14, 0.14, 0.2, 20]} />
-          <meshStandardMaterial color="#020617" roughness={0.9} />
+          <meshStandardMaterial color="#070708" roughness={0.9} />
         </mesh>
       ))}
     </group>
@@ -219,7 +233,7 @@ function SecureBootParts({ reducedMotion }: { reducedMotion: boolean }) {
       <group position={[-2.2, PCB_TOP + 0.11, 0.4]}>
         <mesh>
           <boxGeometry args={[0.8, 0.22, 0.6]} />
-          <PartMaterial color="#1e293b" pulse={false} emissiveIntensity={0.2} />
+          <PartMaterial color="#29292d" pulse={false} emissiveIntensity={0.2} />
           <Edges color="#fbbf24" />
         </mesh>
         {flashPins.map((dz, i) => (
@@ -385,7 +399,7 @@ function AppParts() {
         <mesh position={[0, 0.85, 0]}>
           <boxGeometry args={[2.6, 1.7, 0.1]} />
           <meshStandardMaterial
-            color="#0f172a"
+            color="#17171a"
             metalness={0.4}
             roughness={0.5}
           />
@@ -491,12 +505,12 @@ function PartLabels({ step }: { step: number }) {
           key={part.id}
           position={part.labelAt}
           center
-          distanceFactor={11}
+          distanceFactor={12}
           zIndexRange={[10, 0]}
           style={{ pointerEvents: "none" }}
         >
           <div
-            className="whitespace-nowrap rounded border bg-[#050B14]/90 px-1.5 py-0.5 font-mono text-[10px] text-white/90"
+            className="whitespace-nowrap rounded border bg-black/80 px-1.5 py-0.5 font-mono text-xs text-white/90"
             style={{ borderColor: `${color}88` }}
           >
             {part.label}
@@ -507,14 +521,14 @@ function PartLabels({ step }: { step: number }) {
   );
 }
 
-// ── Camera ──────────────────────────────────────────────────────────────────
-function FitCamera() {
-  const camera = useThree(s => s.camera);
+// ── Redraw on a step change ─────────────────────────────────────────────────
+// When the scene draws on demand (reduced motion, or scrolled away), a new
+// step must still paint: the parts appear in the next frame's useFrame.
+function RedrawOnStep({ step }: { step: number }) {
+  const invalidate = useThree(s => s.invalidate);
   useEffect(() => {
-    const cam = camera as THREE.PerspectiveCamera;
-    cam.position.set(8.2, 6.4, 8.2);
-    cam.updateProjectionMatrix();
-  }, [camera]);
+    invalidate();
+  }, [step, invalidate]);
   return null;
 }
 
@@ -523,13 +537,18 @@ export default function CadWalkthroughScene({
   step,
   reducedMotion,
   motionPaused,
+  onScreen = true,
+  insetTop = 0,
   onRendererUnavailable,
 }: SceneProps) {
   const complete = step >= 7;
 
   return (
     <Canvas
-      dpr={[1, 1.75]}
+      // a large stage: cap the buffer at 1.5x, and draw every frame only
+      // while it is on screen and motion is allowed (on demand otherwise)
+      dpr={[1, 1.5]}
+      frameloop={onScreen && !reducedMotion ? "always" : "demand"}
       camera={{ position: [8.2, 6.4, 8.2], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
       onCreated={({ gl }) => {
@@ -544,7 +563,7 @@ export default function CadWalkthroughScene({
         });
       }}
     >
-      <fog attach="fog" args={["#0a1428", 18, 36]} />
+      <fog attach="fog" args={["#0b0b0d", 18, 36]} />
       <ambientLight intensity={0.55} />
       <directionalLight position={[6, 10, 4]} intensity={1.3} />
       <pointLight
@@ -568,10 +587,10 @@ export default function CadWalkthroughScene({
         args={[40, 40]}
         cellSize={0.8}
         cellThickness={0.6}
-        cellColor="#14304f"
+        cellColor="#2a2a2e"
         sectionSize={4}
         sectionThickness={1}
-        sectionColor="#1f4d7a"
+        sectionColor="#45454b"
         fadeDistance={30}
         fadeStrength={2.5}
         infiniteGrid
@@ -603,7 +622,8 @@ export default function CadWalkthroughScene({
         <PartLabels step={step} />
       </group>
 
-      <FitCamera />
+      <FitCamera extent={BOARD_EXTENT} insetTop={insetTop} />
+      <RedrawOnStep step={step} />
       <OrbitControls
         makeDefault
         enablePan={false}
@@ -613,7 +633,9 @@ export default function CadWalkthroughScene({
         maxDistance={17}
         minPolarAngle={Math.PI / 5.5}
         maxPolarAngle={Math.PI / 2.1}
-        autoRotate={!motionPaused}
+        // only while the loop runs: an auto-rotating control asks for the
+        // next frame itself, which would keep a scrolled-away scene drawing
+        autoRotate={!motionPaused && onScreen}
         autoRotateSpeed={0.55}
       />
     </Canvas>

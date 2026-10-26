@@ -1,124 +1,49 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useState, useEffect, type CSSProperties } from "react";
 import { Link } from "wouter";
 import {
-  ChevronRight,
-  Radio,
-  Zap,
-  Shield,
-  Wifi,
-  Cpu,
-  MapPin,
-  Eye,
-  ArrowRight,
-  ExternalLink,
-  Lock,
-} from "lucide-react";
+  BpPage,
+  BoardFigure,
+  LocalNav,
+  PageHero,
+  Section,
+  Stats,
+} from "@/components/bp";
+import "./ERadar360.css";
 
 // ─── Animated Radar Sweep ────────────────────────────────────────────────────
+// CSS animation (ERadar360.css), paused by the button and stopped under
+// prefers-reduced-motion; no script runs per frame.
 function RadarSweep({ active }: { active: boolean }) {
   return (
-    <div className="relative w-64 h-64 mx-auto">
-      {/* Radar rings */}
+    <div className={active ? "rs on" : "rs"} aria-hidden="true">
       {[1, 2, 3, 4].map(i => (
-        <div
+        <i
           key={i}
-          className="absolute inset-0 rounded-full border border-[#22D3EE]/20"
-          style={{ margin: `${i * 14}%` } as React.CSSProperties}
+          className="rs-ring"
+          style={{ margin: `${i * 14}%` } as CSSProperties}
         />
       ))}
-      {/* Cross-hairs */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-full h-px bg-[#22D3EE]/10" />
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-full w-px bg-[#22D3EE]/10" />
-      </div>
-      {/* Sweep */}
-      {active && (
-        <motion.div
-          className="absolute inset-0"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background:
-                "conic-gradient(from 0deg, transparent 270deg, rgba(34,211,238,0.4) 360deg)",
-            }}
-          />
-        </motion.div>
-      )}
-      {/* Blips */}
+      <i className="rs-x" />
+      <i className="rs-y" />
       {active && (
         <>
-          <motion.div
-            className="absolute w-2 h-2 rounded-full bg-[#F97316]"
-            style={{ top: "25%", left: "60%" }}
-            animate={{ opacity: [0, 1, 0], scale: [0.5, 1.5, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+          <i className="rs-sweep" />
+          <i
+            className="rs-blip"
+            style={{ top: "25%", left: "60%", animationDelay: "0.5s" }}
           />
-          <motion.div
-            className="absolute w-2 h-2 rounded-full bg-[#F97316]"
-            style={{ top: "65%", left: "30%" }}
-            animate={{ opacity: [0, 1, 0], scale: [0.5, 1.5, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 1.2 }}
+          <i
+            className="rs-blip"
+            style={{ top: "65%", left: "30%", animationDelay: "1.2s" }}
           />
-          <motion.div
-            className="absolute w-1.5 h-1.5 rounded-full bg-[#22D3EE]"
-            style={{ top: "40%", left: "75%" }}
-            animate={{ opacity: [0, 1, 0], scale: [0.5, 1.5, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.8 }}
+          <i
+            className="rs-blip c"
+            style={{ top: "40%", left: "75%", animationDelay: "0.8s" }}
           />
         </>
       )}
-      {/* Center dot */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-3 h-3 rounded-full bg-[#22D3EE] shadow-[0_0_12px_#22D3EE]" />
-      </div>
+      <i className="rs-dot" />
     </div>
-  );
-}
-
-// ─── Sensor Spec Card ────────────────────────────────────────────────────────
-function SensorCard({
-  icon: Icon,
-  label,
-  value,
-  color,
-  delay,
-}: {
-  icon: React.FC<{ size?: number; style?: React.CSSProperties }>;
-  label: string;
-  value: string;
-  color: string;
-  delay: number;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay }}
-      className="rounded-2xl border border-white/10 p-4 hover:border-white/20 transition-colors"
-      style={{ background: `${color}08` }}
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center"
-          style={{ background: `${color}20` }}
-        >
-          <Icon size={16} style={{ color }} />
-        </div>
-        <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
-          {label}
-        </span>
-      </div>
-      <p className="text-sm font-mono text-white/80 leading-relaxed">{value}</p>
-    </motion.div>
   );
 }
 
@@ -135,6 +60,13 @@ const ALERT_MSGS = [
   { msg: "V2X: Emergency vehicle approaching — 400 m", type: "danger" },
   { msg: "Radar clear — all zones nominal", type: "ok" },
 ];
+
+const ALERT_COLORS: Record<string, string> = {
+  warn: "#F59E0B",
+  info: "#22D3EE",
+  danger: "#F85149",
+  ok: "#34D399",
+};
 
 function AlertDemo() {
   const [alerts, setAlerts] = useState<
@@ -153,56 +85,32 @@ function AlertDemo() {
     return () => clearInterval(interval);
   }, [running]);
 
-  const colorMap: Record<string, string> = {
-    warn: "#F59E0B",
-    info: "#22D3EE",
-    danger: "#F85149",
-    ok: "#34D399",
-  };
-
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#0D1117] p-5">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-xs font-bold text-white/40 uppercase tracking-widest">
-          Simulated Alert Feed
-        </span>
+    <div className="er-feed">
+      <div className="er-feed-h">
+        <span className="label">Simulated Alert Feed</span>
         <button
+          type="button"
           onClick={() => setRunning(r => !r)}
-          className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-colors"
-          style={{
-            background: running ? "#F8514920" : "#22D3EE20",
-            color: running ? "#F85149" : "#22D3EE",
-            border: `1px solid ${running ? "#F8514940" : "#22D3EE40"}`,
-          }}
+          className={running ? "btn gh sm er-stop" : "btn gh sm"}
         >
           {running ? "Stop" : "Simulate"}
         </button>
       </div>
-      <div className="space-y-2 min-h-[160px]">
-        <AnimatePresence>
-          {alerts.map(a => (
-            <motion.div
-              key={a.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="flex items-center gap-2 text-xs font-mono py-1.5 px-3 rounded-lg"
-              style={{
-                background: `${colorMap[a.type]}15`,
-                borderLeft: `2px solid ${colorMap[a.type]}`,
-              }}
-            >
-              <span style={{ color: colorMap[a.type] }}>●</span>
-              <span className="text-white/70">{a.msg}</span>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        {!running && alerts.length === 0 && (
-          <div className="flex items-center justify-center h-full text-white/20 text-xs">
-            Click Simulate to start
-          </div>
-        )}
-      </div>
+      <ul className="er-alerts">
+        {alerts.map(a => (
+          <li
+            key={a.id}
+            style={{ "--c": ALERT_COLORS[a.type] } as CSSProperties}
+          >
+            <span aria-hidden="true">●</span>
+            <span>{a.msg}</span>
+          </li>
+        ))}
+      </ul>
+      {!running && alerts.length === 0 && (
+        <p className="er-idle">Click Simulate to start</p>
+      )}
     </div>
   );
 }
@@ -210,78 +118,59 @@ function AlertDemo() {
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function ERadar360() {
   const [radarActive, setRadarActive] = useState(true);
-  const heroRef = useRef(null);
 
   const SPECS = [
     {
-      icon: Radio,
       label: "Front Radar",
       value:
         "Proposed TI AWR2944 front radar · 77 GHz FMCW · targets: 120° FOV, 250 m range, 0.75 m resolution",
       color: "#22D3EE",
-      delay: 0,
     },
     {
-      icon: Radio,
       label: "Rear Radar",
       value:
         "Proposed TI AWR2944 rear radar · 77 GHz FMCW · targets: 120° FOV, 150 m range, 0.75 m resolution",
       color: "#22D3EE",
-      delay: 0.05,
     },
     {
-      icon: Zap,
       label: "Laser Detection",
       value:
         "Five-sensor InGaAs APD concept · 360° layout · latency benchmark pending",
       color: "#F97316",
-      delay: 0.1,
     },
     {
-      icon: Wifi,
       label: "V2X",
       value:
         "Proposed Autotalks TEKTON3 DSRC + C-V2X · target: 1 km LOS · planned BSM, TIM, SPaT, MAP support",
       color: "#A78BFA",
-      delay: 0.15,
     },
     {
-      icon: Cpu,
       label: "AI Processor",
       value: "Rockchip RK3588S design target · classifier validation pending",
       color: "#34D399",
-      delay: 0.2,
     },
     {
-      icon: Cpu,
       label: "Co-Processor",
       value:
         "Proposed STM32H7B3 co-processor · planned laser ADC, OBD-II parsing, and GPS fusion",
       color: "#F59E0B",
-      delay: 0.25,
     },
     {
-      icon: MapPin,
       label: "GNSS",
       value:
         "Proposed u-blox NEO-M9N · planned GPS, GLONASS, Galileo, and BeiDou support",
       color: "#60A5FA",
-      delay: 0.3,
     },
     {
-      icon: Eye,
       label: "Display",
       value: 'Proposed 4" Samsung AMOLED · 480×800 · MIPI-DSI',
       color: "#F472B6",
-      delay: 0.35,
     },
     {
-      icon: Lock,
       label: "Connectivity",
       value:
         "Proposed Wi-Fi 6, BT 5.3, and USB-C · target power: 12V OBD-II or USB-C 5V/3A",
       color: "#22D3EE",
-      delay: 0.4,
     },
   ];
 
@@ -321,362 +210,246 @@ export default function ERadar360() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      {/* Hero */}
-      <section
-        ref={heroRef}
-        className="relative min-h-[90vh] flex items-center overflow-hidden"
+    <BpPage className="er">
+      <PageHero
+        label="eCAD Hardware"
+        title={
+          <>
+            eRadar<span>360</span>
+          </>
+        }
+        sub={
+          <>
+            Planned OEM name: <span className="er-oem">Aegis One</span>
+          </>
+        }
+        lead="A design-stage automotive sensing concept combining 77 GHz radar, laser detection, V2X, and edge AI. Hardware performance and safety behavior have not been validated."
+        visual={
+          <BoardFigure
+            base="/media/home-2026-10-22/industries/d04"
+            width={1280}
+            height={720}
+            eager
+            alt="eRadar360: the windshield-mounted car safety design, rendered"
+            caption={
+              <>
+                <span>
+                  <b>eRadar360</b> — the windshield-mounted design: front and
+                  rear 77 GHz radar, five laser detectors and V2X
+                </span>
+                <span>Render · design stage</span>
+              </>
+            }
+          />
+        }
       >
-        {/* Background grid */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(34,211,238,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.3) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-        {/* Glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10"
-          style={{
-            background: "radial-gradient(circle, #22D3EE 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="flex items-center gap-2 mb-6">
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#22D3EE]/10 text-[#22D3EE] border border-[#22D3EE]/20 uppercase tracking-widest">
-                  eCAD Hardware
-                </span>
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20 uppercase tracking-widest">
-                  Design Stage
-                </span>
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-heading font-black mb-4 leading-tight">
-                eRadar<span className="text-[#22D3EE]">360</span>
-              </h1>
-              <p className="text-xl text-white/60 mb-2 font-semibold">
-                Planned OEM name:{" "}
-                <span className="text-[#A78BFA]">Aegis One</span>
-              </p>
-              <p className="text-lg text-white/50 mb-8 leading-relaxed">
-                A design-stage automotive sensing concept combining 77 GHz
-                radar, laser detection, V2X, and edge AI. Hardware performance
-                and safety behavior have not been validated.
-              </p>
-              <div className="flex flex-wrap gap-3 mb-8">
-                {[
-                  "360° Radar Design",
-                  "Laser Detection Concept",
-                  "V2X / DSRC Design",
-                  "AI Design Target",
-                  "Validation Pending",
-                ].map(tag => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 rounded-full text-xs font-semibold bg-white/5 text-white/60 border border-white/10"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <div className="flex gap-4">
-                <a
-                  href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRadar360_CAD_Design"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-[#22D3EE] text-[#0A0E1A] hover:bg-[#22D3EE]/90 transition-colors"
-                >
-                  View CAD Files <ExternalLink size={14} />
-                </a>
-                <Link
-                  href="/hardware-lab"
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-colors"
-                >
-                  Hardware Lab <ChevronRight size={14} />
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right — Radar animation */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col items-center gap-6"
+        <ul className="badges">
+          <li className="dot" style={{ "--c": "#F59E0B" } as CSSProperties}>
+            Design Stage
+          </li>
+          {[
+            "360° Radar Design",
+            "Laser Detection Concept",
+            "V2X / DSRC Design",
+            "AI Design Target",
+            "Validation Pending",
+          ].map(tag => (
+            <li key={tag}>{tag}</li>
+          ))}
+        </ul>
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRadar360_CAD_Design"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
           >
-            <div className="rounded-3xl border border-[#22D3EE]/20 bg-[#0D1117] p-8 w-full max-w-sm">
-              <div className="text-center mb-4">
-                <span className="text-xs font-bold text-[#22D3EE]/60 uppercase tracking-widest">
-                  Illustrative Radar Simulation
-                </span>
-              </div>
-              <RadarSweep active={radarActive} />
-              <div className="flex justify-center mt-4">
-                <button
-                  onClick={() => setRadarActive(r => !r)}
-                  className="text-xs px-4 py-2 rounded-lg font-semibold transition-colors"
-                  style={{
-                    background: radarActive ? "#F8514920" : "#22D3EE20",
-                    color: radarActive ? "#F85149" : "#22D3EE",
-                    border: `1px solid ${radarActive ? "#F8514940" : "#22D3EE40"}`,
-                  }}
-                >
-                  {radarActive ? "Pause Radar" : "Start Radar"}
-                </button>
-              </div>
-            </div>
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 w-full max-w-sm">
-              {[
-                { val: "250 m", label: "Range Target" },
-                { val: "Pending", label: "Latency Benchmark" },
-                { val: "Pending", label: "Accuracy Validation" },
-              ].map(s => (
-                <div
-                  key={s.label}
-                  className="rounded-xl border border-white/10 bg-white/5 p-3 text-center"
-                >
-                  <div className="text-lg font-black text-[#22D3EE]">
-                    {s.val}
-                  </div>
-                  <div className="text-[10px] text-white/40 uppercase tracking-wider">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+            View CAD Files <span aria-hidden="true">↗</span>
+          </a>
+          <Link href="/hardware-lab" className="btn gh">
+            Hardware Lab <span className="ar">›</span>
+          </Link>
         </div>
-      </section>
+      </PageHero>
+
+      <LocalNav
+        name="eRadar360"
+        items={[
+          { id: "simulation", label: "Simulation" },
+          { id: "sensors", label: "Sensors" },
+          { id: "threat", label: "Threat detection" },
+          { id: "configurations", label: "Configurations" },
+          { id: "targets", label: "Targets" },
+        ]}
+      />
+
+      {/* Radar simulation and the headline targets */}
+      <Section id="simulation" alt ariaLabel="Illustrative radar simulation">
+        <div className="split2 er-sim">
+          <div>
+            <p className="label">Illustrative Radar Simulation</p>
+            <div className="er-sim-stats">
+              <Stats
+                small
+                items={[
+                  { value: "250 m", label: "Range Target" },
+                  { value: "Pending", label: "Latency Benchmark" },
+                  { value: "Pending", label: "Accuracy Validation" },
+                ]}
+              />
+            </div>
+          </div>
+          <div className="er-scope">
+            <RadarSweep active={radarActive} />
+            <button
+              type="button"
+              onClick={() => setRadarActive(r => !r)}
+              className="btn gh sm"
+            >
+              {radarActive ? "Pause Radar" : "Start Radar"}
+            </button>
+          </div>
+        </div>
+      </Section>
 
       {/* Sensor Specs */}
-      <section className="py-20 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h2 className="text-3xl font-heading font-black mb-3">
-              Sensor Architecture
-            </h2>
-            <p className="text-white/50">
-              Proposed sensor modalities and processing hardware for a reference
-              design.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {SPECS.map(s => (
-              <SensorCard key={s.label} {...s} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <Section
+        id="sensors"
+        title="Sensor Architecture"
+        lead="Proposed sensor modalities and processing hardware for a reference design."
+        split
+      >
+        <ul className="cards">
+          {SPECS.map(s => (
+            <li key={s.label}>
+              <div
+                className="card er-spec"
+                style={{ "--c": s.color } as CSSProperties}
+              >
+                <span className="k">{s.label}</span>
+                <p>{s.value}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* Alert Demo */}
-      {/* overflow-hidden: the cards below slide in from x:±20, which puts the
-          right-hand one 4px past the viewport on a phone until it settles. */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl font-heading font-black mb-4">
-                Threat-Detection Research
-              </h2>
-              <p className="text-white/50 mb-6 leading-relaxed">
+      <Section id="threat" alt>
+        <div className="split2 er-threat">
+          <div>
+            <div className="sec-h">
+              <h2>Threat-Detection Research</h2>
+              <p className="lead">
                 The reference design proposes radar, laser, and V2X fusion with
                 an edge classifier. Detection latency, false-alert rate, and
                 driver-alert behavior require physical testing.
               </p>
-              <div className="space-y-3">
-                {[
-                  {
-                    icon: Radio,
-                    label: "Radar fusion",
-                    desc: "Proposed front + rear 77 GHz FMCW; 0.75 m resolution target",
-                  },
-                  {
-                    icon: Zap,
-                    label: "Laser grid",
-                    desc: "Five-point coverage concept; latency benchmark pending",
-                  },
-                  {
-                    icon: Wifi,
-                    label: "V2X messages",
-                    desc: "Planned BSM, TIM, SPaT, and MAP support; 1 km LOS target",
-                  },
-                  {
-                    icon: Cpu,
-                    label: "AI classifier",
-                    desc: "Proposed RK3588S NPU and radar-signature classifier; validation pending",
-                  },
-                ].map(item => (
-                  <div key={item.label} className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#22D3EE]/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <item.icon size={14} className="text-[#22D3EE]" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">
-                        {item.label}
-                      </div>
-                      <div className="text-xs text-white/40">{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <AlertDemo />
-            </motion.div>
+            </div>
+            <dl className="er-list">
+              {[
+                {
+                  label: "Radar fusion",
+                  desc: "Proposed front + rear 77 GHz FMCW; 0.75 m resolution target",
+                },
+                {
+                  label: "Laser grid",
+                  desc: "Five-point coverage concept; latency benchmark pending",
+                },
+                {
+                  label: "V2X messages",
+                  desc: "Planned BSM, TIM, SPaT, and MAP support; 1 km LOS target",
+                },
+                {
+                  label: "AI classifier",
+                  desc: "Proposed RK3588S NPU and radar-signature classifier; validation pending",
+                },
+              ].map(item => (
+                <div key={item.label}>
+                  <dt>{item.label}</dt>
+                  <dd>{item.desc}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
+          <AlertDemo />
         </div>
-      </section>
+      </Section>
 
       {/* Configurations */}
-      <section className="py-20 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h2 className="text-3xl font-heading font-black mb-3">
-              Planned Configurations & Cost Estimates
-            </h2>
-            <p className="text-white/50">
-              Illustrative reference configurations and planning estimates; no
-              product is offered for sale.
-            </p>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {CONFIGS.map((c, i) => (
-              <motion.div
-                key={c.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`rounded-2xl border p-6 ${i === 1 ? "border-[#22D3EE]/40 bg-[#22D3EE]/5" : "border-white/10 bg-white/5"}`}
-              >
+      <Section
+        id="configurations"
+        title="Planned Configurations & Cost Estimates"
+        lead="Illustrative reference configurations and planning estimates; no product is offered for sale."
+        split
+      >
+        <ul className="cards">
+          {CONFIGS.map((c, i) => (
+            <li key={c.name}>
+              <div className={i === 1 ? "card hl" : "card"}>
                 {i === 1 && (
-                  <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#22D3EE]/20 text-[#22D3EE] uppercase tracking-widest mb-3">
-                    Reference Configuration
-                  </span>
+                  <span className="k er-ref">Reference Configuration</span>
                 )}
-                <h3 className="text-lg font-bold text-white mb-1">{c.name}</h3>
-                <p className="text-sm text-white/40 mb-4">{c.desc}</p>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-white/40">COGS Estimate</span>
-                    <span className="text-white font-mono">{c.cogs}</span>
+                <h3>{c.name}</h3>
+                <p>{c.desc}</p>
+                <dl className="er-cost">
+                  <div>
+                    <dt>COGS Estimate</dt>
+                    <dd>{c.cogs}</dd>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/40">Price Estimate</span>
-                    <span className="text-[#22D3EE] font-bold font-mono">
-                      {c.msrp}
-                    </span>
+                  <div>
+                    <dt>Price Estimate</dt>
+                    <dd>{c.msrp}</dd>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/40">Margin Estimate</span>
-                    <span className="text-[#34D399] font-mono">{c.margin}</span>
+                  <div>
+                    <dt>Margin Estimate</dt>
+                    <dd>{c.margin}</dd>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                </dl>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* Certifications */}
-      <section className="py-20 border-t border-white/5 bg-[#0D1117]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <h2 className="text-3xl font-heading font-black mb-3">
-              Regulatory and Safety Targets
-            </h2>
-            <p className="text-white/50">
-              These standards guide the design; no certification or regulatory
-              approval is claimed.
-            </p>
-          </motion.div>
-          <div className="flex flex-wrap gap-3">
-            {CERTS.map((c, i) => (
-              <motion.span
-                key={c}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-[#34D399]/10 text-[#34D399] border border-[#34D399]/20"
-              >
-                <Shield size={12} />
-                Target: {c}
-              </motion.span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Section
+        id="targets"
+        alt
+        title="Regulatory and Safety Targets"
+        lead="These standards guide the design; no certification or regulatory approval is claimed."
+        split
+      >
+        <ul className="er-certs">
+          {CERTS.map(c => (
+            <li key={c}>Target: {c}</li>
+          ))}
+        </ul>
+      </Section>
 
       {/* CTA */}
-      <section className="py-20 border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+      <Section
+        id="cad"
+        title="Explore the CAD Files"
+        lead="Draft KiCad schematic, PCB stackup documentation, BOM, pick-and-place data, firmware, and simulation code are available under the MIT License."
+      >
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRadar360_CAD_Design"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
           >
-            <h2 className="text-3xl font-heading font-black mb-4">
-              Explore the CAD Files
-            </h2>
-            <p className="text-white/50 mb-8">
-              Draft KiCad schematic, PCB stackup documentation, BOM,
-              pick-and-place data, firmware, and simulation code are available
-              under the MIT License.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href="https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRadar360_CAD_Design"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-[#22D3EE] text-[#0A0E1A] hover:bg-[#22D3EE]/90 transition-colors"
-              >
-                View on GitHub <ExternalLink size={14} />
-              </a>
-              <Link
-                href="/hardware-lab"
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-colors"
-              >
-                All Hardware Products <ArrowRight size={14} />
-              </Link>
-            </div>
-          </motion.div>
+            View on GitHub <span aria-hidden="true">↗</span>
+          </a>
+          <Link href="/hardware-lab" className="btn gh">
+            All Hardware Products{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

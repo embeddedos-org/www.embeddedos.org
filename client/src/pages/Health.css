@@ -1,0 +1,237 @@
+/* /health: the four EoS Health device concepts, each on a large 3D stage. */
+.bp.hl .hl-sim {
+  margin-top: 28px;
+}
+.bp.hl .hl-metrics {
+  margin-top: 12px;
+}
+.bp.hl .hl-metrics li span {
+  color: var(--fg2);
+}
+.bp.hl .hl-metrics li b {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bp.hl .board picture {
+  display: block;
+  overflow: hidden;
+}
+.bp.hl .board img {
+  transform: scale(1.15);
+  transform-origin: 50% 55%;
+}
+.bp.hl .board figcaption > span:last-child {
+  color: var(--fg3);
+  white-space: nowrap;
+}
+.bp.hl .hl-stats {
+  padding-bottom: clamp(32px, 5vw, 64px);
+}
+
+/* one device */
+.bp.hl .hd {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 24px clamp(28px, 4vw, 64px);
+  align-items: center;
+  padding-block: clamp(36px, 5vw, 64px);
+  border-top: 1px solid var(--line);
+}
+.bp.hl .hd:last-child {
+  border-bottom: 1px solid var(--line);
+}
+@media (min-width: 901px) {
+  .bp.hl .hd:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  }
+  .bp.hl .hd:nth-child(even) .hd-vis {
+    order: 2;
+  }
+}
+@media (max-width: 900px) {
+  .bp.hl .hd {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.hl .hd-vis {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  overflow: hidden;
+  background: radial-gradient(
+      120% 90% at 50% 35%,
+      #1a1a1f 0%,
+      #0b0b0d 55%,
+      #000 100%
+    )
+    var(--panel);
+}
+.bp.hl .hd-stage {
+  position: relative;
+  height: clamp(300px, 34vw, 460px);
+}
+.bp.hl .hd-wait {
+  width: 100%;
+  height: 100%;
+}
+.bp.hl .hd-tag {
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  pointer-events: none;
+}
+.bp.hl .hd-tag::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.hl .hd-wave {
+  padding: 12px 18px 14px;
+  border-top: 1px solid var(--line);
+  background: #000;
+}
+.bp.hl .hd-wave .k {
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.bp.hl .hd-canvas {
+  height: 72px;
+  margin-top: 6px;
+}
+.bp.hl .hd-text h3 {
+  margin-top: 14px;
+  font-size: clamp(28px, 2.8vw, 40px);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.bp.hl .hd-tagline {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.bp.hl .hd-tagline::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.hl .hd-desc {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.hl .hd-specs {
+  margin: 20px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+}
+.bp.hl .hd-specs > div {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+.bp.hl .hd-specs dt,
+.bp.hl .hd-mk {
+  display: block;
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.bp.hl .hd-specs dd {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+.bp.hl .hd-mk {
+  margin-top: 18px;
+}
+.bp.hl .hd-metrics {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bp.hl .hd-metrics li {
+  font-size: 13px;
+  color: var(--fg);
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  padding: 4px 11px;
+}
+.bp.hl .hd-patent {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font: 500 13px/1.5 var(--mono);
+  color: var(--fg2);
+}
+
+/* the radar chart on a large stage */
+.bp.hl .hl-rh {
+  margin-top: 14px;
+}
+.bp.hl .hl-rp {
+  margin-top: 10px;
+  font-size: 17px;
+  color: var(--fg2);
+}
+.bp.hl .hl-rl {
+  margin-top: 14px;
+}
+.bp.hl .hl-stage {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: radial-gradient(120% 90% at 50% 40%, #16161a 0%, #0b0b0d 60%)
+    var(--panel);
+  padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 40px);
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+}
+/* DeviceRadarChart draws at 280px; its viewBox lets it scale to the stage */
+.bp.hl .hl-stage svg {
+  width: min(100%, 520px);
+  height: auto;
+}
+.bp.hl .hl-stage button {
+  font-size: 13px;
+  min-height: 36px;
+}
+@media (max-width: 620px) {
+  .bp.hl .hl-stage button {
+    min-height: 44px;
+  }
+}
+.bp.hl .hl-wait {
+  font-size: 13px;
+  color: var(--fg3);
+}
+
+/* app */
+.bp.hl .hl-ah {
+  font-size: 18px;
+}
+.bp.hl .hl-after {
+  margin-top: 24px;
+}

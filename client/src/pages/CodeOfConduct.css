@@ -1,0 +1,97 @@
+/* Code of Conduct (/code-of-conduct): the pledge, the two lists side by side, scope and enforcement. */
+.bp.coc .coc-pledge {
+  max-width: 34em;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+}
+.bp.coc .coc-h {
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: -0.022em;
+  line-height: 1.18;
+  margin-bottom: 8px;
+}
+.bp.coc .card ul.coc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  font-size: 15px;
+  border-top: 1px solid var(--line);
+}
+.bp.coc .coc-list li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg2);
+}
+.bp.coc .coc-list li:last-child {
+  border-bottom: 0;
+}
+.bp.coc .coc-list li::before {
+  font-size: 14px;
+  line-height: 1.55;
+}
+/* the marks are decoration (each list's heading says which is which), so they
+   have empty alternative text; the first line is for browsers without it */
+.bp.coc .coc-list.ok li::before {
+  content: "✓";
+  content: "✓" / "";
+  color: var(--green);
+}
+.bp.coc .coc-list.no li::before {
+  content: "×";
+  content: "×" / "";
+  color: var(--fg3);
+}
+.bp.coc .coc-sub {
+  margin-bottom: 18px;
+  font-size: 16px;
+  color: var(--fg2);
+}
+.bp.coc .coc-spaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 28px;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 700px) {
+  .bp.coc .coc-spaces {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.coc .coc-spaces li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 10px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  color: var(--fg);
+}
+.bp.coc .coc-spaces li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-top: 9px;
+  border-radius: 50%;
+  background: var(--orange-hi);
+}
+.bp.coc .coc-btn {
+  display: inline-block;
+  padding: 10px 0;
+  margin-block: -10px;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.bp.coc .coc-cov {
+  margin-top: 28px;
+}

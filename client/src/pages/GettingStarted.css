@@ -1,0 +1,268 @@
+/* Getting Started: the eight tools, the six tabbed paths and where to look next. */
+.bp.gs .gs-ok {
+  margin-top: 28px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  max-width: 100%;
+  padding: 11px 16px;
+  border: 1px solid var(--line2);
+  border-radius: 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+.bp.gs .gs-ok::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  transform: translateY(-1px);
+}
+
+/* the tools: the role carries the tool's colour as a dot */
+.bp.gs .gs-tool .k {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.bp.gs .gs-tool .k::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+
+/* the path tabs */
+.bp.gs .gs-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+@media (max-width: 960px) {
+  .bp.gs .gs-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .bp.gs .gs-tabs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.gs .gs-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  min-height: 84px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--line2);
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  transition:
+    border-color 0.25s,
+    background-color 0.25s;
+}
+.bp.gs .gs-tab:hover {
+  border-color: #48484e;
+}
+.bp.gs .gs-tab[aria-selected="true"] {
+  background: var(--panel2);
+  border-color: var(--fg2);
+  box-shadow: inset 3px 0 0 var(--c, var(--orange));
+}
+.bp.gs .gs-badge {
+  margin-bottom: 4px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--fg);
+  color: #000;
+  font: 600 12px/1.2 var(--sans);
+}
+.bp.gs .gs-tl {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.bp.gs .gs-ts {
+  font-size: 14px;
+  color: var(--fg2);
+  line-height: 1.4;
+}
+
+/* a path */
+.bp.gs .gs-panel[hidden] {
+  display: none;
+}
+.bp.gs .gs-ph {
+  display: grid;
+  gap: 18px;
+  padding-bottom: clamp(28px, 4vw, 40px);
+  margin-bottom: clamp(32px, 4vw, 48px);
+  border-bottom: 1px solid var(--line);
+}
+.bp.gs .gs-pt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+}
+.bp.gs .gs-pt h3 {
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  max-width: 20em;
+}
+.bp.gs .gs-time {
+  flex: none;
+  padding: 7px 12px;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  font: 500 13px/1 var(--mono);
+  color: var(--fg2);
+}
+.bp.gs .gs-intro {
+  max-width: 46em;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+.bp.gs .gs-pre {
+  border-left-color: var(--c, var(--fg3));
+}
+.bp.gs .gnote b {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bp.gs .gs-steps {
+  max-width: 900px;
+  gap: clamp(30px, 4vw, 44px);
+}
+.bp.gs .gs-step {
+  min-width: 0;
+}
+.bp.gs .gs-step h4 {
+  padding-top: 4px;
+  font-size: 20px;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.bp.gs .steps p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.bp.gs .steps p.gnote {
+  margin-top: 14px;
+  font-size: 14px;
+}
+.bp.gs .gs-tip {
+  border-left-color: var(--c, var(--fg3));
+}
+.bp.gs .gs-warn {
+  border-left-color: var(--orange-hi);
+}
+.bp.gs .gs-sub {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--fg2);
+}
+.bp.gs .gs-sub li {
+  display: grid;
+  grid-template-columns: 7px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+}
+.bp.gs .gs-sub li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  transform: translateY(-2px);
+}
+.bp.gs .code {
+  margin-top: 14px;
+}
+.bp.gs .gs-cbar {
+  justify-content: flex-end;
+  padding: 4px 6px;
+}
+.bp.gs .gs-copy {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--fg2);
+  font: 500 12px/1 var(--mono);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+.bp.gs .gs-copy:hover {
+  color: var(--fg);
+  background: var(--panel2);
+}
+.bp.gs .gs-copy.done {
+  color: var(--green);
+}
+@media (max-width: 620px) {
+  .bp.gs .gs-copy {
+    min-height: 44px;
+  }
+}
+.bp.gs .gs-nextw {
+  max-width: 900px;
+  margin-top: clamp(40px, 5vw, 56px);
+  padding: 22px 24px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--panel);
+}
+.bp.gs .gs-nextw .glinks {
+  margin-top: 14px;
+}
+.bp.gs .gs-nextw .glinks li:last-child a {
+  border-bottom: 0;
+}
+
+/* where to look next */
+.bp.gs .gs-where {
+  padding-right: 52px;
+}
+.bp.gs .gs-ar {
+  position: absolute;
+  top: 26px;
+  right: 24px;
+  font-style: normal;
+  color: var(--fg3);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.2s;
+}
+.bp.gs .gs-where:hover .gs-ar {
+  transform: translateX(3px);
+  color: var(--orange-hi);
+}
+.bp.gs .gs-ql {
+  margin: clamp(48px, 6vw, 72px) 0 14px;
+}

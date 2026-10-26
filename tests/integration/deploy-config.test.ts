@@ -67,7 +67,16 @@ describe("the build ships the hosting config", () => {
     expect(html).not.toContain("Twenty seconds");
     expect(html).not.toContain("See the stack");
     expect(html).not.toContain("product-showcase.mp4");
-    expect(html).not.toMatch(/<video\b/i);
+    // The Black Edition homepage plays its making-of film and the industry
+    // clips on purpose (owner's design, 2026-10); what this guard keeps is
+    // that no homepage video loads anything before it is needed.
+    const videos = [...html.matchAll(/<video\b[^>]*>/gi)].map(m => m[0]);
+    expect(videos.length).toBeGreaterThan(0);
+    for (const v of videos) {
+      expect(v, v).toMatch(/preload="none"/);
+      expect(v, v).not.toMatch(/\bautoplay\b/);
+      expect(v, v).not.toMatch(/\bsrc=/);
+    }
   });
 
   it("copies .htaccess by name, since the glob skips dotfiles", () => {

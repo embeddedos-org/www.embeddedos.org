@@ -193,7 +193,7 @@ export default function SearchModal() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              className="w-full max-w-xl bg-[#0d1424] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+              className="w-full max-w-xl bg-[#0b0b0d] border border-[#232326] rounded-2xl shadow-2xl overflow-hidden"
               onClick={e => e.stopPropagation()}
               // Without these a screen reader gets no signal that a modal
               // opened — focus simply lands on an unlabelled text field in the
@@ -204,27 +204,28 @@ export default function SearchModal() {
               aria-label="Search this site"
               tabIndex={-1}
             >
-              {/* Search input */}
-              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/10">
-                <Search className="w-5 h-5 text-white/40 flex-shrink-0" />
+              {/* Search input. The field has no ring of its own, so the row
+                  shows its focus: the hairline under it lifts to grey. */}
+              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#232326] focus-within:border-[#a1a1a6]">
+                <Search className="w-5 h-5 text-[#86868b] flex-shrink-0" />
                 <input
                   ref={inputRef}
                   value={query}
                   onChange={e => setQuery(e.target.value)}
                   placeholder="Search pages, projects, hardware…"
                   aria-label="Search pages, projects and hardware"
-                  className="flex-1 bg-transparent text-white placeholder-white/30 outline-none text-sm"
+                  className="flex-1 bg-transparent text-[#f5f5f7] placeholder-[#86868b] outline-none text-sm"
                 />
                 {query && (
                   <button
                     onClick={() => setQuery("")}
                     aria-label="Clear search"
-                    className="min-w-6 min-h-6 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                    className="min-w-6 min-h-6 flex items-center justify-center text-[#86868b] hover:text-white transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 )}
-                <kbd className="hidden sm:flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-white/10 text-white/30 text-xs font-mono">
+                <kbd className="hidden sm:flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-[#34343a] text-[#86868b] text-xs font-mono">
                   ESC
                 </kbd>
               </div>
@@ -232,7 +233,7 @@ export default function SearchModal() {
               {/* Results */}
               <div className="py-2 max-h-80 overflow-y-auto">
                 {query.length > 0 && query.length < 2 && (
-                  <p className="px-4 py-3 text-sm text-white/40">
+                  <p className="px-4 py-3 text-sm text-[#a1a1a6]">
                     Keep typing to search…
                   </p>
                 )}
@@ -241,10 +242,10 @@ export default function SearchModal() {
                     already present on the render that follows a keystroke. */}
                 {query.length >= 2 && items.length === 0 && (
                   <div className="px-4 py-6 text-center">
-                    <p className="text-white/40 text-sm">
+                    <p className="text-[#a1a1a6] text-sm">
                       No results for "{query}"
                     </p>
-                    <p className="text-white/20 text-xs mt-1">
+                    <p className="text-[#86868b] text-xs mt-1">
                       Try "health", "boards", "aerospace", or "ai"
                     </p>
                   </div>
@@ -253,13 +254,13 @@ export default function SearchModal() {
                 {items.length > 0 && (
                   <>
                     {query.length < 2 && (
-                      <p className="px-4 py-1.5 text-xs text-white/30 uppercase tracking-wider font-medium">
+                      <p className="px-4 py-1.5 text-xs text-[#86868b] uppercase tracking-wider font-medium">
                         Quick Navigation
                       </p>
                     )}
                     {query.length >= 2 &&
                       items.some(i => i.type === "page") && (
-                        <p className="px-4 py-1.5 text-xs text-white/30 uppercase tracking-wider font-medium">
+                        <p className="px-4 py-1.5 text-xs text-[#86868b] uppercase tracking-wider font-medium">
                           Pages
                         </p>
                       )}
@@ -272,12 +273,12 @@ export default function SearchModal() {
                           onMouseEnter={() => setSelected(idx)}
                           className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
                             selected === idx
-                              ? "bg-[#F97316]/10 text-white"
-                              : "text-white/70 hover:bg-white/5"
+                              ? "bg-[#1c1c1f] text-[#f5f5f7]"
+                              : "text-[#a1a1a6] hover:bg-[#141417]"
                           }`}
                         >
                           <span
-                            className={`flex-shrink-0 ${selected === idx ? "text-[#F97316]" : "text-white/30"}`}
+                            className={`flex-shrink-0 ${selected === idx ? "text-[#f5f5f7]" : "text-[#86868b]"}`}
                           >
                             {PAGE_ICONS[item.path] ?? (
                               <FileText className="w-4 h-4" />
@@ -287,7 +288,7 @@ export default function SearchModal() {
                             {item.title}
                           </span>
                           <ArrowRight
-                            className={`w-3.5 h-3.5 flex-shrink-0 transition-opacity ${selected === idx ? "opacity-100 text-[#F97316]" : "opacity-0"}`}
+                            className={`w-3.5 h-3.5 flex-shrink-0 transition-opacity ${selected === idx ? "opacity-100 text-[#f5f5f7]" : "opacity-0"}`}
                           />
                         </button>
                       ))}
@@ -295,7 +296,7 @@ export default function SearchModal() {
                     {query.length >= 2 &&
                       items.some(i => i.type === "repo") && (
                         <>
-                          <p className="px-4 pt-3 pb-1.5 text-xs text-white/30 uppercase tracking-wider font-medium border-t border-white/5 mt-1">
+                          <p className="px-4 pt-3 pb-1.5 text-xs text-[#86868b] uppercase tracking-wider font-medium border-t border-[#232326] mt-1">
                             GitHub Repos
                           </p>
                           {items
@@ -311,19 +312,19 @@ export default function SearchModal() {
                                   onMouseEnter={() => setSelected(absIdx)}
                                   className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
                                     selected === absIdx
-                                      ? "bg-[#22D3EE]/10 text-white"
-                                      : "text-white/70 hover:bg-white/5"
+                                      ? "bg-[#1c1c1f] text-[#f5f5f7]"
+                                      : "text-[#a1a1a6] hover:bg-[#141417]"
                                   }`}
                                 >
                                   <span
-                                    className={`flex-shrink-0 ${selected === absIdx ? "text-[#22D3EE]" : "text-white/30"}`}
+                                    className={`flex-shrink-0 ${selected === absIdx ? "text-[#f5f5f7]" : "text-[#86868b]"}`}
                                   >
                                     <Github className="w-4 h-4" />
                                   </span>
                                   <span className="flex-1 text-sm font-medium">
                                     {item.title}
                                   </span>
-                                  <span className="text-xs text-white/20">
+                                  <span className="text-xs text-[#86868b]">
                                     GitHub ↗
                                   </span>
                                 </button>
@@ -336,7 +337,7 @@ export default function SearchModal() {
               </div>
 
               {/* Footer */}
-              <div className="px-4 py-2.5 border-t border-white/5 flex items-center gap-4 text-xs text-white/20">
+              <div className="px-4 py-2.5 border-t border-[#232326] flex items-center gap-4 text-xs text-[#86868b]">
                 <span className="flex items-center gap-1">
                   <kbd className="font-mono">↑↓</kbd> navigate
                 </span>

@@ -1,13 +1,6 @@
-import { motion } from "framer-motion";
-import {
-  GitCommit,
-  Tag,
-  ArrowRight,
-  CheckCircle2,
-  Zap,
-  Shield,
-  Bug,
-} from "lucide-react";
+import type { CSSProperties } from "react";
+import { BpPage, LocalNav, PageHero } from "@/components/bp";
+import "./Changelog.css";
 
 const releases = [
   {
@@ -124,88 +117,71 @@ const releases = [
   },
 ];
 
-const typeConfig: Record<string, { icon: any; color: string; label: string }> =
-  {
-    feat: { icon: Zap, color: "#34D399", label: "Feature" },
-    fix: { icon: Bug, color: "#F97316", label: "Fix" },
-    perf: { icon: CheckCircle2, color: "#22D3EE", label: "Performance" },
-    security: { icon: Shield, color: "#EF4444", label: "Security" },
-  };
+const typeConfig: Record<string, { color: string; label: string }> = {
+  feat: { color: "#34D399", label: "Feature" },
+  fix: { color: "#F97316", label: "Fix" },
+  perf: { color: "#22D3EE", label: "Performance" },
+  security: { color: "#EF4444", label: "Security" },
+};
+
+/** An anchor id for a release: "v0.1.9" → "v0-1-9". */
+const releaseId = (version: string) => version.replace(/\./g, "-");
 
 export default function Changelog() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-cyan-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-medium mb-6">
-              <GitCommit className="w-4 h-4" /> CHANGELOG
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-green-300 bg-clip-text text-transparent">
-              Changelog
-            </h1>
-            <p className="text-xl text-gray-300">
-              Release history for all EmbeddedOS products.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="chlog">
+      <PageHero
+        sig
+        label="CHANGELOG"
+        title="Changelog"
+        lead="Release history for all EmbeddedOS products."
+      />
+      <LocalNav
+        name="Changelog"
+        items={releases.map(r => ({
+          id: releaseId(r.version),
+          label: r.version,
+        }))}
+      />
 
-      <section className="py-8 px-4 pb-24">
-        <div className="max-w-3xl mx-auto space-y-8">
-          {releases.map((r, ri) => (
-            <motion.div
-              key={r.version}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: ri * 0.1 }}
-              className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden"
-            >
-              <div className="flex items-center gap-4 p-5 border-b border-white/5 bg-white/3">
-                <Tag className="w-5 h-5 text-green-400" />
-                <div className="flex-1">
-                  <span className="text-white font-bold font-mono text-lg">
-                    {r.version}
-                  </span>
-                  <span className="ml-3 text-gray-500 text-sm">{r.date}</span>
+      <section className="sec cl-list" aria-label="Releases">
+        <div className="wrap">
+          <ol className="cl-rels">
+            {releases.map(r => (
+              <li key={r.version} id={releaseId(r.version)} className="cl-rel">
+                <div className="cl-h">
+                  <h2>{r.version}</h2>
+                  <span className="cl-date">{r.date}</span>
+                  <a
+                    href={"https://github.com/embeddedos-org"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="tl cl-gh"
+                  >
+                    GitHub <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
-                <a
-                  href={"https://github.com/embeddedos-org"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-white transition-colors text-sm flex items-center gap-1"
-                >
-                  GitHub <ArrowRight className="w-3 h-3" />
-                </a>
-              </div>
-              <div className="p-5 space-y-2">
-                {r.changes.map((c, ci) => {
-                  const cfg = typeConfig[c.type] || typeConfig.feat;
-                  return (
-                    <div key={ci} className="flex items-start gap-3">
-                      <span
-                        className="px-2 py-0.5 rounded text-xs font-medium flex-shrink-0 mt-0.5"
-                        style={{
-                          background: cfg.color + "20",
-                          color: cfg.color,
-                        }}
-                      >
-                        {cfg.label}
-                      </span>
-                      <span className="text-gray-300 text-sm">{c.text}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          ))}
+                <ul className="cl-chg">
+                  {r.changes.map((c, ci) => {
+                    const cfg = typeConfig[c.type] || typeConfig.feat;
+                    return (
+                      <li key={ci}>
+                        <span
+                          className="cl-t"
+                          style={{ "--c": cfg.color } as CSSProperties}
+                        >
+                          {cfg.label}
+                        </span>
+                        <span className="cl-x">{c.text}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
-    </div>
+    </BpPage>
   );
 }

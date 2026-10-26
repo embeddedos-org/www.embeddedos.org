@@ -1296,13 +1296,18 @@ function ScrollToTop() {
         if (cancelled) return;
         const target = document.querySelector(hash);
         if (target) {
-          // Honour the target's scroll-margin-top (scroll-mt-*), which clears
-          // the fixed navbar; it is 0 for targets that set none.
+          // Honour the target's scroll-margin-top (scroll-mt-*, or the
+          // Black Edition pages' [id] rule), which clears the fixed navbar;
+          // a target that sets none lands just below the fixed header.
           const margin = parseFloat(getComputedStyle(target).scrollMarginTop);
+          const bar =
+            document
+              .querySelector('header[role="banner"]')
+              ?.getBoundingClientRect().height ?? 0;
           jump(
             window.scrollY +
               target.getBoundingClientRect().top -
-              (Number.isFinite(margin) ? margin : 0)
+              (Number.isFinite(margin) && margin > 0 ? margin : bar + 16)
           );
           return;
         }

@@ -13,6 +13,8 @@ import { OrbitControls, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { supportsWebGL } from "./HeroTechStack";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
+import FitCamera, { type SceneExtent } from "./fit-camera";
 
 export type DiagramMode = "layered" | "radial" | "pipeline" | "tree" | "matrix";
 
@@ -530,6 +532,49 @@ function MatrixScene({ layers }: { layers: DiagramLayer[] }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// CAMERA FIT — the whole scene in view on any stage shape
+// ─────────────────────────────────────────────────────────────────────────────
+/**
+ * How far a mode's content reaches over its whole animation (see FitCamera):
+ * the vertical centre `cy`, the half height `hy`, and `r`, the farthest reach
+ * from the vertical axis. The numbers are the geometry above: positions,
+ * sizes, bobbing and hover scale.
+ */
+function sceneExtent(mode: DiagramMode, layers: DiagramLayer[]): SceneExtent {
+  switch (mode) {
+    case "radial":
+      // nodes (0.28, 1.25x on hover) orbit at 1.9 and bob 0.18; hub 0.55
+      return { cy: 0, hy: 0.55, r: 1.9 + 0.35 };
+    case "pipeline":
+      // boxes 0.9 x 0.55 (1.08x on hover) every 1.25, bobbing 0.06, tilting
+      return {
+        cy: 0,
+        hy: 0.3 + 0.06 + 0.06,
+        r: ((layers.length - 1) * 1.25) / 2 + 0.49,
+      };
+    case "tree":
+      // root box 0.48 at y 1.6, leaves 0.28 at y -1.1 reaching x ±2.2; 1.2x hover
+      return { cy: 0.285, hy: 1.605, r: 2.2 + 0.17 };
+    case "matrix":
+      // 4 x 4 grid every 1.1, ±0.3 deep, octahedra 0.18 up to 1.3x, bob 0.07
+      return { cy: 0, hy: 1.65 + 0.24 + 0.07, r: Math.hypot(1.89, 0.54) };
+    default: {
+      // layered: slabs 0.36 high (plus the top strip), bobbing 0.035, 1.05x hover
+      const ys = layers.map(l => l.y);
+      const top = Math.max(...ys) + 0.2 + 0.035;
+      const bottom = Math.min(...ys) - 0.2 - 0.035;
+      const r =
+        Math.max(
+          ...layers.map(l =>
+            Math.hypot((l.width ?? 3.6) / 2, (l.depth ?? 1.1) / 2)
+          )
+        ) * 1.05;
+      return { cy: (top + bottom) / 2, hy: (top - bottom) / 2, r };
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 interface ArchitectureDiagram3DProps {
@@ -540,6 +585,32 @@ interface ArchitectureDiagram3DProps {
   accentColor?: string;
 }
 
+// A module-level component, so a re-render of the stage (the legend measured,
+// the stage scrolling on or off screen) keeps the scene mounted.
+function SceneSwitch({
+  mode,
+  layers,
+}: {
+  mode: DiagramMode;
+  layers: DiagramLayer[];
+}) {
+  switch (mode) {
+    case "radial":
+      return <RadialScene layers={layers} />;
+    case "pipeline":
+      return <PipelineScene layers={layers} />;
+    case "tree":
+      return <TreeScene layers={layers} />;
+    case "matrix":
+      return <MatrixScene layers={layers} />;
+    default:
+      return <LayeredScene layers={layers} />;
+  }
+}
+
+/** Room kept clear at the top of the stage for the mode badge (px). */
+const STAGE_BADGE_INSET = 34;
+
 export default function ArchitectureDiagram3D({
   layers,
   mode = "layered",
@@ -548,21 +619,6 @@ export default function ArchitectureDiagram3D({
   accentColor,
 }: ArchitectureDiagram3DProps) {
   const accent = accentColor ?? layers[0]?.color ?? "#F97316";
-
-  function SceneSwitch() {
-    switch (mode) {
-      case "radial":
-        return <RadialScene layers={layers} />;
-      case "pipeline":
-        return <PipelineScene layers={layers} />;
-      case "tree":
-        return <TreeScene layers={layers} />;
-      case "matrix":
-        return <MatrixScene layers={layers} />;
-      default:
-        return <LayeredScene layers={layers} />;
-    }
-  }
 
   // Camera presets per mode
   const camPos: [number, number, number] =
@@ -578,21 +634,45 @@ export default function ArchitectureDiagram3D({
 
   const [webglReady, setWebglReady] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const legendRef = useRef<HTMLDivElement>(null);
+  // Draw every frame only while the stage is on screen and motion is allowed;
+  // otherwise on demand (one frame, then while the visitor drags).
+  const onScreen = useOnScreen(stageRef);
+  const animate = onScreen && !reducedMotion;
+  const [legendHeight, setLegendHeight] = useState(0);
+  const extent = useMemo(() => sceneExtent(mode, layers), [mode, layers]);
 
   useEffect(() => {
     setWebglReady(supportsWebGL());
   }, []);
 
+  // The legend wraps to more lines on a narrow stage; the camera fit keeps
+  // the scene above it.
+  useEffect(() => {
+    const el = legendRef.current;
+    if (!el) return;
+    const measure = () => setLegendHeight(el.offsetHeight);
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <div
+      ref={stageRef}
       className={`relative w-full rounded-2xl overflow-hidden border border-white/8 ${className}`}
-      style={{ height, background: "#050A18" }}
+      style={{ height, background: "var(--panel, #0b0b0d)" }}
     >
       {/* Layer legend overlay */}
       <div
+        ref={legendRef}
         className="absolute bottom-0 left-0 right-0 pointer-events-none z-10 flex flex-wrap gap-x-3 gap-y-1 px-3 py-2"
         style={{
-          background: "linear-gradient(to top, #050A18ee, transparent)",
+          background:
+            "linear-gradient(to top, rgba(11, 11, 13, 0.94), transparent)",
         }}
       >
         {layers.map(layer => (
@@ -601,7 +681,7 @@ export default function ArchitectureDiagram3D({
               className="w-2 h-2 rounded-full flex-shrink-0"
               style={{ background: layer.color }}
             />
-            <span className="text-[9px] font-mono font-semibold tracking-wider text-white/55 uppercase">
+            <span className="text-xs font-mono font-semibold tracking-wider text-white/70 uppercase">
               {layer.label}
             </span>
           </div>
@@ -610,14 +690,7 @@ export default function ArchitectureDiagram3D({
 
       {/* Mode badge */}
       <div className="absolute top-2 right-3 z-10 pointer-events-none">
-        <span
-          className="text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border"
-          style={{
-            color: accent,
-            borderColor: accent + "40",
-            background: accent + "15",
-          }}
-        >
+        <span className="text-xs font-mono font-bold tracking-widest uppercase px-2 py-0.5 rounded-full border text-[#a1a1a6] border-[#34343a] bg-black/70">
           {mode}
         </span>
       </div>
@@ -632,10 +705,16 @@ export default function ArchitectureDiagram3D({
       ) : (
         <Canvas
           camera={{ position: camPos, fov: 42 }}
+          dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true }}
           style={{ background: "transparent" }}
-          frameloop={reducedMotion ? "demand" : "always"}
+          frameloop={animate ? "always" : "demand"}
         >
+          <FitCamera
+            extent={extent}
+            insetTop={STAGE_BADGE_INSET}
+            insetBottom={legendHeight}
+          />
           <ambientLight intensity={0.35} />
           <directionalLight
             position={[3, 5, 3]}
@@ -645,14 +724,17 @@ export default function ArchitectureDiagram3D({
           <pointLight position={[-3, 2, 2]} intensity={0.6} color={accent} />
           <pointLight position={[3, -2, 2]} intensity={0.35} color="#22D3EE" />
           <React.Suspense fallback={null}>
-            <SceneSwitch />
+            <SceneSwitch mode={mode} layers={layers} />
           </React.Suspense>
           <OrbitControls
+            makeDefault
             enableZoom={false}
             enablePan={false}
             minPolarAngle={Math.PI / 5}
             maxPolarAngle={Math.PI / 1.6}
-            autoRotate={mode !== "pipeline" && !reducedMotion}
+            // only while the loop runs: an auto-rotating control asks for
+            // the next frame itself, which would keep a paused scene drawing
+            autoRotate={mode !== "pipeline" && animate}
             autoRotateSpeed={0.5}
           />
         </Canvas>

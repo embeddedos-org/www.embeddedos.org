@@ -1,0 +1,165 @@
+/* /ebuild (EBuildPage.tsx): the parts the shared page blocks do not cover. */
+
+/* the install terminal, then the three facts under it */
+.bp.ebuild .eb-term {
+  margin: 0 0 clamp(24px, 3vw, 36px);
+}
+.bp.ebuild .eb-term pre {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.bp.ebuild .code .pr {
+  color: var(--fg3);
+}
+.bp.ebuild .code .ok {
+  color: var(--green);
+}
+
+/* copy buttons in code bars and command cards */
+.bp.ebuild .eb-copy {
+  flex: none;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: none;
+  color: var(--fg2);
+  font: 500 12px/1 var(--sans);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.bp.ebuild .eb-copy:hover {
+  color: var(--fg);
+  border-color: var(--fg3);
+}
+@media (max-width: 700px), (pointer: coarse) {
+  .bp.ebuild .eb-copy {
+    min-height: 44px;
+    min-width: 64px;
+  }
+}
+.bp.ebuild .code .cbar {
+  align-items: center;
+}
+
+/* phase and command-group selectors: the accent is a dot on the button */
+.bp.ebuild .eb-tabs {
+  margin-bottom: 28px;
+}
+.bp.ebuild .eb-tabs .btn::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.ebuild .eb-steps .n {
+  border-color: var(--line2);
+}
+.bp.ebuild .eb-steps .code pre {
+  font-size: 13px;
+}
+
+/* the command reference */
+.bp.ebuild .eb-cmds {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.bp.ebuild .eb-cmds .card {
+  gap: 12px;
+}
+.bp.ebuild .eb-sig {
+  min-width: 0;
+}
+.bp.ebuild .eb-sig code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: 600 15px/1.4 var(--mono);
+  color: var(--fg);
+}
+.bp.ebuild .eb-sig code::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  vertical-align: 2px;
+}
+.bp.ebuild .eb-flags {
+  margin-top: 6px;
+  font: 12px/1.6 var(--mono);
+  color: var(--fg3);
+  overflow-wrap: anywhere;
+}
+.bp.ebuild .eb-ex {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font: 13px/1.6 var(--mono);
+  color: var(--fg);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.bp.ebuild .eb-ex .pr {
+  color: var(--fg3);
+}
+
+/* the CAD → firmware flow: eight stages in order */
+.bp.ebuild .eb-flow {
+  list-style: none;
+  margin: 0 0 clamp(24px, 3vw, 36px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px 28px;
+  counter-reset: f;
+}
+@media (max-width: 900px) {
+  .bp.ebuild .eb-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .bp.ebuild .eb-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.ebuild .eb-flow li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line2);
+  border-top: 2px solid var(--c, var(--fg3));
+  background: var(--panel);
+  min-width: 0;
+}
+.bp.ebuild .eb-flow li::before {
+  counter-increment: f;
+  content: counter(f, decimal-leading-zero);
+  font: 500 12px/1 var(--mono);
+  color: var(--fg3);
+}
+.bp.ebuild .eb-flow b {
+  font: 600 14px/1.35 var(--mono);
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+.bp.ebuild .eb-flow span {
+  font-size: 13px;
+  color: var(--fg2);
+}
+.bp.ebuild .eb-note strong {
+  color: var(--fg);
+}

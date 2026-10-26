@@ -1,30 +1,16 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
 import {
-  Wrench,
-  ArrowRight,
-  Play,
-  CheckCircle2,
-  Copy,
-  Star,
-  FileCode,
-} from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      delay: i * 0.07,
-      ease: [0.23, 1, 0.32, 1] as [number, number, number, number],
-    },
-  }),
-};
+  Band,
+  BpPage,
+  LocalNav,
+  PageHero,
+  Section,
+  Stats,
+} from "@/components/bp";
+import "./EBuildPage.css";
 
 // ─── COMMANDS ──────────────────────────────────────────────────────────────
 const COMMANDS = [
@@ -311,6 +297,18 @@ misra = "advisory"    # required | advisory | off
 stack_check = true
 coverage = false`;
 
+// ─── CAD → FIRMWARE PIPELINE ───────────────────────────────────────────────
+const CAD_FLOW = [
+  { label: "KiCad Schematic", sub: ".kicad_sch", color: "#F97316" },
+  { label: "ebuild cad analyze", sub: "MCU + pin map", color: "#F59E0B" },
+  { label: "ebuild cad generate", sub: "BSP files", color: "#A78BFA" },
+  { label: "ebuild init", sub: "project scaffold", color: "#22D3EE" },
+  { label: "ebuild build", sub: "firmware.elf", color: "#34D399" },
+  { label: "ebuild sim", sub: "virtual board", color: "#60A5FA" },
+  { label: "ebuild analyze", sub: "static analysis", color: "#F472B6" },
+  { label: "ebuild flash", sub: "real hardware", color: "#F97316" },
+];
+
 export default function EBuildPage() {
   const [activeGroup, setActiveGroup] = useState(0);
   const [activePhase, setActivePhase] = useState(0);
@@ -322,586 +320,264 @@ export default function EBuildPage() {
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
+  const phase = WORKFLOW[activePhase];
+  const group = COMMANDS[activeGroup];
+
   return (
-    <div className="min-h-screen bg-[#080F1E]">
-      {/* Hero */}
-      <section className="relative py-20 sm:py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#F97316]/6 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#22D3EE]/4 rounded-full blur-[80px]" />
-        </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-              style={{
-                background: "rgba(249,115,22,0.12)",
-                border: "1px solid rgba(249,115,22,0.3)",
-                color: "#F97316",
-              }}
-            >
-              <Wrench size={12} /> ebuild — Developer Workflow
-            </span>
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            className="font-heading font-black text-5xl sm:text-7xl text-white mb-6 leading-[1.02]"
-          >
+    <BpPage className="ebuild">
+      <PageHero
+        label="ebuild — Developer Workflow"
+        title={
+          <>
             One Tool for the
             <br />
-            <span style={{ color: "#F97316" }}>Entire EoS Lifecycle</span>
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="text-white/60 text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
-          >
-            ebuild is the EmbeddedOS build tool. It handles everything from
-            project creation to CAD analysis, simulation, static analysis,
-            flashing, and OTA updates — with a single CLI and zero configuration
-            files to maintain manually.
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <Link
-              href="/getting-started"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all active:scale-95"
-              style={{
-                background: "#F97316",
-                boxShadow: "0 0 24px rgba(249,115,22,0.3)",
-              }}
-            >
-              <Play size={16} /> Get Started
-            </Link>
-            <Link
-              href="/eflow"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white/80 transition-all border border-white/15 hover:border-white/30"
-            >
-              eFlow Visual Editor <ArrowRight size={14} />
-            </Link>
-          </motion.div>
+            Entire EoS Lifecycle
+          </>
+        }
+        lead="ebuild is the EmbeddedOS build tool. It handles everything from project creation to CAD analysis, simulation, static analysis, flashing, and OTA updates — with a single CLI and zero configuration files to maintain manually."
+      >
+        <div className="ctas">
+          <Link href="/getting-started" className="btn pri">
+            Get Started
+          </Link>
+          <Link href="/eflow" className="btn gh">
+            eFlow Visual Editor{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
+      </PageHero>
+
+      <LocalNav
+        name="ebuild"
+        items={[
+          { id: "install", label: "Install" },
+          { id: "workflow", label: "Developer Workflow" },
+          { id: "commands", label: "Command Reference" },
+          { id: "toml", label: "ebuild.toml" },
+          { id: "cad", label: "CAD → Firmware" },
+        ]}
+      />
 
       {/* Install */}
-      <section className="pb-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="rounded-2xl border border-white/8 overflow-hidden"
-            style={{ background: "rgba(249,115,22,0.04)" }}
-          >
-            <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#F85149]/50" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#F0883E]/50" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#3FB950]/50" />
-              </div>
-              <span className="text-xs text-white/30">Terminal</span>
-              <button
-                onClick={() => copyCode("pip install embeddedos-ebuild")}
-                className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
-              >
-                {copiedCode === "pip install embeddedos-ebuild" ? (
-                  <CheckCircle2 size={12} className="text-[#34D399]" />
-                ) : (
-                  <Copy size={12} />
-                )}
-                Copy
-              </button>
-            </div>
-            <pre className="p-5 text-sm font-mono text-[#E6EDF3]">
-              <span className="text-white/40">$ </span>pip install
-              embeddedos-ebuild{"\n"}
-              <span className="text-white/40">$ </span>ebuild --version{"\n"}
-              <span style={{ color: "#34D399" }}>
-                ebuild v2.1.0 (EmbeddedOS Build Tool)
-              </span>
-              {"\n"}
-              <span className="text-white/40">$ </span>ebuild platforms list |
-              wc -l{"\n"}
-              <span style={{ color: "#34D399" }}>63</span>
-            </pre>
-          </motion.div>
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            {[
-              {
-                label: `${SIM_PLATFORM_COUNT} platforms`,
-                sub: "supported targets",
-                color: "#F97316",
-              },
-              {
-                label: "Zero config",
-                sub: "toolchain bundled",
-                color: "#22D3EE",
-              },
-              {
-                label: "One command",
-                sub: "build → flash → monitor",
-                color: "#34D399",
-              },
-            ].map(item => (
-              <div
-                key={item.label}
-                className="rounded-xl border p-3 text-center"
-                style={{
-                  background: `${item.color}08`,
-                  borderColor: `${item.color}20`,
-                }}
-              >
-                <div
-                  className="font-heading font-black text-lg"
-                  style={{ color: item.color }}
-                >
-                  {item.label}
-                </div>
-                <div className="text-xs text-white/40">{item.sub}</div>
-              </div>
-            ))}
+      <Section id="install" tight>
+        <div className="code eb-term">
+          <div className="cbar">
+            <b>Terminal</b>
+            <button
+              type="button"
+              onClick={() => copyCode("pip install embeddedos-ebuild")}
+              className="eb-copy"
+            >
+              Copy
+            </button>
           </div>
+          <pre>
+            <span className="pr">$ </span>pip install embeddedos-ebuild{"\n"}
+            <span className="pr">$ </span>ebuild --version{"\n"}
+            <span className="ok">ebuild v2.1.0 (EmbeddedOS Build Tool)</span>
+            {"\n"}
+            <span className="pr">$ </span>ebuild platforms list | wc -l{"\n"}
+            <span className="ok">63</span>
+          </pre>
         </div>
-      </section>
+        <Stats
+          small
+          items={[
+            {
+              value: `${SIM_PLATFORM_COUNT} platforms`,
+              label: "supported targets",
+            },
+            { value: "Zero config", label: "toolchain bundled" },
+            { value: "One command", label: "build → flash → monitor" },
+          ]}
+        />
+      </Section>
 
       {/* Full Workflow */}
-      <section className="pb-20 bg-[#060C1A]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              The Complete Developer Workflow
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              From KiCad schematic to OTA-updated production firmware — every
-              step handled by ebuild.
-            </p>
-          </motion.div>
-
-          {/* Phase tabs */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {WORKFLOW.map((phase, i) => (
-              <button
-                key={phase.phase}
-                onClick={() => setActivePhase(i)}
-                className="px-4 py-2 rounded-xl text-sm font-bold transition-all"
-                style={
-                  activePhase === i
-                    ? { background: phase.color, color: "#000" }
-                    : {
-                        background: `${phase.color}12`,
-                        color: phase.color,
-                        border: `1px solid ${phase.color}25`,
-                      }
-                }
-              >
-                {phase.phase}
-              </button>
-            ))}
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activePhase}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
+      <Section
+        id="workflow"
+        title="The Complete Developer Workflow"
+        lead="From KiCad schematic to OTA-updated production firmware — every step handled by ebuild."
+        split
+        alt
+      >
+        {/* Phase tabs */}
+        <div className="ctas eb-tabs">
+          {WORKFLOW.map((p, i) => (
+            <button
+              key={p.phase}
+              type="button"
+              onClick={() => setActivePhase(i)}
+              aria-pressed={activePhase === i}
+              className="btn gh"
+              style={{ "--c": p.color } as CSSProperties}
             >
-              <div className="space-y-4">
-                {WORKFLOW[activePhase].steps.map((step, i) => (
-                  <div
-                    key={step.title}
-                    className="rounded-2xl border border-white/8 overflow-hidden"
-                    style={{ background: "rgba(255,255,255,0.02)" }}
-                  >
-                    <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-                      <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
-                        style={{
-                          background: `${WORKFLOW[activePhase].color}25`,
-                          border: `1px solid ${WORKFLOW[activePhase].color}40`,
-                        }}
-                      >
-                        {i + 1}
-                      </div>
-                      <h3 className="font-heading font-bold text-white">
-                        {step.title}
-                      </h3>
-                    </div>
-                    <div className="px-5 py-4 space-y-3">
-                      <p className="text-sm text-white/60 leading-relaxed">
-                        {step.desc}
-                      </p>
-                      {step.code && (
-                        <div
-                          className="relative rounded-xl overflow-hidden border border-white/8"
-                          style={{ background: "rgba(5,10,20,0.9)" }}
-                        >
-                          <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
-                            <div className="flex gap-1.5">
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#F85149]/50" />
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#F0883E]/50" />
-                              <div className="w-2.5 h-2.5 rounded-full bg-[#3FB950]/50" />
-                            </div>
-                            <button
-                              onClick={() => copyCode(step.code!)}
-                              className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
-                            >
-                              {copiedCode === step.code ? (
-                                <CheckCircle2
-                                  size={12}
-                                  className="text-[#34D399]"
-                                />
-                              ) : (
-                                <Copy size={12} />
-                              )}
-                              {copiedCode === step.code ? "Copied!" : "Copy"}
-                            </button>
-                          </div>
-                          <pre className="p-4 text-xs overflow-x-auto font-mono leading-relaxed">
-                            <code style={{ color: "#E6EDF3" }}>
-                              {step.code}
-                            </code>
-                          </pre>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              {p.phase}
+            </button>
+          ))}
         </div>
-      </section>
 
-      {/* Command Reference */}
-      <section className="pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              Command Reference
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              Every ebuild command with flags, descriptions, and examples.
-            </p>
-          </motion.div>
-
-          <div className="flex flex-wrap gap-2 mb-6">
-            {COMMANDS.map((group, i) => (
-              <button
-                key={group.group}
-                onClick={() => setActiveGroup(i)}
-                className="px-4 py-2 rounded-xl text-sm font-bold transition-all"
-                style={
-                  activeGroup === i
-                    ? { background: group.color, color: "#000" }
-                    : {
-                        background: `${group.color}12`,
-                        color: group.color,
-                        border: `1px solid ${group.color}25`,
-                      }
-                }
-              >
-                {group.group}
-              </button>
-            ))}
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeGroup}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="space-y-4">
-                {COMMANDS[activeGroup].cmds.map(cmd => (
-                  <div
-                    key={cmd.cmd}
-                    className="rounded-2xl border border-white/8 p-5"
-                    style={{ background: `${COMMANDS[activeGroup].color}04` }}
-                  >
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div>
-                        <code
-                          className="font-mono font-bold text-sm"
-                          style={{ color: COMMANDS[activeGroup].color }}
-                        >
-                          {cmd.cmd}
-                        </code>
-                        {cmd.flags && (
-                          <div className="text-xs text-white/35 font-mono mt-1">
-                            {cmd.flags}
-                          </div>
-                        )}
-                      </div>
+        <ol
+          className="steps num eb-steps"
+          key={activePhase}
+          style={{ "--c": phase.color } as CSSProperties}
+        >
+          {phase.steps.map((step, i) => (
+            <li key={step.title}>
+              <span className="n">{i + 1}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+                {step.code && (
+                  <div className="code">
+                    <div className="cbar">
+                      <span />
                       <button
-                        onClick={() => copyCode(cmd.example)}
-                        className="flex items-center gap-1 text-[10px] text-white/30 hover:text-white/60 transition-colors shrink-0"
+                        type="button"
+                        onClick={() => copyCode(step.code!)}
+                        className="eb-copy"
                       >
-                        {copiedCode === cmd.example ? (
-                          <CheckCircle2 size={10} className="text-[#34D399]" />
-                        ) : (
-                          <Copy size={10} />
-                        )}
-                        Copy example
+                        {copiedCode === step.code ? "Copied!" : "Copy"}
                       </button>
                     </div>
-                    <p className="text-sm text-white/55 mb-3 leading-relaxed">
-                      {cmd.desc}
-                    </p>
+                    {/* scrolls sideways on a phone, so a keyboard can reach it */}
                     <pre
-                      className="rounded-lg p-3 text-xs font-mono overflow-x-auto"
-                      style={{
-                        background: "rgba(5,10,20,0.8)",
-                        color: "#E6EDF3",
-                      }}
+                      tabIndex={0}
+                      role="region"
+                      aria-label={`${step.title}: commands`}
                     >
-                      <span className="text-white/30">$ </span>
-                      {cmd.example}
+                      <code>{step.code}</code>
                     </pre>
                   </div>
-                ))}
+                )}
               </div>
-            </motion.div>
-          </AnimatePresence>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      {/* Command Reference */}
+      <Section
+        id="commands"
+        title="Command Reference"
+        lead="Every ebuild command with flags, descriptions, and examples."
+        split
+      >
+        <div className="ctas eb-tabs">
+          {COMMANDS.map((g, i) => (
+            <button
+              key={g.group}
+              type="button"
+              onClick={() => setActiveGroup(i)}
+              aria-pressed={activeGroup === i}
+              className="btn gh"
+              style={{ "--c": g.color } as CSSProperties}
+            >
+              {g.group}
+            </button>
+          ))}
         </div>
-      </section>
+
+        <ul
+          className="eb-cmds"
+          key={activeGroup}
+          style={{ "--c": group.color } as CSSProperties}
+        >
+          {group.cmds.map(cmd => (
+            <li key={cmd.cmd} className="card">
+              <div className="top">
+                <div className="eb-sig">
+                  <code>{cmd.cmd}</code>
+                  {cmd.flags && <div className="eb-flags">{cmd.flags}</div>}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => copyCode(cmd.example)}
+                  className="eb-copy"
+                >
+                  Copy example
+                </button>
+              </div>
+              <p>{cmd.desc}</p>
+              <pre className="eb-ex">
+                <span className="pr">$ </span>
+                {cmd.example}
+              </pre>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* ebuild.toml Reference */}
-      <section className="pb-20 bg-[#060C1A]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              ebuild.toml Reference
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              The project configuration file. Every field is optional — ebuild
-              uses sensible defaults for everything not specified.
-            </p>
-          </motion.div>
-          <div className="rounded-2xl border border-white/8 overflow-hidden">
-            <div
-              className="flex items-center justify-between px-5 py-3 border-b border-white/5"
-              style={{ background: "rgba(249,115,22,0.05)" }}
+      <Section
+        id="toml"
+        title="ebuild.toml Reference"
+        lead="The project configuration file. Every field is optional — ebuild uses sensible defaults for everything not specified."
+        split
+        alt
+      >
+        <div className="code">
+          <div className="cbar">
+            <b>ebuild.toml</b>
+            <button
+              type="button"
+              onClick={() => copyCode(TOML_EXAMPLE)}
+              className="eb-copy"
             >
-              <div className="flex items-center gap-2">
-                <FileCode size={14} className="text-[#F97316]" />
-                <span className="text-xs font-bold text-white/50">
-                  ebuild.toml
-                </span>
-              </div>
-              <button
-                onClick={() => copyCode(TOML_EXAMPLE)}
-                className="flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors"
-              >
-                {copiedCode === TOML_EXAMPLE ? (
-                  <CheckCircle2 size={12} className="text-[#34D399]" />
-                ) : (
-                  <Copy size={12} />
-                )}
-                {copiedCode === TOML_EXAMPLE ? "Copied!" : "Copy all"}
-              </button>
-            </div>
-            <pre
-              className="p-5 text-xs sm:text-sm font-mono leading-relaxed overflow-x-auto"
-              style={{ background: "rgba(5,10,20,0.95)", color: "#E6EDF3" }}
-            >
-              {TOML_EXAMPLE}
-            </pre>
+              {copiedCode === TOML_EXAMPLE ? "Copied!" : "Copy all"}
+            </button>
           </div>
+          <pre tabIndex={0} role="region" aria-label="ebuild.toml example">
+            {TOML_EXAMPLE}
+          </pre>
         </div>
-      </section>
+      </Section>
 
       {/* CAD Workflow Detail */}
-      <section className="pb-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-4">
-              CAD → Firmware Pipeline
-            </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              The complete flow from KiCad schematic to simulated, validated,
-              and deployed firmware — without touching a soldering iron until
-              the very end.
-            </p>
-          </motion.div>
+      <Section
+        id="cad"
+        title="CAD → Firmware Pipeline"
+        lead="The complete flow from KiCad schematic to simulated, validated, and deployed firmware — without touching a soldering iron until the very end."
+        split
+      >
+        <ol className="eb-flow">
+          {CAD_FLOW.map(node => (
+            <li key={node.label} style={{ "--c": node.color } as CSSProperties}>
+              <b>{node.label}</b>
+              <span>{node.sub}</span>
+            </li>
+          ))}
+        </ol>
 
-          {/* Visual flow */}
-          <div className="overflow-x-auto pb-4">
-            <div className="flex items-center gap-2 min-w-max mx-auto w-fit mb-8">
-              {[
-                {
-                  label: "KiCad Schematic",
-                  sub: ".kicad_sch",
-                  color: "#F97316",
-                },
-                {
-                  label: "ebuild cad analyze",
-                  sub: "MCU + pin map",
-                  color: "#F59E0B",
-                },
-                {
-                  label: "ebuild cad generate",
-                  sub: "BSP files",
-                  color: "#A78BFA",
-                },
-                {
-                  label: "ebuild init",
-                  sub: "project scaffold",
-                  color: "#22D3EE",
-                },
-                {
-                  label: "ebuild build",
-                  sub: "firmware.elf",
-                  color: "#34D399",
-                },
-                { label: "ebuild sim", sub: "virtual board", color: "#60A5FA" },
-                {
-                  label: "ebuild analyze",
-                  sub: "static analysis",
-                  color: "#F472B6",
-                },
-                {
-                  label: "ebuild flash",
-                  sub: "real hardware",
-                  color: "#F97316",
-                },
-              ].map((node, i, arr) => (
-                <div key={node.label} className="flex items-center gap-2">
-                  <div
-                    className="rounded-xl border px-3 py-2.5 text-center min-w-[90px]"
-                    style={{
-                      background: `${node.color}12`,
-                      borderColor: `${node.color}30`,
-                    }}
-                  >
-                    <div className="text-[10px] font-bold text-white leading-tight">
-                      {node.label}
-                    </div>
-                    <div
-                      className="text-[9px] mt-0.5"
-                      style={{ color: node.color }}
-                    >
-                      {node.sub}
-                    </div>
-                  </div>
-                  {i < arr.length - 1 && (
-                    <div className="flex items-center gap-0.5">
-                      <div className="w-4 h-0.5 bg-white/15" />
-                      <ArrowRight size={9} className="text-white/25" />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            className="flex items-start gap-3 p-4 rounded-xl"
-            style={{
-              background: "rgba(249,115,22,0.06)",
-              border: "1px solid rgba(249,115,22,0.2)",
-            }}
-          >
-            <Star size={14} className="text-[#F97316] mt-0.5 shrink-0" />
-            <div className="text-sm text-white/60 leading-relaxed">
-              <strong className="text-[#F97316]">Key insight:</strong> Because
-              you simulate with the same BSP that was generated from your
-              schematic, the firmware that passes simulation will work on real
-              hardware on the first flash — no "it works in sim but not on
-              hardware" surprises. The virtual BME280 on I²C1 address 0x76
-              behaves identically to the real chip.
-            </div>
-          </div>
+        <div className="gnote eb-note">
+          <strong>Key insight:</strong> Because you simulate with the same BSP
+          that was generated from your schematic, the firmware that passes
+          simulation will work on real hardware on the first flash — no &quot;it
+          works in sim but not on hardware&quot; surprises. The virtual BME280
+          on I²C1 address 0x76 behaves identically to the real chip.
         </div>
-      </section>
+      </Section>
 
       {/* CTA */}
-      <section className="pb-24 pt-4 text-center">
-        <div className="max-w-2xl mx-auto px-4">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading font-black text-3xl text-white mb-4">
-              Start Building
-            </h2>
-            <p className="text-white/50 mb-8">
-              Install ebuild and create your first EoS project in under 5
-              minutes.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/getting-started"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all active:scale-95"
-                style={{
-                  background: "#F97316",
-                  boxShadow: "0 0 20px rgba(249,115,22,0.25)",
-                }}
-              >
-                <Play size={16} /> Getting Started Guide
-              </Link>
-              <Link
-                href="/eflow"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white/70 border border-white/15 hover:border-white/30 transition-all"
-              >
-                Try eFlow Visual Editor <ArrowRight size={14} />
-              </Link>
-              <Link
-                href="/product-ebuild"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white/70 border border-white/15 hover:border-white/30 transition-all"
-              >
-                eBuild engineering detail
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
+      <Band
+        title="Start Building"
+        lead="Install ebuild and create your first EoS project in under 5 minutes."
+      >
+        <Link href="/getting-started" className="btn pri">
+          Getting Started Guide
+        </Link>
+        <Link href="/eflow" className="btn gh">
+          Try eFlow Visual Editor{" "}
+          <span className="ar" aria-hidden="true">
+            →
+          </span>
+        </Link>
+        <Link href="/product-ebuild" className="btn gh">
+          eBuild engineering detail
+        </Link>
+      </Band>
+    </BpPage>
   );
 }

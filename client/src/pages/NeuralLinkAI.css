@@ -1,0 +1,24 @@
+/* /neural-link-ai (NeuralLinkAI.tsx): the parts the shared page blocks do not cover. */
+.bp.nlai .nl-specs {
+  padding-bottom: clamp(16px, 3vw, 32px);
+}
+.bp.nlai .gstats span.nl-unit {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--fg3);
+}
+.bp.nlai .nl-tabs {
+  margin-bottom: 16px;
+}
+/* the chosen modality: its accent is the thin rule on top */
+.bp.nlai .nl-signal {
+  border-top: 2px solid var(--c, var(--line2));
+  padding: clamp(24px, 3vw, 32px);
+}
+.bp.nlai .nl-signal h3 {
+  font-size: clamp(24px, 2.4vw, 32px);
+}
+.bp.nlai .nl-signal p {
+  font-size: 17px;
+  max-width: 44em;
+}

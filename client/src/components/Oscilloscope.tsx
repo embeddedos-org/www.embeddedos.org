@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
 
 interface OscilloscopeProps {
   program: "blink" | "echo" | "gpio";
@@ -17,6 +18,9 @@ export default function Oscilloscope({
   // F-23: paint one static frame instead of looping when the visitor
   // prefers reduced motion.
   const reduceMotion = usePrefersReducedMotion();
+  // The trace only moves while the bench runs, so the scope draws frames only
+  // then, and only while it is on screen; stopped, it shows one still frame.
+  const onScreen = useOnScreen(canvasRef);
   const tRef = useRef(0);
 
   useEffect(() => {
@@ -25,13 +29,18 @@ export default function Oscilloscope({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
+    // the page's Black Edition greys and type (bp.css tokens), with their values as fallbacks
+    const css = getComputedStyle(canvas);
+    const token = (name: string, fallback: string) =>
+      css.getPropertyValue(name).replace(/\s+/g, " ").trim() || fallback;
+    const ground = token("--panel", "#0b0b0d");
+    const gridInk = token("--line", "#232326");
+    const axisInk = token("--line2", "#34343a");
+    const labelInk = token("--fg3", "#86868b");
+    const mono = token("--mono", "ui-monospace, Menlo, monospace");
+
+    const animate = running && onScreen && !reduceMotion;
+    let dpr = 1;
 
     const generateSignal = (t: number): number => {
       switch (program) {
@@ -59,17 +68,18 @@ export default function Oscilloscope({
     };
 
     const draw = () => {
-      const w = canvas.width;
-      const h = canvas.height;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
       // Background
-      ctx.fillStyle = "rgba(5,10,20,0.95)";
+      ctx.fillStyle = ground;
       ctx.fillRect(0, 0, w, h);
 
       // Grid
-      ctx.strokeStyle = "rgba(34,211,238,0.06)";
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = gridInk;
+      ctx.lineWidth = 1;
       const cols = 10,
         rows = 8;
       for (let i = 0; i <= cols; i++) {
@@ -86,7 +96,7 @@ export default function Oscilloscope({
       }
 
       // Center line
-      ctx.strokeStyle = "rgba(34,211,238,0.12)";
+      ctx.strokeStyle = axisInk;
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -126,11 +136,11 @@ export default function Oscilloscope({
         ctx.fillRect(scanX - 20, 0, 25, h);
       }
 
-      // Labels
-      ctx.fillStyle = "rgba(34,211,238,0.5)";
-      ctx.font = "9px 'JetBrains Mono', monospace";
+      // Labels (12px: the smallest text the site uses)
+      ctx.fillStyle = labelInk;
+      ctx.font = `600 12px ${mono}`;
       ctx.textAlign = "left";
-      ctx.fillText(running ? "▶ RUNNING" : "■ STOPPED", 8, 14);
+      ctx.fillText(running ? "▶ RUNNING" : "■ STOPPED", 12, 22);
 
       ctx.textAlign = "right";
       const labels: Record<string, string> = {
@@ -138,18 +148,31 @@ export default function Oscilloscope({
         echo: "UART TX/RX",
         gpio: "ADC Scan",
       };
-      ctx.fillText(labels[program] || "", w - 8, 14);
+      ctx.fillText(labels[program] || "", w - 12, 22);
 
-      // F-23: one static frame under reduced motion; the loop otherwise.
-      if (!reduceMotion) frameRef.current = requestAnimationFrame(draw);
+      // F-23: one static frame under reduced motion (and while stopped or
+      // scrolled away); the loop otherwise.
+      if (animate) frameRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    // a sharp canvas, at no more than 1.5 device pixels per CSS pixel;
+    // resizing clears it, so a still frame is drawn again
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(canvas.offsetWidth * dpr);
+      canvas.height = Math.round(canvas.offsetHeight * dpr);
+      if (!animate) draw();
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    if (animate) draw();
     return () => {
       cancelAnimationFrame(frameRef.current);
       ro.disconnect();
     };
-  }, [program, running, color, reduceMotion]);
+  }, [program, running, color, reduceMotion, onScreen]);
 
   return (
     <canvas

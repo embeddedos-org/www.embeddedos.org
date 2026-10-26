@@ -8,10 +8,16 @@ import {
 } from "../../client/src/data/architecture";
 
 const ROOT = path.resolve(import.meta.dirname, "../..");
-const HOME_SOURCE = fs.readFileSync(
-  path.join(ROOT, "client/src/pages/Home.tsx"),
-  "utf8"
-);
+// The homepage is composed of its page file and the Black Edition sections
+// it renders (hero and film/showcase in Sections.tsx, the industry chapters in
+// Chapters.tsx), in that order on the page.
+const HOME_SOURCE = [
+  "client/src/black/Sections.tsx",
+  "client/src/black/Chapters.tsx",
+  "client/src/pages/Home.tsx",
+]
+  .map(file => fs.readFileSync(path.join(ROOT, file), "utf8"))
+  .join("\n");
 const WHAT_WE_DO_SOURCE = fs.readFileSync(
   path.join(ROOT, "client/src/pages/WhatWeDo.tsx"),
   "utf8"
@@ -82,10 +88,20 @@ describe("narrative hierarchy", () => {
     const campaign = "Open infrastructure for physical AI.";
 
     expect(home).toContain(`<h1 id="hero-heading"`);
-    expect(home).toContain(heading);
+    // the heading is set on two lines (two spans); its text is what counts
+    const h1 = home.match(/<h1 id="hero-heading">([\s\S]*?)<\/h1>/)?.[1] ?? "";
+    expect(
+      h1
+        .replace(/<[^>]+>/g, "")
+        .replace(/\{" "\}/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+    ).toBe(heading);
     expect(home).toContain(support);
     expect(home).toContain(campaign);
-    expect(home.indexOf(heading)).toBeLessThan(home.indexOf(support));
+    expect(home.indexOf(`<h1 id="hero-heading"`)).toBeLessThan(
+      home.indexOf(support)
+    );
     expect(home.indexOf(support)).toBeLessThan(home.indexOf(campaign));
     expect(home).toContain(
       "No achieved AGI system is claimed as available today"

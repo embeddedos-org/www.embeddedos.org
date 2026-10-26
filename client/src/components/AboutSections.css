@@ -1,0 +1,22 @@
+/* AboutSections: each part a row, its heading beside the reading column. */
+.bp .abs-rows {
+  border-top: 1px solid var(--line);
+}
+.bp .abs-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 16px clamp(28px, 4vw, 64px);
+  padding-block: clamp(26px, 3.4vw, 40px);
+  border-bottom: 1px solid var(--line);
+}
+.bp .abs-row .h3 {
+  font-size: clamp(20px, 1.8vw, 24px);
+}
+.bp .abs-row .prose {
+  max-width: 44em;
+}
+@media (max-width: 800px) {
+  .bp .abs-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

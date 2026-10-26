@@ -1,17 +1,4 @@
-import { motion } from "framer-motion";
 import { Link } from "wouter";
-import {
-  Mail,
-  Github,
-  Twitter,
-  MessageSquare,
-  MapPin,
-  ArrowRight,
-  Globe,
-  Landmark,
-  Clock,
-  CalendarDays,
-} from "lucide-react";
 import {
   CONTACT_EMAILS,
   FOUNDATION,
@@ -20,12 +7,13 @@ import {
   type ContactTopicKey,
 } from "@/data/foundation";
 import { openContactForm } from "@/lib/contact-form";
+import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./Contact.css";
 import BookingTeaser from "@/components/BookingTeaser";
 import { bookingCalendarReady } from "@/lib/booking";
 
 /**
- * The topics shown on this page, in display order, with the icon/colour this
- * page has always used per topic. Deliberately a subset of `CONTACT_TOPICS`:
+ * The topics shown on this page, in display order. Deliberately a subset of `CONTACT_TOPICS`:
  * `sponsors` and `conduct` are reached from `/sponsors` and `/code-of-conduct`
  * instead, same as before this page had a form.
  *
@@ -36,64 +24,46 @@ import { bookingCalendarReady } from "@/lib/booking";
  */
 const contacts: Array<{
   key: ContactTopicKey;
-  icon: typeof Mail;
-  color: string;
   title: string;
   desc: string;
 }> = [
   {
     key: "contact",
-    icon: Mail,
-    color: "#F97316",
     title: "General Inquiries",
     desc: "Questions about EmbeddedOS products, partnerships, or the Foundation.",
   },
   {
     key: "support",
-    icon: Mail,
-    color: "#F59E0B",
     title: "Technical Support",
     desc: "Build failures, board bring-up, toolchain setup, and questions the documentation does not answer.",
   },
   {
     key: "security",
-    icon: Mail,
-    color: "#EF4444",
     title: "Security Vulnerabilities",
     desc: "Report security vulnerabilities via responsible disclosure. Do not use GitHub issues.",
   },
   {
     key: "press",
-    icon: Mail,
-    color: "#22D3EE",
     title: "Press & Media",
     desc: "Press inquiries, interview requests, and media kit downloads.",
   },
   {
     key: "partners",
-    icon: Mail,
-    color: "#A855F7",
     title: "Partnerships & Sponsors",
     desc: "Corporate sponsorships, hardware partnerships, and research collaborations.",
   },
   {
     key: "careers",
-    icon: Mail,
-    color: "#34D399",
     title: "Careers & Internships",
     desc: "Job applications, internship inquiries, and fellowship applications.",
   },
   {
     key: "donations",
-    icon: Mail,
-    color: "#FBBF24",
     title: "Donations & Fundraising",
     desc: "Tax-deductible donations, grant applications, and fundraising questions.",
   },
   {
     key: "finance",
-    icon: Mail,
-    color: "#60A5FA",
     title: "Finance & Governance",
     desc: "Registration documents, donation receipts, wire and check gifts, grant paperwork.",
   },
@@ -101,29 +71,21 @@ const contacts: Array<{
 
 const social = [
   {
-    icon: Github,
-    color: "#E5E7EB",
     name: "GitHub",
     handle: "@embeddedos-org",
     href: SOCIAL_URLS.github,
   },
   {
-    icon: Twitter,
-    color: "#1D9BF0",
     name: "X / Twitter",
     handle: "@EmbeddedOS_ORG",
     href: SOCIAL_URLS.x,
   },
   {
-    icon: MessageSquare,
-    color: "#5865F2",
     name: "GitHub Discussions",
     handle: "EmbeddedOS Community",
     href: SOCIAL_URLS.discussions,
   },
   {
-    icon: Globe,
-    color: "#F97316",
     name: "Website",
     handle: "www.embeddedos.org",
     href: FOUNDATION.website,
@@ -146,108 +108,78 @@ const REGISTRATION = [
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-cyan-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm font-medium mb-6">
-              <Mail className="w-4 h-4" /> CONTACT
-            </div>
-            <h1 className="display-2 text-white mb-4">Contact Us</h1>
-            <p className="text-xl text-gray-300">
-              Get in touch with the EmbeddedOS Foundation team.
-            </p>
-            <p className="text-sm text-gray-500 mt-4 max-w-xl mx-auto leading-relaxed">
-              Every topic below reaches a person, not a queue. Security reports
-              are answered within 48 hours under the{" "}
-              <Link
-                href="/security"
-                className="text-orange-400 underline underline-offset-2"
-              >
-                security policy
-              </Link>
-              ; other enquiries are answered in the order they arrive.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="contact">
+      <PageHero
+        sig
+        label="CONTACT"
+        title="Contact Us"
+        lead="Get in touch with the EmbeddedOS Foundation team."
+      >
+        <p className="ct-fine">
+          Every topic below reaches a person, not a queue. Security reports are
+          answered within 48 hours under the{" "}
+          <Link href="/security" className="tl">
+            security policy
+          </Link>
+          ; other enquiries are answered in the order they arrive.
+        </p>
+      </PageHero>
+      <LocalNav
+        name="Contact Us"
+        items={[
+          { id: "get-in-touch", label: "Get in Touch" },
+          { id: "email", label: "Prefer email?" },
+          { id: "book-a-meeting", label: "Book a call" },
+          { id: "social", label: "Social & Community" },
+          { id: "organization", label: "The Organization" },
+        ]}
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Get in Touch</h2>
-          {/*
-            F-34: the topic cards below open a JavaScript form dialog. Without
-            JS they are inert, so no-JS visitors get a plain-HTML pointer to
-            the published mailbox (which is also prerendered further down).
-          */}
-          <noscript>
-            <p className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
-              The topic form needs JavaScript. You can reach us directly by
-              email instead — see "Prefer email?" below.
-            </p>
-          </noscript>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {contacts.map((c, i) => (
-              <motion.button
-                key={c.key}
+      <Section id="get-in-touch" title="Get in Touch">
+        {/*
+          F-34: the topic cards below open a JavaScript form dialog. Without
+          JS they are inert, so no-JS visitors get a plain-HTML pointer to
+          the published mailbox (which is also prerendered further down).
+        */}
+        <noscript>
+          <p className="gnote ct-nojs">
+            The topic form needs JavaScript. You can reach us directly by email
+            instead — see "Prefer email?" below.
+          </p>
+        </noscript>
+        <ul className="cards two">
+          {contacts.map(c => (
+            <li key={c.key}>
+              <button
                 type="button"
                 onClick={() => openContactForm({ topic: c.key })}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/[0.07] rounded-xl p-5 text-left transition-colors"
+                className="card ct-topic"
               >
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: c.color + "20" }}
-                  >
-                    <c.icon className="w-4 h-4" style={{ color: c.color }} />
-                  </div>
-                  <div>
-                    <div className="text-white font-medium mb-0.5">
-                      {c.title}
-                    </div>
-                    <span className="text-orange-400 text-sm inline-flex items-center gap-1">
-                      Send a message
-                      <ArrowRight className="w-3 h-3" />
-                    </span>
-                    <p className="text-gray-500 text-xs mt-1">{c.desc}</p>
-                  </div>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
+                <span className="ct-t">{c.title}</span>
+                <span className="more">Send a message</span>
+                <span className="ct-d">{c.desc}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/*
         A published, crawler-visible mailbox alongside the topic form. The form
         above stays the primary path; this link is for reviewers, crawlers and
         anyone whose mail client is the tool they trust — see F-03.
       */}
-      <section className="py-4 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#F97316]/20">
-              <Mail className="w-5 h-5 text-[#F97316]" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-white font-medium mb-1">Prefer email?</h2>
-              <p className="text-gray-500 text-sm leading-relaxed">
+      <section id="email" className="sec tight ct-email">
+        <div className="wrap">
+          <div className="card hl ct-mail">
+            <div>
+              <h2>Prefer email?</h2>
+              <p>
                 Write to us directly — the same people read this inbox as the
                 form above.
               </p>
             </div>
-            <a
-              href={`mailto:${CONTACT_EMAILS.contact}`}
-              className="text-[#F97316] font-semibold underline underline-offset-4 hover:no-underline whitespace-nowrap"
-            >
+            <a href={`mailto:${CONTACT_EMAILS.contact}`} className="tl ct-addr">
               {CONTACT_EMAILS.contact}
             </a>
           </div>
@@ -257,156 +189,110 @@ export default function Contact() {
       <section
         id="book-a-meeting"
         aria-labelledby="book-a-meeting-heading"
-        className="py-12 px-4 scroll-mt-24"
+        className="sec tight ct-book"
       >
-        <div className="max-w-5xl mx-auto min-w-0">
-          <h2
-            id="book-a-meeting-heading"
-            className="text-xl font-bold text-white mb-2 flex items-center gap-2"
-          >
-            <CalendarDays
-              className="w-5 h-5 text-[#F97316]"
-              aria-hidden="true"
-            />
-            Book a call
-          </h2>
-          <p className="text-gray-300 text-sm leading-relaxed mb-6 max-w-2xl">
-            Talk to the Foundation team about the platform, a partnership,
-            research or education.
-          </p>
+        <div className="wrap">
+          <div className="sec-h">
+            <h2 id="book-a-meeting-heading">Book a call</h2>
+            <p className="lead">
+              Talk to the Foundation team about the platform, a partnership,
+              research or education.
+            </p>
+          </div>
           <BookingTeaser
             href="/book"
             title="Book a call with the team"
             line={
               bookingCalendarReady()
-                ? "Pick a topic and a time on our booking page."
-                : "Pick a topic on our booking page and arrange a time by email."
+                ? "Pick a time on our booking page and tell us your topic."
+                : "Arrange a time by email through our booking page."
             }
           />
         </div>
       </section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">
-            Social & Community
-          </h2>{" "}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {social.map((s, i) => (
-              <motion.a
-                key={s.name}
+      <Section id="social" title="Social & Community" alt>
+        <ul className="cards four">
+          {social.map(s => (
+            <li key={s.name}>
+              <a
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-5 text-center hover:border-white/20 transition-all block"
+                className="card ct-soc"
               >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
-                  style={{ background: s.color + "20" }}
-                >
-                  <s.icon className="w-5 h-5" style={{ color: s.color }} />
-                </div>
-                <div className="text-white font-medium text-sm mb-0.5">
-                  {s.name}
-                </div>
-                <div className="text-gray-500 text-xs">{s.handle}</div>
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </section>
+                <span className="ct-t">{s.name}</span>
+                <span className="ct-h">{s.handle}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">
-            The Organization You Are Contacting
-          </h2>
-          <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-            <div className="flex items-start gap-3 mb-5">
-              <Landmark className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
-              <p className="text-gray-400 text-sm leading-relaxed">
-                All of the addresses above belong to one registered nonprofit.
-                Its details are published in full so you can confirm who you are
-                writing to before you write.
-              </p>
-            </div>
+      <Section id="organization" title="The Organization You Are Contacting">
+        <div className="ct-org">
+          <p className="ct-intro">
+            All of the addresses above belong to one registered nonprofit. Its
+            details are published in full so you can confirm who you are writing
+            to before you write.
+          </p>
 
-            <dl className="space-y-3">
-              {REGISTRATION.map(row => (
-                <div
-                  key={row.label}
-                  className="flex items-start justify-between gap-4 py-2 border-b border-white/5"
-                >
-                  <dt className="text-gray-500 text-sm">{row.label}</dt>
-                  <dd className="text-gray-300 text-sm text-right">
-                    {row.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-
-            <div className="flex items-start gap-3 mt-5 pt-5 border-t border-white/5">
-              <MapPin className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <div className="text-gray-500 text-xs uppercase tracking-widest mb-1.5">
-                  Mailing address
-                </div>
-                {/* The JSON-LD in client/index.html is static, so unit tests
-                    keep its PostalAddress in sync with this canonical value. */}
-                <address className="text-gray-300 text-sm not-italic leading-relaxed">
-                  {FOUNDATION.legalName}
-                  <br />
-                  {formatMailingAddress()}
-                </address>
-                <p className="text-gray-500 text-xs leading-relaxed mt-2">
-                  {/* Inline links inside a paragraph carry a persistent
-                      underline: colour alone is a WCAG 1.4.1 failure (axe
-                      link-in-text-block), enforced on this page. */}
-                  For wire transfers, gifts by check or a donation receipt,{" "}
-                  <button
-                    type="button"
-                    onClick={() => openContactForm({ topic: "finance" })}
-                    className="text-orange-400 underline underline-offset-2"
-                  >
-                    contact Finance &amp; Governance
-                  </button>
-                  .
-                </p>
+          <dl className="kv">
+            {REGISTRATION.map(row => (
+              <div key={row.label} className="ct-kv">
+                <dt>{row.label}</dt>
+                <dd>{row.value}</dd>
               </div>
-            </div>
+            ))}
+          </dl>
 
-            <div className="flex flex-wrap gap-3 mt-6">
-              <Link
-                href="/transparency"
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-lg border border-white/15 transition-colors"
+          <div className="ct-addrblock">
+            <p className="label">Mailing address</p>
+            {/* The JSON-LD in client/index.html is static, so unit tests
+                keep its PostalAddress in sync with this canonical value. */}
+            <address>
+              {FOUNDATION.legalName}
+              <br />
+              {formatMailingAddress()}
+            </address>
+            <p className="ct-fin">
+              {/* Inline links inside a paragraph carry a persistent
+                  underline: colour alone is a WCAG 1.4.1 failure (axe
+                  link-in-text-block), enforced on this page. */}
+              For wire transfers, gifts by check or a donation receipt,{" "}
+              <button
+                type="button"
+                onClick={() => openContactForm({ topic: "finance" })}
+                className="tl"
               >
-                Registration &amp; finances
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <Link
-                href="/mission"
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-lg border border-white/15 transition-colors"
-              >
-                Mission &amp; scope
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-6 flex items-start gap-3 text-gray-500 text-xs">
-            <Clock className="w-4 h-4 text-gray-600 flex-shrink-0 mt-0.5" />
-            <p className="leading-relaxed">
-              The Foundation is a volunteer-supported {FOUNDATION.taxStatus}.
-              Replies come from maintainers and staff rather than a support
-              desk, so please allow time for a considered answer.
+                contact Finance &amp; Governance
+              </button>
+              .
             </p>
           </div>
+
+          <div className="ctas">
+            <Link href="/transparency" className="btn gh">
+              Registration &amp; finances{" "}
+              <span className="ar" aria-hidden="true">
+                →
+              </span>
+            </Link>
+            <Link href="/mission" className="btn gh">
+              Mission &amp; scope{" "}
+              <span className="ar" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </div>
+
+          <p className="fine">
+            The Foundation is a volunteer-supported {FOUNDATION.taxStatus}.
+            Replies come from maintainers and staff rather than a support desk,
+            so please allow time for a considered answer.
+          </p>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

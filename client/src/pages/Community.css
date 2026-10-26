@@ -1,0 +1,34 @@
+/* Community (/community): figures, the ways in, the public resources and channels. */
+.bp.community .cm-stats {
+  padding-top: clamp(24px, 3vw, 40px);
+  padding-bottom: clamp(32px, 5vw, 64px);
+}
+.bp.community .cm-go {
+  display: inline-block;
+  padding-block: 12px;
+  line-height: 20px;
+  align-self: flex-start;
+}
+.bp.community .cm-links a {
+  min-height: 44px;
+}
+.bp.community .cm-channels .card {
+  gap: 6px;
+}
+.bp.community .cm-channels .card::after {
+  content: "↗";
+  content: "↗" / "";
+  position: absolute;
+  top: 24px;
+  right: 22px;
+  color: var(--fg3);
+  font-size: 15px;
+}
+.bp.community .cm-channels .card h3 {
+  padding-right: 24px;
+}
+/* the arrow keeps its gap whatever the link's display */
+.bp.community .cm-go span {
+  display: inline-block;
+  margin-left: 4px;
+}

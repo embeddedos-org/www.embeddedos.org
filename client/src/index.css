@@ -4,15 +4,21 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   EMBEDDEDOS ENTERPRISE THEME
-   Deep Ocean Blue + Warm Amber-Orange
-   ============================================================ */
+   EMBEDDEDOS ENTERPRISE THEME — BLACK EDITION
+   Black stage + neutral greys + Warm Amber-Orange
+   ============================================================
+   The grounds, panels and lines are the Black Edition neutrals
+   (#000 stage, #0B0B0D / #141417 panels, #232326 lines, #F5F5F7 /
+   #A1A1A6 text). The token names still say "navy" because other
+   code uses them; only their values moved. Orange (primary) is for
+   donating only; the focus ring is white and `accent`, which the UI
+   primitives use as a hover/selected ground, is a neutral panel. */
 
 @theme inline {
   /* Brand Colors */
-  --color-brand-navy: oklch(17.8% 0.055 248); /* #0B1D3A */
-  --color-brand-navy-light: oklch(22% 0.05 248); /* #0F2547 */
-  --color-brand-navy-mid: oklch(28% 0.06 248); /* #163060 */
+  --color-brand-navy: oklch(0% 0 0); /* #000000, was #0B1D3A */
+  --color-brand-navy-light: oklch(15.1% 0.004 286); /* #0B0B0D, was #0F2547 */
+  --color-brand-navy-mid: oklch(19.3% 0.006 286); /* #141417, was #163060 */
   --color-brand-amber: oklch(67% 0.19 50); /* #F97316 */
   --color-brand-amber-light: oklch(74% 0.17 50); /* #FB923C */
   --color-brand-amber-dark: oklch(58% 0.18 50); /* #EA580C */
@@ -21,29 +27,38 @@
   --color-brand-purple: oklch(65% 0.18 290); /* #A78BFA */
 
   /* Semantic tokens */
-  --color-background: oklch(17.8% 0.055 248);
-  --color-foreground: oklch(97% 0.005 248);
-  --color-card: oklch(22% 0.05 248);
-  --color-card-foreground: oklch(97% 0.005 248);
-  --color-popover: oklch(22% 0.05 248);
-  --color-popover-foreground: oklch(97% 0.005 248);
+  --color-background: oklch(0% 0 0); /* #000000 */
+  --color-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
+  --color-card: oklch(15.1% 0.004 286); /* #0B0B0D */
+  --color-card-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
+  --color-popover: oklch(15.1% 0.004 286); /* #0B0B0D */
+  --color-popover-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
   --color-primary: oklch(67% 0.19 50);
-  --color-primary-foreground: oklch(10% 0.02 248);
-  --color-secondary: oklch(28% 0.06 248);
-  --color-secondary-foreground: oklch(97% 0.005 248);
-  --color-muted: oklch(28% 0.06 248);
-  --color-muted-foreground: oklch(65% 0.02 248);
-  --color-accent: oklch(67% 0.19 50);
-  --color-accent-foreground: oklch(10% 0.02 248);
+  --color-primary-foreground: oklch(0% 0 0); /* #000000 */
+  --color-secondary: oklch(19.3% 0.006 286); /* #141417 */
+  --color-secondary-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
+  --color-muted: oklch(19.3% 0.006 286); /* #141417 */
+  --color-muted-foreground: oklch(71.1% 0.007 286); /* #A1A1A6 */
+  --color-accent: oklch(22.4% 0.006 286); /* #1C1C1F, was orange */
+  --color-accent-foreground: oklch(97.1% 0.003 286); /* #F5F5F7 */
   --color-destructive: oklch(62% 0.22 25);
-  --color-border: oklch(32% 0.04 248);
-  --color-input: oklch(28% 0.06 248);
-  --color-ring: oklch(67% 0.19 50);
+  --color-border: oklch(25.7% 0.006 286); /* #232326 */
+  --color-input: oklch(25.7% 0.006 286); /* #232326 */
+  /* #F5F5F7: the focus ring is white, as on every page (was orange) */
+  --color-ring: oklch(97.1% 0.003 286);
 
-  /* Typography — Space Grotesk (headings) + DM Sans (body) per UI/UX Pro Max */
-  --font-sans: "DM Sans", system-ui, sans-serif;
-  --font-heading: "Space Grotesk", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* Typography — Black Edition: the platform UI face first (SF Pro on Apple,
+     Segoe UI on Windows, Roboto on Android). The webfonts stay loaded and
+     remain the fallback before Arial; canvases and /brand still name them. */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+    "DM Sans", Arial, sans-serif;
+  --font-heading:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto,
+    "Space Grotesk", Arial, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, "JetBrains Mono", Consolas,
+    monospace;
 
   /* Radius */
   --radius: 0.5rem;
@@ -76,7 +91,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Glassmorphism tokens */
-  --glass-bg: oklch(22% 0.05 248 / 0.75);
+  --glass-bg: oklch(15.1% 0.004 286 / 0.75); /* #0B0B0D at 75% */
   --glass-border: oklch(100% 0 0 / 0.08);
   --glass-blur: blur(20px);
 
@@ -154,7 +169,7 @@
   }
 
   ::selection {
-    background: oklch(67% 0.19 50 / 0.3);
+    background: oklch(100% 0 0 / 0.24);
     color: white;
   }
 
@@ -210,7 +225,7 @@
   }
 
   .glass-strong {
-    background: oklch(17.8% 0.055 248 / 0.95);
+    background: oklch(0% 0 0 / 0.95);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
     border: 1px solid oklch(100% 0 0 / 0.1);
@@ -218,7 +233,7 @@
   }
 
   .glass-card {
-    background: oklch(22% 0.05 248 / 0.6);
+    background: oklch(15.1% 0.004 286 / 0.6);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid oklch(100% 0 0 / 0.07);
@@ -345,14 +360,14 @@
       radial-gradient(
         125% 85% at 50% 45%,
         transparent 42%,
-        oklch(8% 0.02 248 / 0.5) 100%
+        oklch(8% 0 0 / 0.5) 100%
       ),
       linear-gradient(
         100deg,
         var(--color-background) 0%,
         var(--color-background) 34%,
-        oklch(17.8% 0.055 248 / 0.9) 52%,
-        oklch(17.8% 0.055 248 / 0.4) 72%,
+        oklch(0% 0 0 / 0.9) 52%,
+        oklch(0% 0 0 / 0.4) 72%,
         transparent 92%
       );
   }
@@ -365,8 +380,8 @@
       background: linear-gradient(
         180deg,
         var(--color-background) 0%,
-        oklch(17.8% 0.055 248 / 0.88) 60%,
-        oklch(17.8% 0.055 248 / 0.45) 100%
+        oklch(0% 0 0 / 0.88) 60%,
+        oklch(0% 0 0 / 0.45) 100%
       );
     }
   }
@@ -374,7 +389,7 @@
   /* Grid dot pattern */
   .bg-grid {
     background-image: radial-gradient(
-      oklch(50% 0.04 248 / 0.3) 1px,
+      oklch(50% 0 0 / 0.3) 1px,
       transparent 1px
     );
     background-size: 32px 32px;
@@ -523,7 +538,7 @@
 
   /* Code block */
   .code-block {
-    background: oklch(14% 0.04 248);
+    background: oklch(14% 0 0);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
@@ -548,9 +563,9 @@
     left: 1rem;
     z-index: 9999;
     padding: 0.75rem 1.5rem;
-    background: var(--color-brand-amber);
-    color: white;
-    border-radius: var(--radius);
+    background: #f5f5f7;
+    color: #000;
+    border-radius: 999px;
     font-weight: 600;
     transition: top 0.2s;
   }
@@ -1398,12 +1413,6 @@ button:active:not(:disabled) {
   transition-duration: 0s;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .calendly-inline-widget .calendly-spinner > div {
-    animation: none;
-  }
-}
-
 .book-trace {
   stroke-dasharray: 14 86;
   stroke-dashoffset: 100;
@@ -1451,70 +1460,14 @@ button:active:not(:disabled) {
   }
 }
 
-.book-pop {
-  animation: book-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes book-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.book-draw {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: book-draw 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-.book-draw-late {
-  animation-delay: 0.45s;
-}
-
-@keyframes book-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.book-confetti {
-  opacity: 0;
-  animation: book-confetti 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards;
-}
-
-@keyframes book-confetti {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(var(--angle))
-      translateY(calc(var(--distance) * -1)) rotate(180deg) scale(0.6);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .book-trace,
   .book-glow,
-  .book-shimmer,
-  .book-pop {
+  .book-shimmer {
     animation: none;
   }
   .book-trace {
     stroke-dasharray: none;
     opacity: 0.25;
-  }
-  .book-draw {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-  .book-confetti {
-    display: none;
   }
 }

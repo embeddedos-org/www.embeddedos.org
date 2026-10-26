@@ -4,6 +4,8 @@ import { RoundedBox, Cylinder, Cone } from "@react-three/drei";
 import * as THREE from "three";
 import { supportsWebGL } from "./HeroTechStack";
 import { usePrefersReducedMotion } from "@/lib/reduced-motion";
+import { useOnScreen } from "@/lib/on-screen";
+import { FitCamera, StageLights, type Extent } from "./three-stage";
 
 // ── Rotor blade ───────────────────────────────────────────────────────────────
 function Rotor({
@@ -37,7 +39,7 @@ function Rotor({
         >
           <boxGeometry args={[0.7, 0.025, 0.12]} />
           <meshStandardMaterial
-            color="#1e2540"
+            color="#232326"
             metalness={0.8}
             roughness={0.2}
             transparent
@@ -63,7 +65,11 @@ function AeroSwiftPersonal() {
     <group ref={groupRef}>
       {/* Main fuselage */}
       <RoundedBox args={[2.8, 0.55, 0.9]} radius={0.2} smoothness={4}>
-        <meshStandardMaterial color="#0f172a" metalness={0.9} roughness={0.1} />
+        <meshStandardMaterial
+          color="#4a4a50"
+          metalness={0.3}
+          roughness={0.35}
+        />
       </RoundedBox>
       {/* Canopy */}
       <mesh position={[0.3, 0.3, 0]}>
@@ -80,26 +86,26 @@ function AeroSwiftPersonal() {
       <mesh position={[0, 0, 0.9]}>
         <boxGeometry args={[1.8, 0.06, 1.2]} />
         <meshStandardMaterial
-          color="#1e2540"
-          metalness={0.8}
-          roughness={0.15}
+          color="#3a3a40"
+          metalness={0.1}
+          roughness={0.75}
         />
       </mesh>
       <mesh position={[0, 0, -0.9]}>
         <boxGeometry args={[1.8, 0.06, 1.2]} />
         <meshStandardMaterial
-          color="#1e2540"
-          metalness={0.8}
-          roughness={0.15}
+          color="#3a3a40"
+          metalness={0.1}
+          roughness={0.75}
         />
       </mesh>
       {/* Tail fin */}
       <mesh position={[-1.2, 0.25, 0]}>
         <boxGeometry args={[0.5, 0.5, 0.06]} />
         <meshStandardMaterial
-          color="#1e2540"
-          metalness={0.8}
-          roughness={0.15}
+          color="#3a3a40"
+          metalness={0.1}
+          roughness={0.75}
         />
       </mesh>
       {/* Solar panel strips */}
@@ -162,9 +168,9 @@ function AeroSwiftTransit() {
       {/* Main fuselage — larger */}
       <RoundedBox args={[3.5, 0.9, 1.4]} radius={0.25} smoothness={4}>
         <meshStandardMaterial
-          color="#0d1424"
-          metalness={0.85}
-          roughness={0.12}
+          color="#47474d"
+          metalness={0.3}
+          roughness={0.35}
         />
       </RoundedBox>
       {/* Passenger windows */}
@@ -195,17 +201,17 @@ function AeroSwiftTransit() {
       <mesh position={[0, 0, 1.4]}>
         <boxGeometry args={[2.5, 0.08, 1.8]} />
         <meshStandardMaterial
-          color="#1a2035"
-          metalness={0.8}
-          roughness={0.15}
+          color="#3a3a40"
+          metalness={0.1}
+          roughness={0.75}
         />
       </mesh>
       <mesh position={[0, 0, -1.4]}>
         <boxGeometry args={[2.5, 0.08, 1.8]} />
         <meshStandardMaterial
-          color="#1a2035"
-          metalness={0.8}
-          roughness={0.15}
+          color="#3a3a40"
+          metalness={0.1}
+          roughness={0.75}
         />
       </mesh>
       {/* 8 rotors for transit */}
@@ -264,35 +270,68 @@ function AeroSwiftTransit() {
 }
 
 // ── Exported canvas wrappers ──────────────────────────────────────────────────
+// Draws only while the stage is on screen (and not at all with reduced motion),
+// at no more than 1.5 device pixels per CSS pixel.
 function GuardedCanvas({ children, ...props }: ComponentProps<typeof Canvas>) {
   const [webglReady, setWebglReady] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const onScreen = useOnScreen(wrapRef);
 
   useEffect(() => {
     setWebglReady(supportsWebGL());
   }, []);
 
-  if (!webglReady) return null;
-
   return (
-    <Canvas frameloop={reducedMotion ? "demand" : "always"} {...props}>
-      {children}
-    </Canvas>
+    <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
+      {webglReady && (
+        <Canvas
+          dpr={[1, 1.5]}
+          frameloop={onScreen && !reducedMotion ? "always" : "demand"}
+          {...props}
+        >
+          {children}
+        </Canvas>
+      )}
+    </div>
   );
 }
+
+// Each aircraft's extreme points as [distance from its turning axis, height],
+// from the geometry above: rotor tips, wing tips, canopy, landing gear and
+// nozzles, with the ±0.1 hover bob. The camera looks down 14° so the wings and
+// rotors read; `FitCamera` keeps every part in frame at every angle.
+const LOOK_DOWN = 0.24;
+const PERSONAL_EXTENT: Extent = [
+  [1.92, 0.27],
+  [0.5, 0.6],
+  [1.47, 0.6],
+  [1.75, 0.35],
+  [1.45, 0.42],
+  [1.73, 0.32],
+];
+const TRANSIT_EXTENT: Extent = [
+  [2.62, 0.14],
+  [2.39, 0.67],
+  [1.2, 1.05],
+  [1.55, 1.0],
+  [2.12, 0.2],
+  [1.88, 0.55],
+];
 
 export function AeroSwiftPersonalCanvas() {
   return (
     <GuardedCanvas
-      camera={{ position: [0, 1.5, 6], fov: 45 }}
+      camera={{ position: [0, 1.5, 6], fov: 32 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
     >
-      <ambientLight intensity={0.3} />
-      <pointLight position={[4, 4, 4]} intensity={2} color="#F97316" />
-      <pointLight position={[-4, 2, 2]} intensity={1} color="#22D3EE" />
-      <pointLight position={[0, -2, 4]} intensity={0.5} color="#A78BFA" />
-      <AeroSwiftPersonal />
+      <FitCamera extent={PERSONAL_EXTENT} elevation={LOOK_DOWN} fill={0.86} />
+      <StageLights />
+      {/* the canopy reaches higher than the hull goes down: centre the craft */}
+      <group position={[0, -0.2, 0]}>
+        <AeroSwiftPersonal />
+      </group>
     </GuardedCanvas>
   );
 }
@@ -300,14 +339,12 @@ export function AeroSwiftPersonalCanvas() {
 export function AeroSwiftTransitCanvas() {
   return (
     <GuardedCanvas
-      camera={{ position: [0, 2, 8], fov: 45 }}
+      camera={{ position: [0, 2, 8], fov: 32 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
     >
-      <ambientLight intensity={0.3} />
-      <pointLight position={[5, 4, 4]} intensity={2} color="#F97316" />
-      <pointLight position={[-5, 2, 2]} intensity={1} color="#22D3EE" />
-      <pointLight position={[0, -2, 5]} intensity={0.5} color="#A78BFA" />
+      <FitCamera extent={TRANSIT_EXTENT} elevation={LOOK_DOWN} fill={0.86} />
+      <StageLights />
       <AeroSwiftTransit />
     </GuardedCanvas>
   );
@@ -342,7 +379,7 @@ export function FlightTelemetry({ model }: { model: "personal" | "transit" }) {
           className="bg-white/5 border border-white/10 rounded-xl p-3 text-center"
         >
           <div className="text-lg font-bold text-[#F97316]">{val}</div>
-          <div className="text-xs text-white/40 capitalize mt-0.5">{key}</div>
+          <div className="text-xs text-[#86868b] capitalize mt-0.5">{key}</div>
         </div>
       ))}
     </div>

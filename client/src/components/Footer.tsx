@@ -204,7 +204,7 @@ function FooterLink({
   // the same for width: most labels are already wider, so it only affects the
   // handful ("eAI", "eNI") whose text alone is narrower than the 24px floor.
   const cls =
-    "group relative inline-flex items-center gap-1 py-1.5 sm:py-0 min-w-6 text-sm text-white/50 hover:text-white transition-colors duration-200";
+    "group relative inline-flex items-center gap-1 py-1.5 sm:py-0 min-w-6 text-[13px] text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200";
   const inner = (
     <>
       {link.name}
@@ -215,7 +215,7 @@ function FooterLink({
         />
       )}
       {/* Underline slide */}
-      <span className="absolute -bottom-0.5 left-0 h-px w-0 group-hover:w-full bg-[#F97316]/60 transition-all duration-200" />
+      <span className="absolute -bottom-0.5 left-0 h-px w-0 group-hover:w-full bg-[#f5f5f7]/40 transition-all duration-200" />
     </>
   );
 
@@ -255,17 +255,11 @@ function toBoardLicence(event: MouseEvent<HTMLAnchorElement>) {
 export default function Footer() {
   return (
     <footer
-      className="relative border-t border-white/[0.06] overflow-hidden"
-      style={{
-        background: "linear-gradient(180deg, #080F1E 0%, #020617 100%)",
-      }}
+      className="relative border-t border-[#232326] overflow-hidden bg-black"
       role="contentinfo"
     >
-      {/* Subtle top glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-px bg-gradient-to-r from-transparent via-[#F97316]/30 to-transparent" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-16 bg-[#F97316]/4 blur-[40px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
+      {/* phones: the bottom row clears the assistant button (56px, 24px from the corner) */}
+      <div className="max-w-[1200px] mx-auto px-[clamp(16px,4vw,44px)] pt-[72px] pb-28 sm:pb-10 relative">
         {/* At xl, the brand and all six link groups share one row. Below xl,
             the existing responsive spans keep the denser columns readable. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-[2fr_repeat(6,minmax(0,1fr))] gap-x-8 xl:gap-x-6 gap-y-10">
@@ -283,30 +277,30 @@ export default function Footer() {
                   width={40}
                   height={40}
                   alt={FOUNDATION.shortName}
-                  className="w-10 h-10 rounded-xl"
+                  className="w-8 h-8 rounded-lg"
                 />
                 <div
-                  className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{ boxShadow: "0 0 16px #F9731640" }}
                 />
               </div>
               <div>
-                <div className="font-heading font-bold text-white text-base">
+                <div className="font-heading font-semibold text-[#f5f5f7] text-[15px] tracking-[-0.01em]">
                   EmbeddedOS
                 </div>
-                <div className="text-[10px] text-[#F97316] font-bold tracking-[0.15em] uppercase">
+                <div className="text-[10px] text-[#a1a1a6] font-medium tracking-[0.08em] uppercase">
                   {FOUNDATION.taxStatus}
                 </div>
               </div>
             </Link>
 
-            <p className="text-sm text-white/45 leading-relaxed mb-4 max-w-xs">
+            <p className="text-[13px] text-[#a1a1a6] leading-relaxed mb-4 max-w-xs">
               Built by embedded engineers, for any embedded hardware. Every
               design decision prioritizes reliability, security, and developer
               experience.
             </p>
 
-            <p className="text-xs text-white/60 mb-2 max-w-xs leading-relaxed">
+            <p className="text-xs text-[#a1a1a6] mb-2 max-w-xs leading-relaxed">
               {FOUNDATION.legalName}
               <br />
               {FOUNDATION.softwareLicense} (software) ·{" "}
@@ -314,14 +308,15 @@ export default function Footer() {
                 href={FOUNDATION.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                /* F-32: #F97316 at 70% was 3.85:1 — full strength is 6.95:1. */
-                className="text-[#F97316] hover:underline transition-colors"
+                /* The footer's link style (grey, hairline underline), as the
+                   address link below; #A1A1A6 is 8.2:1 on black. */
+                className="underline decoration-[#3a3a3e] underline-offset-4 hover:text-[#f5f5f7] transition-colors"
               >
                 {WEBSITE_HOST}
               </a>
             </p>
 
-            <address className="text-xs text-white/60 mb-2 max-w-xs not-italic leading-relaxed">
+            <address className="text-xs text-[#a1a1a6] mb-2 max-w-xs not-italic leading-relaxed">
               {formatMailingAddress(MAILING_ADDRESS)}
             </address>
             {/*
@@ -331,7 +326,7 @@ export default function Footer() {
             */}
             <a
               href={`mailto:${CONTACT_EMAILS.contact}`}
-              className="text-xs text-white/60 underline decoration-white/20 underline-offset-4 hover:text-white transition-colors mb-6 inline-block"
+              className="text-xs text-[#a1a1a6] underline decoration-[#3a3a3e] underline-offset-4 hover:text-[#f5f5f7] transition-colors mb-6 inline-block"
             >
               {CONTACT_EMAILS.contact}
             </a>
@@ -341,7 +336,7 @@ export default function Footer() {
               {SOCIAL_LINKS.map(
                 ({ icon: Icon, href, onClick, label, color }) => {
                   const className =
-                    "group w-9 h-9 flex items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white transition-all duration-200";
+                    "group w-9 h-9 flex items-center justify-center rounded-full border border-[#232326] hover:border-[#3a3a3e] text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200";
                   const iconEl = (
                     <Icon
                       size={15}
@@ -384,12 +379,12 @@ export default function Footer() {
                   whose body has no h2 (e.g. /faq, whose questions are buttons)
                   would otherwise jump h1 -> h3, which is a WCAG heading-order
                   violation. h2 is correct on every page and skips nothing. */}
-              {/* F-32: text-white/30 was 2.5:1 — section headings are 10px text
-                  and need 4.5:1. white/60 reaches 7.3:1 on the footer bg. */}
-              <h2 className="text-[10px] font-extrabold text-white/60 uppercase tracking-[0.18em] mb-5">
+              {/* F-32: text-white/30 was 2.5:1 — section headings need 4.5:1.
+                  #F5F5F7 on the black footer is 19:1. */}
+              <h2 className="text-[12px] font-semibold text-[#f5f5f7] mb-3">
                 {section}
               </h2>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {links.map(link => (
                   <li key={link.name}>
                     <FooterLink link={link} />
@@ -400,38 +395,38 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Gradient divider */}
-        <div className="my-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        {/* Hairline divider */}
+        <div className="mt-[52px] mb-[22px] h-px bg-[#232326]" />
 
         {/* Bottom bar. Two rows rather than three columns: the policy links
             outgrew a single row when Licenses, Security and Code of Conduct
             joined Privacy and Terms, and squeezed the tagline into a three-line
             wrap between them. */}
         {/* F-32: text-white/25 was 2.1:1 on the footer background. */}
-        <div className="flex flex-col gap-4 text-xs text-white/60">
+        <div className="flex flex-col gap-4 text-xs text-[#a1a1a6]">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-center sm:text-left">
               © 2018–2026 {FOUNDATION.legalName}.
-              <span className="mx-1.5 text-white/15">·</span>
+              <span className="mx-1.5 text-[#3a3a3e]">·</span>
               <a
                 href="https://spdx.org/licenses/MIT.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white/50 transition-colors"
+                className="hover:text-[#f5f5f7] transition-colors"
               >
                 {FOUNDATION.softwareLicense} (software)
               </a>
-              <span className="mx-1.5 text-white/15">·</span>
+              <span className="mx-1.5 text-[#3a3a3e]">·</span>
               <Link
                 href="/eos-boards#licence"
                 onClick={toBoardLicence}
-                className="hover:text-white/50 transition-colors"
+                className="hover:text-[#f5f5f7] transition-colors"
               >
                 EoS board designs: all rights reserved
               </Link>
-              <span className="mx-1.5 text-white/15">·</span>
+              <span className="mx-1.5 text-[#3a3a3e]">·</span>
               {FOUNDATION.taxStatus}
-              <span className="mx-1.5 text-white/15">·</span>
+              <span className="mx-1.5 text-[#3a3a3e]">·</span>
               EIN {FOUNDATION.ein}
             </div>
 
@@ -440,7 +435,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="py-1 whitespace-nowrap hover:text-white/50 transition-colors"
+                  className="py-1 whitespace-nowrap hover:text-[#f5f5f7] transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -448,17 +443,17 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-white/20">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[#a1a1a6]">
             <div className="flex items-center gap-1.5 whitespace-nowrap">
               Made with
-              <Heart size={11} className="text-[#F97316] animate-pulse" />
+              <Heart size={11} className="text-[#a1a1a6]" />
               for the embedded community
             </div>
             <a
               href="https://www.interserver.net"
               target="_blank"
               rel="noopener noreferrer"
-              className="whitespace-nowrap hover:text-white/50 transition-colors"
+              className="whitespace-nowrap hover:text-[#f5f5f7] transition-colors"
             >
               Powered by InterServer
             </a>

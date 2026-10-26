@@ -1,20 +1,11 @@
-import { motion } from "framer-motion";
-import {
-  BookOpen,
-  Video,
-  Code,
-  Download,
-  ExternalLink,
-  ArrowRight,
-  Globe,
-} from "lucide-react";
 import { Link } from "wouter";
 import { BOARD_COUNT, REPO_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./Resources.css";
 
 const sections = [
   {
-    icon: BookOpen,
-    color: "#22D3EE",
+    id: "documentation",
     title: "Documentation",
     items: [
       {
@@ -50,8 +41,7 @@ const sections = [
     ],
   },
   {
-    icon: Code,
-    color: "#F97316",
+    id: "code",
     title: "Code & Examples",
     items: [
       {
@@ -81,8 +71,7 @@ const sections = [
     ],
   },
   {
-    icon: Download,
-    color: "#A855F7",
+    id: "downloads",
     title: "Downloads",
     items: [
       {
@@ -112,8 +101,7 @@ const sections = [
     ],
   },
   {
-    icon: Video,
-    color: "#34D399",
+    id: "support",
     title: "Community & Support",
     items: [
       {
@@ -143,8 +131,7 @@ const sections = [
     ],
   },
   {
-    icon: Globe,
-    color: "#F97316",
+    id: "site-pages",
     title: "Site Pages",
     items: [
       // The footer's hub for these: they are real pages with no footer
@@ -210,95 +197,53 @@ const sections = [
 
 export default function ResourcesPage() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-6">
-              <BookOpen className="w-4 h-4" /> RESOURCES
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">
-              Resources
-            </h1>
-            <p className="text-xl text-gray-400">
-              Everything you need to build with EmbeddedOS — documentation,
-              code, downloads, and community.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="resources">
+      <PageHero
+        sig
+        label="RESOURCES"
+        title="Resources"
+        lead="Everything you need to build with EmbeddedOS — documentation, code, downloads, and community."
+      />
+      <LocalNav
+        name="Resources"
+        items={sections.map(section => ({
+          id: section.id,
+          label: section.title,
+        }))}
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {sections.map((section, i) => (
-            <motion.div
-              key={section.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: section.color + "20" }}
-                >
-                  <section.icon
-                    className="w-5 h-5"
-                    style={{ color: section.color }}
-                  />
-                </div>
-                <h2 className="text-xl font-bold text-white">
-                  {section.title}
-                </h2>
-              </div>
-              <div className="space-y-3">
+      <Section className="rs-main">
+        <div className="rs-groups">
+          {sections.map(section => (
+            <div key={section.title} id={section.id} className="rs-group">
+              <h2>{section.title}</h2>
+              <ul className="glinks">
                 {section.items.map(item => (
-                  <div key={item.name}>
+                  <li key={item.name}>
                     {item.external ? (
                       <a
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-start justify-between p-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-colors group"
                       >
-                        <div>
-                          <div className="text-white font-medium text-sm group-hover:text-white flex items-center gap-1">
-                            {item.name}{" "}
-                            <ExternalLink className="w-3 h-3 opacity-50" />
-                          </div>
-                          <div className="text-gray-500 text-xs mt-0.5">
-                            {item.desc}
-                          </div>
-                        </div>
+                        <span>{item.name} </span>
+                        <i aria-hidden="true">↗</i>
+                        <small>{item.desc}</small>
                       </a>
                     ) : (
-                      <Link
-                        href={item.link}
-                        className="flex items-start justify-between p-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-colors group"
-                      >
-                        <div>
-                          <div className="text-white font-medium text-sm">
-                            {item.name}
-                          </div>
-                          <div className="text-gray-500 text-xs mt-0.5">
-                            {item.desc}
-                          </div>
-                        </div>
-                        <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-gray-400 flex-shrink-0 mt-0.5" />
+                      <Link href={item.link}>
+                        <span>{item.name}</span>
+                        <small>{item.desc}</small>
+                        <i aria-hidden="true">→</i>
                       </Link>
                     )}
-                  </div>
+                  </li>
                 ))}
-              </div>
-            </motion.div>
+              </ul>
+            </div>
           ))}
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

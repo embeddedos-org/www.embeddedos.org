@@ -8,9 +8,14 @@ const read = (relativePath: string) =>
 
 const PUBLIC_SOURCES = [
   "client/index.html",
+  "client/src/black/Chapters.tsx",
+  "client/src/black/Sections.tsx",
+  "client/src/black/data.ts",
+  "client/src/black/extras.ts",
   "client/src/components/HealthShowcase.tsx",
   "client/src/components/Navbar.tsx",
   "client/src/data/article-bodies.ts",
+  "client/src/data/books.ts",
   "client/src/data/category-about.ts",
   "client/src/data/content.ts",
   "client/src/data/programme-details.ts",

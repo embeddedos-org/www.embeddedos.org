@@ -1,0 +1,79 @@
+/* /building-os: five chapters, each with its number, the argument and its key points. */
+.bp.bos .bo-ch {
+  padding-block: clamp(56px, 7vw, 104px);
+}
+.bp.bos .bo-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
+  gap: 24px clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .bp.bos .bo-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.bos .bo-h {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.bp.bos .bo-num {
+  font: 600 clamp(56px, 6vw, 88px) / 0.9 var(--display);
+  letter-spacing: -0.05em;
+  color: var(--fg4);
+  font-variant-numeric: tabular-nums;
+}
+.bp.bos .bo-h h2 {
+  padding-left: 16px;
+  border-left: 2px solid var(--c, var(--line2));
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  max-width: 12em;
+}
+.bp.bos .bo-b {
+  display: grid;
+  gap: 26px;
+  min-width: 0;
+}
+.bp.bos .bo-b > p {
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.65;
+  color: var(--fg2);
+  max-width: 40em;
+}
+.bp.bos .bo-pts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 28px;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 640px) {
+  .bp.bos .bo-pts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.bos .bo-pts li {
+  display: grid;
+  grid-template-columns: 7px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+.bp.bos .bo-pts li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  transform: translateY(-2px);
+}

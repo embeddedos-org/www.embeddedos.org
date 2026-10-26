@@ -1,28 +1,14 @@
-import { useState, useRef, lazy, Suspense } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState, lazy, Suspense, type CSSProperties } from "react";
 import { Link } from "wouter";
 import {
-  Heart,
-  Plane,
-  Car,
-  Bot,
-  Factory,
-  Leaf,
-  Building2,
-  Microscope,
-  Rocket,
-  Shield,
-  Wifi,
-  Zap,
-  Brain,
-  Globe,
-  ChevronRight,
-  ArrowRight,
-  ExternalLink,
-  Package,
-  Activity,
-  Layers,
-} from "lucide-react";
+  BpPage,
+  BoardFigure,
+  LocalNav,
+  PageHero,
+  Section,
+  Stats,
+} from "@/components/bp";
+import "./EcadHardware.css";
 
 const ArchitectureDiagram3D = lazy(
   () => import("../components/ArchitectureDiagram3D")
@@ -172,7 +158,6 @@ const HW_DIAGRAMS = [
 const CATEGORIES = [
   {
     id: "health",
-    icon: Heart,
     color: "#EF4444",
     title: "eHealth365",
     subtitle: "Wearable Health Platform",
@@ -196,7 +181,6 @@ const CATEGORIES = [
   },
   {
     id: "radar",
-    icon: Car,
     color: "#F97316",
     title: "eRadar360 / Aegis One",
     subtitle: "Automotive Sensing Concept",
@@ -215,7 +199,6 @@ const CATEGORIES = [
   },
   {
     id: "aerospace",
-    icon: Plane,
     color: "#22D3EE",
     title: "eAerospace",
     subtitle: "Aircraft, UAV & Space Concepts",
@@ -234,7 +217,6 @@ const CATEGORIES = [
   },
   {
     id: "pam",
-    icon: Rocket,
     color: "#F472B6",
     title: "ePAM",
     subtitle: "Personal Air Mobility",
@@ -253,7 +235,6 @@ const CATEGORIES = [
   },
   {
     id: "robotics",
-    icon: Bot,
     color: "#A78BFA",
     title: "eRobotics",
     subtitle: "Industrial Robots & AMR",
@@ -272,7 +253,6 @@ const CATEGORIES = [
   },
   {
     id: "industrial",
-    icon: Factory,
     color: "#34D399",
     title: "eIndustrial",
     subtitle: "IIoT & Industrial Electronics",
@@ -291,7 +271,6 @@ const CATEGORIES = [
   },
   {
     id: "medical",
-    icon: Microscope,
     color: "#F59E0B",
     title: "eMedical",
     subtitle: "Diagnostic & Surgical Devices",
@@ -310,7 +289,6 @@ const CATEGORIES = [
   },
   {
     id: "energy",
-    icon: Leaf,
     color: "#10B981",
     title: "eEnergy",
     subtitle: "Battery, Solar & Power Electronics",
@@ -334,7 +312,6 @@ const CATEGORIES = [
   },
   {
     id: "smartcity",
-    icon: Building2,
     color: "#60A5FA",
     title: "eSmartCity",
     subtitle: "Urban Infrastructure & Utilities",
@@ -358,7 +335,6 @@ const CATEGORIES = [
   },
   {
     id: "defense",
-    icon: Shield,
     color: "#6366F1",
     title: "eDefense",
     subtitle: "Tactical & Surveillance Systems",
@@ -382,7 +358,6 @@ const CATEGORIES = [
   },
   {
     id: "consumer",
-    icon: Wifi,
     color: "#06B6D4",
     title: "eConsumer",
     subtitle: "Smart Home, Wearables & AR",
@@ -406,7 +381,6 @@ const CATEGORIES = [
   },
   {
     id: "electronics",
-    icon: Zap,
     color: "#FBBF24",
     title: "eElectronics",
     subtitle: "PCBs, FPGAs & AI Accelerators",
@@ -425,7 +399,6 @@ const CATEGORIES = [
   },
   {
     id: "mining",
-    icon: Activity,
     color: "#F87171",
     title: "eMining",
     subtitle: "Autonomous Mining & Construction",
@@ -449,7 +422,6 @@ const CATEGORIES = [
   },
   {
     id: "cybersec",
-    icon: Globe,
     color: "#14B8A6",
     title: "eCybersecurity",
     subtitle: "HSMs, Firewalls & Access Control",
@@ -473,7 +445,6 @@ const CATEGORIES = [
   },
   {
     id: "future",
-    icon: Brain,
     color: "#8B5CF6",
     title: "Future Designs",
     subtitle: "Donor-Sponsored Concepts",
@@ -502,138 +473,228 @@ const STATUS_COLORS: Record<string, string> = {
   Concept: "#A78BFA",
 };
 
-function CategoryCard({
-  cat,
-  index,
-}: {
-  cat: (typeof CATEGORIES)[0];
-  index: number;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+const MEDIA = "/media/home-2026-10-22/industries/";
 
+/**
+ * The homepage's industry renders (Chapters.tsx, data-clip) that show a design
+ * from a category on this page. The caption names the design actually shown;
+ * the wording follows the homepage chapter for that render. Future Designs has
+ * no render, so it has no figure.
+ */
+const CATEGORY_RENDER: Record<
+  string,
+  { clip: string; design: string; shows: string }
+> = {
+  health: {
+    clip: "d02",
+    design: "HEALTH-BAND Neuro",
+    shows: "the wristband design, one of the four in this category",
+  },
+  radar: {
+    clip: "d04",
+    design: "eRadar360",
+    shows: "the windshield-mounted design",
+  },
+  aerospace: {
+    clip: "d07",
+    design: "eMR-400",
+    shows: "a multirotor inspection drone design in the UAV and drone line",
+  },
+  pam: {
+    clip: "d06",
+    design: "Urban Drone",
+    shows: "the four-seat tilt-rotor eVTOL design, shown as a scale model",
+  },
+  robotics: {
+    clip: "d08",
+    design: "eRobotics",
+    shows:
+      "a robot assembled from five designs: the eAMR-500 base, eArm-7 arm, eGripper-3F hand, eVision-4K eyes and eLiDAR-360",
+  },
+  industrial: {
+    clip: "d11",
+    design: "ePLC-1000",
+    shows: "a modular PLC design for IEC 61131-3 programs",
+  },
+  medical: {
+    clip: "d03",
+    design: "eECG-12",
+    shows: "a battery-powered 12-lead ECG design",
+  },
+  energy: {
+    clip: "d12",
+    design: "eBMS-100A",
+    shows: "a battery-management design that watches every cell",
+  },
+  smartcity: {
+    clip: "d13",
+    design: "eSL-400",
+    shows: "a street-light controller design that reports over LoRaWAN",
+  },
+  defense: {
+    clip: "d19",
+    design: "eRGD-2000",
+    shows: "a rugged mission computer that cools by conduction, with no fan",
+  },
+  consumer: {
+    clip: "d17",
+    design: "eHub-Pro",
+    shows: "a smart-home hub design for Matter, Zigbee, Z-Wave, BLE and Wi-Fi",
+  },
+  electronics: {
+    clip: "d16",
+    design: "eASIC-Vision",
+    shows: "a computer-vision chip design",
+  },
+  mining: {
+    clip: "d14",
+    design: "eGasDetect-4",
+    shows: "a four-gas detector design",
+  },
+  cybersec: {
+    clip: "d18",
+    design: "eHSM-9000",
+    shows: "a network-attached hardware security module design",
+  },
+};
+
+const FUTURE = [
+  {
+    icon: "👓",
+    name: "eVision",
+    desc: "Obstacle-detection band for blind users",
+    tier: "$5K",
+  },
+  {
+    icon: "🤖",
+    name: "eHand",
+    desc: "6-DOF myoelectric prosthetic hand",
+    tier: "$2K",
+  },
+  {
+    icon: "🧠",
+    name: "eBCI-Lite",
+    desc: "8-channel dry-electrode EEG headband",
+    tier: "$10K",
+  },
+  {
+    icon: "🌾",
+    name: "eFarm",
+    desc: "Solar LoRaWAN soil sensor mesh",
+    tier: "$1K",
+  },
+  {
+    icon: "💧",
+    name: "eHydro",
+    desc: "Water-quality monitoring buoy",
+    tier: "$3K",
+  },
+  {
+    icon: "🐝",
+    name: "eHive",
+    desc: "Acoustic beehive monitor",
+    tier: "$500",
+  },
+  {
+    icon: "🚙",
+    name: "eRover-Mini",
+    desc: "$400 autonomous research rover",
+    tier: "$2K",
+  },
+  {
+    icon: "🎓",
+    name: "eEdu-Kit",
+    desc: "Classroom STEM dev board + curriculum",
+    tier: "$1K",
+  },
+  {
+    icon: "⚡",
+    name: "eMeshGrid",
+    desc: "Off-grid micro-grid controller",
+    tier: "$25K",
+  },
+  {
+    icon: "🛰️",
+    name: "eCubeSat-1U",
+    desc: "1U CubeSat concept with research firmware",
+    tier: "$30K",
+  },
+];
+
+function CategoryRow({ cat }: { cat: (typeof CATEGORIES)[0] }) {
+  const render = CATEGORY_RENDER[cat.id];
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        delay: (index % 4) * 0.07,
-        duration: 0.5,
-        ease: [0.23, 1, 0.32, 1],
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="rounded-2xl border flex flex-col overflow-hidden transition-all duration-300"
-      style={{
-        background: hovered ? `${cat.color}08` : "rgba(255,255,255,0.03)",
-        borderColor: hovered ? `${cat.color}40` : "rgba(255,255,255,0.08)",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-      }}
+    <article
+      className={render ? "cat has-fig" : "cat"}
+      style={{ "--c": cat.color } as CSSProperties}
     >
-      {/* Header */}
-      <div className="p-5 pb-4 flex items-start gap-4">
-        <motion.div
-          animate={{ scale: hovered ? 1.1 : 1, rotate: hovered ? 5 : 0 }}
-          transition={{ duration: 0.3 }}
-          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: `${cat.color}20` }}
-        >
-          <cat.icon size={24} style={{ color: cat.color }} />
-        </motion.div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-white text-lg leading-tight">
-              {cat.title}
-            </h2>
-            <span
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              style={{
-                background: `${STATUS_COLORS[cat.status]}20`,
-                color: STATUS_COLORS[cat.status],
-              }}
-            >
-              {cat.status}
+      {render && (
+        <div className="cat-fig">
+          <BoardFigure
+            base={MEDIA + render.clip}
+            width={1280}
+            height={720}
+            alt={`${render.design}: ${render.shows}`}
+            caption={
+              <>
+                <span>
+                  <b>{render.design}</b> — {render.shows}
+                </span>
+                <span>Render · design stage</span>
+              </>
+            }
+          />
+        </div>
+      )}
+      <div className="cat-text">
+        <div className="cat-top">
+          <h3>{cat.title}</h3>
+          <span
+            className="st"
+            style={{ "--c": STATUS_COLORS[cat.status] } as CSSProperties}
+          >
+            {cat.status}
+          </span>
+        </div>
+        <p className="cat-sub">{cat.subtitle}</p>
+        <p className="cat-desc">{cat.desc}</p>
+
+        <ul className="cat-products">
+          {cat.products.map(p => (
+            <li key={p}>{p}</li>
+          ))}
+        </ul>
+
+        <dl className="cat-specs">
+          {cat.specs.map(s => (
+            <div key={s.label}>
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <p className="cat-std">Target standards: {cat.standard}</p>
+
+        <div className="cat-links">
+          <Link href={cat.href} className="btn gh sm">
+            Learn more<span className="sr-only"> about {cat.title}</span>{" "}
+            <span className="ar" aria-hidden="true">
+              →
             </span>
-          </div>
-          <div className="text-sm mt-0.5" style={{ color: cat.color }}>
-            {cat.subtitle}
-          </div>
+          </Link>
+          <a
+            href={cat.ghref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn ln sm"
+            aria-label={`${cat.title} designs on GitHub (opens in a new tab)`}
+          >
+            GitHub <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
-
-      {/* Description */}
-      <div className="px-5 pb-4">
-        <p className="text-gray-400 text-sm leading-relaxed">{cat.desc}</p>
-      </div>
-
-      {/* Product list */}
-      <div className="px-5 pb-4 flex flex-wrap gap-1.5">
-        {cat.products.map(p => (
-          <span
-            key={p}
-            className="text-[11px] px-2 py-0.5 rounded-md font-mono"
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              color: "rgba(255,255,255,0.6)",
-            }}
-          >
-            {p}
-          </span>
-        ))}
-      </div>
-
-      {/* Specs */}
-      <div className="px-5 pb-4 grid grid-cols-2 gap-2">
-        {cat.specs.map(s => (
-          <div
-            key={s.label}
-            className="rounded-lg p-2"
-            style={{ background: "rgba(255,255,255,0.04)" }}
-          >
-            <div className="text-[10px] text-gray-500 uppercase tracking-wider">
-              {s.label}
-            </div>
-            <div className="text-xs font-semibold text-white mt-0.5">
-              {s.value}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Standard badge */}
-      <div className="px-5 pb-3">
-        <span className="text-[10px] font-mono" style={{ color: cat.color }}>
-          Target standards: {cat.standard}
-        </span>
-      </div>
-
-      {/* Footer actions */}
-      <div
-        className="mt-auto px-5 py-4 border-t flex items-center justify-between"
-        style={{ borderColor: "rgba(255,255,255,0.06)" }}
-      >
-        <Link href={cat.href}>
-          <motion.div
-            whileHover={{ x: 3 }}
-            className="flex items-center gap-1 text-sm font-semibold cursor-pointer"
-            style={{ color: cat.color }}
-          >
-            Learn more<span className="sr-only"> about {cat.title}</span>{" "}
-            <ArrowRight size={14} />
-          </motion.div>
-        </Link>
-        <a href={cat.ghref} target="_blank" rel="noopener noreferrer">
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className="flex items-center gap-1 text-xs text-gray-500 hover:text-white transition-colors cursor-pointer"
-          >
-            GitHub <ExternalLink size={11} />
-          </motion.div>
-        </a>
-      </div>
-    </motion.div>
+    </article>
   );
 }
 
@@ -644,363 +705,172 @@ export default function EcadHardware() {
     filter === "all" ? CATEGORIES : CATEGORIES.filter(c => c.status === filter);
 
   return (
-    <div className="min-h-screen bg-[#050A14] text-white">
-      {/* Hero */}
-      <section className="relative pt-28 pb-16 px-6 overflow-hidden">
-        <img
-          loading="lazy"
-          decoding="async"
-          src="/media/product-ecad-hardware_f5806032.jpg"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-8 pointer-events-none"
-        />
-        <div className="absolute bottom-4 right-6 z-10 rounded-md border border-white/10 bg-[#050A14]/80 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60">
-          Illustrative concept artwork
-        </div>
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div
-          className="absolute top-20 left-1/3 w-96 h-96 rounded-full blur-3xl opacity-10"
-          style={{
-            background: "radial-gradient(circle, #F97316, transparent)",
-          }}
-        />
-        <div
-          className="absolute top-40 right-1/3 w-80 h-80 rounded-full blur-3xl opacity-10"
-          style={{
-            background: "radial-gradient(circle, #22D3EE, transparent)",
-          }}
-        />
-
-        <div className="relative max-w-5xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border"
-              style={{
-                background: "rgba(249,115,22,0.1)",
-                borderColor: "rgba(249,115,22,0.3)",
-                color: "#F97316",
-              }}
-            >
-              <Package size={12} /> eCAD HARDWARE DESIGNS · MIT LICENSE, EXCEPT
-              EoS BOARDS AND MIRRORED DESIGNS
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-              Hardware{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #F97316, #FBBF24)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Design
-              </span>{" "}
-              Portfolio
-            </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              15 hardware design categories — from health wearables to aerospace
-              systems, industrial PLCs to personal air mobility concepts. The
-              repository includes a mix of design documents, KiCad sources,
-              BOMs, and datasheets; coverage varies by design.
-            </p>
-            <Link
-              href="/open-hardware"
-              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-lg text-sm font-semibold border border-emerald-400/30 bg-emerald-400/10 text-emerald-300 hover:border-emerald-400/60"
-            >
-              See 4,022 real board CAD files, rendered and verified{" "}
-              <ArrowRight size={14} />
-            </Link>
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {(["all", "Design", "Concept"] as const).map(f => (
-                <motion.button
-                  key={f}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setFilter(f)}
-                  className="px-5 py-2 rounded-lg text-sm font-semibold border transition-all"
-                  style={{
-                    background:
-                      filter === f ? "rgba(249,115,22,0.2)" : "transparent",
-                    borderColor:
-                      filter === f ? "#F97316" : "rgba(255,255,255,0.15)",
-                    color: filter === f ? "#F97316" : "rgba(255,255,255,0.6)",
-                  }}
-                >
-                  {f === "all" ? "All Categories" : f}
-                  {f !== "all" && (
-                    <span className="ml-2 text-[10px] opacity-70">
-                      ({CATEGORIES.filter(c => c.status === f).length})
-                    </span>
-                  )}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section
-        className="border-y py-8 px-6"
-        style={{
-          borderColor: "rgba(255,255,255,0.07)",
-          background: "rgba(255,255,255,0.02)",
-        }}
+    <BpPage className="ecad">
+      <img
+        loading="lazy"
+        decoding="async"
+        src="/media/product-ecad-hardware_f5806032.jpg"
+        width={1400}
+        height={788}
+        alt=""
+        aria-hidden="true"
+        className="ecad-heroimg"
+      />
+      <PageHero
+        label="eCAD HARDWARE DESIGNS · MIT LICENSE, EXCEPT EoS BOARDS AND MIRRORED DESIGNS"
+        title="Hardware Design Portfolio"
+        lead="15 hardware design categories — from health wearables to aerospace systems, industrial PLCs to personal air mobility concepts. The repository includes a mix of design documents, KiCad sources, BOMs, and datasheets; coverage varies by design."
       >
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-6">
-          {[
-            { value: "15", label: "Design Categories", color: "#F97316" },
-            { value: "50+", label: "Design Entries", color: "#22D3EE" },
-            { value: "10", label: "Future Concepts", color: "#A78BFA" },
-          ].map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-              className="text-center"
+        <p className="ecad-art">Illustrative concept artwork</p>
+        <div className="ctas">
+          <Link href="/open-hardware" className="btn gh">
+            See 4,022 real board CAD files, rendered and verified{" "}
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </PageHero>
+
+      <LocalNav
+        name="eCAD Hardware"
+        items={[
+          { id: "categories", label: "Categories" },
+          { id: "future", label: "Future designs" },
+          { id: "diagrams", label: "Block diagrams" },
+          { id: "explore", label: "Explore" },
+        ]}
+      />
+
+      <div className="wrap ecad-stats">
+        <Stats
+          items={[
+            { value: "15", label: "Design Categories" },
+            { value: "50+", label: "Design Entries" },
+            { value: "10", label: "Future Concepts" },
+          ]}
+        />
+      </div>
+
+      {/* Categories */}
+      <Section
+        id="categories"
+        wide
+        label="eCAD Hardware"
+        title="Design Categories"
+        lead="Every category is at design or concept stage. The figures are renders of the designs, not photographs of built hardware."
+        split
+      >
+        <div
+          className="ctas ecad-filter"
+          role="group"
+          aria-label="Filter categories by stage"
+        >
+          {(["all", "Design", "Concept"] as const).map(f => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              aria-pressed={filter === f}
+              className="btn gh sm"
             >
-              <div className="text-3xl font-black" style={{ color: s.color }}>
-                {s.value}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">{s.label}</div>
-            </motion.div>
+              {f === "all" ? "All Categories" : f}
+              {f !== "all" && (
+                <span className="ecad-n">
+                  ({CATEGORIES.filter(c => c.status === f).length})
+                </span>
+              )}
+            </button>
           ))}
         </div>
-      </section>
-
-      {/* Categories Grid */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {filtered.map((cat, i) => (
-              <CategoryCard key={cat.id} cat={cat} index={i} />
-            ))}
-          </motion.div>
+        <div className="ecad-list">
+          {filtered.map(cat => (
+            <CategoryRow key={cat.id} cat={cat} />
+          ))}
         </div>
-      </section>
+      </Section>
 
       {/* Future Designs Spotlight */}
-      <section
-        className="py-16 px-6"
-        style={{
-          background: "rgba(139,92,246,0.04)",
-          borderTop: "1px solid rgba(139,92,246,0.15)",
-        }}
+      <Section
+        id="future"
+        alt
+        title="Donor-Sponsored Future Designs"
+        lead="10 concept-stage hardware products for health, accessibility, climate, and research. Each has a datasheet stub, BOM placeholder, and one-page business plan for donor evaluation."
+        split
       >
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-black mb-4">
-              Donor-Sponsored Future Designs
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              10 concept-stage hardware products for health, accessibility,
-              climate, and research. Each has a datasheet stub, BOM placeholder,
-              and one-page business plan for donor evaluation.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {[
-              {
-                icon: "👓",
-                name: "eVision",
-                desc: "Obstacle-detection band for blind users",
-                tier: "$5K",
-              },
-              {
-                icon: "🤖",
-                name: "eHand",
-                desc: "6-DOF myoelectric prosthetic hand",
-                tier: "$2K",
-              },
-              {
-                icon: "🧠",
-                name: "eBCI-Lite",
-                desc: "8-channel dry-electrode EEG headband",
-                tier: "$10K",
-              },
-              {
-                icon: "🌾",
-                name: "eFarm",
-                desc: "Solar LoRaWAN soil sensor mesh",
-                tier: "$1K",
-              },
-              {
-                icon: "💧",
-                name: "eHydro",
-                desc: "Water-quality monitoring buoy",
-                tier: "$3K",
-              },
-              {
-                icon: "🐝",
-                name: "eHive",
-                desc: "Acoustic beehive monitor",
-                tier: "$500",
-              },
-              {
-                icon: "🚙",
-                name: "eRover-Mini",
-                desc: "$400 autonomous research rover",
-                tier: "$2K",
-              },
-              {
-                icon: "🎓",
-                name: "eEdu-Kit",
-                desc: "Classroom STEM dev board + curriculum",
-                tier: "$1K",
-              },
-              {
-                icon: "⚡",
-                name: "eMeshGrid",
-                desc: "Off-grid micro-grid controller",
-                tier: "$25K",
-              },
-              {
-                icon: "🛰️",
-                name: "eCubeSat-1U",
-                desc: "1U CubeSat concept with research firmware",
-                tier: "$30K",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ y: -3, scale: 1.03 }}
-                className="rounded-xl border p-4 text-center cursor-pointer"
-                style={{
-                  background: "rgba(139,92,246,0.06)",
-                  borderColor: "rgba(139,92,246,0.2)",
-                }}
-              >
-                <div className="text-3xl mb-2">{item.icon}</div>
-                <div className="font-bold text-white text-sm">{item.name}</div>
-                <div className="text-[11px] text-gray-400 mt-1 leading-tight">
-                  {item.desc}
-                </div>
-                <div
-                  className="mt-2 text-[10px] font-semibold"
-                  style={{ color: "#A78BFA" }}
-                >
-                  Donor tier: {item.tier}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/donate">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2 mx-auto"
-                style={{
-                  background: "linear-gradient(135deg, #8B5CF6, #6366F1)",
-                }}
-              >
-                Sponsor a Future Design <ChevronRight size={18} />
-              </motion.button>
-            </Link>
-          </div>
+        <ul className="ecad-future">
+          {FUTURE.map(item => (
+            <li key={item.name} className="card">
+              <span className="ecad-emoji" aria-hidden="true">
+                {item.icon}
+              </span>
+              <h3>{item.name}</h3>
+              <p>{item.desc}</p>
+              <span className="k">Donor tier: {item.tier}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="ctas ecad-after">
+          <Link href="/donate" className="btn or">
+            Sponsor a Future Design{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
+      </Section>
 
       {/* Hardware Block Diagrams */}
-      <section className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-4">
-              <Layers className="w-4 h-4" /> BLOCK DIAGRAMS
-            </div>
-            <h2 className="text-3xl font-black text-white mb-3">
-              Illustrative Concept Architecture
-            </h2>
-            <p className="text-gray-400">
-              Interactive concept diagrams for proposed hardware pipelines; not
-              as-built schematics.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {HW_DIAGRAMS.map(d => (
-              <div key={d.id}>
-                <div className="mb-3">
-                  <div className="text-white font-bold text-sm">{d.title}</div>
-                  <div className="text-white/40 text-xs">{d.subtitle}</div>
-                </div>
-                <Suspense
-                  fallback={
-                    <div className="h-64 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
-                      Loading…
-                    </div>
-                  }
-                >
-                  <ArchitectureDiagram3D layers={d.layers} height={260} />
+      <Section
+        id="diagrams"
+        label="BLOCK DIAGRAMS"
+        title="Illustrative Concept Architecture"
+        lead="Interactive concept diagrams for proposed hardware pipelines; not as-built schematics."
+        split
+      >
+        <div className="ecad-diagrams">
+          {HW_DIAGRAMS.map(d => (
+            <div
+              key={d.id}
+              className="ecad-dia"
+              style={{ "--c": d.color } as CSSProperties}
+            >
+              <div className="ecad-dia-h">
+                <h3>{d.title}</h3>
+                <p>{d.subtitle}</p>
+              </div>
+              <div className="ecad-stage">
+                <Suspense fallback={<div className="ecad-wait">Loading…</div>}>
+                  <ArchitectureDiagram3D layers={d.layers} height={480} />
                 </Suspense>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </Section>
 
       {/* CTA */}
-      <section className="py-16 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-black mb-4">
-            Explore the Hardware Designs
-          </h2>
-          <p className="text-gray-400 mb-8">
-            The repository is MIT-licensed, except the original EoS development
-            boards, which are all rights reserved, and the manufacturer designs
-            mirrored under boards/cad, which keep their manufacturers' licences.
-            It includes a mix of design documents, KiCad sources, BOMs, and
-            datasheets. Artifact coverage varies by design.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold text-white flex items-center gap-2"
-                style={{
-                  background: "linear-gradient(135deg, #F97316, #EF4444)",
-                }}
-              >
-                View on GitHub <ExternalLink size={16} />
-              </motion.button>
-            </a>
-            <Link href="/getting-started">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="px-8 py-3.5 rounded-xl font-bold border flex items-center gap-2"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "white" }}
-              >
-                Get Started <ChevronRight size={16} />
-              </motion.button>
-            </Link>
-          </div>
+      <Section
+        id="explore"
+        alt
+        title="Explore the Hardware Designs"
+        lead="The repository is MIT-licensed, except the original EoS development boards, which are all rights reserved, and the manufacturer designs mirrored under boards/cad, which keep their manufacturers' licences. It includes a mix of design documents, KiCad sources, BOMs, and datasheets. Artifact coverage varies by design."
+      >
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
+          >
+            View on GitHub <span aria-hidden="true">↗</span>
+          </a>
+          <Link href="/getting-started" className="btn gh">
+            Get Started{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }
