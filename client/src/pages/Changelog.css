@@ -1,0 +1,92 @@
+/* /changelog: each release a row: version, date and link on the left, its changes on the right. */
+.bp.chlog .cl-list {
+  padding-top: clamp(40px, 5vw, 72px);
+}
+.bp.chlog .cl-rels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bp.chlog .cl-rel {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 18px clamp(28px, 5vw, 72px);
+  padding-block: clamp(32px, 4vw, 52px);
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 760px) {
+  .bp.chlog .cl-rel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.chlog .cl-h {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.bp.chlog .cl-h h2 {
+  font-family: var(--mono);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.bp.chlog .cl-date {
+  font: 500 14px/1.4 var(--mono);
+  color: var(--fg2);
+}
+.bp.chlog .cl-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  font-size: 14px;
+}
+.bp.chlog .cl-chg {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bp.chlog .cl-chg li {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+.bp.chlog .cl-chg li:first-child {
+  padding-top: 0;
+}
+.bp.chlog .cl-chg li:last-child {
+  border-bottom: 0;
+}
+@media (max-width: 480px) {
+  .bp.chlog .cl-chg li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+}
+.bp.chlog .cl-t {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 13px/1.4 var(--mono);
+  color: var(--fg2);
+}
+.bp.chlog .cl-t::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.chlog .cl-x {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}

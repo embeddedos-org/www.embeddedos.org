@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const DIMENSIONS = [
@@ -51,6 +51,22 @@ export default function DeviceRadarChart() {
   const [hovered, setHovered] = useState<string | null>(null);
 
   const size = 280;
+  // The chart scales with its stage, so its axis labels are sized for the
+  // width it is drawn at: never under 12 CSS px on a phone, and the same 9
+  // units as before (about 17px) on a desktop stage.
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [scale, setScale] = useState(1.1);
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => {
+      const w = svg.getBoundingClientRect().width;
+      if (w > 0) setScale(w / size);
+    });
+    ro.observe(svg);
+    return () => ro.disconnect();
+  }, []);
+  const labelSize = Math.max(9, 12.5 / scale);
   const cx = size / 2;
   const cy = size / 2;
   const maxR = size * 0.38;
@@ -73,6 +89,7 @@ export default function DeviceRadarChart() {
   return (
     <div className="flex flex-col items-center gap-4">
       <svg
+        ref={svgRef}
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
@@ -154,10 +171,12 @@ export default function DeviceRadarChart() {
               y={pt.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              fill="rgba(255,255,255,0.5)"
-              fontSize="9"
-              fontFamily="'JetBrains Mono', monospace"
+              fontSize={labelSize}
               fontWeight="600"
+              style={{
+                fill: "var(--fg2, #a1a1a6)",
+                fontFamily: "var(--sans, system-ui, sans-serif)",
+              }}
             >
               {dim}
             </text>
@@ -177,25 +196,19 @@ export default function DeviceRadarChart() {
             onMouseLeave={() => setHovered(null)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[10px] font-bold transition-all"
+            // Neutral toggles: the series colour lives only in the dot (and the
+            // chart), so a shown series is a white label, a hidden one grey.
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all"
             style={{
-              borderColor: visible[device.name]
-                ? device.color + "60"
-                : "rgba(255,255,255,0.1)",
-              background: visible[device.name]
-                ? device.color + "15"
-                : "rgba(255,255,255,0.03)",
-              color: visible[device.name]
-                ? device.color
-                : "rgba(255,255,255,0.3)",
+              borderColor: visible[device.name] ? "#48484e" : "#232326",
+              background: "transparent",
+              color: visible[device.name] ? "#f5f5f7" : "#86868b",
             }}
           >
             <div
               className="w-2 h-2 rounded-full"
               style={{
-                background: visible[device.name]
-                  ? device.color
-                  : "rgba(255,255,255,0.2)",
+                background: visible[device.name] ? device.color : "#48484e",
               }}
             />
             {device.name}

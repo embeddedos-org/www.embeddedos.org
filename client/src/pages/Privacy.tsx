@@ -1,13 +1,6 @@
-import { motion } from "framer-motion";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.05, ease: "easeOut" as const },
-  }),
-};
+import { Fragment } from "react";
+import { BpPage, LocalNav, PageHero } from "@/components/bp";
+import "./Legal.css";
 
 const SECTIONS = [
   {
@@ -89,75 +82,89 @@ To exercise these rights, contact us through the form at www.embeddedos.org/cont
   },
 ];
 
+/** One run of policy text: `**bold**` spans become <strong>. */
+function rich(line: string) {
+  return line
+    .split("**")
+    .map((part, j) => (j % 2 === 1 ? <strong key={j}>{part}</strong> : part));
+}
+
+/**
+ * A section's text, word for word: blank lines separate paragraphs, a block
+ * whose every line starts with "• " is a list, and single line breaks inside a
+ * paragraph are kept.
+ */
+function PolicyText({ text }: { text: string }) {
+  return (
+    <div className="prose">
+      {text.split("\n\n").map((block, i) => {
+        const lines = block.split("\n");
+        if (lines.every(l => l.startsWith("• ")))
+          return (
+            <ul key={i}>
+              {lines.map((l, j) => (
+                <li key={j}>{rich(l.slice(2))}</li>
+              ))}
+            </ul>
+          );
+        return (
+          <p key={i}>
+            {lines.map((l, j) => (
+              <Fragment key={j}>
+                {j > 0 && <br />}
+                {rich(l)}
+              </Fragment>
+            ))}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Privacy() {
   return (
-    <div className="min-h-screen pt-16">
-      <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible">
-            <div className="badge-teal mb-4 inline-flex">Legal</div>
-            <h1 className="font-heading font-extrabold text-4xl text-white mb-4">
-              Privacy Policy
-            </h1>
-            <p className="text-white/50 text-sm">
-              Effective date: October 24, 2026 · Embedded Operating Systems
-              Research Foundation
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="glass rounded-2xl border border-white/10 p-6 sm:p-8 mb-6"
-          >
-            <p className="text-white/60 text-sm leading-relaxed">
-              The Embedded Operating Systems Research Foundation ("Foundation",
-              "we", "us", or "our") operates the website at{" "}
-              <strong className="text-white">www.embeddedos.org</strong>. This
-              Privacy Policy explains how we collect, use, and protect
-              information when you use our website, documentation, and services.
-              As a 501(c)(3), we are committed to transparency and minimal data
-              collection.
-            </p>
-          </motion.div>
-
-          <div className="space-y-6">
+    <BpPage className="legal privacy">
+      <PageHero sig label="Legal" title="Privacy Policy">
+        <p className="lg-meta">
+          Effective date: October 24, 2026 · Embedded Operating Systems Research
+          Foundation
+        </p>
+      </PageHero>
+      <LocalNav
+        name="Privacy Policy"
+        items={SECTIONS.map((s, i) => ({
+          id: `s${i + 1}`,
+          label: s.title.replace(/^\d+\.\s*/, ""),
+        }))}
+      />
+      <div className="sec lg-body">
+        <div className="wrap">
+          <div className="lg-doc">
+            <div className="lg-intro">
+              <p>
+                The Embedded Operating Systems Research Foundation
+                ("Foundation", "we", "us", or "our") operates the website at{" "}
+                <strong>www.embeddedos.org</strong>. This Privacy Policy
+                explains how we collect, use, and protect information when you
+                use our website, documentation, and services. As a 501(c)(3), we
+                are committed to transparency and minimal data collection.
+              </p>
+            </div>
             {SECTIONS.map((section, i) => (
-              <motion.div
+              <section
                 key={section.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-                className="glass rounded-xl border border-white/5 p-6"
+                id={`s${i + 1}`}
+                className="lg-sec"
+                aria-labelledby={`s${i + 1}-h`}
               >
-                <h2 className="font-heading font-bold text-white text-lg mb-3">
-                  {section.title}
-                </h2>
-                <div className="text-white/60 text-sm leading-relaxed whitespace-pre-line">
-                  {section.content.split("**").map((part, j) =>
-                    j % 2 === 1 ? (
-                      <strong key={j} className="text-white">
-                        {part}
-                      </strong>
-                    ) : (
-                      part
-                    )
-                  )}
-                </div>
-              </motion.div>
+                <h2 id={`s${i + 1}-h`}>{section.title}</h2>
+                <PolicyText text={section.content} />
+              </section>
             ))}
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </BpPage>
   );
 }

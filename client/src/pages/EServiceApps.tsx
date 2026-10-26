@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
-import { Smartphone, ArrowRight, CheckCircle2 } from "lucide-react";
+import type { CSSProperties } from "react";
 import { Link } from "wouter";
+import { BpPage, PageHero, Section, Stats } from "@/components/bp";
+import "./EServiceApps.css";
 
 const apps = [
   {
@@ -79,117 +80,67 @@ const apps = [
 
 export default function EServiceAppsPage() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/5" />
-        <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium mb-6">
-              <Smartphone className="w-4 h-4" /> ESERVICEAPPS
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">
-              eServiceApps
-            </h1>
-            <p className="text-2xl text-gray-300 mb-2">
-              Flutter Mobile Companion Apps
-            </p>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Native iOS and Android companion apps for every EmbeddedOS
-              product. Built with Flutter for pixel-perfect cross-platform UI.
-              Connect to your EoS devices over BLE, Wi-Fi, or USB.
-            </p>
-            <div className="flex flex-wrap gap-6 justify-center mt-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-cyan-400">6</div>
-                <div className="text-gray-500 text-sm">Apps</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-orange-400">
-                  Flutter
-                </div>
-                <div className="text-gray-500 text-sm">Framework</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400">
-                  iOS + Android
-                </div>
-                <div className="text-gray-500 text-sm">Platforms</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-400">Free</div>
-                <div className="text-gray-500 text-sm">Open Source</div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="esa">
+      <PageHero
+        sig
+        label="ESERVICEAPPS"
+        title="eServiceApps"
+        sub="Flutter Mobile Companion Apps"
+        lead="Native iOS and Android companion apps for every EmbeddedOS product. Built with Flutter for pixel-perfect cross-platform UI. Connect to your EoS devices over BLE, Wi-Fi, or USB."
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {apps.map((app, i) => (
-              <motion.div
-                key={app.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6"
+      <div className="wrap esa-stats">
+        <Stats
+          small
+          items={[
+            { value: "6", label: "Apps" },
+            { value: "Flutter", label: "Framework" },
+            { value: "iOS + Android", label: "Platforms" },
+            { value: "Free", label: "Open Source" },
+          ]}
+        />
+      </div>
+
+      <Section className="esa-apps">
+        <ul className="cards two">
+          {apps.map(app => (
+            <li key={app.name}>
+              <div
+                className="card"
+                style={{ "--c": app.color } as CSSProperties}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <h2 className="text-white font-bold text-lg">{app.name}</h2>
-                  <span
-                    className="px-2 py-0.5 rounded-full text-xs"
-                    style={{ background: app.color + "20", color: app.color }}
-                  >
-                    {app.platform}
-                  </span>
+                <div className="top">
+                  <h2>{app.name}</h2>
+                  <span className="st">{app.platform}</span>
                 </div>
-                <p className="text-gray-400 text-sm mb-4">{app.desc}</p>
-                <div className="space-y-1.5">
+                <p>{app.desc}</p>
+                <ul>
                   {app.features.map(f => (
-                    <div key={f} className="flex items-start gap-2">
-                      <CheckCircle2
-                        className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
-                        style={{ color: app.color }}
-                      />
-                      <span className="text-gray-300 text-xs">{f}</span>
-                    </div>
+                    <li key={f}>{f}</li>
                   ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/eapps"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors"
-            >
-              All eApps <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/eoffice"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              eOffice Suite
-            </Link>
-            <Link
-              href="/product-eserviceapps"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold border border-white/20 transition-colors"
-            >
-              eServiceApps engineering detail
-            </Link>
-          </div>
+      <Section tight>
+        <div className="ctas">
+          <Link href="/eapps" className="btn pri">
+            All eApps{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </Link>
+          <Link href="/eoffice" className="btn gh">
+            eOffice Suite
+          </Link>
+          <Link href="/product-eserviceapps" className="btn gh">
+            eServiceApps engineering detail
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

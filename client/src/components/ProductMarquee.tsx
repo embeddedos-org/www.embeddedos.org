@@ -38,13 +38,13 @@ export default function ProductMarquee() {
       <div
         className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
         style={{
-          background: "linear-gradient(90deg, #080F1E 0%, transparent 100%)",
+          background: "linear-gradient(90deg, #000000 0%, transparent 100%)",
         }}
       />
       <div
         className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
         style={{
-          background: "linear-gradient(270deg, #080F1E 0%, transparent 100%)",
+          background: "linear-gradient(270deg, #000000 0%, transparent 100%)",
         }}
       />
 

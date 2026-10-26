@@ -1,44 +1,10 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { copyText } from "@/lib/clipboard";
 import { moveTabFocus } from "@/lib/tablist";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
-import {
-  Terminal,
-  Cpu,
-  Package,
-  PenTool,
-  ArrowRight,
-  CheckCircle2,
-  Copy,
-  ChevronRight,
-  Monitor,
-  Wifi,
-  Brain,
-  HardDrive,
-  Code,
-  Layers,
-  Play,
-  Shield,
-  Wrench,
-  Info,
-  AlertCircle,
-  Star,
-} from "lucide-react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.45,
-      delay: i * 0.07,
-      ease: [0.23, 1, 0.32, 1] as [number, number, number, number],
-    },
-  }),
-};
+import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./GettingStarted.css";
 
 const ECOSYSTEM = [
   {
@@ -47,7 +13,6 @@ const ECOSYSTEM = [
     role: "Build Tool",
     desc: "Creates, builds and simulates EoS projects, analyzes KiCad schematics, and drives flash tools.",
     color: "#F97316",
-    icon: Wrench,
   },
   {
     id: "eosim",
@@ -55,7 +20,6 @@ const ECOSYSTEM = [
     role: "Simulator",
     desc: `Registry of ${SIM_PLATFORM_COUNT} platform descriptors and simulation engines. Cortex-M apps run on QEMU through ebuild sim.`,
     color: "#22D3EE",
-    icon: Monitor,
   },
   {
     id: "eos",
@@ -63,7 +27,6 @@ const ECOSYSTEM = [
     role: "RTOS Kernel",
     desc: "The real-time OS kernel. Provides HAL, scheduler, IPC, drivers, and POSIX subset.",
     color: "#F97316",
-    icon: Cpu,
   },
   {
     id: "eboot",
@@ -71,7 +34,6 @@ const ECOSYSTEM = [
     role: "Bootloader",
     desc: "Secure bootloader with verified boot, OTA A/B updates, and hardware root of trust.",
     color: "#F59E0B",
-    icon: Shield,
   },
   {
     id: "eflow",
@@ -79,7 +41,6 @@ const ECOSYSTEM = [
     role: "Visual Programming",
     desc: "Drag-and-drop block editor that generates production C code. No assembly needed for common patterns.",
     color: "#A78BFA",
-    icon: Layers,
   },
   {
     id: "eai",
@@ -87,7 +48,6 @@ const ECOSYSTEM = [
     role: "Edge AI",
     desc: "On-device TFLite/ONNX inference and neural interface adapter for BCI devices.",
     color: "#34D399",
-    icon: Brain,
   },
   {
     id: "eapps",
@@ -95,7 +55,6 @@ const ECOSYSTEM = [
     role: "App Ecosystem",
     desc: "60+ apps including eOffice Suite, eBrowser, eDB, and eBot AI assistant.",
     color: "#60A5FA",
-    icon: Package,
   },
   {
     id: "eostudio",
@@ -103,7 +62,6 @@ const ECOSYSTEM = [
     role: "IDE",
     desc: "Universal IDE with AI tutor, 3D modeler, game editor, and UI designer.",
     color: "#F472B6",
-    icon: Code,
   },
 ];
 
@@ -111,7 +69,6 @@ type Path = "nosim" | "sim" | "stm32" | "esp32" | "apps" | "hardware-design";
 
 const PATHS: {
   id: Path;
-  icon: typeof Terminal;
   label: string;
   sublabel: string;
   color: string;
@@ -119,14 +76,12 @@ const PATHS: {
 }[] = [
   {
     id: "nosim",
-    icon: Play,
     label: "Just Looking",
     sublabel: "Illustrative browser demo",
     color: "#34D399",
   },
   {
     id: "sim",
-    icon: Monitor,
     label: "Simulator on My Computer",
     sublabel: "ebuild sim on QEMU — verified",
     color: "#22D3EE",
@@ -134,28 +89,24 @@ const PATHS: {
   },
   {
     id: "esp32",
-    icon: Wifi,
     label: "I Have an ESP32",
     sublabel: "Status: not ready yet",
     color: "#F97316",
   },
   {
     id: "stm32",
-    icon: Cpu,
     label: "I Have an STM32",
     sublabel: "Simulate now; images next",
     color: "#22D3EE",
   },
   {
     id: "apps",
-    icon: Package,
     label: "I Want to Build eApps",
     sublabel: "C + LVGL cross-platform apps",
     color: "#F59E0B",
   },
   {
     id: "hardware-design",
-    icon: PenTool,
     label: "I'm a Hardware Engineer",
     sublabel: "KiCad → analyze → simulate → validate",
     color: "#A78BFA",
@@ -396,6 +347,45 @@ const PATH_CONTENT: Record<Path, PathContent> = {
   },
 };
 
+/** Where to read next once the first build works. */
+const WHERE_NEXT = [
+  {
+    href: "/architecture",
+    label: "How EmbeddedOS is put together",
+    desc: "The full stack, layer by layer, with the diagrams.",
+  },
+  {
+    href: "/ecosystem",
+    label: "Every component and what it does",
+    desc: "Each project, its purpose, and how they depend on each other.",
+  },
+  {
+    href: "/products",
+    label: "The component reference pages",
+    desc: "Engineering detail for each project, with usage examples.",
+  },
+  {
+    href: "/downloads",
+    label: "Every repository and install command",
+    desc: "All EmbeddedOS software repositories, MIT licensed, in one list.",
+  },
+  {
+    href: "/stacks",
+    label: "Pick a stack for your device",
+    desc: "Which components you need for the kind of hardware you are building.",
+  },
+];
+
+/** Quick reference: the component pages a first-time builder opens most. */
+const QUICK_LINKS = [
+  { label: "EoS Kernel", href: "/eos" },
+  { label: "eBoot", href: "/eboot" },
+  { label: "eFlow", href: "/flow" },
+  { label: "EAI / ENI", href: "/eai" },
+  { label: "eOffice", href: "/eoffice" },
+  { label: "Hardware Lab", href: "/hardware-lab" },
+];
+
 export default function GettingStarted() {
   const [activePath, setActivePath] = useState<Path>("sim");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -407,568 +397,231 @@ export default function GettingStarted() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080F1E]">
-      {/* Hero */}
-      <section className="relative py-20 sm:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628] to-[#080F1E]" />
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-[#F97316]/5 rounded-full blur-[100px]" />
-          <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-[#22D3EE]/4 rounded-full blur-[80px]" />
-        </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-              style={{
-                background: "rgba(249,115,22,0.12)",
-                border: "1px solid rgba(249,115,22,0.3)",
-                color: "#F97316",
-              }}
-            >
-              <Play size={12} /> Getting Started
-            </span>
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            className="font-heading font-black text-5xl sm:text-6xl text-white mb-5 leading-[1.05]"
-          >
+    <BpPage className="gs">
+      <PageHero
+        sig
+        label="Getting Started"
+        title={
+          <>
             Start Building with
             <br />
-            <span style={{ color: "#F97316" }}>EmbeddedOS</span>
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="text-white/60 text-xl max-w-2xl mx-auto mb-4 leading-relaxed"
-          >
-            No hardware required to get started. Every command on the simulator
-            path was run as written before it was published.
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-[#34D399]"
-            style={{
-              background: "rgba(52,211,153,0.08)",
-              border: "1px solid rgba(52,211,153,0.2)",
-            }}
-          >
-            <CheckCircle2 size={14} /> Boot the real EoS kernel on QEMU with
-            ebuild sim — no hardware needed
-          </motion.div>
-        </div>
-      </section>
+            <span>EmbeddedOS</span>
+          </>
+        }
+        lead="No hardware required to get started. Every command on the simulator path was run as written before it was published."
+      >
+        <p className="gs-ok">
+          Boot the real EoS kernel on QEMU with ebuild sim — no hardware needed
+        </p>
+      </PageHero>
+      <LocalNav
+        name="Getting Started"
+        items={[
+          { id: "ecosystem", label: "The ecosystem" },
+          { id: "paths", label: "Choose your path" },
+          { id: "next", label: "Where to look next" },
+        ]}
+      />
 
-      {/* Ecosystem Map */}
-      <section className="pb-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <h2 className="font-heading font-black text-2xl text-white mb-2">
-              The EmbeddedOS Ecosystem
-            </h2>
-            <p className="text-white/60 text-sm">
-              8 tools that work together — understand what each one does before
-              you start
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {ECOSYSTEM.map((tool, i) => {
-              const TIcon = tool.icon;
-              return (
-                <motion.div
-                  key={tool.id}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="rounded-2xl border p-4"
-                  style={{
-                    background: `${tool.color}06`,
-                    borderColor: `${tool.color}20`,
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ background: `${tool.color}18` }}
-                    >
-                      <TIcon size={14} style={{ color: tool.color }} />
-                    </div>
-                    <div>
-                      <div className="font-heading font-bold text-white text-sm">
-                        {tool.name}
-                      </div>
-                      <div
-                        className="text-[10px]"
-                        style={{ color: tool.color }}
-                      >
-                        {tool.role}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-white/65 text-xs leading-relaxed">
-                    {tool.desc}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Path Selector */}
-      <section className="pb-8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-6"
-          >
-            <h2 className="font-heading font-black text-2xl text-white mb-1">
-              Choose Your Path
-            </h2>
-            <p className="text-white/60 text-sm">
-              Pick the option that matches where you are right now
-            </p>
-          </motion.div>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
-            role="tablist"
-            aria-label="Getting started paths"
-            onKeyDown={moveTabFocus}
-          >
-            {PATHS.map(p => {
-              const PIcon = p.icon;
-              return (
-                <button
-                  key={p.id}
-                  role="tab"
-                  id={`path-tab-${p.id}`}
-                  aria-selected={activePath === p.id}
-                  aria-controls={`path-panel-${p.id}`}
-                  tabIndex={activePath === p.id ? 0 : -1}
-                  onClick={() => setActivePath(p.id)}
-                  className="relative flex items-center gap-3 p-4 rounded-2xl text-left transition-all"
-                  style={
-                    activePath === p.id
-                      ? {
-                          background: `${p.color}15`,
-                          border: `1.5px solid ${p.color}50`,
-                        }
-                      : {
-                          background: "rgba(255,255,255,0.03)",
-                          border: "1px solid rgba(255,255,255,0.08)",
-                        }
-                  }
-                >
-                  {p.badge && (
-                    <span
-                      className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold"
-                      style={{ background: p.color, color: "#000" }}
-                    >
-                      {p.badge}
-                    </span>
-                  )}
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{
-                      background:
-                        activePath === p.id ? `${p.color}25` : `${p.color}12`,
-                    }}
-                  >
-                    <PIcon size={18} style={{ color: p.color }} />
-                  </div>
-                  <div>
-                    <div className="font-heading font-bold text-white text-sm">
-                      {p.label}
-                    </div>
-                    <div className="text-xs text-white/65">{p.sublabel}</div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Path Content */}
-      <section className="pb-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          {(Object.keys(PATH_CONTENT) as Path[]).map(pathId => {
-            const content = PATH_CONTENT[pathId];
-            return (
+      {/* The eight tools */}
+      <Section
+        id="ecosystem"
+        title="The EmbeddedOS Ecosystem"
+        lead="8 tools that work together — understand what each one does before you start"
+        split
+      >
+        <ul className="cards four">
+          {ECOSYSTEM.map(tool => (
+            <li key={tool.id}>
               <div
-                key={pathId}
-                role="tabpanel"
-                id={`path-panel-${pathId}`}
-                aria-labelledby={`path-tab-${pathId}`}
-                hidden={pathId !== activePath}
+                className="card gs-tool"
+                style={{ "--c": tool.color } as CSSProperties}
               >
-                <div
-                  className="rounded-2xl border p-6 mb-6"
-                  style={{
-                    background: `${content.color}08`,
-                    borderColor: `${content.color}25`,
-                  }}
-                >
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <h2 className="font-heading font-black text-2xl sm:text-3xl text-white">
-                      {content.title}
-                    </h2>
-                    <span
-                      className="px-3 py-1 rounded-full text-xs font-bold"
-                      style={{
-                        background: `${content.color}20`,
-                        color: content.color,
-                      }}
-                    >
-                      {content.time}
-                    </span>
-                  </div>
-                  <p className="text-white/60 text-base mb-4 leading-relaxed">
-                    {content.intro}
-                  </p>
-                  <div
-                    className="flex items-start gap-2 p-3 rounded-xl"
-                    style={{
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    <Info size={14} className="text-white/40 mt-0.5 shrink-0" />
-                    <div>
-                      <span className="text-xs font-bold text-white/60 uppercase tracking-wider">
-                        Prerequisites:{" "}
-                      </span>
-                      <span className="text-xs text-white/60">
-                        {content.prereq}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <span className="k">{tool.role}</span>
+                <h3>{tool.name}</h3>
+                <p>{tool.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-                <div className="space-y-4">
-                  {content.steps.map((step, i) => (
-                    <motion.div
-                      key={step.title}
-                      variants={fadeUp}
-                      initial="hidden"
-                      animate="visible"
-                      custom={i}
-                      className="rounded-2xl border border-white/8 overflow-hidden"
-                      style={{ background: "rgba(255,255,255,0.02)" }}
-                    >
-                      <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
-                        <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
-                          style={{
-                            background: `${content.color}25`,
-                            border: `1px solid ${content.color}40`,
-                          }}
-                        >
-                          {i + 1}
-                        </div>
-                        <h3 className="font-heading font-bold text-white">
-                          {step.title}
-                        </h3>
-                      </div>
-                      <div className="px-5 py-4 space-y-3">
-                        {step.text && (
-                          <p className="text-sm text-white/60 leading-relaxed">
-                            {step.text}
-                          </p>
-                        )}
-                        {step.substeps && (
-                          <ul className="space-y-1.5">
-                            {step.substeps.map(s => (
-                              <li
-                                key={s}
-                                className="flex items-start gap-2 text-sm text-white/55"
-                              >
-                                <ChevronRight
-                                  size={13}
-                                  className="mt-0.5 shrink-0"
-                                  style={{ color: content.color }}
-                                />
-                                {s}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {step.code && (
-                          <div
-                            className="relative rounded-xl overflow-hidden border border-white/8"
-                            style={{ background: "rgba(5,10,20,0.9)" }}
-                          >
-                            <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
-                              <div className="flex gap-1.5">
-                                <div className="w-2.5 h-2.5 rounded-full bg-[#F85149]/50" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-[#F0883E]/50" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-[#3FB950]/50" />
-                              </div>
-                              <button
-                                onClick={() =>
-                                  copyCode(step.code!, `${pathId}-${i}`)
-                                }
-                                className="flex items-center gap-1.5 text-xs text-white/65 hover:text-white transition-colors"
-                              >
-                                {copiedKey === `${pathId}-${i}` ? (
-                                  <CheckCircle2
-                                    size={12}
-                                    className="text-[#34D399]"
-                                  />
-                                ) : (
-                                  <Copy size={12} />
-                                )}
-                                {copiedKey === `${pathId}-${i}`
-                                  ? "Copied!"
-                                  : "Copy"}
-                              </button>
-                            </div>
-                            <pre
-                              role="region"
-                              aria-label={`${step.title} commands`}
-                              tabIndex={0}
-                              className="p-4 text-xs overflow-x-auto font-mono leading-relaxed"
+      {/* The six paths: every panel is in the HTML; one is shown */}
+      <Section
+        id="paths"
+        title="Choose Your Path"
+        lead="Pick the option that matches where you are right now"
+        split
+      >
+        <div
+          className="gs-tabs"
+          role="tablist"
+          aria-label="Getting started paths"
+          onKeyDown={moveTabFocus}
+        >
+          {PATHS.map(p => (
+            <button
+              key={p.id}
+              role="tab"
+              id={`path-tab-${p.id}`}
+              aria-selected={activePath === p.id}
+              aria-controls={`path-panel-${p.id}`}
+              tabIndex={activePath === p.id ? 0 : -1}
+              onClick={() => setActivePath(p.id)}
+              type="button"
+              className="gs-tab"
+              style={{ "--c": p.color } as CSSProperties}
+            >
+              {p.badge && <span className="gs-badge">{p.badge}</span>}
+              <span className="gs-tl">{p.label}</span>
+              <span className="gs-ts">{p.sublabel}</span>
+            </button>
+          ))}
+        </div>
+
+        {(Object.keys(PATH_CONTENT) as Path[]).map(pathId => {
+          const content = PATH_CONTENT[pathId];
+          return (
+            <div
+              key={pathId}
+              role="tabpanel"
+              id={`path-panel-${pathId}`}
+              aria-labelledby={`path-tab-${pathId}`}
+              hidden={pathId !== activePath}
+              className="gs-panel"
+              style={{ "--c": content.color } as CSSProperties}
+            >
+              <div className="gs-ph">
+                <div className="gs-pt">
+                  <h3>{content.title}</h3>
+                  <span className="gs-time">{content.time}</span>
+                </div>
+                <p className="gs-intro">{content.intro}</p>
+                <p className="gnote gs-pre">
+                  <b>Prerequisites: </b>
+                  {content.prereq}
+                </p>
+              </div>
+
+              <ol className="steps num gs-steps">
+                {content.steps.map((step, i) => (
+                  <li key={step.title}>
+                    <span className="n">{i + 1}</span>
+                    <div className="gs-step">
+                      <h4>{step.title}</h4>
+                      {step.text && <p>{step.text}</p>}
+                      {step.substeps && (
+                        <ul className="gs-sub">
+                          {step.substeps.map(s => (
+                            <li key={s}>{s}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {step.code && (
+                        <div className="code">
+                          <div className="cbar gs-cbar">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                copyCode(step.code!, `${pathId}-${i}`)
+                              }
+                              className={
+                                copiedKey === `${pathId}-${i}`
+                                  ? "gs-copy done"
+                                  : "gs-copy"
+                              }
                             >
-                              <code style={{ color: "#E6EDF3" }}>
-                                {step.code}
-                              </code>
-                            </pre>
+                              {copiedKey === `${pathId}-${i}`
+                                ? "Copied!"
+                                : "Copy"}
+                            </button>
                           </div>
-                        )}
-                        {step.tip && (
-                          <div
-                            className="flex items-start gap-2 p-3 rounded-xl text-xs"
-                            style={{
-                              background: `${content.color}08`,
-                              border: `1px solid ${content.color}20`,
-                            }}
+                          <pre
+                            role="region"
+                            aria-label={`${step.title} commands`}
+                            tabIndex={0}
                           >
-                            <Star
-                              size={12}
-                              style={{ color: content.color }}
-                              className="mt-0.5 shrink-0"
-                            />
-                            <span style={{ color: content.color }}>
-                              <strong>Tip:</strong> {step.tip}
-                            </span>
-                          </div>
-                        )}
-                        {step.warn && (
-                          <div
-                            className="flex items-start gap-2 p-3 rounded-xl text-xs"
-                            style={{
-                              background: "rgba(248,81,73,0.08)",
-                              border: "1px solid rgba(248,81,73,0.2)",
-                            }}
-                          >
-                            <AlertCircle
-                              size={12}
-                              className="text-[#F85149] mt-0.5 shrink-0"
-                            />
-                            <span className="text-[#F85149]">
-                              <strong>Note:</strong> {step.warn}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                            <code>{step.code}</code>
+                          </pre>
+                        </div>
+                      )}
+                      {step.tip && (
+                        <p className="gnote gs-tip">
+                          <b>Tip:</b> {step.tip}
+                        </p>
+                      )}
+                      {step.warn && (
+                        <p className="gnote gs-warn">
+                          <b>Note:</b> {step.warn}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
 
-                <div
-                  className="mt-8 rounded-2xl border border-white/8 p-5"
-                  style={{ background: "rgba(255,255,255,0.02)" }}
-                >
-                  <div className="text-xs font-bold text-white/60 uppercase tracking-widest mb-3">
-                    What's Next
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {content.nextSteps.map(ns => {
-                      const className =
-                        "inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white/70 hover:text-white transition-all";
-                      const style = {
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      };
-                      // wouter's Link routes client-side; GitHub links must be plain anchors.
-                      return ns.href.startsWith("http") ? (
+              <div className="gs-nextw">
+                <p className="label">What's Next</p>
+                <ul className="glinks">
+                  {content.nextSteps.map(ns => (
+                    <li key={ns.label}>
+                      {/* wouter's Link routes client-side; GitHub links must be plain anchors. */}
+                      {ns.href.startsWith("http") ? (
                         <a
-                          key={ns.label}
                           href={ns.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={className}
-                          style={style}
                         >
-                          {ns.label} <ArrowRight size={13} />
+                          <span>{ns.label}</span>
+                          <i aria-hidden="true">↗</i>
                         </a>
                       ) : (
-                        <Link
-                          key={ns.label}
-                          href={ns.href}
-                          className={className}
-                          style={style}
-                        >
-                          {ns.label} <ArrowRight size={13} />
+                        <Link href={ns.href}>
+                          <span>{ns.label}</span>
+                          <i aria-hidden="true">→</i>
                         </Link>
-                      );
-                    })}
-                  </div>
-                </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            );
-          })}
-        </div>
-      </section>
+            </div>
+          );
+        })}
+      </Section>
 
-      <section className="pb-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-6"
-          >
-            <h2 className="font-heading font-black text-2xl text-white mb-1">
-              Once it builds, where to look next
-            </h2>
-            <p className="text-white/60 text-sm">
-              The pages that explain how the pieces fit together
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {[
-              {
-                href: "/architecture",
-                label: "How EmbeddedOS is put together",
-                desc: "The full stack, layer by layer, with the diagrams.",
-              },
-              {
-                href: "/ecosystem",
-                label: "Every component and what it does",
-                desc: "Each project, its purpose, and how they depend on each other.",
-              },
-              {
-                href: "/products",
-                label: "The component reference pages",
-                desc: "Engineering detail for each project, with usage examples.",
-              },
-              {
-                href: "/downloads",
-                label: "Every repository and install command",
-                desc: "All EmbeddedOS software repositories, MIT licensed, in one list.",
-              },
-              {
-                href: "/stacks",
-                label: "Pick a stack for your device",
-                desc: "Which components you need for the kind of hardware you are building.",
-              },
-            ].map(l => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="block rounded-2xl border border-white/8 p-5 transition-all hover:border-white/20"
-                style={{ background: "rgba(255,255,255,0.02)" }}
-              >
-                <span className="block font-bold text-white text-sm mb-1">
-                  {l.label}
-                </span>
-                <span className="block text-white/50 text-xs leading-relaxed">
-                  {l.desc}
-                </span>
+      {/* After the first build */}
+      <Section
+        id="next"
+        title="Once it builds, where to look next"
+        lead="The pages that explain how the pieces fit together"
+        split
+      >
+        <ul className="cards">
+          {WHERE_NEXT.map(l => (
+            <li key={l.href}>
+              <Link href={l.href} className="card gs-where">
+                <h3>{l.label}</h3>
+                <p>{l.desc}</p>
+                <i className="gs-ar" aria-hidden="true">
+                  →
+                </i>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Quick reference */}
-      <section className="pb-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {[
-              {
-                label: "EoS Kernel",
-                href: "/eos",
-                color: "#F97316",
-                icon: Cpu,
-              },
-              {
-                label: "eBoot",
-                href: "/eboot",
-                color: "#F59E0B",
-                icon: Shield,
-              },
-              { label: "eFlow", href: "/flow", color: "#A78BFA", icon: Layers },
-              {
-                label: "EAI / ENI",
-                href: "/eai",
-                color: "#34D399",
-                icon: Brain,
-              },
-              {
-                label: "eOffice",
-                href: "/eoffice",
-                color: "#22D3EE",
-                icon: Package,
-              },
-              {
-                label: "Hardware Lab",
-                href: "/hardware-lab",
-                color: "#60A5FA",
-                icon: HardDrive,
-              },
-            ].map(l => {
-              const LIcon = l.icon;
-              return (
-                <Link
-                  key={l.label}
-                  href={l.href}
-                  className="flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all hover:scale-[1.02]"
-                  style={{
-                    background: `${l.color}08`,
-                    borderColor: `${l.color}20`,
-                  }}
-                >
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ background: `${l.color}18` }}
-                  >
-                    <LIcon size={16} style={{ color: l.color }} />
-                  </div>
-                  <span className="text-xs font-bold text-white/60">
-                    {l.label}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-    </div>
+            </li>
+          ))}
+        </ul>
+        <p className="label gs-ql">Quick reference</p>
+        <ul className="glinks cols">
+          {QUICK_LINKS.map(l => (
+            <li key={l.label}>
+              <Link href={l.href}>
+                <span>{l.label}</span>
+                <i aria-hidden="true">→</i>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </BpPage>
   );
 }

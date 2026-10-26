@@ -203,14 +203,14 @@ function WaveCanvas({
 
       // Fade edges
       const gl = ctx.createLinearGradient(0, 0, w * 0.12, 0);
-      gl.addColorStop(0, "rgba(10,15,30,1)");
-      gl.addColorStop(1, "rgba(10,15,30,0)");
+      gl.addColorStop(0, "rgba(0,0,0,1)");
+      gl.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = gl;
       ctx.fillRect(0, 0, w * 0.12, h);
 
       const gr = ctx.createLinearGradient(w * 0.88, 0, w, 0);
-      gr.addColorStop(0, "rgba(10,15,30,0)");
-      gr.addColorStop(1, "rgba(10,15,30,1)");
+      gr.addColorStop(0, "rgba(0,0,0,0)");
+      gr.addColorStop(1, "rgba(0,0,0,1)");
       ctx.fillStyle = gr;
       ctx.fillRect(w * 0.88, 0, w * 0.12, h);
 
@@ -381,7 +381,7 @@ export default function HealthShowcase() {
           className="rounded-2xl border overflow-hidden"
           style={{
             borderColor: `${device.color}30`,
-            background: "rgba(10,15,30,0.8)",
+            background: "rgba(0,0,0,0.8)",
           }}
         >
           {/* Header */}

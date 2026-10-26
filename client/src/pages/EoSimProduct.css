@@ -1,0 +1,34 @@
+/* /eosim (EoSimProduct.tsx): the parts the shared page blocks do not cover. */
+
+/* the six commands, three to a row, each a full-size button */
+.bp.eosimp .es-cmds {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.bp.eosimp .es-cmds .btn {
+  justify-content: flex-start;
+  border-radius: 12px;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+.bp.eosimp .es-out .cbar {
+  font: 400 15px/1.5 var(--sans);
+  color: var(--fg2);
+  padding: 16px 18px;
+}
+.bp.eosimp .es-out pre {
+  font-size: 14px;
+  color: var(--fg);
+}
+.bp.eosimp .es-ps {
+  color: var(--green);
+}
+.bp.eosimp .card .st {
+  padding-top: 5px;
+}
+@media (max-width: 760px) {
+  .bp.eosimp .es-cmds {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

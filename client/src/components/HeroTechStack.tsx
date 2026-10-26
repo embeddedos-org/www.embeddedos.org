@@ -232,7 +232,7 @@ export default function HeroTechStack() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 bg-[#050A14]/95 px-3 py-3">
+      <div className="border-t border-white/10 bg-[#0b0b0d]/95 px-3 py-3">
         <ol
           className="grid grid-cols-4 gap-1.5 sm:grid-cols-7"
           aria-label="Reference architecture stages"

@@ -1,0 +1,438 @@
+/* /api-docs (ApiDocs.tsx): a reference tool, so a documentation layout: the
+   module sidebar beside one reading column, restyled to the page tokens. */
+
+/* a calmer hero than a product page: this is where people come to look things up */
+.bp.apid .phero {
+  padding-bottom: clamp(28px, 4vw, 48px);
+}
+.bp.apid .phero h1 {
+  font-size: clamp(40px, 5.4vw, 76px);
+}
+.bp.apid .phero .gstats {
+  margin-top: 28px;
+  max-width: 640px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.bp.apid .phero .gstats li {
+  padding-block: 18px;
+}
+
+/* search */
+.bp.apid .ad-search {
+  position: relative;
+  max-width: 560px;
+  margin-top: 28px;
+  color: var(--fg3);
+}
+.bp.apid .ad-sic {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.bp.apid .ad-search input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 52px 0 44px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: var(--panel);
+  color: var(--fg);
+  font: inherit;
+  font-size: 15px;
+}
+.bp.apid .ad-search input::placeholder {
+  color: var(--fg3);
+}
+.bp.apid .ad-search input:focus {
+  border-color: var(--fg2);
+}
+.bp.apid .ad-search input:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+.bp.apid .ad-clear {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--fg2);
+  cursor: pointer;
+}
+.bp.apid .ad-clear:hover {
+  color: var(--fg);
+}
+
+/* the documentation layout */
+.bp.apid .ad-doc {
+  display: flex;
+  border-top: 1px solid var(--line);
+}
+.bp.apid .ad-side {
+  padding: 28px 16px 28px 0;
+  border-right: 1px solid var(--line);
+  scrollbar-width: thin;
+}
+.bp.apid .ad-side-h {
+  font: 600 12px/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin: 0 0 12px 10px;
+}
+.bp.apid .ad-side-tabs {
+  display: grid;
+  gap: 2px;
+}
+.bp.apid .ad-side-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--fg2);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.bp.apid .ad-side-tabs button::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line2);
+  transition: background-color 0.2s;
+}
+.bp.apid .ad-side-tabs button:hover {
+  color: var(--fg);
+  background: var(--panel);
+}
+.bp.apid .ad-side-tabs button[aria-selected="true"] {
+  color: var(--fg);
+  background: var(--panel2);
+}
+.bp.apid .ad-side-tabs button[aria-selected="true"]::before {
+  background: var(--c, var(--fg));
+}
+.bp.apid .ad-l {
+  flex: 1;
+  min-width: 0;
+}
+.bp.apid .ad-n {
+  font: 500 12px/1 var(--mono);
+  color: var(--fg3);
+}
+.bp.apid .ad-gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  margin: 18px 0 0 10px;
+  font-size: 13px;
+  color: var(--fg2);
+}
+.bp.apid .ad-gh:hover {
+  color: var(--fg);
+}
+
+.bp.apid .ad-main {
+  flex: 1;
+  min-width: 0;
+  padding: clamp(28px, 3vw, 40px) 0 clamp(64px, 8vw, 120px)
+    clamp(0px, 3.5vw, 48px);
+}
+@media (max-width: 1023px) {
+  .bp.apid .ad-main {
+    padding-left: 0;
+  }
+}
+
+/* the module selector on narrow screens */
+/* (shown below lg by its lg:hidden utility; display is set only where it shows) */
+@media (max-width: 1023px) {
+  .bp.apid .ad-mtabs {
+    display: flex;
+  }
+}
+.bp.apid .ad-mtabs {
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  margin-bottom: 28px;
+}
+.bp.apid .ad-mtabs::-webkit-scrollbar {
+  display: none;
+}
+.bp.apid .ad-mtabs button {
+  flex: none;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: none;
+  color: var(--fg2);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.bp.apid .ad-mtabs button[aria-selected="true"] {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+/* a module */
+.bp.apid .ad-mh {
+  display: grid;
+  gap: 10px;
+  margin-bottom: clamp(28px, 3vw, 40px);
+}
+.bp.apid .ad-mh h2 {
+  font-size: clamp(30px, 3vw, 44px);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.bp.apid .ad-mh p {
+  font-size: 17px;
+  color: var(--fg2);
+  max-width: 44em;
+}
+.bp.apid .ad-subs {
+  display: grid;
+  gap: clamp(36px, 4vw, 52px);
+}
+.bp.apid .ad-sh {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.bp.apid .ad-sh::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+}
+.bp.apid .ad-none {
+  padding: 56px 0;
+  color: var(--fg2);
+  text-align: center;
+}
+
+/* a struct and its fields */
+.bp.apid .ad-struct {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.bp.apid .ad-k {
+  font: 600 12px/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+.bp.apid code.ad-sname {
+  justify-self: start;
+  font-size: 14px;
+  color: var(--fg);
+}
+.bp.apid .tbl td.mono {
+  font: 13px/1.5 var(--mono);
+  color: var(--fg);
+  white-space: nowrap;
+}
+.bp.apid .tbl td.mono + td.mono {
+  color: var(--fg2);
+}
+/* on a phone each field is one block: its name and type on a line and the
+   description under them, so no column is cut off and nothing scrolls */
+@media (max-width: 600px) {
+  .bp.apid .tbl {
+    position: relative;
+  }
+  .bp.apid .tbl table,
+  .bp.apid .tbl tbody {
+    display: block;
+  }
+  .bp.apid .tbl thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .bp.apid .tbl tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .bp.apid .tbl tbody tr:last-child {
+    border-bottom: 0;
+  }
+  .bp.apid .tbl td {
+    display: block;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .bp.apid .tbl td.mono {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .bp.apid .tbl td:not(.mono) {
+    flex-basis: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* a function: its signature opens its return value and example */
+.bp.apid .ad-list {
+  display: grid;
+  gap: 8px;
+}
+.bp.apid .ad-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.bp.apid .ad-card:hover {
+  border-color: var(--line2);
+}
+.bp.apid .ad-sum {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  min-height: 44px;
+  padding: 14px 18px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.bp.apid .ad-sum::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  border-right: 1.5px solid var(--fg3);
+  border-bottom: 1.5px solid var(--fg3);
+  transform: rotate(-45deg);
+  transition: transform 0.25s;
+}
+.bp.apid .ad-sum[aria-expanded="true"]::after {
+  transform: rotate(45deg);
+}
+.bp.apid .ad-head {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.bp.apid code.ad-sig {
+  display: block;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: 14px/1.55 var(--mono);
+  color: var(--fg2);
+}
+.bp.apid .ad-sig .ty {
+  color: var(--fg2);
+}
+.bp.apid .ad-sig .fn {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bp.apid .ad-desc {
+  font-size: 13px;
+  color: var(--fg2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bp.apid .ad-body {
+  display: grid;
+  gap: 14px;
+  padding: 16px 18px 18px;
+  border-top: 1px solid var(--line);
+}
+.bp.apid .ad-body p {
+  font-size: 15px;
+  color: var(--fg);
+}
+.bp.apid .ad-body p.ad-ret {
+  margin-top: 4px;
+  color: var(--fg2);
+}
+.bp.apid .ad-exh {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.bp.apid .ad-copy {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line2);
+  border-radius: 8px;
+  background: none;
+  color: var(--fg2);
+  cursor: pointer;
+}
+.bp.apid .ad-copy:hover {
+  color: var(--fg);
+}
+.bp.apid .ad-copy .ok {
+  color: var(--green);
+}
+@media (max-width: 700px), (pointer: coarse) {
+  .bp.apid .ad-copy {
+    width: 44px;
+    height: 44px;
+  }
+}
+.bp.apid .ad-pre {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  font: 13px/1.65 var(--mono);
+  color: var(--fg);
+}

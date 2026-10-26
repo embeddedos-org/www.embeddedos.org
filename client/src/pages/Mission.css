@@ -1,0 +1,92 @@
+/* Mission & Scope: the statement, the five programmes and the closing band. */
+.bp.mission .ms-quote {
+  margin: 26px 0 0;
+  max-width: 34em;
+}
+.bp.mission .ms-quote p {
+  font-size: clamp(20px, 2vw, 27px);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+}
+.bp.mission .ms-meta {
+  margin-top: 20px;
+  font: 500 13px/1.5 var(--mono);
+  color: var(--fg2);
+}
+.bp.mission .ms-prog {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.bp.mission .ms-p {
+  gap: 14px;
+  padding: clamp(24px, 3vw, 36px);
+}
+.bp.mission .ms-ph {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bp.mission .ms-n {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #38383d;
+  display: grid;
+  place-items: center;
+  font: 500 13px/1 var(--mono);
+  color: var(--fg);
+}
+.bp.mission .ms-p h3 {
+  font-size: clamp(21px, 2vw, 26px);
+}
+.bp.mission .card p.ms-sum {
+  max-width: 52em;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.bp.mission .ms-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 760px) {
+  .bp.mission .ms-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.mission .ms-cols h4 {
+  margin-bottom: 10px;
+  font: 600 12px/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+.bp.mission .ms-cols ul {
+  margin: 0;
+  gap: 6px;
+}
+.bp.mission .ms-cols li::marker {
+  color: var(--fg3);
+}
+.bp.mission .ms-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+.bp.mission .ms-out h3 {
+  font-size: 19px;
+}
+.bp.mission .ms-band .lead {
+  margin-top: 14px;
+}
+.bp.mission .ms-band .wrap > div:first-child {
+  max-width: 40em;
+}

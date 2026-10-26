@@ -43,7 +43,12 @@ export function registerStorageProxy(app: Express) {
     if (local) {
       res.sendFile(local, {
         maxAge: "7d",
-        headers: { "Cache-Control": "public, max-age=604800, immutable" },
+        headers: {
+          "Cache-Control": "public, max-age=604800, immutable",
+          // send's type table does not know AVIF and would answer
+          // application/octet-stream (the homepage's frames and boards are AVIF)
+          ...(local.endsWith(".avif") ? { "Content-Type": "image/avif" } : {}),
+        },
       });
       return;
     }

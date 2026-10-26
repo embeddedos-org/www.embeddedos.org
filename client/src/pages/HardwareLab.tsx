@@ -1,36 +1,15 @@
-import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import {
-  ArrowRight,
-  Cpu,
-  Wrench,
-  Zap,
-  Shield,
-  Wifi,
-  ChevronRight,
-  Heart,
-  Radio,
-  Plane,
-  Factory,
-  Home,
-  Microscope,
-  Bot,
-  Globe,
-  Car,
-  ExternalLink,
-  Layers,
-} from "lucide-react";
+import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { SIM_PLATFORM_COUNT } from "@/data/stack";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, delay: i * 0.05, ease: "easeOut" as const },
-  }),
-};
+import { BOARDS_URL, EOS_BOARDS, MEDIA_HOME } from "@/black/data";
+import {
+  BpPage,
+  BoardFigure,
+  LocalNav,
+  PageHero,
+  Section,
+} from "@/components/bp";
+import "./HardwareLab.css";
 
 const BOARD_FAMILIES = [
   {
@@ -111,145 +90,33 @@ const BOARD_FAMILIES = [
 
 const FEATURES = [
   {
-    icon: Cpu,
     title: "Board Definitions",
     desc: "Repository board definitions across ARM, RISC-V, Xtensa, AVR, and automotive SoC targets.",
   },
   {
-    icon: Zap,
     title: "EoSim Simulator",
     desc: `${SIM_PLATFORM_COUNT} repository platform profiles for firmware simulation without physical hardware.`,
   },
   {
-    icon: Shield,
     title: "Secure Boot",
     desc: "Design goal: hardware-backed secure boot with eBoot; per-platform validation is pending.",
   },
   {
-    icon: Wifi,
     title: "Universal Drivers",
     desc: "Unified driver-model goal; portability and hardware validation vary by target.",
   },
   {
-    icon: Wrench,
     title: "ebuild Targeting",
     desc: "Repository tooling exposes target-based builds, for example: `ebuild build --target stm32h7`; results vary by target.",
   },
   {
-    icon: ArrowRight,
     title: "OTA Updates",
     desc: "Design target: delta OTA updates with rollback protection; per-platform validation is pending.",
   },
 ];
 
-// ─── eCAD Product Family Card ────────────────────────────────────────────────
-function FamilyCard({
-  icon: Icon,
-  name,
-  tagline,
-  color,
-  products,
-  href,
-  external,
-  delay,
-}: {
-  icon: React.FC<{
-    size?: number;
-    className?: string;
-    style?: React.CSSProperties;
-  }>;
-  name: string;
-  tagline: string;
-  color: string;
-  products: string[];
-  href: string;
-  external?: boolean;
-  delay: number;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="group rounded-3xl border p-6 transition-all duration-300"
-      style={
-        {
-          background: hovered ? `${color}06` : "#0D1117",
-          borderColor: hovered ? `${color}40` : "rgba(255,255,255,0.08)",
-          boxShadow: hovered ? `0 20px 60px ${color}15` : "none",
-        } as React.CSSProperties
-      }
-    >
-      <div
-        className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors"
-        style={
-          {
-            background: hovered ? `${color}20` : `${color}10`,
-            border: `1px solid ${color}20`,
-          } as React.CSSProperties
-        }
-      >
-        <Icon size={20} style={{ color } as React.CSSProperties} />
-      </div>
-      <h3 className="text-lg font-black text-white mb-1">{name}</h3>
-      <p className="text-sm text-white/40 mb-4 leading-relaxed">{tagline}</p>
-      <div className="space-y-1 mb-5">
-        {products.map(p => (
-          <div
-            key={p}
-            className="flex items-center gap-2 text-xs text-white/50"
-          >
-            <div
-              className="w-1 h-1 rounded-full shrink-0"
-              style={{ background: color }}
-            />
-            {p}
-          </div>
-        ))}
-      </div>
-      {external ? (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-xs font-bold transition-colors"
-          style={
-            {
-              color: hovered ? color : "rgba(255,255,255,0.3)",
-            } as React.CSSProperties
-          }
-        >
-          View CAD Files<span className="sr-only"> for {name}</span>{" "}
-          <ExternalLink size={11} />
-        </a>
-      ) : (
-        <Link
-          href={href}
-          className="flex items-center gap-1.5 text-xs font-bold transition-colors"
-          style={
-            {
-              color: hovered ? color : "rgba(255,255,255,0.3)",
-            } as React.CSSProperties
-          }
-        >
-          Learn More<span className="sr-only"> about {name}</span>{" "}
-          <ChevronRight size={11} />
-        </Link>
-      )}
-    </motion.div>
-  );
-}
-
 const ECAD_FAMILIES = [
   {
-    icon: Heart,
     name: "eHealth365",
     tagline: "Smart Ring Pro + Smart Patch Pro — in-development concepts",
     color: "#F97316",
@@ -260,10 +127,8 @@ const ECAD_FAMILIES = [
       "Monthly blood + mineral cartridges",
     ],
     href: "/ehealth365",
-    delay: 0,
   },
   {
-    icon: Radio,
     name: "eRadar360 / Aegis One",
     tagline: "Design-stage automotive sensing reference architecture",
     color: "#22D3EE",
@@ -274,10 +139,8 @@ const ECAD_FAMILIES = [
       "Proposed RK3588S NPU",
     ],
     href: "/eradar360",
-    delay: 0.05,
   },
   {
-    icon: Heart,
     name: "EoS Health Devices",
     tagline:
       "KEY ULTRA, BAND Neuro, RING, LAB — four flagship health wearables",
@@ -289,10 +152,8 @@ const ECAD_FAMILIES = [
       "HEALTH-LAB — research patch concept",
     ],
     href: "/health",
-    delay: 0.1,
   },
   {
-    icon: Plane,
     name: "eAerospace",
     tagline: "Concept reference designs for aircraft, UAV, and space systems",
     color: "#60A5FA",
@@ -304,10 +165,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eAerospace_CAD_Design",
     external: true,
-    delay: 0.15,
   },
   {
-    icon: Factory,
     name: "eIndustrial",
     tagline: "Sensors, PLCs, gateways, and smart infrastructure",
     color: "#F59E0B",
@@ -319,10 +178,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eIndustrial_CAD_Design",
     external: true,
-    delay: 0.2,
   },
   {
-    icon: Home,
     name: "eConsumer",
     tagline: "Smart home, wearables, and AR/smart devices",
     color: "#34D399",
@@ -334,10 +191,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eConsumer_CAD_Design",
     external: true,
-    delay: 0.25,
   },
   {
-    icon: Microscope,
     name: "eMedical",
     tagline: "Medical research designs — regulatory targets identified",
     color: "#A78BFA",
@@ -349,10 +204,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eMedical_CAD_Design",
     external: true,
-    delay: 0.3,
   },
   {
-    icon: Bot,
     name: "eRobotics",
     tagline: "Robotic control systems, motor drivers, sensor fusion",
     color: "#F85149",
@@ -364,10 +217,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eRobotics_CAD_Design",
     external: true,
-    delay: 0.35,
   },
   {
-    icon: Globe,
     name: "eSmartCity",
     tagline: "Traffic, environment, utilities, and public safety",
     color: "#22D3EE",
@@ -379,10 +230,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eSmartCity_CAD_Design",
     external: true,
-    delay: 0.4,
   },
   {
-    icon: Zap,
     name: "eEnergy",
     tagline: "Solar, battery, and grid-edge energy devices",
     color: "#F59E0B",
@@ -394,10 +243,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eEnergy_CAD_Design",
     external: true,
-    delay: 0.45,
   },
   {
-    icon: Shield,
     name: "eCybersecurity",
     tagline: "HSM, TPM, secure elements — FIPS 140-3 design target",
     color: "#34D399",
@@ -409,10 +256,8 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eCybersecurity_CAD_Design",
     external: true,
-    delay: 0.5,
   },
   {
-    icon: Car,
     name: "eTransport",
     tagline: "Automotive ECU concepts targeting AUTOSAR and ISO 26262",
     color: "#60A5FA",
@@ -424,210 +269,352 @@ const ECAD_FAMILIES = [
     ],
     href: "https://github.com/embeddedos-org/eCAD-Hardware-Products/tree/master/eTransport_CAD_Design",
     external: true,
-    delay: 0.55,
   },
 ];
 
+/**
+ * Original EoS boards (the homepage showcase, black/data.ts) built around a
+ * chip that a family below lists: shown large beside that family. The board is
+ * named for what it is, an EoS design for that chip; it does not claim that a
+ * target has been validated on it.
+ */
+const FAMILY_BOARDS: Record<string, { slug: string; target: string }[]> = {
+  "ARM Cortex-M": [
+    { slug: "stm32-64", target: "STM32F4" },
+    { slug: "lpc55s69", target: "LPC55S69" },
+  ],
+  "ARM Cortex-A": [{ slug: "cm4-base", target: "Raspberry Pi CM4" }],
+  "Xtensa / ESP": [{ slug: "esp32-devkit", target: "ESP32" }],
+  "AVR / 8-bit": [{ slug: "atmega328p", target: "ATmega328P" }],
+};
+
+/** The EoS boards beside the targets whose chip they carry, in family order. */
+const TARGET_BOARDS = BOARD_FAMILIES.flatMap(family =>
+  (FAMILY_BOARDS[family.family] ?? []).flatMap(fb => {
+    const board = EOS_BOARDS.find(b => b.slug === fb.slug);
+    return board ? [{ ...fb, board }] : [];
+  })
+);
+
+const MEDIA = MEDIA_HOME + "industries/";
+
+/**
+ * The homepage's industry renders (Chapters.tsx, data-clip) that show a design
+ * from each family. The caption names the design actually shown, and `note`
+ * says so where the render is not one of the designs the card lists.
+ */
+const FAMILY_RENDER: Record<
+  string,
+  { clip: string; design: string; shows: string; note?: string }
+> = {
+  eHealth365: {
+    clip: "d01",
+    design: "Smart Ring Pro + Smart Patch Pro",
+    shows: "the two eHealth365 wearable designs",
+  },
+  "eRadar360 / Aegis One": {
+    clip: "d04",
+    design: "eRadar360",
+    shows: "the windshield-mounted design",
+  },
+  "EoS Health Devices": {
+    clip: "d02",
+    design: "HEALTH-BAND Neuro",
+    shows: "the wristband design",
+  },
+  eAerospace: {
+    clip: "d07",
+    design: "eMR-400",
+    shows: "a multirotor inspection drone design in the UAV and drone line",
+  },
+  eIndustrial: {
+    clip: "d11",
+    design: "ePLC-1000",
+    shows: "a modular PLC design",
+  },
+  eConsumer: {
+    clip: "d17",
+    design: "eHub-Pro",
+    shows: "a smart-home hub design",
+  },
+  eMedical: {
+    clip: "d03",
+    design: "eECG-12",
+    shows: "a battery-powered 12-lead ECG design",
+  },
+  eRobotics: {
+    clip: "d08",
+    design: "eRobotics",
+    shows: "a robot assembled from five eRobotics designs",
+  },
+  eSmartCity: {
+    clip: "d13",
+    design: "eSL-400",
+    shows: "a street-light controller design",
+  },
+  eEnergy: {
+    clip: "d12",
+    design: "eBMS-100A",
+    shows: "a battery-management design",
+  },
+  eCybersecurity: {
+    clip: "d18",
+    design: "eHSM-9000",
+    shows: "a network-attached hardware security module design",
+  },
+  // eNav-ECDIS is in eTransport_CAD_Design/maritime_systems (data/industries.ts);
+  // the card lists the automotive line, which has no render
+  eTransport: {
+    clip: "d05",
+    design: "eNav-ECDIS",
+    shows:
+      "an electronic chart display design for ships, from eTransport's maritime line",
+    note: "The automotive ECU designs listed have no render yet.",
+  },
+};
+
+function FamilyRow({
+  name,
+  tagline,
+  color,
+  products,
+  href,
+  external,
+}: {
+  name: string;
+  tagline: string;
+  color: string;
+  products: string[];
+  href: string;
+  external?: boolean;
+}) {
+  const render = FAMILY_RENDER[name];
+  return (
+    <article
+      className={render ? "fam has-fig" : "fam"}
+      style={{ "--c": color } as CSSProperties}
+    >
+      {render && (
+        <div className="fam-fig">
+          <BoardFigure
+            base={MEDIA + render.clip}
+            width={1280}
+            height={720}
+            alt={`${render.design}: ${render.shows}`}
+            caption={
+              <>
+                <span>
+                  <b>{render.design}</b> — {render.shows}
+                  {render.note && <>. {render.note}</>}
+                </span>
+                <span>Render · design stage</span>
+              </>
+            }
+          />
+        </div>
+      )}
+      <div className="fam-text">
+        <h3>{name}</h3>
+        <p className="fam-tag">{tagline}</p>
+        <ul className="fam-products">
+          {products.map(p => (
+            <li key={p}>{p}</li>
+          ))}
+        </ul>
+        {external ? (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn gh sm fam-go"
+          >
+            View CAD Files<span className="sr-only"> for {name}</span>{" "}
+            <span aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <Link href={href} className="btn gh sm fam-go">
+            Learn More<span className="sr-only"> about {name}</span>{" "}
+            <span className="ar" aria-hidden="true">
+              ›
+            </span>
+          </Link>
+        )}
+      </div>
+    </article>
+  );
+}
+
 export default function HardwareLab() {
   return (
-    <div className="min-h-screen pt-16">
-      {/* Hero */}
-      <section className="section-padding bg-grid">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div variants={fadeUp} initial="hidden" animate="visible">
-            <div className="badge-teal mb-4 inline-flex">
-              <Cpu size={12} />
-              Hardware Lab
-            </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-              Repository{" "}
-              <span className="text-gradient">Hardware Definitions</span>
-            </h1>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto mb-8">
-              EmbeddedOS defines targets across ARM Cortex-M/A, RISC-V, Xtensa,
-              AVR, and automotive SoCs. Hardware validation varies by target.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href="https://github.com/embeddedos-org/eos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
-              >
-                View BSP on GitHub
-                <ArrowRight size={16} />
-              </a>
-              <Link
-                href="/getting-started"
-                className="inline-flex items-center gap-2 px-6 py-3 glass hover:bg-white/10 text-white font-semibold rounded-xl transition-all border border-white/10"
-              >
-                Get Started
-              </Link>
-            </div>
-          </motion.div>
+    <BpPage className="hw">
+      <PageHero
+        sig
+        label="Hardware Lab"
+        title="Repository Hardware Definitions"
+        lead="EmbeddedOS defines targets across ARM Cortex-M/A, RISC-V, Xtensa, AVR, and automotive SoCs. Hardware validation varies by target."
+      >
+        <div className="ctas">
+          <a
+            href="https://github.com/embeddedos-org/eos"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
+          >
+            View BSP on GitHub{" "}
+            <span className="ar" aria-hidden="true">
+              →
+            </span>
+          </a>
+          <Link href="/getting-started" className="btn gh">
+            Get Started
+          </Link>
         </div>
-      </section>
+      </PageHero>
+
+      <LocalNav
+        name="Hardware Lab"
+        items={[
+          { id: "capabilities", label: "Capabilities" },
+          { id: "targets", label: "Targets" },
+          { id: "designs", label: "Design families" },
+          { id: "eosim", label: "EoSim" },
+        ]}
+      />
 
       {/* Features */}
-      <section className="py-12 bg-[#080F1E]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {FEATURES.map((f, i) => {
-              const Icon = f.icon;
-              return (
-                <motion.div
-                  key={f.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  custom={i}
-                  className="glass rounded-xl p-4 border border-white/5 flex items-start gap-3"
-                >
-                  <div className="w-9 h-9 rounded-lg bg-[#F97316]/15 border border-[#F97316]/30 flex items-center justify-center shrink-0">
-                    <Icon size={18} className="text-[#F97316]" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-white text-sm">
-                      {f.title}
-                    </div>
-                    <div className="text-xs text-white/50 mt-0.5">{f.desc}</div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <Section id="capabilities" tight ariaLabel="Hardware Lab capabilities">
+        <ul className="cards hw-feat">
+          {FEATURES.map(f => (
+            <li key={f.title}>
+              <div className="card">
+                <p className="hw-ft">{f.title}</p>
+                <p>{f.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       {/* Board Families */}
-      <section className="section-padding">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-10 text-center"
-          >
-            <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              Hardware Targets & Profiles
-            </h2>
-            <p className="text-white/50">
-              Repository board definitions, simulation profiles, and planned
-              targets; inclusion does not claim physical validation.
-            </p>
-          </motion.div>
-          <div className="space-y-8">
-            {BOARD_FAMILIES.map((family, fi) => (
-              <motion.div
-                key={family.family}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={fi}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div
-                    className="text-xs font-bold px-3 py-1 rounded-full"
-                    style={{
-                      background: family.color + "20",
-                      color: family.color,
-                      border: `1px solid ${family.color}40`,
-                    }}
-                  >
-                    {family.family}
-                  </div>
-                  <div className="h-px flex-1 bg-white/5" />
-                </div>
-                <div className="flex flex-wrap gap-2">
+      <Section
+        id="targets"
+        wide
+        alt
+        title="Hardware Targets & Profiles"
+        lead="Repository board definitions, simulation profiles, and planned targets; inclusion does not claim physical validation."
+        split
+      >
+        <div className="hw-families">
+          {BOARD_FAMILIES.map(family => (
+            <div
+              key={family.family}
+              className="hwf"
+              style={{ "--c": family.color } as CSSProperties}
+            >
+              <div className="hwf-text">
+                <h3>{family.family}</h3>
+                <ul className="hwf-chips">
                   {family.boards.map(board => (
-                    <span
-                      key={board}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-white/5 text-white/70 border border-white/10 hover:bg-white/10 hover:text-white transition-colors cursor-default"
-                    >
-                      {board}
-                    </span>
+                    <li key={board}>{board}</li>
                   ))}
-                </div>
-              </motion.div>
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* The original EoS boards carry chips these families list, but they
+            are not repository board definitions: a sub-section of their own,
+            each board marked as design files, not yet manufactured. */}
+        <section className="hw-boards" aria-labelledby="eos-boards">
+          <h3 id="eos-boards">Original EoS boards</h3>
+          <p className="fine hw-proof">
+            The EoS boards shown are ray-traced from their KiCad files: design
+            files, not yet manufactured or bench-tested. Board designs ©
+            Kartikeydheer Srivastava, all rights reserved; EmbeddedOS may use
+            them.
+          </p>
+          <div className="boards hw-bgrid">
+            {TARGET_BOARDS.map(({ slug, target, board }) => (
+              <BoardFigure
+                key={slug}
+                base={`${MEDIA_HOME}boards/${slug}`}
+                width={1600}
+                height={1200}
+                alt={`${board.name}, ray-traced from its KiCad files`}
+                caption={
+                  <>
+                    <span>
+                      <b>{board.name}</b> — an original EoS{" "}
+                      {board.kind.toLowerCase()} with the {board.chip} ({target}{" "}
+                      above)
+                    </span>
+                    <span className="hw-bm">
+                      Render ·{" "}
+                      <a
+                        className="tl"
+                        href={BOARDS_URL + board.folder}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Design files
+                        <span className="sr-only"> for {board.name}</span>
+                      </a>
+                      , not yet manufactured
+                    </span>
+                  </>
+                }
+              />
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </Section>
 
       {/* eCAD Hardware Families */}
-      <section className="section-padding">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-10 text-center"
-          >
-            <div className="badge-teal mb-4 inline-flex">
-              <Layers size={12} />
-              eCAD Hardware Designs
-            </div>
-            <h2 className="font-heading font-bold text-white text-3xl mb-2">
-              18 Hardware Design Families
-            </h2>
-            <p className="text-white/50">
-              Open-source design concepts across health, automotive, aerospace,
-              industrial, consumer, and beyond. EoS integration and hardware
-              validation vary by design.
-            </p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {ECAD_FAMILIES.map(f => (
-              <FamilyCard key={f.name} {...f} />
-            ))}
-          </div>
-          <div className="mt-8 text-center">
-            <a
-              href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#0B1D3A] font-bold rounded-xl transition-all active:scale-95"
-            >
-              Browse All 18 Families on GitHub <ExternalLink size={16} />
-            </a>
-          </div>
+      <Section
+        id="designs"
+        wide
+        label="eCAD Hardware Designs"
+        title="18 Hardware Design Families"
+        lead="Open-source design concepts across health, automotive, aerospace, industrial, consumer, and beyond. EoS integration and hardware validation vary by design."
+        split
+      >
+        <div className="hw-fams">
+          {ECAD_FAMILIES.map(f => (
+            <FamilyRow key={f.name} {...f} />
+          ))}
         </div>
-      </section>
+        <div className="ctas hw-after">
+          <a
+            href="https://github.com/embeddedos-org/eCAD-Hardware-Products"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn pri"
+          >
+            Browse All 18 Families on GitHub <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </Section>
 
       {/* EoSim CTA */}
-      <section className="section-padding bg-[#080F1E]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="glass rounded-2xl p-8 border border-[#22D3EE]/20 bg-[#22D3EE]/5 text-center"
-          >
-            <div className="badge-teal mb-4 inline-flex">
-              EoSim — Board Simulator
-            </div>
-            <h2 className="font-heading font-bold text-white text-2xl mb-3">
-              No Hardware? No Problem.
-            </h2>
-            <p className="text-white/60 mb-6 max-w-xl mx-auto">
-              EoSim simulates {SIM_PLATFORM_COUNT} platforms in software.
-              Develop, test, and debug firmware without any physical hardware.
-            </p>
-            <Link
-              href="/flow"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#0B1D3A] font-bold rounded-xl transition-all active:scale-95"
-            >
-              Try EoSim
-              <ChevronRight size={16} />
-            </Link>
-          </motion.div>
+      <Section
+        id="eosim"
+        alt
+        label="EoSim — Board Simulator"
+        title="No Hardware? No Problem."
+        lead={
+          <>
+            EoSim simulates {SIM_PLATFORM_COUNT} platforms in software. Develop,
+            test, and debug firmware without any physical hardware.
+          </>
+        }
+      >
+        <div className="ctas">
+          <Link href="/flow" className="btn pri">
+            Try EoSim <span className="ar">›</span>
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

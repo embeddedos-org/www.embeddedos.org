@@ -1,23 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Heart,
-  Shield,
-  Globe,
-  Cpu,
-  Zap,
-  Users,
-  CheckCircle,
-  BookOpen,
-  Award,
-  Star,
-  RefreshCw,
-  CreditCard,
-  Wallet,
-} from "lucide-react";
 import { openContactForm } from "@/lib/contact-form";
 import {
   STRIPE_PUBLISHABLE_KEY,
@@ -30,60 +12,46 @@ import {
   type StripePaymentElement,
 } from "@/lib/payments";
 import { REPO_COUNT } from "@/data/stack";
+import { BpPage, PageHero, Section, Stats } from "@/components/bp";
+import "./Donate.css";
 
 type PrerenderWindow = Window & { __EOS_PRERENDER__?: boolean };
 
 const STATS = [
   {
-    icon: Cpu,
     value: String(REPO_COUNT),
     label: "Open-Source Repos",
-    color: "#F97316",
   },
   {
-    icon: BookOpen,
     value: "14",
     label: "Free Technical Books",
-    color: "#22D3EE",
   },
-  { icon: Globe, value: "40+", label: "Countries Using EoS", color: "#34D399" },
-  { icon: Users, value: "100%", label: "To the Foundation", color: "#A78BFA" },
+  { value: "40+", label: "Countries Using EoS" },
+  { value: "100%", label: "To the Foundation" },
 ];
 
 const IMPACT_ITEMS = [
   {
-    icon: Cpu,
-    color: "#F97316",
     title: "Hardware Research",
     detail: "Every $100 funds one new board bring-up",
   },
   {
-    icon: BookOpen,
-    color: "#22D3EE",
     title: "Technical Books",
     detail: "14 books, 100% free forever",
   },
   {
-    icon: Shield,
-    color: "#34D399",
     title: "Security Audits",
     detail: "CVE-0 track record since 2023",
   },
   {
-    icon: Users,
-    color: "#A78BFA",
     title: "501(c)(3) Nonprofit",
     detail: "EIN 41-4821627 · deductible under IRC §170",
   },
   {
-    icon: Zap,
-    color: "#F59E0B",
     title: "Student Internships",
     detail: "Paid internships for embedded devs",
   },
   {
-    icon: Star,
-    color: "#60A5FA",
     title: "Contributor Grants",
     detail: "Grants for open-source contributors",
   },
@@ -262,80 +230,34 @@ export default function Donate() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050510] text-white">
+    <BpPage className="donate">
       {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-20 bg-gradient-to-br from-[#0a0520] via-[#050510] to-[#020818]">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 50%, rgba(249,115,22,0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(99,102,241,0.3) 0%, transparent 50%)",
-          }}
-        />
-        <div className="relative container mx-auto px-4 text-center max-w-3xl">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Badge className="bg-orange-500/20 text-orange-300 border-orange-500/30 px-3 py-1">
-              <Heart className="w-3.5 h-3.5 mr-1.5 fill-current" />
-              501(c)(3) Nonprofit
-            </Badge>
-            <Badge className="bg-green-500/20 text-green-300 border-green-500/30 px-3 py-1">
-              <Shield className="w-3.5 h-3.5 mr-1.5" />
-              Secure Donation
-            </Badge>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-5 leading-tight">
-            Support the{" "}
-            <span className="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">
-              EmbeddedOS Foundation
-            </span>
-          </h1>
-          <p className="text-xl text-white/70 mb-4 leading-relaxed">
-            Your donation funds open-source embedded OS research, developer
-            tooling, and the next generation of real-time operating systems —
-            freely available to everyone.
-          </p>
-          <p className="text-sm text-white/40">
-            Embedded Operating Systems Research Foundation · EIN: 41-4821627 ·
-            501(c)(3) Public Charity
-          </p>
-        </div>
-      </section>
+      <PageHero
+        sig
+        label="501(c)(3) Nonprofit · Secure Donation"
+        title="Support the EmbeddedOS Foundation"
+        lead="Your donation funds open-source embedded OS research, developer tooling, and the next generation of real-time operating systems — freely available to everyone."
+      >
+        <p className="dn-reg">
+          Embedded Operating Systems Research Foundation · EIN: 41-4821627 ·
+          501(c)(3) Public Charity
+        </p>
+      </PageHero>
 
       {/* Stats bar */}
-      <section className="py-10 bg-[#080820] border-y border-white/5">
-        <div className="max-w-4xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6">
-          {STATS.map(s => {
-            const Icon = s.icon;
-            return (
-              <div key={s.label} className="text-center">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
-                  style={{
-                    background: s.color + "20",
-                    border: `1px solid ${s.color}40`,
-                  }}
-                >
-                  <Icon size={18} style={{ color: s.color }} />
-                </div>
-                <div className="font-bold text-2xl text-white">{s.value}</div>
-                <div className="text-xs text-white/40 mt-0.5">{s.label}</div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <div className="wrap dn-stats">
+        <Stats items={STATS} />
+      </div>
 
       {/* Main donation section */}
-      <section className="py-16" id="donate-now">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid lg:grid-cols-5 gap-10">
+      <section className="sec dn-main" id="donate-now">
+        <div className="wrap">
+          <div className="dn-grid">
             {/* Left: giving methods */}
-            <div className="lg:col-span-3">
-              <div className="mb-4">
-                <h2 className="text-2xl font-bold text-white mb-1">
-                  Make a Donation
-                </h2>
-                <p className="text-white/50 text-sm">
+            <div className="dn-give">
+              <div className="dn-head">
+                <h2>Make a Donation</h2>
+                <p>
                   Three secure ways to give — every one reaches the Foundation.
                   Zeffy charges 0% platform fees; card and PayPal gifts are
                   subject to the processor's standard nonprofit fees.
@@ -345,41 +267,36 @@ export default function Donate() {
               <div
                 role="tablist"
                 aria-label="Donation methods"
-                className="grid grid-cols-3 gap-2 mb-4"
+                className="dn-tabs"
               >
                 {(
                   [
-                    { key: "zeffy", label: "Zeffy · 0% fees", Icon: Heart },
-                    { key: "card", label: "Card", Icon: CreditCard },
-                    { key: "paypal", label: "PayPal", Icon: Wallet },
+                    { key: "zeffy", label: "Zeffy · 0% fees" },
+                    { key: "card", label: "Card" },
+                    { key: "paypal", label: "PayPal" },
                   ] as const
-                ).map(({ key, label, Icon }) => (
+                ).map(({ key, label }) => (
                   <button
                     key={key}
                     type="button"
                     role="tab"
                     aria-selected={method === key}
                     onClick={() => setMethod(key)}
-                    className={`inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm font-semibold border transition-all ${
-                      method === key
-                        ? "bg-[#F97316] border-[#F97316] text-white"
-                        : "bg-white/5 border-white/10 text-white/60 hover:text-white hover:border-white/25"
-                    }`}
+                    className="dn-tab"
                   >
-                    <Icon size={15} />
                     {label}
                   </button>
                 ))}
               </div>
               {method === "zeffy" && (
                 <>
-                  <p className="text-white/50 text-sm mb-4">
+                  <p className="dn-small">
                     Powered by{" "}
                     <a
                       href="https://www.zeffy.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-orange-400 underline underline-offset-2"
+                      className="tl"
                     >
                       Zeffy
                     </a>{" "}
@@ -389,8 +306,8 @@ export default function Donate() {
               )}
               {method === "zeffy" && (
                 <>
-                  <div className="mb-4 p-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-xs text-yellow-300/80 flex items-start gap-2">
-                    <span className="text-yellow-400 mt-0.5">ℹ</span>
+                  <div className="gnote dn-tip">
+                    <span aria-hidden="true">ℹ</span>
                     <span>
                       Zeffy may show an optional tip on the payment page
                       (default 17%). You can set it to 0% using the dropdown —
@@ -398,26 +315,20 @@ export default function Donate() {
                       donation amount.
                     </span>
                   </div>
-                  <div
-                    className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5"
-                    style={{ minHeight: 820 }}
-                  >
+                  <div className="dn-embed" style={{ minHeight: 820 }}>
                     {!iframeLoaded && !embedFailed && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
-                        <RefreshCw className="w-8 h-8 text-orange-400 animate-spin" />
-                        <p className="text-white/40 text-sm">
-                          Loading donation form…
-                        </p>
+                      <div className="dn-over">
+                        <span className="dn-spin" aria-hidden="true" />
+                        <p className="dn-small">Loading donation form…</p>
                       </div>
                     )}
 
                     {embedFailed && !iframeLoaded && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 px-6 text-center">
-                        <Heart className="w-8 h-8 text-orange-400" />
-                        <p className="text-white/70 text-base font-semibold">
+                      <div className="dn-over">
+                        <p className="dn-fail-t">
                           The embedded donation form could not load
                         </p>
-                        <p className="text-white/40 text-sm max-w-md">
+                        <p className="dn-small dn-fail-d">
                           A browser extension or network policy is most likely
                           blocking it. You can still give securely on Zeffy's
                           own page — 100% of your donation reaches the
@@ -427,9 +338,8 @@ export default function Donate() {
                           href={ZEFFY_HOSTED_URL}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-bold rounded-xl transition-all active:scale-95"
+                          className="btn or"
                         >
-                          <Heart size={16} />
                           Donate on Zeffy
                         </a>
                       </div>
@@ -455,14 +365,9 @@ export default function Donate() {
                       height={820}
                     />
                     <noscript>
-                      <div className="p-8 text-center">
-                        <p className="text-white/70 mb-4">
-                          The donation form requires JavaScript.
-                        </p>
-                        <a
-                          href={ZEFFY_HOSTED_URL}
-                          className="text-[#F97316] font-bold underline"
-                        >
+                      <div className="dn-nojs">
+                        <p>The donation form requires JavaScript.</p>
+                        <a href={ZEFFY_HOSTED_URL} className="tl">
                           Donate on Zeffy instead
                         </a>
                       </div>
@@ -474,36 +379,27 @@ export default function Donate() {
                 <div
                   role="tabpanel"
                   aria-label="Donate by card"
-                  className="rounded-2xl border border-white/10 bg-white/5 p-6"
+                  className="dn-panel"
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <CreditCard size={16} className="text-orange-400" />
-                    <h3 className="text-white font-semibold">Donate by card</h3>
-                  </div>
-                  <p className="text-white/50 text-xs mb-5">
+                  <h3>Donate by card</h3>
+                  <p className="dn-small">
                     Secure card payment via Stripe. Your card details go
                     directly to Stripe — this site never sees or stores them.
                   </p>
                   {cardStatus === "done" ? (
-                    <div className="text-center py-8">
-                      <CheckCircle
-                        size={40}
-                        className="text-green-400 mx-auto mb-4"
-                      />
-                      <p className="text-white font-semibold text-lg mb-1">
+                    <div className="dn-done">
+                      <p className="dn-done-t">
                         Thank you for your {confirmedAmount} gift!
                       </p>
-                      <p className="text-white/50 text-sm">
+                      <p className="dn-small">
                         A receipt is on its way from Stripe. Your support keeps
                         EmbeddedOS free and open.
                       </p>
                     </div>
                   ) : (
                     <>
-                      <div className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-2">
-                        Amount (USD)
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 mb-3">
+                      <div className="label dn-amt-l">Amount (USD)</div>
+                      <div className="dn-amts">
                         {AMOUNT_PRESETS.map(cents => (
                           <button
                             key={cents}
@@ -512,11 +408,10 @@ export default function Donate() {
                               setAmountCents(cents);
                               setCustomAmount("");
                             }}
-                            className={`px-2 py-2 rounded-xl text-sm font-semibold border transition-all ${
+                            aria-pressed={
                               customAmount === "" && amountCents === cents
-                                ? "bg-[#F97316] border-[#F97316] text-white"
-                                : "bg-white/5 border-white/10 text-white/60 hover:text-white hover:border-white/25"
-                            }`}
+                            }
+                            className="btn gh"
                           >
                             {formatUsd(cents)}
                           </button>
@@ -529,7 +424,7 @@ export default function Donate() {
                         value={customAmount}
                         onChange={e => setCustomAmount(e.target.value)}
                         aria-label="Custom amount in US dollars"
-                        className="w-full mb-4 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-[#F97316]/60"
+                        className="dn-input"
                       />
                       {cardStatus !== "ready" &&
                         cardStatus !== "confirming" && (
@@ -537,7 +432,7 @@ export default function Donate() {
                             type="button"
                             onClick={prepareCardForm}
                             disabled={cardStatus === "preparing"}
-                            className="w-full px-6 py-3 bg-[#F97316] hover:bg-[#EA580C] disabled:opacity-50 text-white font-bold rounded-xl transition-all active:scale-95 mb-4"
+                            className="btn or dn-wide"
                           >
                             {cardStatus === "preparing"
                               ? "Preparing secure form…"
@@ -553,7 +448,7 @@ export default function Donate() {
                         aria-label="Secure card details"
                         className={
                           cardStatus === "ready" || cardStatus === "confirming"
-                            ? "mb-4"
+                            ? "dn-mount"
                             : "hidden"
                         }
                       />
@@ -561,41 +456,33 @@ export default function Donate() {
                         <button
                           type="button"
                           onClick={confirmCardPayment}
-                          className="w-full px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl transition-all active:scale-95 mb-4"
+                          className="btn pri dn-wide"
                         >
                           Donate {formatUsd(chosenAmountCents())} now
                         </button>
                       )}
                       {cardStatus === "confirming" && (
-                        <p className="text-white/50 text-sm text-center mb-4">
+                        <p className="dn-small dn-center">
                           Confirming your payment…
                         </p>
                       )}
                       {(cardStatus === "error" ||
                         cardStatus === "unavailable") && (
-                        <p
-                          role="alert"
-                          className="text-sm text-center mb-4 text-yellow-300/90"
-                        >
+                        <p role="alert" className="dn-alert">
                           {cardError}
                         </p>
                       )}
                       {cardError !== "" &&
                         (cardStatus === "ready" ||
                           cardStatus === "confirming") && (
-                          <p
-                            role="alert"
-                            className="text-sm text-center mb-4 text-red-300/90"
-                          >
+                          <p role="alert" className="dn-alert dn-err">
                             {cardError}
                           </p>
                         )}
-                      <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
+                      <div className="dn-stripe">
                         {/* Stripe wordmark, drawn as text: no external brand
                             image to fetch, nothing to license. */}
-                        <span className="font-bold tracking-tight text-white/45">
-                          stripe
-                        </span>
+                        <span className="dn-stripe-w">stripe</span>
                         <span>· secured · PCI-DSS</span>
                       </div>
                     </>
@@ -606,19 +493,14 @@ export default function Donate() {
                 <div
                   role="tabpanel"
                   aria-label="Donate with PayPal"
-                  className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center"
+                  className="dn-panel dn-pp"
                 >
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <Wallet size={16} className="text-orange-400" />
-                    <h3 className="text-white font-semibold">
-                      Donate with PayPal
-                    </h3>
-                  </div>
-                  <p className="text-white/50 text-xs mb-2">
+                  <h3>Donate with PayPal</h3>
+                  <p className="dn-small">
                     Embedded Operating Systems Research Foundation · Non-profit
                     organization · PayPal Giving Fund ID WJLA5PCYU8V7S.
                   </p>
-                  <p className="text-white/50 text-xs mb-6">
+                  <p className="dn-small">
                     You will complete your gift on paypal.com — this site never
                     sees your payment details. PayPal's standard nonprofit fees
                     apply.
@@ -634,9 +516,8 @@ export default function Donate() {
                     <button
                       type="submit"
                       title="Donate with PayPal"
-                      className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#FFC439] hover:bg-[#E0A800] text-[#003087] font-bold rounded-xl transition-all active:scale-95"
+                      className="btn dn-ppbtn"
                     >
-                      <Wallet size={18} />
                       Donate with PayPal
                     </button>
                     <img
@@ -645,248 +526,167 @@ export default function Donate() {
                       src="https://www.paypal.com/en_US/i/scr/pixel.gif"
                       width={1}
                       height={1}
-                      className="block mx-auto mt-2"
+                      className="dn-pixel"
                     />
                   </form>
-                  <p className="text-white/30 text-xs mt-4">
+                  <p className="fine">
                     PayPal, the PayPal logo marks shown, and the yellow button
                     style are trademarks of PayPal, Inc.
                   </p>
                 </div>
               )}
-              <div className="mt-5 text-xs text-white/30 space-y-1">
-                <div className="font-medium text-white/50 mb-2">
-                  Other ways to give
-                </div>
-                <div>
-                  Wire / check:{" "}
-                  <button
-                    type="button"
-                    onClick={() => openContactForm({ topic: "finance" })}
-                    className="text-orange-400 underline underline-offset-2"
-                  >
-                    contact Finance &amp; Governance
-                  </button>
-                </div>
-                <div>
-                  Card:{" "}
-                  <button
-                    type="button"
-                    onClick={() => setMethod("card")}
-                    className="text-orange-400 underline underline-offset-2"
-                  >
-                    pay by card via Stripe
-                  </button>
-                </div>
-                <div>
-                  PayPal:{" "}
-                  <button
-                    type="button"
-                    onClick={() => setMethod("paypal")}
-                    className="text-orange-400 underline underline-offset-2"
-                  >
-                    give with PayPal
-                  </button>
-                </div>
-                <div>
-                  GitHub Sponsors:{" "}
-                  <a
-                    href="https://github.com/sponsors/embeddedos-org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-orange-400 underline underline-offset-2"
-                  >
-                    github.com/sponsors/embeddedos-org
-                  </a>
-                </div>
+              <div className="dn-other">
+                <div className="label">Other ways to give</div>
+                <dl>
+                  <div>
+                    <dt>Wire / check:</dt>{" "}
+                    <dd>
+                      <button
+                        type="button"
+                        onClick={() => openContactForm({ topic: "finance" })}
+                        className="tl"
+                      >
+                        contact Finance &amp; Governance
+                      </button>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Card:</dt>{" "}
+                    <dd>
+                      <button
+                        type="button"
+                        onClick={() => setMethod("card")}
+                        className="tl"
+                      >
+                        pay by card via Stripe
+                      </button>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>PayPal:</dt>{" "}
+                    <dd>
+                      <button
+                        type="button"
+                        onClick={() => setMethod("paypal")}
+                        className="tl"
+                      >
+                        give with PayPal
+                      </button>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>GitHub Sponsors:</dt>{" "}
+                    <dd>
+                      <a
+                        href="https://github.com/sponsors/embeddedos-org"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="tl"
+                      >
+                        github.com/sponsors/embeddedos-org
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
               </div>
             </div>
 
             {/* Right: trust + impact */}
-            <div className="lg:col-span-2 space-y-6">
-              <Card className="rounded-2xl border border-white/10 bg-white/5">
-                <CardContent className="p-5">
-                  <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-green-400" />
-                    Donation Assurance
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      {
-                        icon: Award,
-                        label: "501(c)(3)",
-                        sub: "Tax-exempt nonprofit",
-                      },
-                      {
-                        icon: CheckCircle,
-                        label: "0% Platform Fee",
-                        sub: "100% goes to Foundation",
-                      },
-                      {
-                        icon: Globe,
-                        label: "MIT License",
-                        sub: "100% open source",
-                      },
-                      {
-                        icon: Shield,
-                        label: "Secure Checkout",
-                        sub: "PCI-DSS processors",
-                      },
-                    ].map(b => {
-                      const Icon = b.icon;
-                      return (
-                        <div
-                          key={b.label}
-                          className="bg-white/5 border border-white/10 rounded-xl p-3 text-center"
-                        >
-                          <Icon className="w-4 h-4 text-orange-400 mx-auto mb-1" />
-                          <div className="text-xs font-semibold text-white">
-                            {b.label}
-                          </div>
-                          <div className="text-xs text-white/40">{b.sub}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-xs text-green-300">
-                    <Shield className="w-3.5 h-3.5 inline mr-1.5" />
-                    {method === "zeffy" &&
-                      "Donation processed on Zeffy · EIN 41-4821627"}
-                    {method === "card" &&
-                      "Card processed by Stripe · EIN 41-4821627"}
-                    {method === "paypal" &&
-                      "Processed by PayPal · EIN 41-4821627"}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="rounded-2xl border border-white/10 bg-white/5">
-                <CardContent className="p-5">
-                  <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-4">
-                    Your Impact
-                  </h3>
-                  <div className="space-y-3">
-                    {IMPACT_ITEMS.map(item => {
-                      const Icon = item.icon;
-                      return (
-                        <div
-                          key={item.title}
-                          className="flex items-start gap-3"
-                        >
-                          <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                            style={{
-                              background: item.color + "20",
-                              border: `1px solid ${item.color}40`,
-                            }}
-                          >
-                            <Icon
-                              className="w-4 h-4"
-                              style={{ color: item.color }}
-                            />
-                          </div>
-                          <div>
-                            <div className="text-sm font-semibold text-white">
-                              {item.title}
-                            </div>
-                            <div className="text-xs text-white/50">
-                              {item.detail}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-              <div className="rounded-2xl border border-orange-500/20 bg-orange-500/5 p-5">
-                <h3 className="text-white font-semibold mb-2 text-sm">
-                  Want recurring impact?
-                </h3>
-                <p className="text-white/50 text-xs mb-3 leading-relaxed">
+            <aside className="dn-side">
+              <div className="card">
+                <h3>Donation Assurance</h3>
+                <ul className="dn-assure">
+                  {[
+                    { label: "501(c)(3)", sub: "Tax-exempt nonprofit" },
+                    {
+                      label: "0% Platform Fee",
+                      sub: "100% goes to Foundation",
+                    },
+                    { label: "MIT License", sub: "100% open source" },
+                    { label: "Secure Checkout", sub: "PCI-DSS processors" },
+                  ].map(b => (
+                    <li key={b.label}>
+                      <b>{b.label}</b>
+                      <span>{b.sub}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="st ok dn-proc">
+                  {method === "zeffy" &&
+                    "Donation processed on Zeffy · EIN 41-4821627"}
+                  {method === "card" &&
+                    "Card processed by Stripe · EIN 41-4821627"}
+                  {method === "paypal" &&
+                    "Processed by PayPal · EIN 41-4821627"}
+                </p>
+              </div>
+              <div className="card">
+                <h3 className="label">Your Impact</h3>
+                <ul className="dn-impact">
+                  {IMPACT_ITEMS.map(item => (
+                    <li key={item.title}>
+                      <b>{item.title}</b>
+                      <span>{item.detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="card hl">
+                <h3>Want recurring impact?</h3>
+                <p>
                   Become a Foundation Member for sustained support — with
                   recognition, early access, and voting rights.
                 </p>
-                <Button
-                  asChild
-                  size="sm"
-                  className="w-full bg-orange-500 hover:bg-orange-400 text-white font-semibold"
-                >
-                  <Link href="/membership">View Membership Tiers →</Link>
-                </Button>
+                <Link href="/membership" className="btn pri dn-wide">
+                  View Membership Tiers <span aria-hidden="true">→</span>
+                </Link>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       </section>
 
       {/* Why donate */}
-      <section className="py-20 bg-gradient-to-b from-[#050510] to-[#080820]">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Why Support EmbeddedOS?
-          </h2>
-          <p className="text-white/60 mb-12 max-w-2xl mx-auto">
-            The Embedded Operating Systems Research Foundation is a 501(c)(3)
-            nonprofit that develops and maintains free, open-source software for
-            embedded systems, IoT, AI edge computing, aerospace, and healthcare
-            devices.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Cpu,
-                title: "Open-Source First",
-                desc: "Every line of code is MIT-licensed and freely available. Your donation keeps it that way.",
-              },
-              {
-                icon: Globe,
-                title: "Global Impact",
-                desc: "EoS powers devices in 40+ countries — from hospital monitors to satellite edge nodes.",
-              },
-              {
-                icon: Users,
-                title: "Community Driven",
-                desc: "Donations fund student internships, contributor grants, and open research programs.",
-              },
-            ].map(c => {
-              const Icon = c.icon;
-              return (
-                <div
-                  key={c.title}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 text-left"
-                >
-                  <Icon className="w-6 h-6 text-orange-400 mb-3" />
-                  <h3 className="text-white font-semibold mb-2">{c.title}</h3>
-                  <p className="text-white/60 text-sm">{c.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-          <div className="mt-12 flex flex-wrap gap-4 justify-center">
-            <Button
-              asChild
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <Link href="/membership">Become a Member</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <Link href="/get-involved">Volunteer / Contribute</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <Link href="/sponsors">Corporate Sponsorship</Link>
-            </Button>
-          </div>
+      <Section
+        title="Why Support EmbeddedOS?"
+        lead="The Embedded Operating Systems Research Foundation is a 501(c)(3) nonprofit that develops and maintains free, open-source software for embedded systems, IoT, AI edge computing, aerospace, and healthcare devices."
+        alt
+      >
+        <ul className="cards">
+          {[
+            {
+              title: "Open-Source First",
+              desc: "Every line of code is MIT-licensed and freely available. Your donation keeps it that way.",
+            },
+            {
+              title: "Global Impact",
+              desc: "EoS powers devices in 40+ countries — from hospital monitors to satellite edge nodes.",
+            },
+            {
+              title: "Community Driven",
+              desc: "Donations fund student internships, contributor grants, and open research programs.",
+            },
+          ].map(c => (
+            <li key={c.title}>
+              <div className="card">
+                <h3>{c.title}</h3>
+                <p>{c.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="ctas dn-more">
+          <Link href="/membership" className="btn gh">
+            Become a Member
+          </Link>
+          <Link href="/get-involved" className="btn gh">
+            Volunteer / Contribute
+          </Link>
+          <Link href="/sponsors" className="btn gh">
+            Corporate Sponsorship
+          </Link>
         </div>
-      </section>
-    </div>
+      </Section>
+    </BpPage>
   );
 }

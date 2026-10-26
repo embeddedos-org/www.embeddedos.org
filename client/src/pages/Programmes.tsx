@@ -11,7 +11,6 @@
  * further down: none of these are running yet.
  */
 
-import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 import {
@@ -24,6 +23,8 @@ import {
 import { openContactForm } from "@/lib/contact-form";
 import AboutSections from "@/components/AboutSections";
 import type { AboutSection } from "@/data/about-section";
+import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
+import "./Programmes.css";
 
 const TRACKS: ProgrammeTrack[] = ["community", "marketing", "research"];
 
@@ -74,99 +75,84 @@ const PROGRAMMES_ABOUT: ReadonlyArray<AboutSection> = [
 
 export default function Programmes() {
   const anyActive = PROGRAMMES.some(isActive);
+  const tracks = TRACKS.filter(track =>
+    PROGRAMMES.some(p => p.track === track)
+  );
 
   return (
-    <div className="min-h-screen pt-16">
-      <section className="section-padding bg-grid relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1D3A]/80 to-[#080F1E]" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="badge-teal mb-4 inline-flex">Foundation</div>
-          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-white mb-4">
-            Programmes
-          </h1>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
-            The Foundation's organised activities, as distinct from the things
-            it publishes — ambassadors, university partnerships, grants and the
-            marketing programmes that support members.
-          </p>
-        </div>
-      </section>
+    <BpPage className="progs">
+      <PageHero
+        sig
+        label="Foundation"
+        title="Programmes"
+        lead="The Foundation's organised activities, as distinct from the things it publishes — ambassadors, university partnerships, grants and the marketing programmes that support members."
+      />
+      <LocalNav
+        name="Programmes"
+        items={[
+          ...tracks.map(track => ({
+            id: `track-${track}`,
+            label: TRACK_LABEL[track],
+          })),
+          { id: "about-programmes", label: "About" },
+        ]}
+      />
 
-      <section className="section-padding">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-12">
-          {!anyActive && (
-            <div className="glass rounded-2xl border border-white/10 p-6">
-              <h2 className="font-heading font-bold text-white text-lg mb-3">
-                None of these are running yet
-              </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
-                All nine are proposed. Nothing on this page is open for
-                applications today, and no programme here has members. They are
-                published because the shape of what the Foundation intends to
-                build is worth showing — but a roadmap presented as a prospectus
-                is the kind of thing that makes everything else harder to
-                believe, so it is said plainly instead.
-              </p>
+      {!anyActive && (
+        <Section className="progs-state" tight>
+          <div className="card hl progs-note">
+            <h2>None of these are running yet</h2>
+            <p>
+              All nine are proposed. Nothing on this page is open for
+              applications today, and no programme here has members. They are
+              published because the shape of what the Foundation intends to
+              build is worth showing — but a roadmap presented as a prospectus
+              is the kind of thing that makes everything else harder to believe,
+              so it is said plainly instead.
+            </p>
+            <div className="ctas">
               <button
                 type="button"
                 onClick={() => openContactForm({ topic: "contact" })}
-                className="inline-block mt-4 text-sm text-[#F97316] underline hover:no-underline"
+                className="btn pri"
               >
                 Help start one — contact us
               </button>
             </div>
-          )}
+          </div>
+        </Section>
+      )}
 
-          {TRACKS.map(track => {
-            const inTrack = PROGRAMMES.filter(p => p.track === track);
-            if (inTrack.length === 0) return null;
-            return (
-              <div key={track}>
-                <h2 className="font-heading font-bold text-white text-2xl mb-5">
-                  {TRACK_LABEL[track]}
-                </h2>
-                <ul className="space-y-3">
-                  {inTrack.map(p => (
-                    <li
-                      key={p.slug}
-                      className="glass rounded-xl border border-white/5 p-5"
-                    >
-                      <div className="flex flex-wrap items-center gap-3 mb-2">
-                        <Link
-                          href={`/programmes/${p.slug}`}
-                          className="text-white font-medium underline decoration-white/25 underline-offset-4 hover:decoration-[#F97316]"
-                        >
-                          {p.name}
-                        </Link>
-                        <span
-                          className={`text-[11px] px-2 py-0.5 rounded-full border ${
-                            isActive(p)
-                              ? "text-emerald-400 border-emerald-400/40 bg-emerald-400/10"
-                              : "text-white/60 border-white/20 bg-white/5"
-                          }`}
-                        >
-                          {STATUS_LABEL[p.status]}
-                        </span>
-                      </div>
-                      <p className="text-white/55 text-sm leading-relaxed">
-                        {p.summary}
-                      </p>
-                      <Link
-                        href={`/programmes/${p.slug}`}
-                        className="inline-flex items-center gap-1.5 mt-3 text-xs text-[#F97316] hover:text-[#EA580C] font-semibold"
-                      >
-                        Details <ArrowRight className="w-3 h-3" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {tracks.map(track => (
+        <Section key={track} id={`track-${track}`} title={TRACK_LABEL[track]}>
+          <ul className="cards">
+            {PROGRAMMES.filter(p => p.track === track).map(p => (
+              <li key={p.slug}>
+                <div className="card">
+                  <div className="top">
+                    <h3>
+                      <Link href={`/programmes/${p.slug}`}>{p.name}</Link>
+                    </h3>
+                    <span className={isActive(p) ? "st ok" : "st"}>
+                      {STATUS_LABEL[p.status]}
+                    </span>
+                  </div>
+                  <p>{p.summary}</p>
+                  <Link href={`/programmes/${p.slug}`} className="more">
+                    Details <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ))}
 
-      <AboutSections title="About programmes" sections={PROGRAMMES_ABOUT} />
-    </div>
+      <AboutSections
+        id="about-programmes"
+        title="About programmes"
+        sections={PROGRAMMES_ABOUT}
+      />
+    </BpPage>
   );
 }

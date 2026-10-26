@@ -1,0 +1,59 @@
+/* The YouTube channel (/youtube): what is on it now, and what it will carry. */
+.bp.ytc .yt-main {
+  padding-top: clamp(24px, 3vw, 40px);
+}
+.bp.ytc .yt-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .bp.ytc .yt-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.ytc .yt-state {
+  gap: 14px;
+  padding: clamp(26px, 3.4vw, 40px);
+}
+.bp.ytc .yt-state h2,
+.bp.ytc .yt-h {
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: -0.022em;
+  line-height: 1.18;
+}
+.bp.ytc .yt-state p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.bp.ytc .yt-state .ctas {
+  margin-top: 8px;
+}
+.bp.ytc .yt-plan {
+  display: grid;
+  gap: 20px;
+}
+.bp.ytc .yt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  counter-reset: yt;
+}
+.bp.ytc .yt-list li {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg2);
+}
+.bp.ytc .yt-list li::before {
+  counter-increment: yt;
+  content: counter(yt, decimal-leading-zero);
+  font: 500 12px/1.9 var(--mono);
+  color: var(--fg3);
+}

@@ -62,7 +62,7 @@ function MarkdownText({ text }: { text: string }) {
  */
 function AnswerLink({ link }: { link: KnowledgeLink }) {
   const className =
-    "inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-[#F97316]/10 border border-[#F97316]/25 text-[#FDBA74] hover:bg-[#F97316]/20 hover:text-white transition-colors";
+    "inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-[#48484e] text-[#f5f5f7] hover:border-[#a1a1a6] transition-colors";
 
   const contactTopic = link.href.startsWith("contact:")
     ? (link.href.slice("contact:".length) as ContactTopicKey)
@@ -184,14 +184,14 @@ export default function EBot() {
           setOpen(true);
           setMinimized(false);
         }}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-[#F97316] to-[#EA580C] shadow-lg shadow-[#F97316]/30 flex items-center justify-center text-white hover:scale-110 transition-transform"
+        className="fixed bottom-6 right-6 z-[35] w-14 h-14 rounded-full bg-[#141417] border border-[#34343a] hover:border-[#a1a1a6] flex items-center justify-center text-[#f5f5f7] transition-colors"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open eBot AI assistant"
         style={{ display: open ? "none" : "flex" }}
       >
         <Bot className="w-6 h-6" />
-        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-[#0a0f1e] animate-pulse" />
+        <span className="absolute top-0 right-0 w-3 h-3 bg-[#34d399] rounded-full border-2 border-[#000000]" />
       </motion.button>
 
       {/* Chat Window */}
@@ -207,7 +207,7 @@ export default function EBot() {
             }
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
-            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 bg-[#0d1424]"
+            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-[#232326] bg-[#0b0b0d]"
             style={{ maxHeight: minimized ? 56 : 520 }}
             role="dialog"
             aria-modal="true"
@@ -215,28 +215,28 @@ export default function EBot() {
             tabIndex={-1}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#F97316]/20 to-[#A78BFA]/10 border-b border-white/10">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center flex-shrink-0">
-                <Bot className="w-4 h-4 text-white" />
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-[#232326]">
+              <div className="w-8 h-8 rounded-full bg-[#141417] border border-[#34343a] flex items-center justify-center flex-shrink-0">
+                <Bot className="w-4 h-4 text-[#f5f5f7]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-white">eBot</p>
-                <p className="text-xs text-green-400 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
+                <p className="text-sm font-semibold text-[#f5f5f7]">eBot</p>
+                <p className="text-xs text-[#a1a1a6] flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-[#34d399] rounded-full inline-block" />
                   EmbeddedOS AI Assistant
                 </p>
               </div>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setMinimized(m => !m)}
-                  className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-1.5 rounded-lg text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06] transition-colors"
                   aria-label="Minimize"
                 >
                   <Minimize2 className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => setOpen(false)}
-                  className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-1.5 rounded-lg text-[#a1a1a6] hover:text-[#f5f5f7] hover:bg-white/[0.06] transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -265,22 +265,22 @@ export default function EBot() {
                       <div
                         className={`w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs ${
                           msg.role === "assistant"
-                            ? "bg-gradient-to-br from-[#F97316] to-[#EA580C]"
-                            : "bg-[#22D3EE]/20 border border-[#22D3EE]/30"
+                            ? "bg-[#141417] border border-[#34343a]"
+                            : "bg-[#232326] border border-[#34343a]"
                         }`}
                       >
                         {msg.role === "assistant" ? (
-                          <Bot className="w-3.5 h-3.5 text-white" />
+                          <Bot className="w-3.5 h-3.5 text-[#f5f5f7]" />
                         ) : (
-                          <User className="w-3.5 h-3.5 text-[#22D3EE]" />
+                          <User className="w-3.5 h-3.5 text-[#a1a1a6]" />
                         )}
                       </div>
                       <div className="max-w-[80%] min-w-0">
                         <div
                           className={`rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                             msg.role === "assistant"
-                              ? "bg-white/5 text-white/90 rounded-tl-sm"
-                              : "bg-[#F97316]/20 text-white rounded-tr-sm border border-[#F97316]/20"
+                              ? "bg-[#141417] text-[#f5f5f7] rounded-tl-sm"
+                              : "bg-[#232326] text-[#f5f5f7] rounded-tr-sm border border-[#34343a]"
                           }`}
                         >
                           <MarkdownText text={msg.content} />
@@ -298,15 +298,15 @@ export default function EBot() {
 
                   {thinking && (
                     <div className="flex gap-2.5">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-3.5 h-3.5 text-white" />
+                      <div className="w-7 h-7 rounded-full bg-[#141417] border border-[#34343a] flex items-center justify-center flex-shrink-0">
+                        <Bot className="w-3.5 h-3.5 text-[#f5f5f7]" />
                       </div>
-                      <div className="bg-white/5 rounded-2xl rounded-tl-sm px-3.5 py-2.5">
+                      <div className="bg-[#141417] rounded-2xl rounded-tl-sm px-3.5 py-2.5">
                         <div className="flex gap-1 items-center h-5">
                           {[0, 1, 2].map(i => (
                             <motion.div
                               key={i}
-                              className="w-1.5 h-1.5 bg-[#F97316] rounded-full"
+                              className="w-1.5 h-1.5 bg-[#a1a1a6] rounded-full"
                               animate={{ y: [0, -4, 0] }}
                               transition={{
                                 duration: 0.6,
@@ -329,7 +329,7 @@ export default function EBot() {
                       <button
                         key={s}
                         onClick={() => send(s)}
-                        className="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/70 hover:bg-[#F97316]/10 hover:border-[#F97316]/30 hover:text-white transition-colors"
+                        className="text-xs px-2.5 py-1 rounded-full border border-[#34343a] text-[#a1a1a6] hover:border-[#a1a1a6] hover:text-[#f5f5f7] transition-colors"
                       >
                         {s}
                       </button>
@@ -339,7 +339,7 @@ export default function EBot() {
 
                 {/* Input */}
                 <div className="px-4 pb-4">
-                  <div className="flex gap-2 bg-white/5 border border-white/10 rounded-xl p-2 focus-within:border-[#F97316]/40 transition-colors">
+                  <div className="flex gap-2 bg-[#141417] border border-[#34343a] rounded-xl p-2 focus-within:border-[#a1a1a6] transition-colors">
                     <input
                       ref={inputRef}
                       value={input}
@@ -347,13 +347,13 @@ export default function EBot() {
                       onKeyDown={handleKey}
                       placeholder="Ask eBot anything…"
                       aria-label="Ask eBot anything"
-                      className="flex-1 bg-transparent text-sm text-white placeholder-white/30 outline-none min-w-0"
+                      className="flex-1 bg-transparent text-sm text-[#f5f5f7] placeholder-[#86868b] outline-none min-w-0"
                       disabled={thinking}
                     />
                     <button
                       onClick={() => send()}
                       disabled={!input.trim() || thinking}
-                      className="w-8 h-8 rounded-lg bg-[#F97316] disabled:opacity-40 flex items-center justify-center text-white hover:bg-[#EA580C] transition-colors flex-shrink-0"
+                      className="w-8 h-8 rounded-lg bg-[#f5f5f7] disabled:opacity-40 flex items-center justify-center text-black hover:bg-white transition-colors flex-shrink-0"
                       aria-label="Send"
                     >
                       <Send className="w-3.5 h-3.5" />

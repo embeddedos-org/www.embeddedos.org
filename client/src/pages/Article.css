@@ -1,0 +1,66 @@
+/* Articles (/article/:slug and the /article-xxx addresses): one reading column. */
+.bp.article .phero h1 {
+  max-width: 18em;
+  font-size: clamp(38px, 5.4vw, 76px);
+  line-height: 1.04;
+}
+.bp.article .phero .lead {
+  max-width: 34em;
+}
+.bp.article .ar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--fg);
+}
+.bp.article .ar-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c, var(--orange-hi));
+}
+.bp.article .ar-read {
+  padding-top: clamp(24px, 3vw, 40px);
+}
+.bp.article .ar-body {
+  gap: clamp(36px, 4vw, 52px);
+  max-width: 42em;
+}
+.bp.article .ar-body section {
+  display: grid;
+  gap: 14px;
+}
+.bp.article .ar-body h2 {
+  font-size: clamp(24px, 2.3vw, 30px);
+  letter-spacing: -0.022em;
+  line-height: 1.18;
+}
+.bp.article .ar-body p {
+  font-size: clamp(17px, 1.3vw, 19px);
+  line-height: 1.7;
+  color: var(--fg2);
+}
+.bp.article .ar-end {
+  display: grid;
+  gap: 28px;
+  max-width: 42em;
+  margin-top: clamp(48px, 6vw, 72px);
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.bp.article .ar-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bp.article .ar-tags li {
+  font: 500 12px/1 var(--mono);
+  color: var(--fg2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 12px;
+}

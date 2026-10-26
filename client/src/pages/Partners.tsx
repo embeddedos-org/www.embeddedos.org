@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
-import { Handshake, Star, ArrowRight, Mail } from "lucide-react";
+import type { CSSProperties } from "react";
 import { openContactForm } from "@/lib/contact-form";
 import AboutSections from "@/components/AboutSections";
 import type { AboutSection } from "@/data/about-section";
+import { Band, BpPage, PageHero, Section } from "@/components/bp";
+import "./Partners.css";
 
 const tiers = [
   {
@@ -99,106 +100,67 @@ const PARTNERS_ABOUT: ReadonlyArray<AboutSection> = [
 
 export default function Partners() {
   return (
-    <div className="min-h-screen bg-[#0A0E1A] text-white">
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/5" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm font-medium mb-6">
-              <Handshake className="w-4 h-4" /> PARTNERSHIPS & SPONSORS
-            </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-yellow-300 bg-clip-text text-transparent">
-              Partners & Sponsors
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Support the EmbeddedOS Foundation and get your organization in
-              front of 10,000+ embedded engineers worldwide.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <BpPage className="partners">
+      <PageHero
+        sig
+        label="PARTNERSHIPS & SPONSORS"
+        title="Partners & Sponsors"
+        lead="Support the EmbeddedOS Foundation and get your organization in front of 10,000+ embedded engineers worldwide."
+      />
 
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-6 mb-8 text-center">
-            <p className="text-gray-300">
-              All sponsorship fees are reinvested into open-source development,
-              free certifications, and education. Donations are{" "}
-              <strong className="text-white">tax-deductible</strong> as the
-              Foundation is a registered{" "}
-              <strong className="text-white">501(c)(3)</strong> nonprofit.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {tiers.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 rounded-xl p-6"
+      <Section className="pt-tiers">
+        <p className="gnote pt-note">
+          All sponsorship fees are reinvested into open-source development, free
+          certifications, and education. Donations are{" "}
+          <strong>tax-deductible</strong> as the Foundation is a registered{" "}
+          <strong>501(c)(3)</strong> nonprofit.
+        </p>
+        <ul className="cards two">
+          {tiers.map(t => (
+            <li key={t.name}>
+              <div
+                className="card pt-tier"
+                style={{ "--c": t.color } as CSSProperties}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-white font-bold text-lg">{t.name}</h2>
-                  <span
-                    className="text-sm font-semibold"
-                    style={{ color: t.color }}
-                  >
-                    {t.price}
-                  </span>
+                <div className="top">
+                  <h2>{t.name}</h2>
+                  <span className="pt-price">{t.price}</span>
                 </div>
-                <ul className="space-y-2 mb-6">
+                <ul className="pt-perks">
                   {t.perks.map(p => (
-                    <li
-                      key={p}
-                      className="flex items-start gap-2 text-sm text-gray-400"
-                    >
-                      <Star
-                        className="w-3 h-3 flex-shrink-0 mt-1"
-                        style={{ color: t.color }}
-                      />
-                      {p}
-                    </li>
+                    <li key={p}>{p}</li>
                   ))}
                 </ul>
                 <button
                   type="button"
                   onClick={() => openContactForm({ topic: "partners" })}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full justify-center"
-                  style={{ background: t.color + "20", color: t.color }}
+                  className="btn gh pt-cta"
                 >
-                  Become a Sponsor <ArrowRight className="w-3 h-3" />
+                  Become a Sponsor{" "}
+                  <span className="ar" aria-hidden="true">
+                    →
+                  </span>
                 </button>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Interested in Partnering?
-          </h2>
-          <p className="text-gray-400 mb-6">
-            Hardware companies, cloud providers, universities, and research labs
-            — we welcome all partnership discussions.
-          </p>
-          <button
-            type="button"
-            onClick={() => openContactForm({ topic: "partners" })}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold transition-colors"
-          >
-            <Mail className="w-4 h-4" /> Contact Partnerships
-          </button>
-        </div>
-      </section>
+      <Band
+        title="Interested in Partnering?"
+        lead="Hardware companies, cloud providers, universities, and research labs — we welcome all partnership discussions."
+      >
+        <button
+          type="button"
+          onClick={() => openContactForm({ topic: "partners" })}
+          className="btn pri"
+        >
+          Contact Partnerships
+        </button>
+      </Band>
 
       <AboutSections title="About partnerships" sections={PARTNERS_ABOUT} />
-    </div>
+    </BpPage>
   );
 }

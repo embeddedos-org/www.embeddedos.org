@@ -40,13 +40,11 @@ const PINNED: readonly (readonly [string, string])[] = [
     "client/src/pages/EcadHardware.tsx",
     "The repository is MIT-licensed, except the original EoS development boards, which are all rights reserved, and the manufacturer designs mirrored under boards/cad, which keep their manufacturers' licences.",
   ],
+  // The homepage's eCAD hall paragraph lives with the story's chapters; the hero's eyebrow line ("Foundation ·
+  // 501(c)(3) · MIT License (software)") was removed at the owner's request, since the header logo carries it.
   [
-    "client/src/pages/Home.tsx",
+    "client/src/black/Chapters.tsx",
     "The repository is published under the MIT licence, except the original EoS development boards, which are all rights reserved, and the manufacturer designs mirrored under boards/cad, which keep their manufacturers' licences.",
-  ],
-  [
-    "client/src/pages/Home.tsx",
-    "Foundation · 501(c)(3) · MIT License (software)",
   ],
   [
     "client/src/pages/Home.tsx",

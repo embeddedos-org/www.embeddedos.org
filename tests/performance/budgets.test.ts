@@ -20,6 +20,18 @@ const brotli = (buf: Buffer) =>
   }).length;
 
 const read = (p: string) => fs.readFileSync(p);
+// three.js's own chunk, found by its content: the bundler names a shared chunk
+// after one of its modules ("three.module-…" while the homepage imported three
+// directly, "extends-…" since only the 3D pages do), so the name is not stable.
+// `__THREE__` is the global three.js registers to catch duplicate copies.
+const threeChunks = () =>
+  fs
+    .readdirSync(ASSETS)
+    .filter(
+      f =>
+        f.endsWith(".js") &&
+        fs.readFileSync(path.join(ASSETS, f), "utf8").includes("__THREE__")
+    );
 const assetsMatching = (re: RegExp) =>
   fs.readdirSync(ASSETS).filter(f => re.test(f));
 const kb = (n: number) => Math.round(n / 1024);
@@ -80,12 +92,14 @@ describe("javascript budgets", () => {
     const preloads = [
       ...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"/g),
     ].map(m => m[1]);
-    expect(preloads.filter(p => /three/i.test(p))).toEqual([]);
+    const three = threeChunks();
+    expect(three.length).toBeGreaterThan(0);
+    expect(preloads.filter(p => three.some(t => p.endsWith(t)))).toEqual([]);
     expect(preloads.length).toBeLessThanOrEqual(4);
   });
 
   it("keeps three.js in an async chunk that only 3D pages pull in", () => {
-    const three = assetsMatching(/three/i);
+    const three = threeChunks();
     expect(three.length).toBeGreaterThan(0);
     const entry = fs.readFileSync(
       path.join(ASSETS, assetsMatching(/^index-.*\.js$/)[0]),
@@ -99,7 +113,7 @@ describe("javascript budgets", () => {
     // ceiling a dependency bump can silently double what the architecture
     // and CAD pages download. Set slightly above the 193 KB the current
     // build produces.
-    const three = assetsMatching(/three/i);
+    const three = threeChunks();
     expect(three.length).toBeGreaterThan(0);
     for (const f of three) {
       const size = brotli(read(path.join(ASSETS, f)));
@@ -132,8 +146,10 @@ describe("image budgets", () => {
   });
 
   it("the homepage image set stays under 800 KB", () => {
+    // What the homepage shows before any script: the logo and the story's
+    // poster at its largest (the 2560 desktop WebP; a phone gets the 1280 one).
     const homepageImages = [
-      "home-story-poster.jpg",
+      "home-2026-10-22/story/d/poster.webp",
       "embeddedos-logo-mark_bc053888.jpg",
     ];
     const total = homepageImages.reduce(
@@ -141,6 +157,22 @@ describe("image budgets", () => {
       0
     );
     expect(total, `homepage images = ${kb(total)} KB`).toBeLessThan(800 * 1024);
+  });
+
+  it("no image in the homepage's media folders exceeds 260 KB", () => {
+    // The story frames, the board renders and the industry posters live in
+    // subfolders, which the flat check above does not open. Frames are packed
+    // two (or four, for phones) to a strip so each strip stays under this.
+    const oversized: string[] = [];
+    for (const dir of ["home-2026-10-22"]) {
+      for (const f of fs.globSync("**/*.{avif,gif,jpg,jpeg,png,svg,webp}", {
+        cwd: path.join(IMG_DIR, dir),
+      })) {
+        const size = fs.statSync(path.join(IMG_DIR, dir, f)).size;
+        if (size > 260 * 1024) oversized.push(`${dir}/${f} = ${kb(size)} KB`);
+      }
+    }
+    expect(oversized).toEqual([]);
   });
 
   it("defers below-the-fold images", () => {

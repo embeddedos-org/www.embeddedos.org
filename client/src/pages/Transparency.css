@@ -1,0 +1,89 @@
+/* Transparency & Accountability: the registration record, the reporting timetable and the documents. */
+.bp.transparency .tr-kv {
+  display: contents;
+}
+.bp.transparency .kv {
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+}
+@media (max-width: 620px) {
+  .bp.transparency .kv {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.transparency .tr-verify {
+  margin-top: clamp(28px, 4vw, 44px);
+  gap: 12px;
+  padding: clamp(24px, 3vw, 36px);
+}
+.bp.transparency .tr-verify p {
+  max-width: 46em;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.bp.transparency .tr-verify b {
+  color: var(--fg);
+  font-weight: 600;
+}
+.bp.transparency .tr-verify .ctas {
+  margin-top: 8px;
+}
+.bp.transparency .tr-verify .btn {
+  white-space: normal;
+  text-align: center;
+  padding-block: 10px;
+}
+.bp.transparency .tr-tl {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.bp.transparency .tr-tl li {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+  gap: 8px 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 620px) {
+  .bp.transparency .tr-tl li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.transparency .tr-when {
+  font: 500 13px/1.5 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+.bp.transparency .tr-tl h3 {
+  font-size: 19px;
+  letter-spacing: -0.015em;
+}
+.bp.transparency .tr-tl p:not(.tr-when) {
+  margin-top: 6px;
+  max-width: 46em;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg2);
+}
+/* the arrow is drawn, not written: the link's text stays the document's name and summary */
+.bp.transparency a.card .top::after {
+  content: "→";
+  content: "→" / "";
+  flex: none;
+  color: var(--fg3);
+  transition:
+    color 0.2s,
+    transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.bp.transparency a.card:hover .top::after {
+  color: var(--orange-hi);
+  transform: translateX(3px);
+}
+.bp.transparency .tr-band .lead {
+  margin-top: 14px;
+}
+.bp.transparency .tr-band .wrap > div:first-child {
+  max-width: 40em;
+}

@@ -13,9 +13,10 @@
  *
  * It deliberately does not compute contrast. The page backgrounds vary, and the
  * honest threshold is empirical: on the two grounds the site actually uses,
- * #0B1D3A and #080F1E, white at 50% opacity is the lowest value that clears
- * 4.5:1 (5.08:1 and 5.31:1 respectively). Anything below that is unreadable
- * somewhere on the site, so the rule is a floor rather than a calculation.
+ * #000000 and the #0B0B0D panel, white at 50% opacity is the lowest step that
+ * clears 4.5:1 (5.32:1 and 5.33:1; 45% gives 4.43:1 on black). Anything below
+ * that is unreadable somewhere on the site, so the rule is a floor rather than
+ * a calculation.
  *
  * ## Why there is a baseline
  *
@@ -40,92 +41,29 @@ const SRC = join(__dirname, "../../client/src");
 
 /**
  * The lowest white opacity that clears 4.5:1 on every ground the site uses.
- * Raising a background lighter than #0B1D3A would let a lower value through,
- * but nothing on the site does that today.
+ * A lighter ground would let a lower value through, but black is the darkest
+ * there is, so this floor cannot be lowered.
  */
 const MIN_WHITE_ALPHA = 50;
 
 /**
  * Greys whose contrast is too low on the dark grounds, measured rather than
- * guessed: gray-600 is 1.95:1 and gray-500 is 3.04:1 against a bg-white/5 card
- * over #0B1D3A. gray-400 is 5.79:1 and is fine.
+ * guessed: gray-600 is 2.57:1 and gray-500 is 4.02:1 against a bg-white/5 card
+ * over black. gray-400 is 7.66:1 and is fine.
  */
 const BANNED_GRAYS = ["text-gray-500", "text-gray-600", "text-gray-700"];
 
 /**
  * Files that already carried low-contrast utilities when this check was added.
  *
- * 289 occurrences across these 67 files. Remove a path when its colours have
- * been checked in a browser and raised — never add one.
+ * 289 occurrences across 67 files when it was added. Remove a path when its
+ * colours have been checked in a browser and raised — never add one. After the
+ * Black Edition redesign and its dark-theme sweep (24 Oct 2026) 65 of them are
+ * clean; the two left are components no route renders.
  */
 const BASELINE = new Set<string>([
-  "src/components/AeroSwift3D.tsx",
   "src/components/BootPipeline.tsx",
-  "src/components/DonateModal.tsx",
-  "src/components/Footer.tsx",
   "src/components/HealthShowcase.tsx",
-  "src/components/Navbar.tsx",
-  "src/components/ProductDetailPage.tsx",
-  "src/components/ProgrammeList.tsx",
-  "src/components/SearchModal.tsx",
-  "src/pages/About.tsx",
-  "src/pages/Aerospace.tsx",
-  "src/pages/ApiDocs.tsx",
-  "src/pages/Architecture.tsx",
-  "src/pages/Article.tsx",
-  "src/pages/Books.tsx",
-  "src/pages/Careers.tsx",
-  "src/pages/Certification.tsx",
-  "src/pages/Changelog.tsx",
-  "src/pages/Contact.tsx",
-  "src/pages/Demo.tsx",
-  "src/pages/Docs.tsx",
-  "src/pages/Donate.tsx",
-  "src/pages/Downloads.tsx",
-  "src/pages/EAI.tsx",
-  "src/pages/EAIEdge.tsx",
-  "src/pages/EApps.tsx",
-  "src/pages/EBoot.tsx",
-  "src/pages/EBrowser.tsx",
-  "src/pages/EBuildPage.tsx",
-  "src/pages/EFlow.tsx",
-  "src/pages/EHealth365.tsx",
-  "src/pages/EIPC.tsx",
-  "src/pages/ENI.tsx",
-  "src/pages/EOSuite.tsx",
-  "src/pages/EOffice.tsx",
-  "src/pages/ERadar360.tsx",
-  "src/pages/EServiceApps.tsx",
-  "src/pages/EcadHardware.tsx",
-  "src/pages/Ecosystem.tsx",
-  "src/pages/EoS.tsx",
-  "src/pages/EoStudio.tsx",
-  "src/pages/Events.tsx",
-  "src/pages/FAQ.tsx",
-  "src/pages/GetInvolved.tsx",
-  "src/pages/GettingStarted.tsx",
-  "src/pages/HardwareLab.tsx",
-  "src/pages/Health.tsx",
-  "src/pages/HealthCompare.tsx",
-  "src/pages/Home.tsx",
-  "src/pages/Industries.tsx",
-  "src/pages/Internship.tsx",
-  "src/pages/Licenses.tsx",
-  "src/pages/Mission.tsx",
-  "src/pages/NeuralLinkAI.tsx",
-  "src/pages/News.tsx",
-  "src/pages/NotFound.tsx",
-  "src/pages/Organization.tsx",
-  "src/pages/Patents.tsx",
-  "src/pages/Products.tsx",
-  "src/pages/Projects.tsx",
-  "src/pages/Quantum.tsx",
-  "src/pages/Research.tsx",
-  "src/pages/Resources.tsx",
-  "src/pages/Roadmap.tsx",
-  "src/pages/Stacks.tsx",
-  "src/pages/Transparency.tsx",
-  "src/pages/WhatWeDo.tsx",
 ]);
 
 function sourceFiles(dir: string): string[] {

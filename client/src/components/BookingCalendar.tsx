@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ExternalLink } from "lucide-react";
+import "./BookingCalendar.css";
 import {
   GOOGLE_APPOINTMENTS_EMBED_URL,
   GOOGLE_BOOKING_PAGE_URL,
@@ -29,7 +29,7 @@ function CalendarSkeleton() {
   return (
     <div
       aria-hidden="true"
-      className="absolute inset-0 grid gap-4 p-6 sm:grid-cols-[1fr_2fr] bg-brand-navy"
+      className="bkc-skel absolute inset-0 grid gap-4 p-6 sm:grid-cols-[1fr_2fr]"
     >
       <div className="hidden sm:grid content-start gap-3">
         <div className="book-shimmer h-12 w-12 rounded-full" />
@@ -169,27 +169,21 @@ export default function BookingCalendar({
       href={page}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-brand-amber/60 px-4 py-2.5 text-sm font-semibold text-brand-amber-light hover:border-brand-amber hover:bg-brand-amber/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-amber"
+      className="btn gh shrink-0"
     >
       Open the booking page{" "}
       <span className="sr-only">on Google Calendar (opens in a new tab)</span>
-      <ExternalLink size={14} aria-hidden="true" />
+      <span aria-hidden="true">↗</span>
     </a>
   );
 
   if (prerendering)
     return (
-      <div
-        data-booking="static"
-        className="grid gap-4 rounded-xl border border-white/10 bg-brand-navy p-6"
-      >
-        <p className="text-sm leading-relaxed text-gray-300">
+      <div data-booking="static" className="card bkc-static">
+        <p>
           The calendar appears here once the page&apos;s scripts run. If it does
           not, open the booking page on Google Calendar, or email us from our{" "}
-          <a
-            href="/contact"
-            className="font-semibold text-brand-amber-light underline underline-offset-2"
-          >
+          <a href="/contact" className="tl">
             contact page
           </a>
           .
@@ -199,11 +193,8 @@ export default function BookingCalendar({
     );
 
   return (
-    <div data-booking="google-calendar" className="grid gap-3 min-w-0">
-      <div
-        ref={ref}
-        className="relative w-full min-w-0 h-[600px] sm:h-[700px] overflow-hidden rounded-xl bg-brand-navy"
-      >
+    <div data-booking="google-calendar" className="bkc">
+      <div ref={ref} className="bkc-stage">
         {state !== "waiting" && (
           <iframe
             ref={frame}
@@ -214,17 +205,13 @@ export default function BookingCalendar({
             // out of the tab order and the accessibility tree until then.
             inert={state !== "ready"}
             onLoad={onFrameLoad}
-            className="absolute inset-0 h-full w-full border-0 bg-white"
+            className="bkc-frame"
           />
         )}
         {(state === "waiting" || state === "loading") && <CalendarSkeleton />}
         {state === "failed" && (
-          <div
-            ref={overlay}
-            data-booking="failed"
-            className="absolute inset-0 grid content-center gap-4 overflow-y-auto bg-brand-navy p-4 sm:p-6"
-          >
-            <p className="text-sm text-gray-300">
+          <div ref={overlay} data-booking="failed" className="bkc-failed">
+            <p>
               {page
                 ? "The calendar could not load here. You can open the booking page on Google Calendar, or:"
                 : "The calendar could not load here."}
@@ -242,8 +229,8 @@ export default function BookingCalendar({
         </p>
       </div>
       {pageLink && state !== "failed" && (
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-gray-300">
+        <div className="bkc-under">
+          <p>
             If the calendar does not appear, open the booking page on Google
             Calendar.
           </p>

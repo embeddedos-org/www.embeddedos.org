@@ -23,13 +23,11 @@
       }
       body {
         margin: 0;
-        background-color: #0b1d3a;
-        color: #eef2f7;
+        background-color: #000000;
+        color: #f5f5f7;
         font-family:
-          "DM Sans",
-          system-ui,
-          -apple-system,
-          sans-serif;
+          -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto,
+          "DM Sans", Arial, sans-serif;
         font-size: 1rem;
         line-height: 1.6;
         min-height: 100vh;
@@ -41,7 +39,9 @@
       h4,
       h5,
       h6 {
-        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+          Roboto, "Space Grotesk", Arial, sans-serif;
         font-weight: 700;
         /* line-height, letter-spacing and margin are owned by the design system
            (display-*, leading-*, mb-*) in the deferred stylesheet. They must not
@@ -67,9 +67,9 @@
         left: 1rem;
         z-index: 9999;
         padding: 0.75rem 1.5rem;
-        background: #f97316;
-        color: #fff;
-        border-radius: 0.5rem;
+        background: #f5f5f7;
+        color: #000;
+        border-radius: 999px;
         font-weight: 600;
       }
       .skip-to-content:focus {
@@ -81,7 +81,7 @@
       name="description"
       content="EmbeddedOS — The open-source operating system for every device. 14 components, 83 board definitions, 300+ APIs."
     />
-    <meta name="theme-color" content="#0B1D3A" />
+    <meta name="theme-color" content="#000000" />
     <link rel="canonical" href="https://www.embeddedos.org/" />
     <!--
       Icons. The site previously declared none and shipped none, so /favicon.ico

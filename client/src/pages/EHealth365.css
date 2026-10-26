@@ -1,0 +1,164 @@
+/* /ehealth365: the two-device health research concept. */
+.bp.eh .phero .badges {
+  margin-top: 26px;
+}
+.bp.eh .eh-hstats {
+  margin-top: 26px;
+  max-width: 640px;
+}
+/* three short figures: one row on every width */
+.bp.eh .eh-hstats .gstats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.bp.eh .board picture {
+  display: block;
+  overflow: hidden;
+}
+.bp.eh .board img {
+  transform: scale(1.15);
+  transform-origin: 50% 55%;
+}
+.bp.eh .board figcaption > span:last-child {
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+/* simulated signals, large */
+.bp.eh .eh-sim {
+  margin-bottom: 20px;
+}
+.bp.eh .eh-waves {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 760px) {
+  .bp.eh .eh-waves {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bp.eh .eh-wave {
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--bg);
+}
+.bp.eh .eh-wave svg {
+  display: block;
+  height: 96px;
+  margin-top: 12px;
+}
+.bp.eh .eh-wave-h {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.bp.eh .eh-wave .k {
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+.bp.eh .eh-val {
+  font: 600 28px/1 var(--display);
+  letter-spacing: -0.02em;
+  color: var(--c, var(--fg));
+  font-variant-numeric: tabular-nums;
+}
+.bp.eh .eh-unit {
+  margin-left: 6px;
+  font: 400 13px/1 var(--sans);
+  color: var(--fg3);
+}
+
+/* device cards */
+.bp.eh .eh-dev {
+  border-top: 2px solid var(--c, var(--line));
+  padding: 30px 28px 26px;
+}
+.bp.eh .eh-dev h3 {
+  font-size: clamp(24px, 2.2vw, 30px);
+}
+.bp.eh .eh-cap {
+  margin-top: 10px;
+}
+.bp.eh .card ul.eh-metrics {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 8px;
+  font-size: 15px;
+}
+.bp.eh .eh-metrics li {
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+}
+.bp.eh .eh-metrics li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c, var(--fg3));
+  transform: translateY(-2px);
+}
+.bp.eh .eh-foot {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+.bp.eh .eh-foot b {
+  display: block;
+  font-weight: 600;
+  color: var(--fg);
+}
+.bp.eh .eh-foot .eh-price {
+  font: 600 22px/1.2 var(--display);
+  letter-spacing: -0.02em;
+}
+.bp.eh .eh-foot span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--fg3);
+}
+.bp.eh .eh-bat {
+  text-align: right;
+}
+.bp.eh .eh-bat b {
+  white-space: nowrap;
+}
+
+/* matrix */
+.bp.eh .eh-filter {
+  margin-bottom: 18px;
+}
+@media (max-width: 620px) {
+  .bp.eh .eh-filter .btn.sm {
+    min-height: 44px;
+  }
+}
+.bp.eh .eh-mono {
+  font: 13px/1.5 var(--mono);
+}
+.bp.eh .eh-sched {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--fg);
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* estimates */
+.bp.eh .eh-est b {
+  font: 600 clamp(30px, 3vw, 40px) / 1 var(--display);
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}

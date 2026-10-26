@@ -1,0 +1,15 @@
+/* ProgrammeList: the closing note under the programme cards. */
+.bp .pgl .card .top h3 {
+  min-width: 0;
+}
+.bp .pgl .card .top .st {
+  margin-top: 5px;
+}
+.bp .pgl-note {
+  margin-top: 24px;
+}
+/* the arrow keeps its gap whatever the link's display */
+.bp .pgl .more span {
+  display: inline-block;
+  margin-left: 4px;
+}
