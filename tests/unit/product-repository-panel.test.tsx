@@ -1,7 +1,7 @@
 /** @vitest-environment jsdom */
 import "@testing-library/jest-dom/vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import ProductRepositoryPanel from "../../client/src/components/ProductRepositoryPanel";
 import {
   PRODUCT_REPOSITORIES,
@@ -9,7 +9,13 @@ import {
 } from "../../client/src/data/product-repositories";
 import EOffice from "../../client/src/pages/EOffice";
 
-afterEach(cleanup);
+vi.mock("../../client/src/lib/clipboard", () => ({ copyText: vi.fn() }));
+import { copyText } from "../../client/src/lib/clipboard";
+
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 describe("source-backed product panels", () => {
   it.each(Object.keys(PRODUCT_REPOSITORIES) as ProductRepositoryId[])(
@@ -41,11 +47,27 @@ describe("source-backed product panels", () => {
       expect(source.sourceCommit).toMatch(/^[a-f0-9]{40}$/);
       fireEvent.click(screen.getByText("Build from source"));
       expect(container.querySelector("details")).toHaveAttribute("open");
-      expect(container.querySelector("code")).toHaveTextContent(
+      expect(container.querySelector("pre code")).toHaveTextContent(
         source.commands.replace(/\s+/g, " ")
       );
     }
   );
+
+  it("copies the exact build commands and confirms success", async () => {
+    vi.mocked(copyText).mockResolvedValue(true);
+    render(<ProductRepositoryPanel product="eboot" />);
+    fireEvent.click(screen.getByText("Build from source"));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Copy build commands" })
+    );
+    expect(copyText).toHaveBeenCalledWith(PRODUCT_REPOSITORIES.eboot.commands);
+    expect(
+      await screen.findByText("Copied", { exact: true })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Build commands copied to clipboard"
+    );
+  });
 
   it("links each eOffice app to its own real source folder", () => {
     render(<EOffice />);

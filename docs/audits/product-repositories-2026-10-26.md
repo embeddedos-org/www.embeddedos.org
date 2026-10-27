@@ -74,3 +74,21 @@ independently validated, and release binaries were not downloaded. Existing
 Getting Started tutorial commands were preserved and were not rerun in this
 change. No production build, PR, push, merge, or deployment was performed for
 this iteration; the local preview is on port 5323.
+
+## Design refinement — 2026-10-27
+
+Reworked the shared panel into an editorial product introduction beside a
+clickable repository map. Map nodes link to the same previously checked source
+paths; connectors show repository organization, not runtime or hardware claims.
+The GitHub URL is visible and the primary button includes the GitHub mark.
+Build commands sit in a disclosure with an accessible copy control and success
+announcement. The map stacks below the introduction on small screens, and its
+hover transitions respect reduced-motion settings. No 3D, remote assets, or
+animation loop were added.
+
+Validation for the refinement: TypeScript, ESLint, formatting and diff checks
+pass; all 37 focused tests pass. The 12 desktop/phone route checks again found
+no horizontal overflow, page errors, broken images, or axe violations in page
+content. Narrow 320px checks pass. A real Chromium clipboard read confirmed
+that the eApps command block is copied exactly. Updated screenshots are saved
+as `3d-review/refined-*.png`. The refinement remains local and is not deployed.
