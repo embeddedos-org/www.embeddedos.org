@@ -92,3 +92,14 @@ no horizontal overflow, page errors, broken images, or axe violations in page
 content. Narrow 320px checks pass. A real Chromium clipboard read confirmed
 that the eApps command block is copied exactly. Updated screenshots are saved
 as `3d-review/refined-*.png`. The refinement remains local and is not deployed.
+
+## Release preparation — 2026-10-27
+
+The full production build passed through the Google-blocking wrapper with
+139/139 prerendered routes, zero failed/thin/degraded/error-boundary pages, and
+138 sitemap URLs. A broader unit/integration run exposed an old `/eos` assertion
+requiring the board count. The page intentionally no longer equates descriptors
+with supported hardware, so the assertion now checks the experimental status,
+no-observed-hardware-boot statement, and descriptor/port distinction instead.
+Other board-count contracts remain intact. Hosting FETCH and DEPLOY are reserved
+for the owner; no automatic hosting deployment is to be triggered.
