@@ -464,6 +464,13 @@ const NAV_ITEMS = {
         title: "Connect",
         items: [
           {
+            name: "Research Grants",
+            desc: "Planned programme; no applications are open",
+            icon: FlaskConical,
+            href: "/programmes/grants",
+            external: false,
+          },
+          {
             name: "Community",
             desc: "Governance & working groups",
             icon: Users,
