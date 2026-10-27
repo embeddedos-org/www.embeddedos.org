@@ -88,10 +88,10 @@ const FOOTER_LINKS = {
     { name: "All Products", href: "/products" },
     { name: "All Projects", href: "/projects" },
     { name: "Ecosystem", href: "/ecosystem" },
+    { name: "How EmbeddedOS Works", href: "/what-we-do" },
     { name: "EoS Kernel", href: "/eos" },
     { name: "eAI", href: "/eai" },
     { name: "eBuild", href: "/ebuild" },
-    { name: "Architecture", href: "/architecture" },
     { name: "Quantum (eQC)", href: "/quantum" },
   ],
   Applications: [
