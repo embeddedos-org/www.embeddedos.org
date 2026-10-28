@@ -155,9 +155,12 @@ describe("critical public claim policy", () => {
     expect(index).toContain(
       "www.googletagmanager.com/gtag/js?id=AW-18484485270"
     );
-    expect(index).toContain("AW-18484485270/UwZ-CNmDoowdEJa5i-5E");
+    expect(index).not.toContain('"event", "conversion"');
     expect(index).not.toMatch(/G-VTNZKL95DQ|VITE_ANALYTICS|\/umami/i);
     expect(privacy).toContain("Google Ads tag (gtag.js)");
+    expect(privacy).toContain(
+      "does not currently send completed actions as conversion events"
+    );
     expect(privacy).toContain("AW-18484485270");
     expect(privacy).toContain("Zeffy-hosted donation form");
     // Stripe and PayPal are named donation processors (card tab + PayPal

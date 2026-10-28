@@ -7,7 +7,7 @@ const SECTIONS = [
     title: "1. Information We Collect",
     content: `We collect minimal information necessary to operate this website. This includes:
 
-• **Usage Data:** This site loads the Google Ads tag (gtag.js) for conversion measurement — it records that a page was viewed so the Foundation can measure its Google Ads. Our hosting provider may also retain standard web-server logs, such as request time, requested path, referrer, IP address, and user agent, for security and reliability.
+• **Usage Data:** This site loads the Google Ads tag (gtag.js) for ad attribution and page measurement. It does not currently send completed donations, sign-ups, or inquiries as conversion events. Our hosting provider may also retain standard web-server logs, such as request time, requested path, referrer, IP address, and user agent, for security and reliability.
 • **Contact Information:** If you contact us through the form at www.embeddedos.org/contact, we retain your email address and message content solely to respond to your inquiry.
 • **Meeting Bookings:** When you use the Google Calendar appointment schedule on /book or follow its booking link, what you type into the booking form, such as your name, email address and the topic you mention, goes to Google and to the Foundation's calendar. This website does not receive or store your booking.
 • **Donation Data:** The donation flow offers three options: a Zeffy-hosted donation form, card payment via Stripe, and PayPal. Information you enter goes directly to the chosen processor (Zeffy, Stripe, or PayPal) and any payment or anti-abuse providers identified there; it is not first collected by this website. The Foundation may receive the donor contact details and transaction records the processor makes available to us. We do not receive or store full card or bank credentials on our servers.
@@ -31,7 +31,7 @@ We do not sell, rent, or share your personal information with third parties for 
 
 What the site does store, in your browser's local storage (not cookies), is limited to two functional preferences: your theme choice (light/dark) and whether you have dismissed the donate dialog. Both stay on your device, are never transmitted to us, and clearing your browser storage simply resets them.
 
-Two Google services are involved in loading every page of this site, and a third on /book. Google Fonts (fonts.gstatic.com) serves the typefaces used across the pages and may set a cache cookie per Google's own privacy policy. The Google Ads tag (googletagmanager.com) measures page views and ad conversions for the Foundation's Google Ads account; Google's handling of that data is governed by Google's Privacy Policy. This site sets no cookies of its own. The third, the Google Calendar booking calendar on /book, is described with its cookies and storage under Third-Party Services below.
+Two Google services are involved in loading every page of this site, and a third on /book. Google Fonts (fonts.gstatic.com) serves the typefaces used across the pages and may set a cache cookie per Google's own privacy policy. The Google Ads tag (googletagmanager.com) supports ad attribution and page measurement for the Foundation; the site does not currently report completed actions as Google Ads conversions. Google's handling of tag data is governed by Google's Privacy Policy. This site sets no cookies of its own. The third, the Google Calendar booking calendar on /book, is described with its cookies and storage under Third-Party Services below.
 
 You can disable cookies in your browser settings. Doing so will not prevent you from accessing any content on this website.`,
   },
@@ -45,7 +45,7 @@ You can disable cookies in your browser settings. Doing so will not prevent you 
 • **Google Calendar** (meeting scheduling, Google LLC) — governed by Google's Privacy Policy at policies.google.com/privacy. The appointment calendar loads from Google only on /book. When it loads, your browser connects to Google, which may process device and usage information and use cookies or local storage. What you type into the booking form goes to Google and to the Foundation's calendar. You can use our contact form to arrange a meeting without loading the calendar.
 • **GitHub** (source code hosting) — governed by GitHub's Privacy Policy at docs.github.com/en/site-policy/privacy-policies
 • **InterServer** (web hosting) — governed by InterServer's Privacy Policy at interserver.net/privacy-policy
-• **Google Ads** (conversion measurement, tag AW-18484485270) — governed by Google's Privacy Policy at policies.google.com/privacy. The tag records page views; ad-click attribution is handled by Google.
+• **Google Ads** (ad attribution and page measurement, tag AW-18484485270) — governed by Google's Privacy Policy at policies.google.com/privacy. The site does not currently send completed actions as conversion events.
 
 We have no control over the data practices of these third parties.`,
   },
