@@ -158,6 +158,7 @@ describe("storage proxy", () => {
       ".gif": /^image\/gif/,
       ".avif": /^image\/avif/,
       ".mp4": /^video\/mp4/,
+      ".vtt": /^text\/vtt/,
     };
 
     // the homepage's story frames, boards, film and industry clips live in

@@ -6,7 +6,7 @@ const licenses = [
     name: "EmbeddedOS Core",
     license: "MIT License",
     desc: "All EmbeddedOS products (EoS kernel, eBootloader, EAI, ENI, EIPC, eBuild, EoSim, EoStudio, eDB, eBrowser, eOffice, eFlow) are released under the MIT License.",
-    href: "https://opensource.org/licenses/MIT",
+    href: "https://spdx.org/licenses/MIT.html",
   },
   {
     name: "CMSIS (ARM)",

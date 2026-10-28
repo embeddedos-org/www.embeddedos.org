@@ -722,6 +722,12 @@ export default function EcadHardware() {
         lead="15 hardware design categories — from health wearables to aerospace systems, industrial PLCs to personal air mobility concepts. The repository includes a mix of design documents, KiCad sources, BOMs, and datasheets; coverage varies by design."
       >
         <p className="ecad-art">Illustrative concept artwork</p>
+        <div className="ctas">
+          <Link href="/open-hardware" className="btn gh">
+            See 4,022 real board CAD files, rendered and verified{" "}
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </PageHero>
 
       <LocalNav

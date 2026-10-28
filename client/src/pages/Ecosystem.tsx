@@ -217,6 +217,13 @@ const products = [
     href: "/ecad-hardware",
   },
   {
+    color: "#5EE08E",
+    name: "Open Hardware",
+    tagline: "Verified Design Files",
+    metrics: ["4,022 CAD files", "254 boards", "Rendered"],
+    href: "/open-hardware",
+  },
+  {
     color: "#60A5FA",
     name: "Aerospace",
     tagline: "Aerospace Concepts",

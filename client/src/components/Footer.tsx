@@ -409,7 +409,7 @@ export default function Footer() {
               © 2018–2026 {FOUNDATION.legalName}.
               <span className="mx-1.5 text-[#3a3a3e]">·</span>
               <a
-                href="https://opensource.org/licenses/MIT"
+                href="https://spdx.org/licenses/MIT.html"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#f5f5f7] transition-colors"

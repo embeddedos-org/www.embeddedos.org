@@ -172,6 +172,7 @@ export const SOCIAL_IMAGE_RULES: ReadonlyArray<readonly [RegExp, string]> = [
     /^\/(ecad-hardware|hardware-lab)$/,
     "/media/product-ecad-hardware_f5806032.jpg",
   ],
+  [/^\/open-hardware$/, "/media/open-hardware-tour-poster.jpg"],
   [
     /^\/(community|get-involved|events|membership)$/,
     "/media/community-illustration-eos_6f39c9db.jpg",
@@ -273,28 +274,7 @@ export function applyRouteMeta(route: string, doc: Document = document): void {
 
   const link = doc.querySelector('link[rel="canonical"]');
   if (link) link.setAttribute("href", canonical);
-
-  // The shell's page-view conversion snippet (see client/index.html) fires on
-  // full page loads only. This is an SPA: wouter swaps the page without
-  // touching <head>, so a client-side navigation would otherwise never count.
-  // Guarded on window.gtag so server-side rendering, tests, and blocker
-  // users degrade to no tracking rather than an exception.
-  trackPageViewConversion();
 }
 
-/** Google Ads conversion ID and page-view conversion label. Single source. */
+/** Google Ads account ID used by the site-wide base tag. */
 export const GOOGLE_ADS_ID = "AW-18484485270";
-export const GOOGLE_ADS_PAGE_VIEW_LABEL = "AW-18484485270/UwZ-CNmDoowdEJa5i-5E";
-
-/** Fire the page-view conversion event when gtag is available. No-op if not. */
-export function trackPageViewConversion(
-  gtag?: (...args: unknown[]) => void
-): void {
-  const impl =
-    gtag ??
-    (typeof window === "undefined"
-      ? undefined
-      : (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag);
-  if (typeof impl !== "function") return;
-  impl("event", "conversion", { send_to: GOOGLE_ADS_PAGE_VIEW_LABEL });
-}
