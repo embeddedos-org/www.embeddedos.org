@@ -697,18 +697,19 @@ describe("card donation", () => {
     ["requires_action", { paymentIntent: { status: "requires_action" } }],
     ["missing", {}],
   ])(
-    "says processing and stays put when the status is %s",
+    "says only that Stripe has not confirmed it, and stays put, when the status is %s",
     async (_label, result) => {
       const { assign } = stubLocation("/donate");
       stubFetch(() => json({ ok: true, client_secret: "pi_1_secret_2" }));
       const confirmPayment = stubStripe(result);
       await payByCard();
       await waitFor(() => expect(confirmPayment).toHaveBeenCalled());
-      expect(
-        await screen.findByText(
-          "Your payment is processing. Stripe will confirm it shortly."
-        )
-      ).toBeInTheDocument();
+      const status = await screen.findByRole("status");
+      // Nothing re-checks the payment or emails the donor, so the message
+      // may promise neither a later confirmation nor a refund.
+      expect(status).toHaveTextContent(
+        /^Stripe has not confirmed this payment yet\.$/
+      );
       expect(screen.queryByText(/Thank you for your/)).toBeNull();
       expect(assign).not.toHaveBeenCalled();
     }

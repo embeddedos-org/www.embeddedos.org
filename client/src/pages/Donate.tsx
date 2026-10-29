@@ -410,8 +410,7 @@ export default function Donate() {
                   ) : cardStatus === "processing" ? (
                     <div className="dn-done">
                       <p role="status" className="dn-small">
-                        Your payment is processing. Stripe will confirm it
-                        shortly.
+                        Stripe has not confirmed this payment yet.
                       </p>
                     </div>
                   ) : (
