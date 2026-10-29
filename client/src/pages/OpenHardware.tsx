@@ -6,26 +6,32 @@ import {
   FileCheck2,
   GraduationCap,
 } from "lucide-react";
+import {
+  ECAD_MIRROR,
+  ECAD_MIRROR_AS_OF,
+  ECAD_MIRROR_REPOSITORY,
+  formatCount,
+} from "@/data/ecad-mirror";
 
-const REPO = "https://github.com/embeddedos-org/eCAD-Hardware-Products";
+const REPO = ECAD_MIRROR_REPOSITORY;
+const M = ECAD_MIRROR;
 
-// The figures move as boards are mirrored: the page says which eCAD-Hardware-Products commit they
-// were counted on. Refresh both when the figures change.
-export const STATS_AS_OF = {
-  date: "18 October 2026",
-  commit: "0e543f053ef95a91999240781ddd651768790ced",
-} as const;
+export const STATS_AS_OF = ECAD_MIRROR_AS_OF;
 
 export const STATS = [
-  { value: "336", label: "board records", color: "#F97316" },
-  { value: "29 of 31", label: "ecosystems from issue #28", color: "#22D3EE" },
+  { value: formatCount(M.records), label: "board records", color: "#F97316" },
   {
-    value: "4,022",
+    value: `${M.ecosystems} of ${M.ecosystemsInIssue28}`,
+    label: "ecosystems from issue #28",
+    color: "#22D3EE",
+  },
+  {
+    value: formatCount(M.cadFiles),
     label: "openly licensed CAD files mirrored",
     color: "#5EE08E",
   },
   {
-    value: "254",
+    value: formatCount(M.boards),
     label: "boards with their CAD files mirrored",
     color: "#A78BFA",
   },
@@ -34,7 +40,7 @@ export const STATS = [
 export const RULES = [
   {
     title: "The licence allows it",
-    body: "Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the other 80 boards keep their official link and digest, and nothing else.",
+    body: `Only boards whose record sets redistribution_allowed to true are copied. Unknown is not permission: the ${M.unlicensedRecords} records without a confirmed redistribution licence keep their official link and digest, and nothing else. That leaves ${M.records - M.unlicensedRecords} records; ${M.pdfOnlyRecords} of them publish only a PDF schematic, which is not CAD, so ${M.boards} boards are mirrored.`,
   },
   {
     title: "The bytes are the manufacturer's bytes",
@@ -97,8 +103,7 @@ export const GALLERY: ReadonlyArray<{
   },
   {
     heading: "Eagle boards",
-    intro:
-      "748 of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.",
+    intro: `${formatCount(M.eagleFiles)} of the mirrored files are Eagle sources. These were drawn from the board XML itself: top copper in red, bottom copper in blue, pads, vias, silkscreen and the board outline.`,
     shots: [
       {
         file: "open-hardware-eagle-feather-rp2040",
@@ -147,8 +152,7 @@ export const GALLERY: ReadonlyArray<{
   },
   {
     heading: "3D models",
-    intro:
-      "25 boards have a verified STEP model. Each of these was tessellated with OpenCASCADE and lit in three.js. The shapes and positions are the manufacturer's model; the shading colours are the renderer's and can differ from the colours in the file.",
+    intro: `${M.stepBoards} boards have a verified STEP model. Each of these was tessellated with OpenCASCADE and lit in three.js. The shapes and positions are the manufacturer's model; the shading colours are the renderer's and can differ from the colours in the file.`,
     shots: [
       {
         file: "open-hardware-3d-beaglebone-ai-64",
@@ -211,22 +215,22 @@ export const GALLERY: ReadonlyArray<{
 export const LICENCE_TERMS = [
   {
     licence: "CC BY-SA",
-    boards: 225,
+    boards: M.licences.ccBySa,
     asks: "Credit the maker, and share your changed design under the same licence.",
   },
   {
     licence: "CC BY 4.0",
-    boards: 21,
+    boards: M.licences.ccBy,
     asks: "Credit the maker.",
   },
   {
     licence: "MIT, BSD or Apache-2.0",
-    boards: 7,
+    boards: M.licences.permissive,
     asks: "Keep the licence text with every copy. Each of these boards' ATTRIBUTION.md carries it, verbatim.",
   },
   {
     licence: "Raspberry Pi's grant in 0BSD wording",
-    boards: 1,
+    boards: M.licences.zeroBsdGrant,
     asks: "Nothing: use, copy, modify and distribute the Pico designs for any purpose.",
   },
 ] as const;
@@ -234,8 +238,11 @@ export const LICENCE_TERMS = [
 export const USAGE = [
   {
     title: "Find a board",
-    body: "Every board has one record: the exact board, revision and MCU, each format marked true, false or unknown, and the licence. Ask the database by format, licence or vendor.",
+    body: "Every board has one record: the exact board, revision and MCU, each format marked true, false or unknown, and the licence. Clone the repository without its files, check out only the database, and ask it by format, licence or vendor.",
     code: [
+      "git clone --filter=blob:none --sparse --depth 1 https://github.com/embeddedos-org/eCAD-Hardware-Products.git",
+      "cd eCAD-Hardware-Products",
+      "git sparse-checkout set --no-cone /tools/devboard_cad/",
       "python3 tools/devboard_cad/query.py with-formats step",
       "python3 tools/devboard_cad/query.py commercial-reuse",
     ],
@@ -243,28 +250,26 @@ export const USAGE = [
     width: 1500,
     height: 673,
     alt: "Terminal output of the database query for boards with a verified STEP model, 25 matched, and 256 records that allow commercial reuse",
-    caption:
-      "25 boards have a verified STEP model, and 256 records allow commercial reuse.",
+    caption: `${M.stepBoards} boards have a verified STEP model, and ${M.commercialReuseRecords} records allow commercial reuse.`,
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: "A partial clone downloads only the folder you name. The SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 9 seconds and 101 MB, against 4.36 GB for every board, and shasum gives the same SHA-256 as its ATTRIBUTION.md.",
+    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 7 seconds: Git downloaded 16 MB, which checks out as 88 MB of files, against ${M.gigabytes} GB for every board. shasum gives the same SHA-256 as its ATTRIBUTION.md.`,
     code: [
-      "git clone --filter=blob:none --sparse --depth 1 https://github.com/embeddedos-org/eCAD-Hardware-Products.git",
-      "cd eCAD-Hardware-Products",
-      "git sparse-checkout set --no-cone /boards/cad/sparkfun/iot-redboard-rp2350/",
+      "git sparse-checkout add /boards/cad/sparkfun/iot-redboard-rp2350/",
       "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/Hardware/*.kicad_sch",
+      "grep -E 'Licence|Attribution:|CAD files:' boards/cad/sparkfun/iot-redboard-rp2350/ATTRIBUTION.md",
     ],
     file: "open-hardware-terminal-fetch",
     width: 1600,
     height: 950,
-    alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, 84 MB of files, listing its KiCad project and four schematic sheets with SHA-256 digests and its CC BY-SA 4.0 licence",
+    alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, where du -sh reports 84M of board files and 17M of Git data, listing its KiCad project and four schematic sheets with SHA-256 digests and its CC BY-SA 4.0 licence",
     caption:
-      "Recorded on the pull request branch before the mirror reached master, which is why it names a branch and a fork.",
+      "Recorded on the pull request branch before the mirror reached master, with the board folder cloned on its own. du counts in mebibytes: 84M of files (88 MB) and 17M of Git data make the video's 101 MB.",
   },
   {
     title: "Open the design in KiCad",
-    body: "The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. Its folder holds the whole project: the project file, the PCB, the root sheet and its three sub-sheets. The Eagle .brd and .sch files, 748 of the 4,022, go through KiCad's EAGLE importer.",
+    body: `The RedBoard's .kicad_pcb and .kicad_sch were saved by KiCad 8, so KiCad 8 or later opens them as they are. Its folder holds the whole project: the project file, the PCB, the root sheet and its three sub-sheets. The Eagle .brd and .sch files, ${formatCount(M.eagleFiles)} of the ${formatCount(M.cadFiles)}, go through KiCad's EAGLE importer.`,
     code: [],
     file: "open-hardware-kicad-redboard-rp2350",
     width: 1596,
@@ -275,10 +280,10 @@ export const USAGE = [
   },
   {
     title: "Send the Gerbers to a board house",
-    body: "A Gerber set is what a fab asks for: copper, solder mask, silkscreen and paste for each side, the board outline and the Excellon drill file. Zip the folder and upload it. Here the open-source whats-that-gerber library names each layer of the SparkFun Edge set.",
+    body: "A Gerber set is what a fab asks for: copper, solder mask, silkscreen and paste for each side, the board outline and the Excellon drill file. Zip the folder and upload it. Here the SparkFun Edge Gerber folder is added to the clone, and the open-source whats-that-gerber library names each of its layers.",
     code: [
-      "cd boards/cad/sparkfun/edge/cad/Hardware/SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers",
-      "ls | xargs node gerber-layers.mjs",
+      "git sparse-checkout add /boards/cad/sparkfun/edge/cad/Hardware/SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers/",
+      "ls boards/cad/sparkfun/edge/cad/Hardware/SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers | xargs node ../eos-helpers/gerber-layers.mjs",
     ],
     file: "open-hardware-terminal-gerber",
     width: 1500,
@@ -289,10 +294,16 @@ export const USAGE = [
   },
   {
     title: "Design the enclosure around the STEP model",
-    body: "Import the STEP into FreeCAD, Fusion or SolidWorks and model the case around it. Measured from the geometry with OpenCASCADE, the BeagleBone AI-64 is 102.5 × 82.6 × 36.6 mm with its heatsink and connectors, and the PocketBeagle is 56.4 × 35.0 mm.",
+    body: "Import the STEP into FreeCAD, Fusion or SolidWorks and model the case around it. Measured from the geometry with OpenCASCADE, the BeagleBone AI-64 is 102.5 × 82.6 × 36.6 mm with its heatsink and connectors, the PocketBeagle is 56.4 × 35.0 mm and the SparkFun Artemis module is 10.5 × 15.5 mm.",
     code: [
-      "cd boards/cad",
-      'for f in beagleboard/beaglebone-ai-64/cad/hw/*.stp beagleboard/pocketbeagle/cad/models/*.step; do node measure-step.mjs "$f"; done',
+      "git sparse-checkout add \\",
+      "  /boards/cad/beagleboard/beaglebone-ai-64/cad/hw/BeagleBone_AI-64_Rev_B1_3D_220826.stp \\",
+      "  /boards/cad/beagleboard/pocketbeagle/cad/models/PocketBeagle.step \\",
+      "  /boards/cad/sparkfun/artemis/cad/Documents/Artemis-Production-Model-V1.step",
+      "node ../eos-helpers/measure-step.mjs \\",
+      "  boards/cad/beagleboard/beaglebone-ai-64/cad/hw/BeagleBone_AI-64_Rev_B1_3D_220826.stp \\",
+      "  boards/cad/beagleboard/pocketbeagle/cad/models/PocketBeagle.step \\",
+      "  boards/cad/sparkfun/artemis/cad/Documents/Artemis-Production-Model-V1.step",
     ],
     file: "open-hardware-terminal-step",
     width: 1600,
@@ -303,7 +314,7 @@ export const USAGE = [
   },
   {
     title: "Keep the credit and the licence",
-    body: "These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The 80 boards without a confirmed redistribution licence are linked, never copied.",
+    body: `These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The ${M.unlicensedRecords} boards without a confirmed redistribution licence are linked, never copied.`,
     code: [],
     file: "open-hardware-attribution",
     width: 1440,
@@ -350,6 +361,14 @@ export const HELPER_SCRIPTS = [
     ],
   },
 ] as const;
+
+export const SETUP = [
+  "mkdir eos-helpers",
+  "cd eos-helpers",
+  "npm install whats-that-gerber@4.2.7 occt-import-js@0.0.23",
+  ...HELPER_SCRIPTS.flatMap(s => [`cat > ${s.name} <<'EOF'`, ...s.code, "EOF"]),
+  "cd ..",
+];
 
 export const VALIDATION = [
   {
@@ -544,8 +563,9 @@ export default function OpenHardware() {
           <p className="text-gray-300 max-w-3xl mb-10 leading-relaxed">
             The database records where each board's files live and the commit of
             the manufacturer's repository they come from. The mirror keeps each
-            board's whole design, 4,022 CAD files and 4.36 GB from 254 boards,
-            and copies a file only when all three of these hold.
+            board's whole design, {formatCount(M.cadFiles)} CAD files and{" "}
+            {M.gigabytes} GB from {formatCount(M.boards)} boards, and copies a
+            file only when all three of these hold.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             {RULES.map((r, i) => (
@@ -586,8 +606,9 @@ export default function OpenHardware() {
           <h2 className="text-3xl font-black mb-4">How to use the files</h2>
           <p className="text-gray-300 max-w-3xl mb-8 leading-relaxed">
             Six steps from a board record to a board you can build, each shown
-            with a real file and its real output. The commands need Git, Python
-            3 and, for the last two, Node.js.
+            with a real file and its real output. Run them in order, in one bash
+            or zsh terminal, from an empty folder. The commands need Git, Python
+            3 and, for steps 4 and 5, Node.js.
           </p>
           <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#0b1220]">
             <video
@@ -612,6 +633,21 @@ export default function OpenHardware() {
           <p className="text-sm text-gray-400 mt-3 mb-12">
             A 45-second how-to, without sound, captioned.
           </p>
+          <div className="mb-12 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+            <h3 className="text-xl font-bold mb-2">Before you start</h3>
+            <p className="text-sm text-gray-300 leading-relaxed mb-4">
+              Steps 4 and 5 run two short Node.js scripts. These commands save
+              both in an eos-helpers folder, next to the clone that step 1
+              makes, and install the two open-source libraries they use. Neither
+              script changes a file.
+            </p>
+            <pre
+              tabIndex={0}
+              className="text-xs leading-relaxed text-sky-200 bg-[#0b1220] border border-white/10 rounded-xl p-4 overflow-x-auto"
+            >
+              <code>{SETUP.join("\n")}</code>
+            </pre>
+          </div>
           <ol className="grid gap-12">
             {USAGE.map((u, i) => (
               <li
@@ -665,29 +701,6 @@ export default function OpenHardware() {
               </li>
             ))}
           </ol>
-          <details className="mt-12 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-            <summary className="cursor-pointer font-semibold">
-              The two helper scripts used in steps 4 and 5
-            </summary>
-            <p className="text-sm text-gray-300 mt-3 mb-4 leading-relaxed">
-              Both run on Node.js after{" "}
-              <code className="text-sky-200">
-                npm install whats-that-gerber occt-import-js
-              </code>
-              . Neither changes a file.
-            </p>
-            {HELPER_SCRIPTS.map(s => (
-              <div key={s.name} className="mb-4">
-                <div className="text-sm font-semibold mb-2">{s.name}</div>
-                <pre
-                  tabIndex={0}
-                  className="text-xs leading-relaxed text-sky-200 bg-[#0b1220] border border-white/10 rounded-xl p-4 overflow-x-auto"
-                >
-                  <code>{s.code.join("\n")}</code>
-                </pre>
-              </div>
-            ))}
-          </details>
         </div>
       </section>
 
