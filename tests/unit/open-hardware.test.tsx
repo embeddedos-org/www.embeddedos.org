@@ -40,7 +40,12 @@ import OpenHardware, {
   USAGE,
   VALIDATION,
 } from "../../client/src/pages/OpenHardware";
-import { ECAD_MIRROR, formatCount } from "../../client/src/data/ecad-mirror";
+import {
+  ECAD_MIRROR,
+  GUIDE_RUN,
+  formatCount,
+  formatSize,
+} from "../../client/src/data/ecad-mirror";
 
 const media = path.resolve(__dirname, "../../client/public/media");
 const VIDEOS = [
@@ -274,6 +279,16 @@ describe("the how-to guide runs as printed, in one shell", () => {
     expect(missing).toEqual([]);
   });
 
+  it("installs the helper libraries into eos-helpers alone", () => {
+    const setup = GUIDE[0];
+    const enter = setup.indexOf("cd eos-helpers");
+    const own = setup.indexOf("echo '{}' > package.json");
+    const install = setup.findIndex(c => c.startsWith("npm install "));
+    expect(enter).toBeGreaterThanOrEqual(0);
+    expect(own).toBeGreaterThan(enter);
+    expect(install).toBeGreaterThan(own);
+  });
+
   it("changes folder only to set up and to enter the clone", () => {
     expect(GUIDE.flat().filter(c => /^cd\b/.test(c))).toEqual([
       "cd eos-helpers",
@@ -333,6 +348,52 @@ describe("the mirror's figures come from one registry", () => {
     expect(RULES[0].body).toContain(`${M.boards} boards are mirrored`);
   });
 
+  it("types none of the registry's or the guide run's figures into the page", () => {
+    const G = GUIDE_RUN;
+    const prose = readFileSync(
+      path.resolve(__dirname, "../../client/src/pages/OpenHardware.tsx"),
+      "utf8"
+    )
+      .replace(/^import[\s\S]*?;$/gm, "")
+      .replace(/code: \[[\s\S]*?\],/g, "")
+      .replace(
+        /export const (HELPER_SCRIPTS|SETUP) = \[[\s\S]*?\](?: as const)?;/g,
+        ""
+      );
+    const counts = [
+      M.records,
+      M.boards,
+      M.cadFiles,
+      M.designSources,
+      M.fabricationFiles,
+      M.modelFiles,
+      M.eagleFiles,
+      M.commercialReuseRecords,
+      M.stepBoards,
+      M.unlicensedRecords,
+      M.ecosystems,
+      M.ecosystemsInIssue28,
+      M.licences.ccBySa,
+      M.licences.ccBy,
+      G.boardFiles,
+    ].flatMap(n => [String(n), formatCount(n)]);
+    const figures = [
+      ...counts,
+      M.gigabytes,
+      `${G.downloadedMB} MB`,
+      `${G.filesMB} MB`,
+      ...Object.values(G.sizes)
+        .flat()
+        .map(n => n.toFixed(1)),
+    ];
+    const typed = [...new Set(figures)].filter(f =>
+      new RegExp(
+        `(?<![\\w.,/-])${f.replace(/[.,]/g, "\\$&")}(?!\\d)(?![.,]\\d)`
+      ).test(prose)
+    );
+    expect(typed).toEqual([]);
+  });
+
   it("keeps the other pages on the registry, not a typed copy", () => {
     for (const page of ["Ecosystem.tsx", "EcadHardware.tsx"]) {
       const source = readFileSync(
@@ -357,6 +418,9 @@ describe("the mirror's figures come from one registry", () => {
     for (const quote of [
       `Query the ${M.records} records`,
       `${M.stepBoards} boards have a verified STEP model, ${M.commercialReuseRecords} records allow commercial reuse`,
+      `downloads ${GUIDE_RUN.downloadedMB} MB`,
+      `${GUIDE_RUN.boardFiles} files and ${GUIDE_RUN.filesMB} MB`,
+      `${formatSize(GUIDE_RUN.sizes.beagleboneAi64, " by ")} millimetres`,
       `instead of ${M.gigabytes} GB`,
       `CC BY-SA, ${ccBySa} boards`,
       `CC BY 4.0, ${ccBy} boards`,

@@ -10,11 +10,14 @@ import {
   ECAD_MIRROR,
   ECAD_MIRROR_AS_OF,
   ECAD_MIRROR_REPOSITORY,
+  GUIDE_RUN,
   formatCount,
+  formatSize,
 } from "@/data/ecad-mirror";
 
 const REPO = ECAD_MIRROR_REPOSITORY;
 const M = ECAD_MIRROR;
+const G = GUIDE_RUN;
 
 export const STATS_AS_OF = ECAD_MIRROR_AS_OF;
 
@@ -249,12 +252,12 @@ export const USAGE = [
     file: "open-hardware-terminal-query",
     width: 1500,
     height: 762,
-    alt: "Terminal output of a blobless sparse clone of eCAD-Hardware-Products that checks out only the database, then the queries for boards with a verified STEP model, 25 matched, and for records that allow commercial reuse, 256 matched",
+    alt: `Terminal output of a blobless sparse clone of eCAD-Hardware-Products that checks out only the database, then the queries for boards with a verified STEP model, ${M.stepBoards} matched, and for records that allow commercial reuse, ${M.commercialReuseRecords} matched`,
     caption: `${M.stepBoards} boards have a verified STEP model, and ${M.commercialReuseRecords} records allow commercial reuse.`,
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 7 to 11 seconds in our two runs: Git downloaded 16 MB, which checks out as 88 MB of files, against ${M.gigabytes} GB for every board. shasum gives the same SHA-256 as its ATTRIBUTION.md.`,
+    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in ${G.boardFiles} files, took ${G.seconds[0]} to ${G.seconds[1]} seconds in our three runs: Git downloaded ${G.downloadedMB} MB, which checks out as ${G.filesMB} MB of files, against ${M.gigabytes} GB for every board. shasum gives the same SHA-256 as its ATTRIBUTION.md.`,
     code: [
       "git sparse-checkout add /boards/cad/sparkfun/iot-redboard-rp2350/",
       "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/Hardware/*.kicad_sch",
@@ -263,7 +266,7 @@ export const USAGE = [
     file: "open-hardware-terminal-fetch",
     width: 1600,
     height: 617,
-    alt: "Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and 33 CAD files its ATTRIBUTION.md lists",
+    alt: `Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and ${G.boardFiles} CAD files its ATTRIBUTION.md lists`,
     caption:
       "Each digest begins with the SHA-256 prefix that the board's ATTRIBUTION.md lists for that sheet.",
   },
@@ -294,7 +297,7 @@ export const USAGE = [
   },
   {
     title: "Design the enclosure around the STEP model",
-    body: "Import the STEP into FreeCAD, Fusion or SolidWorks and model the case around it. Measured from the geometry with OpenCASCADE, the BeagleBone AI-64 is 102.5 × 82.6 × 36.6 mm with its heatsink and connectors, the PocketBeagle is 56.4 × 35.0 mm and the SparkFun Artemis module is 10.5 × 15.5 mm.",
+    body: `Import the STEP into FreeCAD, Fusion or SolidWorks and model the case around it. Measured from the geometry with OpenCASCADE, the BeagleBone AI-64 is ${formatSize(G.sizes.beagleboneAi64)} mm with its heatsink and connectors, the PocketBeagle is ${formatSize(G.sizes.pocketBeagle)} mm and the SparkFun Artemis module is ${formatSize(G.sizes.artemis)} mm.`,
     code: [
       "git sparse-checkout add \\",
       "  /boards/cad/beagleboard/beaglebone-ai-64/cad/hw/BeagleBone_AI-64_Rev_B1_3D_220826.stp \\",
@@ -308,13 +311,13 @@ export const USAGE = [
     file: "open-hardware-terminal-step",
     width: 1600,
     height: 501,
-    alt: "Terminal output of adding three STEP files to the sparse clone and measuring them with OpenCASCADE: BeagleBone AI-64 102.5 by 82.6 by 36.6 mm, PocketBeagle 56.4 by 35.0 mm and the SparkFun Artemis module 10.5 by 15.5 mm",
+    alt: `Terminal output of adding three STEP files to the sparse clone and measuring them with OpenCASCADE: BeagleBone AI-64 ${formatSize(G.sizes.beagleboneAi64, " by ")} mm, PocketBeagle ${formatSize(G.sizes.pocketBeagle, " by ")} mm and the SparkFun Artemis module ${formatSize(G.sizes.artemis, " by ")} mm`,
     caption:
       "Overall size in millimetres, from each manufacturer's own STEP file.",
   },
   {
     title: "Keep the credit and the licence",
-    body: `These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The ${M.unlicensedRecords} boards without a confirmed redistribution licence are linked, never copied.`,
+    body: `These are the manufacturers' designs, copied unmodified so they can be checked against the originals. Each board folder carries an ATTRIBUTION.md naming the maker, the licence, every file's official source and SHA-256, and what was left out. The ${M.unlicensedRecords} records without a confirmed redistribution licence are linked, never copied.`,
     code: [],
     file: "open-hardware-attribution",
     width: 1440,
@@ -365,6 +368,7 @@ export const HELPER_SCRIPTS = [
 export const SETUP = [
   "mkdir eos-helpers",
   "cd eos-helpers",
+  "echo '{}' > package.json",
   "npm install whats-that-gerber@4.2.7 occt-import-js@0.0.23",
   ...HELPER_SCRIPTS.flatMap(s => [`cat > ${s.name} <<'EOF'`, ...s.code, "EOF"]),
   "cd ..",
@@ -588,7 +592,7 @@ export default function OpenHardware() {
               file="open-hardware-terminal-mirror"
               width={1400}
               height={640}
-              alt="Terminal output of mirror.py check reporting 4022 CAD files for 254 boards and 0 problems, 60 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md"
+              alt={`Terminal output of mirror.py check reporting ${M.cadFiles} CAD files for ${M.boards} boards and 0 problems, 60 passing tests, and a board folder holding only CAD files and its ATTRIBUTION.md`}
             />
             <figcaption className="text-sm text-gray-400 px-4 py-3">
               The check CI runs: every redistributable CAD file present, every
@@ -607,8 +611,8 @@ export default function OpenHardware() {
           <p className="text-gray-300 max-w-3xl mb-8 leading-relaxed">
             Six steps from a board record to a board you can build, each shown
             with a real file and its real output. Run them in order, in one bash
-            or zsh terminal, from an empty folder. The commands need Git, Python
-            3 and, for steps 4 and 5, Node.js.
+            or zsh terminal, from an empty folder. The commands need Git and
+            Python 3; the setup below and steps 4 and 5 also need Node.js.
           </p>
           <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#0b1220]">
             <video
@@ -638,8 +642,8 @@ export default function OpenHardware() {
             <p className="text-sm text-gray-300 leading-relaxed mb-4">
               Steps 4 and 5 run two short Node.js scripts. These commands save
               both in an eos-helpers folder, next to the clone that step 1
-              makes, and install the two open-source libraries they use. Neither
-              script changes a file.
+              makes, and install the two open-source libraries they use into
+              that folder alone. Neither script changes a file.
             </p>
             <pre
               tabIndex={0}

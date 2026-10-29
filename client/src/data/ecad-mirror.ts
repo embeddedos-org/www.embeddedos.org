@@ -32,3 +32,19 @@ export const ECAD_MIRROR = {
 export function formatCount(n: number): string {
   return n.toLocaleString("en-US");
 }
+
+export const GUIDE_RUN = {
+  boardFiles: 33,
+  downloadedMB: 16,
+  filesMB: 88,
+  seconds: [5, 11],
+  sizes: {
+    beagleboneAi64: [102.5, 82.6, 36.6],
+    pocketBeagle: [56.4, 35.0],
+    artemis: [10.5, 15.5],
+  },
+} as const;
+
+export function formatSize(mm: readonly number[], joiner = " × "): string {
+  return mm.map(n => n.toFixed(1)).join(joiner);
+}
