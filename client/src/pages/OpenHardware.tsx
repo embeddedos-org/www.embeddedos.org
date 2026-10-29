@@ -248,8 +248,8 @@ export const USAGE = [
     ],
     file: "open-hardware-terminal-query",
     width: 1500,
-    height: 673,
-    alt: "Terminal output of the database query for boards with a verified STEP model, 25 matched, and 256 records that allow commercial reuse",
+    height: 762,
+    alt: "Terminal output of a blobless sparse clone of eCAD-Hardware-Products that checks out only the database, then the queries for boards with a verified STEP model, 25 matched, and for records that allow commercial reuse, 256 matched",
     caption: `${M.stepBoards} boards have a verified STEP model, and ${M.commercialReuseRecords} records allow commercial reuse.`,
   },
   {
@@ -262,10 +262,10 @@ export const USAGE = [
     ],
     file: "open-hardware-terminal-fetch",
     width: 1600,
-    height: 950,
-    alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, where du -sh reports 84M of board files and 17M of Git data, listing its KiCad project and four schematic sheets with SHA-256 digests and its CC BY-SA 4.0 licence",
+    height: 617,
+    alt: "Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and 33 CAD files its ATTRIBUTION.md lists",
     caption:
-      "Recorded on the pull request branch before the mirror reached master, with the board folder cloned on its own. du counts in mebibytes: its 84M of files is the 88 MB above.",
+      "Each digest begins with the SHA-256 prefix that the board's ATTRIBUTION.md lists for that sheet.",
   },
   {
     title: "Open the design in KiCad",
@@ -287,8 +287,8 @@ export const USAGE = [
     ],
     file: "open-hardware-terminal-gerber",
     width: 1500,
-    height: 805,
-    alt: "Terminal output listing the SparkFun Edge design folder and naming the ten layers of its Gerber set: copper, silkscreen, solder paste and solder mask for each side, the outline and the drill file",
+    height: 559,
+    alt: "Terminal output of adding the SparkFun Edge Gerber folder to the sparse clone and naming the ten layers of its Gerber set: copper, silkscreen, solder paste and solder mask for each side, the outline and the drill file",
     caption:
       "Ten files, ten layers. The rendered board is in the Gerber section below.",
   },
@@ -307,8 +307,8 @@ export const USAGE = [
     ],
     file: "open-hardware-terminal-step",
     width: 1600,
-    height: 350,
-    alt: "Terminal output of three STEP models measured with OpenCASCADE: BeagleBone AI-64 102.5 by 82.6 by 36.6 mm, PocketBeagle 56.4 by 35.0 mm and the SparkFun Artemis module",
+    height: 501,
+    alt: "Terminal output of adding three STEP files to the sparse clone and measuring them with OpenCASCADE: BeagleBone AI-64 102.5 by 82.6 by 36.6 mm, PocketBeagle 56.4 by 35.0 mm and the SparkFun Artemis module 10.5 by 15.5 mm",
     caption:
       "Overall size in millimetres, from each manufacturer's own STEP file.",
   },
