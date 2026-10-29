@@ -236,18 +236,16 @@
       gtag("js", new Date());
       gtag("config", "AW-18484485270");
     </script>
-    <!-- Event snippet for Page view conversion: every page load on this site
-      counts toward the goal, so this ships in the shell (and therefore in
-      every prerendered snapshot) rather than on one page. -->
-    <script>
-      gtag("event", "conversion", {
-        send_to: "AW-18484485270/UwZ-CNmDoowdEJa5i-5E",
-      });
-    </script>
-    <script type="module" crossorigin src="/assets/index-b9RpI-8S.js"></script>
+    <!--
+      Keep the base Ads tag for attribution. Do not send a conversion on page
+      load: only completed, meaningful actions should count as conversions.
+      Add an event-specific label after its matching Google Ads conversion
+      action has been created and validated in the account.
+    -->
+    <script type="module" crossorigin src="/assets/index-fhjakIhk.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-aOLDZyDv.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-motion-D0ROkIIu.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-BZUjanHV.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-DuHHbAh1.css">
   </head>
 
   <body>
