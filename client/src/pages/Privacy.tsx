@@ -127,7 +127,7 @@ export default function Privacy() {
     <BpPage className="legal privacy">
       <PageHero sig label="Legal" title="Privacy Policy">
         <p className="lg-meta">
-          Effective date: October 24, 2026 · Embedded Operating Systems Research
+          Effective date: October 29, 2026 · Embedded Operating Systems Research
           Foundation
         </p>
       </PageHero>
