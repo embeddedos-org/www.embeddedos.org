@@ -132,12 +132,24 @@ describe("retired claims do not reappear", () => {
 });
 
 describe("verified figures reach the rendered pages", () => {
-  it.each(["/", "/about", "/eos", "/architecture"])(
+  it.each(["/", "/about", "/architecture"])(
     "%s states the real board count",
     route => {
       expect(pageText(route)).toContain(String(STACK.totals.boards));
     }
   );
+
+  it("distinguishes kernel board descriptors from validated hardware ports", () => {
+    // /eos now describes repository maturity rather than repeating the old
+    // board count. Keep that distinction in the production HTML: descriptor
+    // files are not evidence that the kernel has booted on those boards.
+    const text = pageText("/eos");
+    expect(text).toContain("Board descriptors");
+    expect(text).toContain("not validated hardware ports");
+    expect(text).toContain("Experimental");
+    expect(text).toContain("No observed hardware boot");
+    expect(text).not.toMatch(/\d+ Supported Boards|Flash EoS to any/i);
+  });
 
   it("keeps the simulator's platform count distinct from the board count", () => {
     // One number was used for both, which understated EoSim by roughly 3x.

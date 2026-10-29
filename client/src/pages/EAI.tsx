@@ -1,34 +1,29 @@
-import { useState, Suspense, lazy, type CSSProperties } from "react";
-import ViewportGate from "../components/ViewportGate";
+import ProductRepositoryPanel from "@/components/ProductRepositoryPanel";
+import { useState, type CSSProperties } from "react";
 import { Link } from "wouter";
 import { Band, BpPage, PageHero, Section } from "@/components/bp";
 import "./EAI.css";
-const EAINetworkCanvas = lazy(() =>
-  import("../components/EoS3D").then(m => ({ default: m.EAINetworkCanvas }))
-);
 
 const PRODUCTS = [
   {
     id: "eai",
     color: "#34D399",
     name: "EAI Engine",
-    tagline: "On-device AI inference — no cloud required",
+    tagline: "Model contracts and build-selectable runtimes",
     desc: "EAI is an in-development embedded inference runtime. Memory requirements depend on model size, architecture, runtime overhead, and target hardware. Research areas include vision, NLP, time-series classification, and anomaly detection.",
     specs: [
-      { label: "Runtimes", value: "TFLite · ONNX · GGUF" },
-      { label: "Quantization", value: "4-bit, 8-bit, FP16" },
-      { label: "Min RAM", value: "256KB (classification)" },
+      { label: "Runtimes", value: "EAI-Min · EAI-Framework" },
+      { label: "Quantization", value: "Model- and backend-dependent" },
+      { label: "Memory", value: "Model- and target-dependent" },
       { label: "LLM Memory", value: "Model- and hardware-dependent" },
       { label: "Tasks", value: "Vision · NLP · Time-series · Anomaly" },
-      { label: "Acceleration", value: "CMSIS-NN · Helium · RISC-V V-ext" },
+      { label: "Optional backends", value: "Vulkan · CoreML · QNN" },
     ],
     demo: [
-      ">>> eai.load('gesture_classifier.tflite')",
-      ">>> eai.run(sensor_data)",
-      "{'class': 'wave_right', 'confidence': 0.97}",
-      ">>> eai.load('phi3-mini-4bit.gguf')",
-      ">>> eai.chat('What is the sensor reading?')",
-      "'Temperature is 23.4°C, humidity 61%. All nominal.'",
+      "common/       Runtime contracts and shared utilities",
+      "min/          Lightweight agent runtime",
+      "framework/    Industrial runtime",
+      "formats/      Model-format loaders",
     ],
   },
   {
@@ -46,35 +41,31 @@ const PRODUCTS = [
       { label: "Output", value: "EoS event stream + raw buffer" },
     ],
     demo: [
-      ">>> eni.init(bus='SPI', channels=8, rate=1000)",
-      ">>> eni.stream.subscribe(on_sample)",
-      "Sample: ch[0..7] = [12.3, -4.1, 8.7, ...]",
-      ">>> eni.classify('motor_imagery')",
-      "{'intent': 'left_hand', 'confidence': 0.91}",
-      ">>> eni.trigger_haptic(intensity=0.5)",
+      "common/       Shared types and configuration",
+      "providers/    Signal-provider code",
+      "platform/     Platform adapters",
+      "docs/         Integration documentation",
     ],
   },
   {
     id: "ebot",
     color: "#F97316",
     name: "eBot Agent",
-    tagline: "AI assistant embedded in every EoS device",
-    desc: "eBot is an always-available AI agent running on every EmbeddedOS device. It can answer questions about the device state, execute shell commands, debug firmware, and communicate with external APIs — all from a simple chat interface.",
+    tagline: "Agent runtime modules in eAI",
+    desc: "The eAI repository contains a lightweight agent runtime under min/, with routing, memory, tool-registry, and permission modules. Device integration and available tools depend on the selected runtime and configuration.",
     specs: [
-      { label: "Interface", value: "Chat · CLI · REST API" },
-      { label: "Models", value: "Local GGUF · Cloud LLM" },
-      { label: "Tools", value: "Shell · Sensor read · GPIO · OTA" },
-      { label: "Context", value: "Device state · Logs · Docs" },
-      { label: "Offline", value: "Full offline mode (GGUF)" },
-      { label: "Platform", value: "All EoS devices + web" },
+      { label: "Interface", value: "C runtime · CLI" },
+      { label: "Models", value: "Selected runtime backend" },
+      { label: "Tools", value: "Tool registry and permissions" },
+      { label: "Context", value: "Application-provided context" },
+      { label: "Offline use", value: "Depends on runtime and model" },
+      { label: "Platform", value: "Selected platform adapter" },
     ],
     demo: [
-      "User: What's the CPU temperature?",
-      "eBot: CPU is at 42°C. Fan at 35% duty cycle.",
-      "User: Increase fan speed to 60%",
-      "eBot: Done. Fan now at 60%. Temp dropping.",
-      "User: Show me the last 10 error logs",
-      "eBot: [WARN] SPI timeout x3, [ERR] OTA hash...",
+      "min/src/      Agent runtime source",
+      "min/include/  Public headers",
+      "common/       Tool registry and permissions",
+      "docs/         Runtime documentation",
     ],
   },
 ];
@@ -82,7 +73,7 @@ const PRODUCTS = [
 const USE_CASES = [
   {
     title: "Medical Wearables",
-    desc: "Classify ECG arrhythmias, detect falls, and monitor sleep stages — all on-device with no PHI leaving the hardware.",
+    desc: "Explore signal-classification research for wearable devices. Clinical performance and privacy properties require validation on a named system.",
   },
   {
     title: "Brain-Computer Interface",
@@ -102,7 +93,7 @@ const USE_CASES = [
   },
   {
     title: "Secure AI Inference",
-    desc: "Models run in isolated memory partitions. Inference results are signed and attestable.",
+    desc: "Investigate isolation, permissions, and model provenance. End-to-end security properties depend on the selected system and configuration.",
   },
 ];
 
@@ -127,17 +118,8 @@ export default function EAI() {
             <br />& Edge AI
           </>
         }
-        lead="Run AI models directly on microcontrollers. Connect brain-computer interface devices. Deploy an AI agent on every EoS device — all without cloud dependency."
-        visual={
-          // The 3D neural network, on a large stage; it loads only near the viewport.
-          <div className="board stage">
-            <Suspense fallback={<div className="stage-wait" />}>
-              <ViewportGate>
-                <EAINetworkCanvas hovered={false} />
-              </ViewportGate>
-            </Suspense>
-          </div>
-        }
+        lead="Explore the eAI runtime, agent modules, and neural-interface research. Runtime support and hardware requirements depend on the selected model and target."
+        visual={<ProductRepositoryPanel product="eai" />}
       >
         <div className="ctas">
           <Link href="/getting-started" className="btn pri">
@@ -178,6 +160,14 @@ export default function EAI() {
             <h2>{product.name}</h2>
             <p className="eai-tag">{product.tagline}</p>
             <p>{product.desc}</p>
+            <a
+              className="btn gh"
+              href={`https://github.com/embeddedos-org/${active === "eni" ? "eNI" : "eAI"}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View {product.name} source ↗
+            </a>
             <dl className="eai-specs">
               {product.specs.map(s => (
                 <div key={s.label}>
@@ -190,7 +180,7 @@ export default function EAI() {
 
           <div className="code">
             <div className="cbar">
-              <b>{product.id}-demo.py</b>
+              <b>{product.id} · source map</b>
             </div>
             <pre>
               {product.demo.map((line, i) => (
@@ -207,8 +197,8 @@ export default function EAI() {
       {/* Use cases */}
       <Section
         id="use-cases"
-        title="Use Cases"
-        lead="What you can build with ENI/EAI"
+        title="Research directions"
+        lead="Potential applications to investigate; these examples are not validated device or clinical capabilities"
         split
       >
         <ul className="cards">
@@ -225,7 +215,7 @@ export default function EAI() {
 
       {/* CTA */}
       <Band
-        title="Run AI on your embedded device today"
+        title="Explore the AI source and build guides"
         lead="EAI and ENI are open-source research components under active development for EoS integrations."
       >
         <Link href="/getting-started" className="btn pri">
