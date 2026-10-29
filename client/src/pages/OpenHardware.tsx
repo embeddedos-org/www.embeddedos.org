@@ -254,7 +254,7 @@ export const USAGE = [
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 7 seconds: Git downloaded 16 MB, which checks out as 88 MB of files, against ${M.gigabytes} GB for every board. shasum gives the same SHA-256 as its ATTRIBUTION.md.`,
+    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in 33 files, took 7 to 11 seconds in our two runs: Git downloaded 16 MB, which checks out as 88 MB of files, against ${M.gigabytes} GB for every board. shasum gives the same SHA-256 as its ATTRIBUTION.md.`,
     code: [
       "git sparse-checkout add /boards/cad/sparkfun/iot-redboard-rp2350/",
       "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/Hardware/*.kicad_sch",
