@@ -265,7 +265,7 @@ export const USAGE = [
     height: 950,
     alt: "Terminal output of a sparse clone that fetches only the SparkFun IoT RedBoard RP2350 folder, where du -sh reports 84M of board files and 17M of Git data, listing its KiCad project and four schematic sheets with SHA-256 digests and its CC BY-SA 4.0 licence",
     caption:
-      "Recorded on the pull request branch before the mirror reached master, with the board folder cloned on its own. du counts in mebibytes: 84M of files (88 MB) and 17M of Git data make the video's 101 MB.",
+      "Recorded on the pull request branch before the mirror reached master, with the board folder cloned on its own. du counts in mebibytes: its 84M of files is the 88 MB above.",
   },
   {
     title: "Open the design in KiCad",

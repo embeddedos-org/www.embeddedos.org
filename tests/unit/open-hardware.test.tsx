@@ -77,6 +77,24 @@ describe("open hardware media", () => {
     }
   });
 
+  it("states each video's real length", () => {
+    for (const { name, seconds } of VIDEOS) {
+      const mp4 = readFileSync(path.join(media, `${name}.mp4`));
+      const mvhd = mp4.indexOf("mvhd");
+      expect(mvhd, name).toBeGreaterThan(0);
+      expect(mp4.indexOf("moov"), `${name} faststart`).toBeLessThan(
+        mp4.indexOf("mdat")
+      );
+      const version = mp4[mvhd + 4];
+      const timescale = mp4.readUInt32BE(mvhd + (version === 1 ? 24 : 16));
+      const duration =
+        version === 1
+          ? Number(mp4.readBigUInt64BE(mvhd + 28))
+          : mp4.readUInt32BE(mvhd + 20);
+      expect(duration / timescale, name).toBeCloseTo(seconds, 1);
+    }
+  });
+
   it("keeps each video's captions inside the video", () => {
     for (const { name, seconds, cues } of VIDEOS) {
       const vtt = readFileSync(path.join(media, `${name}.vtt`), "utf8");
