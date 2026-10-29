@@ -13,7 +13,7 @@
  */
 import { describe, expect, it } from "vitest";
 // @ts-expect-error - plain .mjs script, no type declarations
-import { discoverRoutes } from "../../scripts/prerender.mjs";
+import { discoverRoutes, NOINDEX_ROUTES } from "../../scripts/prerender.mjs";
 import { PAGES } from "../../shared/site-index";
 
 /** Routes that exist but are not in the search index yet. */
@@ -58,6 +58,13 @@ const PENDING: { path: string; expires: string }[] = [
   { path: "/article-newsletter-issue-01", expires: "2026-10-31" },
 ];
 
+/**
+ * Routes that must never be search results: the 404 page, and the noindex
+ * confirmation pages, which open only after a completed action — a result
+ * landing on one would count a Google Ads conversion for nothing.
+ */
+const EXEMPT = new Set<string>(["/404", ...NOINDEX_ROUTES]);
+
 const today = () => new Date().toISOString().slice(0, 10);
 const livePending = () => PENDING.filter(p => p.expires >= today());
 
@@ -68,7 +75,7 @@ describe("search index covers every route", () => {
     const indexed = new Set(PAGES.map(p => p.path));
     const pending = new Set(livePending().map(p => p.path));
     const missing = routes.filter(
-      r => r !== "/404" && !indexed.has(r) && !pending.has(r)
+      r => !EXEMPT.has(r) && !indexed.has(r) && !pending.has(r)
     );
     expect(
       missing,

@@ -19,6 +19,7 @@ import {
   formatMailingAddress,
   formatStreetAddress,
 } from "../../client/src/data/foundation";
+import { NOINDEX_ROUTES } from "../../client/src/lib/page-meta";
 
 const ROOT = path.resolve(__dirname, "../..");
 const INDEX_HTML = path.join(ROOT, "client/index.html");
@@ -505,8 +506,16 @@ describe("the Foundation's accounts are spelled one way", () => {
 
 describe("the sitemap covers the site", () => {
   it("lists every static route", () => {
-    const missing = declaredRoutes().filter(r => !sitemapPaths().includes(r));
+    const missing = declaredRoutes().filter(
+      r => !NOINDEX_ROUTES.includes(r) && !sitemapPaths().includes(r)
+    );
     expect(missing, "routes absent from sitemap.xml").toEqual([]);
+  });
+
+  it("lists no noindex confirmation page", () => {
+    // A sitemap entry asks for indexing, which their noindex refuses.
+    const listed = sitemapPaths().filter(p => NOINDEX_ROUTES.includes(p));
+    expect(listed, "noindex routes in sitemap.xml").toEqual([]);
   });
 
   it("lists no path that is not a route", () => {

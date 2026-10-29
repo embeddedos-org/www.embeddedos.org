@@ -18,6 +18,7 @@ import {
 } from "react";
 import { applyRouteMeta, readHeading } from "./lib/page-meta";
 import { OPEN_CONTACT_EVENT } from "./lib/contact-form";
+import type { ConfirmedAction } from "./lib/confirmation";
 
 // --- Modal widget code-splitting (F-07) --------------------------------------
 // The four modal widgets (EBot, SearchModal, DonateModal, ContactFormModal)
@@ -495,6 +496,13 @@ const Architecture = lazyPage(
   () => import("./pages/Architecture")
 );
 const Quantum = lazyPage("/quantum", () => import("./pages/Quantum"));
+// The confirmation pages: one component, the action picks the copy. They open
+// only through openConfirmationPage() in lib/confirmation.ts.
+const ThankYouPage = lazyPage<{ action: ConfirmedAction }>(
+  "/thank-you/contact",
+  () => import("./pages/ThankYou"),
+  ["/thank-you/application", "/thank-you/donation"]
+);
 
 function PageLoader() {
   return (
@@ -1205,6 +1213,21 @@ function Router() {
       <Route path="/quantum">
         <Suspense fallback={<PageLoader />}>
           <Quantum />
+        </Suspense>
+      </Route>
+      <Route path="/thank-you/contact">
+        <Suspense fallback={<PageLoader />}>
+          <ThankYouPage action="contact" />
+        </Suspense>
+      </Route>
+      <Route path="/thank-you/application">
+        <Suspense fallback={<PageLoader />}>
+          <ThankYouPage action="application" />
+        </Suspense>
+      </Route>
+      <Route path="/thank-you/donation">
+        <Suspense fallback={<PageLoader />}>
+          <ThankYouPage action="donation" />
         </Suspense>
       </Route>
       <Route path="/404" component={NotFound} />

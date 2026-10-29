@@ -158,9 +158,16 @@ describe("critical public claim policy", () => {
     expect(index).not.toContain('"event", "conversion"');
     expect(index).not.toMatch(/G-VTNZKL95DQ|VITE_ANALYTICS|\/umami/i);
     expect(privacy).toContain("Google Ads tag (gtag.js)");
+    // Conversions are counted only from the confirmation pages a completed
+    // contact message, job application or card donation opens, by URL; no
+    // form or payment content goes to Google.
     expect(privacy).toContain(
-      "does not currently send completed actions as conversion events"
+      "After a completed contact message, job application, or card donation, the site opens a confirmation page, and the Google tag on that page lets Google Ads count the completed action."
     );
+    expect(privacy).toContain(
+      "The contents of forms and payments are not sent to Google."
+    );
+    expect(privacy).not.toContain("does not currently");
     expect(privacy).toContain("AW-18484485270");
     expect(privacy).toContain("Zeffy-hosted donation form");
     // Stripe and PayPal are named donation processors (card tab + PayPal

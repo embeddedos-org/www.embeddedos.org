@@ -18,6 +18,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { NOINDEX_ROUTES } from "../../client/src/lib/page-meta";
 
 const root = path.resolve(__dirname, "../..");
 const read = (p: string) => readFileSync(path.join(root, p), "utf8");
@@ -38,12 +39,17 @@ const missionSource = read("client/src/pages/Mission.tsx");
 const foundationSource = read("client/src/data/foundation.ts");
 const contactSource = read("client/src/pages/Contact.tsx");
 
-/** Internal routes the router serves, excluding the catch-all 404. */
+/**
+ * Internal routes the router serves, excluding the catch-all 404 and the
+ * noindex confirmation pages. Those open only after a completed action, which
+ * Google Ads counts as a conversion, so no menu may link them: a visitor who
+ * clicked through would be counted for an action they never took.
+ */
 const routes = [
   ...new Set(
     [...appSource.matchAll(/<Route\s+path="([^"]+)"/g)].map(m => m[1])
   ),
-].filter(r => r !== "/404");
+].filter(r => r !== "/404" && !NOINDEX_ROUTES.includes(r));
 
 /** Extract every internal href from a named object literal in source order. */
 function rawHrefsIn(source: string, declaration: string): string[] {
@@ -203,6 +209,13 @@ describe("route coverage", () => {
 
   it("keeps every hub itself in the footer", () => {
     for (const { hub } of HUBS) expect(footerAll).toContain(hub);
+  });
+
+  it("links no confirmation page from the header or the footer", () => {
+    const linked = [...navHrefs, ...footerAll].filter(h =>
+      NOINDEX_ROUTES.includes(h.replace(/\/+$/, ""))
+    );
+    expect(linked).toEqual([]);
   });
 
   it("points every menu link at a route that exists", () => {

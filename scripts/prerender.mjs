@@ -67,8 +67,12 @@ const FALLBACK_DESCRIPTION =
 // Route discovery lives in a dependency-free module (the deploy-drift CI
 // job runs without node_modules); imported for local use and re-exported
 // so existing importers keep working.
-import { stripComments, discoverRoutes } from "./discover-routes.mjs";
-export { stripComments, discoverRoutes };
+import {
+  stripComments,
+  discoverRoutes,
+  NOINDEX_ROUTES,
+} from "./discover-routes.mjs";
+export { stripComments, discoverRoutes, NOINDEX_ROUTES };
 
 /**
  * Serve dist/public, but always hand the *pristine* shell to navigations so a
@@ -584,6 +588,13 @@ export function applyMeta(html, { route, heading, description, image }) {
     out = out.replace(
       /<\/head>/i,
       `<script type="application/ld+json">${websiteJson}</script>\n</head>`
+    );
+  }
+
+  if (NOINDEX_ROUTES.includes(route)) {
+    out = out.replace(
+      /<\/head>/i,
+      `<meta name="robots" content="noindex" />\n</head>`
     );
   }
 

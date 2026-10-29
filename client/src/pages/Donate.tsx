@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { openConfirmationPage } from "@/lib/confirmation";
 import { openContactForm } from "@/lib/contact-form";
 import {
   STRIPE_PUBLISHABLE_KEY,
@@ -220,13 +221,16 @@ export default function Donate() {
       },
       redirect: "if_required",
     });
-    if (error?.message) {
+    // Any error, even one without a message, means the payment did not go
+    // through, so it must never reach the confirmation page below.
+    if (error) {
       setCardStatus("ready");
-      setCardError(error.message);
+      setCardError(error.message ?? "");
       return;
     }
     setConfirmedAmount(formatUsd(chosenAmountCents()));
     setCardStatus("done");
+    openConfirmationPage("donation");
   }
 
   return (

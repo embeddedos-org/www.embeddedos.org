@@ -96,6 +96,20 @@ export const DESCRIPTION_OVERRIDES: Record<string, string> = {
     "nonprofit disclosures, finances, governance and public records.",
 };
 
+/**
+ * Routes served with `<meta name="robots" content="noindex">`: the
+ * confirmation pages, which open only after a completed action.
+ *
+ * Mirrored in scripts/discover-routes.mjs (NOINDEX_ROUTES), which the
+ * prerenderer, the sitemap and the SEO audit read; the two lists must stay
+ * identical — tests/unit/confirmation-pages.test.tsx enforces it.
+ */
+export const NOINDEX_ROUTES: readonly string[] = [
+  "/thank-you/contact",
+  "/thank-you/application",
+  "/thank-you/donation",
+];
+
 export const FALLBACK_DESCRIPTION =
   "EmbeddedOS is a 501(c)(3) nonprofit foundation building an open-source " +
   "operating system for embedded devices, with free documentation, tools and " +
@@ -274,6 +288,24 @@ export function applyRouteMeta(route: string, doc: Document = document): void {
 
   const link = doc.querySelector('link[rel="canonical"]');
   if (link) link.setAttribute("href", canonical);
+
+  // The head a page was first served with stays for the whole visit, so the
+  // noindex a confirmation page was prerendered with must be removed when the
+  // visitor moves on, and restored if they come back through history. The
+  // history entry of a first load keeps its trailing slash.
+  const path = route.length > 1 ? route.replace(/\/+$/, "") : route;
+  const robots = doc.querySelector('meta[name="robots"]');
+  if (NOINDEX_ROUTES.includes(path)) {
+    if (robots) robots.setAttribute("content", "noindex");
+    else {
+      const meta = doc.createElement("meta");
+      meta.setAttribute("name", "robots");
+      meta.setAttribute("content", "noindex");
+      doc.head.appendChild(meta);
+    }
+  } else if (robots?.getAttribute("content") === "noindex") {
+    robots.remove();
+  }
 }
 
 /** Google Ads account ID used by the site-wide base tag. */

@@ -7,6 +7,7 @@ import {
   shortMailto,
 } from "@/lib/application-email";
 import { copyText } from "@/lib/clipboard";
+import { openConfirmationPage } from "@/lib/confirmation";
 import { openContactForm } from "@/lib/contact-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -680,8 +681,8 @@ function ApplicationForm() {
    *
    * /api/apply.php ships inside the static build and is the only first-party
    * way to accept a post here: no Node process runs in production. When it
-   * answers `{ ok: true }` the application really has been delivered, and the
-   * panel says so.
+   * answers `{ ok: true }` the application really has been delivered, so the
+   * panel says so and the confirmation page opens.
    *
    * Everything else falls back to composing a draft in the visitor's own mail
    * client — a host without PHP, an error, a timeout. That path says only that
@@ -720,6 +721,7 @@ function ApplicationForm() {
     if (delivered) {
       setSent(true);
       toast.success("Application sent. A confirmation is on its way to you.");
+      openConfirmationPage("application");
       return;
     }
 
