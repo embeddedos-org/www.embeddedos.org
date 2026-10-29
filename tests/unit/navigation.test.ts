@@ -42,8 +42,8 @@ const contactSource = read("client/src/pages/Contact.tsx");
 /**
  * Internal routes the router serves, excluding the catch-all 404 and the
  * noindex confirmation pages. Those open only after a completed action, which
- * Google Ads counts as a conversion, so no menu may link them: a visitor who
- * clicked through would be counted for an action they never took.
+ * they report to Google Ads, so no menu may link them: a visitor who clicked
+ * through would be thanked for an action they never took.
  */
 const routes = [
   ...new Set(

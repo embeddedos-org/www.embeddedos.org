@@ -61,7 +61,7 @@ const PENDING: { path: string; expires: string }[] = [
 /**
  * Routes that must never be search results: the 404 page, and the noindex
  * confirmation pages, which open only after a completed action — a result
- * landing on one would count a Google Ads conversion for nothing.
+ * landing on one would thank the visitor for something they never did.
  */
 const EXEMPT = new Set<string>(["/404", ...NOINDEX_ROUTES]);
 

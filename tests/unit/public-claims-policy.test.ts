@@ -155,12 +155,17 @@ describe("critical public claim policy", () => {
     expect(index).toContain(
       "www.googletagmanager.com/gtag/js?id=AW-18484485270"
     );
-    expect(index).not.toContain('"event", "conversion"');
+    // One conversion call, guarded: sent only from a confirmation page that a
+    // completed action opened, to the account's existing conversion action.
+    expect(index.match(/"conversion"/g)).toHaveLength(1);
+    expect(index).toMatch(
+      /if \(counted\)\s*gtag\(\s*"event",\s*"conversion",\s*\{\s*send_to: "AW-18484485270\/UwZ-CNmDoowdEJa5i-5E",?\s*\}\s*\)/
+    );
     expect(index).not.toMatch(/G-VTNZKL95DQ|VITE_ANALYTICS|\/umami/i);
     expect(privacy).toContain("Google Ads tag (gtag.js)");
-    // Conversions are counted only from the confirmation pages a completed
-    // contact message, job application or card donation opens, by URL; no
-    // form or payment content goes to Google.
+    // Conversions are reported only from the confirmation pages a completed
+    // contact message, job application or card donation opens; no form or
+    // payment content goes to Google.
     expect(privacy).toContain(
       "After a completed contact message, job application, or card donation, the site opens a confirmation page, and the Google tag on that page lets Google Ads count the completed action."
     );

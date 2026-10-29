@@ -15,9 +15,9 @@ const APP_TSX = path.join(ROOT, "client", "src", "App.tsx");
 /**
  * Routes that are built and served but must never be indexed: the pages a
  * visitor reaches only after completing an action (a contact message sent, a
- * job application delivered, a card donation confirmed). Google Ads counts a
- * conversion when one of these URLs loads, so a search result or a link that
- * lands on one would count an action nobody took.
+ * job application delivered, a card donation confirmed), where the Google tag
+ * reports that completion to Google Ads. A search result or a link that lands
+ * on one would show a thank-you for an action nobody took.
  *
  * scripts/prerender.mjs gives each a robots noindex meta tag,
  * scripts/gen-sitemap.mjs leaves them out of the sitemap, and

@@ -1,14 +1,15 @@
 /** @vitest-environment jsdom */
 
 /**
- * The confirmation pages Google Ads counts conversions on.
+ * The confirmation pages that report completions to Google Ads.
  *
- * Ads counts a conversion when the Google tag loads /thank-you/<action>/. So
- * what has to hold is: the three pages exist and are prerendered; they are
- * never indexed, listed or linked, so nothing but a completed action reaches
- * them; and each opens with a full page load after its action really
- * completed, never after a failure or a fallback whose outcome the site
- * cannot see.
+ * The Google tag on /thank-you/<action>/ sends the completion to the account's
+ * conversion action when a completed action opened the page. So what has to
+ * hold is: the three pages exist and are prerendered; they are never indexed,
+ * listed or linked, so nothing but a completed action reaches them; each opens
+ * with a full page load after its action really completed, never after a
+ * failure or a fallback whose outcome the site cannot see; and the conversion
+ * is sent from that page alone, once, and from nowhere else.
  */
 import "@testing-library/jest-dom/vitest";
 import {
@@ -380,81 +381,112 @@ describe("openConfirmationPage", () => {
   });
 });
 
-describe("the Google tag counts a confirmation page only with its token", () => {
+describe("the Google tag reports a completion only with its token", () => {
+  const SHELL_HTML = read("client/index.html");
   /** The shell's inline snippet that configures the tag. */
   const snippet = (() => {
     const scripts = [
-      ...read("client/index.html").matchAll(/<script>([\s\S]*?)<\/script>/g),
+      ...SHELL_HTML.matchAll(/<script>([\s\S]*?)<\/script>/g),
     ].map(m => m[1]);
     const found = scripts.filter(s => s.includes('gtag("js"'));
     expect(found).toHaveLength(1);
     return found[0];
   })();
 
-  /** Run the snippet as a page at `pathname` would, and report its calls. */
+  const CONFIG = ["config", "AW-18484485270"];
+  const CONVERSION = [
+    "event",
+    "conversion",
+    { send_to: "AW-18484485270/UwZ-CNmDoowdEJa5i-5E" },
+  ];
+
+  /**
+   * Run the snippet as a page at `pathname` would, and return every gtag()
+   * call it made after gtag("js"). A fake dataLayer records each call: the
+   * snippet's gtag() pushes its arguments there and nowhere else.
+   */
   function load(pathname: string, storage: Storage | object) {
+    const calls: unknown[][] = [];
     const context: Record<string, unknown> = {
       location: { pathname },
       sessionStorage: storage,
       Date,
+      dataLayer: { push: (args: IArguments) => calls.push([...args]) },
     };
     context.window = context;
     vm.runInNewContext(snippet, context);
-    const calls = (context.dataLayer as IArguments[]).map(a => [...a]);
-    return calls.filter(c => c[0] === "config");
+    expect(calls[0]?.[0]).toBe("js");
+    // Plain objects from this realm, so they compare by value.
+    return JSON.parse(JSON.stringify(calls.slice(1)));
   }
 
-  it("configures the tag when the token names this page, then spends it", () => {
+  const blocked = () => ({
+    getItem: () => {
+      throw new DOMException("blocked", "SecurityError");
+    },
+  });
+
+  it("configures the tag and sends one conversion when the token names this page, then spends it", () => {
     for (const page of Object.values(CONFIRMATION_PAGES)) {
       const storage = fakeStorage();
       storage.setItem(CONFIRMATION_TOKEN_KEY, page);
-      expect(load(page, storage)).toEqual([["config", "AW-18484485270"]]);
+      expect(load(page, storage)).toEqual([CONFIG, CONVERSION]);
       expect(storage.getItem(CONFIRMATION_TOKEN_KEY)).toBeNull();
-      // A reload after that finds no token and records nothing.
+      // A reload after that finds no token: no config, no conversion.
       expect(load(page, storage)).toEqual([]);
     }
   });
 
-  it("records nothing on a confirmation page without its exact token", () => {
+  it("sends nothing on a confirmation page without its exact token", () => {
     for (const page of Object.values(CONFIRMATION_PAGES)) {
       expect(load(page, fakeStorage())).toEqual([]);
       const wrong = fakeStorage();
       wrong.setItem(CONFIRMATION_TOKEN_KEY, "/thank-you/elsewhere/");
       expect(load(page, wrong)).toEqual([]);
+      const other = fakeStorage();
+      other.setItem(
+        CONFIRMATION_TOKEN_KEY,
+        Object.values(CONFIRMATION_PAGES).find(p => p !== page)!
+      );
+      expect(load(page, other)).toEqual([]);
       expect(load(page.slice(0, -1), fakeStorage())).toEqual([]);
       expect(load(`${page}index.html`, fakeStorage())).toEqual([]);
+      expect(load(page, blocked())).toEqual([]);
     }
   });
 
-  it("records nothing there when sessionStorage is unavailable", () => {
-    const blocked = {
-      getItem: () => {
-        throw new DOMException("blocked", "SecurityError");
-      },
-    };
-    expect(load("/thank-you/donation/", blocked)).toEqual([]);
-  });
-
-  it("configures the tag on every other page as before", () => {
+  it("configures the tag on every other page and sends no conversion", () => {
     for (const page of ["/", "/contact/", "/careers", "/donate/", "/404"]) {
-      expect(load(page, fakeStorage())).toEqual([["config", "AW-18484485270"]]);
-      const blocked = {
-        getItem: () => {
-          throw new DOMException("blocked", "SecurityError");
-        },
-      };
-      expect(load(page, blocked)).toEqual([["config", "AW-18484485270"]]);
+      expect(load(page, fakeStorage())).toEqual([CONFIG]);
+      expect(load(page, blocked())).toEqual([CONFIG]);
+      // Not even a stray token for a confirmation page makes one count here.
+      const stray = fakeStorage();
+      stray.setItem(CONFIRMATION_TOKEN_KEY, CONFIRMATION_PAGES.donation);
+      expect(load(page, stray)).toEqual([CONFIG]);
+      expect(stray.getItem(CONFIRMATION_TOKEN_KEY)).toBeNull();
     }
   });
 
-  it("counts the page openConfirmationPage() opens", () => {
+  it("reports the page openConfirmationPage() opens", () => {
     stubLocation("/careers");
     const storage = fakeStorage();
     vi.stubGlobal("sessionStorage", storage);
     openConfirmationPage("application");
     expect(load("/thank-you/application/", storage)).toEqual([
-      ["config", "AW-18484485270"],
+      CONFIG,
+      CONVERSION,
     ]);
+  });
+
+  it("has one conversion call in the shell, inside the guarded branch", () => {
+    // Static form of the same rule, for the prerendered HTML: no page load
+    // sends a conversion unconditionally.
+    expect(SHELL_HTML.match(/"conversion"/g)).toHaveLength(1);
+    expect(SHELL_HTML.match(/gtag\(\s*"event"/g)).toHaveLength(1);
+    expect(snippet).toMatch(/var counted = guarded && token === here;/);
+    expect(snippet).toMatch(
+      /if \(counted\)\s*gtag\(\s*"event",\s*"conversion"/
+    );
   });
 });
 
