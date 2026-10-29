@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Send, CheckCircle2, AlertTriangle } from "lucide-react";
 import { CONTACT_TOPICS, type ContactTopicKey } from "@/data/foundation";
 import { OPEN_CONTACT_EVENT, type OpenContactDetail } from "@/lib/contact-form";
+import { openConfirmationPage } from "@/lib/confirmation";
 
 /**
  * The sitewide contact form, replacing every `mailto:` link on the site.
@@ -151,6 +152,10 @@ export default function ContactFormModal() {
           .catch(() => ({}));
         if (res.ok && payload.ok) {
           setStatus("sent");
+          // contact.php answers a filled honeypot with ok and sends nothing,
+          // and its trim() keeps a non-breaking space the check above strips.
+          // Only an exactly empty honeypot is certainly a sent message.
+          if (form.website === "") openConfirmationPage("contact");
           return;
         }
         setErrorKind(

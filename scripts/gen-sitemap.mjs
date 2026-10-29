@@ -33,7 +33,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { discoverRoutes } from "./prerender.mjs";
+import { discoverRoutes, NOINDEX_ROUTES } from "./prerender.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_OUT = path.join(ROOT, "client", "public", "sitemap.xml");
@@ -87,8 +87,9 @@ function build() {
   // than the order Vite happened to walk the routes in.
   // /404 is a real route but must never be in a sitemap: submitting an error
   // page for indexing invites it into search results, where it is the worst
-  // possible landing page.
-  const EXCLUDE = new Set(["/404"]);
+  // possible landing page. The noindex confirmation pages are left out for the
+  // same reason: a sitemap entry asks for indexing, which noindex refuses.
+  const EXCLUDE = new Set(["/404", ...NOINDEX_ROUTES]);
   const routes = discoverRoutes()
     .filter(r => !EXCLUDE.has(r))
     .sort();

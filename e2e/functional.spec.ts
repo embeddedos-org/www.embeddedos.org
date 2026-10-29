@@ -266,6 +266,8 @@ test.describe("careers application submission", () => {
     await expect(page.getByText("Application received")).toBeVisible();
     // The form is replaced, so nobody submits twice by accident.
     await expect(page.locator("#fullName")).toHaveCount(0);
+    // A delivered application opens its confirmation page with a full load.
+    await expect(page).toHaveURL(/\/thank-you\/application\/$/);
   });
 
   test("a host without PHP falls back to a mail draft, and says so honestly", async ({

@@ -155,11 +155,39 @@ describe("critical public claim policy", () => {
     expect(index).toContain(
       "www.googletagmanager.com/gtag/js?id=AW-18484485270"
     );
-    expect(index).not.toContain('"event", "conversion"');
+    // One conversion call, guarded: sent only from a confirmation page that a
+    // completed action opened, to the account's existing conversion action.
+    expect(index.match(/"conversion"/g)).toHaveLength(1);
+    expect(index).toMatch(
+      /if \(counted\)\s*gtag\(\s*"event",\s*"conversion",\s*\{\s*send_to: "AW-18484485270\/UwZ-CNmDoowdEJa5i-5E",?\s*\}\s*\)/
+    );
     expect(index).not.toMatch(/G-VTNZKL95DQ|VITE_ANALYTICS|\/umami/i);
     expect(privacy).toContain("Google Ads tag (gtag.js)");
+    // Conversions are reported only from the confirmation pages a completed
+    // contact message, job application or card donation opens; no form or
+    // payment content goes to Google.
     expect(privacy).toContain(
-      "does not currently send completed actions as conversion events"
+      "After a completed contact message, job application, or card donation, the site opens a confirmation page, and the Google tag on that page lets Google Ads count the completed action."
+    );
+    expect(privacy).toContain(
+      "This site does not send the contents of forms or payments to Google."
+    );
+    expect(privacy).not.toContain("does not currently");
+    // The tag sets first-party cookies for embeddedos.org (the parent domain,
+    // by default), so the policy names them as examples and may not claim
+    // the site sets no cookies at all, or that its list is complete.
+    expect(privacy).toContain(
+      "first-party cookies for embeddedos.org, including _gcl_au, and _gcl_aw after a Google ad click."
+    );
+    expect(privacy).toContain("The site itself sets no other cookies.");
+    expect(privacy).not.toContain("does not set any cookies of its own");
+    expect(privacy).not.toContain("This site sets no cookies of its own");
+    expect(privacy).not.toContain(
+      "Apart from these, this site sets no cookies"
+    );
+    // The confirmation token in sessionStorage is disclosed too.
+    expect(privacy).toContain(
+      "keeps a one-time marker in session storage for that tab, only until its confirmation page loads and removes it, so that page is counted once."
     );
     expect(privacy).toContain("AW-18484485270");
     expect(privacy).toContain("Zeffy-hosted donation form");

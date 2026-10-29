@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { openConfirmationPage } from "@/lib/confirmation";
 import { openContactForm } from "@/lib/contact-form";
 import {
   STRIPE_PUBLISHABLE_KEY,
@@ -89,6 +90,7 @@ export default function Donate() {
     | "preparing"
     | "ready"
     | "confirming"
+    | "processing"
     | "done"
     | "error"
     | "unavailable"
@@ -213,20 +215,29 @@ export default function Donate() {
     if (!stripeRef.current || !stripeElementsRef.current) return;
     setCardStatus("confirming");
     setCardError("");
-    const { error } = await stripeRef.current.confirmPayment({
+    const { error, paymentIntent } = await stripeRef.current.confirmPayment({
       elements: stripeElementsRef.current,
       confirmParams: {
         return_url: "https://www.embeddedos.org/donate/#donate-now",
       },
       redirect: "if_required",
     });
-    if (error?.message) {
+    // Any error, even one without a message, means the payment did not go
+    // through, so it must never reach the confirmation page below.
+    if (error) {
       setCardStatus("ready");
-      setCardError(error.message);
+      setCardError(error.message ?? "");
+      return;
+    }
+    // Only "succeeded" is a completed gift. Anything else (a delayed method
+    // still "processing") may yet fail, so it is not confirmed or counted.
+    if (paymentIntent?.status !== "succeeded") {
+      setCardStatus("processing");
       return;
     }
     setConfirmedAmount(formatUsd(chosenAmountCents()));
     setCardStatus("done");
+    openConfirmationPage("donation");
   }
 
   return (
@@ -394,6 +405,12 @@ export default function Donate() {
                       <p className="dn-small">
                         A receipt is on its way from Stripe. Your support keeps
                         EmbeddedOS free and open.
+                      </p>
+                    </div>
+                  ) : cardStatus === "processing" ? (
+                    <div className="dn-done">
+                      <p role="status" className="dn-small">
+                        Stripe has not confirmed this payment yet.
                       </p>
                     </div>
                   ) : (

@@ -45,7 +45,14 @@ export interface StripeInstance {
     elements: unknown;
     confirmParams: { return_url: string };
     redirect: "if_required";
-  }) => Promise<{ error?: { message?: string } }>;
+  }) => Promise<{
+    error?: { message?: string };
+    /**
+     * Present when no redirect happened. Only "succeeded" means the money
+     * moved; "processing" (a delayed payment method) may still fail.
+     */
+    paymentIntent?: { status?: string };
+  }>;
 }
 
 declare global {

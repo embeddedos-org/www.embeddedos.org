@@ -13,6 +13,25 @@ const ROOT = path.resolve(import.meta.dirname, "..");
 const APP_TSX = path.join(ROOT, "client", "src", "App.tsx");
 
 /**
+ * Routes that are built and served but must never be indexed: the pages a
+ * visitor reaches only after completing an action (a contact message sent, a
+ * job application delivered, a card donation confirmed), where the Google tag
+ * reports that completion to Google Ads. A search result or a link that lands
+ * on one would show a thank-you for an action nobody took.
+ *
+ * scripts/prerender.mjs gives each a robots noindex meta tag,
+ * scripts/gen-sitemap.mjs leaves them out of the sitemap, and
+ * scripts/seo-audit.mjs does not report them as orphans. Mirrored for
+ * client-side navigation by NOINDEX_ROUTES in client/src/lib/page-meta.ts;
+ * tests/unit/confirmation-pages.test.tsx holds the two equal.
+ */
+export const NOINDEX_ROUTES = [
+  "/thank-you/contact",
+  "/thank-you/application",
+  "/thank-you/donation",
+];
+
+/**
  * Strip JS/JSX comments from source before route scraping.
  *
  * discoverRoutes() and the route-preload sync test find routes with a regex

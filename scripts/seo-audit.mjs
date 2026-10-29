@@ -16,6 +16,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { NOINDEX_ROUTES } from "./discover-routes.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DIST = path.join(ROOT, "dist", "public");
@@ -296,7 +297,9 @@ export function audit(docs, sitemap) {
       if (inbound.has(href) && href !== d.route)
         inbound.set(href, inbound.get(href) + 1);
 
-  const EXEMPT = new Set(["/404"]);
+  // The noindex confirmation pages are unlinked and out of the sitemap by
+  // design: they open only after a completed action.
+  const EXEMPT = new Set(["/404", ...NOINDEX_ROUTES]);
   for (const [route, count] of inbound)
     if (count === 0 && !EXEMPT.has(route))
       add("error", "orphan-page", route, "no inbound internal link");

@@ -244,7 +244,11 @@ describe("Google Ads tag", () => {
     expect(shell).toContain(
       "www.googletagmanager.com/gtag/js?id=AW-18484485270"
     );
-    expect(shell).not.toContain('"event", "conversion"');
+    // No page load sends a conversion unconditionally: the shell's one
+    // conversion call sits in the branch taken only on a confirmation page a
+    // completed action opened (run in tests/unit/confirmation-pages.test.tsx).
+    expect(shell.match(/"conversion"/g)).toHaveLength(1);
+    expect(shell).toMatch(/if \(counted\)\s*gtag\(\s*"event",\s*"conversion"/);
   });
 });
 
