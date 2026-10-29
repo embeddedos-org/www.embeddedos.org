@@ -20,14 +20,33 @@ export const CONFIRMATION_PAGES = {
 export type ConfirmedAction = keyof typeof CONFIRMATION_PAGES;
 
 /**
+ * The sessionStorage key of the one-time token that lets a confirmation page
+ * count. The Google tag snippet in client/index.html reads and removes it, and
+ * configures the tag on a confirmation page only when the token names that
+ * exact page, so a reload, a bookmark or a direct visit counts nothing.
+ */
+export const CONFIRMATION_TOKEN_KEY = "eos-confirmation";
+
+/**
  * Open the confirmation page for a completed action.
  *
  * A full page load, never a wouter navigation: the Google tag records page
  * loads, and a client-side route change loads nothing it can see.
  *
+ * Where sessionStorage is unavailable (blocked, or full) the token cannot be
+ * written, so the page opens but the completion goes uncounted. That is the
+ * intended direction to fail: undercounting is acceptable, overcounting is
+ * not.
+ *
  * @param action - the action that completed.
  * @example openConfirmationPage("contact"); // loads /thank-you/contact/
  */
 export function openConfirmationPage(action: ConfirmedAction): void {
-  window.location.assign(CONFIRMATION_PAGES[action]);
+  const target = CONFIRMATION_PAGES[action];
+  try {
+    window.sessionStorage.setItem(CONFIRMATION_TOKEN_KEY, target);
+  } catch {
+    // Uncounted rather than miscounted; see above.
+  }
+  window.location.assign(target);
 }

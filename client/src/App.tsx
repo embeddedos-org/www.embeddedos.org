@@ -178,6 +178,15 @@ function IdleGate({
 const pageLoaders: Record<string, () => Promise<unknown>> = {};
 const preloaded = new Map<string, ComponentType>();
 
+/**
+ * The registry key for a pathname: trailing slashes stripped, the root kept.
+ * A first load arrives at the served URL, /about/, while routes are declared
+ * as /about, so both the lookup and preloadRoute() go through this.
+ */
+export function routeKey(pathname: string): string {
+  return pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+}
+
 // Route components are rendered without props, so the wrapper forwards none.
 function lazyPage<P extends object = Record<string, never>>(
   path: string,
@@ -209,7 +218,7 @@ function lazyPage<P extends object = Record<string, never>>(
     // preloaded is keyed by the pathname that was fetched, which for an alias
     // is not this component's declared path. Check both.
     const here =
-      typeof window !== "undefined" ? window.location.pathname : path;
+      typeof window !== "undefined" ? routeKey(window.location.pathname) : path;
     const Ready = (preloaded.get(path) ?? preloaded.get(here)) as
       ComponentType<P> | undefined;
     return Ready ? <Ready {...props} /> : <Lazy {...props} />;
@@ -221,7 +230,7 @@ function lazyPage<P extends object = Record<string, never>>(
  * render can mount it synchronously.
  */
 export async function preloadRoute(pathname: string): Promise<void> {
-  const key = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+  const key = routeKey(pathname);
   const loader = pageLoaders[key];
   if (!loader) return;
   try {

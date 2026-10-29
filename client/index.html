@@ -234,13 +234,39 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "AW-18484485270");
+      // A confirmation page may count only when a completed action opened it.
+      // openConfirmationPage() (client/src/lib/confirmation.ts) leaves a
+      // one-time token naming the page; it is read and removed here on every
+      // page. Under /thank-you/<action>/ without that exact token (a reload, a
+      // bookmark, a direct visit) the tag is not configured, so it records
+      // nothing. Without sessionStorage a real completion goes uncounted:
+      // undercounting is acceptable, overcounting is not. Every other page
+      // configures the tag as before.
+      (function () {
+        var token = null;
+        try {
+          token = sessionStorage.getItem("eos-confirmation");
+          sessionStorage.removeItem("eos-confirmation");
+        } catch (e) {}
+        var here = location.pathname.replace(/\/?$/, "/");
+        var guarded = [
+          "/thank-you/contact/",
+          "/thank-you/application/",
+          "/thank-you/donation/",
+        ].some(function (page) {
+          return here.indexOf(page) === 0;
+        });
+        if (!guarded || token === here) gtag("config", "AW-18484485270");
+      })();
     </script>
     <!--
-      Keep the base Ads tag for attribution. Do not send a conversion on page
-      load: only completed, meaningful actions should count as conversions.
-      Add an event-specific label after its matching Google Ads conversion
-      action has been created and validated in the account.
+      Conversions are counted by URL, not by events. Each Google Ads conversion
+      action in the account matches one confirmation page (/thank-you/contact/,
+      /thank-you/application/, /thank-you/donation/), and the config call above
+      is what records that page load. Never add a conversion event snippet (a
+      gtag event of type conversion with a send_to label) to these pages or to
+      this shell: Ads would count the same completion twice, once by URL and
+      once by event.
     -->
   </head>
 

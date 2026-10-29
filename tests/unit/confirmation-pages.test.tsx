@@ -21,6 +21,7 @@ import {
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import vm from "node:vm";
 import type { ReactNode } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -51,6 +52,7 @@ vi.mock("../../client/src/components/ui/select", () => ({
 
 import {
   CONFIRMATION_PAGES,
+  CONFIRMATION_TOKEN_KEY,
   openConfirmationPage,
   type ConfirmedAction,
 } from "../../client/src/lib/confirmation";
@@ -102,6 +104,21 @@ function stubLocation(pathname: string) {
   };
   vi.stubGlobal("location", location);
   return { assign, location };
+}
+
+/** A Storage that lives only in the test. */
+function fakeStorage(): Storage {
+  const items = new Map<string, string>();
+  return {
+    get length() {
+      return items.size;
+    },
+    key: i => [...items.keys()][i] ?? null,
+    getItem: k => items.get(k) ?? null,
+    setItem: (k, v) => void items.set(k, String(v)),
+    removeItem: k => void items.delete(k),
+    clear: () => items.clear(),
+  };
 }
 
 function stubFetch(respond: () => Promise<Response>) {
@@ -263,6 +280,8 @@ describe("never linked", () => {
       "client/src/App.tsx",
       "client/src/lib/confirmation.ts",
       "client/src/lib/page-meta.ts",
+      // The Google tag's one-time-token guard, not a link.
+      "client/index.html",
     ]);
     const files = [
       ...fs.globSync("client/src/**/*.{ts,tsx,js,jsx,json}", { cwd: ROOT }),
@@ -290,14 +309,12 @@ describe("the confirmation page", () => {
       [
         "your application was received, and a confirmation is on its way to your inbox.",
         "A person reads every one; we usually reply within 5–10 business days.",
+        "To add a CV, reply to that confirmation email with it attached.",
       ],
     ],
     donation: [
       "client/src/pages/Donate.tsx",
-      [
-        "A receipt is on its way from Stripe.",
-        "Your support keeps EmbeddedOS free and open.",
-      ],
+      ["Your support keeps EmbeddedOS free and open."],
     ],
   };
 
@@ -311,6 +328,12 @@ describe("the confirmation page", () => {
       expect(text).toContain(phrase);
       expect(source).toContain(phrase);
     }
+  });
+
+  it("promises no receipt for a gift", () => {
+    // stripe-intent.php sets no receipt_email, so nothing backs the claim.
+    const { container } = render(<ThankYou action="donation" />);
+    expect(container.textContent).not.toMatch(/receipt/i);
   });
 
   it("links onward to Home, Projects, Get involved and Contact, all real routes", () => {
@@ -331,10 +354,112 @@ describe("openConfirmationPage", () => {
     expect(assign).toHaveBeenCalledTimes(1);
     expect(assign).toHaveBeenCalledWith(`/thank-you/${action}/`);
   });
+
+  it("leaves a one-time token naming the page, before it loads", () => {
+    const { assign } = stubLocation("/");
+    const storage = fakeStorage();
+    vi.stubGlobal("sessionStorage", storage);
+    assign.mockImplementation(() =>
+      expect(storage.getItem(CONFIRMATION_TOKEN_KEY)).toBe(
+        "/thank-you/application/"
+      )
+    );
+    openConfirmationPage("application");
+    expect(assign).toHaveBeenCalledTimes(1);
+  });
+
+  it("still opens the page when sessionStorage is unavailable", () => {
+    const { assign } = stubLocation("/");
+    vi.stubGlobal("sessionStorage", {
+      setItem: () => {
+        throw new DOMException("blocked", "SecurityError");
+      },
+    });
+    openConfirmationPage("contact");
+    expect(assign).toHaveBeenCalledWith("/thank-you/contact/");
+  });
+});
+
+describe("the Google tag counts a confirmation page only with its token", () => {
+  /** The shell's inline snippet that configures the tag. */
+  const snippet = (() => {
+    const scripts = [
+      ...read("client/index.html").matchAll(/<script>([\s\S]*?)<\/script>/g),
+    ].map(m => m[1]);
+    const found = scripts.filter(s => s.includes('gtag("js"'));
+    expect(found).toHaveLength(1);
+    return found[0];
+  })();
+
+  /** Run the snippet as a page at `pathname` would, and report its calls. */
+  function load(pathname: string, storage: Storage | object) {
+    const context: Record<string, unknown> = {
+      location: { pathname },
+      sessionStorage: storage,
+      Date,
+    };
+    context.window = context;
+    vm.runInNewContext(snippet, context);
+    const calls = (context.dataLayer as IArguments[]).map(a => [...a]);
+    return calls.filter(c => c[0] === "config");
+  }
+
+  it("configures the tag when the token names this page, then spends it", () => {
+    for (const page of Object.values(CONFIRMATION_PAGES)) {
+      const storage = fakeStorage();
+      storage.setItem(CONFIRMATION_TOKEN_KEY, page);
+      expect(load(page, storage)).toEqual([["config", "AW-18484485270"]]);
+      expect(storage.getItem(CONFIRMATION_TOKEN_KEY)).toBeNull();
+      // A reload after that finds no token and records nothing.
+      expect(load(page, storage)).toEqual([]);
+    }
+  });
+
+  it("records nothing on a confirmation page without its exact token", () => {
+    for (const page of Object.values(CONFIRMATION_PAGES)) {
+      expect(load(page, fakeStorage())).toEqual([]);
+      const wrong = fakeStorage();
+      wrong.setItem(CONFIRMATION_TOKEN_KEY, "/thank-you/elsewhere/");
+      expect(load(page, wrong)).toEqual([]);
+      expect(load(page.slice(0, -1), fakeStorage())).toEqual([]);
+      expect(load(`${page}index.html`, fakeStorage())).toEqual([]);
+    }
+  });
+
+  it("records nothing there when sessionStorage is unavailable", () => {
+    const blocked = {
+      getItem: () => {
+        throw new DOMException("blocked", "SecurityError");
+      },
+    };
+    expect(load("/thank-you/donation/", blocked)).toEqual([]);
+  });
+
+  it("configures the tag on every other page as before", () => {
+    for (const page of ["/", "/contact/", "/careers", "/donate/", "/404"]) {
+      expect(load(page, fakeStorage())).toEqual([["config", "AW-18484485270"]]);
+      const blocked = {
+        getItem: () => {
+          throw new DOMException("blocked", "SecurityError");
+        },
+      };
+      expect(load(page, blocked)).toEqual([["config", "AW-18484485270"]]);
+    }
+  });
+
+  it("counts the page openConfirmationPage() opens", () => {
+    stubLocation("/careers");
+    const storage = fakeStorage();
+    vi.stubGlobal("sessionStorage", storage);
+    openConfirmationPage("application");
+    expect(load("/thank-you/application/", storage)).toEqual([
+      ["config", "AW-18484485270"],
+    ]);
+  });
 });
 
 describe("contact form", () => {
-  async function submitContact() {
+  async function submitContact(honeypot = "") {
     render(<ContactFormModal />);
     openContactForm();
     const field = (id: string, value: string) =>
@@ -348,6 +473,7 @@ describe("contact form", () => {
     field("contact-email", "ada@example.org");
     field("contact-subject", "A question");
     field("contact-message", "A question about the board files.");
+    if (honeypot) field("contact-website", honeypot);
     fireEvent.submit(
       (document.getElementById("contact-name") as HTMLElement).closest("form")!
     );
@@ -363,6 +489,17 @@ describe("contact form", () => {
       "/api/contact.php",
       expect.anything()
     );
+  });
+
+  it("stays put when the honeypot holds only a non-breaking space", async () => {
+    // The browser's trim() lets it through; contact.php's trim() does not, so
+    // the endpoint answers ok without sending anything.
+    const { assign } = stubLocation("/contact");
+    const fetchMock = stubFetch(() => json({ ok: true }));
+    await submitContact("\u00a0");
+    await screen.findByText("Message sent");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(assign).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -390,7 +527,7 @@ describe("contact form", () => {
 });
 
 describe("job application", () => {
-  async function submitApplication() {
+  async function submitApplication(honeypot = "") {
     const { container } = render(<Careers />);
     const field = (id: string, value: string) =>
       fireEvent.change(container.querySelector(`#${id}`) as HTMLElement, {
@@ -402,6 +539,7 @@ describe("job application", () => {
       "statement",
       "I would like to work on the bootloader and the board bring-up tooling."
     );
+    if (honeypot) field("website", honeypot);
     const form = (container.querySelector("#fullName") as HTMLElement).closest(
       "form"
     )!;
@@ -419,6 +557,16 @@ describe("job application", () => {
     await waitFor(() => expect(assign).toHaveBeenCalledTimes(1));
     expect(assign).toHaveBeenCalledWith("/thank-you/application/");
     expect(fetchMock).toHaveBeenCalledWith("/api/apply.php", expect.anything());
+  });
+
+  it("stays put when the honeypot is filled, though the endpoint says ok", async () => {
+    // apply.php answers a filled honeypot with { ok: true } and sends nothing.
+    const { assign } = stubLocation("/careers");
+    const fetchMock = stubFetch(() => json({ ok: true }));
+    await submitApplication("https://bot.example");
+    await screen.findByText("Application received");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(assign).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -453,7 +601,11 @@ describe("job application", () => {
 });
 
 describe("card donation", () => {
-  type ConfirmResult = { error?: { message?: string } };
+  type ConfirmResult = {
+    error?: { message?: string };
+    paymentIntent?: { status?: string };
+  };
+  const SUCCEEDED = { paymentIntent: { status: "succeeded" } };
 
   function stubStripe(result: ConfirmResult) {
     const confirmPayment = vi.fn(async () => result);
@@ -478,7 +630,7 @@ describe("card donation", () => {
   it("opens /thank-you/donation/ once Stripe confirms the payment", async () => {
     const { assign } = stubLocation("/donate");
     stubFetch(() => json({ ok: true, client_secret: "pi_1_secret_2" }));
-    const confirmPayment = stubStripe({});
+    const confirmPayment = stubStripe(SUCCEEDED);
     await payByCard();
     await waitFor(() => expect(assign).toHaveBeenCalledTimes(1));
     expect(assign).toHaveBeenCalledWith("/thank-you/donation/");
@@ -508,10 +660,32 @@ describe("card donation", () => {
     expect(assign).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ["processing", { paymentIntent: { status: "processing" } }],
+    ["requires_action", { paymentIntent: { status: "requires_action" } }],
+    ["missing", {}],
+  ])(
+    "says processing and stays put when the status is %s",
+    async (_label, result) => {
+      const { assign } = stubLocation("/donate");
+      stubFetch(() => json({ ok: true, client_secret: "pi_1_secret_2" }));
+      const confirmPayment = stubStripe(result);
+      await payByCard();
+      await waitFor(() => expect(confirmPayment).toHaveBeenCalled());
+      expect(
+        await screen.findByText(
+          "Your payment is processing. Stripe will confirm it shortly."
+        )
+      ).toBeInTheDocument();
+      expect(screen.queryByText(/Thank you for your/)).toBeNull();
+      expect(assign).not.toHaveBeenCalled();
+    }
+  );
+
   it("stays put when the payment cannot start", async () => {
     const { assign } = stubLocation("/donate");
     stubFetch(() => json({ ok: false, error: "stripe_error" }, 500));
-    const confirmPayment = stubStripe({});
+    const confirmPayment = stubStripe(SUCCEEDED);
     render(<Donate />);
     fireEvent.click(screen.getByRole("tab", { name: "Card" }));
     fireEvent.click(screen.getByRole("button", { name: /Continue with \$25/ }));

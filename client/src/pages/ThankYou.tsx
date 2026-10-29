@@ -14,7 +14,7 @@ import type { ConfirmedAction } from "@/lib/confirmation";
  */
 const CONFIRMATIONS: Record<
   ConfirmedAction,
-  { label: string; title: string; lead: string }
+  { label: string; title: string; lead: string; note?: string }
 > = {
   contact: {
     label: "Contact",
@@ -25,19 +25,21 @@ const CONFIRMATIONS: Record<
     label: "Careers",
     title: "Application received",
     lead: "Thank you — your application was received, and a confirmation is on its way to your inbox. A person reads every one; we usually reply within 5–10 business days.",
+    note: "To add a CV, reply to that confirmation email with it attached.",
   },
   donation: {
     label: "Donate",
     title: "Thank you for your gift!",
-    lead: "A receipt is on its way from Stripe. Your support keeps EmbeddedOS free and open.",
+    lead: "Your support keeps EmbeddedOS free and open.",
   },
 };
 
 export default function ThankYou({ action }: { action: ConfirmedAction }) {
-  const { label, title, lead } = CONFIRMATIONS[action];
+  const { label, title, lead, note } = CONFIRMATIONS[action];
   return (
     <BpPage>
       <PageHero label={label} title={title} lead={lead}>
+        {note && <p className="fine">{note}</p>}
         <div className="ctas">
           <Link href="/" className="btn pri">
             Back to the homepage

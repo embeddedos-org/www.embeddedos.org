@@ -152,7 +152,10 @@ export default function ContactFormModal() {
           .catch(() => ({}));
         if (res.ok && payload.ok) {
           setStatus("sent");
-          openConfirmationPage("contact");
+          // contact.php answers a filled honeypot with ok and sends nothing,
+          // and its trim() keeps a non-breaking space the check above strips.
+          // Only an exactly empty honeypot is certainly a sent message.
+          if (form.website === "") openConfirmationPage("contact");
           return;
         }
         setErrorKind(

@@ -168,6 +168,13 @@ describe("critical public claim policy", () => {
       "The contents of forms and payments are not sent to Google."
     );
     expect(privacy).not.toContain("does not currently");
+    // The tag sets first-party cookies on www.embeddedos.org, so the policy
+    // must name them and may not claim the site sets no cookies at all.
+    expect(privacy).toContain(
+      "first-party cookies on www.embeddedos.org: _gcl_au, and _gcl_aw when you arrive from a Google ad."
+    );
+    expect(privacy).not.toContain("does not set any cookies of its own");
+    expect(privacy).not.toContain("This site sets no cookies of its own");
     expect(privacy).toContain("AW-18484485270");
     expect(privacy).toContain("Zeffy-hosted donation form");
     // Stripe and PayPal are named donation processors (card tab + PayPal

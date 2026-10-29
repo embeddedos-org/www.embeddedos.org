@@ -721,7 +721,9 @@ function ApplicationForm() {
     if (delivered) {
       setSent(true);
       toast.success("Application sent. A confirmation is on its way to you.");
-      openConfirmationPage("application");
+      // apply.php answers a filled honeypot with { ok: true } and sends
+      // nothing, so only an exactly empty one is certainly a delivery.
+      if (honeypot === "") openConfirmationPage("application");
       return;
     }
 
