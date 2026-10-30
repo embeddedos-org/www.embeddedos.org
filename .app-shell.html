@@ -234,18 +234,53 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "AW-18484485270");
+      // A completion is reported only from a confirmation page that a
+      // completed action opened. openConfirmationPage()
+      // (client/src/lib/confirmation.ts) leaves a one-time token naming the
+      // page; it is read and removed here on every page. With that exact
+      // token, the page configures the tag and sends the completion to the
+      // account's existing conversion action ("Page view") by its label.
+      // Under /thank-you/<action>/ without it (a reload, a bookmark, a direct
+      // visit) the tag is not configured and nothing is sent. Without
+      // sessionStorage a real completion goes uncounted: undercounting is
+      // acceptable, overcounting is not. Every other page configures the tag
+      // as before and sends no conversion.
+      (function () {
+        var token = null;
+        try {
+          token = sessionStorage.getItem("eos-confirmation");
+          sessionStorage.removeItem("eos-confirmation");
+        } catch (e) {}
+        var here = location.pathname.replace(/\/?$/, "/");
+        var guarded = [
+          "/thank-you/contact/",
+          "/thank-you/application/",
+          "/thank-you/donation/",
+        ].some(function (page) {
+          return here.indexOf(page) === 0;
+        });
+        var counted = guarded && token === here;
+        if (!guarded || counted) gtag("config", "AW-18484485270");
+        if (counted)
+          gtag("event", "conversion", {
+            send_to: "AW-18484485270/UwZ-CNmDoowdEJa5i-5E",
+          });
+      })();
     </script>
     <!--
-      Keep the base Ads tag for attribution. Do not send a conversion on page
-      load: only completed, meaningful actions should count as conversions.
-      Add an event-specific label after its matching Google Ads conversion
-      action has been created and validated in the account.
+      The completion goes to the account's one conversion action, "Page view"
+      (send_to AW-18484485270/UwZ-CNmDoowdEJa5i-5E), and only from the guarded
+      branch above, after a completed action. That action counts one
+      conversion per ad click, so a second load after the same click cannot
+      count twice, and the token already stops reloads and direct visits.
+      Do not also create URL-based conversion rules for /thank-you/ in the Ads
+      account: every completion would then count twice, once by URL and once
+      by this event.
     -->
-    <script type="module" crossorigin src="/assets/index-fhjakIhk.js"></script>
+    <script type="module" crossorigin src="/assets/index-CkDvK_-p.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-aOLDZyDv.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-motion-D0ROkIIu.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DuHHbAh1.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-CG_O2U9_.css">
   </head>
 
   <body>

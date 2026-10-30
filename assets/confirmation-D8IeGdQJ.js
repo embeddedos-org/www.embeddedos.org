@@ -1,0 +1,1 @@
+const t={contact:"/thank-you/contact/",application:"/thank-you/application/",donation:"/thank-you/donation/"},a="eos-confirmation";function i(n){const o=t[n];try{window.sessionStorage.setItem(a,o)}catch{}window.location.assign(o)}export{i as o};
