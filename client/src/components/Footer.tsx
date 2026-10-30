@@ -404,16 +404,24 @@ export default function Footer() {
             broke mid-phrase ("501(c)(3) / Public Charity") and pushed "Code of
             Conduct" onto a line of its own. It is now three short lines, and
             every item is nowrap, so a narrow screen breaks between items,
-            never inside one. The policy column is auto-width from lg up, so
-            its five links always fit on one row there. */}
+            never inside one. The one exception is the legal name: it breaks
+            after the year first, and wraps itself only below about 326 px,
+            where it is wider than the line. From lg up the policy links sit
+            on one row: their own row below the identity until xl, where the
+            identifiers would otherwise orphan "D-U-N-S" on a second line, and
+            an auto-width column beside it from xl. */}
         {/* F-32: text-white/25 was 2.1:1 on the footer background. */}
         <div className="flex flex-col gap-5 text-xs text-[#a1a1a6]">
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-10 text-center lg:text-left">
+          <div
+            data-footer-bottom
+            className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_auto] xl:gap-x-10 text-center lg:text-left"
+          >
             <div className="grid gap-2 leading-relaxed">
               {/* divs, not p: the global p rule (margin-bottom 1em) is
                   unlayered, so it outranks Tailwind's m-0 utility. */}
-              <div className="text-[#f5f5f7]">
-                © 2018–2026 {FOUNDATION.legalName}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-x-1 text-[#f5f5f7]">
+                <span className="whitespace-nowrap">© 2018–2026</span>{" "}
+                <span data-footer-legal-name>{FOUNDATION.legalName}</span>
               </div>
               {/* Stacked on phones, where a trailing "·" would otherwise end
                   the first line; one row from sm up. */}
@@ -443,7 +451,7 @@ export default function Footer() {
               {/* The numbers a donor, funder or grant reviewer checks. Labels
                   stay #A1A1A6 (8.2:1 on black); the values are #F5F5F7. */}
               <dl
-                data-footer-section="Registration"
+                data-footer-registration
                 className="flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-1"
               >
                 <div className="whitespace-nowrap">
@@ -464,7 +472,7 @@ export default function Footer() {
             </div>
 
             <nav aria-label="Legal">
-              <ul className="flex flex-wrap justify-center lg:justify-end gap-x-5 gap-y-1">
+              <ul className="flex flex-wrap justify-center lg:justify-start xl:justify-end gap-x-5 gap-y-1">
                 {LEGAL_LINKS.map(link => (
                   <li key={link.href}>
                     <Link

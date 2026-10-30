@@ -244,6 +244,98 @@ test.describe("responsive layout", () => {
     });
   }
 
+  // Both bottom-bar tests query and measure inside one page.evaluate: the
+  // prerendered footer is replaced when React mounts, and a locator resolved
+  // before that measures a detached node whose boxes are all zero.
+  test("the footer bottom bar keeps its policy links on one row from lg", async ({
+    page,
+  }) => {
+    for (const width of [1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const tops = await page.evaluate(() =>
+        [...document.querySelectorAll('footer nav[aria-label="Legal"] a')].map(
+          link => {
+            const box = link.getBoundingClientRect();
+            return box.width > 0 ? Math.round(box.top) : Number.NaN;
+          }
+        )
+      );
+      expect(tops, `policy links at ${width}px`).toHaveLength(5);
+      expect(tops.every(Number.isFinite), `unmeasured at ${width}px`).toBe(
+        true
+      );
+      expect(
+        Math.max(...tops) - Math.min(...tops),
+        `policy links wrap at ${width}px: ${JSON.stringify(tops)}`
+      ).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("no footer bottom-bar item breaks inside itself", async ({ page }) => {
+    for (const width of [320, 390, 768]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const result = await page.evaluate(() => {
+        const bar = document.querySelector("footer [data-footer-bottom]");
+        if (!bar) return null;
+        // The legal name is the one item allowed to wrap: below ~326 px it is
+        // wider than the line. Everything else must stay one line tall, have
+        // a box, and sit inside the viewport (the footer clips overflow, so
+        // the page's own scroll width cannot show it).
+        const items = [
+          ...bar.querySelectorAll(
+            "a, dl[data-footer-registration] > div, span.whitespace-nowrap"
+          ),
+        ];
+        const viewport = document.documentElement.clientWidth;
+        const label = (el: Element) => el.textContent ?? "";
+        const tall = items
+          .filter(
+            el =>
+              el.getBoundingClientRect().height >
+              parseFloat(getComputedStyle(el).lineHeight) * 1.5
+          )
+          .map(label);
+        const outside = items
+          .filter(el => {
+            const box = el.getBoundingClientRect();
+            return (
+              box.width === 0 || box.left < -0.5 || box.right > viewport + 0.5
+            );
+          })
+          .map(label);
+        // From 390 px the name fits on its own line, so it must not wrap there.
+        const name = bar.querySelector("[data-footer-legal-name]");
+        const nameLines = name
+          ? Math.round(
+              name.getBoundingClientRect().height /
+                parseFloat(getComputedStyle(name).lineHeight)
+            )
+          : 0;
+        const dot = bar.querySelector('span[aria-hidden="true"]');
+        return {
+          nameLines,
+          count: items.length,
+          year: bar.querySelector("span.whitespace-nowrap")?.textContent,
+          tall,
+          outside,
+          dotShown: dot ? getComputedStyle(dot).display !== "none" : false,
+        };
+      });
+      expect(result, `no bottom bar at ${width}px`).not.toBeNull();
+      // 2 licence links + 4 registration items + 5 policy links + the year.
+      expect(result!.count, `items at ${width}px`).toBe(12);
+      expect(result!.year, "the year is its own item").toBe("© 2018–2026");
+      if (width >= 390)
+        expect(result!.nameLines, `legal name lines at ${width}px`).toBe(1);
+      expect(result!.tall, `items broken at ${width}px`).toEqual([]);
+      expect(result!.outside, `items off-screen at ${width}px`).toEqual([]);
+      // The licence separator would end a line on its own below sm (640 px).
+      expect(result!.dotShown, `separator at ${width}px`).toBe(width >= 640);
+    }
+  });
+
   test("the brand and all six footer groups align at xl desktop", async ({
     page,
   }) => {

@@ -9,19 +9,24 @@
  * than one page belongs here so there is only one place to correct it.
  *
  * Every value below is transcribed from the Foundation's IRS determination or
- * from a page that already published it. Nothing here may be estimated: if a
- * figure is not known, it is absent rather than approximated.
+ * from a page that already published it, except the UEI and D-U-N-S number,
+ * which the Foundation supplied (see their comment). Nothing here may be
+ * estimated: if a figure is not known, it is absent rather than approximated.
  */
 
-/** Legal identity as it appears on the IRS determination letter. */
+/**
+ * Legal identity as it appears on the IRS determination letter, plus the
+ * SAM.gov and Dun & Bradstreet identifiers noted below.
+ */
 export const FOUNDATION = {
   legalName: "Embedded Operating Systems Research Foundation",
   shortName: "EmbeddedOS Foundation",
   ein: "41-4821627",
   /**
-   * Identifiers for federal awards and grant applications, supplied by the
-   * Foundation on 30 October 2026. They are not on the IRS determination: the
-   * UEI is issued by SAM.gov, and the D-U-N-S number by Dun & Bradstreet.
+   * Supplied by the Foundation on 30 October 2026; neither is on the IRS
+   * determination. The SAM.gov Unique Entity ID identifies the Foundation for
+   * federal awards. The D-U-N-S number, issued by Dun & Bradstreet, no longer
+   * does (since April 2022), but some funders still ask for it.
    */
   uei: "VVHWY3VW8LM9",
   duns: "14-462-4208",
