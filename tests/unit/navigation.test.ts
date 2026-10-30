@@ -94,7 +94,7 @@ const HUBS: Array<{ prefix: string; hub: string }> = [
  * Pages with no footer column, grouped by the hub page that carries them.
  *
  * Ad Grants review: the footer ran seven columns and ~90 links. It now runs
- * six columns of at most eight links, and the depth moved here — each hub is
+ * six columns of at most nine links, and the depth moved here — each hub is
  * itself in the footer, and the "hub links its members" test below fails if a
  * member is ever removed from its hub page. Adding a member means adding the
  * link on the hub page AND the entry here, together.
@@ -410,8 +410,17 @@ describe("footer columns", () => {
       const count =
         (col[1].match(/\{ name:/g) ?? []).length +
         (col[1].includes("FOOTER_COMMUNITY_LINKS") ? 2 : 0);
-      expect(count, `footer column has ${count} links`).toBeLessThanOrEqual(8);
+      // Nine, not eight: on 29 Oct 2026 the owner asked that no footer link be
+      // removed, so Platform carries both "How EmbeddedOS Works" (#109) and the
+      // Architecture link it had replaced. Still far from the ~90-link footer
+      // the Ad Grants review flagged.
+      expect(count, `footer column has ${count} links`).toBeLessThanOrEqual(9);
     }
+  });
+
+  it("keeps both the Architecture and How EmbeddedOS Works links in the footer", () => {
+    expect(footerAll).toContain("/architecture");
+    expect(footerAll).toContain("/what-we-do");
   });
 
   it("keeps the published legal address readable", () => {

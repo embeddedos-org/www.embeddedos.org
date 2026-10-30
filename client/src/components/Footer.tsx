@@ -92,6 +92,7 @@ const FOOTER_LINKS = {
     { name: "EoS Kernel", href: "/eos" },
     { name: "eAI", href: "/eai" },
     { name: "eBuild", href: "/ebuild" },
+    { name: "Architecture", href: "/architecture" },
     { name: "Quantum (eQC)", href: "/quantum" },
   ],
   Applications: [
