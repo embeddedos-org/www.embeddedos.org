@@ -249,7 +249,7 @@ export const USAGE = [
       "python3 tools/devboard_cad/query.py with-formats step",
       "python3 tools/devboard_cad/query.py commercial-reuse",
     ],
-    file: "open-hardware-terminal-query",
+    file: "open-hardware-terminal-query.50c9ba1f",
     width: 1500,
     height: 762,
     alt: `Terminal output of a blobless sparse clone of eCAD-Hardware-Products that checks out only the database, then the queries for boards with a verified STEP model, ${M.stepBoards} matched, and for records that allow commercial reuse, ${M.commercialReuseRecords} matched`,
@@ -257,14 +257,14 @@ export const USAGE = [
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in ${G.boardFiles} files, took ${G.seconds[0]} to ${G.seconds[1]} seconds in our four runs: Git downloaded ${G.downloadedMB} MB, which checks out as ${G.filesMB} MB of files, against ${M.gigabytes} GB for every board. awk prints the SHA-256 prefix that its ATTRIBUTION.md lists for each sheet, and shasum's digests begin with them.`,
+    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in ${G.boardFiles} files, took ${G.seconds[0]} to ${G.seconds[1]} seconds in our ${G.runs} runs: Git downloaded ${G.downloadedMB} MB, which checks out as ${G.filesMB} MB of files, against ${M.gigabytes} GB for every board. The awk line prints the SHA-256 prefix that its ATTRIBUTION.md lists for each sheet, and shasum's digests begin with them.`,
     code: [
       "git sparse-checkout add /boards/cad/sparkfun/iot-redboard-rp2350/",
       "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/Hardware/*.kicad_sch",
       "awk -F'`' '$2 ~ /^cad\\/Hardware\\/[^\\/]*\\.kicad_sch$/ {print $4, $2}' boards/cad/sparkfun/iot-redboard-rp2350/ATTRIBUTION.md",
       "grep -E 'Licence|Attribution:|CAD files:' boards/cad/sparkfun/iot-redboard-rp2350/ATTRIBUTION.md",
     ],
-    file: "open-hardware-terminal-fetch",
+    file: "open-hardware-terminal-fetch.eaa3828e",
     width: 1600,
     height: 820,
     alt: `Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, the SHA-256 prefixes its ATTRIBUTION.md lists for the same sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and ${G.boardFiles} CAD files its ATTRIBUTION.md lists`,
@@ -289,7 +289,7 @@ export const USAGE = [
       "git sparse-checkout add /boards/cad/sparkfun/edge/cad/Hardware/SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers/",
       "ls boards/cad/sparkfun/edge/cad/Hardware/SparkFun_TensorFlow_Ambiq_Apollo3-Gerbers | xargs node ../eos-helpers/gerber-layers.mjs",
     ],
-    file: "open-hardware-terminal-gerber",
+    file: "open-hardware-terminal-gerber.994cfc37",
     width: 1500,
     height: 559,
     alt: "Terminal output of adding the SparkFun Edge Gerber folder to the sparse clone and naming the ten layers of its Gerber set: copper, silkscreen, solder paste and solder mask for each side, the outline and the drill file",
@@ -309,7 +309,7 @@ export const USAGE = [
       "  boards/cad/beagleboard/pocketbeagle/cad/models/PocketBeagle.step \\",
       "  boards/cad/sparkfun/artemis/cad/Documents/Artemis-Production-Model-V1.step",
     ],
-    file: "open-hardware-terminal-step",
+    file: "open-hardware-terminal-step.6100bd9f",
     width: 1600,
     height: 501,
     alt: `Terminal output of adding three STEP files to the sparse clone and measuring them with OpenCASCADE: BeagleBone AI-64 ${formatSize(G.sizes.beagleboneAi64, " by ")} mm, PocketBeagle ${formatSize(G.sizes.pocketBeagle, " by ")} mm and the SparkFun Artemis module ${formatSize(G.sizes.artemis, " by ")} mm`,
@@ -365,6 +365,18 @@ export const HELPER_SCRIPTS = [
     ],
   },
 ] as const;
+
+export const TOUR_VIDEO = {
+  src: "/media/open-hardware-tour.mp4",
+  poster: "/media/open-hardware-tour-poster.jpg",
+  captions: "/media/open-hardware-tour.vtt",
+} as const;
+
+export const HOWTO_VIDEO = {
+  src: "/media/open-hardware-howto.324b63c7.mp4",
+  poster: "/media/open-hardware-howto-poster.jpg",
+  captions: "/media/open-hardware-howto.2f581c91.vtt",
+} as const;
 
 export const SETUP = [
   "mkdir eos-helpers",
@@ -508,15 +520,15 @@ export default function OpenHardware() {
               controls
               playsInline
               preload="none"
-              poster="/media/open-hardware-tour-poster.jpg"
+              poster={TOUR_VIDEO.poster}
               width={1600}
               height={900}
               className="w-full h-auto block"
             >
-              <source src="/media/open-hardware-tour.mp4" type="video/mp4" />
+              <source src={TOUR_VIDEO.src} type="video/mp4" />
               <track
                 kind="captions"
-                src="/media/open-hardware-tour.vtt"
+                src={TOUR_VIDEO.captions}
                 srcLang="en"
                 label="English"
                 default
@@ -624,15 +636,15 @@ export default function OpenHardware() {
               controls
               playsInline
               preload="none"
-              poster="/media/open-hardware-howto-poster.jpg"
+              poster={HOWTO_VIDEO.poster}
               width={1600}
               height={900}
               className="w-full h-auto block"
             >
-              <source src="/media/open-hardware-howto.mp4" type="video/mp4" />
+              <source src={HOWTO_VIDEO.src} type="video/mp4" />
               <track
                 kind="captions"
-                src="/media/open-hardware-howto.vtt"
+                src={HOWTO_VIDEO.captions}
                 srcLang="en"
                 label="English"
                 default

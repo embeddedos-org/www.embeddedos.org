@@ -10,7 +10,18 @@
  */
 import "@testing-library/jest-dom/vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { existsSync, readFileSync } from "node:fs";
+import { execFileSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import type { ReactNode } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -35,7 +46,9 @@ import OpenHardware, {
   LICENCE_TERMS,
   HELPER_SCRIPTS,
   RULES,
+  HOWTO_VIDEO,
   SETUP,
+  TOUR_VIDEO,
   STATS,
   STATS_AS_OF,
   USAGE,
@@ -50,9 +63,10 @@ import {
 
 const media = path.resolve(__dirname, "../../client/public/media");
 const VIDEOS = [
-  { name: "open-hardware-tour", seconds: 68.8, cues: 13 },
-  { name: "open-hardware-howto", seconds: 45.3, cues: 8 },
+  { ...TOUR_VIDEO, seconds: 68.8, cues: 13 },
+  { ...HOWTO_VIDEO, seconds: 45.3, cues: 8 },
 ];
+const local = (url: string) => path.join(media, path.basename(url));
 
 const pageImages = [
   "open-hardware-terminal-mirror",
@@ -76,16 +90,16 @@ describe("open hardware media", () => {
   });
 
   it("ships each video with its poster and captions", () => {
-    for (const { name } of VIDEOS) {
-      for (const file of [`${name}.mp4`, `${name}-poster.jpg`, `${name}.vtt`]) {
-        expect(existsSync(path.join(media, file)), file).toBe(true);
+    for (const { src, poster, captions } of VIDEOS) {
+      for (const url of [src, poster, captions]) {
+        expect(existsSync(local(url)), url).toBe(true);
       }
     }
   });
 
   it("states each video's real length", () => {
-    for (const { name, seconds } of VIDEOS) {
-      const mp4 = readFileSync(path.join(media, `${name}.mp4`));
+    for (const { src: name, seconds } of VIDEOS) {
+      const mp4 = readFileSync(local(name));
       const mvhd = mp4.indexOf("mvhd");
       expect(mvhd, name).toBeGreaterThan(0);
       expect(mp4.indexOf("moov"), `${name} faststart`).toBeLessThan(
@@ -102,8 +116,8 @@ describe("open hardware media", () => {
   });
 
   it("keeps each video's captions inside the video", () => {
-    for (const { name, seconds, cues } of VIDEOS) {
-      const vtt = readFileSync(path.join(media, `${name}.vtt`), "utf8");
+    for (const { captions: name, seconds, cues } of VIDEOS) {
+      const vtt = readFileSync(local(name), "utf8");
       expect(vtt.startsWith("WEBVTT"), name).toBe(true);
       const ends = [...vtt.matchAll(/--> (\d\d):(\d\d):(\d\d\.\d{3})/g)].map(
         m => Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3])
@@ -151,8 +165,14 @@ describe("open hardware page", () => {
 
     const videos = [...container.querySelectorAll("video")];
     expect(videos.map(v => v.getAttribute("poster"))).toEqual(
-      VIDEOS.map(v => `/media/${v.name}-poster.jpg`)
+      VIDEOS.map(v => v.poster)
     );
+    expect(
+      videos.map(v => v.querySelector("source")?.getAttribute("src"))
+    ).toEqual(VIDEOS.map(v => v.src));
+    expect(
+      videos.map(v => v.querySelector("track")?.getAttribute("src"))
+    ).toEqual(VIDEOS.map(v => v.captions));
     for (const video of videos) {
       expect(video.getAttribute("preload")).toBe("none");
       expect(video.querySelector('track[kind="captions"]')).not.toBeNull();
@@ -300,6 +320,38 @@ describe("the how-to guide runs as printed, in one shell", () => {
     );
   });
 
+  it.skipIf(spawnSync("sh", ["-c", "command -v awk"]).status !== 0)(
+    "runs step 2's awk line on ATTRIBUTION.md rows and prints the four sheet prefixes (skipped only when awk is missing)",
+    () => {
+      const command = USAGE[1].code.find(c => c.startsWith("awk "));
+      expect(command).toBeDefined();
+      const dir = mkdtempSync(path.join(tmpdir(), "oh-awk-"));
+      try {
+        const target = path.join(
+          dir,
+          "boards/cad/sparkfun/iot-redboard-rp2350/ATTRIBUTION.md"
+        );
+        mkdirSync(path.dirname(target), { recursive: true });
+        copyFileSync(
+          path.resolve(__dirname, "fixtures/redboard-rp2350-attribution.txt"),
+          target
+        );
+        const printed = execFileSync("sh", ["-c", command as string], {
+          cwd: dir,
+          encoding: "utf8",
+        });
+        expect(printed.trimEnd().split("\n")).toEqual([
+          "be5dd4bca494338f… cad/Hardware/SparkFun_IoT_RedBoard-RP2350.kicad_sch",
+          "05ff2d0b90d29b45… cad/Hardware/core.kicad_sch",
+          "1385d32bcff91828… cad/Hardware/peripherals.kicad_sch",
+          "577f627961ba0cc0… cad/Hardware/power.kicad_sch",
+        ]);
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    }
+  );
+
   it("prints the ATTRIBUTION.md prefixes that step 2's digests are checked against", () => {
     const step2 = GUIDE[2];
     const shasum = step2.findIndex(c => c.startsWith("shasum -a 256 "));
@@ -369,8 +421,7 @@ describe("the how-to guide runs as printed, in one shell", () => {
 
 describe("the mirror's figures come from one registry", () => {
   const M = ECAD_MIRROR;
-  const captions = (name: string) =>
-    readFileSync(path.join(media, `${name}.vtt`), "utf8");
+  const captions = (url: string) => readFileSync(local(url), "utf8");
 
   it("reconciles the records, the files and the licences", () => {
     expect(M.boards + M.unlicensedRecords + M.pdfOnlyRecords).toBe(M.records);
@@ -438,6 +489,9 @@ describe("the mirror's figures come from one registry", () => {
         .flat()
         .map(n => n.toFixed(1)),
     ];
+    expect(prose).not.toMatch(
+      /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten) runs\b/
+    );
     const typed = [...new Set(figures)].filter(f =>
       new RegExp(
         `(?<![\\w.,/-])${f.replace(/[.,]/g, "\\$&")}(?!\\d)(?![.,]\\d)`
@@ -458,8 +512,8 @@ describe("the mirror's figures come from one registry", () => {
   });
 
   it("quotes the registry in the captions and the route description", () => {
-    const howto = captions("open-hardware-howto");
-    const tour = captions("open-hardware-tour");
+    const howto = captions(HOWTO_VIDEO.captions);
+    const tour = captions(TOUR_VIDEO.captions);
     const description = JSON.parse(
       readFileSync(
         path.resolve(__dirname, "../../shared/route-descriptions.json"),
@@ -472,7 +526,7 @@ describe("the mirror's figures come from one registry", () => {
       `${M.stepBoards} boards have a verified STEP model, ${M.commercialReuseRecords} records allow commercial reuse`,
       `downloads ${GUIDE_RUN.downloadedMB} MB`,
       `${GUIDE_RUN.boardFiles} files and ${GUIDE_RUN.filesMB} MB`,
-      `${formatSize(GUIDE_RUN.sizes.beagleboneAi64, " by ")} millimetres`,
+      ...Object.values(GUIDE_RUN.sizes).map(size => formatSize(size, " by ")),
       `instead of ${M.gigabytes} GB`,
       `CC BY-SA, ${ccBySa} boards`,
       `CC BY 4.0, ${ccBy} boards`,
@@ -493,5 +547,41 @@ describe("the mirror's figures come from one registry", () => {
     expect(description).toContain(
       `${formatCount(M.cadFiles)} openly licensed CAD files from ${M.boards} development boards`
     );
+  });
+});
+
+describe("replaced guide media carry their content hash", () => {
+  const HASHED = /^(.+)\.([0-9a-f]{8})\.([a-z0-9]+)$/;
+  const sha256 = (file: string) =>
+    createHash("sha256")
+      .update(readFileSync(path.join(media, file)))
+      .digest("hex");
+
+  it("names every hashed /media file by the first 8 hex of its SHA-256", () => {
+    const hashed = readdirSync(media).filter(f => HASHED.test(f));
+    const wrong = hashed.filter(f => {
+      const [, stem, hex, ext] = f.match(HASHED) as RegExpMatchArray;
+      const source = ext === "webp" ? `${stem}.${hex}.jpg` : f;
+      return (
+        !existsSync(path.join(media, source)) ||
+        sha256(source).slice(0, 8) !== hex
+      );
+    });
+    expect(hashed.length).toBeGreaterThan(0);
+    expect(wrong).toEqual([]);
+  });
+
+  it("gives every guide screenshot, the how-to video and its captions a hashed name", () => {
+    const guide = [
+      ...USAGE.filter(u =>
+        u.file.startsWith("open-hardware-terminal-")
+      ).flatMap(u => [`${u.file}.jpg`, `${u.file}.webp`]),
+      path.basename(HOWTO_VIDEO.src),
+      path.basename(HOWTO_VIDEO.captions),
+    ];
+    expect(guide).toHaveLength(10);
+    expect(
+      guide.filter(f => !HASHED.test(f) || !existsSync(path.join(media, f)))
+    ).toEqual([]);
   });
 });

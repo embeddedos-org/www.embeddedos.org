@@ -38,6 +38,7 @@ export const GUIDE_RUN = {
   downloadedMB: 16,
   filesMB: 88,
   seconds: [5, 11],
+  runs: 4,
   sizes: {
     beagleboneAi64: [102.5, 82.6, 36.6],
     pocketBeagle: [56.4, 35.0, 6.9],

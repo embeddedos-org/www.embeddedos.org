@@ -518,7 +518,7 @@
       "sha256": "f14a694034189d68e335de7cdedaedfa07af8353a35441ecf55438c10006483c",
       "webpSha256": "017e2797061134c96ea750d36df7f83936d31d541857af44b8d42732c2fefda9"
     },
-    "open-hardware-terminal-query.jpg": {
+    "open-hardware-terminal-query.50c9ba1f.jpg": {
       "sha256": "50c9ba1f9f3038235425d0f7e105945b8c9c4e586001dd44c6ec575353253c9d",
       "webpSha256": "7138b9d890a0f5b719ff4fa669f467b7cf81367d7d95272c9c544191e7748944"
     },
@@ -530,15 +530,15 @@
       "sha256": "76affc2ee9572a8a702b2dc345a5ac8b0d5969a7cc92e74b579a1c50cbc338b7",
       "webpSha256": "d63458b39910def34cbfb35880cb250fd7a80cb928a47e0e2900a4cfe03c88a2"
     },
-    "open-hardware-terminal-fetch.jpg": {
+    "open-hardware-terminal-fetch.eaa3828e.jpg": {
       "sha256": "eaa3828e0c4d4cafcde229e09b9337dea4419b614a10eca473b28465afc40a86",
       "webpSha256": "3e63a3aa8c47a8097c5591b87c9e49d0624520302e75c43c7416ca308f3e77d7"
     },
-    "open-hardware-terminal-gerber.jpg": {
+    "open-hardware-terminal-gerber.994cfc37.jpg": {
       "sha256": "994cfc37625c2e9907537654659e8a7fad885274aeba6fc4677afb1ec7cc5817",
       "webpSha256": "67791521f9af77306bc8c19b932fa497c345d88d91d44c2946187f2edb35d07f"
     },
-    "open-hardware-terminal-step.jpg": {
+    "open-hardware-terminal-step.6100bd9f.jpg": {
       "sha256": "6100bd9f57d8753bc4ce943f4100783222e57774bcb9c81578e7cc9de8c2a450",
       "webpSha256": "1a29d7fc2144ee8f36da135d1d4f4ca3aa5cb82538fa03533e3c4318a2f91e51"
     }
