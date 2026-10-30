@@ -13,6 +13,8 @@ const REGISTRATION = [
     value: FOUNDATION.publicCharityClassification,
   },
   { label: "Employer Identification Number (EIN)", value: FOUNDATION.ein },
+  { label: "SAM.gov Unique Entity ID (UEI)", value: FOUNDATION.uei },
+  { label: "D-U-N-S Number", value: FOUNDATION.duns },
   {
     label: "Effective date of exemption",
     value: FOUNDATION.exemptionEffective,
@@ -164,7 +166,7 @@ export default function Transparency() {
         id="registration"
         label="Registration"
         title="Nonprofit registration details"
-        lead="The Foundation is a tax-exempt organisation recognised by the United States Internal Revenue Service. These are the details as they appear on its determination."
+        lead="The Foundation is a tax-exempt organisation recognised by the United States Internal Revenue Service. The IRS details are as they appear on its determination; the SAM.gov Unique Entity ID and D-U-N-S number identify it for federal awards and grant applications."
       >
         <dl className="kv">
           {REGISTRATION.map(row => (

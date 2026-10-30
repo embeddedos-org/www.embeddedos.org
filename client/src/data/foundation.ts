@@ -18,6 +18,13 @@ export const FOUNDATION = {
   legalName: "Embedded Operating Systems Research Foundation",
   shortName: "EmbeddedOS Foundation",
   ein: "41-4821627",
+  /**
+   * Identifiers for federal awards and grant applications, supplied by the
+   * Foundation on 30 October 2026. They are not on the IRS determination: the
+   * UEI is issued by SAM.gov, and the D-U-N-S number by Dun & Bradstreet.
+   */
+  uei: "VVHWY3VW8LM9",
+  duns: "14-462-4208",
   taxStatus: "501(c)(3) Public Charity",
   publicCharityClassification: "509(a)(2)",
   exemptionEffective: "March 11, 2026",
