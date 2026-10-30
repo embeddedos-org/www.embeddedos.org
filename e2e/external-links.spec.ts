@@ -7,7 +7,9 @@
  *
  * How it works: the prerendered dist/public tree is scanned for every unique
  * external <a href> (anything http(s) that is not www.embeddedos.org itself),
- * and each URL is fetched — no browser needed. Redirects are followed;
+ * and each URL is fetched with plain fetch (e2e/fetch-status.ts), not
+ * Playwright's request API, because fetch honours proxy env vars — no browser
+ * needed. Redirects are followed;
  * anything that comes back 400/403 on a non-allowlisted URL, 404, 410, or
  * 5xx, or that fails to connect at all, fails the run. A 429 or a dropped
  * connection is retried with backoff (5s, then 30s), because public hosts
@@ -22,9 +24,9 @@
  * while it serves the same file at /<owner>/<repo>/raw/<ref>/<path>, and the
  * repository and its folders, normally (seen from CI runners and a desktop,
  * 2026-10-10, with githubstatus.com reporting all systems operational). That
- * 503 says nothing about the file, so the file is checked at its /raw/ URL:
- * 200 is a warning like a throttled 429, and anything else, such as the 404
- * of a deleted file, is a dead link.
+ * 503 says nothing about the file, so the file is checked at its /raw/ URL,
+ * with the same retries: 200 is a warning like a throttled 429, and anything
+ * else, such as the 404 of a deleted file, is a dead link.
  *
  * Bot-blocked allowlist: a few legitimate destinations refuse unauthenticated
  * bot traffic while working fine for human visitors. Those exact URLs are
@@ -37,6 +39,7 @@
  * network: they must name a route the prerender actually emitted.
  */
 import { test, expect } from "./fixtures";
+import { fetchStatus } from "./fetch-status";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -125,21 +128,6 @@ function githubRawUrl(url: string): string | null {
   return m ? `https://github.com/${m[1]}/${m[2]}/raw/${m[3]}` : null;
 }
 
-/** One GET, redirects followed: the final status, or "connection failed". */
-async function fetchStatus(url: string): Promise<number | string> {
-  try {
-    const res = await fetch(url, {
-      redirect: "follow",
-      signal: AbortSignal.timeout(30_000),
-      headers: { "User-Agent": USER_AGENT },
-    });
-    await res.arrayBuffer().catch(() => undefined);
-    return res.status;
-  } catch {
-    return "connection failed";
-  }
-}
-
 test("the build exposes outbound links to check", () => {
   expect(URLS.length).toBeGreaterThan(50);
 });
@@ -167,47 +155,10 @@ async function checkOutbound() {
   async function worker() {
     while (next < checked.length) {
       const url = checked[next++];
-      let status: number | string = "connection failed";
-      // Up to three attempts: public hosts throttle CI runners with 429s and
-      // proxies drop connections, and neither is evidence of a dead link.
-      // Backoff grows (5s, 30s) so a short throttle clears; a 429 that
-      // survives all attempts becomes a warning rather than a failure (see
-      // the verdict below); a genuinely dead destination fails every attempt
-      // the same way.
-      const waits = [5_000, 30_000];
-      for (let attempt = 0; attempt <= waits.length; attempt++) {
-        try {
-          // Plain fetch, not Playwright's request API: fetch honours proxy
-          // env vars, so the sweep works both on CI runners (direct) and
-          // behind an egress proxy. Redirects are followed by default.
-          const res = await fetch(url, {
-            redirect: "follow",
-            signal: AbortSignal.timeout(30_000),
-            headers: { "User-Agent": USER_AGENT },
-          });
-          // Drain the body so the socket can be reused/closed cleanly.
-          await res.arrayBuffer().catch(() => undefined);
-          status = res.status;
-          if (status === 429 && attempt < waits.length) {
-            await new Promise(r => setTimeout(r, waits[attempt]));
-            continue;
-          }
-          break;
-        } catch {
-          // A dropped connection is usually a transient proxy/CI blip rather
-          // than a dead destination; retries separate the two. A genuinely
-          // dead host (DNS failure, refused) fails every attempt the same way.
-          if (attempt < waits.length) {
-            await new Promise(r => setTimeout(r, waits[attempt]));
-            continue;
-          }
-          status = "connection failed";
-          break;
-        }
-      }
+      const status = await fetchStatus(url, USER_AGENT);
       const raw = status === 503 ? githubRawUrl(url) : null;
       if (raw) {
-        const rawStatus = await fetchStatus(raw);
+        const rawStatus = await fetchStatus(raw, USER_AGENT);
         if (rawStatus === 200) {
           warnings.push(`${url} -> 503 (GitHub file page; ${raw} -> 200)`);
         } else {

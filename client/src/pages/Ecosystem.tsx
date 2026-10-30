@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { Link } from "wouter";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
+import { ECAD_MIRROR, formatCount } from "@/data/ecad-mirror";
 import { Band, BpPage, PageHero, Section } from "@/components/bp";
 import "./Ecosystem.css";
 
@@ -220,7 +221,11 @@ const products = [
     color: "#5EE08E",
     name: "Open Hardware",
     tagline: "Verified Design Files",
-    metrics: ["4,022 CAD files", "254 boards", "Rendered"],
+    metrics: [
+      `${formatCount(ECAD_MIRROR.cadFiles)} CAD files`,
+      `${formatCount(ECAD_MIRROR.boards)} boards`,
+      "Rendered",
+    ],
     href: "/open-hardware",
   },
   {

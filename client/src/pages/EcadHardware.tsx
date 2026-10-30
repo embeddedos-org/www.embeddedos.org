@@ -8,6 +8,7 @@ import {
   Section,
   Stats,
 } from "@/components/bp";
+import { ECAD_MIRROR, formatCount } from "@/data/ecad-mirror";
 import "./EcadHardware.css";
 
 const ArchitectureDiagram3D = lazy(
@@ -724,8 +725,8 @@ export default function EcadHardware() {
         <p className="ecad-art">Illustrative concept artwork</p>
         <div className="ctas">
           <Link href="/open-hardware" className="btn gh">
-            See 4,022 real board CAD files, rendered and verified{" "}
-            <span aria-hidden="true">→</span>
+            See {formatCount(ECAD_MIRROR.cadFiles)} real board CAD files,
+            rendered and verified <span aria-hidden="true">→</span>
           </Link>
         </div>
       </PageHero>

@@ -519,8 +519,8 @@
       "webpSha256": "017e2797061134c96ea750d36df7f83936d31d541857af44b8d42732c2fefda9"
     },
     "open-hardware-terminal-query.jpg": {
-      "sha256": "c6438f9e7ad1c6c3b6938293c683eae5f2d4b3ba96c57c44829b860a476a5e75",
-      "webpSha256": "1fa4543ea3935c482850f89fc43a76bccbdf9a3c2871d0d7ab1c74754036026d"
+      "sha256": "50c9ba1f9f3038235425d0f7e105945b8c9c4e586001dd44c6ec575353253c9d",
+      "webpSha256": "7138b9d890a0f5b719ff4fa669f467b7cf81367d7d95272c9c544191e7748944"
     },
     "open-hardware-tour-poster.jpg": {
       "sha256": "1a56d5ed14379548a8baa50dad592d305d12a0fd1c0944f847d06a6339fd5350",
@@ -531,16 +531,16 @@
       "webpSha256": "d63458b39910def34cbfb35880cb250fd7a80cb928a47e0e2900a4cfe03c88a2"
     },
     "open-hardware-terminal-fetch.jpg": {
-      "sha256": "f1c0f24b9148221745d92da6686f286abeadc9bec3eab241f98faa12cb06729a",
-      "webpSha256": "d99421106aa531ecf2f8d1a8658eb9dcc849d3f6f7a44db85054ef642601bbdf"
+      "sha256": "acbfd9367534522f145110c94963dfaa9aeabbf822e4234ad6ac4e596c58cb8d",
+      "webpSha256": "852bd9e0bfa3eb04838afde81b9eb16ca5b00874d3eae03082d56bef6a9fb382"
     },
     "open-hardware-terminal-gerber.jpg": {
-      "sha256": "bd75306a5244ad67282044f905d30daf53df00214770a12457d7ff4bc68f0377",
-      "webpSha256": "f45d4e07d1ce7f51b0119265f9b21f738d1e914efe7bb5fc288402378f645313"
+      "sha256": "994cfc37625c2e9907537654659e8a7fad885274aeba6fc4677afb1ec7cc5817",
+      "webpSha256": "67791521f9af77306bc8c19b932fa497c345d88d91d44c2946187f2edb35d07f"
     },
     "open-hardware-terminal-step.jpg": {
-      "sha256": "df43ac9c344e856b34c29728d3d60a0dc6012df580d1828c3e021141f478f321",
-      "webpSha256": "cceb92368038f8ba83f7961c6d092ae91fe64768ec00cde72753cfdf87100504"
+      "sha256": "6100bd9f57d8753bc4ce943f4100783222e57774bcb9c81578e7cc9de8c2a450",
+      "webpSha256": "1a29d7fc2144ee8f36da135d1d4f4ca3aa5cb82538fa03533e3c4318a2f91e51"
     }
   }
 }
