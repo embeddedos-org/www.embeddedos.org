@@ -266,7 +266,7 @@ export const USAGE = [
     ],
     file: "open-hardware-terminal-fetch",
     width: 1600,
-    height: 617,
+    height: 820,
     alt: `Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, the SHA-256 prefixes its ATTRIBUTION.md lists for the same sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and ${G.boardFiles} CAD files its ATTRIBUTION.md lists`,
     caption:
       "Each shasum digest begins with the prefix that ATTRIBUTION.md lists for the same sheet.",
