@@ -10,7 +10,7 @@ Step 1, find a board. Clone the repository without its files and check out only 
 
 3
 00:00:09.800 --> 00:00:16.200
-Step 2, fetch one board. Adding the SparkFun IoT RedBoard RP2350 to the clone downloads 16 MB: its whole KiCad project and Gerbers, 33 files and 88 MB, instead of 4.36 GB, and shasum matches its ATTRIBUTION.md.
+Step 2, fetch one board. Adding the SparkFun IoT RedBoard RP2350 to the clone downloads 16 MB: its whole KiCad project and Gerbers, 33 files and 88 MB, instead of 4.36 GB, and shasum matches the prefixes its ATTRIBUTION.md lists.
 
 4
 00:00:16.200 --> 00:00:22.100
@@ -22,7 +22,8 @@ Step 4, send the Gerbers to a board house. Add the SparkFun Edge Gerber folder: 
 
 6
 00:00:28.000 --> 00:00:33.400
-Step 5, design the enclosure around the STEP model. Add the three STEP files and measure them: the BeagleBone AI-64 is 102.5 by 82.6 by 36.6 millimetres, heatsink and connectors included.
+Step 5, design the enclosure around the STEP model. In millimetres:
+BeagleBone AI-64 102.5 by 82.6 by 36.6 with heatsink, PocketBeagle 56.4 by 35.0 by 6.9, Artemis 10.5 by 15.5 by 1.8.
 
 7
 00:00:33.400 --> 00:00:39.800
