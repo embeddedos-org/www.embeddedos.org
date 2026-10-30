@@ -34,6 +34,8 @@ const FACTS: readonly { label: string; value: string }[] = [
     value: FOUNDATION.publicCharityClassification,
   },
   { label: "EIN", value: FOUNDATION.ein },
+  { label: "SAM.gov UEI", value: FOUNDATION.uei },
+  { label: "D-U-N-S", value: FOUNDATION.duns },
   { label: "Exemption effective", value: FOUNDATION.exemptionEffective },
   { label: "Jurisdiction", value: FOUNDATION.jurisdiction },
   { label: "Software licence", value: FOUNDATION.softwareLicense },

@@ -399,52 +399,87 @@ export default function Footer() {
         {/* Hairline divider */}
         <div className="mt-[52px] mb-[22px] h-px bg-[#232326]" />
 
-        {/* Bottom bar. Two rows rather than three columns: the policy links
-            outgrew a single row when Licenses, Security and Code of Conduct
-            joined Privacy and Terms, and squeezed the tagline into a three-line
-            wrap between them. */}
+        {/* Bottom bar: the legal identity on the left, the policy links on the
+            right. The identity used to be one sentence of five items, which
+            broke mid-phrase ("501(c)(3) / Public Charity") and pushed "Code of
+            Conduct" onto a line of its own. It is now three short lines, and
+            every item is nowrap, so a narrow screen breaks between items,
+            never inside one. The policy column is auto-width from lg up, so
+            its five links always fit on one row there. */}
         {/* F-32: text-white/25 was 2.1:1 on the footer background. */}
-        <div className="flex flex-col gap-4 text-xs text-[#a1a1a6]">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="text-center sm:text-left">
-              © 2018–2026 {FOUNDATION.legalName}.
-              <span className="mx-1.5 text-[#3a3a3e]">·</span>
-              <a
-                href="https://spdx.org/licenses/MIT.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#f5f5f7] transition-colors"
+        <div className="flex flex-col gap-5 text-xs text-[#a1a1a6]">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-10 text-center lg:text-left">
+            <div className="grid gap-2 leading-relaxed">
+              {/* divs, not p: the global p rule (margin-bottom 1em) is
+                  unlayered, so it outranks Tailwind's m-0 utility. */}
+              <div className="text-[#f5f5f7]">
+                © 2018–2026 {FOUNDATION.legalName}
+              </div>
+              {/* Stacked on phones, where a trailing "·" would otherwise end
+                  the first line; one row from sm up. */}
+              <div className="flex flex-col sm:flex-row items-center sm:justify-center lg:justify-start gap-x-1.5 gap-y-1">
+                <a
+                  href="https://spdx.org/licenses/MIT.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="whitespace-nowrap hover:text-[#f5f5f7] transition-colors"
+                >
+                  {FOUNDATION.softwareLicense} (software)
+                </a>
+                <span
+                  aria-hidden="true"
+                  className="hidden sm:inline text-[#3a3a3e]"
+                >
+                  ·
+                </span>
+                <Link
+                  href="/eos-boards#licence"
+                  onClick={toBoardLicence}
+                  className="whitespace-nowrap hover:text-[#f5f5f7] transition-colors"
+                >
+                  EoS board designs: all rights reserved
+                </Link>
+              </div>
+              {/* The numbers a donor, funder or grant reviewer checks. Labels
+                  stay #A1A1A6 (8.2:1 on black); the values are #F5F5F7. */}
+              <dl
+                data-footer-section="Registration"
+                className="flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-1"
               >
-                {FOUNDATION.softwareLicense} (software)
-              </a>
-              <span className="mx-1.5 text-[#3a3a3e]">·</span>
-              <Link
-                href="/eos-boards#licence"
-                onClick={toBoardLicence}
-                className="hover:text-[#f5f5f7] transition-colors"
-              >
-                EoS board designs: all rights reserved
-              </Link>
-              <span className="mx-1.5 text-[#3a3a3e]">·</span>
-              {FOUNDATION.taxStatus}
-              <span className="mx-1.5 text-[#3a3a3e]">·</span>
-              EIN {FOUNDATION.ein}
+                <div className="whitespace-nowrap">
+                  <dt className="sr-only">Status</dt>
+                  <dd className="text-[#f5f5f7]">{FOUNDATION.taxStatus}</dd>
+                </div>
+                {[
+                  { label: "EIN", value: FOUNDATION.ein },
+                  { label: "SAM.gov UEI", value: FOUNDATION.uei },
+                  { label: "D-U-N-S", value: FOUNDATION.duns },
+                ].map(({ label, value }) => (
+                  <div key={label} className="flex gap-1.5 whitespace-nowrap">
+                    <dt>{label}</dt>
+                    <dd className="text-[#f5f5f7] tabular-nums">{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            <div className="flex items-center flex-wrap justify-center gap-x-4 gap-y-1">
-              {LEGAL_LINKS.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="py-1 whitespace-nowrap hover:text-[#f5f5f7] transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+            <nav aria-label="Legal">
+              <ul className="flex flex-wrap justify-center lg:justify-end gap-x-5 gap-y-1">
+                {LEGAL_LINKS.map(link => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-block py-1 whitespace-nowrap hover:text-[#f5f5f7] transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[#a1a1a6]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 border-t border-[#232326] text-[#a1a1a6]">
             <div className="flex items-center gap-1.5 whitespace-nowrap">
               Made with
               <Heart size={11} className="text-[#a1a1a6]" />

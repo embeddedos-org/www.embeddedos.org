@@ -103,6 +103,8 @@ const REGISTRATION = [
   { label: "Legal name", value: FOUNDATION.legalName },
   { label: "Status", value: FOUNDATION.taxStatus },
   { label: "EIN", value: FOUNDATION.ein },
+  { label: "SAM.gov UEI", value: FOUNDATION.uei },
+  { label: "D-U-N-S", value: FOUNDATION.duns },
   { label: "Jurisdiction", value: FOUNDATION.jurisdiction },
 ];
 
