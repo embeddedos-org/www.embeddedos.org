@@ -33,6 +33,7 @@ vi.mock("wouter", () => ({
 import OpenHardware, {
   GALLERY,
   LICENCE_TERMS,
+  HELPER_SCRIPTS,
   RULES,
   SETUP,
   STATS,
@@ -279,6 +280,55 @@ describe("the how-to guide runs as printed, in one shell", () => {
     expect(missing).toEqual([]);
   });
 
+  it("writes each helper script's whole source in the setup", () => {
+    const bodies: Record<string, string[]> = {};
+    let current: string | null = null;
+    for (const line of SETUP) {
+      if (current !== null) {
+        if (line === "EOF") current = null;
+        else bodies[current].push(line);
+        continue;
+      }
+      const save = line.match(/^cat > (\S+) <<'EOF'$/);
+      if (save) {
+        current = save[1];
+        bodies[current] = [];
+      }
+    }
+    expect(bodies).toEqual(
+      Object.fromEntries(HELPER_SCRIPTS.map(s => [s.name, [...s.code]]))
+    );
+  });
+
+  it("prints the ATTRIBUTION.md prefixes that step 2's digests are checked against", () => {
+    const step2 = GUIDE[2];
+    const shasum = step2.findIndex(c => c.startsWith("shasum -a 256 "));
+    const prefixes = step2.findIndex(
+      c =>
+        c.startsWith("awk ") &&
+        c.includes("kicad_sch") &&
+        c.endsWith("/ATTRIBUTION.md")
+    );
+    expect(shasum).toBeGreaterThanOrEqual(0);
+    expect(prefixes).toBeGreaterThan(shasum);
+  });
+
+  it("states all three extents measure-step.mjs prints for each model", () => {
+    for (const [model, size] of Object.entries(GUIDE_RUN.sizes)) {
+      expect(size, model).toHaveLength(3);
+    }
+  });
+
+  it("says which commit the outputs match, and what the guide needs", () => {
+    render(<OpenHardware />);
+    const intro = screen.getByText(/^Six steps from a board record/);
+    expect(intro.textContent).toContain("Node.js with npm");
+    expect(intro.textContent).toContain(
+      `eCAD-Hardware-Products ${STATS_AS_OF.commit.slice(0, 7)} of ${STATS_AS_OF.date}`
+    );
+    expect(intro.textContent).toMatch(/later commits can add boards/);
+  });
+
   it("installs the helper libraries into eos-helpers alone", () => {
     const setup = GUIDE[0];
     const enter = setup.indexOf("cd eos-helpers");
@@ -380,6 +430,8 @@ describe("the mirror's figures come from one registry", () => {
     const figures = [
       ...counts,
       M.gigabytes,
+      STATS_AS_OF.date,
+      STATS_AS_OF.commit.slice(0, 7),
       `${G.downloadedMB} MB`,
       `${G.filesMB} MB`,
       ...Object.values(G.sizes)

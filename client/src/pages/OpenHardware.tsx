@@ -257,18 +257,19 @@ export const USAGE = [
   },
   {
     title: "Fetch one board, not the whole mirror",
-    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in ${G.boardFiles} files, took ${G.seconds[0]} to ${G.seconds[1]} seconds in our three runs: Git downloaded ${G.downloadedMB} MB, which checks out as ${G.filesMB} MB of files, against ${M.gigabytes} GB for every board. shasum gives the same SHA-256 as its ATTRIBUTION.md.`,
+    body: `A partial clone downloads only the folders you name. Adding the SparkFun IoT RedBoard RP2350, its whole KiCad project and Gerbers in ${G.boardFiles} files, took ${G.seconds[0]} to ${G.seconds[1]} seconds in our four runs: Git downloaded ${G.downloadedMB} MB, which checks out as ${G.filesMB} MB of files, against ${M.gigabytes} GB for every board. awk prints the SHA-256 prefix that its ATTRIBUTION.md lists for each sheet, and shasum's digests begin with them.`,
     code: [
       "git sparse-checkout add /boards/cad/sparkfun/iot-redboard-rp2350/",
       "shasum -a 256 boards/cad/sparkfun/iot-redboard-rp2350/cad/Hardware/*.kicad_sch",
+      "awk -F'`' '$2 ~ /^cad\\/Hardware\\/[^\\/]*\\.kicad_sch$/ {print $4, $2}' boards/cad/sparkfun/iot-redboard-rp2350/ATTRIBUTION.md",
       "grep -E 'Licence|Attribution:|CAD files:' boards/cad/sparkfun/iot-redboard-rp2350/ATTRIBUTION.md",
     ],
     file: "open-hardware-terminal-fetch",
     width: 1600,
     height: 617,
-    alt: `Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and ${G.boardFiles} CAD files its ATTRIBUTION.md lists`,
+    alt: `Terminal output of adding the SparkFun IoT RedBoard RP2350 folder to the sparse clone: the SHA-256 digests of its four KiCad schematic sheets, the SHA-256 prefixes its ATTRIBUTION.md lists for the same sheets, and the CC BY-SA 4.0 licence, SparkFun Electronics attribution and ${G.boardFiles} CAD files its ATTRIBUTION.md lists`,
     caption:
-      "Each digest begins with the SHA-256 prefix that the board's ATTRIBUTION.md lists for that sheet.",
+      "Each shasum digest begins with the prefix that ATTRIBUTION.md lists for the same sheet.",
   },
   {
     title: "Open the design in KiCad",
@@ -612,7 +613,11 @@ export default function OpenHardware() {
             Six steps from a board record to a board you can build, each shown
             with a real file and its real output. Run them in order, in one bash
             or zsh terminal, from an empty folder. The commands need Git and
-            Python 3; the setup below and steps 4 and 5 also need Node.js.
+            Python 3; the setup below and steps 4 and 5 also need Node.js with
+            npm. The outputs shown match eCAD-Hardware-Products{" "}
+            {STATS_AS_OF.commit.slice(0, 7)} of {STATS_AS_OF.date}, where the
+            figures above were counted; later commits can add boards, so your
+            counts can be higher.
           </p>
           <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#0b1220]">
             <video

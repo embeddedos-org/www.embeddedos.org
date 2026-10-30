@@ -40,8 +40,8 @@ export const GUIDE_RUN = {
   seconds: [5, 11],
   sizes: {
     beagleboneAi64: [102.5, 82.6, 36.6],
-    pocketBeagle: [56.4, 35.0],
-    artemis: [10.5, 15.5],
+    pocketBeagle: [56.4, 35.0, 6.9],
+    artemis: [10.5, 15.5, 1.8],
   },
 } as const;
 

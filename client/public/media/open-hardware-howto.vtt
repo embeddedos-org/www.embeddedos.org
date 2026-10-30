@@ -10,7 +10,7 @@ Step 1, find a board. Clone the repository without its files and check out only 
 
 3
 00:00:09.800 --> 00:00:16.200
-Step 2, fetch one board. Adding the SparkFun IoT RedBoard RP2350 to the clone downloads 16 MB: its whole KiCad project and Gerbers, 33 files and 88 MB, instead of 4.36 GB, and shasum matches its ATTRIBUTION.md.
+Step 2, fetch one board. Adding the SparkFun IoT RedBoard RP2350 to the clone downloads 16 MB: its whole KiCad project and Gerbers, 33 files and 88 MB, instead of 4.36 GB, and shasum matches the prefixes its ATTRIBUTION.md lists.
 
 4
 00:00:16.200 --> 00:00:22.100
