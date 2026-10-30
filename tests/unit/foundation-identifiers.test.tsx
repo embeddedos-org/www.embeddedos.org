@@ -79,6 +79,14 @@ describe("footer bottom bar", () => {
     ]);
   });
 
+  it("reads the copyright as one sentence, with a space after the year", () => {
+    const { container } = render(<Footer />);
+    const name = container.querySelector("[data-footer-legal-name]");
+    expect(name?.parentElement?.textContent).toBe(
+      `© 2018–2026 ${FOUNDATION.legalName}`
+    );
+  });
+
   it("keeps the policy links in one labelled list, in order", () => {
     render(<Footer />);
     const nav = screen.getByRole("navigation", { name: "Legal" });

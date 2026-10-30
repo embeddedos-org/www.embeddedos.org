@@ -421,7 +421,7 @@ export default function Footer() {
                   unlayered, so it outranks Tailwind's m-0 utility. */}
               <div className="flex flex-wrap justify-center lg:justify-start gap-x-1 text-[#f5f5f7]">
                 <span className="whitespace-nowrap">© 2018–2026</span>{" "}
-                <span>{FOUNDATION.legalName}</span>
+                <span data-footer-legal-name>{FOUNDATION.legalName}</span>
               </div>
               {/* Stacked on phones, where a trailing "·" would otherwise end
                   the first line; one row from sm up. */}

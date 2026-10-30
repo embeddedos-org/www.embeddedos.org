@@ -305,8 +305,17 @@ test.describe("responsive layout", () => {
             );
           })
           .map(label);
+        // From 390 px the name fits on its own line, so it must not wrap there.
+        const name = bar.querySelector("[data-footer-legal-name]");
+        const nameLines = name
+          ? Math.round(
+              name.getBoundingClientRect().height /
+                parseFloat(getComputedStyle(name).lineHeight)
+            )
+          : 0;
         const dot = bar.querySelector('span[aria-hidden="true"]');
         return {
+          nameLines,
           count: items.length,
           year: bar.querySelector("span.whitespace-nowrap")?.textContent,
           tall,
@@ -318,6 +327,8 @@ test.describe("responsive layout", () => {
       // 2 licence links + 4 registration items + 5 policy links + the year.
       expect(result!.count, `items at ${width}px`).toBe(12);
       expect(result!.year, "the year is its own item").toBe("© 2018–2026");
+      if (width >= 390)
+        expect(result!.nameLines, `legal name lines at ${width}px`).toBe(1);
       expect(result!.tall, `items broken at ${width}px`).toEqual([]);
       expect(result!.outside, `items off-screen at ${width}px`).toEqual([]);
       // The licence separator would end a line on its own below sm (640 px).
