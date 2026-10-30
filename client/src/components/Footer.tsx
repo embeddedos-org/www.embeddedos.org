@@ -420,7 +420,7 @@ export default function Footer() {
               {/* divs, not p: the global p rule (margin-bottom 1em) is
                   unlayered, so it outranks Tailwind's m-0 utility. */}
               <div className="flex flex-wrap justify-center lg:justify-start gap-x-1 text-[#f5f5f7]">
-                <span className="whitespace-nowrap">© 2018–2026</span>
+                <span className="whitespace-nowrap">© 2018–2026</span>{" "}
                 <span>{FOUNDATION.legalName}</span>
               </div>
               {/* Stacked on phones, where a trailing "·" would otherwise end
