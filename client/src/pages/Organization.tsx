@@ -82,7 +82,7 @@ const legal = [
   },
   { label: "Jurisdiction", value: FOUNDATION.jurisdiction },
   { label: "EIN", value: FOUNDATION.ein },
-  { label: "SAM.gov UEI", value: FOUNDATION.uei },
+  { label: "SAM.gov Unique Entity ID (UEI)", value: FOUNDATION.uei },
   { label: "D-U-N-S Number", value: FOUNDATION.duns },
   {
     label: "Effective Date of Exemption",
