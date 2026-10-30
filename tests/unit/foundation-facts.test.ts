@@ -168,6 +168,20 @@ describe("structured data agrees with the source of truth", () => {
     expect(structuredData().taxID).toBe(foundationValue("ein"));
   });
 
+  it("publishes the same D-U-N-S number the pages publish, as digits", () => {
+    expect(structuredData().duns).toBe(
+      foundationValue("duns").replace(/-/g, "")
+    );
+  });
+
+  it("publishes the same SAM.gov UEI the pages publish", () => {
+    expect(structuredData().identifier).toEqual({
+      "@type": "PropertyValue",
+      propertyID: "SAM.gov UEI",
+      value: foundationValue("uei"),
+    });
+  });
+
   it("publishes the same legal name the pages publish", () => {
     expect(structuredData().name).toBe(foundationValue("legalName"));
   });

@@ -4,7 +4,10 @@ import { openContactForm } from "@/lib/contact-form";
 import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
 import "./Transparency.css";
 
-/** Legal identity, as published on the IRS determination. */
+/**
+ * Legal identity as published on the IRS determination, then the two
+ * identifiers that are not on it: the SAM.gov UEI and the D-U-N-S number.
+ */
 const REGISTRATION = [
   { label: "Legal name", value: FOUNDATION.legalName },
   { label: "Organisation type", value: FOUNDATION.taxStatus },
@@ -166,7 +169,7 @@ export default function Transparency() {
         id="registration"
         label="Registration"
         title="Nonprofit registration details"
-        lead="The Foundation is a tax-exempt organisation recognised by the United States Internal Revenue Service. The IRS details are as they appear on its determination; the SAM.gov Unique Entity ID and D-U-N-S number identify it for federal awards and grant applications."
+        lead="The Foundation is a tax-exempt organisation recognised by the United States Internal Revenue Service. The IRS details are as they appear on its determination. The SAM.gov Unique Entity ID identifies the Foundation for federal awards; the D-U-N-S number, issued by Dun & Bradstreet, is still requested by some funders."
       >
         <dl className="kv">
           {REGISTRATION.map(row => (

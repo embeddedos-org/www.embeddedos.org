@@ -244,6 +244,61 @@ test.describe("responsive layout", () => {
     });
   }
 
+  test("the footer bottom bar keeps its policy links on one row from lg", async ({
+    page,
+  }) => {
+    for (const width of [1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const tops = await page
+        .locator('footer nav[aria-label="Legal"] a')
+        .evaluateAll(links =>
+          links.map(link => Math.round(link.getBoundingClientRect().top))
+        );
+      expect(tops, `policy links at ${width}px`).toHaveLength(5);
+      expect(
+        Math.max(...tops) - Math.min(...tops),
+        `policy links wrap at ${width}px: ${JSON.stringify(tops)}`
+      ).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("no footer bottom-bar item breaks inside itself", async ({ page }) => {
+    for (const width of [320, 390, 768]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const result = await page
+        .locator("footer [data-footer-bottom]")
+        .evaluate(bar => {
+          // The legal name is the one item allowed to wrap: below ~326 px it
+          // is wider than the line. Everything else must stay one line tall.
+          const items = [
+            ...bar.querySelectorAll(
+              "a, dl[data-footer-registration] > div, span.whitespace-nowrap"
+            ),
+          ];
+          const tall = items
+            .filter(el => {
+              const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+              return el.getBoundingClientRect().height > lineHeight * 1.5;
+            })
+            .map(el => el.textContent);
+          const dot = bar.querySelector('span[aria-hidden="true"]');
+          return {
+            tall,
+            dotShown: dot ? getComputedStyle(dot).display !== "none" : false,
+            overflow:
+              document.documentElement.scrollWidth -
+              document.documentElement.clientWidth,
+          };
+        });
+      expect(result.tall, `items broken at ${width}px`).toEqual([]);
+      expect(result.overflow, `horizontal overflow at ${width}px`).toBe(0);
+      // The licence separator would end a line on its own below sm (640 px).
+      expect(result.dotShown, `separator at ${width}px`).toBe(width >= 640);
+    }
+  });
+
   test("the brand and all six footer groups align at xl desktop", async ({
     page,
   }) => {
