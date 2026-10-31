@@ -20,13 +20,16 @@
 # are never referenced — each build's HTML names only its own hashes — so they
 # waste disk and nothing else, and can be cleared out by hand when it matters.
 #
-# Only .htaccess is copied by name. The `*` glob covers every directory and
+# Only .htaccess is copied by name at the root. The `*` glob covers every directory and
 # regular file but skips dotfiles, which is why .htaccess needs its own line and
 # why this file and the .app-shell.html build cache never reach the document
-# root at all.
+# root at all. assets/.htaccess rides inside the assets/ directory copy (cp -R
+# copies a directory's contents including dotfiles) and is also copied by name
+# below, so the hashed-assets cache rule ships with the build (www #120).
 deployment:
   tasks:
     - export DEPLOYPATH=$HOME/public_html
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH/
     - /bin/cp .htaccess $DEPLOYPATH/
+    - /bin/cp assets/.htaccess $DEPLOYPATH/assets/

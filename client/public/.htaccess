@@ -46,7 +46,10 @@ ErrorDocument 404 /404.html
 # The production homepage critical path (entry + vendors + CSS) measured
 # ~1012 KB raw / ~241 KB brotli with no guaranteed compression: without
 # these directives every visitor downloads the full raw weight. All
-# dist/public/assets/* files are content-hashed, so they can be immutable;
+# dist/public/assets/* files are content-hashed, so the year-long lifetime is safe for them;
+# every other static file revalidates daily (see below). The year-long rule lives in
+# assets/.htaccess, not here: FilesMatch matches filenames only, never paths, so a
+# year-long rule in this file would also cover unhashed /media files and root icons (www #120).
 # HTML documents are short-lived so crawlers and visitors see fresh meta.
 #
 # The host runs LiteSpeed. LiteSpeed honors mod_deflate/mod_expires-style
@@ -79,11 +82,12 @@ AddType image/avif .avif
 
 <IfModule mod_expires.c>
   ExpiresActive On
-  # Hashed build assets: immutable for a year.
+  # Hashed build assets: 1-year Expires (safe: no unhashed .js/.css is served from
+  # the document root — verified 2026-10-31; every served script/stylesheet is hashed).
   ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType text/css "access plus 1 year"
   <FilesMatch "\.(js|css|woff2?|avif|webp|png|jpe?g|gif|svg|ico)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header set Cache-Control "public, max-age=86400"
   </FilesMatch>
   # HTML documents: revalidate every visit so edited meta/JSON-LD is fresh.
   <FilesMatch "\.(html|htm)$">
@@ -96,7 +100,7 @@ AddType image/avif .avif
 <IfModule !mod_expires.c>
   <IfModule mod_headers.c>
     <FilesMatch "\.(js|css|woff2?|avif|webp|png|jpe?g|gif|svg|ico)$">
-      Header set Cache-Control "public, max-age=31536000, immutable"
+      Header set Cache-Control "public, max-age=86400"
     </FilesMatch>
     <FilesMatch "\.(html|htm)$">
       Header set Cache-Control "public, max-age=0, must-revalidate"

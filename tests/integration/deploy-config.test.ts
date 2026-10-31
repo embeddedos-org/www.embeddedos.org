@@ -172,3 +172,27 @@ describe("every route resolves without a fallback rewrite", () => {
     ).toBe(true);
   });
 });
+
+describe("cache lifetimes are scoped to hashed assets (www #120)", () => {
+  it("never serves a year-long unrevalidating lifetime from the root .htaccess", () => {
+    // FilesMatch matches filenames only, never paths: ANY year-long rule in
+    // the root file would also cover unhashed /media files and root icons.
+    expect(readHtaccess()).not.toContain("immutable");
+  });
+
+  it("ships a per-folder year-long rule inside assets/", () => {
+    const assetsHtaccess = path.join(DIST, "assets", ".htaccess");
+    expect(
+      fs.existsSync(assetsHtaccess),
+      "dist/public/assets/.htaccess missing — hashed assets would lose their year-long lifetime"
+    ).toBe(true);
+    expect(fs.readFileSync(assetsHtaccess, "utf8")).toContain(
+      "max-age=31536000, immutable"
+    );
+  });
+
+  it("copies the assets .htaccess to the document root on deploy", () => {
+    const yml = fs.readFileSync(CPANEL_YML, "utf8");
+    expect(yml).toMatch(/cp\s+assets\/\.htaccess\s+\$DEPLOYPATH\/assets\//);
+  });
+});
