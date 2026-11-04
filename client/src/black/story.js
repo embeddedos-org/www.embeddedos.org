@@ -1433,7 +1433,9 @@ export function mountBlack(host) {
     const ix = host.querySelector(".bk-ix");
     if (!ix) return null;
     const list = ix.querySelector(".bk-ix-list");
-    const tabs = [...ix.querySelectorAll('.bk-ix-list [role="tab"]')];
+    const tabs = [
+      ...ix.querySelectorAll('.bk-ix-list li:not([hidden]) [role="tab"]'),
+    ];
     const panels = tabs.map(t =>
       host.querySelector("#" + t.getAttribute("aria-controls"))
     );

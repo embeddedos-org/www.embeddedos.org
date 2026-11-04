@@ -462,6 +462,10 @@ export default function Footer() {
                   { label: "EIN", value: FOUNDATION.ein },
                   { label: "SAM.gov UEI", value: FOUNDATION.uei },
                   { label: "D-U-N-S", value: FOUNDATION.duns },
+                  {
+                    label: "NSF Research Account Number:",
+                    value: FOUNDATION.nsfResearchAccountNumber,
+                  },
                 ].map(({ label, value }) => (
                   <div key={label} className="flex gap-1.5 whitespace-nowrap">
                     <dt>{label}</dt>

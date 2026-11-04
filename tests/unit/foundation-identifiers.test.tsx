@@ -37,6 +37,7 @@ describe("registration identifiers", () => {
     // 12 characters from digits and capitals without I and O; never a leading 0.
     expect(FOUNDATION.uei).toMatch(/^[A-HJ-NP-Z1-9][A-HJ-NP-Z0-9]{11}$/);
     expect(FOUNDATION.duns).toMatch(/^\d{2}-\d{3}-\d{4}$/);
+    expect(FOUNDATION.nsfResearchAccountNumber).toMatch(/^[A-Z0-9]{9}$/);
   });
 
   const PAGES: [string, ComponentType][] = [
@@ -76,6 +77,7 @@ describe("footer bottom bar", () => {
       ["EIN", FOUNDATION.ein],
       ["SAM.gov UEI", FOUNDATION.uei],
       ["D-U-N-S", FOUNDATION.duns],
+      ["NSF Research Account Number:", FOUNDATION.nsfResearchAccountNumber],
     ]);
   });
 

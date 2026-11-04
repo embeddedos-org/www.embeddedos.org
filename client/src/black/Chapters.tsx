@@ -4,7 +4,7 @@ import { ChapterExtras, ChapterWord } from "./ChapterExtras";
 import { MEDIA_HOME } from "./data";
 
 /**
- * Every industry: the 25 chapters the homepage's 3D story used to carry, as an
+ * Every industry: the 18 featured chapters from the homepage's 3D story, as an
  * explorer. The chapter cards and the part cards ("spots") are the story's own
  * markup, moved here unchanged except for what only the 3D stage needed (the
  * "drag to turn it" hints, `inert`, `data-side`) and the heading level (each
@@ -23,10 +23,9 @@ export default function Chapters() {
             <h2 id="ind-h">One board. Every industry.</h2>
           </div>
           <p className="bk-lead">
-            <b>125 product lines and 292 named models</b> across eighteen eCAD
-            domains, plus eAgriTech, and a full-body robot built from five of
-            them. Pick an industry to see its design and the EoS profile it
-            runs.
+            <b>125 product lines and 292 named models</b> across eighteen
+            featured hardware domains. Pick an industry to see its design and
+            the EoS profile it runs.
           </p>
         </div>
         <div className="bk-ix">
@@ -310,7 +309,7 @@ export default function Chapters() {
                 <span className="dh">A vault for keys</span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-edefense"
@@ -325,7 +324,7 @@ export default function Chapters() {
                 <span className="dh">A computer with no fan to fail</span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-rbt-wake"
@@ -340,7 +339,7 @@ export default function Chapters() {
                 <span className="dh">The board docks, and a body wakes up</span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-rbt-see"
@@ -357,7 +356,7 @@ export default function Chapters() {
                 </span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-rbt-walk"
@@ -372,7 +371,7 @@ export default function Chapters() {
                 <span className="dh">Walking is a real-time job</span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-rbt-hands"
@@ -387,7 +386,7 @@ export default function Chapters() {
                 <span className="dh">Hands that pick, check and place</span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-rbt-safe"
@@ -404,7 +403,7 @@ export default function Chapters() {
                 </span>
               </a>
             </li>
-            <li role="presentation">
+            <li role="presentation" hidden>
               <a
                 role="tab"
                 id="bk-ct-every"
@@ -2493,6 +2492,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-edefense"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-edefense"
               style={{ "--c": "#9CA3AF" } as CSSProperties}
@@ -2565,6 +2565,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-rbt-wake"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-rbt-wake"
               style={{ "--c": "#34D399" } as CSSProperties}
@@ -2736,6 +2737,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-rbt-see"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-rbt-see"
               style={{ "--c": "#34D399" } as CSSProperties}
@@ -2916,6 +2918,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-rbt-walk"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-rbt-walk"
               style={{ "--c": "#34D399" } as CSSProperties}
@@ -3089,6 +3092,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-rbt-hands"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-rbt-hands"
               style={{ "--c": "#34D399" } as CSSProperties}
@@ -3249,6 +3253,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-rbt-safe"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-rbt-safe"
               style={{ "--c": "#34D399" } as CSSProperties}
@@ -3400,6 +3405,7 @@ export default function Chapters() {
             <div
               className="bk-chap"
               id="ch-every"
+              hidden
               role="tabpanel"
               aria-labelledby="bk-ct-every"
               style={{ "--c": "#38BDF8" } as CSSProperties}
