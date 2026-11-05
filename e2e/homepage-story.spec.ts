@@ -5,9 +5,9 @@ import { BOARD_PARTS } from "../client/src/black/parts";
  * The homepage's ray-traced story (client/src/black). These replace the 3D
  * story's tests one for one: the content is in the static HTML, the story
  * mounts cleanly, it goes live, it falls back to the poster when it cannot,
- * and leaving the page releases it. The 25 industry chapters and their part
- * cards moved from the 3D stage into the explorer, so their count is still
- * pinned here.
+ * and leaving the page releases it. The explorer presents the 18 featured
+ * industry chapters; legacy detail panels remain in the static source but are
+ * excluded from its tab list and hidden from readers.
  */
 test.describe("homepage story", () => {
   test("the static HTML carries the story, the chapters and the sections, without runtime state", async ({
@@ -17,8 +17,13 @@ test.describe("homepage story", () => {
     const html = await res.text();
 
     expect(html).toContain('id="hero-heading"');
-    // the hero card plus the 25 chapter cards
+    // The legacy panels remain prerendered, but only 18 tabs are presented.
     expect(html.match(/<article class="card[ "]/g)?.length).toBe(26);
+    const explorer = html.match(/<ol class="bk-ix-list"[\s\S]*?<\/ol>/)?.[0];
+    expect(explorer?.match(/<li role="presentation">/g)?.length).toBe(18);
+    expect(explorer?.match(/<li role="presentation" hidden="">/g)?.length).toBe(
+      7
+    );
     expect(html.match(/<article class="spot"/g)?.length).toBe(24);
     expect(html).toContain('id="board-map"');
     for (let n = 1; n <= 25; n++) {
@@ -120,12 +125,12 @@ test.describe("homepage story", () => {
     await expect(page.locator("#ch-emedical")).toBeVisible();
     await expect(page.locator("#ch-ehealth365")).toBeHidden();
 
-    await page.goto("/#ch-rbt-hands");
-    await expect(page.locator("#bk-ct-rbt-hands")).toHaveAttribute(
+    await page.goto("/#ch-ecybersec");
+    await expect(page.locator("#bk-ct-ecybersec")).toHaveAttribute(
       "aria-selected",
       "true"
     );
-    await expect(page.locator("#ch-rbt-hands .spot")).toHaveCount(2);
+    await expect(page.locator("#ch-ecybersec")).toBeVisible();
   });
 
   test("a link to a chapter lands on it", async ({ page }) => {
@@ -155,11 +160,11 @@ test.describe("homepage story", () => {
     await first.scrollIntoViewIfNeeded();
     await first.focus();
     await page.keyboard.press("End");
-    await expect(page.locator("#bk-ct-every")).toHaveAttribute(
+    await expect(page.locator("#bk-ct-ecybersec")).toHaveAttribute(
       "aria-selected",
       "true"
     );
-    await expect(page.locator("#bk-ct-every")).toBeFocused();
+    await expect(page.locator("#bk-ct-ecybersec")).toBeFocused();
     await page.keyboard.press("Home");
     await expect(first).toHaveAttribute("aria-selected", "true");
   });

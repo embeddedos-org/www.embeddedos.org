@@ -9,14 +9,15 @@
  * than one page belongs here so there is only one place to correct it.
  *
  * Every value below is transcribed from the Foundation's IRS determination or
- * from a page that already published it, except the UEI and D-U-N-S number,
- * which the Foundation supplied (see their comment). Nothing here may be
- * estimated: if a figure is not known, it is absent rather than approximated.
+ * from a page that already published it, except the UEI, D-U-N-S and NSF
+ * research account numbers, which the Foundation supplied (see their
+ * comments). Nothing here may be estimated: if a figure is not known, it is
+ * absent rather than approximated.
  */
 
 /**
  * Legal identity as it appears on the IRS determination letter, plus the
- * SAM.gov and Dun & Bradstreet identifiers noted below.
+ * SAM.gov, Dun & Bradstreet and NSF identifiers noted below.
  */
 export const FOUNDATION = {
   legalName: "Embedded Operating Systems Research Foundation",
@@ -30,6 +31,8 @@ export const FOUNDATION = {
    */
   uei: "VVHWY3VW8LM9",
   duns: "14-462-4208",
+  /** Supplied by the Foundation on 5 November 2026. */
+  nsfResearchAccountNumber: "0000A93CG",
   taxStatus: "501(c)(3) Public Charity",
   publicCharityClassification: "509(a)(2)",
   exemptionEffective: "March 11, 2026",
