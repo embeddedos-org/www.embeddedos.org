@@ -27,7 +27,7 @@
 # copies a directory's contents including dotfiles) and is also copied by name
 # below, so the hashed-assets cache rule ships with the build (www #120).
 #
-# The last task is a stopgap for www #128: it turns off PHP's session upload
+# The task after mkdir is a stopgap for www #128: it turns off PHP's session upload
 # progress in public_html/.user.ini, the per-directory file PHP reads where it
 # runs as FastCGI or FPM (whether this host's handler reads it is unconfirmed;
 # #128 asks for the effective value to be checked in cPanel). It appends one
@@ -36,10 +36,11 @@
 # would overwrite them. awk reads the last value the file assigns, which is
 # the one PHP uses; the line is appended only when that value is not 0, so
 # repeated deploys leave the file alone. If the INI Editor later rewrites the
-# file, the next deploy adds the line back. This narrows the exposure only;
-# the fix is upgrading the host's PHP (#128).
+# file, the next deploy adds the line back. It runs before the build is
+# copied, so a deploy that stops partway has still applied it. This narrows
+# the exposure only; the fix is upgrading the host's PHP (#128).
 #
-# The .htaccess copy above replaces public_html/.htaccess on every deploy. Under
+# The .htaccess copy below replaces public_html/.htaccess on every deploy. Under
 # some handlers cPanel writes its own blocks there (MultiPHP Manager's PHP
 # version, the INI Editor's php_flag lines), so check the live file before
 # changing PHP settings in cPanel, or the next deploy will drop them.
@@ -47,7 +48,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=$HOME/public_html
     - /bin/mkdir -p $DEPLOYPATH
+    - test "$(awk -F= '/^[[:space:]]*session[.]upload_progress[.]enabled[[:space:]]*=/ { v = $2 } END { gsub(/[[:space:]\r]/, "", v); print v }' "$DEPLOYPATH/.user.ini" 2>/dev/null)" = 0 || printf '\nsession.upload_progress.enabled = 0\n' >> "$DEPLOYPATH/.user.ini"
     - /bin/cp -R * $DEPLOYPATH/
     - /bin/cp .htaccess $DEPLOYPATH/
     - /bin/cp assets/.htaccess $DEPLOYPATH/assets/
-    - test "$(awk -F= '/^[[:space:]]*session[.]upload_progress[.]enabled[[:space:]]*=/ { v = $2 } END { gsub(/[[:space:]\r]/, "", v); print v }' "$DEPLOYPATH/.user.ini" 2>/dev/null)" = 0 || printf '\nsession.upload_progress.enabled = 0\n' >> "$DEPLOYPATH/.user.ini"

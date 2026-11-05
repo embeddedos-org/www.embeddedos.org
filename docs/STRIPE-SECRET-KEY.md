@@ -40,9 +40,10 @@ environment variables with no file edits:
 ### Method B — `.user.ini` outside the document root (fallback)
 
 If the panel has no environment-variable UI, PHP still reads per-directory
-`.user.ini` files — but it **must not** live in `public_html` (it would be
-web-readable and it would be overwritten by the next deploy, which copies
-only tracked build output). Place it in the account home **above**
+`.user.ini` files — but it **must not** live in `public_html`: deploys
+maintain a PHP setting in `public_html/.user.ini` (#128), and nothing secret
+belongs in the document root, even though `.htaccess` denies web access to
+that file. Place it in the account home **above**
 `public_html` and point PHP at it via `.htaccess`… except our `.htaccess` is
 tracked in git, so keep the secret out of it too. Instead:
 

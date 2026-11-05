@@ -14,9 +14,11 @@
  *
  * Requires `pnpm build` first.
  */
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
+import os from "node:os";
+import { execFileSync } from "node:child_process";
 // @ts-expect-error - plain .mjs script, no type declarations
 import { discoverRoutes } from "../../scripts/prerender.mjs";
 
@@ -101,26 +103,68 @@ describe("PHP session upload progress is off (stopgap for #128)", () => {
       .filter(l => /^\s*-\s/.test(l))
       .map(l => l.replace(/^\s*-\s+/, ""));
   };
+  const iniTask = () => tasks().find(t => t.includes(".user.ini")) ?? "";
 
-  it("appends the setting to public_html/.user.ini as the last task", () => {
-    // cPanel's MultiPHP INI Editor keeps the host's PHP settings in this
-    // file, so it is appended to, never copied over. Last, so DEPLOYPATH is
-    // set and the docroot exists when it runs.
-    const last = tasks().at(-1) ?? "";
-    expect(last).toMatch(/^test "\$\(awk /);
-    expect(last).toContain(`"$DEPLOYPATH/.user.ini" 2>/dev/null)" = 0 ||`);
-    expect(last).toMatch(
-      /\|\| printf '\\nsession\.upload_progress\.enabled = 0\\n' >> "\$DEPLOYPATH\/\.user\.ini"$/
-    );
+  it("updates .user.ini right after the docroot exists, before the copy", () => {
+    // Before the build copy, so a deploy that stops partway has applied it.
+    const t = tasks();
+    const at = t.indexOf(iniTask());
+    expect(at, "no .cpanel.yml task touches .user.ini").toBeGreaterThan(-1);
+    expect(t[at - 1]).toMatch(/mkdir -p \$DEPLOYPATH$/);
+    expect(t.findIndex(x => x.includes("cp -R"))).toBeGreaterThan(at);
+    expect(
+      t.filter(x => x.includes(".user.ini")),
+      "only one task may write the host's .user.ini"
+    ).toHaveLength(1);
   });
 
-  it("has no other task that writes .user.ini", () => {
-    expect(
-      tasks()
-        .slice(0, -1)
-        .filter(t => t.includes(".user.ini")),
-      "a task would overwrite the host's .user.ini"
-    ).toEqual([]);
+  describe("running the task against a docroot", () => {
+    // Runs the task exactly as written in .cpanel.yml, under sh, so the test
+    // follows the command rather than its spelling.
+    let dir: string;
+    const ini = () => path.join(dir, ".user.ini");
+    const deploy = () =>
+      execFileSync("sh", ["-c", iniTask()], {
+        env: { ...process.env, DEPLOYPATH: dir },
+      });
+    // The value PHP uses: the last assignment in the file.
+    const effective = () =>
+      fs
+        .readFileSync(ini(), "utf8")
+        .split(/\r?\n/)
+        .map(l => l.match(/^\s*session\.upload_progress\.enabled\s*=\s*(\S+)/))
+        .filter(m => m !== null)
+        .at(-1)?.[1];
+
+    beforeEach(() => {
+      dir = fs.mkdtempSync(path.join(os.tmpdir(), "deploy-ini-"));
+    });
+    afterEach(() => {
+      fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("creates the file with the setting off", () => {
+      deploy();
+      expect(effective()).toBe("0");
+    });
+
+    it("keeps the host's settings and overrides an enabled value", () => {
+      const host = "memory_limit = 256M\nsession.upload_progress.enabled = 1";
+      fs.writeFileSync(ini(), host);
+      deploy();
+      expect(fs.readFileSync(ini(), "utf8").startsWith(host)).toBe(true);
+      expect(effective()).toBe("0");
+    });
+
+    it("adds nothing on repeated deploys", () => {
+      fs.writeFileSync(ini(), "memory_limit = 256M\r\n");
+      deploy();
+      const once = fs.readFileSync(ini(), "utf8");
+      deploy();
+      deploy();
+      expect(fs.readFileSync(ini(), "utf8")).toBe(once);
+      expect(effective()).toBe("0");
+    });
   });
 
   it("sets the same flag in .htaccess only inside PHP-module guards", () => {
@@ -139,6 +183,12 @@ describe("PHP session upload progress is off (stopgap for #128)", () => {
     ]);
     expect(rules.replace(phpGuard, "")).not.toMatch(
       /php_(admin_)?(flag|value)/
+    );
+  });
+
+  it("does not serve .user.ini", () => {
+    expect(readHtaccess()).toMatch(
+      /^<Files "\.user\.ini">\n\s*Require all denied\n<\/Files>$/m
     );
   });
 });
