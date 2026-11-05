@@ -89,6 +89,60 @@ describe("the build ships the hosting config", () => {
   });
 });
 
+describe("PHP session upload progress is off (stopgap for #128)", () => {
+  // The list items under `deployment: tasks:`, in order. The file is a flat
+  // list of one-line shell commands, so this is all the YAML it needs.
+  const tasks = () => {
+    const lines = fs.readFileSync(CPANEL_YML, "utf8").split("\n");
+    const start = lines.findIndex(l => /^\s+tasks:\s*$/.test(l));
+    expect(start, "no tasks: list in .cpanel.yml").toBeGreaterThan(-1);
+    return lines
+      .slice(start + 1)
+      .filter(l => /^\s*-\s/.test(l))
+      .map(l => l.replace(/^\s*-\s+/, ""));
+  };
+
+  it("appends the setting to public_html/.user.ini as the last task", () => {
+    // cPanel's MultiPHP INI Editor keeps the host's PHP settings in this
+    // file, so it is appended to, never copied over. Last, so DEPLOYPATH is
+    // set and the docroot exists when it runs.
+    const last = tasks().at(-1) ?? "";
+    expect(last).toMatch(/^test "\$\(awk /);
+    expect(last).toContain(`"$DEPLOYPATH/.user.ini" 2>/dev/null)" = 0 ||`);
+    expect(last).toMatch(
+      /\|\| printf '\\nsession\.upload_progress\.enabled = 0\\n' >> "\$DEPLOYPATH\/\.user\.ini"$/
+    );
+  });
+
+  it("has no other task that writes .user.ini", () => {
+    expect(
+      tasks()
+        .slice(0, -1)
+        .filter(t => t.includes(".user.ini")),
+      "a task would overwrite the host's .user.ini"
+    ).toEqual([]);
+  });
+
+  it("sets the same flag in .htaccess only inside PHP-module guards", () => {
+    // An unguarded php_flag answers 500 on a server without a PHP module.
+    const rules = readHtaccess()
+      .split("\n")
+      .filter(l => !l.trim().startsWith("#"))
+      .join("\n");
+    const phpGuard =
+      /<IfModule\s+(php_module|php8_module|lsapi_module)>\s*php_flag\s+session\.upload_progress\.enabled\s+off\s*<\/IfModule>/g;
+    const guarded = [...rules.matchAll(phpGuard)].map(m => m[1]);
+    expect(guarded.sort()).toEqual([
+      "lsapi_module",
+      "php8_module",
+      "php_module",
+    ]);
+    expect(rules.replace(phpGuard, "")).not.toMatch(
+      /php_(admin_)?(flag|value)/
+    );
+  });
+});
+
 describe("the hosting config uses only directives this host honours", () => {
   /**
    * <Limit> and <LimitExcept> are banned here, by measurement rather than
