@@ -1791,6 +1791,275 @@ export const PAGES: SearchEntry[] = [
       "quickstart",
     ],
   },
+  {
+    title: "Blog",
+    path: "/blog",
+    tags: ["blog", "deep dives", "design decisions", "trade-offs"],
+  },
+  {
+    title: "Publications",
+    path: "/publications",
+    tags: [
+      "publications",
+      "papers",
+      "architecture",
+      "security model",
+      "toolchain",
+    ],
+  },
+  {
+    title: "Technical Reports",
+    path: "/technical-reports",
+    tags: [
+      "technical reports",
+      "engineering write-ups",
+      "subsystems",
+      "measured on real hardware",
+    ],
+  },
+  {
+    title: "Benchmarks",
+    path: "/benchmarks",
+    tags: [
+      "benchmarks",
+      "performance",
+      "results",
+      "configuration",
+      "reproduced",
+    ],
+  },
+  {
+    title: "Press Releases",
+    path: "/press-releases",
+    tags: ["press releases", "announcements", "journalists", "analysts"],
+  },
+  {
+    title: "Newsletter",
+    path: "/newsletter",
+    tags: ["newsletter", "what shipped", "summary", "issues"],
+  },
+  {
+    title: "Case Studies",
+    path: "/case-studies",
+    tags: ["case studies", "deployed", "organisations", "cost", "saved"],
+  },
+  {
+    title: "Member Stories",
+    path: "/member-stories",
+    tags: ["member stories", "member organisations", "why they joined"],
+  },
+  {
+    title: "Product Showcases",
+    path: "/product-showcases",
+    tags: [
+      "product showcases",
+      "shipping products",
+      "built on embeddedos",
+      "products",
+    ],
+  },
+  {
+    title: "Project Showcases",
+    path: "/project-showcases",
+    tags: [
+      "project showcases",
+      "community projects",
+      "research builds",
+      "hardware experiments",
+    ],
+  },
+  {
+    title: "Videos",
+    path: "/videos",
+    tags: ["videos", "recorded talks", "walkthroughs", "demonstrations"],
+  },
+  {
+    title: "Podcast",
+    path: "/podcast",
+    tags: ["podcast", "conversations", "engineers", "production"],
+  },
+  {
+    title: "Webinars",
+    path: "/webinars",
+    tags: ["webinars", "live technical sessions", "recording", "materials"],
+  },
+  {
+    title: "White Papers",
+    path: "/white-papers",
+    tags: ["white papers", "long-form", "platform decisions"],
+  },
+  {
+    title: "Research Dataset",
+    path: "/datasets",
+    tags: ["datasets", "dataset", "research dataset", "measurement data"],
+  },
+  {
+    title: "Architecture Research",
+    path: "/research/architecture",
+    tags: ["layers", "boundaries"],
+  },
+  {
+    title: "Security Research",
+    path: "/research/security",
+    tags: ["secure boot", "verified update", "key handling"],
+  },
+  {
+    title: "AI Research",
+    path: "/research/ai",
+    tags: ["inference", "constrained devices", "memory", "latency", "power"],
+  },
+  {
+    title: "Embedded Systems Research",
+    path: "/research/embedded-systems",
+    tags: ["drivers", "board bring-up", "embedded systems"],
+  },
+  {
+    title: "RTOS Research",
+    path: "/research/rtos",
+    tags: [
+      "rtos",
+      "scheduling",
+      "determinism",
+      "worst-case timing",
+      "real-time",
+    ],
+  },
+  {
+    title: "Linux Research",
+    path: "/research/linux",
+    tags: ["linux", "shared tooling", "comparisons"],
+  },
+  {
+    title: "Hardware Research",
+    path: "/research/hardware",
+    tags: ["silicon", "boards", "hardware features"],
+  },
+  {
+    title: "Networking Research",
+    path: "/research/networking",
+    tags: ["connectivity", "stacks", "protocols", "networking"],
+  },
+  {
+    title: "Programmes",
+    path: "/programmes",
+    tags: ["programmes", "ambassadors", "university partnerships", "grants"],
+  },
+  {
+    title: "Ambassador Program",
+    path: "/programmes/ambassador",
+    tags: [
+      "ambassador program",
+      "ambassadors",
+      "contributors",
+      "events",
+      "local sessions",
+    ],
+  },
+  {
+    title: "University Program",
+    path: "/programmes/university-program",
+    tags: [
+      "university program",
+      "course materials",
+      "hardware kits",
+      "mentoring",
+      "universities",
+    ],
+  },
+  {
+    title: "Community Meetups",
+    path: "/programmes/community-meetups",
+    tags: ["community meetups", "meetups", "local meetings"],
+  },
+  {
+    title: "Conference Presence",
+    path: "/programmes/conference-presence",
+    tags: [
+      "conference presence",
+      "conferences",
+      "talks",
+      "booths",
+      "workshops",
+      "cfp",
+    ],
+  },
+  {
+    title: "Member Marketing",
+    path: "/programmes/member-marketing",
+    tags: [
+      "member marketing",
+      "blog slots",
+      "social amplification",
+      "launch support",
+    ],
+  },
+  {
+    title: "Partner Marketing",
+    path: "/programmes/partner-marketing",
+    tags: [
+      "partner marketing",
+      "joint announcements",
+      "silicon vendors",
+      "integrators",
+    ],
+  },
+  {
+    title: "University Collaborations",
+    path: "/programmes/university-collaborations",
+    tags: [
+      "university collaborations",
+      "research partnerships",
+      "academic groups",
+    ],
+  },
+  {
+    title: "Industry Collaborations",
+    path: "/programmes/industry-collaborations",
+    tags: ["industry collaborations", "applied research", "companies"],
+  },
+  {
+    title: "Research Grants",
+    path: "/programmes/grants",
+    tags: [
+      "research grants",
+      "grants",
+      "funding",
+      "formal verification",
+      "security analysis",
+    ],
+  },
+  {
+    title: "Brand Assets",
+    path: "/brand",
+    tags: ["brand assets", "brand", "logos", "colours", "typography"],
+  },
+  {
+    title: "Media/Press Kit",
+    path: "/press-kit",
+    tags: [
+      "press kit",
+      "media",
+      "boilerplate",
+      "legal name",
+      "tax status",
+      "logos",
+    ],
+  },
+  {
+    title: "Social Media",
+    path: "/social",
+    tags: ["social media", "social", "accounts", "impostor"],
+  },
+  {
+    title: "YouTube",
+    path: "/youtube",
+    tags: ["youtube", "channel", "videos"],
+  },
+  {
+    title: "Newsletter Issue 01 — Welcome, What Shipped, What Is Next",
+    path: "/article-newsletter-issue-01",
+    tags: ["first issue", "what shipped", "get involved"],
+  },
 ];
 
 /** Source repositories, searched alongside the pages. */
