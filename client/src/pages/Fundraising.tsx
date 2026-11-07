@@ -81,7 +81,7 @@ export default function FundraisingPage() {
 
       <Section
         title="What Your Donation Funds"
-        lead="100% of donations go directly to the Foundation mission. No executive salaries, no overhead."
+        lead="Donations fund the Foundation's open-source development, research and education work."
       >
         <ul className="cards two">
           {uses.map(u => (
