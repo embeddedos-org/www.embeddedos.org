@@ -163,81 +163,6 @@ const LAYERS: { name: string; c: string; text: string; chips: Chip[] }[] = [
   },
 ];
 
-type Repo = [name: string, st: string, status: string, text: string];
-
-/** The ecosystem index: the repositories on the device, then the tools. */
-const DEVICE_REPOS: Repo[] = [
-  [
-    "eBoot",
-    "s-work",
-    "Working",
-    "Signed two-stage boot with A/B slots and recovery; not yet booted on hardware.",
-  ],
-  [
-    "EoS kernel",
-    "s-work",
-    "Working",
-    "Real-time kernel with priority scheduling, sync and queues; tested on hosts.",
-  ],
-  [
-    "eIPC",
-    "s-code",
-    "Prototype",
-    "Authenticated messages between processes and devices; Go core and a C SDK.",
-  ],
-  [
-    "eDB",
-    "s-code",
-    "Prototype",
-    "Multi-model data store: five models, 38 endpoints, 42 passing tests.",
-  ],
-  [
-    "eosllm",
-    "s-work",
-    "Working",
-    "Runs language models on the device with three real back ends; 160 tests.",
-  ],
-  [
-    "eAI",
-    "s-docs",
-    "Framework",
-    "The on-device AI layer; its model runtimes are placeholders today.",
-  ],
-  [
-    "eBrowser",
-    "s-code",
-    "Engine",
-    "Browser engine for embedded displays; JavaScript and the sandbox are planned.",
-  ],
-  ["eOffice", "s-code", "Prototype", "11 office apps with 741 tests."],
-  [
-    "eApps",
-    "s-code",
-    "Catalogue",
-    "124 catalogue entries; many apps are templates.",
-  ],
-];
-const TOOL_REPOS: Repo[] = [
-  [
-    "ebuild",
-    "s-work",
-    "Working",
-    "One CLI to create, build, flash and simulate; knows 171 MCUs, 826 tests.",
-  ],
-  [
-    "EoStudio",
-    "s-docs",
-    "7 of 13",
-    "Design studio and IDE: 7 of its 13 editors are real; 40 code generators.",
-  ],
-  [
-    "EoSim",
-    "s-work",
-    "Working",
-    "Simulator with 153 platforms and 2,117 passing tests.",
-  ],
-];
-
 /**
  * The four health designs. Each status line uses only what the site already
  * states: the two U.S. application numbers (pages/Patents.tsx, pages/Terms.tsx)
@@ -319,20 +244,6 @@ const COMMUNITY: [title: string, text: string][] = [
     "This page says what works, what is partial and what is planned.",
   ],
 ];
-
-function RepoList({ repos }: { repos: Repo[] }) {
-  return (
-    <ul className="hp-ix-list" data-stagger="">
-      {repos.map(([name, st, status, text]) => (
-        <li key={name}>
-          <b>{name}</b>
-          <span className={`hp-st ${st}`}>{status}</span>
-          <p>{text}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 const Arrow = () => (
   <span className="ar" aria-hidden="true">
@@ -696,42 +607,6 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-          </section>
-          <section className="hp-sec" aria-labelledby="hp-eco" data-reveal="">
-            <div className="hp-wrap hp-ix-wrap">
-              <div className="hp-ix-head">
-                <p className="hp-label" data-fade="">
-                  The ecosystem
-                </p>
-                <h2 id="hp-eco" data-split="">
-                  The Complete Embedded Ecosystem
-                </h2>
-                <p className="hp-lead" data-fade="">
-                  Every component you need to build, deploy and manage embedded
-                  systems, each described as it stands in its repository today.
-                </p>
-                <div className="hp-actions" data-fade="">
-                  <Link className="hp-btn gh" href="/projects">
-                    All Projects <Arrow />
-                  </Link>
-                  <Link className="hp-btn gh" href="/eapps">
-                    All Apps <Arrow />
-                  </Link>
-                </div>
-              </div>
-              <div className="hp-ix">
-                <h3 className="hp-ix-k" data-fade="">
-                  <span>On the device</span>
-                  <span>9 repositories</span>
-                </h3>
-                <RepoList repos={DEVICE_REPOS} />
-                <h3 className="hp-ix-k" data-fade="">
-                  <span>To build and test it</span>
-                  <span>3 repositories</span>
-                </h3>
-                <RepoList repos={TOOL_REPOS} />
               </div>
             </div>
           </section>
