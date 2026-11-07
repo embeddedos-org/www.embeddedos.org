@@ -214,7 +214,17 @@ copies them into every build**:
   and the homepage — a soft 404 that search engines index as a real page.
 - **`.cpanel.yml`** — the tasks cPanel runs on deploy. It copies `*` plus
   `.htaccess` by name, because the `*` glob skips dotfiles. There is no delete
-  step: overwriting is safe, emptying a directory is not.
+  step: overwriting is safe, emptying a directory is not. Before copying the
+  build, it appends `session.upload_progress.enabled = 0` to
+  `public_html/.user.ini` unless the file already ends up at 0, a stopgap for
+  #128 that `.htaccess` repeats for module handlers; `.htaccess` also denies
+  web access to `.user.ini`. It appends rather than copies so the host's own
+  PHP settings in that file survive. The fix for #128 is still upgrading the
+  host's PHP in cPanel.
+  Each deploy replaces `public_html/.htaccess`. Under some PHP handlers
+  cPanel's MultiPHP Manager and INI Editor write their settings into that
+  file, so check the live file before changing PHP in cPanel, or the next
+  deploy will drop those settings.
 
 They live in `client/public/` rather than being committed to `deploy` directly
 because that was tried and it failed — a file added to the deploy branch by hand

@@ -14,9 +14,11 @@
  *
  * Requires `pnpm build` first.
  */
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
+import os from "node:os";
+import { execFileSync } from "node:child_process";
 // @ts-expect-error - plain .mjs script, no type declarations
 import { discoverRoutes } from "../../scripts/prerender.mjs";
 
@@ -86,6 +88,108 @@ describe("the build ships the hosting config", () => {
     // this file guards against.
     const yml = fs.readFileSync(CPANEL_YML, "utf8");
     expect(yml).toMatch(/^\s*-\s*\S*cp\s+\.htaccess\s+\$DEPLOYPATH/m);
+  });
+});
+
+describe("PHP session upload progress is off (stopgap for #128)", () => {
+  // The list items under `deployment: tasks:`, in order. The file is a flat
+  // list of one-line shell commands, so this is all the YAML it needs.
+  const tasks = () => {
+    const lines = fs.readFileSync(CPANEL_YML, "utf8").split("\n");
+    const start = lines.findIndex(l => /^\s+tasks:\s*$/.test(l));
+    expect(start, "no tasks: list in .cpanel.yml").toBeGreaterThan(-1);
+    return lines
+      .slice(start + 1)
+      .filter(l => /^\s*-\s/.test(l))
+      .map(l => l.replace(/^\s*-\s+/, ""));
+  };
+  const iniTask = () => tasks().find(t => t.includes(".user.ini")) ?? "";
+
+  it("updates .user.ini right after the docroot exists, before the copy", () => {
+    // Before the build copy, so a deploy that stops partway has applied it.
+    const t = tasks();
+    const at = t.indexOf(iniTask());
+    expect(at, "no .cpanel.yml task touches .user.ini").toBeGreaterThan(-1);
+    expect(t[at - 1]).toMatch(/mkdir -p \$DEPLOYPATH$/);
+    expect(t.findIndex(x => x.includes("cp -R"))).toBeGreaterThan(at);
+    expect(
+      t.filter(x => x.includes(".user.ini")),
+      "only one task may write the host's .user.ini"
+    ).toHaveLength(1);
+  });
+
+  describe("running the task against a docroot", () => {
+    // Runs the task exactly as written in .cpanel.yml, under sh, so the test
+    // follows the command rather than its spelling.
+    let dir: string;
+    const ini = () => path.join(dir, ".user.ini");
+    const deploy = () =>
+      execFileSync("sh", ["-c", iniTask()], {
+        env: { ...process.env, DEPLOYPATH: dir },
+      });
+    // The value PHP uses: the last assignment in the file.
+    const effective = () =>
+      fs
+        .readFileSync(ini(), "utf8")
+        .split(/\r?\n/)
+        .map(l => l.match(/^\s*session\.upload_progress\.enabled\s*=\s*(\S+)/))
+        .filter(m => m !== null)
+        .at(-1)?.[1];
+
+    beforeEach(() => {
+      dir = fs.mkdtempSync(path.join(os.tmpdir(), "deploy-ini-"));
+    });
+    afterEach(() => {
+      fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("creates the file with the setting off", () => {
+      deploy();
+      expect(effective()).toBe("0");
+    });
+
+    it("keeps the host's settings and overrides an enabled value", () => {
+      const host = "memory_limit = 256M\nsession.upload_progress.enabled = 1";
+      fs.writeFileSync(ini(), host);
+      deploy();
+      expect(fs.readFileSync(ini(), "utf8").startsWith(host)).toBe(true);
+      expect(effective()).toBe("0");
+    });
+
+    it("adds nothing on repeated deploys", () => {
+      fs.writeFileSync(ini(), "memory_limit = 256M\r\n");
+      deploy();
+      const once = fs.readFileSync(ini(), "utf8");
+      deploy();
+      deploy();
+      expect(fs.readFileSync(ini(), "utf8")).toBe(once);
+      expect(effective()).toBe("0");
+    });
+  });
+
+  it("sets the same flag in .htaccess only inside PHP-module guards", () => {
+    // An unguarded php_flag answers 500 on a server without a PHP module.
+    const rules = readHtaccess()
+      .split("\n")
+      .filter(l => !l.trim().startsWith("#"))
+      .join("\n");
+    const phpGuard =
+      /<IfModule\s+(php_module|php8_module|lsapi_module)>\s*php_flag\s+session\.upload_progress\.enabled\s+off\s*<\/IfModule>/g;
+    const guarded = [...rules.matchAll(phpGuard)].map(m => m[1]);
+    expect(guarded.sort()).toEqual([
+      "lsapi_module",
+      "php8_module",
+      "php_module",
+    ]);
+    expect(rules.replace(phpGuard, "")).not.toMatch(
+      /php_(admin_)?(flag|value)/
+    );
+  });
+
+  it("does not serve .user.ini", () => {
+    expect(readHtaccess()).toMatch(
+      /^<Files "\.user\.ini">\n\s*Require all denied\n<\/Files>$/m
+    );
   });
 });
 

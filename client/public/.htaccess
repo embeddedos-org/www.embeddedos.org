@@ -135,6 +135,33 @@ AddType image/avif .avif
 # open-source file was not worth a directive whose meaning changes between the
 # server it was tested on and the server it runs on.
 
+# Stopgap for www #128: session upload progress off, where PHP takes php_flag
+# from .htaccess (PHP as an Apache module, mod_lsapi, and LiteSpeed where it
+# honours these guards). Where PHP runs as FastCGI or FPM the same setting
+# comes from public_html/.user.ini, which .cpanel.yml maintains. Which path
+# applies on this host is unconfirmed; #128 asks for the effective value to be
+# checked in cPanel. php8_module is the name cPanel's EasyApache uses,
+# php_module upstream PHP's. Each block is guarded, the same way cPanel's own
+# INI Editor writes them, so a server that loads none of these modules skips
+# it rather than answering 500 on an unknown directive. This narrows the
+# exposure only; the fix is upgrading the host's PHP (#128).
+<IfModule php_module>
+  php_flag session.upload_progress.enabled off
+</IfModule>
+<IfModule php8_module>
+  php_flag session.upload_progress.enabled off
+</IfModule>
+<IfModule lsapi_module>
+  php_flag session.upload_progress.enabled off
+</IfModule>
+
+# .cpanel.yml writes public_html/.user.ini, and the host may keep its own PHP
+# settings there, so it is not served. Scoped to that one filename, so unlike
+# the method rules described above it cannot deny anything else.
+<Files ".user.ini">
+  Require all denied
+</Files>
+
 # Baseline security headers (Ad Grants site-quality review).
 #
 # Guarded by <IfModule mod_headers.c> like the cache blocks above: a safe
