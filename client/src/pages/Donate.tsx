@@ -34,7 +34,7 @@ const STATS = [
 const IMPACT_ITEMS = [
   {
     title: "Hardware Research",
-    detail: "Every $100 funds one new board bring-up",
+    detail: "Funds board bring-up and hardware research",
   },
   {
     title: "Technical Books",
@@ -50,7 +50,7 @@ const IMPACT_ITEMS = [
   },
   {
     title: "Student Internships",
-    detail: "Paid internships for embedded devs",
+    detail: "Internship programme for embedded developers",
   },
   {
     title: "Contributor Grants",
