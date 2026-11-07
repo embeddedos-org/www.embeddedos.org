@@ -108,7 +108,6 @@
   margin-bottom: 0;
 }
 .hs .hp-head h2,
-.hs .hp-ix-head h2,
 .hs .hp-comm-head h2,
 .hs .hp-cta h2 {
   margin-top: 14px;
@@ -913,62 +912,8 @@
   gap: 6px 16px;
 }
 
-/* ───────── the ecosystem index ───────── */
-.hs .hp-ix-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-  gap: 48px 72px;
-  align-items: start;
-}
-.hs .hp-ix-head {
-  position: sticky;
-  top: calc(var(--nav) + 40px);
-}
-.hs .hp-ix-head h2 {
-  font-size: clamp(32px, 3.4vw, 50px);
-}
-.hs .hp-ix-head .hp-lead,
 .hs .hp-comm-head .hp-lead {
   margin-top: 18px;
-}
-.hs .hp-ix {
-  min-width: 0;
-}
-.hs .hp-ix-k {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--line2);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg2);
-}
-.hs .hp-ix-list + .hp-ix-k {
-  margin-top: 48px;
-}
-.hs .hp-ix-list li {
-  display: grid;
-  grid-template-columns: 8.5rem 7.5rem minmax(0, 1fr);
-  gap: 4px 20px;
-  align-items: baseline;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--line);
-}
-.hs .hp-ix-list b {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--fg);
-}
-.hs .hp-ix-list p {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--fg2);
 }
 
 /* ───────── the health devices: numbered typographic cards, no icons ───────── */
@@ -1137,14 +1082,6 @@
     justify-content: flex-start;
   }
 }
-@media (max-width: 1023px) {
-  .hs .hp-ix-wrap {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .hs .hp-ix-head {
-    position: static;
-  }
-}
 @media (max-width: 900px) {
   .hs .hp-prog,
   .hs .hp-split {
@@ -1184,14 +1121,6 @@
   }
   .hs .hp-layer .hp-chips {
     grid-column: auto;
-  }
-}
-@media (max-width: 640px) {
-  .hs .hp-ix-list li {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .hs .hp-ix-list p {
-    grid-column: 1 / -1;
   }
 }
 @media (max-width: 620px) {
