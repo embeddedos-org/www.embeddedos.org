@@ -1,9 +1,8 @@
 /**
  * The "Ask your AI" card opens an outside assistant with a prompt that sends it
- * to /llms.txt. Two things can silently break that: a link that no longer
- * carries the whole prompt, and a brief that points the assistant at a page
- * the site no longer has — the assistant would then answer from nothing, or
- * from somewhere else.
+ * to the embeddedos-org repository list. Two things can silently break this
+ * feature: a link that no longer carries the whole prompt, and /llms.txt (the
+ * site guide for crawlers) pointing at a page the site no longer has.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -28,8 +27,10 @@ describe("Ask your AI links", () => {
     expect(url.searchParams.get("q")).toBe(ASK_AI_PROMPT);
   });
 
-  it("points the assistant at the brief on our own origin", () => {
-    expect(ASK_AI_PROMPT).toContain("https://www.embeddedos.org/llms.txt");
+  it("points the assistant at the embeddedos-org repositories", () => {
+    expect(ASK_AI_PROMPT).toContain(
+      "https://github.com/orgs/embeddedos-org/repositories"
+    );
   });
 });
 

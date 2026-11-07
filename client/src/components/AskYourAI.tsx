@@ -9,17 +9,17 @@ import { Minus } from "lucide-react";
  *
  * Each tile is a plain link: the prompt rides in the target's `q` parameter,
  * so there is no script, no API key and nothing sent from this site. The
- * prompt points the assistant at /llms.txt (client/public/llms.txt), which
- * tells it what to ask the visitor and to answer only from embeddedos.org and
- * the embeddedos-org GitHub. The brief lives on our own origin rather than a
- * third-party host so its wording stays under the Foundation's control.
+ * prompt points the assistant at the embeddedos-org repository list on
+ * GitHub, the public source of every component, and limits it to that and
+ * embeddedos.org. /llms.txt (client/public/llms.txt) remains as the site
+ * guide for crawlers.
  *
  * eBot stays the on-site assistant; this is the off-site one. The card hides
  * while eBot's panel is open, and collapses to a pill beside eBot's button.
  */
 
 export const ASK_AI_PROMPT =
-  "Read https://www.embeddedos.org/llms.txt and follow it: ask my industry and company, then show where EmbeddedOS applies to us. Use only embeddedos.org pages and the embeddedos-org GitHub; say if unsure.";
+  "Read https://github.com/orgs/embeddedos-org/repositories then ask my industry and company, and show where EmbeddedOS applies to us. Use only embeddedos.org pages and the embeddedos-org GitHub; say if unsure.";
 
 export type AiTarget = {
   id: string;
