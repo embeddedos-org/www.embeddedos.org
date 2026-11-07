@@ -6,6 +6,7 @@ import { answerQuestion, type KnowledgeLink } from "@shared/ebot-knowledge";
 import { openContactForm } from "@/lib/contact-form";
 import type { ContactTopicKey } from "@/data/foundation";
 import { useFocusTrap } from "@/lib/focus-trap";
+import AskYourAI, { AiTiles } from "./AskYourAI";
 
 interface Message {
   role: "user" | "assistant";
@@ -178,6 +179,8 @@ export default function EBot() {
 
   return (
     <>
+      <AskYourAI hidden={open} />
+
       {/* FAB Button */}
       <motion.button
         onClick={() => {
@@ -207,15 +210,20 @@ export default function EBot() {
             }
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
-            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-[#232326] bg-[#0b0b0d]"
-            style={{ maxHeight: minimized ? 56 : 520 }}
+            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] flex flex-col rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-[#232326] bg-[#0b0b0d]"
+            // A flex column under a viewport-aware cap: the message log is the
+            // only part that shrinks, so the header, suggestions and input are
+            // never clipped on a short window.
+            style={{
+              maxHeight: minimized ? 56 : "min(560px, calc(100dvh - 3rem))",
+            }}
             role="dialog"
             aria-modal="true"
             aria-label="eBot, the EmbeddedOS assistant"
             tabIndex={-1}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-[#232326]">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-[#232326] flex-shrink-0">
               <div className="w-8 h-8 rounded-full bg-[#141417] border border-[#34343a] flex items-center justify-center flex-shrink-0">
                 <Bot className="w-4 h-4 text-[#f5f5f7]" />
               </div>
@@ -250,7 +258,7 @@ export default function EBot() {
                     the answer arrives without any focus change, so without it
                     the exchange was silent. */}
                 <div
-                  className="h-[320px] overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-white/10"
+                  className="h-[320px] min-h-[96px] flex-shrink overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-white/10"
                   role="log"
                   aria-live="polite"
                   aria-atomic="false"
@@ -324,7 +332,7 @@ export default function EBot() {
 
                 {/* Suggestions (only when 1 message) */}
                 {messages.length === 1 && (
-                  <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+                  <div className="px-4 pb-2 flex flex-wrap gap-1.5 flex-shrink-0">
                     {SUGGESTIONS.map(s => (
                       <button
                         key={s}
@@ -338,7 +346,7 @@ export default function EBot() {
                 )}
 
                 {/* Input */}
-                <div className="px-4 pb-4">
+                <div className="px-4 pb-4 flex-shrink-0">
                   <div className="flex gap-2 bg-[#141417] border border-[#34343a] rounded-xl p-2 focus-within:border-[#a1a1a6] transition-colors">
                     <input
                       ref={inputRef}
@@ -358,6 +366,12 @@ export default function EBot() {
                     >
                       <Send className="w-3.5 h-3.5" />
                     </button>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 mt-3">
+                    <span className="text-xs text-[#86868b]">
+                      Or ask your own AI
+                    </span>
+                    <AiTiles size={28} />
                   </div>
                 </div>
               </>
