@@ -42,7 +42,7 @@ const IMPACT_ITEMS = [
   },
   {
     title: "Security Audits",
-    detail: "CVE-0 track record since 2023",
+    detail: "Responsible disclosure under a public security policy",
   },
   {
     title: "501(c)(3) Nonprofit",
@@ -676,8 +676,8 @@ export default function Donate() {
               desc: "Every line of code is MIT-licensed and freely available. Your donation keeps it that way.",
             },
             {
-              title: "Global Impact",
-              desc: "EoS powers devices in 40+ countries — from hospital monitors to satellite edge nodes.",
+              title: "Open to Everyone",
+              desc: "The documentation and getting-started guides are free to read, so engineers anywhere can learn and build with EoS.",
             },
             {
               title: "Community Driven",
