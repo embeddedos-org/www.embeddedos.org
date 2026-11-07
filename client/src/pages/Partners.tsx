@@ -71,7 +71,7 @@ const PARTNERS_ABOUT: ReadonlyArray<AboutSection> = [
     heading: "Where the money goes",
     body: [
       "All sponsorship fees are reinvested into the mission: open-source development, free certifications, and education. The Foundation is a registered 501(c)(3) nonprofit, EIN 41-4821627, so contributions are tax-deductible to the extent the law allows.",
-      "How the money is used is reported like everything else the Foundation does. The transparency page carries the Foundation's financial disclosures, and sponsorship income appears there alongside donations and grants.",
+      "How the money is used will be reported like everything else the Foundation does, on the transparency page alongside donations and grants.",
     ],
   },
   {
@@ -105,15 +105,15 @@ export default function Partners() {
         sig
         label="PARTNERSHIPS & SPONSORS"
         title="Partners & Sponsors"
-        lead="Support the EmbeddedOS Foundation and get your organization in front of 10,000+ embedded engineers worldwide."
+        lead="Support the EmbeddedOS Foundation's open-source embedded systems research and education, with public recognition for your organization."
       />
 
       <Section className="pt-tiers">
         <p className="gnote pt-note">
           All sponsorship fees are reinvested into open-source development, free
-          certifications, and education. Donations are{" "}
-          <strong>tax-deductible</strong> as the Foundation is a registered{" "}
-          <strong>501(c)(3)</strong> nonprofit.
+          certifications, and education. Contributions are{" "}
+          <strong>tax-deductible</strong> to the extent the law allows, as the
+          Foundation is a registered <strong>501(c)(3)</strong> nonprofit.
         </p>
         <ul className="cards two">
           {tiers.map(t => (

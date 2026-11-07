@@ -34,7 +34,7 @@ const STATS = [
 const IMPACT_ITEMS = [
   {
     title: "Hardware Research",
-    detail: "Every $100 funds one new board bring-up",
+    detail: "Funds board bring-up and hardware research",
   },
   {
     title: "Technical Books",
@@ -50,11 +50,11 @@ const IMPACT_ITEMS = [
   },
   {
     title: "Student Internships",
-    detail: "Paid internships for embedded devs",
+    detail: "Internship programme for embedded developers",
   },
   {
     title: "Contributor Grants",
-    detail: "Grants for open-source contributors",
+    detail: "Planned grants for open-source contributors",
   },
 ];
 
@@ -619,7 +619,7 @@ export default function Donate() {
                       label: "0% Platform Fee",
                       sub: "100% goes to Foundation",
                     },
-                    { label: "MIT License", sub: "100% open source" },
+                    { label: "MIT License", sub: "Core EoS repositories" },
                     { label: "Secure Checkout", sub: "PCI-DSS processors" },
                   ].map(b => (
                     <li key={b.label}>
@@ -652,7 +652,7 @@ export default function Donate() {
                 <h3>Want recurring impact?</h3>
                 <p>
                   Become a Foundation Member for sustained support — with
-                  recognition, early access, and voting rights.
+                  recognition and early access.
                 </p>
                 <Link href="/membership" className="btn pri dn-wide">
                   View Membership Tiers <span aria-hidden="true">→</span>
@@ -673,7 +673,7 @@ export default function Donate() {
           {[
             {
               title: "Open-Source First",
-              desc: "Every line of code is MIT-licensed and freely available. Your donation keeps it that way.",
+              desc: "The core EoS repositories are MIT-licensed and freely available. Your donation keeps them that way.",
             },
             {
               title: "Open to Everyone",
@@ -681,7 +681,7 @@ export default function Donate() {
             },
             {
               title: "Community Driven",
-              desc: "Donations fund student internships, contributor grants, and open research programs.",
+              desc: "Donations fund student internships and open research, with contributor grants planned.",
             },
           ].map(c => (
             <li key={c.title}>
