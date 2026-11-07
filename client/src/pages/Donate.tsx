@@ -12,7 +12,7 @@ import {
   type StripeElements,
   type StripePaymentElement,
 } from "@/lib/payments";
-import { REPO_COUNT } from "@/data/stack";
+import { BOARD_COUNT, REPO_COUNT, SIM_PLATFORM_COUNT } from "@/data/stack";
 import { BpPage, PageHero, Section, Stats } from "@/components/bp";
 import "./Donate.css";
 
@@ -27,8 +27,8 @@ const STATS = [
     value: "14",
     label: "Free Technical Books",
   },
-  { value: "40+", label: "Countries Using EoS" },
-  { value: "100%", label: "To the Foundation" },
+  { value: String(BOARD_COUNT), label: "Board Definitions" },
+  { value: String(SIM_PLATFORM_COUNT), label: "Simulated Platforms" },
 ];
 
 const IMPACT_ITEMS = [
