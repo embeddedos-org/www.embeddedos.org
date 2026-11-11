@@ -12,6 +12,7 @@
   "/careers": "Open roles and internships at the EmbeddedOS Foundation for embedded engineers, AI researchers and open-source contributors.",
   "/changelog": "Release notes for the EmbeddedOS platform — what changed in each version across the kernel, bootloader and developer tooling.",
   "/community": "How the EmbeddedOS community works: contributing code, docs and hardware designs, plus where discussion and support happen.",
+  "/contribute": "How to contribute to EmbeddedOS: architecture review by the TSC, submitting a pull request, the PR template and review timelines.",
   "/contact": "Reach the Foundation by topic. Security reports are answered within 48 hours; other enquiries within a few business days.",
   "/demo": "Run EoS firmware in your browser. Toggle GPIO pins, watch UART output and test programs against simulated STM32, ESP32 and Pico boards.",
   "/eai-edge": "An in-development concept for a manifest-pinned eNI to eIPC to eAI workflow. Hardware support and setup steps require validation.",

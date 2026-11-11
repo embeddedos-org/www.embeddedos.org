@@ -1,0 +1,23 @@
+/* Contribute (/contribute): architecture review, PR steps, the PR template, review targets and packages. */
+.bp.contribute .ct-sub {
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: var(--fg2);
+}
+.bp.contribute .ct-list {
+  margin: 0 0 28px;
+  padding-left: 20px;
+  list-style: disc;
+  color: var(--fg2);
+}
+.bp.contribute .ct-list li + li {
+  margin-top: 8px;
+}
+/* the template has long comment lines; wrap them so the block never widens the page on a phone */
+.bp.contribute .code pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.bp.contribute .steps + .gnote {
+  margin-top: 28px;
+}

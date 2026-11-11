@@ -30,6 +30,13 @@ Fixes #<same-repository issue number>
 
 -
 
+## Architecture impact
+
+<!-- A change that crosses component boundaries, changes which components are part of the supported platform, or changes or deprecates a public interface needs a Technical Steering Committee decision before merge. See https://www.embeddedos.org/contribute/#architecture-review -->
+
+- [ ] None. The change stays inside one component and changes no public interface.
+- [ ] Architecture review needed. RFC discussion: <link>. TSC decision: <link>.
+
 ## Validation
 
 <!-- List exact commands or manual checks and their results. -->

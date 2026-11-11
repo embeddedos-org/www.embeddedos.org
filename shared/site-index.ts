@@ -920,6 +920,20 @@ export const PAGES: SearchEntry[] = [
     ],
   },
   {
+    title: "Contribute",
+    path: "/contribute",
+    tags: [
+      "contribute",
+      "contributing",
+      "pull request",
+      "pr template",
+      "code review",
+      "architecture review",
+      "rfc",
+      "tsc",
+    ],
+  },
+  {
     title: "eDB — Embedded Multi-Model Database",
     path: "/edb",
     tags: [

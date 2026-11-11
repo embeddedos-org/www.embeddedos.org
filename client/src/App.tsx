@@ -321,6 +321,7 @@ const Organization = lazyPage(
   () => import("./pages/Organization")
 );
 const CommunityPage = lazyPage("/community", () => import("./pages/Community"));
+const Contribute = lazyPage("/contribute", () => import("./pages/Contribute"));
 const EIPCPage = lazyPage("/eipc", () => import("./pages/EIPC"));
 const EoSimProductPage = lazyPage(
   "/eosim",
@@ -797,6 +798,11 @@ function Router() {
       <Route path="/community">
         <Suspense fallback={<PageLoader />}>
           <CommunityPage />
+        </Suspense>
+      </Route>
+      <Route path="/contribute">
+        <Suspense fallback={<PageLoader />}>
+          <Contribute />
         </Suspense>
       </Route>
       <Route path="/eipc">

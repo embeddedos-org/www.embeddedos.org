@@ -38,6 +38,7 @@ const donateSource = read("client/src/pages/Donate.tsx");
 const missionSource = read("client/src/pages/Mission.tsx");
 const foundationSource = read("client/src/data/foundation.ts");
 const contactSource = read("client/src/pages/Contact.tsx");
+const getInvolvedSource = read("client/src/pages/GetInvolved.tsx");
 
 /**
  * Internal routes the router serves, excluding the catch-all 404 and the
@@ -166,6 +167,7 @@ const HUB_MEMBERS: Array<{ hub: string; members: string[] }> = [
   { hub: "/donate", members: ["/membership", "/sponsors"] },
   { hub: "/contact", members: ["/book"] },
   { hub: "/mission", members: ["/industries"] },
+  { hub: "/get-involved", members: ["/contribute"] },
 ];
 
 const HUB_SOURCES: Record<string, string> = {
@@ -177,6 +179,7 @@ const HUB_SOURCES: Record<string, string> = {
   "/donate": donateSource,
   "/mission": missionSource,
   "/contact": contactSource,
+  "/get-involved": getInvolvedSource,
 };
 
 /** Every route covered through a hub rather than a literal footer link. */
