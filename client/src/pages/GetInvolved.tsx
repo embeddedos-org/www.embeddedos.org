@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import ProgrammeList from "@/components/ProgrammeList";
 import { BpPage, LocalNav, PageHero, Section } from "@/components/bp";
 import "./GetInvolved.css";
@@ -90,6 +91,9 @@ export default function GetInvolved() {
               →
             </span>
           </a>
+          <Link href="/contribute" className="btn ln">
+            How to Contribute
+          </Link>
         </div>
       </PageHero>
       <LocalNav
