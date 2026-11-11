@@ -41,6 +41,7 @@ import {
   Brain,
   Cpu as CpuIcon,
   Atom,
+  GitPullRequest,
 } from "lucide-react";
 import { BOARD_COUNT, SIM_PLATFORM_COUNT, REPO_COUNT } from "../data/stack";
 
@@ -573,7 +574,7 @@ export default function Navbar() {
                 <span className="font-heading font-semibold text-[#f5f5f7] text-[15px] tracking-[-0.01em]">
                   EmbeddedOS
                 </span>
-                <span className="text-[10px] text-[#a1a1a6] font-medium tracking-[0.08em] uppercase mt-0.5">
+                <span className="text-[10px] text-[#a1a1a6] font-medium tracking-[0.08em] uppercase mt-0.5 whitespace-nowrap">
                   Foundation · 501(c)(3)
                 </span>
               </div>
@@ -586,7 +587,7 @@ export default function Navbar() {
               value={openMenu}
               onValueChange={setOpenMenu}
             >
-              <NavigationMenu.List className="flex items-center gap-3 min-[1100px]:gap-4 xl:gap-[clamp(20px,2.6vw,34px)]">
+              <NavigationMenu.List className="flex items-center gap-2 min-[1100px]:gap-3 xl:gap-[clamp(16px,1.7vw,28px)]">
                 {(Object.keys(NAV_ITEMS) as NavKey[]).map(label => {
                   const section = NAV_ITEMS[label];
                   return (
@@ -671,14 +672,26 @@ export default function Navbar() {
                 })}
 
                 <NavigationMenu.Item>
+                  <Link
+                    href="/contribute"
+                    className="flex items-center py-4 leading-5 text-[13px] whitespace-nowrap text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200"
+                  >
+                    Contribute
+                  </Link>
+                </NavigationMenu.Item>
+
+                <NavigationMenu.Item>
                   <a
                     href="https://github.com/embeddedos-org"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="GitHub"
+                    title="GitHub"
                     className="flex items-center gap-1.5 py-4 leading-5 text-[13px] text-[#a1a1a6] hover:text-[#f5f5f7] transition-colors duration-200"
                   >
                     <Star size={14} className="opacity-80" />
-                    GitHub
+                    {/* icon only: the bar has no room for the label once
+                        Contribute is in it; aria-label and title name it */}
                   </a>
                 </NavigationMenu.Item>
 
@@ -884,8 +897,17 @@ export default function Navbar() {
                   );
                 })}
 
-                {/* GitHub and Book a call, one row each: on phones index.css
-                    makes nav links inline-flex, so w-full keeps them apart */}
+                {/* Contribute, GitHub and Book a call, one row each: on phones
+                    index.css makes nav links inline-flex, so w-full keeps them
+                    apart */}
+                <Link
+                  href="/contribute"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex w-full items-center gap-2 px-1 py-3 text-[19px] font-medium tracking-[-0.015em] text-[#f5f5f7] hover:text-white transition-colors"
+                >
+                  <GitPullRequest size={16} className="text-[#a1a1a6]" />
+                  Contribute
+                </Link>
                 <a
                   href="https://github.com/embeddedos-org"
                   target="_blank"

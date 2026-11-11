@@ -81,6 +81,16 @@ describe("page anchors", () => {
   });
 });
 
+describe("header", () => {
+  it("links to /contribute from both the desktop bar and the phone menu", () => {
+    const navbar = readFileSync(
+      path.join(root, "client/src/components/Navbar.tsx"),
+      "utf8"
+    );
+    expect(navbar.match(/href="\/contribute"/g) ?? []).toHaveLength(2);
+  });
+});
+
 describe("package entries", () => {
   it("builds an anchor of letters, digits and single hyphens", () => {
     expect(packageAnchor("eBoot")).toBe("pkg-eboot");
